@@ -1,6 +1,6 @@
-= ACS I/O
+= Particle Output
 
-== The First Implementation
+== Getting Started
 
 *Bob*: Let's get some actual work done, after all our talking, last time.
 Shall we code up an I/O implementation of our ACS data format we designed
@@ -98,7 +98,7 @@ convenience in other languages.  But you're right, it does look very natural.
 *Bob*: I then have to provide the main tag +particle+, which I have encoded
 as a +Body+ class constant, by adding the following line to the +Body+ class:
 
-  TAG = "particle"
+ :inccode: .iobody.rb-tag
 
 The rest of the tag, in our example <tt>star giant AGB</tt>, which I call
 the type, in our case the type of particle, I assume will be stored in
@@ -106,7 +106,7 @@ an instance variable <tt>@type</tt>.  By default, when you create a
 vanilla flavor +Body+ instance, there is not extra type information,
 so I have added the following line to the +initialize+ method:
 
-    @type = nil
+ :inccode: .iobody.rb-type
 
 If a type is specified, then the string <tt>@type</tt> is inserted after
 the string +TAG+, with a space in between, as you can see in the +if+ clause;
@@ -144,22 +144,73 @@ But don't you think this is more short and simple:
 
 *Alice*: Shorter yes, but simpler only once you get used to it.
 Okay, I see what is happening in this method.  You have postponed the
-real work to the two methods <tt>real_to_s</tt> and <tt>vector_to_s</tt>.
+real work to the two methods <tt>f_to_s</tt> and <tt>f_v_to_s</tt>.
 A nice example of top-down programming!
 
+== Methods f_to_s and f_v_to_s
+
 *Bob*: The real work is actually very simple, since we've done it already
-in our previous version.  Here are the methods:
+in our previous version.  Here is the first method:
 
- :inccode: .iobody.rb+real_to_s
+ :inccode: .iobody.rb+f_to_s
 
- :inccode: .iobody.rb+vector_to_s
+*Alice*: So I guess +f+ stands for floating-point format, and <tt>f_to_s</tt>
+indicates a conversion from a floating point number to a string.  That makes
+sense, as a first step toward the more general <tt>to_s</tt> with converts
+the whole +Body+ content to a string.  In fact <tt>to_s</tt> could be called
+<tt>body_to_s</tt>.
 
-*Alice*: Why did you not call the first one <tt>scalar_to_s</tt>?
+*Bob*: Ah, but here is where Ruby's method notation shines: you invoke the
+method <tt>to_s</tt> for a particular +Body+ instance +b+ by writing
+<tt>b.to_s</tt>, which when you read it aloud sounds like b-to-s, and does
+what you expect it to do.
 
-*Bob*: Since it handles just a single number, it seemed sufficient to
+*Alice*: You're right.  It is all very logical and consistent -- and concise
+as well.  I like it.
 
+*Bob*: Here is the second method:
 
-== xx
+ :inccode: .iobody.rb+f_v_to_s
+
+*Alice*: I see.  Earlier we have used a <tt>to_v</tt> method as an extra
+method for the class +Array+, which is in fact a type of a-to-v method,
+or array-to-vector.  But as you reminded me, a particular array +a+
+will be converted by writing <tt>a.to_v</tt> which sounds just right.
+And now you are using the same logic to define a v-to-s method, from
+vector to string.
+
+*Bob*: Yes, and I thought it would be more consistent to stress the fact
+that we are not dealing with any old vector, but with a vector that has
+floating point values in it.  Hence the name <tt>f_v_to_s</tt>.
+
+*Alice*: But we use vectors exclusively for physical quantities, that are
+always represented as floating point variables.  Is it really
+necessary to add this <tt>f_</tt> to stress that we are dealing with
+floating point numbers?  You could as well write <tt>f_p_n_v_to_s</tt>
+for floating-point-number-valued-vectors.
+
+*Bob*: Ah, but look at the definition of the +Vector+ class; you will find
+no mention there of floating point variables.  So it does make sense
+to add that we are doing an extra conversion.  You can also look at the
+<tt>simple_read</tt> input method that we defined before.  The position,
+for example, was read in as follows:
+
+ :inccode: .init_iobody.rb-pos_f_v
+
+So you see, from that point of view it is natural to make a
+combination like <tt>to_f_v</tt>, as we will undoubtedly do later on
+in our new read method.  For our write method this means that <tt>f_v_to</tt>
+is natural.
+
+*Alice*: I see your point.  But how about making it a bit more compact,
+like <tt>fv_to_s</tt>?  I would prefer that, it is visually more pleasing.
+
+*Bob*: But logically less correct, I would say.
+
+*Alice*: Hmm, I don't think so.  But you wrote it, and it's not that
+important, so let's do it your way.
+
+== Testing
 
 *Alice*: We still need a method to do the actual output.
 Let me try something.  How about this:
@@ -172,27 +223,48 @@ file.
 
 *Alice*: Let's test it.  Here is a test file <tt>test.rb</tt>
 
- :inccode: iobody_driver1.rb
+ :commandinput: cat > test.rb END
+require "iobody.rb"
+
+b = Body.new(1, [2,3], [4.5, 6.7])
+b.write
+END
+
+ :output: cat test.rb
 
 And here is the result:
 
- :command: cp -f iobody_driver1.rb test.rb
  :commandoutput: ruby test.rb
- :command: rm -f test.rb
 
 *Bob*: Looks good!  Let's give it a more modest accuracy.  Given the
 order of the arguments to +write+, this means that we now have to
 explicitly supply the file name +stdout+:
 
- :inccode: .iobody_driver2.rb-barebones
+ :commandinput: cat > test.rb END
+require "iobody.rb"
+
+b = Body.new(1, [2,3], [4.5, 6.7])
+b.write($stdout, 4)
+END
+
+ :output: cat test.rb
 
 Let's test it:
 
- :command: cp -f iobody_driver2.rb test.rb
  :commandoutput: ruby test.rb
- :command: rm -f test.rb
 
+*Alice*: Just what it should be.  Let's see whether the indentation works:
 
+ :commandinput: cat > test.rb END
+require "iobody.rb"
 
+b = Body.new(1, [2,3], [4.5, 6.7])
+b.write($stdout, 4, 16, 4)
+END
 
+ :output: cat test.rb
 
+ :commandoutput: ruby test.rb
+
+*Bob*: Perfect.  I think we've done enough writing now.  Time to start
+reading in our new data format!

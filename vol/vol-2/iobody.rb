@@ -2,13 +2,17 @@ require "vector.rb"
 
 class Body
 
-  TAG = "particle"
+#:segment start: tag
+  TAG = "particle"                                                #1 vol 2, 2.3
+#:segment end:
 
   attr_accessor :mass, :pos, :vel, :type
 
   def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
     @mass, @pos, @vel = mass, pos, vel
-    @type = nil
+#:segment start: type
+    @type = nil                                                   #2 vol 2, 2.3
+#:segment end:
     @story = []
   end
 

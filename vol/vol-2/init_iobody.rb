@@ -26,7 +26,9 @@ class Body
 
   def simple_read
     @mass = gets.to_f
+#:segment start: pos_f_v
     @pos = gets.split.map{|x| x.to_f}.to_v
+#:segment end:
     @vel = gets.split.map{|x| x.to_f}.to_v
   end
 
