@@ -11,7 +11,7 @@
 \bigskip
 The Kali Code\\
 \medskip
- 6: User Interface
+ 6: Self-Describing Data Files
 }
 \author{\bf Piet Hut and Jun Makino}
 

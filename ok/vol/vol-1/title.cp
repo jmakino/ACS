@@ -9,9 +9,9 @@
 
 \title{\bf The Art of Computational Science\\
 \bigskip
-The Kali Code\\
+Open Knowledge\\
 \medskip
- 5: Open Knowledge
+1: Weaving Text and Code
 }
 \author{\bf Piet Hut and Jun Makino}
 
