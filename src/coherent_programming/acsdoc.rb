@@ -23,20 +23,15 @@ module Acsdoc
     indent = s.index(":output:") 
     tmpname = ".acsdoc.command-out"
     tmpcommand = ".acsdoc.command-file"
-    prompt = " "* indent + ">"
+    prompt = " "* indent + "|gravity>"
     commandline = a[1..a.size].join(" ").chomp
-    coutcopy = STDOUT.dup
-    cerrcopy = STDERR.dup
     outfile = open(tmpname, "w+")
     fullcommand = "cd #{dirname}; "+commandline + ">& " + tmpname
-    print "command to run = ", fullcommand, "\n"
+    print "Generating output of \"#{commandline}\"...\n"
+    print "command to run = ", fullcommand, "\n" if $DEBUG
     open(tmpcommand,"w+"){ |f|  f.print fullcommand + "\n"}
-#    $stdout = outfile
-#    $stderr = outfile
-  system("cat  #{tmpcommand}");
-  system("csh -f #{tmpcommand}");
-#    $stdout = coutcopy
-#    $stderr = cerrcopy
+    system("cat  #{tmpcommand}") if $DEBUG
+    system("csh -f #{tmpcommand}");
     outfile.close
     ofile.print prompt + commandline, "\n"
     output = `cat #{dirname}/#{tmpname}`
