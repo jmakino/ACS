@@ -1,0 +1,17 @@
+= The Hermite Algorithm
+
+== xx
+
+Take <tt>yo6nbody9.rb</tt> and add hermite:
+
+ :commandoutput: ruby rknbody6b_driver.rb < figure8.in
+
+
+ :commandoutput: ruby hnbody1a_driver.rb < figure8.in
+
+== xx
+
+ :commandoutput: ruby rknbody9b_driver.rb < cube1.in
+
+
+ :commandoutput: ruby hnbody1b_driver.rb < cube1.in

@@ -1,0 +1,158 @@
+= An Eight-Body System
+
+== Setting Up a Cube
+
+*Bob*: Now that we have settled on a tool for doing N-body simulations,
+it would be a pity to stop with three bodies.  Let's try it out on a
+bunch more particles.
+
+*Alice*: We haven't yet written tools for setting up initial conditions,
+though, such as a Plummer model, or a King model, or even just a
+homogeneous sphere with particles sprinkled in.  We will certainly do
+that later, but starting with that right know would be too much of a
+distraction.  After all, it was you who wanted to move on quickly to
+graphics!
+
+*Bob*: I agree.  Let's do something really simple then.  How about
+setting up eight particles on the eight corners of a cube, centered on
+the origin?  We can start with all particles at rest, and just let
+them fall toward each other.
+
+*Alice*: That sounds like a reasonably quick try.  But we cannot give
+them equal masses, otherwise by symmetry they will all hit each other
+in the center, at distance zero from each other, where the inter-particle
+forces will be infinitely large.
+
+*Bob*: Yes, we have to perturb something.  Either we can give them
+equal masses, and small but different initial velocities, or we can
+give them zero velocities but slightly different masses.  Let me do
+the latter.  Here are some initial conditions:
+
+ :inccode: cube1.in
+
+As you can see, I took masses starting from 1.0 with increments of 0.1
+for each next particle as I was walking around the eight corners of the
+central cube, for which the edges all have a length of 2.
+
+*Alice*: The advantage of perturbing the masses, rather than the velocities,
+is that you keep the center of mass at rest.  In other words, the kinetic
+energy you will be measuring, as soon as the particles start moving, will
+be the energy of the internal motion only.  It will not receive a contribution
+from the kinetic energy associated with center-of-mass motion.  If you had
+perturbed the velocities arbitrarily, that would no longer be true.
+
+== Letting Go
+
+*Bob*: Let's guess how long would it take for the particles to reach
+the center.  The masses are of order unity, the distances also, so the
+accelerations must also be of order unity.  This would suggest that it
+would take of order one time unit for the particles to meet each other.
+Well, let us ask the computer to tell us whether it will take them
+more than one time unit or less.
+
+*Alice*: Hmm, we should be able to predict that before doing a run.
+Wasn't it John Wheeler, who told us never to do a calculation before
+you know the answer?  I like his attitude.  Relying too much on raw
+computer power can make you lazy.
+
+*Bob*: Lazy is in the eye of the beholder, I guess: it is a lot of
+work to write a good computer program, as we both know!  But I see your
+point.  It certainly doesn't hurt to try to predict numerical results
+beforehand, and it makes you more likely to catch a bug, if things
+come out differently from what you expected.
+
+*Alice*: Not only that, it will give you more physical insight into the
+answer as well.
+
+*Bob*: Okay, let's see whether we can predict the outcome of our
+particle race toward the center.  I started saying that inter-particle
+distances were of order unity.  However, the typical distances between
+particles are actually more like 2, 3 or 3.5, roughly speaking as an
+approximation for <tex>$2, 2\sqrt(2), 2\sqrt(3)$</tex>, depending
+whether they share an edge, a side, or nothing at all.  So the initial
+acceleration, with inverse square forces, will receive contributions
+that have a distance dependence of something like
+<tex>$7(1/3)^2$</tex>, if we take 3 as a typical distance.  With a
+typical mass being somewhat larger than 1, we do indeed get an
+acceleration that is fairly close to 1, between 0.75 and 1.5, I would
+guess.
+
+Now this means that when you start from rest, and you have a distance
+to the center of <tex>$\sqrt(3)$</tex> or roughly 1.7, it will take
+more than one time unit to arrive at the center.  So I'm pretty sure
+that by time <tt>t = 1</tt>, the particles haven't arrived in the
+center yet.
+
+*Alice*: I agree.  Okay, we have placed our bets.  Let the truth be
+revealed!  And actually, this would be a good time to use the <tt>x_flag</tt>
+that we built in to ask for extra information about accelerations.
+
+*Bob*: Good idea.  Okay, here goes, let's run things for one time unit:
+
+ :commandoutput: ruby rknbody8b_driver.rb < cube1.in
+
+== Passing Through
+
+*Alice*: And indeed, the particles did not reach the center yet.
+The first particle, for example, that started at the right-far-upper
+corner, at <tex>$\{x,y,z\}=\{1,1,1\}$</tex> still has positive values
+for all three position components, and velocity components that are
+all negative, indicating that it is moving toward the center, but hasn't
+quite gotten there yet.  It is about half way, judging from the size
+of the position components.
+
+*Bob*: And look, my guestimate for the accelerations was correct too.
+Going back to the first snapshot output, typical components for the
+acceleration at time zero are 0.6 and 0.7, which means in three
+dimensions that the magnitude of the acceleration vector must be
+something like <tex>0.65$\sqrt(3)$</tex>, say, or about 1.1; comfortable
+within my predicted range!
+
+*Alice*: Yes, well done!  And our integrator has behaved well, too,
+even with the rather large time step of 0.1 that we have given it.
+Perhaps this is not surprising, given that the particles haven't reached
+the central crunch yet.
+
+*Bob*: I bet things won't go so well for the next time unit.  But
+let's try and see what happens:
+
+ :commandoutput: ruby rknbody8c_driver.rb < cube1.in
+
+== Convergence
+
+*Alice*: A veritable numerical explosion!  Look, the total energy has
+changed from a negative value around -20 to an enormously large
+positive value.  So much for energy conservation.  Clearly we'll have
+to try a much smaller time step.
+
+*Bob*: At least the particles have passed through the center, as you
+can see from the particles that reversed the signs of the values of
+the components of their position vectors -- although some of the particles
+seem to have gone of in almost random directions, with great speed.
+Okay, let's make the time step a hundred times smaller.  We did start
+off with a rather unrealistically large time step value, after all.
+
+*Alice*: And let's cut down on the output for now, showing only the
+energy errors for a few runs.  If we give a large value, say 10, for
+the snapshot output interval, no snapshot will appear during our run.
+Here we go again:
+
+ :commandoutput: ruby rknbody8d_driver.rb < cube1.in
+
+*Bob*: Still a disaster.  Well, these particle energy errors have
+little meaning, of course, once they are larger than the original
+energy values.  So we have no way of knowing how much smaller we'll
+have to make the time step.  Let's just try a time step value that is
+a factor ten smaller.
+
+ :commandoutput: ruby rknbody8e_driver.rb < cube1.in
+
+*Alice*: Much better already!  It seems that we're finally converging.
+But I'd like to be sure.  How about a time step that is smaller yet,
+by a factor two:
+
+ :commandoutput: ruby rknbody8f_driver.rb < cube1.in
+
+*Bob*: Convergence declared.  Good!  Normally, a fourth-order
+integrator should get a factor 16 more accurate when you half the
+time step, so this is very satisfactory.
