@@ -1,1 +1,0 @@
-/home/makino/papers/acs/kali/vol/vol-3b/clop.rb
