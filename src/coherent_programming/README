@@ -21,7 +21,7 @@ The changes we made are
         rdoc document, in rdoc does not recognize ":xxx:" if xxx
         includes white spaces.
 
-  One can do inline image by saying 'link: filename' (no space allowed
+* One can do inline image by saying 'link: filename' (no space allowed
   between link: and filename). Note that the
   link is relative to the place the index.html file is put, which is
   normally the "doc" directory under the directory rdoc source files
