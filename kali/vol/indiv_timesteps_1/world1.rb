@@ -469,6 +469,7 @@ class Body
 
   def to_worldpoint
     wp = WorldPoint.new
+    wp.restore_contents(self)
   end
 
 end
