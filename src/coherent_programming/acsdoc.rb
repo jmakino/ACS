@@ -1418,7 +1418,11 @@ end
 
 unless tolatex_flag
   print "rdoc #{coptions} #{ARGV.join(" ")} \n" 
-  system("rdoc #{coptions} #{ARGV.join(" ")}") 
+  unless system("rdoc #{coptions} #{ARGV.join(" ")}") 
+# This part is to work around some unfixed bug in rdoc
+    system("touch .zdummy")
+    system("rdoc #{coptions} #{ARGV.join(" ")} .zdummy") 
+  end
   add_toc
   process_css
 end
