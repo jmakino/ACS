@@ -365,6 +365,19 @@ static VALUE RCbody_copy_to_C(VALUE self, VALUE rp)
 	p->old_jerk[k]= p->jerk[k];
     }
 }
+static VALUE RCbody_update_old(VALUE self)
+{
+    int k;
+    VALUE local, element;
+    Cbody_ptr p;
+    Data_Get_Struct(self, Cbody, p);
+    for (k=0;k<NDIM;k++){
+	p->old_pos[k] = p->pos[k];
+	p->old_vel[k] = p->vel[k];
+	p->old_acc[k] = p->acc[k];
+	p->old_jerk[k]= p->jerk[k];
+    }
+}
     
 static VALUE RCbody_copy_from_C(VALUE self, VALUE rp)
 {
@@ -412,6 +425,36 @@ static VALUE correct(VALUE self)
     return Qnil;
 }
 
+static VALUE Cbody_calculate_force_all(VALUE self, VALUE cbp, VALUE size)
+{
+    int i,j,k,n;
+    static int nsize=0;
+    static Cbody_ptr *p;
+    n = FIX2INT(size);
+    if (nsize < n){
+	if (n != 0) {
+	    p=realloc(p,sizeof(Cbody_ptr)*n);
+	}else{
+	    p=malloc(sizeof(Cbody_ptr)*n);
+	}
+	if (p == NULL) {
+	    fprintf(stderr,"MALLOC failed in calculate force all\n");
+	    exit(-1);
+	}
+	nsize=n;
+    }
+    for(i=0;i<n;i++){
+	Data_Get_Struct(rb_ary_entry(cbp,i), Cbody, p[i]);
+    }
+    for(i=0;i<n-1;i++){
+	for(j=i+1;j<n;j++){
+	    Cbody_pairwize_force(p[i], p[j]);
+	}
+    }
+    
+    return Qnil;
+}
+
 	
 
 void Init_pairwize()
@@ -445,6 +488,9 @@ void Init_pairwize()
     rb_define_method(RCbody, "set_dt", set_dt, 1);
     rb_define_method(RCbody, "predict", predict, 0);
     rb_define_method(RCbody, "correct", correct, 0);
+    rb_define_method(RCbody, "update_old", RCbody_update_old, 0);
+    rb_define_global_function("Cbody_calculate_force_all",
+			      Cbody_calculate_force_all,2);
 
 }
 
