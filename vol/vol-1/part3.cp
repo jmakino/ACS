@@ -1,9 +1,9 @@
-= Part 3.  A SIMPLE INTEGRATOR
+= Part 4.  MOVING PARTICLES
 
-Chapter 10: Setting the Stage
+Chapter 14: The Two-Body Problem
 
-Chapter 11: Introducing the Players
+Chapter 15: Forward Euler
 
-Chapter 12: Handling N-body Systems
+Chapter 16: Energy Conservation
 
-Chapter 13: Evolving a 2-body System
+Chapter 17: Graphics
