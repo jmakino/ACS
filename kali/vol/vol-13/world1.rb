@@ -4,9 +4,10 @@ class Worldpoint
 
   attr_accessor :mass, :pos, :vel, :acc, :jerk, :time, :next_time
 
-  def propagate(era, wl, dt_param)
+  def propagate(era, wl, dt_param, init_flag = false)
     ss = era.take_snapshot(wl, @next_time)
     wp = ss.body.shift
+    wp = self if init_flag
     wp.acc, wp.jerk = wp.get_acc_and_jerk(ss)
     wp.correct(self)
     wp.next_time = wp.time + wp.collision_time_scale(ss) * dt_param
@@ -27,12 +28,12 @@ class Worldpoint
   end    
 
   def collision_time_scale(snapshot)
-    time_scale_sq = 1e30                         # square of time scale value
+    time_scale_sq = VERY_LARGE_NUMBER              # square of time scale value
     snapshot.body.each do |b|
       r = b.pos - @pos
       v = b.vel - @vel
       r2 = r*r
-      v2 = v*v
+      v2 = v*v + 1.0/VERY_LARGE_NUMBER          # always non-zero, for division
       estimate_sq = r2 / v2              # [distance]^2/[velocity]^2 = [time]^2
       if time_scale_sq > estimate_sq
         time_scale_sq = estimate_sq
@@ -141,10 +142,36 @@ class Worldline
     @worldpoint.push(@worldpoint.last.propagate(era, self, dt_param))
   end
 
+  def valid_extrapolation?(time)
+    if @worldpoint.last.time <= time and time <= @worldpoint.last.next_time
+      true
+    else
+      false
+    end
+  end
+
+  def valid_interpolation?(time)
+    if @worldpoint[0].time <= time and time <= @worldpoint.last.time
+      true
+    else
+      false
+    end
+  end
+
+  def valid_time?(time)
+    if @worldpoint[0].time <= time and time <= @worldpoint.last.next_time
+      true
+    else
+      false
+    end
+  end
+
   def take_point(time)
-    if @worldpoint.last.time <= time
+    if time >= @worldpoint.last.time
+      raise if not valid_extrapolation?(time)
       @worldpoint.last.extrapolate(time)
     else
+      raise if not valid_interpolation?(time)
       @worldpoint.each_index do |i|
         if @worldpoint[i].time > time
           return @worldpoint[i-1].interpolate(@worldpoint[i], time)
@@ -153,10 +180,11 @@ class Worldline
     end
   end
 
-  def next_worldline(t)
+  def next_worldline(time)
+    raise if not valid_interpolation?(time)
     wl = Worldline.new
     @worldpoint.each_index do |i|
-      if @worldpoint[i].time > t
+      if @worldpoint[i].time > time
         wl.worldpoint = @worldpoint[i-1...@worldpoint.size]
         break
       end
@@ -167,22 +195,11 @@ class Worldline
 #  def read                               # for self-documenting data
 #  end
 
-  def read_worldpoint
-    @worldpoint[0] = Worldpoint.new
-    @worldpoint[0].read
-  end
-
-  def write_worldpoint
-    @worldpoint.last.write
-  end
-
-  def write
-    print "    Begin World Line\n"               # for now; 
-    @worldpoint.each do |wp|
-      print "    at time ", wp.time, " :\n"
-      wp.write
-    end
-    print "    End World Line\n"                 # for now; 
+  def read_initial_worldpoint(time)
+    wp = @worldpoint[0] = Worldpoint.new
+    wp.read
+    wp.time = wp.next_time = time
+    wp.acc = wp.jerk = wp.pos*0
   end
 
 end
@@ -196,8 +213,8 @@ class Worldera
     @worldline = []
   end
 
-  def shortest_worldline
-    t = 1e30
+  def shortest_extrapolated_worldline
+    t = VERY_LARGE_NUMBER
     wl = nil
     @worldline.each do |w|
       if t > w.worldpoint.last.next_time
@@ -208,21 +225,23 @@ class Worldera
     wl
   end
 
-  def oldest_time
-    t = 1e30
+  def shortest_interpolated_worldline
+    t = VERY_LARGE_NUMBER
+    wl = nil
     @worldline.each do |w|
       if t > w.worldpoint.last.time
         t = w.worldpoint.last.time
+        wl = w
       end
     end
-    t
+    wl
   end
 
-  def evolve(c)
+  def evolve(dt_era, dt_param)
     nsteps = 0
-    @end_time = @start_time + c.dt_era
-    while oldest_time < @end_time
-      shortest_worldline.extend(self, c.dt_param)
+    @end_time = @start_time + dt_era
+    while shortest_interpolated_worldline.worldpoint.last.time < @end_time
+      shortest_extrapolated_worldline.extend(self, dt_param)
       nsteps += 1
     end
     [next_era, nsteps]
@@ -250,6 +269,11 @@ class Worldera
     ws
   end
 
+  def valid_time?(time)
+    return true if @start_time <= time and time <= @end_time
+    false
+  end
+
   def write_diagnostics(t, nsteps, initial_energy, x_flag)
     STDERR.print "at time t = #{sprintf("%g", t)} "
     STDERR.print "(from interpolation after #{nsteps} steps "
@@ -260,32 +284,21 @@ class Worldera
 #  def read          # for self-documenting data, either Worldera or Snapshot
 #  end
 
-  def read_snapshot
+  def read_initial_snapshot
     n = gets.to_i
     @start_time = gets.to_f
     @end_time = @start_time      # for now, to allow initial diagnostics output
     for i in 0...n
       @worldline[i] = Worldline.new
-      @worldline[i].read_worldpoint         # for now; "read" w. self-doc. data
-      @worldline[i].worldpoint[0].time = @start_time
-      @worldline[i].worldpoint[0].next_time = @start_time
-      @worldline[i].worldpoint[0].acc = @worldline[i].worldpoint[0].pos*0
-      @worldline[i].worldpoint[0].jerk = @worldline[i].worldpoint[0].pos*0
+      @worldline[i].read_initial_worldpoint(@start_time)
     end
   end
 
   def write_snapshot(t)
+    raise if not valid_time?(t)
     print @worldline.size, "\n"
     printf("%24.16e\n", t)
     take_snapshot(nil, t).write
-  end
-
-  def write
-    print "  Begin Era\n"               # for now; 
-    @worldline.each do |wl|
-      wl.write
-    end
-    print "  End Era\n"                 # for now; 
   end
 
 end
@@ -294,11 +307,7 @@ class World
 
   def startup(dt_param)
     @era.worldline.each do |wl|
-      wp = wl.worldpoint[0]
-      ss = @era.take_snapshot(wl, wp.time)
-      ss.body.shift
-      wp.acc, wp.jerk = wp.get_acc_and_jerk(ss)
-      wp.next_time = wp.time + wp.collision_time_scale(ss) * dt_param
+      wl.worldpoint[0].propagate(@era, wl, dt_param, true)
     end
     ss = @era.take_snapshot(nil, @era.start_time)
     ss.ekin + ss.epot
@@ -314,35 +323,28 @@ class World
     t_end = time + c.dt_end
     @era.write_snapshot(time) if c.init_out
     while @era.start_time < t_end
-      @new_era, dn = @era.evolve(c)
+      @new_era, dn = @era.evolve(c.dt_era, c.dt_param)
       nsteps += dn
       @old_era = @era
       @era = @new_era
-      time = @old_era.end_time
-      while time >= t_dia
+      while t_dia <= @old_era.end_time and t_dia <= t_end
         @old_era.write_diagnostics(t_dia, nsteps, initial_energy, c.x_flag)
         t_dia += c.dt_dia
       end
-      if time >= t_out
+      while t_out <= @old_era.end_time and t_out <= t_end
         @old_era.write_snapshot(t_out)
         t_out += c.dt_out
       end
     end
   end
 
-  def read_snapshot
+  def read_initial_snapshot
     @era = Worldera.new
-    @era.read_snapshot
+    @era.read_initial_snapshot
   end
 
   def write_snapshot(time)
     @era.write_snapshot(time)
-  end
-
-  def write
-    print "Begin World\n"               # for now; 
-    @era.write
-    print "End World\n"               # for now; 
   end
 
 end
@@ -430,10 +432,15 @@ options_text= <<-END
   Value type:		float
   Default value:	0.01
   Variable name:	dt_era
-  Description:		Interval between diagnostics output
+  Description:		Duration of an era
   Long description:
-    This option sets the time interval between diagnostics output,
-    which will appear on the standard error channel.
+    This option sets the time interval between begin and end of an era,
+    which is the period in time that contains a bundle of world lines,
+    all of which are guaranteed to extend beyond the era boundaries with
+    by at least one world point in either direction.  In other words, each
+    world line has an earliest world point before the beginning of the era,
+    and a latest world point past the end of the era.  This guarantees
+    accurate interpolation at each time within an era.
 
 
   Short name: 		-d
@@ -520,7 +527,7 @@ options_text= <<-END
 clop = parse_command_line(options_text, true)
 
 w = World.new
-w.read_snapshot                            # for now; "read" w. self-doc. data
+w.read_initial_snapshot                     # for now; "read" w. self-doc. data
 #w.write_snapshot(0)
 #w.write
 w.evolve(clop)

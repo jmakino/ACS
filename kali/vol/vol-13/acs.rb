@@ -7,6 +7,8 @@ end
 
 include Math
 
+VERY_LARGE_NUMBER = 1e30
+
 class Array
   def one_level_deep_copy
     a = []
