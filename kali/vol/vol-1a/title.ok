@@ -7,11 +7,21 @@
 	
 <tex>
 
-\title{\bf The Art of Computational Science\\
+\title{{\sl The Art of Computational Science}\\
 \bigskip
-The Kali Code\\
+{\sl The Kali Code}\\
+\bigskip
+{\sl vol. 1-a}\\
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bf The 2-Body Problem:\\
 \medskip
- 1: The Two-Body Problem
+\medskip
+Forward Euler
+\bigskip
 }
 \author{\bf Piet Hut and Jun Makino}
 
