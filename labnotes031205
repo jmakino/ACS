@@ -1,0 +1,13 @@
+2003, December 5, Friday, Tokyo: Jun, Piet
+
+1. Ruby N-body Integrator
+
+We started with the C++ version of the Hermite code, nbody_sh1.C, that
+we introduced in "Moving Stars Around", and we began to rewrite it in
+ruby, as nbody_sh1.rb.
+
+We figured out how to write a body class, how to use class variables
+to store the shared time in there, as well as the estimated collision
+time necessary to compute the new time step.  We also found out how to
+use command line arguments, for which there is a nice feature build
+in, allowing both single character and full word options.
