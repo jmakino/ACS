@@ -1,5 +1,14 @@
 = The <tt>Body</tt> Class
 
+== Code Listing
+
+*Alice*: It would be good to print out that whole +Body+ class, 
+to get an idea of what is happening on the ground level.
+
+*Bob*: My pleasure!  Here it all is.
+
+ : inccode:.nbody_ind1.rb+Body
+
 == A Familiar Part
 
 *Bob*: The second half of the +Body+ class is familiar,
@@ -107,7 +116,7 @@ determination of the ending position.
 tentative step is what I call <tt>predict_step</tt>, while what you called
 a more accurate determination I call <tt>correct_step</tt>.
 
-== xxx
+== Shifting Perspective
 
 *Alice*: That all makes a lot of sense.  And the next four lines, following
 the actual correction part of <tt>correct_step</tt> are the same as the

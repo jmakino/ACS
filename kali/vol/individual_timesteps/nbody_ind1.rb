@@ -152,7 +152,7 @@ class NBody
   end
 
   def find_next_particle
-    next_time = 1e30
+    next_time = VERY_LARGE_NUMBER
     next_particle = nil
     @body.each do |b|
       if next_time > b.next_time
@@ -288,7 +288,7 @@ options_text= <<-END
 
   END
 
-clop = parse_command_line(options_text, true)
+clop = parse_command_line(options_text, true)                                #3
 
-nb = ACS_IO.acs_read(NBody)
-nb.evolve(clop)
+nb = ACS_IO.acs_read(NBody)                                                  #3
+nb.evolve(clop)                                                              #3

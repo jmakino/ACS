@@ -284,12 +284,3 @@ everything.
 step?
 
 *Bob*: For that, we have to go to the +Body+ class.
-
-*Alice*: It would be good to print out that whole class, 
-to get an idea of what is happening on the ground level.
-
-*Bob*: My pleasure!  Here it all is.
-
-== The <tt>Body</tt> Class
-
- : inccode:.nbody_ind1.rb+Body
