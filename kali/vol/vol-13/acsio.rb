@@ -2,6 +2,10 @@ class Float
   def to_acs_special_s(precision, indent)
     " " * indent + sprintf(" %#{precision+8}.#{precision}e", self) + "\n"
   end
+  def Float.acs_parse(a, indent)
+# check indentation here first)
+    a.to_f
+  end
 end
 
 class Vector
@@ -77,28 +81,42 @@ module ACS_IO
                ACS_FOOTER
   end
 
-  def read_acs_string(file = $stdin)
+  def ACS_IO.read_acs_string(file = $stdin)
     s = file.gets
     while s =~ /^\s*$/
       s = file.gets
     end 
     return nil if not s
-    raise "Not an ACS file" if s.chomp != ACS_HEADER
+    raise "Not an ACS file" if s != ACS_HEADER
     contents = ""
     s = file.gets
-    while s.chomp != ACS_FOOTER
+    while s != ACS_FOOTER
       contents += s
       s = file.gets
     end
     contents
   end
 
-  def acs_read(file = $stdin)
-    s = read_acs_string(file)
+  def ACS_IO.acs_read(file = $stdin)
+    s = ACS_IO.read_acs_string(file)
     return nil if not s
     a = s.split("\n")
-    acs_parse(a)
+    first_line = a.shift
+    first_line =~ /^ */
+    indent = $&.size
+    top_class_name = first_line.strip
+    begin
+      tc = eval(top_class_name).new
+      rescue NameError
+      define_class(top_class_name)
+      retry
+    end
+    tc.acs_parse(a, indent)
   end
+
+  def define_class(name)
+    eval("class #{name} \nend", TOPLEVEL_BINDING)
+  end   
 
   def io_name_okay?(w)
     if defined? ACS_IO_NAME
@@ -112,7 +130,33 @@ module ACS_IO
     end
   end
 
-  def acs_parse(a)
+  def to_do
+    
+  end
+
+  def acs_parse(a, base_indent)
+    first_line = a.shift
+    first_line =~ /^ */
+    indent = $&.size
+    first_line_word = first_line.split
+    class_name = first_line_word[0]
+    variable_name = first_line_word[1]
+    if class_name == "Float"
+      eval("@#{variable_name} = Float.acs_parse(a.shift, indent)")
+    else
+    begin
+      eval("@#{variable_name} = #{class_name}.new")
+      rescue NameError
+      define_class(class_name)
+      exit
+      retry
+    end
+    end
+p self
+exit
+    tc.acs_parse(a, indent)
+
+
     first_line = a.shift.split
     io_name_okay?(first_line[0])
     name = first_line[1]
