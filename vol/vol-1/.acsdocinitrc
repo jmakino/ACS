@@ -1,4 +1,4 @@
-@@addtional_commands_for_tex = <<END
+@@additional_commands_for_tex = <<END
 \\parindent 0pt
 \\parskip 5 pt
 \\title{The Art of Computational Science\\\\

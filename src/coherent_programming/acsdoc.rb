@@ -53,8 +53,8 @@ module Rdoctotex
 
   @@charstoescape =/(#)|(\{)|(\})|(\_)|(\{)|(\\)/
 
-  @@addtional_preambles_for_tex = ""
-  @@addtional_commands_for_tex = ""
+  @@additional_preambles_for_tex = ""
+  @@additional_commands_for_tex = ""
 
   def escapetexspecialcharacters(instring)
     s=instring.gsub(@@charstoescape){|word| "\\"+word}
@@ -130,7 +130,8 @@ module Rdoctotex
     imgbase =".imgs/"
     imgdir =  imgbase 
     Dir.mkdir(imgdir) unless File.exist?(imgdir)
-    imgname = imgbase + figure_number.to_s + "_" +figurefilename + ".eps"
+    imgname = imgbase + figure_number.to_s + "_" +
+      File.basename(figurefilename) + ".eps"
     p imgname
     if figurefilename =~ /eps$/ 
       system "/bin/cp -p #{dirname}/#{figurefilename} #{imgname}"
@@ -380,9 +381,9 @@ END
     s= <<-END_TEXSOURCE
     \\documentclass{book}
     \\usepackage{graphicx}
-    #{@@addtional_preambles_for_tex}
+    #{@@additional_preambles_for_tex}
     \\begin{document}
-       #{@@addtional_commands_for_tex}
+       #{@@additional_commands_for_tex}
        #{s}
     \\end{document}
     END_TEXSOURCE
@@ -398,8 +399,8 @@ module Acsdoc
   @@prompt = "|gravity>"
 
   @@imgcount = 0
-  @@addtional_preambles_for_inline_tex = ""
-  @@addtional_commands_for_inline_tex = ""
+  @@additional_preambles_for_inline_tex = ""
+  @@additional_commands_for_inline_tex = ""
 
 #
 # takes a single string which contains a command
@@ -570,11 +571,11 @@ module Acsdoc
     texsource.print <<-END_TEXSOURCE
     \\documentclass{article}
     \\usepackage{graphicx}
-    #{@@addtional_preambles_for_inline_tex}
+    #{@@additional_preambles_for_inline_tex}
     \\begin{document}
        \\pagestyle{empty}
        \\thispagestyle{empty}
-       #{@@addtional_commands_for_inline_tex}
+       #{@@additional_commands_for_inline_tex}
        #{texcode}
     \\end{document}
     END_TEXSOURCE
@@ -677,7 +678,8 @@ module Acsdoc
     imgbase =".imgs/"
     imgdir =  imgbase 
     Dir.mkdir(imgdir) unless File.exist?(imgdir)
-    imgname = imgbase + figure_number.to_s + "_" +figurefilename + ".jpeg"
+    imgname = imgbase + figure_number.to_s + "_" +
+      File.basename(figurefilename) + ".jpeg"
     p imgname
     system "convert #{dirname}/#{figurefilename} #{imgname}"
     system "mv -f #{imgname}.0 #{imgname}"if File.exist?(imgname + ".0")
