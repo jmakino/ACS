@@ -31,7 +31,13 @@ if ( $success == 1) then
     @ year = $year + 1
     goto loopyear
 endif
-svn add Mail
+
+foreach dir ( [A-Z]*/*  [A-Z]*/* )
+    if ( ( -d $dir ) && ( !  ( -e $dir/.svn ) ) ) then
+	svn add $dir
+	echo New directory $dir added
+    endif
+end	
 svn add `ls -1 -d [A-Z]*/*/*/*[^~] [A-Z]*/*/*/.[0-9,a-z,A-Z]*[^~] [A-Z]*/*/*/*/*[^~] | grep -v \.svn`
 rdoc $coptions TODO combined/*
 
