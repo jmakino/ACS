@@ -1,0 +1,36 @@
+README for ACS Version 1.1
+
+Piet Hut and Jun Makino
+
+Here we describe a few basic things about the tarball.
+
+Document volumes:
+
+acs-1.1.tgz comes with entire HTML/PS/PDF documents for the
+ACS project. To look at the documents, please start at the top level
+index.html file, which points to all volumes available in the current
+version.
+
+Source codes:
+
+In the current release, the sources for the volumes and the source
+file for programs are in foo/vol/vol-x directories. For example,
+the source file rkbody.rb used in volume 1-b of the Kali series
+appears as
+
+kali/vol/vol-1b/rkbody.rb
+
+Running programs used in volumes:
+
+Currently, all programs with output shown in one volume are designed
+to run at the directory it resides. For example,
+integrator_driver4epc.rb in volume 1-b of the Kali series can be run,
+assuming you are in the top level directory (at which this README
+exists), by:
+
+    cd kali/vol/vol-1b; ruby integrator_driver4epc.rb < euler.in
+
+which should create the same output as what appears in chapter 9 of
+this volume.
+
+    
