@@ -1,5 +1,5 @@
 require "new_vector.rb"
-
+require "speedup1a/pairwise"
 class Body
 
   attr_accessor :mass, :pos, :vel, :acc
@@ -65,22 +65,36 @@ class Nbody
     @init_flag = true
   end
 
-  def acc
-    null_vector = @body[0].pos*0
-    @body.each{|bi| bi.acc = null_vector}
+  def acc_ruby
+    @body.each{|bi| bi.acc = bi.pos*0}
     @body.each_index do |i|
       bi = @body[i]
       (i+1...@body.size).each do |j|
-          bj = @body[j]
-          r = bj.pos - bi.pos
-          r2 = r*r + @eps*@eps
-          r3 = r2*sqrt(r2)
-          bj.acc -= r*(bi.mass/r3)
-          bi.acc += r*(bj.mass/r3)
+	bj = @body[j]
+	r = bj.pos - bi.pos
+	r2 = r*r + @eps*@eps
+	r3 = r2*sqrt(r2)
+	bj.acc -= r*(bi.mass/r3)
+	bi.acc += r*(bj.mass/r3)
       end
     end
   end    
-
+  def acc_c
+    ndim = @body[0].pos.size
+    @body.each{|bi| bi.acc = bi.pos*0}
+    @body.each_index do |i|
+      bi = @body[i]
+      (i+1...@body.size).each do |j|
+	bj = @body[j]
+	pairwise_acceleration(bi.acc,bj.acc,bi.pos,bj.pos,bi.mass,bj.mass,@eps,
+			      ndim)
+      end
+    end
+  end    
+  
+  def acc
+    acc_ruby
+  end
   def evolve(integration_method, eps, dt, dt_dia, dt_out, dt_end,
              init_out, x_flag)
     @dt = dt                                                                 #1
