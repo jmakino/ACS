@@ -3,44 +3,44 @@ Date: Wed Dec 31 20:57:27 JST 2003
 From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
 
 
-> > The changes we made are
-> > 
-> > * added a new directive, ":inccode:", which works essentially the same
-> >   way as the normal ":include:", but adds horizontal lines before and
-> >   after the included files.
-> 
-> maybe good to mention what is minimally needed and what is the freedom
-> (like you can put spaces, and then you don't collide with rdoc format).
+ > > The changes we made are
+ > > 
+ > > * added a new directive, ":inccode:", which works essentially the same
+ > >   way as the normal ":include:", but adds horizontal lines before and
+ > >   after the included files.
+ > 
+ > maybe good to mention what is minimally needed and what is the freedom
+ > (like you can put spaces, and then you don't collide with rdoc format).
 
 Okay, could you add that?
 
-> By the way, should there be a "*" in front of the following line:
+ > By the way, should there be a "*" in front of the following line:
 
 Either way.
 
-> >   link:sample.gif
-> 
-> I guess you did not commit this to svn yet?  I could not find it.
+ > >   link:sample.gif
+ > 
+ > I guess you did not commit this to svn yet?  I could not find it.
 
 You mean sample.gif by this? It was intentionally left out. Should I
 make up something?
 
-> By the way, it would be great if you could include the figure that you
-> drew in November, which was meant to be included with the labnotes
-> during the first few days that you visited Kyoto.  Presumably you can
-> now do that with this system?
+ > By the way, it would be great if you could include the figure that you
+ > drew in November, which was meant to be included with the labnotes
+ > during the first few days that you visited Kyoto.  Presumably you can
+ > now do that with this system?
 
 Well, I must say you can do as well...
 
-> > * added a pair of directives, ":segment start:" and ":segment end:".
-> >   texts between  ":segment start: segment_name" and corresponding
-> >   ":segment end:" will be stored the file .foo.rb-segment.name, where
-> >   foo.rb is the source file. Here is a sample code segment included:
-> > 
-> >  :inccode: .acsdoc.rb-prep_rb
-> 
-> Could you put this under svn?  I'm curious to see how and where the
-> directives occur.  Presumably in the source code itself, after "#"?
+ > > * added a pair of directives, ":segment start:" and ":segment end:".
+ > >   texts between  ":segment start: segment_name" and corresponding
+ > >   ":segment end:" will be stored the file .foo.rb-segment.name, where
+ > >   foo.rb is the source file. Here is a sample code segment included:
+ > > 
+ > >  :inccode: .acsdoc.rb-prep_rb
+ > 
+ > Could you put this under svn?  I'm curious to see how and where the
+ > directives occur.  Presumably in the source code itself, after "#"?
 
 Now acsdoc.rb automatically creates these files, and sample directives
 are in that file itself. So you can try things immedietly. Please try
