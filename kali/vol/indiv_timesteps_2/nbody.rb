@@ -12,7 +12,7 @@ class Body
 
 end
 
-class Nbody
+class NBody
 
   ACS_OUTPUT_NAME = self.to_s
 

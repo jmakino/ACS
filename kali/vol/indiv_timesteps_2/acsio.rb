@@ -1,11 +1,13 @@
 class Fixnum
   def Fixnum.acs_parse(s, indent)
+# check indentation here first
     s.to_i
   end
 end
 
 class Bignum
   def Bignum.acs_parse(s, indent)
+# check indentation here first
     s.to_i
   end
 end
@@ -15,6 +17,7 @@ class Float
     " " * indent + sprintf(" %#{precision+8}.#{precision}e", self) + "\n"
   end
   def Float.acs_parse(s, indent)
+# check indentation here first
     s.to_f
   end
 end
@@ -25,6 +28,8 @@ class Vector
       self.map{|x| sprintf(" %#{precision+8}.#{precision}e", x)}.join + "\n"
   end
   def Vector.acs_parse(s, indent)
+# check indentation here first
+# and this here below should go partially to vector.rb
     s.split.map{|x| x.to_f}.to_v
   end
 end
@@ -91,7 +96,7 @@ module ACS_IO
     if defined? self.class::ACS_OUTPUT_NAME and check_acs_output_name
       tag = self.class::ACS_OUTPUT_NAME
     else
-      tag = self.class.to_s
+      tag = self.class.name
     end
     s = " " * base_indent + tag + " " + name + "\n"
     if self.instance_variables.size > 0
@@ -101,7 +106,7 @@ module ACS_IO
       end
       return s
     end
-    case self.class.to_s
+    case self.class.name
     when "String"
       return s.chomp + self.to_acs_special_s(indent, add_indent)
     when "Array"
@@ -186,8 +191,8 @@ module ACS_IO
         raise "first_word = #{first_word} != #{ACS_OUTPUT_NAME}"
       end
     else
-      if w != self.class.to_s
-        raise "first_word = #{first_word} != #{self.class.to_s}"
+      if w != self.class.name
+        raise "first_word = #{first_word} != #{self.class.name}"
       end
     end
   end
