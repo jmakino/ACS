@@ -315,21 +315,52 @@ the previous series of four that were used in the prediction step, which were
 <tex>$\left\{\ba_{-3},\ba_{-2},\ba_{-1},\ba_0\right\}$</tex>.
 
 Note that once more I have interchanged the order of the calculations of
-the position and velocity: by calculated the corrected value of the velocity
+the position and velocity: by calculating the corrected value of the velocity
 first, I am able to use that one in the expression for the corrected value
 of the position.
 
-Let me see whether I can extend your code, to implement this scheme.
+*Bob*: And this time I certainly do not recognize these equations.  It
+seems that we really have a new algorithm here.
+
+*Alice*: Let me see whether I can extend your code, to implement this scheme.
+It would be nice to keep the number of acceleration calculations the same
+as we had before, doing it only once per time step.  After all, when
+we will generalize this to a true N-body system, it is the calculation
+of the acceleration that will be most expensive, given that for each particle
+we will have to loop over all other particles.
+
+However, I need to compute the acceleration at the end of the calculation,
+at the newly predicted position.  This means that I then have to remember
+the value of the acceleration, so that I could reuse it at the
+beginning of the next time step.  This means that I will have to change
+the variable <tt>ap0</tt> to a true instance variable <tt>@ap0</tt>, so
+that it will still be there, the next time we enter <tt>ms4pc</tt>.
+
+I will have to initialize <tt>@ap0</tt> during the last time we use the
+<tt>rk4</tt> method, so that it is ready to be used when we finally
+enter the main body of the <tt>ms4pc</tt> method, as I will call it,
+to distinguish it from your previous implementation <tt>ms4</tt>.
+The +pc+ stands for predictor-corrector version.
+
+Well, the rest is just a matter of coding up the equations we just
+wrote out.  What do you think of this:
 
  :inccode: .ms4body.rb+ms4pc
 
-Try again:
+*Bob*: That ought to work.  Let's see whether it does:
 
  :commandoutput: ruby integrator_driver4dpc.rb < euler.in
 
-Much better!  More than ten times more accurate.
-Now ten times smaller time step:
+*Alice*: Much better!  More than ten times more accurate than the
+predictor-only version, the method <tt>ms4</tt>.  Let me give a
+ten times smaller time step:
 
  :commandoutput: ruby integrator_driver4epc.rb < euler.in
 
-Twenty times better.
+Even better, by a factor of about twenty this time.  Great!
+I now feel I understand the idea of predictor-corrector schemes.
+We're building up a good laboratory for exploring algorithms!
+
+*Bob*: Yes, I've never been able to plug and play so rapidly with different
+integration schemes.  Using a scripting language like Ruby definitely has
+its advantages.

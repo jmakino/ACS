@@ -140,24 +140,24 @@ class Body
     elsif @nsteps == 2
       @ap1 = acc
       rk4(dt)
+      @ap0 = acc
     else
       old_pos = pos
       old_vel = vel
-      ap0 = acc
-      jdt = ap0*(11.0/6.0) - @ap1*3 + @ap2*1.5 - @ap3/3.0
-      sdt2 = ap0*2 - @ap1*5 + @ap2*4 - @ap3
-      cdt3 = ap0 - @ap1*3 + @ap2*3 - @ap3
-      @pos += vel*dt + (ap0/2.0 + jdt/6.0 + sdt2/24.0)*dt*dt
-      @vel += ap0*dt + (jdt/2.0 + sdt2/6.0 + cdt3/24.0)*dt
+      jdt = @ap0*(11.0/6.0) - @ap1*3 + @ap2*1.5 - @ap3/3.0
+      sdt2 = @ap0*2 - @ap1*5 + @ap2*4 - @ap3
+      cdt3 = @ap0 - @ap1*3 + @ap2*3 - @ap3
+      @pos += vel*dt + (@ap0/2.0 + jdt/6.0 + sdt2/24.0)*dt*dt
+      @vel += @ap0*dt + (jdt/2.0 + sdt2/6.0 + cdt3/24.0)*dt
       @ap3 = @ap2
       @ap2 = @ap1
-      @ap1 = ap0
-      ap0 = acc
-      jdt = ap0*(11.0/6.0) - @ap1*3 + @ap2*1.5 - @ap3/3.0
-      sdt2 = ap0*2 - @ap1*5 + @ap2*4 - @ap3
-      cdt3 = ap0 - @ap1*3 + @ap2*3 - @ap3
-      @vel = old_vel + ap0*dt + (jdt/(-2.0) + sdt2/6.0 + cdt3/(-24.0))*dt
-      @pos = old_pos + vel*dt + (ap0/(-2.0) + jdt/6.0 + sdt2/(-24.0))*dt*dt
+      @ap1 = @ap0
+      @ap0 = acc
+      jdt = @ap0*(11.0/6.0) - @ap1*3 + @ap2*1.5 - @ap3/3.0
+      sdt2 = @ap0*2 - @ap1*5 + @ap2*4 - @ap3
+      cdt3 = @ap0 - @ap1*3 + @ap2*3 - @ap3
+      @vel = old_vel + @ap0*dt + (jdt/(-2.0) + sdt2/6.0 + cdt3/(-24.0))*dt
+      @pos = old_pos + vel*dt + (@ap0/(-2.0) + jdt/6.0 + sdt2/(-24.0))*dt*dt
     end
   end
 
