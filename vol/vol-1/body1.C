@@ -17,8 +17,8 @@ public:
     }
     void print(){
 	cout << mass <<endl;
-	cout << pos[0] << " "<< pos[1] << " "<< pos[2]   <<endl;
-	cout << vel[0] << " "<< vel[1] << " "<< vel[2]   <<endl;
+	cout << pos[0] <<" "<< pos[1] <<" "<< pos[2] <<endl;
+	cout << vel[0] <<" "<< vel[1] <<" "<< vel[2] <<endl;
     }
 	
 };
