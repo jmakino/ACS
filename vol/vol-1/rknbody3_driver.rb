@@ -1,4 +1,4 @@
-require "rknbody.rb"
+require "rknbody3.rb"
 
 include Math
 

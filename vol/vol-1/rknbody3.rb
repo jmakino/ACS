@@ -2,15 +2,15 @@ require "rknvector.rb"
 
 class Body
 
-  attr_accessor :mass, :pos, :vel, :nb
+  attr_accessor :mass, :pos, :vel, :old_pos, :half_vel, :a0, :a1, :a2
 
   def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
     @mass, @pos, @vel = mass, pos, vel
   end
 
-  def acc
+  def acc(body_array)
     a = @pos*0                              # null vector of the correct length
-    @nb.b.each do |b|
+    body_array.each do |b|
       unless b == self
         r = b.pos - @pos
         r2 = r*r
@@ -25,9 +25,9 @@ class Body
     0.5*(@vel*@vel)
   end
 
-  def epot                        # potential energy
+  def epot(body_array)                  # potential energy
     p = 0
-    @nb.b.each do |b|
+    body_array.each do |b|
       unless b == self
         r = b.pos - @pos
         r2 = r*r
@@ -64,14 +64,13 @@ end
 
 class Nbody
 
-  attr_accessor :time, :b
+  attr_accessor :time, :body
 
   def initialize(n=0, time = 0)
     @time = time
-    @b = []
+    @body = []
     for i in 0...n
-      @b[i] = Body.new
-      @b[i].nb = self
+      @body[i] = Body.new
     end
   end
 
@@ -100,52 +99,44 @@ class Nbody
   end
 
   def forward(dt)
-    @b.each{|b| b.vel += b.acc*dt}
-    @b.each{|b| b.pos += b.vel*dt}
+    @body.each{|b| b.vel += b.acc(@body)*dt}
+    @body.each{|b| b.pos += b.vel*dt}
   end
 
   def leapfrog(dt)
-    @b.each{|b| b.vel += b.acc*0.5*dt}
-    @b.each{|b| b.pos += b.vel*dt}
-    @b.each{|b| b.vel += b.acc*0.5*dt}
+    @body.each{|b| b.vel += b.acc(@body)*0.5*dt}
+    @body.each{|b| b.pos += b.vel*dt}
+    @body.each{|b| b.vel += b.acc(@body)*0.5*dt}
   end
 
   def rk2(dt)
-    old_pos = []
-    @b.each_index{|i| old_pos[i] = @b[i].pos}
-    half_vel = []
-    @b.each_index{|i| half_vel[i] = @b[i].vel + @b[i].acc*0.5*dt}
-    @b.each{|b| b.pos += b.vel*0.5*dt}
-    @b.each{|b| b.vel += b.acc*dt}
-    @b.each_index{|i| @b[i].pos = old_pos[i] + half_vel[i]*dt}
+    @body.each{|b| b.old_pos = b.pos}
+    @body.each{|b| b.half_vel = b.vel + b.acc(@body)*0.5*dt}
+    @body.each{|b| b.pos += b.vel*0.5*dt}
+    @body.each{|b| b.vel += b.acc(@body)*dt}
+    @body.each{|b| b.pos = b.old_pos + b.half_vel*dt}
   end
 
   def rk4(dt)
-    old_pos = []
-    @b.each_index{|i| old_pos[i] = @b[i].pos}
-    a0 = []
-    @b.each_index{|i| a0[i] = @b[i].acc}
-    @b.each_index{|i| @b[i].pos =
-                             old_pos[i] + @b[i].vel*0.5*dt + a0[i]*0.125*dt*dt}
-    a1 = []
-    @b.each_index{|i| a1[i] = @b[i].acc}
-    @b.each_index{|i| @b[i].pos = old_pos[i] + @b[i].vel*dt + a1[i]*0.5*dt*dt}
-    a2 = []
-    @b.each_index{|i| a2[i] = @b[i].acc}
-    @b.each_index{|i| @b[i].pos =
-                     old_pos[i] + @b[i].vel*dt + (a0[i]+a1[i]*2)*(1/6.0)*dt*dt}
-    @b.each_index{|i| @b[i].vel += (a0[i]+a1[i]*4+a2[i])*(1/6.0)*dt}
+    @body.each{|b| b.old_pos = b.pos}
+    @body.each{|b| b.a0 = b.acc(@body)}
+    @body.each{|b| b.pos = b.old_pos + b.vel*0.5*dt + b.a0*0.125*dt*dt}
+    @body.each{|b| b.a1 = b.acc(@body)}
+    @body.each{|b| b.pos = b.old_pos + b.vel*dt + b.a1*0.5*dt*dt}
+    @body.each{|b| b.a2 = b.acc(@body)}
+    @body.each{|b| b.pos = b.old_pos + b.vel*dt + (b.a0+b.a1*2)*(1/6.0)*dt*dt}
+    @body.each{|b| b.vel += (b.a0+b.a1*4+b.a2)*(1/6.0)*dt}
   end
 
   def ekin                        # kinetic energy
     e = 0
-    @b.each{|b| e += b.ekin}
+    @body.each{|b| e += b.ekin}
     e
   end
 
   def epot                        # potential energy
     e = 0
-    @b.each{|b| e += b.epot}
+    @body.each{|b| e += b.epot(@body)}
     e/2                           # pairwise potentials were counted twice
   end
 
@@ -162,24 +153,23 @@ END
   end
 
   def pp                                # pretty print
-    print "     N = ", @b.size, "\n"
+    print "     N = ", @body.size, "\n"
     print "  time = ", @time, "\n"
-    @b.each{|b| b.pp}
+    @body.each{|b| b.pp}
   end
 
   def simple_print
-    print @b.size, "\n"
+    print @body.size, "\n"
     printf("%24.16e\n", @time)
-    @b.each{|b| b.simple_print}
+    @body.each{|b| b.simple_print}
   end
 
   def simple_read
     n = gets.to_i
     @time = gets.to_f
     for i in 0...n
-      @b[i] = Body.new
-      @b[i].nb = self
-      @b[i].simple_read
+      @body[i] = Body.new
+      @body[i].simple_read
     end
   end
 
