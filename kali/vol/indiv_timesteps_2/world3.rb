@@ -769,7 +769,7 @@ class World
 
 end
 
-class Worldsnapshot < Nbody
+class Worldsnapshot < NBody
 
   attr_accessor :time
 
