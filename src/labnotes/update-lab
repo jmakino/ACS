@@ -31,6 +31,7 @@ if ( $success == 1) then
     @ year = $year + 1
     goto loopyear
 endif
+svn add Mail
 svn add `ls -1 -d [A-Z]*/*/*/*[^~] [A-Z]*/*/*/.[0-9,a-z,A-Z]*[^~] [A-Z]*/*/*/*/*[^~] | grep -v \.svn`
 rdoc $coptions combined/*
 

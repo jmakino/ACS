@@ -1,5 +1,7 @@
 #
 # Contributer_list: 
 $contributer_list = { "J" => "Junichiro Makino",
-                     "P" => "Piet Hut"}
+                     "P" => "Piet Hut",
+                     "Mail" => "Mail",
+		     }
 		     

@@ -1,0 +1,95 @@
+= Mechanism to put mails to lab notes
+
+Basic idea: put everything sent to not@acs.org to lab nots
+
+steps to do:
+
+* setup alias on margaux: I defined the following:
+
+    not:makino,piet,not@grape.astron.s.u-tokyo.ac.jp
+
+    notonly:not@grape.astron.s.u-tokyo.ac.jp
+
+  in margaux:/usr/adm/sendmail/aliases and ran newaliases
+
+* setup procmail on grape.
+
+  * Change in postfix settings
+      [root@grape postfix]# diff -C1  main.cf.20031003  main.cf
+      *** main.cf.20031003    2003-10-03 23:51:16.000000000 +0900
+      --- main.cf     2003-12-31 12:59:31.000000000 +0900
+      ***************
+      *** 357,358 ****
+      --- 357,359 ----
+        #mailbox_command = /some/where/procmail -a "$EXTENSION"
+      + mailbox_command = /usr/bin/procmail
+        
+      ***************
+      *** 546,551 ****
+        
+      ! relayhost = sun1.astron.s.u-tokyo.ac.jp
+      ! myorigin = astron.s.u-tokyo.ac.jp
+      ! mydomain = astron.s.u-tokyo.ac.jp
+      ! mydestination = astron.s.u-tokyo.ac.jp
+      ! myhostname = port.astron.s.u-tokyo.ac.jp
+      --- 547,553 ----
+        
+      ! #relayhost = sun1.astron.s.u-tokyo.ac.jp
+      ! relayhost = margaux.astron.s.u-tokyo.ac.jp
+      ! myorigin = margaux.astron.s.u-tokyo.ac.jp
+      ! #mydomain = astron.s.u-tokyo.ac.jp
+      ! #mydestination = astron.s.u-tokyo.ac.jp
+      ! myhostname = grape.astron.s.u-tokyo.ac.jp
+  * setup "not" username (homedir = /home/not
+
+  * setup /home/not/.procmailrc
+          [root@grape postfix]# cat /home/not/.procmailrc
+          UMASK=33
+          MAILDIR=$HOME/Mail/
+          LOGFILE=$MAILDIR/procmail.log
+          DEFAULT=$HOME/Mail/inbox/.
+          :0
+          *^Subject.*test
+          test/.
+
+Now everything sent to either not@artcompsci.org or notonly@... should
+appear in grape:/home/Mail/inbox with sequence number.
+
+Next thing to do: setup local copy of acs under grape:/usr2/acs, by:
+
+
+[acs@grape ~/acs]$ history
+     1  13:24   ls
+     2  13:24   mkdir acs
+     3  13:24   cd acs
+     4  13:24   ls
+     5  13:24   ls ../svn
+     6  13:24   history
+     7  13:25   svn checkout file:///usr2/acs/svn/acs
+     8  13:25   ls
+     9  13:25   cd ..
+    10  13:25   ls
+    11  13:25   mv acs acs.old
+    12  13:25   mv acs.old/acs acs
+    13  13:25   cd acs
+    14  13:25   ls
+    15  13:25   svn update
+
+This now made grape:/usr2/acs/acs as local copy of the svn repository
+on our master svn server. So on this machine we can add files to svn
+repository without using ssh.
+
+The concept here is to have not/Mail/200x/x, which would do the following:
+  * look at /home/not/inbox every so often
+  * if there is a new file, copy it to appropriate place, after
+    decoding date.
+
+So we need a script which does the following:
+
+  * record the sequence number at specified place
+    I think we can just store it at not/Mail/processed
+  * loop on sequence number untill file does not exist
+  * for existing (but new) file, process it to create its new copy
+  * if there is any new file, run update-lab.
+
+  
