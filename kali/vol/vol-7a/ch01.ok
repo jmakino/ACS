@@ -2,23 +2,17 @@
 
 == xxx
 
-A few notes about what Murat and Michele and Piet did, during the few days
-on and before September 16 (see also murat4.summary):
+Start with the old rknbody8.rb code, for fixed time steps
 
- Start with the old rknbody8.rb code, for fixed time steps
+discuss how to extend it to variable time steps, then implement:
+nbody_cst1.rb
 
- discuss how to extend it to variable time steps, then implement
+nbody_sh1.rb
 
- clean-up: introduce the notion of a collision time scale
+nbody_ind1.rb
 
- discuss how to extend to individual time steps, then implement
+nbody_ind2.rb
 
- clean-up:
-   rename the body instance variable names
-   introduce on N-body level two methods: autonomous vs. forced steps
-   try to split evaluate, then decide it is better not to (see murat4a.rb)
+nbody_ind3.rb
 
- discussion of remaining problems:
-   what to do with high-velocity stars
-   how to combine and speed up calculations of acc, jerk, collision time scale
 
