@@ -24,7 +24,7 @@ class Worldpoint < Body
   attr_accessor :mass, :pos, :vel, :acc, :jerk, :snap, :crackle,
                 :time, :next_time, :nsteps,
                 :minstep, :maxstep,
-                :nearest_neighbor
+                :nearest_neighbor, :second_nearest_neighbor
 
   def initialize
     @nsteps = 0
@@ -569,8 +569,6 @@ class Worldline
     end
   end
 
-#### (was) TEMPORARILY DISABLED: NEWLY SHOWN BINARY COMPONENTS MAY VIOLATE THIS
-
   def valid_interpolation?(time)
     unless @worldpoint[0].time <= time and time <= @worldpoint.last.time
       raise "\n#{time} not in [#{@worldpoint[0].time}, #{@worldpoint.last.time}]\n"
@@ -746,15 +744,12 @@ class Worldera
 Safety_hysteris_factor = 1.5
 
   def evolve(dt_era, dt_max, isolation_factor)
-#STDERR.printf("at time %.3g : #{@worldline.size} particles\n", @start_time) if
-#  @start_time - @start_time.floor < 0.01
     hide_binaries(@start_time, Safety_hysteris_factor*isolation_factor, dt_max)
     nsteps = 0
     while shortest_interpolated_worldline.worldpoint.last.time < @end_time
       wl = shortest_extrapolated_worldline
       if wl.worldpoint.last.class == Binary
         ss = take_snapshot_except(wl, wl.worldpoint.last.time)
-#ss.acs_write($stderr)
         unless ss.isolated?(wl.worldpoint.last, isolation_factor)
           show_binary(wl, dt_max)
           wl = shortest_extrapolated_worldline
@@ -781,6 +776,14 @@ Safety_hysteris_factor = 1.5
   end
 
   def take_full_snapshot(time)       # WRONG ! ! ! should be synchronized !!!!!
+# hack to get binary stuff to work, for now
+# the problem arises when a binary shows its members in the middle of an
+# era, and when output is needed, later, at the beginning of that era; in
+# that case the old binary information should still have been there . . .
+okay_flag = true
+@worldline.each{|wl| okay_flag = false if wl.worldpoint[0].time > time}
+return nil unless okay_flag 
+# end of hack
     ss = take_snapshot_except(nil, time)
     ss_deep_copy = ss.deep_copy
     list = []
@@ -813,16 +816,12 @@ Safety_hysteris_factor = 1.5
   def show_binary(w, dt_max)
     wp = w.worldpoint.last
     t = wp.most_recent_return_time(wp.time)
-    return if t < w.worldpoint[0].time
-    return if t < @start_time
+    return if t <= w.worldpoint[0].time
+    return if t <= @start_time
 STDERR.printf("**entering show_binary at time t = %.3g ; ", t)
 STDERR.printf("%d -> %d particles\n", @worldline.size, @worldline.size + 1)
     w.cap_at(t)
     b1, b2 = w.worldpoint.last.dissolve
-#b1.acs_write($stderr)
-#b2.acs_write($stderr)
-#STDERR.print "t = #{t}\n"
-#STDERR.print "@start_time = #{@start_time}\n"
     w1 = Worldline.new
     w1.setup_from_single_worldpoint(b1.to_worldpoint, w.method, w.dt_param, t)
     w2 = Worldline.new
@@ -841,8 +840,6 @@ STDERR.printf("%d -> %d particles\n", @worldline.size, @worldline.size + 1)
     @worldline.compact!
     @worldline.push(w1)
     @worldline.push(w2)
-#w1.acs_write($stderr)
-#w2.acs_write($stderr)
   end
 
   def hide_binaries(time, factor, dt_max)
@@ -864,11 +861,6 @@ STDERR.printf("%d -> %d particles\n", @worldline.size, @worldline.size + 1)
     t1 = w1.next_worldpoint_at_or_after(@start_time).time
     t2 = w2.next_worldpoint_at_or_after(@start_time).time
     t = min(t1, t2)
-STDERR.print "t1 = #{t1} ; t2 = #{t2} ; t = #{t}\n"
-#take_snapshot(t).acs_write($stderr)
-#take_snapshot(t).write_diagnostics(1.0)
-#take_full_snapshot(t).acs_write($stderr)
-#take_full_snapshot(t).write_diagnostics(1.0)
 STDERR.printf("*entering merge_worldlines at time t = %.3g to merge ", t)
     w1.cap_at(t)
     w2.cap_at(t)
@@ -887,8 +879,6 @@ STDERR.print "|#{i}"
         @worldline[i] = nil
       end
     end
-#STDERR.print "w1.wordline.last.class = ", w1.worldpoint.last.class, "\n"
-#STDERR.print "w2.wordline.last.class = ", w2.worldpoint.last.class, "\n"
    @worldline.compact!
     w = Worldline.new
     w.setup_from_single_worldpoint(b, method, dt_param, t)
@@ -898,10 +888,6 @@ STDERR.print "|#{i}"
     @worldline.push(w)
 STDERR.printf("| ; %d -> %d particles", @worldline.size + 1, @worldline.size)
 STDERR.print "\n"
-#take_snapshot(t).acs_write($stderr)
-#take_snapshot(t).write_diagnostics(1.0)
-#take_full_snapshot(t).acs_write($stderr)
-#take_full_snapshot(t).write_diagnostics(1.0)
   end
 
   def write_diagnostics(t, nsteps, initial_energy, init_flag = false)
@@ -1085,6 +1071,22 @@ class Worldsnapshot < Nbody
     sqrt(time_scale_sq)                  # time scale value
   end
 
+  def find_second_nearest_neighbors
+    @body.each_index do |i|
+      d2 = VERY_LARGE_NUMBER
+      @body.each_index do |j|
+        if j != i and j != @body[i].nearest_neighbor
+          r = @body[j].pos - @body[i].pos
+          r2 = r*r
+          if d2 > r2
+            d2 = r2
+            @body[i].second_nearest_neighbor = j
+          end
+        end
+      end
+    end
+  end
+
   def find_nearest_neighbors
     @body.each_index do |i|
       d2 = VERY_LARGE_NUMBER
@@ -1121,6 +1123,7 @@ class Worldsnapshot < Nbody
 
   def find_isolated_binaries(factor)
     find_nearest_neighbors
+    find_second_nearest_neighbors
     list = []
     return [[0, 1]] if @body.size == 2
     @body.each_index do |i|
@@ -1128,8 +1131,16 @@ class Worldsnapshot < Nbody
         if j > i
           if @body[i].nearest_neighbor == j and @body[j].nearest_neighbor == i
             b = Binary.new(@body[i], @body[j])
-            if b.rel_energy < 0 and isolated?(b, factor)
-              list.push([i, j])
+            if b.rel_energy < 0
+              r = @body[i].pos - @body[@body[i].second_nearest_neighbor].pos
+              ri2 = r*r
+              r = @body[j].pos - @body[@body[j].second_nearest_neighbor].pos
+              rj2 = r*r
+              r2 = ri2
+              r2 = rj2 if rj2 < ri2
+              if sqrt(r2) > factor * b.semi_major_axis
+                list.push([i, j])
+              end
             end
           end
         end
