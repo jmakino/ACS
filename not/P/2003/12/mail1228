@@ -1,0 +1,287 @@
+ From piet@ias.edu  Sun Dec 28 02:12:41 2003
+ X-SNS: School of Natural Sciences
+ Date: Sun, 28 Dec 2003 02:12:39 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ CC: makino@astron.s.u-tokyo.ac.jp, makino@astron.s.u-tokyo.ac.jp
+ In-reply-to: <20031227.014514.88472581.makino@astron.s.u-tokyo.ac.jp> (message
+ 	from Jun Makino on Sat, 27 Dec 2003 01:45:14 +0900 (JST))
+ Subject: Re: Ruby-fortran95 interface
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1004; Body=1 Fuz1=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-100.0 required=5.0 tests=USER_IN_WHITELIST 
+ 	autolearn=no version=2.60
+ 
+ > This is fun to read:
+ > 
+ > http://www-106.ibm.com/developerworks/linux/library/l-oslab/
+ 
+ Indeed!
+ 
+ Piet
+ 
+ From piet@ias.edu  Sun Dec 28 02:16:26 2003
+ X-SNS: School of Natural Sciences
+ Date: Sun, 28 Dec 2003 02:16:25 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ Subject: further progress
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1004; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-100.0 required=5.0 tests=USER_IN_WHITELIST 
+ 	autolearn=no version=2.60
+ 
+ Hi Jun:
+ 
+ I hope you got some rest this weekend!  As for me, I slept almost twelve
+ hours, from Friday to Saturday.  Clearly, we've worked quite hard, the last
+ two weeks.  But I'm very very pleased that we now have enough foundations
+ built that we can start writing our second book (this is the first time in
+ my life I have been able to write "we can start writing our second book" :>).
+ 
+ I actually managed to write a non-trivial chapter (chapter 2).  I have just
+ committed it to svn.  You can find it all in the directory acs/dia, and
+ when you run the script that I explain in the next email, you'll see
+ everything combined: code, book text, and lab notes.
+ 
+ I'll divide my notes over a few different emails, so that it will be easier
+ for you to reply to individual points.
+ 
+ Piet
+ 
+ From piet@ias.edu  Sun Dec 28 02:16:51 2003
+ X-SNS: School of Natural Sciences
+ Date: Sun, 28 Dec 2003 02:16:50 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ Subject: directory structure, and rdoc display
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1004; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-100.0 required=5.0 tests=USER_IN_WHITELIST 
+ 	autolearn=no version=2.60
+ 
+ Hi Jun:
+ 
+ when we set up our current directory structures, ten days ago or so, we
+ were still thinking about literature programming, with "acs/src" containing
+ both code and book text combined in lit. prog. files.  However, now that
+ we have coherent programming, we have three places for text: labnotes,
+ code, and book chapters.
+ 
+ How about the following toplevel directory structure:
+ 
+ src (for code src)
+ not (for lab notes)
+ dia (for dialogues, i.e. our book series)
+ bin
+ doc (for toplevel "index.html" file perhaps; also other things??)
+ 
+ Currently we also have "log".  I could not remember why, but thanks to our
+ labnote mechanism, with a "find" under html I quickly found it, in session
+ "Fri Dec 19 18:45:30 EST 2003 -- Piet Hut" (isn't that nice ?!?!!):
+ 
+   log: this contains automatically generated version of the lab notes,
+        in ps, pdf, and html format
+ 
+ Instead of "dia" we could use "nar" for narrative; or "vol" for volumes,
+ i.e. book volumes, but that is probably not so clear; "txt" is possible,
+ but suggests ascii text.  Do you agree with "dia"?  For now, I have created
+ that directory under svn; we can remove or rename it if you prefer.
+ 
+ I guess it is time to make a decision where to put all the rdoc output.
+ It would certainly be nice to have it all combined, so that you can read
+ labnotes and source code and bookchapters all in one rdoc browser session.
+ For now, to be able to start writing chapters, I added the following line
+ to my .cshrc file
+ 
+     alias acsdoc 'cd $ACSROOT/dia ; \
+       ruby $ACSROOT/src/coherent_programming/acsdoc.rb \
+       --inline-source $ACSROOT/not/combined/* *.cp *.rb'
+ 
+ When I run this, I get lab notes and chapters all nicely together.
+ Shall we write a shell script to do this, and where shall we put it?
+ Perhaps just in $ACSROOT/doc, or do you have another preference?
+ 
+ Piet
+ 
+ From piet@ias.edu  Sun Dec 28 02:17:13 2003
+ X-SNS: School of Natural Sciences
+ Date: Sun, 28 Dec 2003 02:17:12 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ Subject: listing local svn files without internet connection
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1004; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-100.0 required=5.0 tests=USER_IN_WHITELIST 
+ 	autolearn=no version=2.60
+ 
+ Hi Jun:
+ 
+ I wrote a script `svn_local_list.rb' which I can run without internet
+ connection, to see which files are under svn control.  I put that in
+ "ACS/bin".  Is that the right place to put it, do you think, or can
+ you think of a better place?
+ 
+ Also, shouldn't we place "$ACSROOT/src/labnotes/update-lab" in "ACS/bin"?
+ And how about "$ACSROOT/src/coherent_programming/acsdoc.rb" ?
+ 
+ By the way, in my first version of this script, I started with:
+ 
+   unless entry_file = open(".svn/entries","r")
+     raise "The current directory is not under subversion control"
+   end
+ 
+ However, this does not do the proper error handling.  I used the same format
+ as what you used in "combine-notes.rb", but when I tried to run my script in
+ a directory that is not under svn control, I got a real error message that
+ was never captured by this "raise" command (it responded with:
+ 
+    /home/piet/acs/bin/svn_local_list.rb:13:in `open': 
+      No such file or directory - ".svn/entries" (Errno::ENOENT)
+ 	from /home/piet/acs/bin/svn_local_list.rb:13
+ 
+ without ever seeing the second line with "raise" in it.  So I changed the
+ first three lines above to
+ 
+    fname = ".svn/entries"
+    if FileTest.exist?(fname)
+      entry_file = open(fname, "r")
+    else
+      print "The current directory is not under subversion control\n"
+      exit
+    end
+ 
+ This is actually nicer, because it does not give any error message;
+ in a way it is more appropriate to just print the message without
+ shouting on the error stream ;>).
+ Anyway, I guess this means that we have to use a different form of
+ error handling in "combine-notes.rb" and "acsdoc.rb" as well.
+ 
+ Piet
+ 
+ From piet@ias.edu  Sun Dec 28 02:17:40 2003
+ X-SNS: School of Natural Sciences
+ Date: Sun, 28 Dec 2003 02:17:37 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ Subject: todo
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1004; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-100.0 required=5.0 tests=HTML_MESSAGE,
+ 	USER_IN_WHITELIST autolearn=no version=2.60
+ 
+ Hi Jun:
+ 
+ I started to make the previous labnotes a bit prettier, replacing {\tt xx}
+ by <tt>xx</tt>.  I guess one of the main things to do is to provide a
+ mechanism to include figures in our labnotes, using rdoc.
+ 
+ Do you have a suggestion for how to do this?
+ 
+ More generally, I think it would be nice to have a single todo list
+ somewhere.  For practical reasons, it might be nice to have it in the
+ same directory as the combined lab note files.  We could simply name the
+ file "acs/not/combined/todo", and then put it under rdoc with the rest of
+ the lab files.
+ 
+ Of course, unlike the lab files, this file would be changed all the time.
+ I don't mind.  Do you?
+ 
+ Piet
+ 
+ From piet@ias.edu  Sun Dec 28 02:17:58 2003
+ X-SNS: School of Natural Sciences
+ Date: Sun, 28 Dec 2003 02:17:57 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ Subject: preprocessor
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1004; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-100.0 required=5.0 tests=HTML_MESSAGE,
+ 	USER_IN_WHITELIST autolearn=no version=2.60
+ 
+ Hi Jun:
+ 
+ I added a couple lines to the preprocessor we wrote,
+ acs/src/coherent_programming/acsdoc.rb, macros to allow us to `talk' to
+ each other while writing book text.  However, it will get a bit unwieldy
+ if we just keep adding lines to that file.  Please have a look, and let
+ me know what you prefer.  What I added was:
+ 
+     s.gsub!(/<p>/, '<i>[Jun: ')
+     s.gsub!(/<\/p>/, ' -- Piet] </i>')
+     s.gsub!(/<j>/, '<i>[Piet ')
+     s.gsub!(/<\/j>/, ' -- Jun] </i>')
+ 
+ So now in the text of the book you can write "<j>some comments</j>"
+ and they will show up as in italic as "[Piet: some comments -- Jun]".
+ 
+ Piet
+ 
+ From piet@ias.edu  Sun Dec 28 02:18:07 2003
+ X-SNS: School of Natural Sciences
+ Date: Sun, 28 Dec 2003 02:18:05 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ Subject: next steps
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1004; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-100.0 required=5.0 tests=USER_IN_WHITELIST 
+ 	autolearn=no version=2.60
+ 
+ Hi Jun:
+ 
+ As I mentioned in my first message, I have split up my reactions over a
+ few email messages, to make it easier for us to react further.  Now the
+ question arises: what are the next steps.
+ 
+ I can continue writing book chapters, but I would like to know first whether
+ you are happy with my approach.  Does what I have written give the right
+ level of detail, or should we explain more?
+ 
+ Also, I'm not so happy with the fact that I wrote five different versions
+ of the body class, as you can see in Chapter 2.  Besides it being quite a
+ clutter, it confuses rdoc, since all five define similar methods, and each
+ method shows up separately on the html screen.  I could give each class a
+ different name, "Body01" in file "body01.rb", "Body02" in file "body02.rb",
+ but then we have a duplications of many different classes.  Perhaps this is
+ better, but maybe there is an even better method.
+ 
+ Finally, I think I was quite clumsy with the way in which I combined lab
+ notes and code and book text for rdoc.  When I look at the directories
+ under acs/dia, I get:
+ 
+ <pctmp63|/home/piet/acs/dia> listdir
+ ./
+ ./doc/
+ ./doc/classes/
+ ./doc/files/
+ ./doc/files/home/
+ ./doc/files/home/piet/
+ ./doc/files/home/piet/acs/
+ ./doc/files/home/piet/acs/not/
+ ./doc/files/home/piet/acs/not/combined/
+ <pctmp63|/home/piet/acs/dia> 
+ 
+ So somehow my whole ACSROOT, /home/piet/acs, gets repeated underneath
+ /home/piet/acs/dia/doc/files, which cannot be a good way of doing things.
+ Do you have a better suggestion?
+ 
+ Cheers,
+ 
+ Piet
+ 

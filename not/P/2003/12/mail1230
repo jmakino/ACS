@@ -1,0 +1,191 @@
+ From piet@ias.edu  Tue Dec 30 00:30:45 2003
+ X-SNS: School of Natural Sciences
+ Date: Tue, 30 Dec 2003 00:30:44 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ CC: makino@astron.s.u-tokyo.ac.jp
+ In-reply-to: <20031229.221623.10294075.makino@astron.s.u-tokyo.ac.jp> (message
+ 	from Jun Makino on Mon, 29 Dec 2003 22:16:23 +0900 (JST))
+ Subject: Re: lab notes by Jun, Monday, Dec. 29
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: servers: morpheus 1049; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-100.0 required=5.0 tests=USER_IN_WHITELIST 
+ 	autolearn=no version=2.60
+ 
+ > > > I installed ruby 1.8.1 and made a few changes:
+ > > 
+ > > Interesting, to have PGPLOT and rdoc all combined with the latest ruby.
+ > > 
+ > > Would you suggest switching to ruby 1.8.1, or is this just a local
+ > > experiment of yours?
+ > 
+ > I guess it's perhaps better to move to 1.8.x. 1.8.1 at least compiles
+ > without any problem.
+ 
+ I just installed it too, without any problem.  I already noticed that
+ the README file is in rdoc format.  Very nice to have things in one
+ format, that way.
+ 
+ Piet
+ 
+ From piet@ias.edu  Tue Dec 30 01:13:59 2003
+ X-SNS: School of Natural Sciences
+ Date: Tue, 30 Dec 2003 01:13:58 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ CC: makino@astron.s.u-tokyo.ac.jp
+ In-reply-to: <20031229.221405.68038804.makino@astron.s.u-tokyo.ac.jp> (message
+ 	from Jun Makino on Mon, 29 Dec 2003 22:14:05 +0900 (JST))
+ Subject: Re: more on code segments
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: servers: morpheus 1049; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-100.0 required=5.0 tests=USER_IN_WHITELIST 
+ 	autolearn=no version=2.60
+ 
+ > > > For the first one, I guess something like
+ > > > 
+ > > >  :segment start: segment_name
+ > > >  ...
+ > > >  ...
+ > > >  :segment end:
+ > > > 
+ > > > which would generate the file named .xxx.rb-segment_name would be
+ > > > fine. Then you can just include it. Do you have
+ > > > suggestion/comments/whatever?  (See my notes in Dec 26)
+ > > 
+ > > Yes, that is very nice, I like that approach.  I had not thought about
+ > > .xxx.rb-segment_name, that is a great idea.  I guess you want to
+ > > generate those automatically, from directives written as comments in
+ > > the ruby code?  That would be a good solution.
+ > 
+ > Okay, I'll try to implement them.
+ 
+ Great, thanks!  I just saw that you had already added something to
+ acsdoc.rb along these lines.  Is this work in progress?  Should I
+ look at it or try something, or are you in the middle of working on it?
+ 
+ > > I think it would be okay to do so.  The important thing is that it is
+ > > XML compliant.  It may be a good thing to make all our innovations as
+ > > much as possible look like XML.  Then when someone makes a rdoc-2-XML
+ > > translator, probably soon(ish), perhaps our constructions can survive
+ > > that transition.
+ > > 
+ > > So I would vote for doing what you described.  But just to make sure,
+ > > do you see another option, which would keep compatibility with rdoc?
+ > 
+ > There are couple of possible dirty ways. One possibility is to
+ > post-process the generated HTML, to translate &lt;name=xxx&gt; back to
+ > <name=xxx>. The other is, well, basically similar. Define special tag,
+ > and translate whatever is between that tag to original text as much as
+ > possible in post-processing.
+ 
+ A post-processor would seem like a very dirty way, and probably not
+ very reliable(?).  I would prefer to just change the source code for
+ now, in a very modest and minimum way, and to keep track of the
+ changes made.
+ 
+ Later on, after we put ACS 0.1 on the web, we can ask Dave Thomas
+ whether he would be willing to add some or all of them to his system.
+ Certainly the option to provide straight HTML commands would be one
+ that many people would use; and perhaps some of your other additions
+ will be useful to others as well.  At the very least, he might be
+ convinced to add a mechanism to allow changes in a more transparant
+ way; we'll see.
+ 
+ Piet
+ 
+ From piet@ias.edu  Tue Dec 30 23:53:25 2003
+ X-SNS: School of Natural Sciences
+ Date: Tue, 30 Dec 2003 23:53:24 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ CC: makino@astron.s.u-tokyo.ac.jp
+ In-reply-to: <20031231.014240.26964806.makino@astron.s.u-tokyo.ac.jp> (message
+ 	from Jun Makino on Wed, 31 Dec 2003 01:42:40 +0900 (JST))
+ Subject: book numbering (?) and title(s)
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1040; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-100.0 required=5.0 tests=USER_IN_WHITELIST 
+ 	autolearn=no version=2.60
+ 
+ > > It may be good to write one book for each new release.  So then each
+ > > book would get a number x.y and a title.
+ > 
+ > Hmm, well, this would enforce linear structure again. If you like
+ > that, just call it book 1 is fine too. 
+ 
+ These are all difficult decisions.  I feel different about them on
+ different days ;>).  Perhaps better not to couple ACS x.y releases
+ and books; we may want to do more releases and/or more books at some
+ points in time.
+ 
+ Numbering or not is really a very difficult question.
+ Half of me thinks it is better, to give people a handle on the books.
+ Half of me thinks it is better not, to give us freedom.
+ 
+ Hmmmm.  Right now, I feel half + epsilon in favor of numbering.
+ That has the great advantages that we can answer a question by saying:
+ look in ACS vol. 3, chapter 6.
+ 
+ Now a big question is then: do we call "Moving Stars Around" volume 0?
+ Or better to leave that out of the numbering system altogether?
+ 
+ Here is one option.  I don't know whether it's a good idea.  We could
+ start volume 1 by letting Bob tell Alice that there are some students
+ we wrote nbody_sh1.C with relatively little help from him; he just
+ gave the other Alice (the student) some advice when she asked him.
+ They then look at the code, and talk about how difficult it is nowadays
+ to start something new, in a world full of big packages and legacy code;
+ it was so different when Alice (the prof) was starting, 25 years ago!
+ Hmmmm.  Wat do you think?
+ 
+ > > Alternative titles:
+ > > 
+ > > -- Coherent Programming (too general, too vague?)
+ > > -- Laying the Foundations for a Computational Lab (too long?)
+ > > -- Stellar Dynamics with Individual Time Steps (ignores lab aspects)
+ > > -- Designing a Laboratory for Dense Stellar Systems (too early?)
+ > > 
+ > > The last title could be given to a later book perhaps.
+ > > 
+ > > What do you think?
+ > 
+ > I feel against "Designing" or "Laying foundations" , since they sound
+ > like we are not doing real lab work there, but just drawing figures or
+ > building labs. Also, for the large part of the book 1 (well, I think
+ > I'd prefer "book 1" after all), we will be talking about nbody_sh1. So
+ > how about "Writing simple N-body programs?"
+ 
+ "Writing simple N-body programs" is a good idea.  However, already the
+ presence of variable time steps makes it move in the direction of
+ dense stellar systems, as opposed to galactic dynamics and collisionless
+ stellar dynamices in general.  If we then introduce individual time steps,
+ we definitely specialize.  So we could try to be a bit more specific,
+ given that our programs will not be that "simple" after all.
+ Or we could show the world how complicated our notion of "simple"
+ already is, and stick to your suggestion: "Writing simple N-body programs".
+ 
+ These decisions are extremely important, perhaps more than anything
+ else we decide, since these titles are going to become our public face,
+ they will be what people will remember about ACS.
+ 
+ > > but both Knuth and www have already overloaded that word.  A "collection"
+ > > of books would suggest too little structure, like a simple set.  In fact,
+ > > category theory would be a better metaphor; but a "category" of books
+ > > sounds too strange.  Hmmm.  How about a "cluster" of books?  Or do you
+ > > have another suggestion?
+ > 
+ > Cluster... Associlation? Galaxy? Zoo, Museum, Exploratorium, or we
+ > could just have "book shelf".
+ 
+ What a great idea, "book shelf", I like that!  But first we have to
+ decide whether to number or not.
+ 
+ Piet
+ 

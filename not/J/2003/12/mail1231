@@ -1,0 +1,383 @@
+ From makino@astron.s.u-tokyo.ac.jp  Tue Dec 30 11:30:17 2003
+ MIME-Version: 1.0
+ Date: Wed, 31 Dec 2003 01:30:09 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: Zflop
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312300315.hBU3FYRN003612@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: servers: morpheus 1049; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ 
+ > Just a picture of the first ten or twenty core oscillations would be nice,
+ > in density, and comparing that with 64k, 32k, 16k.  In other words reproducing
+ > what Haldan Cohn et al. have done fifteen years ago (e.g. in the papers with
+ > Wise and Murphy, of which I was co-author as well).
+ > 
+ > Then a thermodynamic cycle of the type you did with GRAPE-4, at the
+ > time of our first IAU symposium.
+ > 
+ > Those together would make for a wonderful paper!
+ 
+ Okay.
+ 
+ > Shall I suggest that to him?
+ 
+ Yes, please.
+ 
+ > Who should be co-authors, just you and me and him?  Other(s)?
+ 
+ Could have Douglas. Either way is fine.
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Tue Dec 30 11:42:40 2003
+ MIME-Version: 1.0
+ Date: Wed, 31 Dec 2003 01:42:40 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: directory structure
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312300338.hBU3ctlO003639@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: servers: morpheus 1049; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ > I just renamed "dia" to "vol" under svn and removed "log" also under svn.
+ 
+ Okay.
+ 
+ > but both Knuth and www have already overloaded that word.  A "collection"
+ > of books would suggest too little structure, like a simple set.  In fact,
+ > category theory would be a better metaphor; but a "category" of books
+ > sounds too strange.  Hmmm.  How about a "cluster" of books?  Or do you
+ > have another suggestion?
+ 
+ Cluster... Associlation? Galaxy? Zoo, Museum, Exploratorium, or we
+ could just have "book shelf".
+ 
+ > Okay.  I guess we will stick to "moving stars around", yes?
+ 
+ Ya.
+ 
+ > It may be good to write one book for each new release.  So then each
+ > book would get a number x.y and a title.
+ 
+ Hmm, well, this would enforce linear structure again. If you like
+ that, just call it book 1 is fine too. 
+ 
+ > Alternative titles:
+ > 
+ > -- Coherent Programming (too general, too vague?)
+ > -- Laying the Foundations for a Computational Lab (too long?)
+ > -- Stellar Dynamics with Individual Time Steps (ignores lab aspects)
+ > -- Designing a Laboratory for Dense Stellar Systems (too early?)
+ > 
+ > The last title could be given to a later book perhaps.
+ > 
+ > What do you think?
+ 
+ I feel against "Designing" or "Laying foundations" , since they sound
+ like we are not doing real lab work there, but just drawing figures or
+ building labs. Also, for the large part of the book 1 (well, I think
+ I'd prefer "book 1" after all), we will be talking about nbody_sh1. So
+ how about "Writing simple N-body programs?"
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Tue Dec 30 11:46:27 2003
+ MIME-Version: 1.0
+ Date: Wed, 31 Dec 2003 01:46:27 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: listing local svn files without internet connection
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312300352.hBU3qcxh003696@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: servers: morpheus 1049; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ > A very nice idea!  Normally, this would be bad programming, for two
+ > reasons: the underlying language is too complicated to understand a
+ > script immediately and the compiler is too stupid to explain clearly
+ > what is going on.  In ruby neither of these two problems are there.
+ > 
+ > So yes, let us keep it simple.
+ 
+ Okay.
+ > > Hmm, I *guess* it should go to src/coherent_programming, or something
+ > > like src/coherent_programming/utilities.
+ > 
+ > That doesn't sound right, since a script to check which files are
+ > under svn control is much more general than src/coherent_programming;
+ > it can be used in any subdirectory of acs.
+ 
+ As I wrote, "executables" should appear in, say, $ACSBIN, but here I
+ guess I'm talking about the source code and its document, which should
+ be under src/xxx.
+ 
+ > It think it either should appear in a more general acs directory (if
+ > so, where?) or it should be outside acs altogether.  I'm happy to put
+ > it in my own personal bin for example, but I just wondered whether it
+ > would not be nice to present it as a useful tool -- for example, in
+ > the dialogue in the book, it could show up.  If so, perhaps it should
+ > just go then wherever the code for that chapter would go.
+ 
+ I guess we basically decided that ALL "source" code will be under
+ "src/xxx". 
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Tue Dec 30 11:48:08 2003
+ MIME-Version: 1.0
+ Date: Wed, 31 Dec 2003 01:48:09 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: todo
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312300356.hBU3uk1Q003711@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: servers: morpheus 1049; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ > > The simplest is to have "BUGS", besides J and P, under the not/ directory,
+ > > and have some convention on the file names we put there. We then can
+ > > construct both combined log files and logs of BUGS only.
+ > 
+ > Good idea.  How about also putting TODO there, under the not/ directory,
+ > on the same level as BUGS?
+ 
+ So not/TODO? That's fine. For BUGS, what I meant is to have
+ 
+ not/BUGS/200x/x
+ 
+ in other words, exactly the same structure as J/ and P/. Is this what
+ you thought?
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Tue Dec 30 11:49:06 2003
+ MIME-Version: 1.0
+ Date: Wed, 31 Dec 2003 01:49:07 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: preprocessor
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312300403.hBU43eLb003732@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: servers: morpheus 1049; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ > > Well, if it is done in Emacs, I guess that's not something we want to
+ > > standardize...
+ > 
+ > Sorry, I was refering to the line:
+ > 
+ > > > > <memo Peter>  nemo snapshot is better </memo>
+ > 
+ > That is a nice suggestion.  I thought you meant to implement that in
+ > our extension to rdoc.  I agree with you that this is much clearer than
+ > <j> ... </j>.
+ > 
+ > Or do you mean that it would be even better to write directly into the
+ > file "[<i> ... - Jun]" and not use <memo Jun> . . . </memo> ?
+ 
+ Ya, I think this form is actually better, unless you want more fancy
+ things like changing colors or fonts (that might actually be useful, though)
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Tue Dec 30 11:54:06 2003
+ MIME-Version: 1.0
+ Date: Wed, 31 Dec 2003 01:54:06 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: chapters 1 and 2
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312300417.hBU4H7U8003752@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: servers: morpheus 1049; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ > > Well, we can assume they are smarter than us, and know everything that
+ > > Sverre, Douglas, Steve, Peter and Simon know. 
+ > 
+ > :>).  Okay, that makes sense.  But not too smart; they should make
+ > some mistakes, and then find out how to correct them, so that the
+ > reader can learn from the mistakes too, as we did in the previous book.
+ 
+ Well, smart people will make mistakes (if not,  why we do?)
+ > 
+ > However, in that case, it might be better to do a better job using C++,
+ > including classes with operator overloading, for several reasons:
+ > 
+ > -- otherwise Fortran people may think that C++ is rather trivial;
+ > -- otherwise C++ people may think that we are unfair, comparing the
+ >      use of classes in ruby with C++ without classes.
+ > 
+ > Perhaps the best thing would be to introduce three versions of the code:
+ > 
+ > 1) in Fortran
+ > 2) in C
+ > 3) in C++
+ 
+ Okay. Well, now the question is:
+ 
+ Should we write them for shared timestep or individual timestep?
+ 
+ The point is, for more complex algorithm, you can show the power of
+ high-level languages more clearly. For something simple any language
+ is okay.
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Tue Dec 30 12:07:32 2003
+ MIME-Version: 1.0
+ Date: Wed, 31 Dec 2003 02:07:29 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: communication
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312300426.hBU4Q4lO003768@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: servers: morpheus 1049; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ > > For mails today, I think it's better to put them in lab notes. For
+ > > future, in principle we can setup an email address so that everthing
+ > > sent to there will appear in the lab notes, either under Mail name or
+ > > something else. Do you want something like that, or prefer to do
+ > > manually?
+ > 
+ > That's a very nice idea!  You can add an email account to acs.org,
+ > perhaps "not@acs.org", which is forwarded to both you and me (and to
+ > other developers in the future), and also will wind up in the log files.
+ > I don't know how easy it is to do that automatically, perhaps generating
+ > a file starting with "." also, in lab note mode, or in a slightly different
+ > way?  Would you like to try to set that up?  That would be great!
+ 
+ Well, to setup everything on grape.astron.s.u-tokyo.ac.jp is *fairly*
+ easy (I mean something like half-day work). However, there is related
+ question which is addressed in your next message:
+ 
+ 
+ Subject: Re: Wiki vs. rdoc
+ 
+ > In the middle of all the emails, I guess you didn't respond to the one
+ > below yet.  Did you mean to combine Wiki and rdoc, or split stuff up
+ > between them, or replace rdoc by Wiki?
+ 
+ One extreme is to put all notes to Wiki, which does offer most of the
+ things we need for lab notes system, and certainly fits best to 
+ the open source or open whatever concept.
+ 
+ If we use rdoc and current system, we do need to device some mechanism
+ to extend colaborators, and that's some additional work (though not
+ much). Also, the document structure may be too linear-oriented. (as
+ our original intention was linear log file) This is however probably
+ not much limitation, if we have easy way to make links to old notes
+ (which we should).
+ 
+ But more important difference is in the basic philosophy. Wiki
+ is, well, completely anarchistic, with intended no restriction on what
+ anyone can do to any page under Wiki. I'm not sure if we want that
+ level of openness.
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Tue Dec 30 12:16:25 2003
+ MIME-Version: 1.0
+ Date: Wed, 31 Dec 2003 02:16:26 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: lab notes by Jun, Sunday, Dec. 27
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312300431.hBU4VX1B003789@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: servers: morpheus 1049; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ > > I guess we should, if we are to use this extention.
+ > 
+ > Okay, would you like to do that?  Then I'll pick it up with svn.
+ > 
+ > We probably should have one README file (or READMETOO file) which
+ > explains exactly what we have changed, including the type of diffs
+ > you showed in your email, so that we can adapt more easily with the
+ > next update.
+ 
+ Okay. Now they are there.
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Tue Dec 30 12:18:41 2003
+ MIME-Version: 1.0
+ Date: Wed, 31 Dec 2003 02:18:42 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: more on code segments
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312300613.hBU6DwxR004007@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: servers: morpheus 1049; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.3 required=5.0 tests=ORDER_NOW autolearn=no 
+ 	version=2.60
+ 
+ 
+ > > Okay, I'll try to implement them.
+ > 
+ > Great, thanks!  I just saw that you had already added something to
+ > acsdoc.rb along these lines.  Is this work in progress?  Should I
+ > look at it or try something, or are you in the middle of working on it?
+ 
+ Ya, please take a look. It should be in working order now. See README
+ at coherent_programming.
+ 
+ > Later on, after we put ACS 0.1 on the web, we can ask Dave Thomas
+ > whether he would be willing to add some or all of them to his system.
+ > Certainly the option to provide straight HTML commands would be one
+ > that many people would use; and perhaps some of your other additions
+ > will be useful to others as well.  At the very least, he might be
+ > convinced to add a mechanism to allow changes in a more transparant
+ > way; we'll see.
+ 
+ Okay. Sounds reasonable.
+ 
+ Jun
+ 

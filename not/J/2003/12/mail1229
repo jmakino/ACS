@@ -1,0 +1,523 @@
+ From makino@astron.s.u-tokyo.ac.jp  Mon Dec 29 05:59:46 2003
+ MIME-Version: 1.0
+ Date: Mon, 29 Dec 2003 19:59:45 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: Zflop
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312290625.hBT6P2eO001118@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1040; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ Piet,
+ 
+ > The next mile stone will be a Zflop, a zetta floating point operations,
+ > 10^21 flop.  With a system running at 50 Tflops, this will take almost
+ > eight months.  So maybe you will have to wait till the GRAPE-8.  Or it
+ > might just be possible on the current GRAPE-6 cluster.
+ > 
+ > Just a thought!  It would be a nice title for a paper:
+ > The first Zettaflop calculation.
+ 
+ Sounds nice, but perhaps not practical with current G6. Better to wait
+ for G8?
+ 
+ > On a related topic, we have been talking about Holger doing core collapse
+ > calculations for larger N values, perhaps starting from an isothermal
+ > sphere, and watching a few core oscillations, maybe even for half a million
+ > particles, or up to a million.  Shall we ping Holger about that?
+ > Do you think this will be interesting, and if so, do you have a suggestion
+ > for what to suggest to him to do?
+ > Also, it might be possible to do core collapse from more regular initial
+ > conditions for 128k and 256k.
+ 
+ Hmm, I think just to go to 128K would be nice, but a problem is what
+ paper he can write...
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Mon Dec 29 07:19:22 2003
+ MIME-Version: 1.0
+ Date: Mon, 29 Dec 2003 21:19:21 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: directory structure
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312290705.hBT75PiH001175@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1040; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ > Fine.  Let's see.  How about "vol" for volumes?
+ 
+ Fine.
+ 
+ > In that case, shall we have a subdirectory vol/volume1 ?
+ > 
+ > Perhaps we can call the current book volume 1, if this is the first book
+ > in which two professor start talking and working together.  The more
+ > introductory books can be written in a different way, and perhaps with
+ > a different numbering?  Or would you prefer to have a continuous numbering?
+ > 
+ > For example, we could call the `professor series' "The Art of Computational
+ > Science" and the `student series' something like "Introduction to
+ > Computational Science" or "Introduction to Stellar Dynamics" or . . .
+ 
+ I guess one possibility would be not to call them "series" at
+ all... After all, we will write something like a web of books. So in
+ principle we can jusr have book titles. 
+ 
+ Also, I guess "The art" basically covers everything. We could have
+ something like advanced course, introductory course etc.
+ 
+ > By the way, just before that, I mentioned "log".  Shall we delete that,
+ > since it no longer seems to be necessary?  Or is it still?
+ 
+ I think it's fine to remove "log".
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Mon Dec 29 07:54:00 2003
+ MIME-Version: 1.0
+ Date: Mon, 29 Dec 2003 21:53:54 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: listing local svn files without internet connection
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312290730.hBT7UrVQ001232@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1040; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ > By the way, after I sent you the email below, I realized that I forgot
+ > to svn the script I wrote.  I did indeed put it in acs/bin, but I did
+ > not commit it yet.  But since you mentioned that it should not go to
+ > acs/bin, where shall I put it?  Or would it be better not to commit it?
+ 
+ Hmm, I *guess* it should go to src/coherent_programming, or something
+ like src/coherent_programming/utilities.
+ 
+ > As for the "raise" problem which I mentioned, how do you think we should
+ > change that?
+ 
+ Our use of raise was completely wrong. Here is one example of raise:
+ 
+ -----------------------------------------------------------------
+ x = ARGV[0]
+ begin
+   infile = open(x,"r")
+ rescue
+   raise "Failed to open timestamp file #{x}"
+ end
+ while infile.gets do
+   print
+ end
+ -----------------------------------------------------------------
+ open() throws the exception. So we need rescue clause to catch it.
+ 
+ This shows the error message like:
+ 
+   test.rb:5: Failed to open timestamp file xtest.rb (RuntimeError)
+ 
+ when non-existent filename is given.
+ 
+ The advantage of this form over your solution is that it shows the
+ source code line number etc.  
+ 
+ An extreme solution would be just do not put any rescue or raise or
+ whatever, and just let Ruby generate error message. The advantage of
+ this solution is that the code is the most compact and easy to read.
+ As far as the error is rare, this might be a better solution.
+ 
+ 
+ -----------------------------------------------------------------
+ x = ARGV[0]
+ infile = open(x,"r")
+ while infile.gets do
+   print
+ end
+ -----------------------------------------------------------------
+ is certainly a nice and compact program, and the error message:
+ 
+ test.rb:2:in `initialize': No such file or directory - xtest.rb (Errno::ENOENT)
+         from test.rb:2:in `open'
+         from test.rb:2
+ 
+ is reasonably descriptive.
+ 
+ Jun
+ 	
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Mon Dec 29 07:59:07 2003
+ MIME-Version: 1.0
+ Date: Mon, 29 Dec 2003 21:59:07 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: todo
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312290735.hBT7Zfq9001243@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1040; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ > That is fine, but it would be nice to have a natural and systematic
+ > way to look at the todo files regularly.  After all, there is so much
+ > to do, and we have so little time, that it is rather important that we
+ > work mostly on the most important things.  In other words, it is important
+ > to have clear priorities.
+ 
+ So what I proposed is to have *only one* Todo file, under
+ somewhere. If there is only one file we do not need any mechanism to
+ look at it.
+ 
+ > Right now, we determine our prorities in a variety of ways, by talking
+ > with each other, by writing email, by mentioning things in lab notes;
+ > if we also have a number of different places where we write todo notes,
+ > I wonder how we can remind ourselves where to look when.
+ > 
+ > Similarly, we may want to have a place or a mechanism for bug reports.
+ > Right now that is not yet much of an issue, but soon it will be.
+ > 
+ > Do you have suggestions for setting up some sort of todo mechanism and
+ > bug reports mechanism?  Perhaps they can appear together somewhere?
+ > Having them in multiple places is fine too, if we can think of a good
+ > way to let them point easily at each other.
+ 
+ The simplest is to have "BUGS", besides J and P, under the not/ directory,
+ and have some convention on the file names we put there. We then can
+ construct both combined log files and logs of BUGS only.
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Mon Dec 29 08:00:24 2003
+ MIME-Version: 1.0
+ Date: Mon, 29 Dec 2003 22:00:24 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: preprocessor
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312290738.hBT7cIJK001250@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1040; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=HTML_MESSAGE autolearn=no 
+ 	version=2.60
+ 
+ 
+ > > Personally, I *feel* these are better done with emacs macros, since it
+ > > is probably better to be able to see "[Jun ... -- Jun]" in the source
+ > > text file itself, instead of <j> .... </j>.
+ > > 
+ > > How do you think?
+ > 
+ > I see your point.  Okay!  That would also be more general perhaps,
+ > since my use of <i> for italic may be confusing, if someone uses
+ > another <i> inside the memo form.
+ > 
+ > How would you like to implement this?
+ 
+ Well, if it is done in Emacs, I guess that's not something we want to
+ standardize...
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Mon Dec 29 08:07:44 2003
+ MIME-Version: 1.0
+ Date: Mon, 29 Dec 2003 22:07:43 +0900 (JST)
+ To: piet@IAS.EDU
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: chapters 1 and 2
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312290807.hBT87c98001285@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1040; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ 
+ > Yes, that makes sense.  I agree.
+ > 
+ > The main question is: how much do we want to write about that, a few
+ > pages, a chapter, several chapters?  Do we actually want to provide a
+ > code in Fortran and in C, perhaps the nbody_sh1.C code and its Fortran
+ > equivalent?  That would be fine, of course, but it would make a big
+ > difference in how I would write the text, so it would be good to
+ > decide that right now, before I write more.
+ 
+ At least a chapter. I thought that was our original plan anyway. 
+ 
+ > I'm not sure what is the best way.  If it were for a student book,
+ > then I would prefer to start with ruby right away, since it is so much
+ > simpler.  Since we start by introducing a professor dialogue, it makes
+ > sense to assume that they have experience with fortran and/or C, but
+ > even so, they may decide to start a new project in ruby, given that
+ > they have heard good things about it (perhaps they read the IBM web
+ > page you pointed out; we can certainly refer to that!).
+ 
+ Well, for student books I'd like to have discussion like that, since
+ that is exactly what is missing in most of textbooks.
+ 
+ > On the other hand, if we start with C++, we can recycle several
+ > chapters of the previous book.  However, then it will be a loooong
+ > time before we get to ruby.  And for Fortran people, to have to go
+ > through long chapter(s) on C++, which is new to them, and then a long
+ > chapter(s) on ruby, which is also new to them, may just be too
+ > frustrating, right from the beginning.
+ > 
+ > What do you think?
+ 
+ We can say that those who are not familiar with either language can
+ skip that part. 
+ 
+ > Option 1: they are relatively new to stellar dynamics, but they do
+ >           have experience in other fields.  This is how I started the
+ >           dialogue.  This is perhaps rather unrealistic, though, and we
+ >           would have to offer a strong explanation for why they want to
+ >           write their own environment.
+ > 
+ > Option 2: they are familiar with stellar dynamics, they have gone to
+ >           modest meetings perhaps, but they finally conclude that they
+ >           have to build their own system.  This will be much closer to
+ >           our own case, of course.  Shall we do that?  But then it will
+ >           be more complicated to write a story.  We will have to say
+ >           at least a bit in some detail about what they have done in
+ >           the past, what type of experience they got with which
+ >           package on which projects.  The easiest would be just to
+ >           take ourselves!  But that would make *A* and *B* just be
+ >           Piet and Jun, it would be too transparent, and we may as
+ >           well then write the dialogue between us.  Hmmmmm.  Do you
+ >           have some suggestions?
+ 
+ I do not think option 1 is viable. Option 2 but not with ourselves is
+ the only practical choise. If we really talks, there will be too many
+ mistakes and whatever, and we will never finish anything. Fictional
+ characters must be much smarter than us.
+ 
+ > Fine!  I'm happy to write about all that, after we have decided the
+ > two issues above:
+ > 
+ > -- whether to include C++ and/or Fortran code before Ruby code;
+ 
+ I think we should.
+ 
+ > -- how to describe the background of Alice and Bob.  
+ 
+ Well, we can assume they are smarter than us, and know everything that
+ Sverre, Douglas, Steve, Peter and Simon know. 
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Mon Dec 29 08:22:05 2003
+ MIME-Version: 1.0
+ Date: Mon, 29 Dec 2003 22:22:04 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: communication
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312290857.hBT8v4MB001386@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1040; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ 
+ > This is my last message for today.  I'm sorry to send so many emails,
+ > but it is easier to reply to shorter ones with a specific topic, I think.
+ > Do you agree?
+ 
+ Well, either way is okay.
+ 
+ > However, there is a drawback too.  All the email that you and I have
+ > exchanged yesterday and today is now outside the lab notes.  Would you
+ > like me to add these emails to the lab notes?  I can simply write them
+ > out and add them all as one contribution, even though that's a bit bulky.
+ > 
+ > What do you prefer?
+ 
+ For mails today, I think it's better to put them in lab notes. For
+ future, in principle we can setup an email address so that everthing
+ sent to there will appear in the lab notes, either under Mail name or
+ something else. Do you want something like that, or prefer to do
+ manually?
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Mon Dec 29 08:22:05 2003
+ MIME-Version: 1.0
+ Date: Mon, 29 Dec 2003 22:22:04 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: communication
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312290857.hBT8v4MB001386@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1040; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ 
+ > This is my last message for today.  I'm sorry to send so many emails,
+ > but it is easier to reply to shorter ones with a specific topic, I think.
+ > Do you agree?
+ 
+ Well, either way is okay.
+ 
+ > However, there is a drawback too.  All the email that you and I have
+ > exchanged yesterday and today is now outside the lab notes.  Would you
+ > like me to add these emails to the lab notes?  I can simply write them
+ > out and add them all as one contribution, even though that's a bit bulky.
+ > 
+ > What do you prefer?
+ 
+ For mails today, I think it's better to put them in lab notes. For
+ future, in principle we can setup an email address so that everthing
+ sent to there will appear in the lab notes, either under Mail name or
+ something else. Do you want something like that, or prefer to do
+ manually?
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Mon Dec 29 08:15:29 2003
+ MIME-Version: 1.0
+ Date: Mon, 29 Dec 2003 22:15:29 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: lab notes by Jun, Sunday, Dec. 27
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312290848.hBT8muEP001359@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1040; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ > > what happens if I wrote <a name=test> here?
+ > 
+ > Sorry, where and what is "here"?  In which file?
+ > 
+ > > Well, I added changes, so that now I can use <name>name</name> as tags
+ > > 
+ > > to generate a tag <name>name</name> as <a name=name>.
+ > 
+ > Ah, with "added changes" you mean you added changes to the original rdoc
+ > source code?
+ 
+ Ya.
+ 
+ > Very minimal indeed!
+ > 
+ > Shall I implement those changes as well?  Should we have our own rdoc
+ > version under svn?
+ 
+ I guess we should, if we are to use this extention.
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Mon Dec 29 08:16:23 2003
+ MIME-Version: 1.0
+ Date: Mon, 29 Dec 2003 22:16:23 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: lab notes by Jun, Monday, Dec. 29
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312290851.hBT8pojb001373@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1040; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ > > I installed ruby 1.8.1 and made a few changes:
+ > 
+ > Interesting, to have PGPLOT and rdoc all combined with the latest ruby.
+ > 
+ > Would you suggest switching to ruby 1.8.1, or is this just a local
+ > experiment of yours?
+ 
+ I guess it's perhaps better to move to 1.8.x. 1.8.1 at least compiles
+ without any problem.
+ 
+ Jun
+ 
+ From makino@astron.s.u-tokyo.ac.jp  Mon Dec 29 08:14:05 2003
+ MIME-Version: 1.0
+ Date: Mon, 29 Dec 2003 22:14:05 +0900 (JST)
+ To: piet@ias.edu
+ Cc: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: more on code segments
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ Reply-To: makino@astron.s.u-tokyo.ac.jp
+ In-Reply-To: <200312290830.hBT8UDIA001329@pollux.sns.ias.edu>
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1040; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=0.0 required=5.0 tests=none autolearn=no version=2.60
+ 
+ 
+ > > For the first one, I guess something like
+ > > 
+ > >  :segment start: segment_name
+ > >  ...
+ > >  ...
+ > >  :segment end:
+ > > 
+ > > which would generate the file named .xxx.rb-segment_name would be
+ > > fine. Then you can just include it. Do you have
+ > > suggestion/comments/whatever?  (See my notes in Dec 26)
+ > 
+ > Yes, that is very nice, I like that approach.  I had not thought about
+ > .xxx.rb-segment_name, that is a great idea.  I guess you want to
+ > generate those automatically, from directives written as comments in
+ > the ruby code?  That would be a good solution.
+ 
+ Okay, I'll try to implement them.
+ 
+ > I think it would be okay to do so.  The important thing is that it is
+ > XML compliant.  It may be a good thing to make all our innovations as
+ > much as possible look like XML.  Then when someone makes a rdoc-2-XML
+ > translator, probably soon(ish), perhaps our constructions can survive
+ > that transition.
+ > 
+ > So I would vote for doing what you described.  But just to make sure,
+ > do you see another option, which would keep compatibility with rdoc?
+ 
+ There are couple of possible dirty ways. One possibility is to
+ post-process the generated HTML, to translate &lt;name=xxx&gt; back to
+ <name=xxx>. The other is, well, basically similar. Define special tag,
+ and translate whatever is between that tag to original text as much as
+ possible in post-processing.
+ 
+ Jun
+ 

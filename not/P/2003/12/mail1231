@@ -1,0 +1,332 @@
+ From piet@ias.edu  Wed Dec 31 00:01:20 2003
+ X-SNS: School of Natural Sciences
+ Date: Wed, 31 Dec 2003 00:01:20 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ CC: makino@astron.s.u-tokyo.ac.jp
+ In-reply-to: <20031231.014627.52162999.makino@astron.s.u-tokyo.ac.jp> (message
+ 	from Jun Makino on Wed, 31 Dec 2003 01:46:27 +0900 (JST))
+ Subject: Re: listing local svn files without internet connection
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: servers: morpheus 1049; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-100.0 required=5.0 tests=USER_IN_WHITELIST 
+ 	autolearn=no version=2.60
+ 
+ > > That doesn't sound right, since a script to check which files are
+ > > under svn control is much more general than src/coherent_programming;
+ > > it can be used in any subdirectory of acs.
+ > 
+ > As I wrote, "executables" should appear in, say, $ACSBIN, but here I
+ > guess I'm talking about the source code and its document, which should
+ > be under src/xxx.
+ > 
+ > > It think it either should appear in a more general acs directory (if
+ > > so, where?) or it should be outside acs altogether.  I'm happy to put
+ > > it in my own personal bin for example, but I just wondered whether it
+ > > would not be nice to present it as a useful tool -- for example, in
+ > > the dialogue in the book, it could show up.  If so, perhaps it should
+ > > just go then wherever the code for that chapter would go.
+ > 
+ > I guess we basically decided that ALL "source" code will be under
+ > "src/xxx". 
+ 
+ Yes, that is reasonable, to put all source code under "src".
+ But which subdirectory would be best for a very general script, such
+ as the one that lists files committed (locally) under svn?
+ Is there a traditional name, like "src/general"?  Something like
+ "src/svn" does not seem right, that is probably too specific?
+ 
+ Piet
+ 
+ From piet@ias.edu  Wed Dec 31 00:09:23 2003
+ X-SNS: School of Natural Sciences
+ Date: Wed, 31 Dec 2003 00:09:22 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ CC: makino@astron.s.u-tokyo.ac.jp
+ In-reply-to: <20031231.014809.13770985.makino@astron.s.u-tokyo.ac.jp> (message
+ 	from Jun Makino on Wed, 31 Dec 2003 01:48:09 +0900 (JST))
+ Subject: Re: todo
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: servers: morpheus 1049; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-100.0 required=5.0 tests=USER_IN_WHITELIST 
+ 	autolearn=no version=2.60
+ 
+ > > Good idea.  How about also putting TODO there, under the not/ directory,
+ > > on the same level as BUGS?
+ > 
+ > So not/TODO? That's fine. For BUGS, what I meant is to have
+ > 
+ > not/BUGS/200x/x
+ > 
+ > in other words, exactly the same structure as J/ and P/. Is this what
+ > you thought?
+ 
+ Well, I don't have any experience with systematic ways of dealing with
+ bug reports.  My naive idea was to make a linear list, and number the
+ bugs, and their solutions.  Like a todo list, but because there will
+ be much more text than in the todo list, it would make the todo list
+ hard to read.  So it would be a specialization of the todo list.
+ The problem with not/BUGS/200x/x is that some bugs may not be corrected
+ until after a few months, and then we could forget about it; or do you
+ think we should try to correct every bug immediately?  There are grey
+ areas between bugs and features, and some features for sure will be
+ taken care of only after a few months.
+ 
+ As for not/TODO, shall I just make a (short) list for now?
+ And I guess we just add and remove things, because it is under svn?
+ Or do you prefer to only add, like in lab notes (but that would make
+ the list longer and longer, and hard to see quickly what needs to be done)?
+ 
+ Piet
+ 
+ From piet@ias.edu  Wed Dec 31 00:12:26 2003
+ X-SNS: School of Natural Sciences
+ Date: Wed, 31 Dec 2003 00:12:25 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ CC: makino@astron.s.u-tokyo.ac.jp
+ In-reply-to: <20031231.014907.58456254.makino@astron.s.u-tokyo.ac.jp> (message
+ 	from Jun Makino on Wed, 31 Dec 2003 01:49:07 +0900 (JST))
+ Subject: Re: preprocessor
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: servers: morpheus 1049; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-100.0 required=5.0 tests=USER_IN_WHITELIST 
+ 	autolearn=no version=2.60
+ 
+ > > > Well, if it is done in Emacs, I guess that's not something we want to
+ > > > standardize...
+ > > 
+ > > Sorry, I was refering to the line:
+ > > 
+ > > > > > <memo Peter>  nemo snapshot is better </memo>
+ > > 
+ > > That is a nice suggestion.  I thought you meant to implement that in
+ > > our extension to rdoc.  I agree with you that this is much clearer than
+ > > <j> ... </j>.
+ > > 
+ > > Or do you mean that it would be even better to write directly into the
+ > > file "[<i> ... - Jun]" and not use <memo Jun> . . . </memo> ?
+ > 
+ > Ya, I think this form is actually better, unless you want more fancy
+ > things like changing colors or fonts (that might actually be useful, though)
+ 
+ Okay, for now at least we will do it by hand.
+ Later we can implement <memo>.
+ 
+ Piet
+ 
+ From piet@ias.edu  Wed Dec 31 00:28:27 2003
+ X-SNS: School of Natural Sciences
+ Date: Wed, 31 Dec 2003 00:28:26 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ CC: makino@astron.s.u-tokyo.ac.jp
+ In-reply-to: <20031231.020729.45874884.makino@astron.s.u-tokyo.ac.jp> (message
+ 	from Jun Makino on Wed, 31 Dec 2003 02:07:29 +0900 (JST))
+ Subject: Re: communication
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: servers: morpheus 1049; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-100.0 required=5.0 tests=USER_IN_WHITELIST 
+ 	autolearn=no version=2.60
+ 
+ > > > For mails today, I think it's better to put them in lab notes. For
+ > > > future, in principle we can setup an email address so that everthing
+ > > > sent to there will appear in the lab notes, either under Mail name or
+ > > > something else. Do you want something like that, or prefer to do
+ > > > manually?
+ > > 
+ > > That's a very nice idea!  You can add an email account to acs.org,
+ > > perhaps "not@acs.org", which is forwarded to both you and me (and to
+ > > other developers in the future), and also will wind up in the log files.
+ > > I don't know how easy it is to do that automatically, perhaps generating
+ > > a file starting with "." also, in lab note mode, or in a slightly different
+ > > way?  Would you like to try to set that up?  That would be great!
+ > 
+ > Well, to setup everything on grape.astron.s.u-tokyo.ac.jp is *fairly*
+ > easy (I mean something like half-day work). However, there is related
+ > question which is addressed in your next message:
+ > 
+ > 
+ > Subject: Re: Wiki vs. rdoc
+ > 
+ > > In the middle of all the emails, I guess you didn't respond to the one
+ > > below yet.  Did you mean to combine Wiki and rdoc, or split stuff up
+ > > between them, or replace rdoc by Wiki?
+ > 
+ > One extreme is to put all notes to Wiki, which does offer most of the
+ > things we need for lab notes system, and certainly fits best to 
+ > the open source or open whatever concept.
+ > 
+ > If we use rdoc and current system, we do need to device some mechanism
+ > to extend colaborators, and that's some additional work (though not
+ > much). Also, the document structure may be too linear-oriented. (as
+ > our original intention was linear log file) This is however probably
+ > not much limitation, if we have easy way to make links to old notes
+ > (which we should).
+ > 
+ > But more important difference is in the basic philosophy. Wiki
+ > is, well, completely anarchistic, with intended no restriction on what
+ > anyone can do to any page under Wiki. I'm not sure if we want that
+ > level of openness.
+ 
+ I feel rather strongly that we should go with rdoc and not with Wiki,
+ at least at this point, and at least for ACS 0.1.
+ 
+ What I like about rdoc is that we can have ruby code documentation and
+ lab notes and our .cp files ALL accessible within one browser page,
+ with pointers between them.  Using Wiki would set lab notes aside in a
+ separate world.
+ 
+ In addition, the anarchistic nature may indeed be a bit to wide-open.
+ 
+ So if you don't mind, I would prefer to start a "not@acs.org", with
+ the type of implementation you mentioned above (as *fairly* easy).
+ 
+ For now, shall I simply dump our current email in lab notes, perhaps
+ one session per day with all the emails together?  If so, one session,
+ or two separate sessions, one for your emails, and one for mine?
+ Alternatively, to keep the flow of thoughts, I could make one loooong
+ session, in which I just add all the emails together, but then related
+ emails following each other.  Any preference?
+ 
+ Piet
+ 
+ From piet@ias.edu  Wed Dec 31 01:03:00 2003
+ X-SNS: School of Natural Sciences
+ Date: Wed, 31 Dec 2003 01:02:59 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ CC: makino@astron.s.u-tokyo.ac.jp
+ In-reply-to: <20031231.021842.42769381.makino@astron.s.u-tokyo.ac.jp> (message
+ 	from Jun Makino on Wed, 31 Dec 2003 02:18:42 +0900 (JST))
+ Subject: Re: more on code segments
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: meer: morpheus 1086; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-99.7 required=5.0 tests=ORDER_NOW,USER_IN_WHITELIST 
+ 	autolearn=no version=2.60
+ 
+ > > > Okay, I'll try to implement them.
+ > > 
+ > > Great, thanks!  I just saw that you had already added something to
+ > > acsdoc.rb along these lines.  Is this work in progress?  Should I
+ > > look at it or try something, or are you in the middle of working on it?
+ > 
+ > Ya, please take a look. It should be in working order now. See README
+ > at coherent_programming.
+ 
+ Great!  Thanks!
+ 
+ > =README
+ > 
+ > ==Overview
+ > 
+ > This is the readme file for the core of the cp system. The system
+ > itself is implemented as rather simple and minor modification of rdoc
+ > system, which is intended to be used as automatic HTML generation from
+ > ruby programs and its enbedded document.
+ > 
+ > The file acsdoc.rb performs the minor transformations we made:
+ > 
+ > The changes we made are
+ > 
+ > * added a new directive, ":inccode:", which works essentially the same
+ >   way as the normal ":include:", but adds horizontal lines before and
+ >   after the included files.
+ 
+ maybe good to mention what is minimally needed and what is the freedom
+ (like you can put spaces, and then you don't collide with rdoc format).
+ 
+ By the way, should there be a "*" in front of the following line:
+ 
+ >   One can do inline image by saying 'link: filename' (no space allowed
+ >   between link: and filename). Note that the
+ >   link is relative to the place the index.html file is put, which is
+ >   normally the "doc" directory under the directory rdoc source files
+ >   live. In other words, you need to add additional "../" to any file
+ >   name... Hmm, a bit inconvenient?  Anyway, here is a sample inline
+ >   image: 
+ > 
+ >   link:sample.gif
+ 
+ I guess you did not commit this to svn yet?  I could not find it.
+ 
+ By the way, it would be great if you could include the figure that you
+ drew in November, which was meant to be included with the labnotes
+ during the first few days that you visited Kyoto.  Presumably you can
+ now do that with this system?
+ 
+ > * added a pair of directives, ":segment start:" and ":segment end:".
+ >   texts between  ":segment start: segment_name" and corresponding
+ >   ":segment end:" will be stored the file .foo.rb-segment.name, where
+ >   foo.rb is the source file. Here is a sample code segment included:
+ > 
+ >  :inccode: .acsdoc.rb-prep_rb
+ 
+ Could you put this under svn?  I'm curious to see how and where the
+ directives occur.  Presumably in the source code itself, after "#"?
+ 
+ I look forward to start using this nice system -- so much better than
+ what we had in the previous book (which was already much better than
+ anything I'd worked with earlier).
+ 
+ Piet
+ 
+ From piet@ias.edu  Wed Dec 31 01:53:35 2003
+ X-SNS: School of Natural Sciences
+ Date: Wed, 31 Dec 2003 01:53:34 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: makino@astron.s.u-tokyo.ac.jp
+ CC: makino@astron.s.u-tokyo.ac.jp
+ In-reply-to: <20031231.015406.91313269.makino@astron.s.u-tokyo.ac.jp> (message
+ 	from Jun Makino on Wed, 31 Dec 2003 01:54:06 +0900 (JST))
+ Subject: Re: chapters 1 and 2
+ X-Spam-Level: 
+ X-Spam-Checker-Version: SpamAssassin 2.60 (1.212-2003-09-23-exp) on morpheus
+ X-Spam-DCC: RollaNet: morpheus 1040; Body=1 Fuz1=1 Fuz2=1
+ X-Spam-Pyzor: 
+ X-Spam-Status: No, hits=-100.0 required=5.0 tests=USER_IN_WHITELIST 
+ 	autolearn=no version=2.60
+ 
+ > > :>).  Okay, that makes sense.  But not too smart; they should make
+ > > some mistakes, and then find out how to correct them, so that the
+ > > reader can learn from the mistakes too, as we did in the previous book.
+ > 
+ > Well, smart people will make mistakes (if not,  why we do?)
+ 
+ I think you're right (if I'm not mistaken)  q(^_^)p
+ 
+ > > Perhaps the best thing would be to introduce three versions of the code:
+ > > 
+ > > 1) in Fortran
+ > > 2) in C
+ > > 3) in C++
+ > 
+ > Okay. Well, now the question is:
+ > 
+ > Should we write them for shared timestep or individual timestep?
+ > 
+ > The point is, for more complex algorithm, you can show the power of
+ > high-level languages more clearly. For something simple any language
+ > is okay.
+ 
+ That is a very interesting suggestion.
+ 
+ ---
+ 
+ But now we talked on the phone, so no need to write here now.
+ 
+ I look forward to see the NBODY1 version with Hermite and block timesteps!
+ 
+ Piet
+ 
