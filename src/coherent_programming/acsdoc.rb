@@ -147,6 +147,21 @@ module Rdoctotex
     ostring
   end
 
+  def latex_process_tex_weblinks(instring)
+    ins = instring.join("\n")
+    ostring=ins.gsub(/(^|\s)<web>(.+?)<\/web>/m){ linktext = $2
+      if linktext =~ /(.*)\|(.*)/m
+	url=escapetexspecialcharacters($1)
+	text=$2
+	s="<tex>{\\it #{text}({\\tt #{url}})}</tex>"
+      else
+	s="<tex>{\\it #{linktext}</tex>"
+      end
+      s
+    }
+    ostring.split("\n")
+  end
+
 
   def latex_copy_figure_file(figurefilename,dirname, figure_number)
     imgbase =".imgs/"
@@ -461,6 +476,7 @@ END
     s=process_include(instring)
     s=latex_process_tex_mathmarkup(s)
     s=latex_process_tex_equations(s)
+    s=latex_process_tex_weblinks(s)
     s=latex_find_and_process_figures(s,dirname)
     s=process_single_paragraphs_lists_etc(s,0,0,1,0)
     s=post_process_verbatim(s)
@@ -979,6 +995,22 @@ module Acsdoc
     instring
   end
 
+  def process_tex_weblinks(instring)
+    ostring=instring.gsub(/(\s)<web>(.+?)<\/web>/m){ linktext = $2
+      blank=$1
+      p linktext
+      if linktext =~ /(.*)\|(.*)/m
+	url=($1)
+	text=$2
+	s="(#{text})[#{url}]"
+      else
+	s="(#{linktext})[#{linktext}]"
+      end
+      blank+s.gsub(/\s/m," ")
+    }
+  end
+
+
 
   def prep_cp(infile, outfile,tolatex_flag)
     $infile = infile
@@ -1012,6 +1044,7 @@ module Acsdoc
       tmp2= process_toc(tmp2,infile);
       tmp2= process_section_headers(tmp2,infile)
       tmp2= process_tex_labels(tmp2,dirname);
+      tmp2= process_tex_weblinks(tmp2)
     end
     ofile.print tmp2
     ofile.close

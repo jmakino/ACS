@@ -167,12 +167,13 @@ module Generators
     
     def handle_special_TIDYLINK(special)
       text = special.text
-      unless text =~ /(\S+)\[(.*?)\]/
-        return text
+      unless text =~ /(\w+)\[(.*?)\]/
+	unless text =~ /\((.*?)\)\[(.*?)\]/
+	  return text
+	end
       end
       label = $1
       url   = $2
-      
       unless url =~ /\w+?:/
         url = "http://#{url}"
       end
@@ -215,7 +216,8 @@ module Generators
         @markup.add_special(/((link:|http:|mailto:|ftp:|www\.)\S+\w)/, :HYPERLINK)
 
         # and links of the form  <text>[<url>]
-        @markup.add_special(/\b(\S+?\[\S+?\.\S+?\])/, :TIDYLINK)
+        @markup.add_special(/\b(\w+?\[\S+?\.\S+?\])/, :TIDYLINK)
+        @markup.add_special(/(\(\S+.*?\)\[\S+?\.\S+?\])/, :TIDYLINK)
 
       end
       unless defined? @html_formatter

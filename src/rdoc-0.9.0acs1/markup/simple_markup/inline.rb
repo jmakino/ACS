@@ -232,6 +232,7 @@ module SM
       add_html("name", :XNAME)
       add_html("ntaga", :XNTAGA)
       add_html("ntagb", :XNTAGB)
+      add_html("ntagc", :XNTAGC)
     end
 
     def add_word_pair(start, stop, name)

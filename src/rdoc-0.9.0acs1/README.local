@@ -75,3 +75,65 @@ diff -C0 inline.rb.original inline.rb
 ntagb should be used in a pair, like <ntaga> label </ntaga><ntagb>link
 to label</ntagb>, which is translated to <a href=#label>link to
 label</a>.
+
+2004/7/10 more changes
+
+<yebisu:/home/makino/acs/src/rdoc-0.9.0acs1/markup/simple_markup>diff -C0 to_html.rb.original to_html.rb
+*** to_html.rb.original 2003-02-21 00:50:43.000000000 +0900
+--- to_html.rb  2004-07-10 17:09:35.000000000 +0900
+***************
+*** 29 ****
+--- 30,33 ----
++         InlineTag.new(SM::Attribute.bitmap_for(:XNAME),   "<a name=", ">"),
++         InlineTag.new(SM::Attribute.bitmap_for(:XNTAGA),   "<a href=#", ">"),
++         InlineTag.new(SM::Attribute.bitmap_for(:XNTAGC),   "<a href=", ">"),
++         InlineTag.new(SM::Attribute.bitmap_for(:XNTAGB),   "", "</a>"),
+<yebisu:/home/makino/acs/src/rdoc-0.9.0acs1/markup/simple_markup>diff -C0 inline.rb.original inline.rb
+*** inline.rb.original  2003-03-09 14:20:12.000000000 +0900
+--- inline.rb   2004-07-10 17:08:33.000000000 +0900
+***************
+*** 225 ****
+--- 226 ----
++       add_word_pair("!", "!", :XNAME)
+***************
+*** 230 ****
+--- 232,235 ----
++       add_html("name", :XNAME)
++       add_html("ntaga", :XNTAGA)
++       add_html("ntagb", :XNTAGB)
++       add_html("ntagc", :XNTAGC)
+
+ntagc is almost the same as ntaga, but do not add "#".
+
+Unfortunately, this does not work since rdoc tries to convert
+"www...." automatically to hyperlink. To avoid this, I added the
+following changes:
+
+<yebisu:/home/makino/acs/src/rdoc-0.9.0acs1/rdoc/generators>!!
+diff -C0 html_generator.rb html_generator.rb.original
+*** html_generator.rb   Sat Jul 10 17:53:52 2004
+--- html_generator.rb.original  Wed Dec 31 18:31:05 2003
+***************
+*** 158 ****
+!         "<img ALIGN=\"middle\" src=\"#{url}\">"
+--- 158 ----
+!         "<img src=\"#{url}\">"
+***************
+*** 170,173 ****
+!       unless text =~ /(\w+)\[(.*?)\]/
+!       unless text =~ /\((.*?)\)\[(.*?)\]/
+!         return text
+!       end
+--- 170,171 ----
+!       unless text =~ /(\S+)\[(.*?)\]/
+!         return text
+***************
+*** 220,221 ****
+!         @markup.add_special(/\b(\w+?\[\S+?\.\S+?\])/, :TIDYLINK)
+!         @markup.add_special(/(\(\S+.*?\)\[\S+?\.\S+?\])/, :TIDYLINK)
+--- 218 ----
+!         @markup.add_special(/\b(\S+?\[\S+?\.\S+?\])/, :TIDYLINK)
+
+This makes the form (some text)[url] to be converted to <a
+href=url>some text</a>. Original rdoc has the capability of converting
+the form text[url] anyway. So this is additional function.

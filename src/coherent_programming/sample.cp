@@ -33,3 +33,10 @@ line <tex> $\alpha=0$</tex> and  <tex> $\beta = 1$</tex>.
 Ref to equation ref(newton)
 
 Does this work?
+
+This should be handled rdoc...  text[www.artcompsci.org]. Well?
+This should be handled rdoc... (online text)[www.artcompsci.org]. Well?
+
+Sample web link is <web>http:www.artcompsci.org|ACS
+homepage</web>. How this work?
+
