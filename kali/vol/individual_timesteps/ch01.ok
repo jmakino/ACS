@@ -130,10 +130,13 @@ Hermite.  Can you show me what you did?
 *Bob*: Let me skip the start-up phase for now.  Often in life, it is not
 so easy to start at the beginning.  Let's start in the middle instead.
 Imagine that all of our particles have already taken at least one step.
-Let me show you how which particle takes the next step.  There are two
-questions here: at any given time we first have to determine which particle
-needs to take a step, and then we have to figure out how that step can be
-taken.
+Let me show you how which particle takes the next step.
+
+*Alice*: How which what?
+
+*Bob*: There are two questions here: at any given time we first have to
+determine _which_ particle needs to take a step, and then we have to
+figure out _how_ that step can be taken.
 
 *Alice*: I'm all ears.
 
@@ -237,4 +240,35 @@ what +evolve+ looked like in the case of shared time steps:
 And here is how I rewrote it for the individual time step case:
 
  :inccode:.nbody_ind1.rb+evolve
+
+== xxx
+
+*Alice*: What does +startup+ do?
+
+*Bob*: Let's look at that later.  It records the initial total energy
+<tt>@e0@</tt>, as in the shared time step case, and it does a lot more.
+Other than that, the parts up to the +while+ loop are the same in both
+case.  So let us jump to the +while+ loop, for now.
+
+In the case of shared time steps, we first determined the size of the
+next (shared) time step, and then we pushed all particles forward, through
+the command <tt>send(c.method)</tt>.  Following that, there are only some
+administrative issues, related to reporting diagnostics and orchestrating
+output.  These issues are quite similar in both cases.  Note that in the
+case of individual time steps, I've made sure to synchronize the particles
+will a call to +sync+; but again, let's leave that for later.
+
+*Alice*: Are you leaving anything for now?
+
+*Bob*: Yes.  Do you remember the <i>how which</i> question?
+
+*Alice*: You were going to tell me how to push which particle forward.
+That was quite a while ago.
+
+*Bob*: Well, we needed to lay some foundations.  Now I can show you.
+The _which_ part is decided right at the start of the +while+ loop,
+by a call to <tt>find_next_particle</tt>.  The _how_ part 
+
+
+*Alice*: 
 
