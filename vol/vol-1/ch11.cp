@@ -50,7 +50,7 @@ turn +new+ invokes the _instance_ method +initialize+, in a way that
 is hidden from the user.  Note that the error message mentioned a
 <tt>private method `initialize'</tt> of the class +Body+.  This means
 that the _class_ method +initialize+ is there alright, it just is not
-publicly avaible -- which means in turn that you cannot use the
+publicly available -- which means in turn that you cannot use the
 function from outside the scope of the class definition.  The method
 <tt>Body.new</tt>, however, does have access; it is defined to be part
 of the class +Body+, so it does have access to all the methods of
@@ -132,7 +132,7 @@ parameters.  What do you mean with `possible'?
 *Bob*: I meant that you don't have to use them.  When you leave all of
 them out, you get the default values.  When you specify one or more of
 them, you have to specify them from left to right.  For example, when
-you type <tt>b = Body.new(1)</tt> you give the particle mass an intial
+you type <tt>b = Body.new(1)</tt> you give the particle mass an initial
 value 1, rather than the default value 0, while keeping the other
 values 0.  At least that's what I read.
 
@@ -164,9 +164,9 @@ debugger works its way out from the innermost nesting, back to its
 caller function +initialize+ that is in turn called by +new+ -- just
 as I told you!
 
-*Alice*: Indeed.  And yes, I can guess now what went wrong.  I bet I should
-have presented the positions and velocities as arrays, making three
-arguments in total.
+*Alice*: Indeed.  And yes, I can guess now what went wrong.  I bet
+I should have presented the positions and velocities as arrays.  That
+would indeed make 3 arguments in total, instead of 7.
 
     irb(main):016:0> d = Body.new(1, [0.5, 0, 0], [0, 0.7, 0]
       )
@@ -243,7 +243,7 @@ definition.  As for the two methods you introduced, they are effectively
 
 *Bob*: Yes.  The first method echoes the value of the internal variable
 <tt>@mass</tt>.  While the variable <tt>@mass</tt> itself is private,
-the methode <tt>mass</tt> is public by default, so this gives you the
+the method <tt>mass</tt> is public by default, so this gives you the
 simple way I promised, to access data that would be hidden otherwise.
 
 The second method allows you to change the internal state of an object.
@@ -254,7 +254,8 @@ variable <tt>@mass</tt>.
 
 *Alice*: The syntax <tt>mass=(m)</tt> looks rather odd, if you ask me,
 this combination of an equal sign and parentheses.  Anyway, let's see
-whether I understand it correctly.
+whether I understand it correctly.  I will try to read the old value
+of the mass and then write a new value into the same variable
 
     irb(main):026:0> d.mass
     => 1
@@ -285,25 +286,38 @@ are a couple examples.
     => 4
 
 *Alice*: Much better!  I like the pragmatic compromise between clarity
-and ease of use.
+and ease of use.  Let me do it once more to show the symmetry between
+reading and writing:
+
+    irb(main):031:0> new_mass = 8
+    => 8
+    irb(main):032:0> old_mass = d.mass
+    => 4
+    irb(main):033:0> d.mass = new_mass
+    => 8
+    irb(main):034:0> d
+    => #<Body:0x400df1f0 @mass=8, @vel=[0, 0.7, 0], @pos=[0.5
+      , 0, 0]>
+
+As it should be.  Now what about the position and velocity?
 
 == Syntactic Sugar
 
 *Bob*: You may guess how we can give `get' and `set' functions for the
 other internal variables.  Here is how we deal with the position
 
-    irb(main):031:0> class Body
-    irb(main):032:1>   def pos
-    irb(main):033:2>     @pos
-    irb(main):034:2>   end
-    irb(main):035:1>   def pos=(p)
-    irb(main):036:2>     @pos = p
-    irb(main):037:2>   end
-    irb(main):038:1> end
+    irb(main):035:0> class Body
+    irb(main):036:1>   def pos
+    irb(main):037:2>     @pos
+    irb(main):038:2>   end
+    irb(main):039:1>   def pos=(p)
+    irb(main):040:2>     @pos = p
+    irb(main):041:2>   end
+    irb(main):042:1> end
     => nil
-    irb(main):039:0> d.pos
+    irb(main):043:0> d.pos
     => [0.5, 0, 0]
-    irb(main):040:0> d.pos = [0.5, 0, 0.1]
+    irb(main):044:0> d.pos = [0.5, 0, 0.1]
     => [0.5, 0, 0.1]
 
 *Alice*: The way you use the `set' function is different, in the sense

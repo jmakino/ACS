@@ -5,7 +5,7 @@
 *Alice*: So here we are, ready to begin writing a toy model to simulate
 a dense stellar system.  We have decided to begin with a very simple
 integrator, since we will use the material in a course for students
-with little or no prior background in differential equastions and
+with little or no prior background in differential equations and
 numerical methods.
 
 *Bob*: That pretty much defines the first integrator to discuss: one
