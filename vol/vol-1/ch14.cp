@@ -123,8 +123,8 @@ Here is how the forward Euler integration scheme works:
 
 <tex>
 \begin{eqnarray}
-{\bf r}_{i+1} & = & {\bf r}_i + {\bf v}_i dt \label{forward-euler-step1} \\
-{\bf v}_{i+1} & = & {\bf v}_i + {\bf a}_i dt \label{forward-euler-step2}
+{\bf r}_{i+1} & = & {\bf r}_i + {\bf v}_i dt     \nonumber \\
+{\bf v}_{i+1} & = & {\bf v}_i + {\bf a}_i dt     \nonumber
 \end{eqnarray}
 </tex>
 
@@ -178,20 +178,226 @@ the top.
 
  :inccode: euler1.rb
 
-*Alice*: xxx
+*Alice*: Short and simple, but it looks simple only because we are used
+to coding up integrators.  For the students, it would be good to spell
+out, just one time, what the equations above look like, in the simplest
+case where we are working with vectors in two dimensions.  To be specific
+in our notation, we can use underscore _x_ for the first component of
+each vector and underscore _y_ for the second component, as follows:
 
-*Bob*: xxx
+<tex>
+\begin{eqnarray}
+{\bf r} & = & \{r_x, r_y\}                          \nonumber \\
+{\bf v} = \dot{\bf r} & = & \{v_x, v_y\}            \nonumber \\
+{\bf a} = \ddot{\bf r} & = & \{a_x, a_y\}           \nonumber
+\end{eqnarray}
+</tex>
 
-== Input
+The last three equations in the earlier sections then become six
+equations, one for each vector component.
 
-*Bob*: We have to provide an input file, let's call it <tt>euler.in</tt>:
+There are two equations for the calculation of the relative
+acceleration components <tex>$a_x$</tex> and <tex>$a_y$</tex>,
+each of which can be calculated in terms of the relative position
+components <tex>$r_x$</tex> and <tex>$r_y$</tex>, since
+<tex>$r = \sqrt{r_x^2+r_y^2}$</tex>:
+
+<tex>
+\begin{eqnarray}
+a_x & = & - \frac{M}{(r_x^2 + r_y^2)^{3/2}}r_x                  \nonumber \\
+a_y & = & - \frac{M}{(r_x^2 + r_y^2)^{3/2}}r_y                  \nonumber
+\end{eqnarray}
+</tex>
+
+Two equations tell us how to find the position vector components at
+the new time step: we take the components at the previous time, and
+we add the increment in position provided by the product of the
+corresponding velocity vector component and the time step size:
+
+<tex>
+\begin{eqnarray}
+(r_x)_{i+1} & = & (r_x)_i + (v_x)_i dt                          \nonumber \\
+(r_y)_{i+1} & = & (r_y)_i + (v_y)_i dt                          \nonumber
+\end{eqnarray}
+</tex>
+
+Similarly, we update the velocity vector components, by incrementing
+those using the acceleration, which is the time derivative of the velocity:
+
+<tex>
+\begin{eqnarray}
+(v_x)_{i+1} & = & (v_x)_i + (a_x)_i dt                          \nonumber \\
+(v_y)_{i+1} & = & (v_y)_i + (a_y)_i dt                          \nonumber
+\end{eqnarray}
+</tex>
+
+If we would do this calculation in three-dimensional space, all vectors
+would acquire a third component: <tex>${\bf r} = \{r_x, r_y, r_z\}$</tex>,
+and so one.  Each pair of equations above would then be replaced by a
+triple of equations, because an extra equation would appear for the
+corresponding <tex>$z$</tex> component.
+
+To conclude the story, the forward Euler algorithm for the two-body
+problem can be summarized as follows.  Given the relative position and
+the relative velocity between the two particles at a given time
+<tex>$t_i$</tex>, first calculate the relative accelaration in terms
+of the relative position at <tex>$t_i$</tex>.  Then compute the new
+values for the relative positions at <tex>$t_{i+1}$</tex>, in terms of
+the relative positions and velocities at <tex>$t_{i}$</tex>.
+Similarly, compute the new values for the relative velocities at
+<tex>$t_{i+1}$</tex>, in terms of the relative velocities and
+accelerations at <tex>$t_{i}$</tex>.
+
+*Bob*: And after you have once said that in words, it becomes obvious
+how much more compact and efficient equations are, already in
+component notion.  And then it is clear that vector notation is even
+more efficient than component notation.
+
+== Writing Clean Code
+
+*Alice*: But now I want to understand how exactly you coded these six
+equations in the file <tt>test.br</tt> above.
+
+*Bob*: The line <tt>input Math</tt> tells Ruby to load the +Math+ module.
+This is merely a convenience.  We could have left that out, but then
+the square root +sqrt+ would not have been recognized; we would have
+had to write <tt>Math.sqrt</tt> instead.  It is just more convenient
+to load +Math+ right at the beginning.
+
+*Alice*: Then you define the size of the time step and the number of
+steps you want to take.  That is a good idea, to introduce them as
+variables at the top of your program, instead of hardcoding them below
+inside the loops.  It will be much easier to change the values only
+once at the top, rather than having to inspect the whole program to see
+where the values might occur.
+
+*Bob*: You would be surprised how many scientists of the hard-coding
+type you can still find!
+
+*Alice*: That is because most scientists have never been taught how to
+include levels of data abstraction in their program, right from the
+beginning in the conceptual view of the architecture of a program.
+
+*Bob*: But at least they all use subroutines.
+
+*Alice*: Not all!  There are still legacy codes being used widely that
+jump around through many pages of programs using do loops between blocks
+of code that are effectively a poor man's subroutine.  One problem is
+that scientists view subroutines merely as a convenient way to save time:
+if you use the same piece of code in three places in your program, you
+save time by writing it only once as a subroutine, and calling it from
+three places.  But that is the _least_ important reason to use functions
+or subroutines in a program.
+
+Much more important reasons are the issue of code maintainance.  If the
+same piece of code occurs in more than one place, it is well neigh
+impossible to maintain the code in a consistent way.  Change something
+in one place in someone's legacy code, and most likely you don't even
+know that it would have to be changed in the other place to.  Bugs
+appear, for no apparent reason, because you are _sure_ that you did
+the right thing; you just didn't know about the other place which now
+has become incompatible.  I bet that literally person-millennia have
+gone down the drain this way, during the last fifty years, chasing
+those bugs.
+
+*Bob*: You mean more than 10,000 person-years?
+
+*Alice*: I wouldn't be surprised.  I would estimate there to be at least
+a hundred thousand programmers in the world.  Most of them have struggled
+for a total of a month in their life, at the very least, chasing bugs that
+originated in codes which they tried to update, only to find out that there
+were unexpected and typically undocumented side effects.  That already
+makes a person-millennium worth of effort.  And I think that is a vast
+underestimate.
+
+*Bob*: Impressive.  I never thought about it quite that way.
+
+*Alice*: So the name of the game is modularity, and I'm glad to see you
+giving the students the right example, in the third and fourth line of
+your integrator.
+
+*Bob*: This type of what you call modularity at least I agree with.  It
+would have been easy to write <tt>100.times</tt> in the seventh line
+instead of <tt>ns.times</tt>, and change that number by hand later.
+I thought about doing that.  But when I saw that <tt>dt</tt> occurs
+not once but twice in the body of the +do+ loop, I realized that it
+would be all to easy to change the numerical value of one of them, and
+not the other.
+
+*Alice*: With the result of having the position and velocity stepping
+forwards in time at different speeds -- quite a nightmare, when you
+want to debug it.  Most likely you will start your debugging on the
+assumption that you made a mistake in the physics of gravitational
+interaction, or in the mathematical equations, or in the way you solve
+them numerically, or just a typo in the way you coded it all.  The
+last thing you suspect would be that you would update the position
+with time step 0.01 and the velocity with time step 0.001, say.
+
+*Bob*: I know it all too well, from past experience.  That's why I
+wizened up.
+
+== Where the Work is Done
+
+*Alice*: Talking about the +do+ loop, I presume it is being traversed
++ns+ times, almost as if you read Ruby like English.  How can that
+possible work?
+
+*Bob*: The period means that +times+ is a method associated with the
+class of which the variable +ns+ points to an instance.  Since +ns+
+has been initialized with an integer, it now has become an instance of
+class Integer.  And conveniently, this class has a method +times+
+built in that takes the value of the instance of the class, here the
+value of +ns+, and iterates the following block of code +ns+ times.
+
+As often in the case of Ruby, the explanation of a construction sounds
+far more complicated that the way you use it.  As you already remarked,
+<tt>ns.times</tt> reads like English.  Another example of the principle
+of least surprise.
+
+*Alice*: Within the +do+ loop, you first compute <tex>$|{\bf r}|^2$</tex>
+by introducing a variable <tt>r2</tt>, initialize it to zero, and then
+accumulating the result of squaring the value of each component of the
+vector <tex>${\bf r}$</tex>.  What you need for the acceleration is
+the 3/2 power, so you compute that in the next line.
+
+Finally, you solve the three pairs of equations I wrote above.  The
+array methode +each_index+ presumably does what it says, it executes the
+next block of code once for each possible value of the index of the array?
+
+*Bob*: Yes.  In the case of a two-dimensional array +a+, the two components
+are <tt>a[0]</tt> and <tt>a[1]</tt>; remember that Ruby arrays start at
+zero by default.  For such an array, the block of code following
+<tt>a.each_index</tt> will be executed once for <tt>k=0</tt>, and once
+for <tt>k=1</tt>.
+
+*Alice*: And if we would have used three-dimensional arrays for positions
+and velocities and accelerations, the block would be executed also for
+<tt>k=2</tt>.  How neat to see an integrator without any need to remind
+the computer <i>ad nauseum</i> to go through an inner loop for +k+ is
+1 to 3, or something like that -- just as we saw earlier when we wrote
+the I/O routines.
+
+*Bob*: But we can do even better.  Granted, we have avoided the use of an
+explicit variable +NDIM+ for the number of dimensions, but there is
+still the lingering smell of components hanging in the air, in terms
+of the use of +k+ in the last two blocks of code.  I wanted to get the
+code working quickly, so I didn't think about it to much, but I have
+an idea of how to get rid of even +k+.
+
+*Alice*: That would be even better.  But shall we first check whether
+everything works as advertised?  There is a call to +simple_read+, so
+I presume we have to provide an input file.
+
+*Bob*: Let's call it <tt>euler.in</tt>; how about this one?
 
  :inccode: euler.in
 
 *Alice*: A nice example already for our dimensional freedom: a
-two-body problem is intrinsically two-dimensional.  Even in three
-dimensions you can always find a plane in which the relative motion
-takes place.
+two-body problem is intrinsically two-dimensional.  It was not just
+laziness that I showed the equations in component form only for two
+dimensions.  Even in three dimensions, a 2-body problem can always
+be reduced to a two-dimensional problem.  The point is that you can
+always find a plane in which the relative motion takes place.
 
 *Bob*: That may not be immediately obvious for a student.  When I heard
 this for the first time, I thought about two particles passing each
@@ -217,87 +423,4 @@ relative motion of the two particles, which made me choose the above
 numbers.  Total mass of unity, initial position on the x-axis, also
 unity, and initial velocity perpendicular to that, and one half, for a
 change.
-
-#*Bob*: Here is a minimal version, let's call it <tt>euler2.rb</tt>
-#
-# :inccode: euler2.rb
-
-== Forward
-
-*Bob*: Let's test it:
-
- :command: cp -f euler1.rb test.rb
- :commandoutput: ruby test.rb < euler.in
- :command: rm -f test.rb
-
-*Bob*: ten times smaller step size:
-
- :inccode: .euler3.rb-barebones
-
-and run it:
-
- :command: cp -f euler3.rb test.rb
- :commandoutput: ruby test.rb < euler.in
- :command: rm -f test.rb
-
-*Bob*: ten times smaller step size:
-
- :inccode: .euler4.rb-barebones
-
-and run it:
-
- :command: cp -f euler4.rb test.rb
- :commandoutput: ruby test.rb < euler.in
- :command: rm -f test.rb
-
-*Bob*: ten times smaller step size:
-
- :inccode: .euler5.rb-barebones
-
-and run it:
-
- :command: cp -f euler5.rb test.rb
- :commandoutput: ruby test.rb < euler.in
- :command: rm -f test.rb
-
-#*Bob*: ten times smaller step size:
-#
-# :inccode: .euler6.rb-barebones
-#
-#and run it:
-#
-# :command: cp -f euler6.rb test.rb
-# :commandoutput: ruby test.rb < euler.in
-# :command: rm -f test.rb
-#
-#*Bob*: ten times smaller step size:
-#
-# :inccode: .euler7.rb-barebones
-#
-#and run it:
-#
-# :command: cp -f euler7.rb test.rb
-# :commandoutput: ruby test.rb < euler.in
-# :command: rm -f test.rb
-
-*Bob*: Here is a fancy version, with command line arguments
-and energy error diagnostics:
-
- :inccode: euler.rb
-
-*Bob*: And here is how you run it
-
- :commandoutput: ruby euler.rb < euler.in > /dev/null
-
- :commandoutput: ruby euler.rb -o 10 -d 0.0001< euler.in
-
- :commandoutput: ruby euler.rb -o 10 -d 0.00001 < euler.in
-
-
-
-
-
-
-
-
 
