@@ -105,3 +105,8 @@ END
   
   
 
+* Known BUG in latex generation
+
+  If you try to do unnumbered list and numbered list at the same level
+  without any intervening text, the generated tex source might have
+  wrong nesting of begin{itemize} etc.

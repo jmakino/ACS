@@ -10,7 +10,7 @@
 # a temporary file ".filename.cp", which is removed before the script finishes.
 # If acsdoc.rb is invoked with the option "--keep-dot-files", these temporary
 # files are not removed
-#
+#    s
 # usage:  ruby acsdoc.rb [--keep-dot-files] [rdoc option]... [file]...
 #
 # 2004/3/22 Major rewrite to make it more easily extensible.
@@ -26,28 +26,165 @@ module Rdoctotex
   @@wordreplace=[
     [/\+\w+\+/,"{\\tt", "}"],
     [/\*\w+\*/,"{\\bf", "}"],
-    [/_\w+_/,"{\\it", "}"]]
+    [/_\w+_/,"{\\it", "}"]
+  ]
+  
+  @@tagreplace=[
+    ["<tt>","</tt>","{\\tt", "}"],
+    ["<b>","</b>","{\\bf", "}"],
+    ["<em>","</em>","{\\it", "}"],
+    ["<i>","</i>","{\\it", "}"],
+    ["<tex>","</tex>","", ""]
+  ]
+  
+  @@header=[
+    "part","chapter","section","subsection","subsubsetion",
+    "subsubsubsection"]
 
+  @@listtypes=[
+    ["paragraph",""],
+    ["ulist*","itemize"],
+    ["ulist-","itemize"],
+    ["nlist", "enumerate"],
+    ["verbatim","verbatim"]]
+  
   def wordmarkup(instr)
-    @@wordreplace.each{|x| s.gsub!(x[0]){|word|
-	x[1]+ " " + word[1,word.length-2] +x[2]}}
-    s
+    @@wordreplace.each do |x| instr.gsub!(x[0]) do
+	|word|	x[1]+ " " + word[1,word.length-2] +x[2]
+      end
+    end
+    instr
   end
 
-  def process_wordmarkup(instring)
+  def process_wordmarkup(instring,dirname)
     ostring = []
-    instring.each{|s| ostring.push(wordmarkup(instring))}
+    instring.each{|s| ostring.push(wordmarkup(s))}
   end
 
-  def convert_to_latex(instring,dirname)
-    process_wordmarkup(instring).join("\n")
+  def tagmarkup(instr)
+    @@tagreplace.each do |x| 
+      instr.gsub!(x[0]) { |word|x[2]+ " " }
+      instr.gsub!(x[1]) { |word|x[3] }
+    end
+    instr
   end
-  module_function :convert_to_latex
+
+  def process_tagmarkup(instring,dirname)
+    ostring = []
+    instring.each{|s| ostring.push(tagmarkup(s))}
+  end
+
+  def process_headers(instring)
+    ostring=[]
+    while s=instring.shift
+      header_candidate =s.split[0] 
+      if /^=+$/ =~ header_candidate
+	ostring.push("\\"+@@header[header_candidate.length]+"{")
+	header_text = s.sub(/=+/," ")
+	while /^\s+$/ =~ (s = instring.shift )
+	  header_text += s + " "
+	end
+	header_text += "}"
+	ostring.push(header_text)
+	instring.unshift(s)
+      else
+	ostring.push(s)
+      end
+    end
+    ostring
+  end
+  
+  def process_single_paragraphs_lists_etc(instring,indent,type,new)
+    s_prev = ""
+    ostr=[]
+    p type
+    ostr.push("\\begin{"+@@listtypes[type][1]+"}")  if new and (type >0)
+    
+    while s=instring.shift
+      header_candidate =s.split[0] 
+      new_item = nil
+      new_type = 1
+      if (/^(\*|\-|\d+\.)$/ =~ header_candidate) 
+	new_type = 1+[/\*/,/\-/,/\d+\./].collect{
+	  |x| x=~ header_candidate}.index(0)
+
+	s1 = s.sub(/\S+\s/){|x| " "*x.length} 
+	new_indent = /\S/ =~ s1
+	new_item = 1
+      else
+	new_indent = /\S/ =~ s
+	new_indent = indent if /^\s*$/ =~s 
+	s1=s
+      end
+      if type == 4 and /^\s+/ =~s 
+	s1 = s
+	new_type=4
+	new_item = nil
+      end
+	  
+      p s
+      p new_item
+      p new_indent
+      new_type = 4 if new_indent > 0 and new_item == nil
+      if new_indent > indent
+	instring.unshift(s)
+	new=1
+	new = nil if new_type == type and type == 4 
+	print "type =  #{new_type}, #{type}, #{new}\n"
+	if new 
+	  ostr+= process_single_paragraphs_lists_etc(instring,new_indent,
+						     new_type,new)
+	else
+	  ostr.push s1
+	  instring.shift
+	end
+      elsif new_indent == indent
+	if new_item
+	  if new_type != type
+	    ostr.push("\\end{"+@@listtypes[type][1]+"}")
+	    instring.unshift(s)
+	    ostr+= process_single_paragraphs_lists_etc(instring,new_indent,
+						       new_type,1)
+	  end
+	  ostr.push("\\item ") if new_type < 4
+	end
+	ostr.push s1
+      else
+	if type == 4 and new_type==4
+	  indent = new_indent
+	else
+	  ostr.push("\\end{"+@@listtypes[type][1]+"}")
+	end
+	instring.unshift(s)
+	return ostr
+      end
+      s_prev = s
+    end	
+    ostr
+  end
+  
+  
+  def convert_to_latex(instring,dirname)
+    print "Enter convert "; p instring
+    s=process_single_paragraphs_lists_etc(instring,0,0,1)
+    p s
+    s=process_wordmarkup(s,dirname)
+    s=process_headers(s)
+    s = process_tagmarkup(s,dirname).join("\n")
+    s= <<-END_TEXSOURCE
+    \\documentclass{book}
+    \\begin{document}
+       #{s}
+    \\end{document}
+    END_TEXSOURCE
+  end
+
 end
 
 
 
 module Acsdoc
+  include Rdoctotex
 
   @@prompt = "|gravity>"
 
@@ -374,7 +511,6 @@ end
 
 # :segment start: acsdoc
 include Acsdoc
-
 del_flag = true
 del_file_list = Array.new
 tolatex_flag = false
