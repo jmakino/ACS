@@ -41,11 +41,11 @@ class Body
     @vel += acc*dt
   end
 
-  def ekin                     # kinetic energy per unit of mass
+  def ekin                     # kinetic energy
     @ek = 0.5*(@vel*@vel)
   end
 
-  def epot                     # potential energy per unit of mass
+  def epot                     # potential energy
     @ep = -1/sqrt(@pos*@pos)
   end
 
