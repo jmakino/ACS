@@ -22,7 +22,8 @@ while s = entry_file.gets
     file_name = $'
     file_name.chop!                                        # remove trailing \n
     file_name.chop!                                        # remove trailing "
-    unless file_name == "svn:this_dir"
+#    unless file_name == "svn:this_dir"   # older svn version
+    unless file_name == ""               # new svn version
       print file_name, "\n"
     end
   end
