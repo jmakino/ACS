@@ -359,7 +359,8 @@ overlook any typos or logopos.
 
 *Bob*: errors in logic, as opposed to typing.
 
-*Alice*: Let's run it and see:
+*Alice*: Yes, both are equally likely to have slipped in.
+Let's try to run it and if it runs, let's see how well we're doing:
 
  :commandoutput: ruby integrator_driver4dpc.rb < euler.in
 
