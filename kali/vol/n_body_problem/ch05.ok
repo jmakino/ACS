@@ -178,7 +178,7 @@ or more different files.  Such requirements go against any notion of
 rapid prototyping.
 
 While violating the DRY principle may not always lead to likely
-errors, the consequences are equally bad that if it discourages free
+errors, the consequences are equally bad if it discourages free
 experimentation.  In that way you are likely to miss more optimal
 solution.  Miss out on more optimal solutions often enough in a
 large software project, and you get an end product that can be very

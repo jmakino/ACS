@@ -62,7 +62,7 @@ data for that whole system.
  :inccode: .rknbody1.rb+initialize+Nbody
 
 By default an N-body system is created empty, containing 0 particles, at
-starting at time 0, but if you like, you can create it was several particles
+starting at time 0, but if you like, you can create it with several particles
 right from the start.  In our case, the driver creates an empty default system,
 leaving it up to the <tt>simple_read</tt> input function to create the
 necessary particle slots, depending on how many are needed to store
@@ -75,7 +75,7 @@ instances, since if you specify +n+ particles to be present, you fill the
 array by creating +n+ new bodies, from <tt>@body[0]</tt> through
 <tt>@body[n-1]</tt>.  But what about the +for+ loop?  Ah, yes, I
 remember now: in Ruby <tt>0...n</tt> means that you exclude +n+, while
-<tt>0..n</tt> does indeed exclude +n+.
+<tt>0..n</tt> does indeed include +n+.
 
 *Bob*: A handy short notation, but like every short notation, potentially
 confusing if you're not yet used to it.

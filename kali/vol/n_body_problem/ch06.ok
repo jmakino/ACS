@@ -249,7 +249,7 @@ that contain the commands will stand out:
 an index _i_.  In the previous version, we could leave out that obnoxious
 _i_ index at the expense of introducing extra variables on the +Body+ level.
 But now we can have our cake and eat it: no more _i_ and no more extra
-variable with +Body+, I presume.
+variables with +Body+, I presume.
 
 *Alice*: Correct!  The content of the string effectively
 will declare the extra variables for us when the string is evaluated in

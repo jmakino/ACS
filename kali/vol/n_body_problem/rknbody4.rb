@@ -66,7 +66,6 @@ class Nbody
 
   def initialize
     @body = []
-    end
   end
 
   def evolve(integration_method, dt, dt_dia, dt_out, dt_end)

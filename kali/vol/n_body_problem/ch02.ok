@@ -118,8 +118,8 @@ back to the statement above, this line is filtering out particle pair
 combinations where both particles have the same identity.
 
 *Bob*: Indeed.  particles are not allowed to interact with themselves.
-For all other bodies, we compute the in a similar way as before.  The
-main difference is that the vector connecting the two bodies is not
+For all other bodies, we compute the distance in a similar way as before.
+The main difference is that the vector connecting the two bodies is not
 given, as was the case for the two-body problem, where there was only
 one relative vector.  Here we compute the vector pointing from the
 calling particle to the called particle first, as follows:
@@ -259,7 +259,7 @@ If I really wanted to be self-explanatory, I would write:
     a = ([0]*vector_size).to_v
 
 That way I would express the fact that +a+ is a vector, that it needs
-to be off the right size, that it should contain all zeroes, and that
+to be of the right size, that it should contain all zeroes, and that
 it should be converted to a proper vector at the end of the day.
 
 *Bob*: A long day, if you ask me.  I would never have guessed your explanation
@@ -360,7 +360,7 @@ of an _i_ variable.
 *Alice*: That is a reasonable solution.  You are trading modularity for
 readability.  And while I'm sure there are several alternatives, let's
 first complete our guided tour here.  What is left to visit is the
-energy diagnostics part of the code
+energy diagnostics part of the code.
 
 == Energy Diagnostics
 

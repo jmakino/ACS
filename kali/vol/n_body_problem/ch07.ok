@@ -130,7 +130,7 @@ All it does is invoke the pretty print version for each particle:
 
  :inccode: .rknbody7.rb+pp+Body
 
-which does nothing else put print the +Body+ instance in its standard
+which does nothing else but print the +Body+ instance in its standard
 string form:
 
  :inccode: .rknbody7.rb+to_s
@@ -223,6 +223,4 @@ the same results for our figure out orbit:
 
 *Alice*: All is well, clearly.  Good!  So now we have a version of the code
 that is both lean and easy to read on the level of the integrators,
-and has extra debugging options.  Progress!.
-
-
+and has extra debugging options.  Progress!

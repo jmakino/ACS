@@ -79,9 +79,10 @@ guess.
 
 Now this means that when you start from rest, and you have a distance
 to the center of <tex>$\sqrt(3)$</tex> or roughly 1.7, it will take
-more than one time unit to arrive at the center.  So I'm pretty sure
-that by time <tt>t = 1</tt>, the particles haven't arrived in the
-center yet.
+more than one time unit to arrive at the center.  Of course, nonlinear
+effects will complicate things, but I don't think they will invalidate
+this simple reasoning so quickly.  I'm pretty sure that by time
+<tt>t = 1</tt>, the particles haven't arrived in the center yet.
 
 *Alice*: I agree.  Okay, we have placed our bets.  Let the truth be
 revealed!  And actually, this would be a good time to use the <tt>x_flag</tt>
