@@ -1,0 +1,83 @@
+= XXX
+
+== Of Forests and Trees
+
+*Alice*: You know, I'd like to go over the whole code once again,
+now that we make sure it works.  I feel I can't see the forest for
+the trees.  I'd like to gain a good overview.
+
+*Bob*: That's a good idea.  How shall we do this, from the beginning
+to the end, or from the end to the beginning?
+
+*Alice*: I prefer to go top-down.  Given the way we have written the code,
+this means starting at the end, or at least close to the end, with the
++World+ class.
+
+*Bob*: Okay, let's print it out.
+
+ : inccode:.world1.rb+World
+
+== xxx
+
+*Alice*: We'd better start at the gate: at the very bottom of our code,
+we can see how we make our entrance:
+
+ :inccode:.world1.rb-1
+
+The method <tt>World.admit</tt> can be found at the end of our +World+
+class definition.  Unlike most methods we have written so far, this
+particular function is _not_ an instance method, but a class method,
+as indicated by the fact that the Class name is added here in front of it.
+
+*Bob*: And we need this feature, otherwise we couldn't read in the data
+for a +World+ object.  Just like the general class method +new+, the class
+method +admit+ can operate by itself, without having to be invoked from
+an existing +World+ object.
+
+*Alice*: The first thing this method does is to invoke our acs_read function,
+which returns an object called +object+, that can either be a +World+ object
+or a +Worldsnapshot+ object.
+
+In the first case, we are dealing with a complete output dump from a
+previous run.  Any invocation of <tt>world1.rb</tt> gives us the choice
+to produce a snapshot or a complete +World+ dump, as we will see in a
+moment.  In the case of a dump, the class of the object is +World+,
+and since we're looking at a class method of class +World+, +self+
+here is the same as +World+.  In that case, the +if+ statement evaluates
+to +true+, and we invoke the method <tt>object.setup_from_world</tt>,
+in other words, an instance method of class +World+, with the name
+<tt>setup_from_world</tt>.
+
+Now I'm puzzled.  That last function sets up all kind of things, it seems,
+performing a variety of initializations.  But after that, <tt>World.admit</tt>
+just returns +object+.  What happens with that object, of type +World+?
+
+*Bob*: Ah, the compactness of Ruby notation!  On the same line where we
+invoke <tt>World.admit</tt>, at the very end of the code, we then invoke
+the member function +evolve+ of the object that is returned.
+
+*Alice*: Oh, yes, of course.  Okay, what happens if we start with a snapshot
+output?  For example, we could start with a Plummer model input file.  Or
+we could take the output from a previous run, if we had decided to do
+an output of a <tt>WorldSnapshot</tt> object.  Back to <tt>World.admit</tt>.
+
+*Bob*: Wait a minute.  If we start with a Plummer model, the class of the
+object that has been read in will be +NBody+, not +WorldSnapshot+.  Wouldn't
+the +elsif+ statement in <tt>World.admit</tt> fail?
+
+*Alice*: No, it won't.  That's the magic that we've built into
+<tt>acsio.rb</tt>, remember?  In the first line, <tt>acs_read</tt>
+tries to recognize either a +World+ object or a +WorldSnapshot+ object.
+Now an +NBody+ object certainly has nothing to do with the +World+ class.
+But We have defined the +WorldSnapshot+ class as a subclass of +NBody+.
+When <tt>acs_read</tt> sees this, it opens the gate for the +Nbody+ object,
+and it then reads it in _as_ a +WorldSnapshot+ object.
+
+*Bob*: Ah yes, how clever we were, when we wrote that!  Almost too clever,
+I'm afraid.  But it does all seem to work.  Okay, so even in the case
+of a completely fresh Plummer model input file, the +elsif+ statement
+will evaluate as +true+.  Good.
+
+
+
+

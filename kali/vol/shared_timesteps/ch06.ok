@@ -35,9 +35,14 @@ step, which would result in a huge energy error.
 we've done something like this already, but let's run it again, from the
 same initial conditions:
 
- :commandoutput: mkplummer.rb -n 5 -s 1 | acsnumber.rb > test.in
+ :commandoutput: mkplummer.rb -n 5 -s 1 | acsnumber.rb > test
 
-Here is the shared time step version:
+== Concrete Results
+
+*Alice*: And we may as well start with the same type of accuracy requirements
+as we did before.
+
+*Bob*: Here is the shared time step version:
 
  :commandoutput: nbody_cst1.rb -d 0.001 -t 1 -o 2 < test.in
 
@@ -57,6 +62,8 @@ more clearly.
 is scheme is more accurate by almost a factor two.
 
 *Bob*: Hmmm.  So much for all that hard work, to make the time step adaptive!
+
+== More is Different
 
 *Alice*: Well, we are dealing only with five particles, and we are running
 at relatively high accuracy.  I sugest we increase the number of particles
