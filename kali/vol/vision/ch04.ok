@@ -175,7 +175,7 @@ their delivery car, and so on.
 *Alice*: Yes, that is a good example of the problems you can get with an
 inflexible specification.  But think of the alternative: if any telephone
 number could have had any length, back in the days in which the
-telephone systems was set up, based on mechanical relays, it would
+telephone system was set up, based on mechanical relays, it would
 probably have been more cumbersome then.  In any case, whatever
 solution they would have come up with would sooner or later have led
 to unforeseen problems.
@@ -222,7 +222,7 @@ they want?
 *Alice*: If you allow that, you may as well forget about modularity.
 In that case, there are so many ways that a small modification can
 cause a major perturbation that will be almost impossible to trace
-down.  And if you want to parallelize your code, things only will
+down.  And if you want to parallelize your code, things will only
 get worse.
 
 == A Matter of Opinion?
@@ -239,7 +239,7 @@ tell you whether it would even have a chance of being reasonable.
 *Alice*: First of all, you should treat the dynamics code in exactly the
 same way as we have treated the overall kitchen sink code: it should
 be split up into smaller modules, connected with well-defined interfaces.
-For starters, the N-body code will be split in a global and local part.
+For starters, the N-body code will be split into a global and local part.
 The global part will compute the particle orbits throughout the whole
 cluster, while the local part will handle all the close encounters,
 coordinate transformations, regularization, and so on.
@@ -247,8 +247,9 @@ coordinate transformations, regularization, and so on.
 *Bob*: But what about perturber lists?
 
 *Alice*: You mean particles that are too far from a local clump to be part
-of the clump, but too close, so that their influence on the clump can
-not be neglected, unlike the bulk of stars that are further removed?
+of the clump, but too close, so that their influence on the clump
+cannot be neglected, unlike the bulk of stars that are further
+removed?
 
 *Bob*: Exactly.  Those perturbers will give you a bunch of spaghetti
 that cross wires between your two neat local and global modules.
@@ -284,11 +285,11 @@ skill and patience.
 
 *Alice*: Even so, inventing the concept of a race car must have taken far
 more time than any subsequent designing and building of race cars.
-In any case, it is clear that we have a different was of looking at
+In any case, it is clear that we have a different way of looking at
 things.  Perhaps you are right, and I have too optimistic a view of
 the power of modularity.  It is possible that the problem is just
 too dirty, and that any approach no matter how clean will get bogged
-down into details which force you break the rules you started with.
+down in details which force you to break the rules you started with.
 I doubt it, but it is a logical possibility.  But perhaps I am right,
 and you have too pessimistic a view, colored by too much frustration
 with less modular approaches.  How are we going to find out who is
@@ -300,7 +301,7 @@ Well, what type of benefit are you willing to give me?
 *Bob*: I have a suggestion.  How about working together for a while in
 writing a toy model version of your grand vision.  You can have the
 satisfaction of seeing the first steps being taken toward your castle
-in the sky.  And I will then have the satisfaction of you realizing
+in the sky.  And I will then have the satisfaction of your realizing
 how much more complicated it will be than you now think, to get from
 the toy model to reality.
 
@@ -319,8 +320,8 @@ do within the time frame of a single course.
 the end, how very far they will still be from a competitive N-body code!
 
 *Alice*: Good, we have a deal.  I have thought for a long time about the
-question of how to structure a stellar dynamics code in a more clean
-and modular way, and still let it be able to handle close encounters
+question of how to structure a stellar dynamics code in a cleaner
+and more modular way, and still let it be able to handle close encounters
 and all that.  I had not thought about combining it with stellar
 evolution and hydrodynamics, but now that we discussed these options,
 I feel even more convinced that a modular approach is called for.

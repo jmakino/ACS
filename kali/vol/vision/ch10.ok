@@ -25,7 +25,7 @@ for an educational project.
 *Alice*: There are several reasons why.  For one thing, I like to make
 it attractive and easy for others to use my code.  Once I spend a lot
 of time writing a good piece of code, I'm happy to spend a bit more time
-to polish it and make it available in a more userfriendly way.  And if
+to polish it and make it available in a more user friendly way.  And if
 more people will be using it, I will get more feedback which in turn
 can improve the product.  Also, others are more likely to write
 extensions or complementary programs, and there is a better chance
@@ -60,8 +60,8 @@ with any complicated program, there always comes a time that you have
 to beat the thing into shape.  You can start in a nice clean way,
 following this paradigm or that, but then when the program gets going,
 you find that this is missing or that, and that such and such is
-slowing down the execution much to much.  You start throwing in this
-and that, and taking short cuts here and there to get significant
+slowing down the execution much too much.  You start throwing in this
+and that, and taking shortcuts here and there to get significant
 speedup.  How are you going to document that?  Spend a few hours every
 day rewriting the documentation, each time you have tinkered with the
 code?  That seems hardly efficient!
@@ -71,7 +71,7 @@ have only two weeks left before a conference where you have to present
 your latest results, I can imagine that you take that approach.  But
 unless there is a serious emergency, I cannot see how that will gain
 you in the long run.  But I don't think we can convince each other by
-arguing.  We clearly have a very different style.  Let us agree that
+arguing.  We clearly have very different styles.  Let us agree that
 we at least will be careful to write clear comments and a good help
 mechanism for each code.  For myself I will keep track of what major
 and minor decisions we make while working on our project, so that I

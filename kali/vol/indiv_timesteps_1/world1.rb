@@ -73,13 +73,13 @@ class WorldPoint < Body
     wp.mass = @mass
     wp.time = t
     dt = other.time - @time
-    snap = (-6*(@acc - other.acc) - 2*(2*@jerk + other.jerk)*dt)/dt**2
-    crackle = (12*(@acc - other.acc) + 6*(@jerk + other.jerk)*dt)/dt**3
+    snap = (-6*(@acc - other.acc) - 2*(2*@jerk + other.jerk)*dt)/dt**2       #4
+    crackle = (12*(@acc - other.acc) + 6*(@jerk + other.jerk)*dt)/dt**3      #4
     dt = t - @time
-    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
-             (1/24.0)*snap*dt**4 + (1/144.0)*crackle*dt**5
-    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*snap*dt**3 + 
-             (1/24.0)*crackle*dt**4
+    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +     #4
+             (1/24.0)*snap*dt**4 + (1/144.0)*crackle*dt**5                   #4
+    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*snap*dt**3 +     #4
+             (1/24.0)*crackle*dt**4                                          #4
     wp
   end
 

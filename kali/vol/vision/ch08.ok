@@ -125,7 +125,7 @@ dynamics (GD) and a local stellar dynamics (LD) module, five in total!
 *Alice*: Nothing wrong with having five modules in a code.  This means
 that you have a lot of freedom!  You can replace each module, rewrite
 it, experiment with it, all without affecting anything in any of the
-other modules.  But lets not repeat our arguments.  After we finish
+other modules.  But let's not repeat our arguments.  After we finish
 our first toy code, we can take up this discussion again, and by that
 time we'll have a lot of actual code to work with, to strengthen our
 arguments.
@@ -199,7 +199,7 @@ and if this is what you want, this is what we'll try to do.  But allow
 me to laugh loudly if your approach will result in an unwieldy code,
 with many extra lines to circumvent your interface restrictions, and
 a very slooooow overall execution speed.  And I won't hesitate to tell
-my student's whose brilliant idea it was to do all this ;>).
+my students whose brilliant idea it was to do all this ;>).
 
 *Alice*: If that is what will happen, you can use it as a case study
 in how not to follow the advice of computer scientists who tell you to
@@ -224,7 +224,7 @@ translate your modular ideas for modeling dense stellar systems?
 
 *Alice*: That sounds like something to do with dentists, perhaps a
 new type of tooth paste.  How about using a Greek term?  The word
-astrophysics comes from the Greek after all.
+astrophysics comes from Greek after all.
 
 *Bob*: I'm not very strong on languages.  Do you have a specific
 suggestion?
@@ -345,7 +345,7 @@ it and getting a feel for what is under the hood.
 
 *Bob*: I'm afraid you're right.  When I did my first programming, it
 was in basic, and soon afterward in C.  Nowadays, when students talk
-about programming, they mean tweaking the parameters of a packages,
+about programming, they mean tweaking the parameters of a package,
 while using GUIs.
 
 *Alice*: Perhaps we begin to sound like old folks, shaking our heads

@@ -5,6 +5,6 @@ SCRIPTSRCS = check_and_install.rb acsstart.cshrc acsresetlibrary.rb
 
 LIBSRCS = acsrequire.rb acs.rb
 
-TARGET = code_management
+TARGET = volume7
 
 include ../etc/Makefile.inc

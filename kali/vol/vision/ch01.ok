@@ -75,18 +75,18 @@ about dense stellar systems, in particular?
 == Dense Stellar Systems
 
 *Alice*: A quarter century ago, when I was an undergraduate, astronomy was
-much less unified than it was today.  People observing in different
-wave length bands did not talk as much with each other as they do
+much less unified than it is today.  People observing in different
+wavelength bands did not talk as much with each other as they do
 today, and theorists studying stars, star clusters, galaxies, and
 cosmology had even less overlap in their research.  Someone simulating
 the birth or evolution of a star; someone simulating a star cluster;
-someone simulating a collisions between two galaxies; or someone
+someone simulating a collision between two galaxies; or someone
 studying large scale structure of the universe -- all four of them
 would be working separately, each on their own island.  In contrast,
 we now see bridges everywhere.
 
 When studying large scale structure simulations, we see how normal
-galaxies are build up through the process of merging smaller galaxies
+galaxies are built up through the process of merging smaller galaxies
 and protogalactic gas clouds.  And when we study a collision between
 two galaxies, we see how star clusters are formed through the shocks
 that occur in the bridges and tails connecting them.  So this already
@@ -98,19 +98,19 @@ interactions between many protostellar clouds simultaneously.  So this
 forces us to study a whole star forming region, a proto stellar
 cluster.  In this way all four fields are now connected.
 
-It is fair to say that dense stellar systems form an central topic in
+It is fair to say that dense stellar systems form a central topic in
 the current trend toward unification of astrophysics.  Not only is the
 topic connected with structure from the scale of individual stars up
 to that of galaxies and beyond, it also is connected with the study of
 extreme forms of matter, including neutron stars and black holes.  And
 finally, on the level of simulations, it combines the simplest and
 most elegant theory of complexity, that of self-gravitational systems,
-with the a diverse mix of astrophysical effects, as seen in stellar
+with a diverse mix of astrophysical effects, as seen in stellar
 evolution and stellar hydrodynamics, including the physics of
 accretion disks, common envelope evolution, and so on.
 
 *Bob*: That is all nice and fine, from a high-level point of view.
-However, when I'm working in the trenches, so the speak, I do not have
+However, when I'm working in the trenches, so to speak, I do not have
 much use for the big picture, and my only job is getting the details
 straight, and to get the work done.
 
@@ -186,9 +186,10 @@ heart of an N-body system, the agents of change in their evolution.
 Even if no binary stars were present initially, they would be formed
 dynamically in simultaneous three-body encounters.  And once there,
 encounters between these binaries and single stars would complicate
-the meek heat flow by two-body relaxation: a single scattering
-encounter can suddenly release a large amount of energy when a binary
-increases its internal binding energy by a significant amount.
+the normally weak heat flow mediated by two-body relaxation: a single
+scattering encounter can suddenly release a large amount of energy
+when a binary increases its internal binding energy by a significant
+amount.
 
 During the seventies, Henon and Spitzer and co-workers used
 approximate Monte Carlo Fokker-Planck simulations to model the

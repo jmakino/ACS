@@ -1,4 +1,4 @@
-$acsdate="20050304"
+$acsdate="20050306"
 require "acs"
 
 class Body

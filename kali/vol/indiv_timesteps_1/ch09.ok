@@ -291,9 +291,13 @@ So let's get started.  The values associated with the world point
 are the values at the beginning of the step.  Let us indicate those
 with a subscript 0.  The values at the end of the step, associated
 with the world point +other+, I will give a subscript 1.  We then
-get the following notation, if we translate the four lines for
-+snap+, +crackle+, <tt>wp.pos</tt>, and <tt>wp.vel</tt>, and use
-<tex>$\tau$</tex> for the interval +dt+:
+get the following notation, if we use <tex>$\tau$</tex> for the
+interval +dt+, and translate the four lines for +snap+, +crackle+,
+<tt>wp.pos</tt>, and <tt>wp.vel</tt>:
+
+ :inccode:.world1.rb-4
+
+We then get:
 
 :eqnarray:
 \label{interpol1}
@@ -377,5 +381,68 @@ the old and the new velocity.
  :inccode:.world1.rb-3
 
 It is probably easiest to translate that expression directly into our
-notation, as follows:
+notation, after which we can substitute eq. (ref(interpol2)):
+
+:eqnarray:
+\label{interpol5}
+\br_1 \,&=&\, \br_0 + \hhalf(\bv_0 + \bv_1)\tau
++ \one{12}(\ba_0 - \ba_1)\tau^2                                 \nonumber\\
+&=&\, \br_0 + \hhalf\left(
+2\bv_0 + \hhalf(\ba_0+\ba_1)\tau \ + \  \one{12}(\bj_0-\bj_1)\tau^2
+\right)\tau + \one{12}(\ba_0 - \ba_1)\tau^2                     \nonumber\\
+&=&\, \br_0 + \bv_0\tau + \one{6}(2\ba_0+\ba_1)\tau^2 \ 
++ \  \one{24}(\bj_0-\bj_1)\tau^3
+
+This is indeed exactly the same result as we obtained in
+eq. (ref(interpol4)), and this concludes the proof that we have
+done exactly the right thing, in postulating eqs. (ref(interpol1)) and
+(ref(interpol2)).  These equations were in turn what we had put in our
+method <tt>interpolate</tt>, so this proofs that we wrote that one
+correctly.
+
+== Glitches
+
+*Bob*: Apart from the inconsistency in the fact that the derivative of the
+position is no longer exactly what it should be.
+
+*Alice*: You mean the fact that the last term in the first line of
+eq. (ref(interpol2)) has a coefficient of 1/444, rather than 1/120?
+
+*Bob*: Yes.  You told me you would get back to that.
+
+*Alice*: Well, we now can find the reason.  It would be nice to keep the
+expressions for position and velocity consistent, in that you retrieve
+the velocity by differentiating the position with respect to time.
+At the same time, it would be nice to guarantee that the interpolation
+formula gives you the correct values for both position and velocity,
+at the beginning and at the end of the interpolated time interval.
+
+*Bob*: And we now see that we cannot do both.
+
+*Alice*: Exactly.  Note, however, that we _can_ do both on the level of
+a fourth-order approximation.  This inconsistency shows up only at fifth
+order in <tex>$\tau$</tex>.
+
+To be specific, in the first line of eq. (ref(interpol2)), we could
+have left out the last term altogether.  In that case, we would be
+fourth-order consistent, and you would be granted your wish: to this
+order of accuracy, indeed the velocity would be the time derivative of
+the position.  But we our interpolation formula would be off by
+exactly that last term, when we would ask for the position of the
+interpolation at the end of the interpolated interval.
+
+*Bob*: So in the end, it is mostly a matter of taste, whether we mind to
+have fifth-order discontinuities in interpolated position, as a
+function of time, in a fourth-order scheme, or whether we mind having
+the velocity and the time derivative of the position being off by a
+fifth-order term.
+
+*Alice*: Well summarized.  And I guess that is the penalty of having any
+finite precision: if you are accurate to <tex>$k^{\rm th}$</tex> order,
+you will make errors on the <tex>$(k+1)^{\rm th}$</tex> order, in all
+kinds of ways.
+
+*Bob*: I'm happy with the current choice, to keep the interpolator
+fifth-order accurate in position.  But it was a good exercise to check
+exactly what we did and why.
 

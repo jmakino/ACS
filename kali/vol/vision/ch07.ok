@@ -33,7 +33,7 @@ the ZAMS radius, as well as the lifetime, by a simple power law formula.
 It can keep the radius constant for the first 90 percent of its lifetime,
 and then linearly increase it to a value that is 100 times larger
 during the giant phase.  After that, we can let the radius go to zero,
-sine the actual radius of a white dwarf is a hundred times smaller
+since the actual radius of a white dwarf is a hundred times smaller
 than the original ZAMS radius.  The mass we can reduce to that of a
 typical white dwarf, assuming that the remaining mass is lost in last
 stages of stellar evolution, through AGB and horizontal branch evolution.
@@ -70,7 +70,7 @@ get a run-away merger going before even the most massive stars undergo
 a supernova, something which takes a few million years.  The most
 massive stars are most likely to merge, since they provide more
 gravitational focusing, and the more massive a merger product becomes,
-the more likely it is that it will eat yet another stars, more and
+the more likely it is that it will eat yet another star, more and
 more rapidly, as a snowball effect.
 
 *Alice*: Eating snow?  I'm not sure about your mixed metaphors, and it
@@ -128,7 +128,7 @@ case, we have a stellar hydrodynamics (SH) module that will have the
 responsibility to follow up on a close encounter.  So when the SD
 module notices a close encounter, it notifies the SH module.  If the
 SH module decides to merge two stars, it has to tell this to both the
-SE and SD modules.  The SE module then has to construct a new module
+SE and SD modules.  The SE module then has to construct a new star
 for the merger product, and independently the SD module will replace
 the two previous particles with one new particle, with a mass equal to
 that of the merger mass: the sum of the previous two masses minus the
@@ -161,7 +161,7 @@ all kind of exceptions to this nice little rule you are specifying
 here `from above'.  For example, as soon as the SD module gives the
 green light to one star to step forward, there is a chance that it
 will run into another star immediately, on a time scale that can be
-arbitrarily much shorter than the time step you thought it would take.
+arbitrarily shorter than the time step you thought it would take.
 This means that all the other stars that happily stepped forward are
 now ahead of their time, and we should call them back to their previous
 position, to make sure that they were not affected by the collision.
@@ -200,7 +200,7 @@ make the interface as complicated as many of the codes currently in use.
 The idea is to use the interface specification to protect you from
 spaghetti, not to create more.
 
-*Bob*: I still don't see clearly what you may want to pass how.
+*Bob*: I still don't see clearly what you may want to pass and how.
 
 == Choosing Ingredients
 
@@ -370,7 +370,7 @@ in the stellar evolution module).
 Note that we don't have to give the position and velocity of the new
 star to the stellar evolution module.  That is none of its business;
 it is information that the stellar dynamics module keeps track of.
-Position and velocity do not even any meaning within the stellar
+Position and velocity do not even have any meaning within the stellar
 evolution part of the software.
 
 *Bob*: We'd better specify the units for the variables as well.  How

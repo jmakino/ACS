@@ -9,7 +9,7 @@ the question of the environment in which we want to work.
 or computer language?
 
 *Alice*: All of these questions need to be addressed, and they are
-general concerns for any software projects.  However, in our particular
+general concerns for any software project.  However, in our particular
 case there is also the question of how to get data in and out of our
 integrator, and how to analyze the results.
 
@@ -125,7 +125,7 @@ language to use.  I have no strong preference among Fortran, C, or
 C++.  They all have their strengths and weaknesses.  C is nice and
 fast and straightforward.  Fortran has by now caught up with C quite
 well, after lagging behind for a long time in a lack of appropriate
-date structures.  C++ is an unwieldy beast of a language, but if you
+data structures.  C++ is an unwieldy beast of a language, but if you
 use an appropriate subset, and you don't try to become a language
 lawyer dealing with multiple inheritance and all that stuff, it's a
 good tool; it's fast enough, and you don't look at the unreadable
@@ -230,7 +230,7 @@ with a factor of 100.  What do I care?  People ran 25-body systems
 back in the sixties, when computers were much more than a million
 times slower than they are now, so we can loose a couple zeroes in
 factors of speed.  And it will prevent you from ever claiming that
-your toy model have much to do with the reality of production runs!
+your toy model has much to do with the reality of production runs!
 
 *Alice*: We'll see about that.
 
@@ -269,7 +269,7 @@ up our own copy?
 
 *Bob*: That's the point: not everybody can pick it up freely.  If you
 read the fine print, you will see that it is only really free for
-educational purpose.
+educational purposes.
 
 *Alice*: That may be good enough for us, since we are only dealing
 with students.

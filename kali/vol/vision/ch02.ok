@@ -18,7 +18,7 @@ deal with dynamically formed binaries, you don't see much subsequent
 mass segregation.  First of all, such binaries are formed in the core,
 where the density is highest.  Secondly, recoil from three-body
 reactions will tend to kick binaries away from the center, even while
-mass segregation will tend to let it move back toward the inner part
+mass segregation will tend to let them move back toward the inner part
 of the core.
 
 *Alice*: I see.  So mass segregation was studied systematically only in
@@ -36,7 +36,7 @@ inconsistent.
 *Bob*: They were not very realistic, by and large, since most of them
 did not include the effects of stellar evolution.  In the real world,
 while heavier stars do tend to sink to the center of a star cluster,
-roughly on a two-body relaxation time, they also tend to burn up more
+roughly on a two-body relaxation time scale, they also tend to burn up more
 quickly.  As you know, a star 25 times more massive than the sun burns
 up a 1000 times faster.  So it would be totally unrealistic to follow
 a multi-mass system, and to leave the heavier mass particles in the
@@ -280,7 +280,7 @@ say almost absent.
 *Bob*: Yes, I agree with all that, but what can a poor boy do?  We do
 the best we can.  And in order to get at least some new insight in the
 evolution of star clusters, I think those tracks and recipes are good
-enough, even though the latter are far from ideal of course.  But let
+enough, even though the latter are far from ideal, of course.  But let
 me move on to my main difference with your view.  Whenever two stars
 collide with each other and merge, you wind up with a merger product
 that is totally unlike the type of normal ZAMS (zero age main

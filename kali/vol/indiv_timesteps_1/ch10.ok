@@ -1,0 +1,6 @@
+= XXX
+
+== xxx
+
+ :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby acsnumber.rb > test.in
+

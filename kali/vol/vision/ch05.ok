@@ -7,7 +7,7 @@ in our galaxy.  It is unremarkable in its properties.  Its mass is in
 the mid range of what is normal for stars: there are others more than
 ten times more massive, and there are also stars more then ten times less
 massive, but the vast majority of stars have a mass within a factor
-ten of that of the sun.  Our home star is also unremarkable in its
+of ten of that of the sun.  Our home star is also unremarkable in its
 location, at a distance of some thirty thousand light years from the
 center of the galaxy.  Again, the number of stars closer to the center
 and further away from the center are comparable.  Our closest neighbor,
@@ -23,13 +23,14 @@ neighborhood must be very rare.  Although the stars follow random
 orbits without any traffic control, they present such tiny targets
 that we have to wait very long indeed in order to witness two of them
 crashing into each other.  A quick estimate tells us that the sun has
-a chance of hitting another star of less than <tex>$10^{-18}$</tex> per year.  In
-other words, we would have to wait at least <tex>$10^{18}$</tex> years to have an
-appreciable chance to witness such a collision.  Given that the sun is
-less than five billion years old, it is no surprise that it does not
-show any signs of a past collision: the chance that that would have
-happened was less than one in a hundred million.  Life in our galactic
-suburbs is really quite safe for a star.
+a chance of hitting another star of less than <tex>$10^{-18}$</tex>
+per year.  In other words, we would have to wait at least
+<tex>$10^{18}$</tex> years to have an appreciable chance to witness
+such a collision.  Given that the sun is less than five billion years
+old, it is no surprise that it does not show any signs of a past
+collision: the chance that that would have happened was less than one
+in a hundred million.  Life in our galactic suburbs is really quite
+safe for a star.
 
 There are other places in our galaxy that are far more crowded, and
 consequently are a lot more dangerous to venture into.  We will have
@@ -40,19 +41,20 @@ link:m15.jpg
 A snapshot of the globular cluster M15, taken with the Hubble Space
 Telescope.
 
-In the photo above we see a picture of the globular cluster M15,
-taken with the Hubble Space Telescope.  This cluster contains roughly
-a million stars.  In the central region typical distances between
+In the photo above we see a picture of the globular cluster M15, taken
+with the Hubble Space Telescope.  This cluster contains roughly a
+million stars.  In the central region typical distances between
 neighboring stars are only a few hundredth of a light year, more than
 a hundred times smaller than those in the solar neighborhood.  This
 implies a stellar density that is more than a million times larger
 than that near the sun.  Since the typical relative velocities of
 stars in M15 are comparable to that of the sun and its neighbors, a
 few tens of km/sec, collision times scale with the density, leading to
-a central time between collisions of less than <tex>$10^{12}$</tex> years.  With
-globular clusters having an age of more than <tex>$10^{10}$</tex> years, a typical
-star near the center already has a chance of more than a percent to
-have undergone a collision in the past.  
+a central time between collisions of less than <tex>$10^{12}$</tex>
+years.  With globular clusters having an age of more than
+<tex>$10^{10}$</tex> years, a typical star near the center already has
+a chance of more than a percent to have undergone a collision in the
+past.
 
 In fact, the chances are much higher than this rough estimate indicates.
 One reason is the stars spend some part of their life time in a much
@@ -137,7 +139,7 @@ which will soon afterwards end their life in brilliant supernova
 explosions, while spewing much of their debris back into the
 interstellar medium.  Such complications are not present in globular
 clusters, where supernovae no longer occur since the member stars are
-too old and small to become a supernova.
+too old and small to become supernovae.
 
 Most other galaxies also harbor a massive black hole in their nuclei.
 Some of those have a mass of hundreds of millions of solar masses, or
@@ -157,7 +159,7 @@ stars is high enough to make collisions likely, at least temporarily.
 These are the sites where stars are born.  The above photo taken
 by the Japanese Subaru telescope in Hawaii shows the Orion Nebula,
 also known as M42, at a distance of 1500 light years from the sun.
-This picture, too, is taking in infrared light in order to penetrate
+This picture, too, is taken in infrared light in order to penetrate
 the dusty regions surrounding the young stars.  The four brightest
 stars in the center, collectively known as the Trapezium, form the
 most massive stars of a larger conglomeration of stars, all recently
