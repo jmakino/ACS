@@ -104,7 +104,11 @@ module Rdoctotex
   def process_refmarkup(instring)
     ostring = []
     instring.each{|x| 
-      ostring.push(x.gsub(/ref\(((\w|\d|\:)*)\)/){|s|  "\\ref{"+ $1 + "}"})}
+      y=x.gsub(/ref\(sect\:((\w|\d|\:)*)\)/){|s|  
+	"\\ref{sect:"+ @@latex_section_table[$1].to_s + "}"}
+      z=y.gsub(/ref\(((\w|\d|\:)*)\)/){|s|  "\\ref{"+ $1 + "}"}
+      ostring.push(z)
+		 }
     ostring
   end
 
@@ -193,6 +197,9 @@ END
     ostring
   end
 
+  @@latex_section_number = 0
+  @@latex_section_table={}
+  
   def process_headers(instring)
     
     nosectionnumber = nil
@@ -200,6 +207,7 @@ END
     ostring=[]
     afterverbatim = nil
     inabstract = nil
+    labeltext=nil
     while s=instring.shift
       header_candidate =s.split[0] 
       if /^=+$/ =~ header_candidate
@@ -212,7 +220,7 @@ END
 	  inabstract = true
 	  header = "\\begin{abstract}"
 	else
-	    header = ""
+	  header = ""
 	  if inabstract 
 	    header = "\\end{abstract}\n\n" 
 	    inabstract = nil
@@ -228,7 +236,14 @@ END
 	  end
 	end
 	ostring.push(header)
+	@@latex_section_number+=1
+	print "label and section header ", labeltext, header_text,"\n"
+	ss = labeltext ? labeltext : header_text
+	p ss
+	@@latex_section_table.store(ss, @@latex_section_number)
+	ostring.push("\\label{sect:#{@@latex_section_number}}")
 	instring.unshift(s)
+	labeltext=nil
       elsif /^---+/ =~ header_candidate
 	if afterverbatim
 	  ostring.push("\\hrule\n\n\\bigskip\n\n")
@@ -238,6 +253,8 @@ END
 	afterverbatim = nil
       elsif /^\s*:nosectionnumber:\s*$/ =~ header_candidate
 	nosectionnumber = true
+      elsif /^\s*:label:\s*$/ =~ header_candidate
+	labeltext=s.split[1]
       else
 	ostring.push(s)
       end
@@ -438,8 +455,8 @@ END
     s=post_process_verbatim(s)
     s=process_link(s)
     s=process_wordmarkup(s,dirname)
-    s=process_refmarkup(s)
     s=process_headers(s)
+    s=process_refmarkup(s)
     s=process_toc_latex(s)
     s = process_tagmarkup(s,dirname).join("\n")
     s= <<-END_TEXSOURCE
@@ -893,14 +910,18 @@ module Acsdoc
 
 
   def process_tex_labels(instring,dirname)
-    instring.gsub(/ref\(((\w|\d|\:)*)\)/){|s| 
+    x=instring.gsub(/ref\(sect:((\w|\d)*)\)/){|s| 
+      "<ntaga>"+ @@section_label_table[$1] + "</ntaga><ntagb>"+
+       @@section_label_table[$1]+ "</ntagb>"
+    }
+    x.gsub(/ref\(((\w|\d|\:)*)\)/){|s| 
       "<ntaga>"+ $1 + "</ntaga><ntagb>"+ @@tex_labels[$1].to_s+ "</ntagb>"}
   end
 
 @@sectionheadercounter=0
 @@sectionheaders=[]
 
-  def process_section_headers(instring,filename)
+  def process_section_headers_old(instring,filename)
     instring.gsub(/^(=+)\s*(.+)$/){|s| 
       sectionlevel = $1.length
       sectionname = $2
@@ -909,6 +930,33 @@ module Acsdoc
       @@sectionheadercounter+= 1
       s+"\n<name>" + sectionlabel + "</name>\n"
     }
+  end
+
+  @@section_label_table={}
+
+  def process_section_headers(instring,filename)
+    labeltext=nil
+    ostring=""
+    instring.each_line{|str|
+      if str =~ /^\s*:label:\s/
+	labeltext=str.split[1]
+	print "Label #{labeltext} found\n"
+      else
+	x=str.gsub(/^(=+)\s*(.+)$/){|s| 
+	  sectionlevel = $1.length
+	  sectionname = $2
+	  sectionlabel="rdocsect"+@@sectionheadercounter.to_s
+	  @@sectionheaders.push [sectionlabel,sectionlevel,sectionname,filename]
+	  @@sectionheadercounter+= 1
+	  labeltext = sectionname if labeltext==nil
+	  @@section_label_table={labeltext,sectionlabel}
+	  labeltext=nil
+	  s+"\n<name>" + sectionlabel + "</name>\n"
+	} 
+	ostring +=x
+      end
+    }
+    ostring
   end
 
 @@filefortoc = []
@@ -949,9 +997,9 @@ module Acsdoc
       tmp2= find_and_process_figures(tmp2,dirname);
       tmp2= find_and_process_generic_tag(tmp2,dirname,"nosectionnumber",
 					 "process_nosectionnumber")
-      tmp2= process_tex_labels(tmp2,dirname);
       tmp2= process_toc(tmp2,infile);
       tmp2= process_section_headers(tmp2,infile)
+      tmp2= process_tex_labels(tmp2,dirname);
     end
     ofile.print tmp2
     ofile.close
@@ -1093,7 +1141,7 @@ module Acsdoc
 	    method_level -= 1
 	  elsif olevel[lastlevel] > loc 
 	    raise "Unexpected \"end\" with level #{loc} for expected level "+
-	      "#{olevel[lastlevel]} at line #{ARGF.lineno}"
+	      "#{olevel[lastlevel]} at line #{ARGF.lineno} of file #{infile}"
 	  end
 	end
       end

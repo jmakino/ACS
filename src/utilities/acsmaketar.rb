@@ -34,7 +34,7 @@ but does not upload the release to the web server.
 
 
 Short name: -w
-Long name:  --web_inly
+Long name:  --web_only
 Value type:  bool
 Default value: nil
 Description: if set, web update is run, from existing release
@@ -152,7 +152,7 @@ end
 unless $webonly
 
   STDERR.print "Creating the file list....."
-  svnlist = svn_files(".",/(^\.\/msa$)/)
+  svnlist = svn_files(".",/(^\.\/msa$)|(^not$)/)
   
   STDERR.print "svn files finished ..."
   doclist = doc_directories(".")
@@ -160,7 +160,7 @@ unless $webonly
   #doclist.each{|x| print x,"\n"}
   STDERR.print "doc files finished ..."
   
-  msafiles,excludefiles = all_files("msa", /(^\.svn$)/)
+  msafiles,excludefiles = all_files("msa", /^(\.svn|web_old)$/)
   STDERR.print "msa files finished ..."
   
   open("tmp.tarfilelist","w"){
