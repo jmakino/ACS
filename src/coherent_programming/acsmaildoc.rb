@@ -81,7 +81,6 @@ module Acsmaildoc
       ofile.close
       retry
     end
-    print "current seq = ", seqnum, "\n";
     updated = 0
     while  File.exist?(seqname = $maildir + "/" + seqnum.to_s) do
       process_mailfile(seqnum)
