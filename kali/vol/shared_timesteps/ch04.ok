@@ -1,0 +1,119 @@
+= An Answer
+
+== Inspection
+
+*Alice*: Here is a cup of tea.  I figured you'd need one!
+
+*Bob*: Thanks!  I've been scratching my head, but pure thought hasn't
+given me an answer yet.
+
+*Alice*: Well, debugging is part of life, at least if your life is tied
+up with simulations.  When in doubt, sort it out.  Let's have a look at
+what is going on under the hood.  How about just printing out some output
+files?
+
+*Bob*: When in doubt, print it out, you mean.  Okay, here are the first
+two leapfrog files:
+
+ :commandoutput: cat leap_sh.out 
+
+ :commandoutput: cat leap_sh_tenth.out
+
+== Of Course!
+
+*Alice*: And look, there is the answer!  The final output times are _quite_
+different.
+
+*Bob*: Indeed!  And of course!!  Remember our discussion when we wrote the
+shared timestep code?  We realized that we would overshoot, but we decided
+not to care.  Well, a constant time step scheme can stop properly
+after one time unit, but a shared time step code is guaranteed to overshoot,
+unless we teach it to halt at exactly the required time.
+
+*Alice*: And we decided not to do that, because we did not want to influence
+the integration.  If you restart a code from a previous output, say at
+time <tt>t=1</tt>, it would be nice to get the same results at a later
+time, <tt>t=2</tt> for example, as if you had made a single run
+directly to <tt>t=2</tt>.
+
+*Bob*: Yes, that was a good argument, but we can't have our cake and eat it.
+At least for testing purposes, we should be able to ask the code to stop at
+_exactly_ the time we want it to stop.
+
+*Alice*: Perhaps we _can_ have our cake and eat it, if we build in an extra
+option.  Running the code with the option <tt>--exact_time</tt>, if we want
+to call it that way, should produce all diagnostics at the exact time
+that we order them.  For our current purposes, that would be ideal.
+The default should be to have only approximate obedience to time requests,
+in order to allow accurate restarts.  So this extra option should be a
+boolean flag.
+
+*Bob*: That's easy to implement.  How about this:
+
+ :inccode:.nbody_sh1.rb+evolve
+
+I have added an extra +if+ statement at the top of the +while+ loop,
+which causes the time step to shorten whenever it threatens to
+overshoot the next output time <tt>t_out</tt>.  Note that I subtracted
+a very small amount from <tt>t_out</tt> in the last +if+ statement,
+just in case round-off errors would make <tt>@time</tt> ever so
+slightly smaller than the target time <tt>t_out</tt>.  In this way,
+even with a small roundoff error, <tt>@time</tt> should still be
+larger than <tt>t_out - 1.0/VERY_LARGE_NUMBER</tt>.
+
+And to make it complete, we should implement the option.  Here is the
+full new list: 
+
+ :commandoutput: nbody_sh1.rb -h
+
+== The Right Thing
+
+*Alice*: Let's inspect an output file, to make sure it halts correctly.
+
+*Bob*: Let's go back to our original Yoshida tests.  Here you are:
+
+ :commandoutput: nbody_sh1.rb -m yo6 -t 1 --exact_time < test.in > yo6sh.out
+
+ :commandoutput: cat yo6sh.out
+
+*Alice*: Good!  Indeed at time 1.  Let's repeat our
+comparison with the constant time step run.
+
+*Bob*: That should come out a whole lot better now!  Here we go:
+
+ :commandoutput: cat yo6sh.out yo6cst_tenth.out | acsdiff.rb
+
+*Alice*: And right you are.  That's more like it.  Wonderful!
+
+== Setting up the Leapfrog
+
+*Bob*: Let's repeat our leapfrog test suite, just to make sure that
+everything behaves the way it should.  It is hard to use a sixth-order
+integrator, since before you know it you are up to the round-off barrier.
+
+*Alice*: I agree.  Always good to make an extra test.
+
+*Bob*: Here are the three output files, now finished at the exact time:
+
+ :commandoutput: nbody_sh1.rb -m leapfrog -t 1 --exact_time < test.in > leap_sh.out
+
+ :commandoutput: nbody_sh1.rb -m leapfrog -t 1 --exact_time -d 0.001 < test.in > leap_sh_tenth.out
+
+ :commandoutput: nbody_sh1.rb -m leapfrog -t 1 --exact_time -d 0.0001 < test.in > leap_sh_hundredth.out
+
+== Testing the Leapfrog
+
+*Alice*: I bet this will come out correctly quadratic.
+
+*Bob*: I think so to, but seeing is believing:
+
+ :commandoutput: cat leap_sh.out leap_sh_hundredth.out | acsdiff.rb
+
+ :commandoutput: cat leap_sh_tenth.out leap_sh_hundredth.out | acsdiff.rb
+
+*Alice*: We see, we believe, we are delighted!
+
+*Bob*: You may say so!  I am really relieved.  I was so frustrated, when
+we found that linear behavior!  But now all is well.
+
+

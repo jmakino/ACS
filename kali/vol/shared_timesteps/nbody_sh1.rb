@@ -89,7 +89,8 @@ class NBody
     time_scale
   end
 
-  def evolve(integration_method, dt_param, dt_dia, dt_out, dt_end, init_out)
+  def evolve(integration_method, dt_param, dt_dia, dt_out, dt_end, init_out,
+             exact_time_flag)
     @nsteps = 0
     e_init
     write_diagnostics
@@ -101,6 +102,9 @@ class NBody
 
     while @time < t_end
       @dt = dt_param * collision_time_scale
+      if exact_time_flag and @time + @dt > t_out
+        @dt = t_out - @time
+      end
       send(integration_method)
       @time += @dt
       @nsteps += 1
@@ -108,7 +112,7 @@ class NBody
         write_diagnostics
         t_dia += dt_dia
       end
-      if @time >= t_out
+      if @time >= t_out - 1.0/VERY_LARGE_NUMBER
         acs_write
         t_out += dt_out
       end
@@ -324,6 +328,19 @@ options_text= <<-END
     t_final = t_init + t.
 
 
+  Long name:  		--exact_time
+  Value type:  		bool
+  Variable name:	exact_time_flag
+  Description:		Force all outputs to occur at the exact times
+  Long description:
+    If this flag is set to true, all forms of output will happen at the
+    exact times specified.  The variable shared time step will be shortened
+    whenever the system would overshoot an output time, in order to guarantee
+    output to occur at the right time.  Note that in this case, by changing
+    the output times, the trajectories of the particles will be changed too,
+    as a side effect.
+
+
   Short name:		-i
   Long name:  		--init_out
   Value type:  		bool
@@ -339,4 +356,5 @@ options_text= <<-END
 parse_command_line(options_text, true)
 
 nb = ACS_IO.acs_read(NBody)
-nb.evolve($method, $dt_param, $dt_dia, $dt_out, $dt_end, $init_out)
+nb.evolve($method, $dt_param, $dt_dia, $dt_out, $dt_end, $init_out,
+          $exact_time_flag)

@@ -55,7 +55,7 @@ corresponds to which particle in the other system.
 *Alice*: I guess we have to number them, by giving each body a unique
 identifier.
 
-== Counting Sheep, and other Bodies
+== Numbering Bodies
 
 *Bob*: Given that every object in Ruby already has an identifier called
 <tt>object_id</tt>, a natural name for such an ID would be <tt>body_id</tt>.

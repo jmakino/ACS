@@ -1,4 +1,4 @@
-= Verification
+= A Puzzle
 
 == Yoshida
 
@@ -79,15 +79,34 @@ steps and the `true' output.  Let's check:
 
 *Bob*: That sure doesn't look good.  How can the distance be so large?
 
-== 
+== Back to Basics
+
+*Alice*: Could it be that Yoshida's integrator is just too fancy for our
+purpose?  Perhaps that was not such a good choice to start our testing
+with.  Let's go back to basics, and do the same thing with the leapfrog
+integrator instead:
 
  :commandoutput: nbody_sh1.rb -m leapfrog -t 1 < test.in > leap_sh.out
 
  :commandoutput: nbody_sh1.rb -m leapfrog -t 1 -d 0.001 < test.in > leap_sh_tenth.out
 
+*Bob*: The energy scales like it should for a second-order integrator:
+a hundred times better accuracy for a ten times smaller time step.
+
+*Alice*: And, really, the phase space distance should also become a
+hundred times better.  I hope it does:
+
  :commandoutput: cat leap_sh.out yo6cst_tenth.out | acsdiff.rb
 
  :commandoutput: cat leap_sh_tenth.out yo6cst_tenth.out | acsdiff.rb
+
+== Even more Basic
+
+*Bob*: Well, it doesn't.  What is going on here?
+
+*Alice*: Let's completely forget about sixth-order integrators, and
+stick to the basics completely.  If we do a third leapfrog integration,
+we can use the result of that run as our yard stick:
 
  :commandoutput: nbody_sh1.rb -m leapfrog -t 1 -d 0.0001 < test.in > leap_sh_hundredth.out
 
@@ -95,12 +114,17 @@ steps and the `true' output.  Let's check:
 
  :commandoutput: cat leap_sh_tenth.out leap_sh_hundredth.out | acsdiff.rb
 
-== 
+*Bob*: That doesn't make much difference.  Still no quadratic behavior.
 
- :commandoutput: cat leap_sh.out 
+*Alice*: No matter what we do, we get linear behavior, instead of quadratic.
 
- :commandoutput: cat leap_sh_tenth.out
+*Bob*: That should tell us something.  But what?
 
-Aha, the output times are different!
+*Alice*: Beats me.
 
-Let's build in an option to allow synchronized output.
+*Bob*: This is ennoying.  Just when we were having fun!
+
+*Alice*: How about a cup of tea first?
+
+*Bob*: Feel free to get some tea, but I'll stay here.  I just can't stand
+this.  What could be going so terribly wrong here?
