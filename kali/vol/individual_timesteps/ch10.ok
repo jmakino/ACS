@@ -1,0 +1,7 @@
+= Many Methods
+
+== xxx
+
+In file <tt>world2.rb</tt> many other methods, beside Hermite:
+forward Euler and leapfrog and most interestingly, a fourth-order
+multi-step scheme.
