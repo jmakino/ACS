@@ -265,7 +265,7 @@ options_text= <<-END
   Long description:
     This program evolves an N-body code with a fourth-order Hermite Scheme,
     using individual time steps.
-    (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
+    (c) 2004, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
     example:
     ruby mkplummer3.rb -n 5 | ruby #{$0} -t 1
