@@ -84,11 +84,12 @@ system.  How about:
 *B*: This is only the class definition.  Let's see whether we can do a
 little bit of useful work, by adding the following lines
 
- :inccode: .test.rb-demo
+ :inccode: .body-init-demo1.rb-demo
 
 Let's call this file <tt>test.rb</tt>.
 Now let's run it:
 
+ :command: cp -f body-init-demo1.rb test.rb
  :commandoutput: ruby test.rb
 
 *A*: So far so good.  The +p+ command just dumps the value of the object
