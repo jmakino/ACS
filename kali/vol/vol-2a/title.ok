@@ -7,11 +7,21 @@
 	
 <tex>
 
-\title{\bf The Art of Computational Science\\
+\title{{\sl The Art of Computational Science}\\
 \bigskip
-The Kali Code\\
+{\sl The Kali Code}\\
+\bigskip
+{\sl vol. 2-b}\\
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bf The N-Body Problem:\\
 \medskip
- 3: The N-Body Problem
+\medskip
+Forward Euler, Leapfrog, Runge-Kutta
+\bigskip
 }
 \author{\bf Piet Hut and Jun Makino}
 
