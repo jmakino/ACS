@@ -2,11 +2,11 @@ require "rk6nbody9.rb"
 
 include Math
 
-eps = 0.01
-dt = 0.0002           # time step
-dt_dia = 2.1088      # diagnostics printing interval
-dt_out = 2.1088      # output interval
-dt_end = 2.1088      # duration of the integration
+eps = 0.1
+dt = 0.002          # time step
+dt_dia = 2           # diagnostics printing interval
+dt_out = 10           # output interval
+dt_end = 2           # duration of the integration
 init_out = false     # initial output requested ?
 x_flag = false       # extra diagnostics requested ?
 ##method = "forward"  # integration method
