@@ -71,55 +71,163 @@ all of a sudden when they pass close to a star.
 playing with stars on a computer.  So let's put our toy model on the
 web, and see what reactions we get.
 
-=== An Open Source Approach
+=== Free and Open
 
-*A*: If we do that, I suggest that we make it completely open source.
+*A*: If we do that, I suggest that we make it freely available, without
+restrictions.
 
 *B*: I agree.  That seems the most natural thing to do.  I have benefitted
 so much from all kind of tools that are freely available on the web
 that it only seems fair to contribute my own tools in return.
-Besides, it offers a great form of quality control: when we write something
-which is unclear or has bugs, changes are that we will soon hear about
-it from others.
+Besides, it offers a great form of quality control: when we write
+something which is unclear or has bugs, changes are that we will soon
+hear about it from others.
 
-*A*: 
+*A*: I feel the same.  I have been using Unix as long as I have been
+working with computers, and I was delighted when the Linux operating
+system became available.
+
+*B*: Same here.  And without all its GNU tools, Linux wouldn't exist.
+Take the gcc compiler for example.  And I certainly wouldn't want to
+live without emacs.
+
+*A*: I wonder how we should present our toy model.  Call it `open
+source' or `free software' or something like that?
+
+*B*: Both terms are in wide use, and there are huge political
+discussions about what exactly is and is not open or free in what
+way.  I'm not sure whether we want to get into all that.
+
+*A*: But if we don't write anything along those lines, there may be
+drawbacks as well.  What if someone uses our integrator to design a
+bridge, and then the bridge falls down because there was a bug in our
+code, and we will be held liable for damages?
+
+*B*: Are you serious?
+
+*A*: Not really.  I mean, us introducing a bug?
+
+*B*: Very funny.  But I guess in this world you never know who will
+knock on your cyber door and copies your software.  Do you have a
+suggestion as to how to prevent liability?
+
+*A*: The easiest way would be to use a type of open source licence,
+preferably a rather simple one, which at least includes the usual
+disclaimers.
+
+*B*: Perhaps it is time to have a look at the web, and do a search
+for `open source.'
+
+*A*: Here is something: "http://www.opensource.org" with a long list
+of open source licences.
+
+*B*: That was quick!  Let's see what they say.  Hmmmm.  Most of them
+are far too long to read, let alone figure out, for my taste.  Isn't
+there a simple one?
 
 === Open Source Licence
 
-*A*: To really make it open source, it would be good to put up an open
-source licence as well.
+*A*: I remember someone mentioning the X window system as having a
+straightforward licence.  Here, that is probably the MIT licence.
+It is short and sweet:
 
-*B*: What for?
+    The MIT License
 
-*A*: To prevent others from taking the material from our web site, and
-patenting it, or selling it while hiding the source code, things like
-that.
+    Copyright (c) <year> <copyright holders>
 
-*B*: My first reaction is: would anybody be so mean?  But I suppose,
-some people would be, or at least could be.  Yes, it would be very
-unpleasant to see someone selling our stuff in a proprietary fashion.
-I wouldn't mind if somebody would add value to it in some way, and
-then ask money for it, but at the very least the open source character
-should be preserved, which implies that the source code should remain
-available.  And all of it.  Someone may add some stuff, but they
-shouldn't hide or leave out parts.  Or at the very least, when they
-want to make a leaner version, they should include a clear pointer to
-where the original code could be found on the web.
+    Permission is hereby granted, free of charge, to any
+    person obtaining a copy of this software and associated
+    documentation files (the "Software"), to deal in the
+    Software without restriction, including without
+    limitation the rights to use, copy, modify, merge,
+    publish, distribute, sublicense, and/or sell copies of
+    the Software, and to permit persons to whom the Software
+    is furnished to do so, subject to the following
+    conditions:
 
-*A*: 
+    The above copyright notice and this permission notice
+    shall be included in all copies or substantial portions
+    of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+    ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+    PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+    SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+*B*: Great! We have our disclaimers, at the end in capitals,
+and the first paragraph sounds reasonable too.  But does it really
+cover enough ground?  I don't mind if someone else would sell our
+software, unlikely as that may be, but I sure would be unhappy if
+they would not include a pointer back to our own web site, and if
+they would sell only the executables, while hiding the source code.
+The real source will be on our web site, but who would be able to
+find it?  They would even be allowed to change the name of the
+package, so it may then become impossible for a user to find our
+web site.  Hmm.
+
+*A*: Yes, that wouldn't be much fun.  Hmm indeed.  But if the X
+window people have lived with this licence for all that time, there
+is perhaps not too much danger involved.
+
+*B*: Not if our toy model will become as famous as X, but I doubt
+that we will see the day of an N-body model for each man, woman and
+child.
+
+*A*: Maybe the best solution for now is to start with the MIT
+licence.  I presume that we can always later replace it with a more
+elaborate and more restrictive version.  What do you think?
+
+*B*: Fine with me.
 
 == A Minimal Vision
 
 === Applications
 
-*A*: xx
+*A*: It's time to decide what to put into our toy model.  We'll
+have some simple stellar dynamics as a backbone, but we should
+at least include some stellar dynamics and hydrodynamics.
 
-*B*: xx
+*B*: That's asking a lot.  The simplest stellar evolution code
+will be huge, much larger than a small N-body program.  For
+hydrodynamics we can use SPH, that won't be much that large.  But in
+both cases we'll have a lot of explaining to do, if we really want to
+describe to the students what is going on in those codes.
 
-*A*: It should contain a toy model for stellar evolution.
-(describe what we did after MODEST-1).
+*A*: No, that would be hitting a safety pin with a sledge hammer.
+All that we need to do is to implement the correct interfaces for a
+real evolution code and a real hydro code.  But for our toy model, we
+can then finish the job by adding something very simple at the other
+side of the interface.  In other words, we can write a very very
+simple toy model for stellar evolution, a minimal skeleton version
+really; and similarly for stellar dynamics.
 
-*B*: Then similarly for hydro: e.g. when to star touch, they stick.
+*B*: A look-up table for stellar evolution, for a few simple tracks?
+
+*A*: Even simpler.  For example, we could let the evolution program
+determine everything just by giving it a mass.  It will then compute
+the ZAMS radius, as well as the lifetime, by a simple power law formula.
+It can keep the radius constant for the first 90% of its lifetime,
+and then linearly increase the radius to a 100 times larger radius
+during the giant face.  After that, the radius will go to zero, and
+the mass becomes that of a typical white dwarf.  This is all at least
+qualitatively correct for relatively low-mass stars.
+
+*B*: Simple indeed.  But it will give at least some numbers through
+the interface that are not altogether unreasonable, so that we can test
+how everything hangs together.  Now what would be the equivalent for
+hydrodynamics?  Obviously something simpler than SPH.  Well, how about
+giving each star a radius, according to a recipe what you just outlined,
+and then stipulating that two stars stick and merge when they pass to
+within the some of their radii?
+
+*A*: Good idea.
+
+*B*: 
 
 *A*: xx
 
@@ -340,119 +448,118 @@ your toy model have much to do with the reality of production runs!
 
 = old stuff (040120)
 
-In this context Alice mentions one extreme: the Sussman/Wisdom book,
-which appeals to them in many ways.  Bob vaguely has heard about Lisp,
-never about Scheme.  When Alison takes the book from her bookshelf,
-Bob is shocked by the parentheses.  Is this computer code, he asks.
-Alice talks a bit about it, but agrees that the isolation of Scheme
-may be too much.  They discuss Perl and Python as more practical
-compromises, better than C and C++ and Fortran, which Bob and Alice
-both have experience with, but which Alice has grown frustrated with.
-Bob doesn't mind either C++ or Fortran, but he does like the
-flexibility and power of quick expression of Perl and Python.
-
-Alison mentions a bold idea: would it be possible to write a N-body
-code in such a more flexible language?  Bob: anything is possible, you
-can do it in Basic or Awk if you want.  Alison presses her point, and
-Bob, more out of politeness than anything else, listens.  For the sake
-of curiosity, he asks her what she has in mind, mostly to show her how
-wrong she is.  After some more discussion he has to admit that the idea,
-while impractical, may not be as ridiculous as he first thought.
-Seeing it still as a game, he starts thinking out loud with Alice how
-they would do such a strange thing.
-
-Oscillating between Perl and Python, as the most realistic
-compromises, they are also afraid that a compromise may have the
-disadvantages of both sides, and they both feel that it would be
-better to have a single coherent vision that they can agree with.
-Coherence is better than committee decisions.  In short, they want a
-pragmatic approach.
-
-Just for fun, since they are sitting behind a terminal, they decide to
-type in "pragmatic programming", in the hope to find something there,
-more as a joke.  To their surprise they find the two books of two
-characters that call themselves the Pragmatic Programmers.  They
-browse through a few pages of their first book and like it a lot,
-since it really reflects their own experience.  Like Kernighan and
-Pike, but addressing more broadly the whole of software development,
-says Bob.  Like Knuth, very sensible, but a generation later, says
-Alice.
-
-Then they look at the second book, about Ruby.  Since they already
-thought about Perl and Python, they give it a closer look, and become
-convinced that this may be better than just a comprise.  They decide
-to give it a try.  After all, 90% of an N-body code takes less than 1%
-of the compute, so who cares about the speed of an interpreted language.
-It is flexibility and clarity and rapid prototyping and recycling that
-counts.  What to do first?  Get familiar with the language, and write
-something simple but actually useful, in order to see how it works out
-in practice; in other words, a pragmatic program.
-
-Alice suggests to write a constant time step leapfrog.  Bob laughs and
-says that he recognizes that Alice has also worked in cosmology.
-Alice counters that Bob's SPH experience must make him feel happy with
-leapfrog.  Bob says that, yes, for problems with softening that might
-not be too bad, but now they want to do stellar dynamics of stellar
-systems, and they should be able to handle point particles.  At the
-very least they need variable time steps, and much better even
-individual time steps.  He quotes the classic paper by Makino and Hut
-(1988), Performance Analysis of Direct N-Body Calculations, to make
-his point.  And by the way, when you get close encounters, the
-leapfrog sucks.  Fourth-order schemes are a must, and Hermite is the
-most elegant scheme.
-
-Alice agrees that something like NBODY1h would be a good idea, but she
-laughs at the idea of learning a whole new computer language by starting
-to write such a complicated code from scratch.  Shouldn't you first learn
-to do I/O and to write a simple class for individual particles and for
-the whole system?  Sure, says Bob, a bit annoyed that Alice seems to use
-her longer experience and seniority to push for what he thinks is an
-overly indirect and long-winded approach.  He is still not completely
-used to have tenure, and he automatically feels the tension between
-what he thinks is best and the need to be respectful to more senior
-professors.  But, Bob tries once more, once you write a leapfrog, it
-wouldn't take many more lines to write a Hermite code, right?  And
-to go from equal to variable time steps is also only a few more lines,
-basically having a time step criterion, which in an interpreted language
-is rather simple to add.  And even block time steps isn't that big of
-a deal, once you figure out what to do, something you pick up from
-other codes anyway.
-
-Alice has to admit that an equal-timestep leapfrog code will probably
-be more than half as long as an individual time step block time step
-code with Hermite.  But there is another argument, she adds.  The main
-reason to use an interpreted object-oriented language like ruby is to
-be able to rapidly switch between classes and methods, changing
-inheritance and mixins; all so much more easily than in C++.  So by
-providing both a leapfrog and a Hermite code, they can get valuable
-experience in switching between methods.  If they really get serious
-in writing a full-fledged dense stellar systems code, they surely will
-need to be able to switch methods, at some point.  And to get experience
-doing so early on will help them, first of all, to decide whether ruby
-is really the right language for the job, and secondly, if they go
-with ruby, they will then have the necessary experience to use ruby in
-a way that makes such method switching natural.
-
-Meanwhile, although defending her point of view eloquently, Alice is
-having her doubts too.  She knows how easy it is to waste time when
-trying to do something that is too elegant.  However, before she can
-say that, to her surprise Bob brings up a point in favor of starting
-with a leapfrog.  If they would start with a complete NBODY1h type
-code, he says, they would probably just translate such a code line by
-line into ruby.  That will probably work, but they run the risk that
-in that way they never really get a flavor of the language, and so
-will not be able to tap the real power of ruby.  That, for him, is a
-more important argument to start with the leapfrog.
-
-Alice has to laugh again, and tells Bob that she was just about to
-agree with him that starting with NBODY1h would not be such a bad
-idea after all, but that she must say that Bob's latest argument is
-certainly convincing too.  What she doesn't tell Bob is that she
-thinks it is funny that he could agree to her idea only after he
-came up with a different argument for it; even so, she appreciates his
-independence and critical attitude.  Bob, meanwhile, has to smile too,
-realizing that Alice is not as inflexible as he had thought, and
-reminding himself at the same time that he now has tenure, after all,
-and that there really is no reason not to push his own agenda and use
-his own judgement.
-
+#In this context Alice mentions one extreme: the Sussman/Wisdom book,
+#which appeals to them in many ways.  Bob vaguely has heard about Lisp,
+#never about Scheme.  When Alison takes the book from her bookshelf,
+#Bob is shocked by the parentheses.  Is this computer code, he asks.
+#Alice talks a bit about it, but agrees that the isolation of Scheme
+#may be too much.  They discuss Perl and Python as more practical
+#compromises, better than C and C++ and Fortran, which Bob and Alice
+#both have experience with, but which Alice has grown frustrated with.
+#Bob doesn't mind either C++ or Fortran, but he does like the
+#flexibility and power of quick expression of Perl and Python.
+#
+#Alison mentions a bold idea: would it be possible to write a N-body
+#code in such a more flexible language?  Bob: anything is possible, you
+#can do it in Basic or Awk if you want.  Alison presses her point, and
+#Bob, more out of politeness than anything else, listens.  For the sake
+#of curiosity, he asks her what she has in mind, mostly to show her how
+#wrong she is.  After some more discussion he has to admit that the idea,
+#while impractical, may not be as ridiculous as he first thought.
+#Seeing it still as a game, he starts thinking out loud with Alice how
+#they would do such a strange thing.
+#
+#Oscillating between Perl and Python, as the most realistic
+#compromises, they are also afraid that a compromise may have the
+#disadvantages of both sides, and they both feel that it would be
+#better to have a single coherent vision that they can agree with.
+#Coherence is better than committee decisions.  In short, they want a
+#pragmatic approach.
+#
+#Just for fun, since they are sitting behind a terminal, they decide to
+#type in "pragmatic programming", in the hope to find something there,
+#more as a joke.  To their surprise they find the two books of two
+#characters that call themselves the Pragmatic Programmers.  They
+#browse through a few pages of their first book and like it a lot,
+#since it really reflects their own experience.  Like Kernighan and
+#Pike, but addressing more broadly the whole of software development,
+#says Bob.  Like Knuth, very sensible, but a generation later, says
+#Alice.
+#
+#Then they look at the second book, about Ruby.  Since they already
+#thought about Perl and Python, they give it a closer look, and become
+#convinced that this may be better than just a comprise.  They decide
+#to give it a try.  After all, 90% of an N-body code takes less than 1%
+#of the compute, so who cares about the speed of an interpreted language.
+#It is flexibility and clarity and rapid prototyping and recycling that
+#counts.  What to do first?  Get familiar with the language, and write
+#something simple but actually useful, in order to see how it works out
+#in practice; in other words, a pragmatic program.
+#
+#Alice suggests to write a constant time step leapfrog.  Bob laughs and
+#says that he recognizes that Alice has also worked in cosmology.
+#Alice counters that Bob's SPH experience must make him feel happy with
+#leapfrog.  Bob says that, yes, for problems with softening that might
+#not be too bad, but now they want to do stellar dynamics of stellar
+#systems, and they should be able to handle point particles.  At the
+#very least they need variable time steps, and much better even
+#individual time steps.  He quotes the classic paper by Makino and Hut
+#(1988), Performance Analysis of Direct N-Body Calculations, to make
+#his point.  And by the way, when you get close encounters, the
+#leapfrog sucks.  Fourth-order schemes are a must, and Hermite is the
+#most elegant scheme.
+#
+#Alice agrees that something like NBODY1h would be a good idea, but she
+#laughs at the idea of learning a whole new computer language by starting
+#to write such a complicated code from scratch.  Shouldn't you first learn
+#to do I/O and to write a simple class for individual particles and for
+#the whole system?  Sure, says Bob, a bit annoyed that Alice seems to use
+#her longer experience and seniority to push for what he thinks is an
+#overly indirect and long-winded approach.  He is still not completely
+#used to have tenure, and he automatically feels the tension between
+#what he thinks is best and the need to be respectful to more senior
+#professors.  But, Bob tries once more, once you write a leapfrog, it
+#wouldn't take many more lines to write a Hermite code, right?  And
+#to go from equal to variable time steps is also only a few more lines,
+#basically having a time step criterion, which in an interpreted language
+#is rather simple to add.  And even block time steps isn't that big of
+#a deal, once you figure out what to do, something you pick up from
+#other codes anyway.
+#
+#Alice has to admit that an equal-timestep leapfrog code will probably
+#be more than half as long as an individual time step block time step
+#code with Hermite.  But there is another argument, she adds.  The main
+#reason to use an interpreted object-oriented language like ruby is to
+#be able to rapidly switch between classes and methods, changing
+#inheritance and mixins; all so much more easily than in C++.  So by
+#providing both a leapfrog and a Hermite code, they can get valuable
+#experience in switching between methods.  If they really get serious
+#in writing a full-fledged dense stellar systems code, they surely will
+#need to be able to switch methods, at some point.  And to get experience
+#doing so early on will help them, first of all, to decide whether ruby
+#is really the right language for the job, and secondly, if they go
+#with ruby, they will then have the necessary experience to use ruby in
+#a way that makes such method switching natural.
+#
+#Meanwhile, although defending her point of view eloquently, Alice is
+#having her doubts too.  She knows how easy it is to waste time when
+#trying to do something that is too elegant.  However, before she can
+#say that, to her surprise Bob brings up a point in favor of starting
+#with a leapfrog.  If they would start with a complete NBODY1h type
+#code, he says, they would probably just translate such a code line by
+#line into ruby.  That will probably work, but they run the risk that
+#in that way they never really get a flavor of the language, and so
+#will not be able to tap the real power of ruby.  That, for him, is a
+#more important argument to start with the leapfrog.
+#
+#Alice has to laugh again, and tells Bob that she was just about to
+#agree with him that starting with NBODY1h would not be such a bad
+#idea after all, but that she must say that Bob's latest argument is
+#certainly convincing too.  What she doesn't tell Bob is that she
+#thinks it is funny that he could agree to her idea only after he
+#came up with a different argument for it; even so, she appreciates his
+#independence and critical attitude.  Bob, meanwhile, has to smile too,
+#realizing that Alice is not as inflexible as he had thought, and
+#reminding himself at the same time that he now has tenure, after all,
+#and that there really is no reason not to push his own agenda and use
+#his own judgement.

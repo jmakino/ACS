@@ -65,7 +65,7 @@ The format we have chosen for our book series, at least for the first
 several volumes, is sufficiently unusual that it deserves some
 clarification.  Most scientific text books summarize the state of the
 art of a field `after the dust has settled.'  Students are presented
-with a clean path of logic that has little resemblance with the
+with a clean path of logic that bears little resemblance to the
 historical process of trial and error that underlies any scientific
 discovery, large or small.  As a result, a graduate student facing his
 or her first major piece of independent research is in for a big shock,
@@ -117,10 +117,11 @@ of us, distilling our experience of working together for much of our
 professional life: since 1988 we have been coauthors on some fifty
 scientific publications, and together we have organized two symposia
 sponsored by the International Astronomical Union and edited the
-corresponding proceedings.  However, such an approach would have been
-too narrow.  We decided it would be much more fun to use composite
-characters, mixing in some of the styles and personalities of the few
-dozen colleagues we have interacted with intensively over the years.
+corresponding proceedings, as well as a number of workshops.  However,
+such an literal approach would have been too narrow.  We decided it
+would be much more fun to use composite characters, mixing in some of
+the styles and personalities of the few dozen colleagues we have
+interacted with intensively over the years.
 
 === ACS versions
 
@@ -142,14 +143,41 @@ but self-sufficient core of simple N-body programs and accompanying
 documentation and narrative.  These versions can be freely downloaded
 from our web site "http://www.ArtCompSci.org".  They include all
 completed volumes in our book series.  Text, code, and everything else
-is presented as open source project under the conditions of the xxx
-<i>[MIT license?  We will have to decide how to formulate and present
-this -- Piet]</i>  In addition, we plan to make these volumes
-available in print, with the xxxx company.  We hope, of course, that
-our software environment will be sufficiently attractive that serious
-users will want to purchase printed copies of these books for their
-extra convenience; as a side effect, this may convince book publishers
-that there really is a market for `open source' book publishing.
+is presented as open source software under the conditions of the MIT
+license:  
+
+    Copyright (c) 2004 -- present, Piet Hut & Jun Makino
+
+    Permission is hereby granted, free of charge, to any
+    person obtaining a copy of this software and associated
+    documentation files (the "Software"), to deal in the
+    Software without restriction, including without
+    limitation the rights to use, copy, modify, merge,
+    publish, distribute, sublicense, and/or sell copies of
+    the Software, and to permit persons to whom the Software
+    is furnished to do so, subject to the following
+    conditions:
+
+    The above copyright notice and this permission notice
+    shall be included in all copies or substantial portions
+    of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+    ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+    PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+    SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+#In addition, we plan to make these volumes available in print, with
+#the xxxx company.  We hope, of course, that our software environment
+#will be sufficiently attractive that serious users will want to
+#purchase printed copies of these books for their extra convenience; as
+#a side effect, this may convince book publishers that there really is
+#a market for `open source' book publishing.
 
 === A Historical Note
 
@@ -159,7 +187,7 @@ beginning students who may not yet have much familiarity with computer
 programming and the use of numerical methods.  We do not plan to
 publish that manuscript, which we put up on our web site in the Fall
 of 2003, in its current form.  Instead, we intend to recycle much of
-the text in one of our more educational volumes in our current series.
+the text in one or more volumes in our current series.
 However, until we find the time to do so, we will keep <i>Moving Stars
 Around</i> around on our web site, as introductory material.
 
