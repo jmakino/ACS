@@ -321,14 +321,15 @@ options_text= <<-END
     about the number of times that particles have made their time step longer
     or shorter, and also the number of times that they had to halve their
     time step because of incommensurability.
-         Comparing murat8.rb and murat6.rb, we find that for -d0.01, the
-    standard value, murat8.rb takes 0.1% more time steps than murat6.rb.
-    For -d0.1, however, murat8.rb takes 1% more time steps than murat6.rb.
+         Comparing nbody_ind_block4.rb and nbody_ind_block2.rb, we find that
+    for -d0.01, the standard value, nbody_ind_block4.rb takes 0.1% more time
+    steps than nbody_ind_block2.rb.  For -d0.1, however, nbody_ind_block4.rb
+    takes 1% more time steps than nbody_ind_block2.rb.
 
-    (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
+    (c) 2004, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
     example:
-    ruby mkplummer3.rb -n 5 | ruby murat7.rb -t 1
+    ruby mkplummer3.rb -n 5 | ruby #{$0} -t 1
 
 
   Short name: 		-d

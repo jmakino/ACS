@@ -1,5 +1,6 @@
 require "vector.rb"
 require "clop.rb"
+require "old_block_time.rb"
 
 class Body
 
@@ -28,17 +29,17 @@ class Body
 
   def predict_step(t)
     if t > @next_time
-      STDERR.print "predict_step: t = ", t, " > @next_time = "
-      STDERR.print @next_time, "\n"
+      STDERR.print "predict_step: t = ", t.to_f, " > @next_time = "
+      STDERR.print @next_time.to_f, "\n"
       exit
     end
-    dt = t - @time
+    dt = (t - @time).to_f
     @pred_pos = @pos + @vel*dt + @acc*(dt*dt/2.0) + @jerk*(dt*dt*dt/6.0)
     @pred_vel = @vel + @acc*dt + @jerk*(dt*dt/2.0)
   end
 
   def correct_step(ba, t, dt_param)
-    dt = t - @time
+    dt = (t - @time).to_f	
     new_jerk = get_jerk(ba)
     new_acc = get_acc(ba)
     new_vel = @vel + (@acc + new_acc)*(dt/2.0) +        # first compute new_vel
@@ -52,7 +53,7 @@ class Body
     @pred_pos = @pos
     @pred_vel = @vel
     @time = t
-    @next_time = @time + collision_time_scale(ba) * dt_param
+    @next_time = find_next_time(ba, dt_param)
   end  
 
   def collision_time_scale(body_array)
@@ -75,6 +76,20 @@ class Body
       end
     end
     sqrt(time_scale_sq)                  # time scale value
+  end
+
+  def find_next_time(ba, dt_param)
+    dt_estimate = ( collision_time_scale(ba) * dt_param ).to_b
+    if dt_estimate.int > 0
+      dt_block = 1.to_b
+    else
+      dt_block = dt_estimate.block
+    end
+#STDERR.print "dt_block = ", dt_block.to_f, " ; @time = ", @time.to_f, "\n"
+    if dt_block == 0.to_b
+      STDERR.print "find_next_time: dt_block = 0\n"
+    end
+    @time + dt_block
   end
 
   def get_acc(body_array)
@@ -168,25 +183,26 @@ class Nbody
       b.jerk = b.get_jerk(@body)
     end
     @body.each do |b|
-      b.time = @time
-      b.next_time = @time + b.collision_time_scale(@body) * dt_param
-    end
+      b.time = @time.copy            # deep copy
+      b.next_time = b.find_next_time(@body, dt_param)
+     end
   end
 
   def evolve(dt_param, delta_dia, delta_out, delta_end, init_out, x_flag)
     nsteps = 0
     startup(dt_param)
     write_diagnostics(nsteps, x_flag)
-    t_dia = @time + delta_dia
-    t_out = @time + delta_out
-    t_end = @time + delta_end
+    t_dia = @time + delta_dia.to_b
+    t_out = @time + delta_out.to_b
+    t_end = @time + delta_end.to_b
     simple_print if init_out
     while @time < t_end
       np = find_next_particle
       @time = np.next_time
-      if (@time < t_end)
+      if @time < t_end
         np.autonomous_step(@body, dt_param)
         nsteps += 1
+#STDERR.print "                                nsteps = ", nsteps, " \n"
       end
       if @time >= t_dia
         sync(t_dia, dt_param)
@@ -204,7 +220,7 @@ class Nbody
   end
 
   def find_next_particle
-    next_time = 1e30
+    next_time = 1e9.to_b          # this will still fit inside a 32-bit integer
     next_particle = nil
     @body.each do |b|
       if next_time > b.next_time
@@ -235,7 +251,7 @@ class Nbody
   def write_diagnostics(nsteps, x_flag)
     etot = ekin + epot
     STDERR.print <<END
-at time t = #{sprintf("%g", time)}, after #{nsteps} steps :
+at time t = #{sprintf("%g", time.to_f)}, after #{nsteps} steps :
   E_kin = #{sprintf("%.3g", ekin)} ,\
  E_pot =  #{sprintf("%.3g", epot)} ,\
  E_tot = #{sprintf("%.3g", etot)}
@@ -263,13 +279,13 @@ END
 
   def simple_print
     print @body.size, "\n"
-    printf("%24.16e\n", @time)
+    printf("%24.16e\n", @time.to_f)
     @body.each{|b| b.simple_print}
   end
 
   def simple_read
     n = gets.to_i
-    @time = gets.to_f
+    @time = gets.to_b
     for i in 0...n
       @body[i] = Body.new
       @body[i].simple_read
@@ -283,11 +299,15 @@ options_text= <<-END
   Description: Individual Time Step Hermite Code
   Long description:
     This program evolves an N-body code with a fourth-order Hermite Scheme,
-    using individual time steps.
-    (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
+    using individual time steps.  The only allowed time steps are powers of
+    two, with a maximum value for the time steps of unity.  In other words,
+    dt = 2^(-k) with k >= 0.
+         The difference with the previous version is that now we use a
+    a class Block_time, to represent block time steps without round-off.
+    (c) 2004, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
     example:
-    ruby mkplummer3.rb -n 5 | ruby murat4.rb -t 1
+    ruby mkplummer3.rb -n 5 | ruby #{$0} -t 1
 
 
   Short name: 		-d

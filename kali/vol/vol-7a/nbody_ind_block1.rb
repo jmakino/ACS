@@ -300,10 +300,10 @@ options_text= <<-END
     using individual time steps.  The only allowed time steps are powers of
     two, with a maximum value for the time steps of unity.  In other words,
     dt = 2^(-k) with k >= 0.
-    (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
+    (c) 2004, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
     example:
-    ruby mkplummer3.rb -n 5 | ruby murat5.rb -t 1
+    ruby mkplummer3.rb -n 5 | ruby #{$0} -t 1
 
 
   Short name: 		-d

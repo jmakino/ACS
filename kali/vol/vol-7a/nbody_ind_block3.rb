@@ -86,10 +86,15 @@ class Body
       dt_block = dt_estimate.block
     end
 #STDERR.print "dt_block = ", dt_block.to_f, " ; @time = ", @time.to_f, "\n"
+    while not dt_block.commensurable?(@time)
+      dt_block.halve
+#STDERR.print ">> dt_block = ", dt_block.to_f, " ; @time = ", @time.to_f, "\n"
+    end
     if dt_block == 0.to_b
       STDERR.print "find_next_time: dt_block = 0\n"
+      exit
     end
-    @time + dt_block
+    return @time + dt_block
   end
 
   def get_acc(body_array)
@@ -302,12 +307,13 @@ options_text= <<-END
     using individual time steps.  The only allowed time steps are powers of
     two, with a maximum value for the time steps of unity.  In other words,
     dt = 2^(-k) with k >= 0.
-         The difference with the previous version is that now we use a
-    a class Block_time, to represent block time steps without round-off.
-    (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
+         The difference with the previous version is that now we line up
+    the time steps with the boundaries; what Aarseth calls "commensurable"
+    in his book.
+    (c) 2004, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
     example:
-    ruby mkplummer3.rb -n 5 | ruby murat6.rb -t 1
+    ruby mkplummer3.rb -n 5 | ruby #{$0} -t 1
 
 
   Short name: 		-d

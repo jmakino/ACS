@@ -270,7 +270,7 @@ options_text= <<-END
     or various other schemes such as forward Euler, leapfrog, or Runge-Kutta,
     using variable time steps, shared by all particles, where the size of
     of the time step is determined adaptively.
-    (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
+    (c) 2004, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
 
   Short name:		-m
