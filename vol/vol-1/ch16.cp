@@ -99,7 +99,7 @@ vector, in the +else+ clause, and for a scaler, in the +if+ clause.
 I thought that Ruby was so clever that you could do that.  Because a
 type is determined only at run time, I thought that you could wait to
 see which branch of the +if+ statement would be actually traversed, to
-see which type Ruby is giving to +product+: array or scalar value.
+see which type Ruby is giving to +product+ array or scalar value.
 In either case, that is what should be returned.
 
 I guess I was wrong.  After all, Ruby is doing a lot of clever thinking
@@ -147,7 +147,7 @@ of them.
 *Bob*: What good would that do?  They worked, and I didn't change anything
 about the way they worked!
 
-*Alice*: Pretty please?
+*Alice*: Just to make me feel better.
 
 *Bob*: Oh, well, it's only six lines typing.  Here you are:
 
@@ -286,7 +286,7 @@ microscope just a bit more.  We have taken smaller steps now, but we
 haven't yet looked into the results of each step further.  In other
 words, we have divided, but not yet conquered.
 
-How about asking +a+ and +b+ themselves what they think that is going
+How about asking +a+ and +b+ themselves what they think is going
 on?  For starters, we can ask them their type, what class they think
 they are, with the <tt>class</tt> method we have seen before.
 
@@ -437,7 +437,7 @@ firmly into the problem, I must admit I felt quite stuck.
 *Alice*: I couldn't even have started if you hadn't showed me how to
 get going with Ruby.  I guess this idea of pair programming is much
 more efficient than people think.  It seems that you can get more
-lines of code written when you're alone behind a key board, and that
+lines of code written when you're alone behind a keyboard, and that
 may or may not be true, but at least when chasing bugs, more eyes make
 all the difference.
 

@@ -143,7 +143,7 @@ most of the differences in comparing the last two runs must come from
 the much less accurate run before the last one.  So the last one can
 be expected to be accurate to about one unit in the fifth decimal
 place.  So it would seem safe to say that the first component of the
-	With relative position will be <tex>$0.43187 \pm 0.00001$</tex>.  I think
+relative position will be <tex>$0.43187 \pm 0.00001$</tex>.  I think
 we have shown that we can solve the 2-body problem with Ruby!
 
 == A Full Orbit
@@ -155,14 +155,18 @@ units?  That should be more than enough.
 *Bob*: I would think so.  With a total mass of one and an initial
 distance of one, in a system of units where the gravitational constant
 <tex>$G=1$</tex> as well, the orbital period should be of order unity.
-My guess would be that the period would be three or so, in our units,
+But there must be a factor <tex>$\pi$</tex> somewhere in there as well.
+My guess would be that the period would be at least five, in our units,
 given that the relative motion started on the right hand side of the
-_x_ axis moving upward, and after one time unit had changed to the
-second quadrant, with positive _y_ and negative _x_ values.
+_x_ axis moving upward, and after one time unit we are still in the
+first quadrant, with positive _y_ and _x_ values.
 
-*Alice*: I agree.  And pretty soon we'll have to install some form of
-graphics, since I'd sure like to see the orbit, rather than staring
-at numbers.  But one thing at a time; we'll get to that soon.
+*Alice*: Something like that, but it could be a bit smaller.  We started
+at apocenter, which means that the relative motion is speeding up.  In
+fact, we saw before that the velocity had increased.  Anyway, pretty
+soon we'll have to install some form of graphics, since I'd sure like
+to see the orbit, rather than staring at numbers.  But one thing at a
+time; we'll get to that soon.
 
 *Bob*: Here is an integration for ten time units, starting with our
 original time step of 0.01:
@@ -296,6 +300,8 @@ we get a chance, let's test it for ourselves.
 # :command: rm -f test.rb
  |gravity> time ruby test.rb < euler.in
    mass = 1.0
+   pos = 0.592168165567474, -0.362592197667279
+   vel = 1.04418312945112, 0.205156629088709
 
 *Alice*: And you were right: it is converging.
 
@@ -319,12 +325,14 @@ We may as well get a bit to eat, since we can't wait for this to finish.
 # :command: rm -f test.rb
  |gravity> time ruby test.rb < euler.in
    mass = 1.0
+   pos = 0.598877592948656, -0.360833442654858
+   vel = 1.03213853108295, 0.213031665991379
 
 *Bob*: That was not bad, to stretch our legs and get some good food.
 A nice side effect of a slow integration.
 
-*Alice*: And look, Ruby has done it's job.  Now the error is down to less
-than 1% in any of the position or velocity coordinates.
+*Alice*: And look, Ruby has done it's job.  Now the error is down to
+about 1% in any of the position or velocity coordinates.
 
 *Bob*: Good!  Now I believe that we have done things correctly.  But boy,
 that took a long time to converge.  Two morals of the story: to do anything

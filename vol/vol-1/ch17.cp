@@ -13,7 +13,7 @@ it, we can discard the previous +Body+ class definition.
 Here it is.  I have added one line and modified one line, that's all!
 The line on top <tt>require "vector.rb"</tt> I have added so as to make
 Ruby aware of our new class +Vector+; as we have seen, the Ruby interpreter
-effectively replaces this line by the file +vector.rb+.  Now the only
+effectively replaces this line by the file <tt>vector.rb</tt>.  Now the only
 thing I changed is the initialization line for +pos+ and +vel+.  They
 are now <i>bona fide</i> vectors, right when they see the light of day.
 
@@ -84,7 +84,8 @@ computer code!
 
 *Alice*: Perhaps Ruby should be called FORmula TRANslator.
 
-*Bob*: I'm afraid that name has already been taken, a few years ago . . .
+*Bob*: I'm afraid that name has already been taken, quite a few
+decades ago . . .
 
 *Alice*: And the next two lines clearly mean:
 
@@ -235,10 +236,6 @@ these tricks, but they sure are useful.  Here is what happened.  The
 outher <tt>[]</tt> brackets, turning an array into a comma separated
 list of its elements.
 
-<i>[Jun, is this right?  I couldn't find it in the manual; hard to
-look under "*"; it only talks about multiplication.  Where did you
-find it?  --  Piet]</i>
-
 *Alice*: Ah, and then you feed that list into the initializer of a new
 +Vector+ object.  Very clever, if not devious!
 
@@ -247,7 +244,7 @@ find it?  --  Piet]</i>
 this file <tt>euler2b.rb</tt> with +b+ for beta version.  I think
 we're getting closer now:
 
- :inccode: .euler2b.rb+simple_read
+ :inccode: .vbody2.rb+simple_read
 
 And let me try it:
 
@@ -305,7 +302,7 @@ definition, right?
 *Bob*: Right.  Not only can you extend your own classes by giving new
 bits and pieces like this, as we have seen before, you can do the same
 thing to the predefined classes.  In general, almost nothing in Ruby
-is sacrosanct; you can typically treat the built-in stuff as if you
+is off limits; you can typically treat the built-in stuff as if you
 had just written it all yourself.
 
 *Alice*: That's really neat.  So now can we get rid of the clutter
