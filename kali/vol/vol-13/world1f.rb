@@ -13,32 +13,52 @@ class Worldpoint
     @maxstep = 0
   end
 
-  def propagate(era, wl, dt_param, dt_max)
-    dt_old = @next_time - @time
-    ss = era.take_snapshot(wl, @next_time)
-    wp = ss.body.shift
-    wp.acc, wp.jerk = wp.get_acc_and_jerk(ss)
-    wp.correct(self)
-    dt = wp.collision_time_scale(ss) * dt_param
+  def start_step(wl)
+    wl.take_point(@next_time)
+  end
+
+  def admin(old_time)
+    dt = @time - old_time
+    @maxstep = dt if @maxstep < dt
+    @minstep = dt if @minstep > dt
+    @nsteps = @nsteps + 1
+  end
+
+  def finish_step(old_point, snapshot, dt_param, dt_max)
+    set_acc_and_jerk_and_next_time(snapshot, dt_param, dt_max)
+    correct(old_point)
+    admin(old_point.time)
+  end
+
+  def set_next_time(snapshot, dt_param, dt_max)
+    dt = collision_time_scale(snapshot) * dt_param
     dt = dt_max if dt > dt_max
-    wp.next_time = wp.time + dt
-    wp.maxstep = dt_old if wp.maxstep < dt_old
-    wp.minstep = dt_old if wp.minstep > dt_old
-    wp.nsteps = @nsteps + 1
-    wp
+    @next_time = @time + dt
+  end
+
+  def correct(old_point)
+    dt = @time - old_point.time
+    @vel = old_point.vel + (1/2.0)*(old_point.acc + @acc)*dt +
+                           (1/12.0)*(old_point.jerk - @jerk)*dt**2
+    @pos = old_point.pos + (1/2.0)*(old_point.vel + @vel)*dt +
+                           (1/12.0)*(old_point.acc - @acc)*dt**2
+  end
+
+  def set_acc_and_jerk_and_next_time(snapshot, dt_param, dt_max)
+    get_acc_and_jerk(snapshot)
+    set_next_time(snapshot, dt_param, dt_max)
   end
 
   def get_acc_and_jerk(snapshot)
-    a = j = @pos*0                         # null vectors of the correct length
+    @acc = @jerk = @pos*0                  # null vectors of the correct length
     snapshot.body.each do |b|
       r = b.pos - @pos
       r2 = r*r
       r3 = r2*sqrt(r2)
       v = b.vel - @vel
-      a += b.mass*r/r3
-      j += b.mass*(v-3*(r*v/r2)*r)/r3
+      @acc += b.mass*r/r3
+      @jerk += b.mass*(v-3*(r*v/r2)*r)/r3
     end
-    [a, j]
   end    
 
   def collision_time_scale(snapshot)
@@ -145,26 +165,6 @@ class Worldpoint
     wp
   end
 
-  def correct(old)
-    dt = @time - old.time
-    @vel = old.vel + (1/2.0)*(old.acc + @acc)*dt +         # first compute @vel
-                     (1/12.0)*(old.jerk - @jerk)*dt**2     # since @vel is used
-    @pos = old.pos + (1/2.0)*(old.vel + @vel)*dt +         # to compute @pos
-                     (1/12.0)*(old.acc - @acc)*dt**2
-  end
-
-  def clone
-    c = Worldpoint.new
-    c.mass = @mass
-    c.pos = @pos*1             # silly, but it works ; to be cleaned up
-    c.vel = @vel*1             # by overloading the = operator ; without 
-    c.acc = @acc*1             # this silly trick, no deep vector copy !!
-    c.jerk = @jerk*1
-    c.time = @time
-    c.next_time = @next_time
-    c
-  end
-
   def to_acs(precision = 16, base_indentation = 0, additional_indentation = 2)
     subtag = if @type then " "+@type else "" end
     indent = base_indentation + additional_indentation
@@ -198,47 +198,37 @@ class Worldline
   def startup(era, dt_param, dt_max)
     wp = @worldpoint[0]
     ss = era.take_snapshot(self, wp.time)
-    ss.body.shift
-    wp.acc, wp.jerk = wp.get_acc_and_jerk(ss)
-    dt = wp.collision_time_scale(ss) * dt_param
-    dt = dt_max if dt > dt_max
-    wp.next_time = wp.time + dt
+    wp.set_acc_and_jerk_and_next_time(ss, dt_param, dt_max)
   end
 
-  def extend(era, dt_param, dt_max)
-    @worldpoint.push(@worldpoint.last.propagate(era, self, dt_param, dt_max))
+  def extend(snapshot, dt_param, dt_max)
+    old_point = @worldpoint.last
+    new_point = old_point.start_step(self)
+    new_point.finish_step(old_point, snapshot, dt_param, dt_max)
+    @worldpoint.push(new_point)
   end
 
   def valid_extrapolation?(time)
-    if @worldpoint.last.time <= time and time <= @worldpoint.last.next_time
-      true
-    else
-      false
-    end
+    raise unless @worldpoint.last.time <= time and
+      time <= @worldpoint.last.next_time
   end
 
   def valid_interpolation?(time)
-    if @worldpoint[0].time <= time and time <= @worldpoint.last.time
-      true
-    else
-      false
-    end
+    raise unless @worldpoint[0].time <= time and
+      time <= @worldpoint.last.time
   end
 
   def valid_time?(time)
-    if @worldpoint[0].time <= time and time <= @worldpoint.last.next_time
-      true
-    else
-      false
-    end
+    raise unless @worldpoint[0].time <= time and
+      time <= @worldpoint.last.next_time
   end
 
   def take_point(time)
     if time >= @worldpoint.last.time
-      raise if not valid_extrapolation?(time)
+      valid_extrapolation?(time)
       @worldpoint.last.extrapolate(time)
     else
-      raise if not valid_interpolation?(time)
+      valid_interpolation?(time)
       @worldpoint.each_index do |i|
         if @worldpoint[i].time > time
           return @worldpoint[i-1].interpolate(@worldpoint[i], time)
@@ -248,7 +238,7 @@ class Worldline
   end
 
   def next_worldline(time)
-    raise if not valid_interpolation?(time)
+    valid_interpolation?(time)
     wl = Worldline.new
     @worldpoint.each_index do |i|
       if @worldpoint[i].time > time
@@ -326,14 +316,18 @@ class Worldera
     nsteps = 0
     @end_time = @start_time + dt_era
     while shortest_interpolated_worldline.worldpoint.last.time < @end_time
+      wl = shortest_extrapolated_worldline
+      wp = wl.worldpoint.last
       unless shared_flag
-        shortest_extrapolated_worldline.extend(self, dt_param, dt_max)
+        ss = take_snapshot(wl, wp.next_time)
+        wl.extend(ss, dt_param, dt_max)
         nsteps += 1
       else
-        t = shortest_extrapolated_worldline.worldpoint.last.next_time
+        t = wp.next_time
         @worldline.each do |w|
           w.worldpoint.last.next_time = t
-          w.extend(self, dt_param, dt_era)
+          ss = take_snapshot(w, t)
+          w.extend(ss, dt_param, dt_era)
           nsteps += 1
         end
       end
@@ -355,7 +349,7 @@ class Worldera
     @worldline.each do |w|
       s = w.take_point(time)
       if w == wl
-        ws.body.unshift(s)
+        ws.camera_body = s
       else
         ws.body.push(s)
       end
@@ -479,7 +473,7 @@ class Worldsnapshot
 
   TAG = "worldsnapshot"
 
-  attr_accessor :body, :type
+  attr_accessor :camera_body, :body, :type
 
   def initialize
     @body = []
