@@ -4,6 +4,14 @@
 #
 cd $ACSROOT/not
 
+if ( $LANG == "ja_JP.eucJP"  ) then
+   set koptions = -KE
+   set coptions = "--charset=EUC-JP"
+else
+  set koptions = " "
+   set coptions = " "
+endif
+echo $coptions
 set year = 2003
 loopyear:
 set success = 0
@@ -13,8 +21,8 @@ foreach month (1 2 3 4 5 6 7 8 9 10 11 12)
     if ( $status == 0 ) then
        ls  */$year/$month/*[0-9]
            if ( $status == 0 ) then
-       
-              ruby ../src/labnotes/combine-notes.rb 	combined/${year}-${month}-all       	 */$year/$month/*[0-9]
+              echo $koptions
+              ruby $koptions ../src/labnotes/combine-notes.rb 	combined/${year}-${month}-all       	 */$year/$month/*[0-9]
               set success = 1
         endif
     endif
@@ -24,6 +32,6 @@ if ( $success == 1) then
     goto loopyear
 endif
 svn add `ls -1 -d [A-Z]*/*/*/*[^~] [A-Z]*/*/*/.[0-9,a-z,A-Z]*[^~] [A-Z]*/*/*/*/*[^~] | grep -v \.svn`
-rdoc combined/*
+rdoc $coptions combined/*
 
 

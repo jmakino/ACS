@@ -2,17 +2,18 @@ The lazy way to change the timestamp files of all rdoc labnote files:
 	
 tmp.awk:
 
-{
-print $2, $3, substr($1, length($1)-1,99), $5, $6, $7
-}
+ {
+   print $2, $3, substr($1, length($1)-1,99), $5, $6, $7
+ }
 
-cat tmp.csh
-foreach f ( lab*)
-  (echo -n $f " " ; cat .${f}) | awk -f tmp.awk > xx
-  mv  xx .${f}
-  cat .${f}
-  echo end $f
-end
+ cat tmp.csh
+
+ foreach f ( lab*)
+   (echo -n $f " " ; cat .${f}) | awk -f tmp.awk > xx
+   mv  xx .${f}
+   cat .${f}
+   echo end $f
+ end
 
 To create the entire labnote entry, you would do:
 
@@ -20,4 +21,61 @@ To create the entire labnote entry, you would do:
    423  16:24   ruby ../src/labnotes/combine-notes.rb combined/2003-11-all */2003/11/*[0-9]
    424  16:24   rdoc combined/*
 
-   
+Made command update-lab
+
+Now you need to define ACSROOT to be the top level directory name,
+under which you have "not" directory.
+
+Modification for src/c*p*/acsdoc.rb:
+
+Need to define directives for segments. One way:
+
+
+ :segment start: segment_name
+ ...
+ ...
+ :segment end:<br>
+
+This should allow correctly nested segments like
+
+  :segment start: segment_name
+  ...
+  :segment start: segment_name1
+  ...
+  ...
+  :segment end:
+  ...
+  :segment start: segment_name2
+  ...
+  ...
+  :segment end:
+  ...
+  :segment end:
+
+
+acsdoc.rb then creates files with name like
+ .filename-segment_name
+
+which you can then include by
+saying:include:   .filename-segment_name
+
+We could have a convention to transform, for example,
+ filename:segment  after :include code: to .filename-segment.
+This may be slightly easier to use
+
+The RDOC format seems to have rather interesting "feature", that is,
+the text (paragraph) is filled only when the line starts with
+non-whitespace. 
+
+漢字を書くと何が起こるのかな？
+
+Well, the default language type seems to be iso-8859-1, which is a bit
+unfortunate...
+
+Actually, by passing --charset=EUC-JP to rdoc, you can make japanese
+document as well. Currently, I hacked update-lab so that it gives the
+correct --charset option when LANG=ja_JP.eucJP (and only when). SJIS
+and JIS are not handled correctly right now.
+
+* これで箇条書きになるはず。
+

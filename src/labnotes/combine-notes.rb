@@ -59,7 +59,7 @@ def printnote(filewithtime, outputfile)
     "#{contributer_name}\n---\n"
   
   while s = infile.gets
-    outputfile.print s, "\n"
+    outputfile.print s
   end
 end
 
@@ -67,7 +67,8 @@ end
 $contributer_list = {}
 peoplefile = "people"
 load peoplefile if FileTest.exists? peoplefile
-p $contributer_list
+
+
 
 
 if not output_file = open(ARGV[0],"w+")
