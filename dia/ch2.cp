@@ -337,8 +337,8 @@ a class constant, with the +Body+ class:
      4.000000000000000e+00  5.000000000000000e+00  6.000000000000000e+00
     |gravity> 
 
-*B*: And you quickly inserted some backslashes "<tt>\</tt>" by hand to break
-up by hand the line we so carefully crafted.  I guess you don't like to have
+*B*: And you quickly inserted some backslashes "<tt>\\</tt>" by hand to break
+up the single line we so carefully crafted.  I guess you don't like to have
 a line run over more than eighty columns?
 
 *A*: It must be an atavism from my old FORTRAN days.  Now let's chain
