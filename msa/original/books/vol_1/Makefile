@@ -29,14 +29,15 @@ weball: .weball
 
 .weball: .web  .web_ps  .web_pdf
 	touch .weball
-install: .weball
+install: .weball acscodes.tar
 	-mkdir $(INSTALLDIR)/version-`date +%Y%m%d%H%M`
 	mv  $(INSTALLDIR)/v1_web* $(INSTALLDIR)/version-`date +%Y%m%d%H%M`
 	cp -rp  $(TARGETDIR)/v1_web* $(INSTALLDIR)
+	cp acscodes.tar $(INSTALLDIR)
 .web: v1_web.dvi
 	latex2web-withlists.csh v1_web $(TARGETDIR)
 	touch .web
-#	cd $(TARGETDIR) ; tar cvf v1_web_html.tar v1_web
+	cd $(TARGETDIR) ; tar cvzf v1_web_html.tgz v1_web
 .web_ps:v1_web.dvi
 	dvips v1_web
 	gzip v1_web.ps
@@ -55,5 +56,7 @@ v1_web.dvi: v1_web.tex
 	csh -f makecutfiles.csh
 	latex v1_web
 	latex v1_web
+acscodes.tar: v1_web.tex
+	tar cvf acscodes.tar */*.C  */*.awk 
 clean:
 	-rm v1_web.dvi v1_web.tex
