@@ -1,0 +1,57 @@
+Date: Sat Jul 10 00:44:02 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+So now for the second part:
+ > > 1)
+ > > 
+ > > If I write something in a chapter to come out under html as:
+ > > 
+ > > <i>Programming Ruby -- The Pragmatic Programmer's Guide</i>, by
+ > > David Thomas and Andrew Hunt, 2001 [Addison Wesley].  This is a
+ > > great introduction to Ruby.  There is a complete <a href="xxx">online
+ > > version</a> available for this book.
+ > > 
+ > > It would be nice if it would get under LaTeX as follows:
+ > > 
+ > > There is a complete <i>online
+ > > version</i>(xxx) available for this book.
+ > > 
+ > > Could you design a form in which this information can be given,
+ > > perhaps as "<acswebref>xxx,online version</acswebref>",
+ > > which then will be translated in the above two ways for the
+ > > html and ps/pdf versions?  Since there are never commas in
+ > > URLs, I think, the first comma will signify the end of the URL.
+ > 
+ > I suggest that we first implement this, perhaps already for ACS 1.1.1
+ > or otherwise for ACS 1.1.2 or so.  This is more straightforward.  As
+ > for the other questions above, we can exchange a few more emails, and
+ > if we don't converge quickly, we can leave a decision for late September.
+
+There can be commas in some URL, though the formal specification does
+not allow it. So probably we need a slightly different syntax. How
+about "|", like
+
+  <web>xxx|online version</web>
+
+Here, instead of the *first* comma, we can use *last* "|". This means
+you cannot use  "|" in the link label. Do you mind?  
+
+By the way, I think "acswebref" is unnecessarily long.
+
+ > > 2)
+ > > 
+ > > Could you replace tabs in code text (Ruby and C) with the right
+ > > number of spaces?  Right now, I belive the tabs don't appear correctly
+ > > in code mode under acsdoc.  I've been taking out tabs by hand, but
+ > > whenever I make a modification, emacs tend to put some tabs back
+ > > in again, with automatic identation.  It is better to automatize
+ > > this.
+ > 
+ > I checked, and indeed, this doesn't work yet.  So whenever it is
+ > convenient, it would be nice to add that feature to acsdoc.
+
+I *think* this is now done.
+
+Jun
+
