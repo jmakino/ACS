@@ -464,6 +464,12 @@ module Acsdoc
   @@additional_preambles_for_inline_tex = ""
   @@additional_commands_for_inline_tex = ""
 
+  @@outputcount = 0
+  @@reuseoutput = nil
+
+  def setreuseoutput(value)
+    @@reuseoutput = value
+  end
 #
 # takes a single string which contains a command
 # and creates processed string which contain output
@@ -1174,7 +1180,7 @@ initacs
 del_flag = true
 del_file_list = Array.new
 tolatex_flag = false
-
+reulse_fpag = false
 ARGV.collect! do |a|
   if a =~ /\.((cp)|(ok))$/
     extention = "."+$1
@@ -1208,6 +1214,10 @@ ARGV.collect! do |a|
   elsif a == "--tolatex"
     tolatex_flag = true
     del_flag = false
+    a = ""
+  elsif a == "--reuseoutput"
+    print "reuse flag set\n"
+    setreuseoutput true
     a = ""
   end
   a

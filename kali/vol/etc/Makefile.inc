@@ -42,6 +42,6 @@ clean :
 	latex  $< 
 	latex  $< 
 %.ps : %.dvi
-	dvips  $< 
+	dvips  -o $@ $< 
 
 
