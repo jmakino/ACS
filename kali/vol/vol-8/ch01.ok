@@ -1,3 +1,108 @@
-= A Choice of Plotting Packages
+= A Sixth-Order Integrator
 
-== xxx
+== Modularity
+
+*Bob*: I couldn't resist translating the sixth-order integrator that we
+developed for the two-body problem to the N-body problem as well.
+
+*Alice*: That was probably straightforward, given that it was constructed
+as a series of call to the leapfrg method.
+
+*Bob*: Indeed.  I first implemented it for the version of our N-body code
+in file <tt>rknbody6.rb</tt> that incorporated a +calc+ method on the
++Body+ level, but not yet on the +Nbody+ level.  I put the extended
+version that has an <tt>yo6</tt> method in file <tt>yo6nbody6.rb</tt>.  Here
+is the sixth-order <tt>yo6</tt> method:
+
+ :inccode: .yo6nbody6.rb+yo6
+
+I have taken it <i>verbatim</i> from the two-body code in
+<tt>rknbody6.rb</tt>.
+
+*Alice*: That is exactly why modular programming is so much fun!  When
+you use enough care to set things up correctly, you can plug and play
+with modules, with minimal changes -- in this case, no change at all.
+
+*Bob*: Well, it depends.  I also wrote a sixth-order version for our softened
+code, in file <tt>yo6nbody9.rb</tt>, but there the <tt>yo6</tt> method
+grew considerably:
+
+ :inccode: .yo6nbody9.rb+yo6
+
+The reason was that this code did not hand a +dt+ argument to its
+integrators, since we had a +calc+ on the level of the +Nbody+ class
+taking care of that.  Instead, I had to use the +Nbody+ instance variable
+<tt>@dt</tt>.  Nothing complicated, just more lines of code: 14 instead of 5.
+
+*Alice*: It is nice to have so many versions to choose from: clearly some
+versions are somewhat more useful for some applications, allowing direct
+swapping of modules, while others have other advantages, such as more brevity.
+
+== Testing
+
+*Bob*: Let me show you that it all works.  Here was the result for the
+<tt>rk4</tt>
+
+ :commandoutput: ruby rknbody6b_driver.rb < figure8.in
+
+Now let us try the <tt>yo6</tt> version:
+
+ :commandoutput: ruby yo6nbody6a_driver.rb < figure8.in
+
+*Alice*: Wonderful.  Much more accurate.
+
+*Bob*: Yes, but for a much larger amount of computing time.  The method
+<tt>yo6</tt> involves seven calls to
+the +leapfrog+ method, which itself is implemented in a rather inefficient
+method, with two calles to +acc+ where one would suffice.
+
+*Alice*: Well, we decided not to worry about efficiency, and we'll get back
+to that by the time we are ready to use our code for some more serious
+applications.
+
+== Softening
+
+*Bob*: Time to check whether the sixth-order integrator works in the version
+of our N-body codes that includes a softened potential.  Let me test things
+first for zero softening, for the figure 8 input:
+
+ :commandoutput: ruby yo6nbody9a_driver.rb < figure8.in
+
+*Alice*: The exact same result as what you got with the previous version.
+Good!
+
+*Bob*: Now let us switch on softening.
+
+== Cold Collapse
+
+*Alice*: We can try to
+reproduce the cold collapse calculation with eigth particles on a
+cube.  For <tt>rk4</tt> we found for a softening length of 0.1 that we
+had to go to a time step of 0.001 to get a reasonable result.  Let us
+redo that particular run again:
+
+ :commandoutput: ruby rknbody9b_driver.rb < cube1.in
+
+I would like to see how our sixth-order version runs this collapse for
+the same parameter values.
+
+*Bob*: Here you are:
+
+ :commandoutput: ruby yo6nbody9b_driver.rb < cube1.in
+
+As we would have expected, the energy conservation is a lot better.
+I wonder how quickly it will degrade when we make the time step larger.
+Since a sixth-order scheme is so sensitive to time step size, let me
+only double the time step:
+
+ :commandoutput: ruby yo6nbody9c_driver.rb < cube1.in
+
+*Alice*: Hmmm, the degradation is faster than I would have expected.
+This may be related to the fact that this particular integrator,
+like the leapfrog out of which it is built up, is based on a
+symplectic algorithm, which has superior energy conservation.  Even if
+the errors in phase scale with the sixth power of the time step,
+cumulative errors in energy may behave differently.
+
+*Bob*: In any case, it is nice to see how a sixth-order scheme can lead
+to machine accuracy much quicker than a fourth-order scheme.

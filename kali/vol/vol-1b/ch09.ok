@@ -345,10 +345,13 @@ I will have to initialize <tt>@ap0</tt> during the last time we use the
 <tt>rk4</tt> method, so that it is ready to be used when we finally
 enter the main body of the <tt>ms4pc</tt> method, as I will call it,
 to distinguish it from your previous implementation <tt>ms4</tt>.
-The +pc+ stands for predictor-corrector version.
 
-Well, the rest is just a matter of coding up the equations we just
-wrote out.  What do you think of this:
+*Bob*: The +pc+ stands for predictor-corrector version, I take it.
+
+== Implementation
+
+*Alice*: Indeed.  Well, the rest is just a matter of coding up the
+equations we just wrote out.  What do you think of this:
 
  :inccode: .ms4body.rb+ms4pc
 
@@ -360,12 +363,109 @@ overlook any typos or logopos.
 *Bob*: errors in logic, as opposed to typing.
 
 *Alice*: Yes, both are equally likely to have slipped in.
-Let's try to run it and if it runs, let's see how well we're doing:
+Let's try to run it and if it runs,
+let's see how well we're doing:
+
+ :commandoutput: ruby integrator_driver4dpc_old.rb < euler.in
+
+== A Logopo
+
+*Bob*: And it is . . . . a logopo!
+
+*Alice*: And an inscrutable logopo to boot: what does that mean,
+<tt>undefined method `-@'</tt> ?!?  Just when I grew fond of Ruby,
+it gives us _that_ kind of message -- just to keep us on our toes,
+I guess.
+
+*Bob*: Beats me.  I know what the method <tt>-</tt> is, that is just
+the subtraction method, which I have neatly defined for our +Vector+
+class, while I was implementing the second-order version of our series
+of multi-step integrators.  I have no idea as to what the method
+<tt>-@</tt> could possibly be.
+
+But let us look at the code first, maybe that will tell us something.
+I'll scrutinize all the minus signs, to see whether we can find a clue
+there.  The middle part of the method <tt>ms4pc</tt> is the same as in
+the predictor-only method <tt>ms4</tt>, and that one did not give any
+errors.  So we'll have to look in the last five lines.  The first three
+of those are verbatim copies of the lines above, which were already tested,
+we the culprit really should lurk somewhere in the last _two_ lines.
+
+Hmm, minus sign, last two lines, ahaha!  Unary minus!!
+
+*Alice*: Unary minus??  As opposed to a dualistic minus?
+
+*Bob*: As opposed to a binary minus.  There are two different meanings
+of a minus sign, logically speaking: the minus in <tex>$3-2=1$</tex>
+and the minus in <tex>$-(+1)=-1$</tex>.  In the first example, the minus
+indicates that you are subtracting _two_ numbers.  You could write
+that operation as <tex>$minus(3,2)=1$</tex>.  In the second example,
+you are dealing only with one number, and you take the negative value
+of that number.  You could write that as <tex>$minus(+1)=-1$</tex>.
+
+So in the first case, you have a _binary_ operator, with two arguments,
+and in the second case, you have a _unary_ operator, with only one argument.
+Hence the name `unary minus.'
+
+*Alice*: A binary minus, hey?  I'm getting more and more confused with all
+those different things that are called binaries.  In astronomy we call
+double stars binaries, in computer science they use binary trees in data
+structures, and binary notation for the ones and zeros in a register,
+and we talk about binary data as opposed to ASCII data, and now even a
+lowly minus can become a binary.  Oh well, I guess each use has its own
+logic.
+
+*Bob*: And many things in the universe come in pairs.
+
+*Alice*: Even people trying to write a toy model and stumbling upon unary
+minuses -- or unary mini?  Anyway, I see now that the minus sign that I
+added in front of the jerk in the middle of the line
+
+ :include: .ms4body_old.rb-1
+
+was a unary minus.  All very logical.  And yes, while we had defined a
+binary minus before, we had not yet defined a unary minus.
+
+*Bob*: So you committed a logopo.
+
+*Alice*: And I could correct my logopo by writing <tt>jdt/(-2.0)</tt>
+instead of <tt>-jdt/2.0</tt>.  However, I don't like to do that, it looks
+quite ugly.
+
+*Bob*: The alternative is to add a unary minus to our +Vector+ class.
+
+*Alice*: I would like that much better!  How do you do that?
+
+*Bob*: Judging from the error message, Ruby seems to use the convention
+that <tt>-@</tt> stands for unary minus.  But just to make sure, let me
+look at the manual.  Just a moment . . . 
+
+. . . and yes, my interpretation was correct.  So let's just add it to
+our collections of methods in the file <tt>vector.rb</tt>.  How about
+the following extension, within the +Vector+ class:
+
+ :inccode: .vector.rb+-@
+
+and for good measure, I may as well add a unary plus too:
+
+ :inccode: .vector.rb++@
+
+*Alice*: I see, just in case you write something like <tt>r_new = +r_old</tt>.
+
+*Bob*: Exactly.  No need to do so, but also no need to let that give you
+an error message if you do.
+
+== Testing
+
+*Alice*: Do you think that your one-liner will work?
+
+*Bob*: Only one way to find out!  Let's check it:
 
  :commandoutput: ruby integrator_driver4dpc.rb < euler.in
 
-Much better!  More than ten times more accurate than the
-predictor-only version, the method <tt>ms4</tt>.  Let me give a
+*Alice*: What a charm!  Not only does the unary minus fly, also the corrected
+version turns out to be more than ten times more accurate than the
+predictor-only version, the method <tt>ms4</tt>.  Let's give a
 ten times smaller time step:
 
  :commandoutput: ruby integrator_driver4epc.rb < euler.in

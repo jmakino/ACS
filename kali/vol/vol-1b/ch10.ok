@@ -189,3 +189,7 @@ the coefficients yourself!
 *Bob*: Or, to be honest, the symbolic integrator found them.  Well,
 I'm glad it all worked, especially after that scare with that start-up
 mystery!
+
+And of course, if we really wanted to go all out, I should implement
+full predictor-corrector versions for each of them.  Well, perhaps some
+other day.

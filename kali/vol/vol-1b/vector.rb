@@ -9,6 +9,12 @@ class Vector < Array
     self.each_index{|k| diff[k] = self[k]-a[k]}
     diff
   end
+  def -@
+    self.map{|x| -x}.to_v
+  end
+  def +@
+    self
+  end
   def *(a)
     if a.class == Vector              # inner product
       product = 0

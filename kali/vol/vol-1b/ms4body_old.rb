@@ -1,4 +1,4 @@
-require "vector.rb"
+require "vector_old.rb"
 
 class Body
 
@@ -66,8 +66,8 @@ class Body
     a1 = acc
     @pos = old_pos + vel*dt + a1*0.5*dt*dt
     a2 = acc
-    @pos = old_pos + vel*dt + (a0+a1*2)*(1/6.0)*dt*dt                       #1
-    @vel = vel + (a0+a1*4+a2)*(1/6.0)*dt                                    #1
+    @pos = old_pos + vel*dt + (a0+a1*2)*(1/6.0)*dt*dt
+    @vel = vel + (a0+a1*4+a2)*(1/6.0)*dt
   end
 
   def yo4(dt)
@@ -156,7 +156,7 @@ class Body
       jdt = @ap0*(11.0/6.0) - @ap1*3 + @ap2*1.5 - @ap3/3.0
       sdt2 = @ap0*2 - @ap1*5 + @ap2*4 - @ap3
       cdt3 = @ap0 - @ap1*3 + @ap2*3 - @ap3
-      @vel = old_vel + @ap0*dt + (-jdt/2.0 + sdt2/6.0 - cdt3/24.0)*dt
+      @vel = old_vel + @ap0*dt + (-jdt/2.0 + sdt2/6.0 - cdt3/24.0)*dt        #1
       @pos = old_pos + vel*dt + (-@ap0/2.0 + jdt/6.0 - sdt2/24.0)*dt*dt
     end
   end
