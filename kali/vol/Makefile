@@ -8,7 +8,6 @@ all:
 	$(MAKE) -C vol-5
 	$(MAKE) -C vol-6
 	$(MAKE) -C vol-7
-	$(MAKE) -C vol-7c
 	$(MAKE) -C vol-8
 	$(MAKE) -C vol-9
 	$(MAKE) -C vol-10
@@ -17,6 +16,7 @@ all:
 	$(MAKE) -C vol-13
 	$(MAKE) -C vol-14
 	$(MAKE) -C vol-15
+	$(MAKE) -C vol-16
 
 clean:
 	$(MAKE) -C vol-0 clean
@@ -28,7 +28,6 @@ clean:
 	$(MAKE) -C vol-5 clean
 	$(MAKE) -C vol-6 clean
 	$(MAKE) -C vol-7 clean
-	$(MAKE) -C vol-7c clean
 	$(MAKE) -C vol-8 clean
 	$(MAKE) -C vol-9 clean
 	$(MAKE) -C vol-10 clean
@@ -37,3 +36,4 @@ clean:
 	$(MAKE) -C vol-13 clean
 	$(MAKE) -C vol-14 clean
 	$(MAKE) -C vol-15 clean
+	$(MAKE) -C vol-16 clean
