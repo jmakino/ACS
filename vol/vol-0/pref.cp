@@ -179,7 +179,7 @@ license:
 #a side effect, this may convince book publishers that there really is
 #a market for `open source' book publishing.
 
-=== A Historical Note
+== A Historical Note
 
 In preparing for our project, we wrote a complete manuscript, titled
 <i>Moving Stars Around</i>, also in dialogue form, but aimed more at
