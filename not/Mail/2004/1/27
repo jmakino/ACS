@@ -1,0 +1,30 @@
+Date: Sun Jan 04 17:12:57 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > Indeed very similar to our experiences!  And rdoc is far easier to use
+ > than XML, for sure.  It is interesting, though, that Dave Thomas at
+ > the end mentions that he does like XML for book writing:
+ > 
+ >   Dave Thomas: If you're talking about using XML in certain domains,
+ >   it's fine. XSLT, for example, lets you do some really fun things with
+ >   XML. When we had our book online, for example, we went from LaTeX, to
+ >   XML, and then to the output format, simply because XSLT gave us some
+ >   really powerful ways for manipulating the document's content. XML is
+ >   useful in appropriate contexts, but it is being grossly abused in most
+ >   of the ways it is being used today.
+
+Hmm, can you parse the exact meaning here? I mean, did they wrote a
+translator from latex to XML, or did they write text in XML? It sounds
+they developed a translator...
+
+ > We, too, will have to decide later what to do.  And of course, for I/O
+ > it will be good to use XML format, at the very least, and either our
+ > own I/O interpreter or more likely an existing Ruby-XML parser.
+
+Ya. either REXML or EXPAT(?) would be fine.
+
+Jun
+
