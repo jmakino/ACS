@@ -103,11 +103,172 @@ very interesting document.  In order to make it useful, you'd better
 provide some good structure.  But doing so takes time: it would be
 like writing a paper, each time you write a piece of code!
 
+== Dialogues
+
 *Alice*: You put your finger on the problem.  And your last point shows to me
 what is so nice about a dialogue.  Just listing what happened will be
-dry and boring, and indeed hard to read later on.  But if
+dry and boring, and indeed hard to read later on.  But if we recreate
+a dialogue between the two of us, we can tell our students and
+colleagues how and why we did what, in a natural flow of arguments.
 
-*Bob*: 
+*Bob*: Like Platonic dialogues?
 
-== xx
+*Alice*: Perhaps more like the dialogues that Galileo wrote.  But let's leave
+out Simplicio, and just take two able researchers.
 
+*Bob*: You and me?
+
+*Alice*: Why not?
+
+*Bob*: Hmmm.  I doubt that it would be practical.  You're not going to tape
+our conversations, are you?
+
+*Alice*: Oh no, that would be too much work and also it would give far too
+much material.  Instead, we'll make our written dialogues much shorter than
+the real-life ones.
+
+*Bob*: So you want to distill our wisdom?
+
+*Alice*: Yes, distilling is I guess how you could say it, but in the process
+we'll distill our whole experience, from wisdom to foolishness.  It is
+essential to show what problems we ran into, how we found out that
+there were problems, how we traced the roots of those problems, and
+finally how we found solutions . . . 
+
+*Bob*: . . . with much trial and error.
+
+*Alice*: Exactly.  For students it will probably be interesting to see how we
+go about problem solving, and for colleagues at least it will give
+them a precise idea of why we choose our design details the way we did.
+When they can see the whole path of development, they have much more
+of a basis to agree or disagree.  To the extent that they agree with
+our approach, they can then add more material to our codes in the same
+spirit.  And to the extent they disagree, it will be easier for them
+to point out exactly where they part ways with us, and why.
+
+*Bob*: Well, I'm sure it will be interesting for the students for another
+reason too.
+
+*Alice*: What do you have in mind?
+
+*Bob*: I'm sure they'll enjoy seeing us making mistakes!  It will make them
+feel better, I'm sure.
+
+*Alice*: Good point.  I remember when I started programming, how stupid I
+often felt when something didn't work right away.
+
+*Bob*: Until you found out that in programming almost always things dont' work
+right away.
+
+*Alice*: Exactly.  Okay, let's do it!
+
+*Bob*: Wait.  If we really want to put all our mistakes on paper, perhaps
+the students will enjoy seeing our first half dozen or so mistakes, but at
+some point even they will get bored.
+
+*Alice*: So we'll have to be creative in our distillation process.  For
+example, in the first few volumes we can show them how we stumbled
+here and there, trying to learn Ruby, for example.  But further on, we
+can polish the presentation.
+
+*Bob*: It will seem then that we will become very smart very quickly,
+in rather unrealistic ways.
+
+*Alice*: Sure, but that's fine.  For the record, let's just note here that
+all similarities between the Bob and Alice of our dialogues and actual
+astronomers present or past is completely accidental!
+
+== Presentation Format
+
+*Bob*: I must say, you're making a strong case for writing dialogues.
+I'm willing to give it a try.
+
+*Alice*: okay, let's get started right away!  Remember the conversation
+we had when we saw each other over coffee, and asked each other what
+our research plans were?  That's how we got this idea of writing some
+code for toy model simulations of dense stellar systems.
+
+*Bob*: I guess we can reconstruct a dialogue along those lines.  But how
+do you want to write that, in what form?  Plain text is not very helpful.
+At the very least we want to put that material on the web, to make it
+accessible to our students and others who may be interested.
+
+*Alice*: But I don't like writing everything in HTML.  For one thing,
+mathematical equations don't lend themselves very well to that medium.
+For another, I like to make printouts, especially of complex codes and
+of text with many equations, and I far prefer LaTeX for that purpose.
+
+*Bob*: There are programs that can translate LaTeX to HTML, but from
+what I've seen, they are not doing a very good job.  Perhaps a better
+alternative would be to start with a third medium, from which we can
+then produce both postscript output, like with LaTeX, and HTML output,
+for web sites.
+
+*Alice*: Do you have any particular example in mind.
+
+*Bob*: XML is being advertised as a <i>lingua franca</i> for exactly
+these purposes, but I'm a little hesitant to make a jump in that
+direction.  Everything I've seen is rather cumbersome, at least on the
+level of writing XML directly, even though the basic idea is fine.
+The problem is that the XML source is almost unreadable, with even more
+markers and flags and begin-this and end-that than you already have in
+HTML.
+
+*Alice*: How do people then work with XML in practice?
+
+*Bob*: I presume they use an editor that allows them to add all the extra
+information, where needed, without showing it all on the screen.
+
+*Alice*: A bit like the WYSIWYG, what-you-see-is-what-you-get, way in which
+many text editors nowadays show you what will be printed, rather than what
+the special symbols are that you type in order to get there?
+
+*Bob*: Yes.  Unlike emacs or vi, which show the full LaTeX commands, you
+could imagine working with an editor that would produce the LaTeX
+output directly in a window, while giving you a menu from which you
+can pick the directives.
+
+*Alice*: Probably somebody has already written such a thing.
+
+*Bob*: I bet.  However, I'm used to good old ascii coding in editors where
+you can exactly see what you put in.
+
+*Alice*: Me too.  I really don't like having to click a mouse at every point
+along the way.  Besides, if the input is in ascii, you know for sure that you
+will still be able to read that material ten years from now.  If you write it
+in some form of `easier' format, it is quite likely that some day you won't
+be able to decode anymore what you wrote!
+
+*Bob*: I couldn't agree more.  So I must admit, I don't like the XML solution
+very much, if it would mean working with a WYSIWYG editor.  Besides, what
+would such an editor show you on the screen?  HTML output format?  LaTeX
+output format?  A third type of output format?  None of them would cover
+all the bases.
+
+*Alice*: Have you tried writing XML that way?
+
+*Bob*: No, though I came close.  Recently, I was thinking about using some
+XML for documenting some of my codes, so I looked around on the web,
+to see what kind of editors were available.  Unfortunately, the good
+ones all seemed te be commercial products, and I couldn't find
+anything in the open-source domain that looked appealing.
+
+*Alice*: There is nothing wrong with paying for a software package.
+
+*Bob*: Indeed, I'd be happy to pay for a good piece of software.  However,
+when I do so, I need to be convinced that I will use it often enough
+to make it worth the investment.  And even more importantly, I do want to
+have access to the source code, if I'm going to use it as a foundation
+for some of my own code development.
+
+*Alice*: Those are good points.  If we are going to use XML, we would want our
+students to join in and write extensions of what we're doing.  If they first
+need to buy an expensive editor before they can even start working with our
+software, that wouldn't be ideal.  And yes, it would be much better if they
+would have direct access to the source text of our dialogues as well
+as the source of our codes.
+
+*Bob*: So let me look what alternatives there are available.  There must be
+others who came up to the same dilemmas as we have just summarized.  I'll
+do a web search, and with a little luck I may come across a better system.
+I'll let you know!

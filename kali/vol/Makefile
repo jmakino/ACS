@@ -9,16 +9,15 @@ all:
 	$(MAKE) -C vol-3b
 	$(MAKE) -C vol-4
 	$(MAKE) -C vol-5
-	$(MAKE) -C vol-6
+	$(MAKE) -C vol-6a
+	$(MAKE) -C vol-6b
 	$(MAKE) -C vol-7a
 	$(MAKE) -C vol-7b
 	$(MAKE) -C vol-8
-	$(MAKE) -C vol-9a
-	$(MAKE) -C vol-9b
+	$(MAKE) -C vol-9
 	$(MAKE) -C vol-10
-	$(MAKE) -C vol-11
-	$(MAKE) -C vol-12a
-	$(MAKE) -C vol-12b
+	$(MAKE) -C vol-11a
+	$(MAKE) -C vol-11b
 
 clean:
 	$(MAKE) -C vol-0a clean
