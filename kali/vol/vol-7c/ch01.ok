@@ -1,0 +1,64 @@
+= XXX
+
+== xxx
+
+The idea of taking an arbitrary N-body snapshot, and giving a short
+description of the most important characteristics.
+
+Normally you do: initial conditions, integration, data output,
+figures, interpretation.  The idea here is to get a summary form of
+interpretation immediately after the integration.
+
+What should go in?
+
+N, time, {mass, pos, vel} and later type (single, binary, triple, ...)
+
+What should come out?
+
+are the units (close to) standard N-body units?
+total mass, energy, r_c, r_h, angular momentum vector, 
+is there once clump or are there several clumps,
+distance between c.o.m and center of density,
+2K/W (K = total kinetic energy; W = absolute value of total potential energy),
+2K_r/K_t (2x the radial kinetic energy divided by tangential kinetic energy),
+inertia tensor and its eigenvalues, number of bound stars, thermal radius
+(radius up to which a Maxwellian is a good approximation).
+
+Then later temperature over spherical shells, and how many sigma away from
+isothermal.  Take k = 1/6N in standard N-body units.
+
+Also: recognition of being close to a polytrope or King model, etc,
+in terms of f(E), and perhaps rho(r), T(r), etc.
+
+== xxx
+
+Let's start with the question whether the system is close to dynamical
+equilibrium.
+
+Musing: (thermal equilibrium, nuclear equilibrium, from binary
+energy generation???  actually in a star: global dynamical equilibrium,
+local thermal equilibrium, global thermal equilibrium includes the
+right amount of nuclear energy generation -- here binary energy generation;
+could check whether it is in post-core-collapse, only for very large N,
+and then core oscilations form a problem).
+Maybe leave this out.
+
+Let us start with the file <tt>energy.rb</tt> that we used when we
+built our Plummer models:
+
+ :inccode: .energy.rb
+
+And then start with:
+
+center of mass or center of density?
+
+For determining the core structure, c.o.d. better, but for determining
+escaper, probably c.o.m. of bound particles (to be determined iteratively).
+
+Start with file <tt>report.rb</tt>
+
+Homework: can there be an oscilation in the number of escapers,
+preventing convergence?
+
+TEST: take a 300-particle system, and give one particle a position and
+velocity component with e+02.
