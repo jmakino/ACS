@@ -24,8 +24,8 @@ class Body
 
   def simple_read
     @mass = gets.to_f
-    @pos = gets.split.collect { |x| x.to_f }
-    @vel = gets.split.collect { |x| x.to_f }
+    @pos = gets.split.map { |x| x.to_f }
+    @vel = gets.split.map { |x| x.to_f }
   end
 
 end
