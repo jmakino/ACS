@@ -59,9 +59,10 @@ identifier.
 
 *Bob*: Given that every object in Ruby already has an identifier called
 <tt>object_id</tt>, a natural name for such an ID would be <tt>body_id</tt>.
-Now that is easy to implement.  How about writing a nifty tool like this:
+Now that is easy to implement.  How about writing a nifty tool like this,
+in file <tt>nbody_set_id.rb</tt>:
 
- :inccode:acsnumber.rb
+ :inccode:nbody_set_id.rb
 
 == A Test Count
 
@@ -69,9 +70,9 @@ You see, I even allowed for taste: the default is to start numbering at
 one, but you can start at zero as well, or at any other place you like.
 Let's test it with our Plummer Model:
 
- :commandoutput: ruby acsnumber.rb -h
- :commandoutput: ruby mkplummer.rb -n 2 | ruby acsnumber.rb -p 5
- :commandoutput: ruby mkplummer.rb -n 2 | ruby acsnumber.rb -p 5 -n 42
+ :commandoutput: ruby nbody_set_id.rb -h
+ :commandoutput: ruby mkplummer.rb -n 2 | ruby nbody_set_id.rb -p 5
+ :commandoutput: ruby mkplummer.rb -n 2 | ruby nbody_set_id.rb -p 5 -n 42
 
 == Defensive Programming
 
@@ -123,9 +124,9 @@ ourselves to configuration space, rather than to phase space.
 between two N-body systems, as the 6N-dimensional distance in phase space,
 or the 2DN-dimensional distance for the general case of D spatial dimensions.
 It's time to practice my Ruby skills again.  Let's call the file
-<tt>acsdiff.rb</tt>:
+<tt>nbody_diff.rb</tt>:
 
- :inccode:acsdiff.rb
+ :inccode:nbody_diff.rb
 
 How about this?
 
@@ -145,8 +146,8 @@ for a circular binary, I believe.  Ah yes, here it is, in
 To start with, let's see whether two identical systems are assigned a
 distance of zero correctly:
 
- :commandoutput: ruby acsnumber.rb < circular_binary.in > tmp0.in
- :commandoutput: cat tmp0.in tmp0.in | ruby acsdiff.rb
+ :commandoutput: ruby nbody_set_id.rb < circular_binary.in > tmp0.in
+ :commandoutput: cat tmp0.in tmp0.in | ruby nbody_diff.rb
 
 *Alice*: Good!  Let's perturb our binary slightly.  If we use the most
 popular Pythagorean triangle, we can immediately check whether our
@@ -157,11 +158,11 @@ Cartesian distances in phase space come out correctly.  Here is a file
 
 And here is our first real result:
 
- :commandoutput: ruby acsnumber.rb < pert_circ_binary.in > tmp1.in
- :commandoutput: cat tmp0.in tmp1.in | ruby acsdiff.rb
+ :commandoutput: ruby nbody_set_id.rb < pert_circ_binary.in > tmp1.in
+ :commandoutput: cat tmp0.in tmp1.in | ruby nbody_diff.rb
 
 Just what it should be!  Now for positions only, and a higher precision:
 
- :commandoutput: cat tmp0.in tmp1.in | ruby acsdiff.rb -r -p 5
+ :commandoutput: cat tmp0.in tmp1.in | ruby nbody_diff.rb -r -p 5
 
 Perfect.  I think we're ready to move on.

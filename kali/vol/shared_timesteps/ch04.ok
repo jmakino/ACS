@@ -79,7 +79,7 @@ comparison with the constant time step run.
 
 *Bob*: That should come out a whole lot better now!  Here we go:
 
- :commandoutput: cat yo6sh.out yo6cst_tenth.out | ruby acsdiff.rb
+ :commandoutput: cat yo6sh.out yo6cst_tenth.out | ruby nbody_diff.rb
 
 *Alice*: And right you are.  That's more like it.  Wonderful!
 
@@ -103,8 +103,8 @@ integrator, since before you know it you are up to the round-off barrier.
 
 *Bob*: I think so to, but seeing is believing:
 
- :commandoutput: cat leap_sh.out leap_sh_hundredth.out | ruby acsdiff.rb
- :commandoutput: cat leap_sh_tenth.out leap_sh_hundredth.out | ruby acsdiff.rb
+ :commandoutput: cat leap_sh.out leap_sh_hundredth.out | ruby nbody_diff.rb
+ :commandoutput: cat leap_sh_tenth.out leap_sh_hundredth.out | ruby nbody_diff.rb
 
 *Alice*: We see, we believe, we are delighted!
 

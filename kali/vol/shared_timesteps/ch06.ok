@@ -35,7 +35,7 @@ step, which would result in a huge energy error.
 we've done something like this already, but let's run it again, from the
 same initial conditions:
 
- :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby acsnumber.rb > test
+ :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby nbody_set_id.rb > test
 
 == Concrete Results
 
@@ -72,7 +72,7 @@ scheme should win out from the constant time step scheme.
 
 *Bob*: Okay, five times more particles:
 
- :commandoutput: ruby mkplummer.rb -n 25 -s 1 | ruby acsnumber.rb > test2.in
+ :commandoutput: ruby mkplummer.rb -n 25 -s 1 | ruby nbody_set_id.rb > test2.in
 
 And a ten times longer time step.  The shared time step code should be able
 to handle that gracefully.

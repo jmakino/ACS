@@ -86,9 +86,7 @@ energy and the right quartiles again -- and this time in standard units.
 *Bob*: Let's start with the quartiles:
 
  :commandoutput: ruby mkplummer3.rb -n 10000 | ruby quartiles.rb
-
  :commandoutput: ruby mkplummer3.rb -n 10000 | ruby quartiles.rb
-
  :commandoutput: ruby mkplummer3.rb -n 10000 | ruby quartiles.rb
 
 *Alice*: These are indeed what we had derived a bit earlier, in
@@ -116,9 +114,7 @@ That should be easy to verify: in the standard units, the total energy
 should be -1/4.  Let's check:
 
  :commandoutput: ruby mkplummer3.rb -n 1000 | ruby energy.rb
-
  :commandoutput: ruby mkplummer3.rb -n 1000 | ruby energy.rb
-
  :commandoutput: ruby mkplummer3.rb -n 1000 | ruby energy.rb
 
 *Alice*: Just as it should be, within the expected statistical errors of a
@@ -205,9 +201,7 @@ accurate, even for, say, 100 particles, by construction.
 *Bob*: I hope so!  Let's try:
 
  :commandoutput: ruby mkplummer4.rb -n 100 | ruby quartiles.rb
-
  :commandoutput: ruby mkplummer4.rb -n 100 | ruby quartiles.rb
-
  :commandoutput: ruby mkplummer4.rb -n 100 | ruby quartiles.rb
 
 Indeed, as expected.  And of course it will be even more accurate

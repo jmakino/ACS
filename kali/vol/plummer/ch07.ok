@@ -81,9 +81,7 @@ fluctuations are from case to case, in the kinetic and potential energies,
 as well as the total energy.
 
  :commandoutput: ruby mkplummer2.rb -n 10 | ruby energy.rb
-
  :commandoutput: ruby mkplummer2.rb -n 10 | ruby energy.rb
-
  :commandoutput: ruby mkplummer2.rb -n 10 | ruby energy.rb
 
 *Bob*: Better to increase the number of particles, to see whether we
@@ -92,9 +90,7 @@ particle system should have <tex>$\sqrt{N}$</tex> deviations around
 three percent or so.
 
  :commandoutput: ruby mkplummer2.rb -n 1000 | ruby energy.rb
-
  :commandoutput: ruby mkplummer2.rb -n 1000 | ruby energy.rb
-
  :commandoutput: ruby mkplummer2.rb -n 1000 | ruby energy.rb
 
 *Bob*: Good enough!  Also note that the virial theorem is obeyed
@@ -351,9 +347,7 @@ Why don't you create a few more 1000-particle realizations.
 *Bob*: Here are a few more.
 
  :commandoutput: ruby mkplummer2.rb -n 1000 | ruby energy.rb
-
  :commandoutput: ruby mkplummer2.rb -n 1000 | ruby energy.rb
-
  :commandoutput: ruby mkplummer2.rb -n 1000 | ruby energy.rb
 
 You're right: the numbers work out beautifully.

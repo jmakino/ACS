@@ -237,7 +237,7 @@ pushing toward machine accuracy.
 
 *Bob*: We may as well.  Let's start with the same initial conditions:
 
- :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby acsnumber.rb > test.in
+ :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby nbody_set_id.rb > test.in
 
 I will repeat the two previous runs, with a ten times shorter time step,
 and then treat the new code in the same way:
@@ -248,8 +248,8 @@ and then treat the new code in the same way:
 
 *Alice*: And now let's check whether the results are really similar:
 
- :commandoutput: cat tmpc.out tmps.out | ruby acsdiff.rb
- :commandoutput: cat tmps.out tmpi.out | ruby acsdiff.rb
+ :commandoutput: cat tmpc.out tmps.out | ruby nbody_diff.rb
+ :commandoutput: cat tmps.out tmpi.out | ruby nbody_diff.rb
 
 *Bob*: I'd say so!  Hard to get better within double precision accuracy.
 

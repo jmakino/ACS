@@ -112,7 +112,7 @@ experimenten kan nu via het internet en op draagbare computers gebeuren.
 <b> Hoe kan ik met een N-lichamen code gaan spelen?</b>
 <p>
 Een snelle manier om de smaak te pakken te krijgen is om ons oudere
-boek te lezen, <a href="../msa/web/index.html">Sterren Laten Bewegen</a>.
+boek te lezen, <a href="../../../msa/web/index.html">Sterren Laten Bewegen</a>.
 Dit boek vormt een volledige inleiding in 250 paginas, toegelicht met
 computer codes in C++.  Het begint met eenvoudige integratieschemas, en
 leidt vandaar tot het Hermite schema.  De lezers van het boek worden
@@ -122,7 +122,8 @@ dubbelsterren.  De lezers kunnen daarbij de codes vrijelijk aanpassen
 aan hun eigen interesse.
 <p>
 Een veel meer gedetailleerde behandeling van het N-lichamen probleem
-kunt u aantreffen in onze serie, de <a href="../kali/index.html">Kali code</a>
+kunt u aantreffen in onze serie, de
+<a href="../../../kali/index.html">Kali code</a>
 geheten, die tot vele tientallen delen zal uitgroeien.  In deze serie
 boeken ontwikkelen we een professioneel software systeem voor simulaties
 van dichtbevolkte sterrenstelsels.  Ook hier beginnen we helemaal aan
@@ -142,139 +143,179 @@ N-body problem.
 <a name="use"></a>
 <b> Waarom gebruiken we Ruby?</b>
 <p>
-Ruby combines the flexibility of a scripting language with the power
-of a fully object-oriented programming language.  For a large-scale
-software project, such as the development of the
-<a href="../kali/index.html">Kali code</a>, it is essential to use data
-encapsulation, such as offered by C++.  However, when developing new
-code, it is impossible to know beforehand what the best data structures
-will look like.  Rapid prototyping, all but impossible in C++, is equally
-essential for developing code that is well-thought-out and easy to read,
-not stuck in a legacy of historical data design decisions.
+Ruby combineert de flexibiliteit van een `scripting language' met de
+veelzijdigheid en robustheid van een volledig `object-oriented'
+computer taal.  Voor een grootschalig software project, zoals de
+<a href="../../../kali/index.html">Kali code</a>, is het absoluut
+noodzakelijk om data in te kapselen, zoals dat bijvoorbeeld in C++
+gebeurt.  Het grote probleem hierbij is de vraag welke data structuren
+je het beste kunt bouwen, voor dit soort inkapselen.  Wanneer je aan
+een nieuw project begint, weet je vooralsnog niet wat de beste
+structuren zullen zijn, totdat je een tijdlang ervaring opgedaan hebt
+met prototypes.  In een vrij starre taal zoals C++ is het vrijwel
+onmogelijk om zomaar snel even iets in elkaar te zeten.  In Ruby,
+daarentegen, is dat veel gemakkelijker.  Dit soort flexibiliteit maakt
+Ruby ideaal voor het ontwerpen en ontwikkelen van goed doordachte en
+eenvoudig leesbare code, dat niet gedwongen wordt om in hetzelfde oude
+spoor door te blijven lopen van vorige edities.
 
 <hr>
 <a name="fast"></a>
 <b> Is Ruby snel genoeg?</b>
 <p>
-No, Ruby by itself is too slow for serious scientific simulations.
-However, it is straightforward to replace a few time-critical lines of
-Ruby code with C code, thereby speeding up the original Ruby code to a
-speed that can approximate that of C code without much trouble.  See
-<a href="../kali/vol/vol-6/doc/files/_/_title_ok.html">Vol. 6: Speedup</a> for
-detailed examples.
+Nee.  Ruby is op zich te langzaam voor serieuze wetenschappelijke
+toepassingen.  Gelukkig is het vrij eenvoudig om een paar regels van
+een Ruby programma te vervangen door een klein stukje C programma,
+wat het uitvoeren van die regels heel veel sneller maakt.  Omdat de
+meeste programmas de meeste tijd besteden in een klein onderdeel van
+de totale code, is het in de praktijk vrij gemakkelijk om de snelheid
+van een Ruby programma op peil te brengen met dat van een equivalent
+C programma.  Zie
+<a href=../../../kali/vol/speedup/doc/files/_/_title_ok.html>Vol. 11:
+Speedup</a> voor een aantal gedetailleerde voorbeelden.
 
 <hr>
 <a name="many"></a>
 <b> Waarom schrijven we zoveel delen?</b>
 <p>
-Most scientific text books summarize the state of the art of a field
-`after the dust has settled.'  Students are presented with a clean
-path of logic that bears little resemblance to the historical process
-of trial and error that underlies any scientific discovery, large or
-small.  In comparison, there is not much information available that
-teaches students how to make mistakes and learn from them.  In
-contrast, our aim is to present much of the tacit knowledge that is
-essential for starting a research project in computational science.
+De meeste wetenschappelijke boeken beschrijven een tak van wetenschap
+pas nadat er orde op zaken is gebracht, en de meeste losse eindjes aan
+elkaar geknoopt zijn.  Op deze manier krijgen studenten een beeld
+voorgeschoteld van een net paadje dat rechtlijnig op zijn doel afgaat,
+en wat hoegenaamd niks te maken heeft met het historische pad van
+ontdekking, met veel gissen en missen.  Met zo'n aanpak leren studenten
+niet hoe je fouten kunt maken en daar dan steeds van kan leren.  Ons
+doel daarentegen is om nu juist een gids te zijn van kronkelpaden.
+Wanneer je vertrouwd raakt met het process van het tasten in het
+duister, kun je pas echt beginnen om onderzoek te doen.
 <p>
-Initially, we expected to be able to present our series in ten volumes.
-However, when we completed our first volume, <i>Moving Stars Around</i>, and
-published it on the web in October 2003, we learned two important lessons:
-1) until you start making implicit knowledge explicit, you have no idea
-how much you know; 2) when you start this process, you learn an awful lot,
-adding to the store of your knowledge at roughly the same pace as you are
-writing it up.  We now consider several tens of volumes to be a more
-realistic estimate, even just for the <i>Kali</i> series.
+Ons oorspronkelijk plan was om onze hele Kali serie in tien delen te
+laten uitkomen.  Maar toen we eenmaal ons eerste deel, <i>Moving Stars
+Around</i>, af hadden en op het web hadden geplaatst in oktober 2003,
+werd het ons duidelijk dat:
+1) totdat je probeert expliciet op te schrijven wat je tot dan
+toe alleen maar impliciet weet, heb je er werkelijk geen idee van
+hoeveel je wel niet weet; en 2) terwijl je aan het opschrijven bent,
+leer je bovendien veel nieuws, zodat je kennis nog verder groeit,
+vrijwel in hetzelfde tempo als waarmee je aan het schrijven bent.
+<p>
+Als gevolg van dit alles denken we nu dat we wel vele tientallen boeken
+zullen gaan schrijven, in de Kali serie.
+
 <hr>
 <a name="name"></a>
 <b> Waar komt de naam Kali vandaan?</b>
 <p>
-We borrowed the name from the Sanskrit <i>kali</i>, meaning
-<i>dark</i>, as in the <i>kali yuga</i>, the dark ages we are currently in
-according to Hindu mythology.  The same word also occurs in the name
-<i>Kali</i>, for the Hindu Goddess who is depicted as black.  The term
-<i>dark</i> seemed appropriate for our project of focusing on forms of
-tacit knowledge that have not been brought to light, so far, and
-perhaps cannot be presented in a bright, logical series of statements.
-Instead, we expect our dialogues to carry the many less formal and
-less bright shades of meaning, that pervade any craft.
+We hebben de naam ontleend aan het woord <i>kali</i> uit het Sanskriet,
+dat <i>donker</i> betekend, zoals in de uitdrukking <i>kali yuga</i>,
+de duistere tijden waar we ons nu in bevinden volgens de Hindoe mythologie.
+Hetzelfde woord wordt ook gebruikt als naam voor de godin <i>Kali</i>,
+die altijd als volkomen zwart afgebeeld wordt.  The uitdrukking <i>donker</i>
+of <i>duister</i> leek ons toepasselijk voor ons project waarin we tot nog toe
+niet gearticuleerde kennis aan het licht willen brengen.  Dit process,
+van het expliciet uitdrukken van wat voornamelijk een soort
+ambachtelijke kennis is, kan allicht niet direct leiden tot een
+logische reeks van precies geformuleerde uitdrukkingen.  In plaats
+daarvan gebruiken een dialoogvorm, waarin we hopenlijk de informele en
+vaak minder zichtbare aspecten, inherent in elk ambacht, toch nog
+redelijk bespreekbaar kunnen maken.
 
 <hr>
 <a name="student"></a>
 <b> Ik ben een sterrenkunde student.  Is dit iets voor mij?</b>
 <p>
-Yes, indeed: you are our main target.  In fact, we have written these
-on-line books with younger versions of ourselves in mind.  We hope that
-the books and codes presented here will be useful for your own research.
-Beyond that, we hope that you will contribute your own additions and
-variations, beyond the material presented here: feel free to
-<a href="mailto:comments@artcompsci.org">contact us</a>, and insofar
-as time permits, we'll try to answer each of you.
-In addition, you will be able
-to find announcements of summer schools and other ACS-related activities,
-on our <a href="whatsnew.html">"What's New?"</a> page.
+Jazeker: studenten zijn onze eerste doelgroep.  We schrijven deze boeken
+eigenlijk voor onszelf, maar dan wel onszelf in onze jongere jaren, toen
+we zelf nog student waren (en maar wat graag dit soort boeken in onze
+handen hadden gekregen).  We hopen dat deze boeken en computer programmas
+nuttig blijken te zijn voor jullie eigen onderzoek.  En verder hopen we
+ook dat jullie zelf bijdragen zullen maken tot het materiaal wat we hier
+gepresenteerd hebben.  Wanneer jullie zelf variaties op de codes maken,
+met nieuwe toepassingen, kun je ons altijd aanschieten, door een
+<a href="mailto:comments@artcompsci.org">emailtje naar ons</a>
+te sturen.  Voorzover we de tijd kunnen vinden, zullen we proberen
+jullie email allemaal te beantwoorden.  Verder kun je
+aankondigingen vinden van zomerscholen, en andere activiteiten die we
+binnen het kader van ACS uitvoeren, op de web pagina
+<a href="../../../rel/whatsnew.html">Nieuws</a>.
 <p>
-We also encourage you to form your own support groups, in which you
-share your experiences of working with the ACS material.  You will
-have far more time to discuss common questions and suggestion among
-each other, compared to the time we can make available to you
-individually.  And the more serious your collaborations will become,
-the more we will be motivated to help you implement the many great
-suggestions you undoubtedly will come up with.
+We raden jullie ook aan om zelf groepjes te vormen om daarin met
+elkaar je ervaring met het werken aan ACS te delen.  Hoewel wij je
+af en toe best met raad en daad willen bijstaan, zullen jullie toch
+veel meer tijd aan elkaar kunnen besteden dan wij mogelijkerwijs kunnen
+uittrekken.  Bovendien, hoe interessanter jullie groepswerk zal worden,
+hoe meer het ons zal lonen om rustig met jullie aan tafel te gaan zitten
+om te helpen om de nieuwe interessante ideeen te implementeren waar jullie
+ongetwijfeld mee naar voren zullen komen.
 
 <hr>
 <a name="astro"></a>
 <b> Ik ben een sterrenkundige, en al gepromoveerd.  Is dit iets voor mij?</b>
 <p>
-Yes, if you have any interest in dense stellar systems.  Whether you
-are an observer or theorist, from 2005 onward, the <i>Kali</i> project
-will give you the tools to run simulations in a friendly environment.
-Our presentation is designed to be self-contained, without assuming a
-background knowledge beyond basic astrophysics.  If it turns out that
-you find anything lacking in this respect, please
-<a href="mailto:comments@artcompsci.org">contact us</a>.
+Oh ja, zo lang je maar geinteresseerd ben in stersystemen met hoge
+dichtheden.  Of je nu een waarnemer bent of een theoreet, het
+<i>Kali</i> project zal je vanaf 2005 meer en meer stukken gereedschap
+aan kunnen bieden om simulaties uit te voeren in een gebruikersvriendelijke
+omgeving.  Onze presentatie is erop gericht om op eigen benen te
+staan, zonder veel achtergrondkennis te verwachten, afgezien van algemene
+basisbegrippen in de astrofysica.  Als je merkt dat er plekken zijn in
+onze uitleg waarin we te weinig uitleg geven, dan zouden we het op
+prijs stellen als je <a href="mailto:comments@artcompsci.org">
+contact met ons opneemt</a>, om het ons te laten weten.
 
 <hr>
 <a name="amateur"></a>
 <b> Ik ben een amateur sterrenkundige.  Is dit iets voor mij?</b>
 <p>
-Absolutely!  We very much hope that you will download our software,
-and explore the virtual heavens on your computer, just as you explore
-the actual heavens with your telescope.  We have tried to make our
-presentation self-contained.  In addition, we will continue to add
-explanations and provide more pointers to background information, as
-needed.
+Absoluut!  Het is onze bedoeling dat je onze software zult gaan gebruiken
+om zo een virtueel heelal te verkennen op je eigen computer, net zoals
+je het werkelijke heelal verkent met je telescoop.  We hebben ons best
+gedaan om onze presentatie zoveel mogelijk los te staan van andere boeken,
+zodat je het direct kunt gebruiken, zonder andere benodigdheden.  Wel
+zullen we meer en meer suggesties gaan vermelden voor het vinden van
+verdere achtergrondinformatie, maar het is echt onze bedoeling dat de
+boeken en programmas hier op zichzelf al direct gebruikt kunnen worden.
 <p>
-If you find that there are key points that are not yet clearly explained,
-or missing altogether, please feel free to
-<a href="mailto:comments@artcompsci.org">let us know</a>.  We may not
-find the time to respond and thank each of you individually, but rest
-assured that your comments will be greatly appreciated.
+Als je op belangrijke begrippen stuit die wij gebruiken zonder dat we
+ze duidelijk uiteenzetten, dan stellen wij het op prijs als je ons daar
+even een <a href="mailto:comments@artcompsci.org">berichtje</a> over
+stuurt.  Afhankelijk van hoe druk we het hebben, zal het al of niet
+mogelijk zijn om jullie allemaal individueel te bedanken.  Maar ook al
+zouden we geen tijd hebben om je persoonlijk te bedankten, dan zullen
+we toch zeker je suggesties waarderen en serieus nemen.
 
 <hr>
 <a name="help"></a>
 <b>Hoe kan ik meehelpen?</b>
 <p>
-Since we are still in the initial phase of setting up the ACS project,
-most of our attention is currently focused on writing enough volumes
-to present a full working environment for N-body simulations.  We
-expect to finish this initial phase some time in 2005.  From then on,
-there will be increasingly many opportunities to join us in our attempt
-to produce a virtual astronomy laboratory.
+Omdat het ACS project nog vrijwel in de kinderschoenen staat, besteden
+we voorlopig onze meeste aandacht aan het schrijven van genoeg boekdelen
+om een volledig functioneel systeem op te zetten voor het werken met
+N-lichamen simulaties.  We hopen deze beginfase ergens in 2005 af te
+kunnen ronden.  Vanaf die tijd zullen er meer en meer gelegenheden
+zijn om ons te helpen in ons project om een virtueel sterrenkundig
+laboratorium op te zetten.
 <p>
-Opportunities for software development will range from specialized
-areas in computational astrophysics and numerical methods to more
-general areas in graphics and user interfaces, and parallelizing codes.
-In addition, we will need much help in getting our environment ported
-to a range of different platforms and operating systems.
+Er zullen meer en meer gelegenheden komen om software te ontwikkelen,
+om ons project verder te ondersteunen, in een breed spectrum dat een
+weid terrein bestrijkt: van gespecializeerde terreinen in numerieke
+methoden in de astrofysica tot heel algemene methodes op het gebied
+van graphics en user interfaces, en ook het paralellizeren van programmas.
+Verder zullen we ook zeker nog heel wat hulp nodig hebben in het porteren
+van ons software systeem naar verschillende types computer en operating
+systems.
 <p>
-As our project will grow larger, and our user base will increase, we
-will need volunteers to answer routine inquiries, and to help
-beginners to get started.  In addition, it would be wonderful to make
-translations of our material available to a wide audience fluent in
-other languages than English.
+Alnaargelang ons project verder zal groeien, en het aantal gebruikers
+toe zal nemen, zullen we ook meer en meer vrijwilligers nodig hebben
+om ons te helpen om standaard vragen te beantwoorden, en om beginnende
+gebruikers een handje te helpen.  Bovendien zal het ook prettig zijn als
+we wat meer hulp krijgen om een groter gedeelte van het materiaal hier
+vanuit het Engels in het Nederlands te vertalen, om zo een wijder
+publiek te kunnen bereiken.
 <p>
-If you would like to make a serious contribution in any of these
-areas, please <a href="mailto:comments@artcompsci.org">contact us</a>.
+Als je interesse hebt om een serieuze contributie te maken op een of
+meerdere van deze gebieden, dan zouden we het zeer op prijs stellen
+als je ons <a href="mailto:comments@artcompsci.org">daarover aanschrijft</a>.
 
 <hr>
 

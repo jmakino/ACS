@@ -260,9 +260,7 @@ called <tt>quartiles.rb</tt>:
 And let's test it right away:
 
  :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles.rb
-
  :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles.rb
-
  :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles.rb
 
 *Bob*: Wonderful!  So my Plummer code was correct after all.  But I'm
