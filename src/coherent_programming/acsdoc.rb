@@ -1037,6 +1037,14 @@ END
 	ostring += s + "\n" + navi+ "\n"
       elsif s =~ /^<\/body/
 	ostring +=   navi + "\n" + s + "\n"
+      elsif  s =~ /<!-- banner header -->/
+        # adding space after header table
+	ostring +=    s + "\n <p>&ensp;</p> \n"
+      elsif s =~ /^<table.*Information on file/
+	# skip the filename block created by rdoc
+	while s !~ /^<\/table>/
+	  s= instring.shift
+	end
       else
 	ostring +=     s + "\n"
       end
