@@ -1,6 +1,6 @@
 = Returning to Simplicity
 
-== Extra +Body+ Variables
+== Extra <tt>Body</tt> Variables
 
 *Bob*: Now that we've begun to modify my original N-body code,
 I would like to write a third version, where I keep local copies of

@@ -409,9 +409,9 @@ class Worldpoint
 
   MAX_TIMESTEP_INCREMENT_FACTOR = 2
 
-  attr_accessor :pos, :vel
+  attr_accessor :pos, :vel, :next_time
 
-  attr_reader :mass, :time, :next_time,
+  attr_reader :mass, :time, 
               :nsteps, :minstep, :maxstep
 
   def setup(method, dt_param, time)

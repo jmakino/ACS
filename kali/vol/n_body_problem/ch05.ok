@@ -86,7 +86,7 @@ correct.  Congratulations!
 
 *Bob*: Thanks!  So let's move on.
 
-== Single Links in +Body+
+== Single Links in <tt>Body</tt>
 
 *Alice*: Well, before we move on, let us revisit the choice you made of
 installing double links between the particles in an N-body system and
@@ -127,7 +127,7 @@ by the equivalent version:
 
  :inccode: .rknbody3.rb+epot+Body
 
-== Single Links in +Nbody+
+== Single Links in <tt>Nbody</tt>
 
 *Bob*: Okay, and let us put the code into a separate file <tt>rknbody3.rb</tt>.
 Life gets a bit simpler for the +Nbody+ code: when it creates its daughters,

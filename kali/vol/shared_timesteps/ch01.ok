@@ -117,7 +117,7 @@ relative distance squared divided by relative acceleration.
 
 *Alice*: If you say so; I mean, I'll try!
 
-== Implementation on the +Body+ Level
+== Implementation on the <tt>Body</tt> Level
 
 *Bob*: There will be no ambiguity once we code it up.
 I'll copy the code <tt>nbody_cst1.rb</tt> into a new file
@@ -150,7 +150,7 @@ Similarly, when the two body will meet each other in a free fall time
 that is shorter than our time scale estimate so far, we make the same
 kind of replacement.  Looks good!
 
-== Implementation on the +NBody+ Level
+== Implementation on the <tt>NBody</tt> Level
 
 *Bob*: This gives us an individual time scale, an estimate of the amount
 of time after which to expect significant changes, but on a per-particle
