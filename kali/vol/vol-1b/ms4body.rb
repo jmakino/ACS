@@ -10,9 +10,9 @@ class Body
 
   def evolve(integration_method, dt, dt_dia, dt_out, dt_end)
     time = 0
-    nsteps = 0
+    @nsteps = 0
     e_init
-    write_diagnostics(nsteps, time)
+    write_diagnostics(time)
 
     t_dia = dt_dia - 0.5*dt
     t_out = dt_out - 0.5*dt
@@ -21,9 +21,9 @@ class Body
     while time < t_end
       send(integration_method,dt)
       time += dt
-      nsteps += 1
+      @nsteps += 1
       if time >= t_dia
-        write_diagnostics(nsteps, time)
+        write_diagnostics(time)
         t_dia += dt_dia
       end
       if time >= t_out
@@ -70,6 +70,50 @@ class Body
     @vel = vel + (a0+a1*4+a2)*(1/6.0)*dt                                    #1
   end
 
+  def rk6(dt)
+    d = [0.784513610477560e0, 0.235573213359357e0, -1.17767998417887e0,
+         1.31518632068391e0]
+    for i in 0..2 do leapfrog(dt*d[i]) end
+    leapfrog(dt*d[3])
+    for i in 0..2 do leapfrog(dt*d[2-i]) end
+  end
+
+  def ms2(dt)
+    if @nsteps == 0
+      @prev_acc = acc
+      rk2(dt)
+    else
+      old_acc = acc
+      jdt = old_acc - @prev_acc
+      @pos += vel*dt + old_acc*0.5*dt*dt
+      @vel += old_acc*dt + jdt*0.5*dt
+      @prev_acc = old_acc
+    end
+  end
+
+  def ms4(dt)
+    if @nsteps == 0
+      @ap3 = acc
+      rk4(dt)
+    elsif @nsteps == 1
+      @ap2 = acc
+      rk4(dt)
+    elsif @nsteps == 2
+      @ap1 = acc
+      rk4(dt)
+    else
+      ap0 = acc
+      jdt = ap0*(11.0/6.0) - @ap1*3 + @ap2*1.5 - @ap3/3.0
+      sdt2 = ap0*2 - @ap1*5 + @ap2*4 - @ap3
+      cdt3 = ap0 - @ap1*3 + @ap2*3 - @ap3
+      @pos += vel*dt + (ap0/2.0 + jdt/6.0 + sdt2/24.0)*dt*dt
+      @vel += ap0*dt + (jdt/2.0 + sdt2/6.0 + cdt3/24.0)*dt
+      @ap3 = @ap2
+      @ap2 = @ap1
+      @ap1 = ap0
+    end
+  end
+
   def ekin                        # kinetic energy
     0.5*(@vel*@vel)               # per unit of reduced mass
   end
@@ -82,10 +126,10 @@ class Body
     @e0 = ekin + epot             # per unit of reduced mass
   end
 
-  def write_diagnostics(nsteps, time)
+  def write_diagnostics(time)
     etot = ekin + epot
     STDERR.print <<END
-at time t = #{sprintf("%g", time)}, after #{nsteps} steps :
+at time t = #{sprintf("%g", time)}, after #{@nsteps} steps :
   E_kin = #{sprintf("%.3g", ekin)} ,\
  E_pot =  #{sprintf("%.3g", epot)} ,\
  E_tot = #{sprintf("%.3g", etot)}

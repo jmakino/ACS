@@ -70,48 +70,25 @@ class Body
     @vel = vel + (a0+a1*4+a2)*(1/6.0)*dt                                    #1
   end
 
-  def milne(dt)
-    if @nsteps == 0
-      @prev2_pos = pos
-      rk6(dt)
-    elsif @nsteps == 1
-      @prev1_pos = pos
-      @prev1_acc = acc
-      rk6(dt)
-    elsif @nsteps == 2
-      @old_pos = pos
-      @old_acc = acc
-      rk6(dt)
-      @new_acc = acc
-    else
-      @prev3_pos = @prev2_pos
-      @prev2_pos = @prev1_pos
-      @prev1_pos = @old_pos
-      @old_pos = pos
-      @prev1_vel = @old_vel
-      @old_vel = vel
-      @prev2_acc = @prev1_acc
-      @prev1_acc = @old_acc
-      @old_acc = @new_acc
-      @pos = @old_pos + @prev2_pos - @prev3_pos +
-             (@old_acc*5 + @prev1_acc*2 + @prev2_acc*5)*dt*dt/4
-      @new_acc = acc
-
-
-
-
-
-      @vel = @old_vel*2 - @prev1_vel +
-             (@old_acc*5 + @prev1_acc*2 + @prev2_acc*5)*dt*dt/12
-    end
-  end
-
   def rk6(dt)
     d = [0.784513610477560e0, 0.235573213359357e0, -1.17767998417887e0,
          1.31518632068391e0]
     for i in 0..2 do leapfrog(dt*d[i]) end
     leapfrog(dt*d[3])
     for i in 0..2 do leapfrog(dt*d[2-i]) end
+  end
+
+  def ms2(dt)
+    if @nsteps == 0
+      @prev_acc = acc
+      rk2(dt)
+    else
+      old_acc = acc
+      jdt = old_acc - @prev_acc
+      @pos += vel*dt + old_acc*0.5*dt*dt
+      @vel += old_acc*dt + jdt*0.5*dt
+      @prev_acc = old_acc
+    end
   end
 
   def ekin                        # kinetic energy

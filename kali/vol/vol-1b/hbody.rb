@@ -1,4 +1,4 @@
-require "hvector.rb"
+require "vector.rb"
 
 class Body
 
@@ -112,7 +112,7 @@ class Body
     STDERR.print <<END
 at time t = #{sprintf("%g", time)}, after #{nsteps} steps :
   E_kin = #{sprintf("%.3g", ekin)} ,\
- E_pot =  #{sprintf("%.3g", epot)},\
+ E_pot =  #{sprintf("%.3g", epot)} ,\
  E_tot = #{sprintf("%.3g", etot)}
              E_tot - E_init = #{sprintf("%.3g", etot-@e0)}
   (E_tot - E_init) / E_init =#{sprintf("%.3g", (etot - @e0) / @e0 )}

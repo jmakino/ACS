@@ -62,7 +62,8 @@ in Newton's equations of gravity, so we only have
 
 To make a connection with Abramowitz and Stegun, their _x_ becomes our
 time _t_, their _y_ becomes our position vector <tex>$\br$</tex>, and their
-_f_ becomes our acceleration vector <tex>$\ba$</tex>.  Also, their <i>y'</i>
+_f_ becomes our acceleration vector <tex>$\ba$</tex>.  Also, their
+<tex>$y'$</tex>
 becomes our velocity vector <tex>$\bv$</tex>.  Finally, their _h_ is
 our time step +dt+.
 

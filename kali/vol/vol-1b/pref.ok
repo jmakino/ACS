@@ -6,9 +6,10 @@ In the current volume, we continue the dialogue that we started in the
 previous volume, where Alice and Bob developed a gravitational 2-body
 code, based on the simplest of all integration algorithms, the forward
 Euler method.  They are now ready to implement a variety of other
-algorithms, such as the leapfrog and Runge-Kutta schemes, up to fourth
-order.  In a future release, we plan to extend the discussion to
-higher-order schemes, as well as to multi-step methods.
+algorithms, such as the leapfrog and Runge-Kutta schemes, up to sixth
+order, and to the Hermite scheme that integrates the derivative of
+Newton's equations.  In a future release, we plan to extend the
+discussion to multi-step methods.
 
 == Acknowledgments
 
@@ -22,11 +23,9 @@ Ninomiya.  In addition, we thank the Observatory of Strasbourg, where
 the kind invitation of Professor Christian Boily allowed us to make a
 rapid beginning with the current volume.
 
-It is our pleasure to thank Douglas Heggie for his comments on the
-manuscript.
+It is our pleasure to thank Douglas Heggie and Michele Trenti for
+their comments on the manuscript.
 
 Piet Hut and Jun Makino
 
 Kyoto, June 2004
-
-(written for the occasion of the ACS 1.0 release)

@@ -94,7 +94,7 @@ something in between 0.1 and 0.01.  I'll take 0.04:
 
 *Alice*: Ah, good, less than a percent error in relative total energy
 conservations.  We're getting somewhere in our testing.  Let's halve
-the time step.  If you're <tt>rk6</tt> method is really sixth-order,
+the time step.  If your <tt>rk6</tt> method is really sixth-order,
 halving the time step should make the result 64 times more accurate.
 
 *Bob*: Here we go:

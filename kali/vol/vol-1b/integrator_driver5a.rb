@@ -1,13 +1,13 @@
-require "ms2body.rb"
+require "hbody.rb"
 
 include Math
 
 #:segment start: barebones
-dt = 0.01            # time step
-dt_dia = 0.1         # diagnostics printing interval
-dt_out = 0.1         # output interval
-dt_end = 0.1         # duration of the integration
-method = "ms2"       # integration method
+dt = 0.001          # time step
+dt_dia = 10          # diagnostics printing interval
+dt_out = 10         # output interval
+dt_end = 10         # duration of the integration
+method = "hermite"       # integration method
 #:segment end:
 
 STDERR.print "dt = ", dt, "\n",

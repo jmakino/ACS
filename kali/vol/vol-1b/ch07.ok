@@ -1,4 +1,24 @@
-= A Multi-Step Method
+= A Two-Step Method
 
-[to be written]
+== xxx
+
+Start with <tt>rk6body.rb</tt>
+
+First replace +nsteps+ by an instance variable <tt>@nsteps</tt>,
+since it will be used for starting up the multistep method.
+
+Call this <tt>ms2body.rb</tt>.
+
+Extend <tt>vector.rb</tt> to allow "-" and why not "/" as well for
+good measure.
+
+ :commandoutput: ruby integrator_driver4a.rb < euler.in
+
+ :commandoutput: ruby integrator_driver4b.rb < euler.in
+
+looks like 2nd order  
+
+ :commandoutput: ruby integrator_driver4c.rb < euler.in
+
+Even better; clearly 2nd order
 
