@@ -5,3 +5,5 @@ clean:
 	$(MAKE) -C ok   clean
 	$(MAKE) -C kali clean
 
+newversion: all
+	ruby src/utilities/acsmaketar.rb

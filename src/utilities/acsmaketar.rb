@@ -176,7 +176,3 @@ if ans == "y"
   system sendcommand
   system extractcommand
 end
-
-
-  
-
