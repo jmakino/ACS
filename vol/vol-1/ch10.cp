@@ -1,8 +1,6 @@
-= Chapter 3.  A Simple Integrator
+= Getting Started
 
-== Getting Started
-
-=== Ruby
+== Ruby
 
 *Alice*: So here we are, ready to begin writing a toy model to simulate
 a dense stellar system.  We have decided to begin with a very simple
@@ -87,7 +85,7 @@ for a given problem is to start with the physical structures that
 occur naturally, but that may not always be the best option, and
 certainly not the only one.
 
-=== A Body Class
+== A Body Class
 
 *Bob*: For example, a single particle has as a minimum a mass,
 a position and velocity.  Whenever you deal with a particle, you
@@ -159,7 +157,7 @@ variable.
 *Alice*: And you can change the type of that value, whenever you want?
 Can we try that?  I'd like to see the syntax of how you do that.
 
-=== The irb Interpreter
+== The irb Interpreter
 
 *Bob*: The easiest way is to use the Ruby interpreter +irb+.  The
 acronym stands for <i>interactive Ruby</i>.  You invoke it 
@@ -263,7 +261,7 @@ lower case letters: we have three such variables, +mass+, +pos+, and
 +vel+.  All three are given here as possible parameters to the
 initialization function +initialize+.
 
-=== Creating a Body
+== Creating a Body
 
 *Alice*: So how do you create a particle?
 
@@ -346,7 +344,7 @@ ago.  Okay, now I remember.  Of course.  Here is how you do it in
 
  :inccode: body1.C
 
-=== xxxxxxxx
+== xxxxxxxx
 
 *Alice*: That is quite an impressive difference, between Ruby and C++!
 But aren't you cheating a bit?  That last part, with the +main+ function
