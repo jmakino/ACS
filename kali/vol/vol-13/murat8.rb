@@ -1,6 +1,6 @@
 require "vector.rb"
 require "clop.rb"
-require "block_time.rb"
+require "old_block_time.rb"
 
 $n_longer = $n_shorter = $n_halve = 0
 

@@ -1,25 +1,19 @@
-#
-# for now, no tools for dealing with numbers with different scale factors
-#
-
 class Block_time
 
   include Comparable
 
   TIME_ARRAY_MAX_LENGTH = 50     # 2**-50 = 9e-16 , okay for double precision
 
-  attr_accessor :scale_factor, :time_int, :time_array
+  attr_accessor :time_int, :time_array
 
-  def initialize(time = 0, scale_factor = 1.0)
+  def initialize(time = 0)
     @time_array = []
-    set_time(time, scale_factor)
+    set_time(time)
   end
 
-  def set_time(time, factor = 1)
-    @scale_factor = factor
-    tau = time/factor.to_f
-    @time_int = tau.floor
-    rest = tau - @time_int                          # 0 <= remainder < 1
+  def set_time(t)
+    @time_int = t.floor
+    rest = t - @time_int                          # 0 <= remainder < 1
     for i in 0...TIME_ARRAY_MAX_LENGTH
       rest *= 2
       @time_array[i] = rest.floor
@@ -34,12 +28,11 @@ class Block_time
       rest = rest * 0.5
       number += rest * @time_array[i]	
     end
-    number*@scale_factor
+    number
   end
 
   def <=>(a)
     if a.class == Block_time
-      raise if @scale_factor != a.scale_factor
       return -1 if @time_int < a.time_int
       return 1 if @time_int > a.time_int
       for i in 0...TIME_ARRAY_MAX_LENGTH
@@ -49,15 +42,14 @@ class Block_time
       return 0
     end
     if a.class == Float or a.class == Fixnum
-      return self.to_f <=> a
+      a_block = Block_time.new(a)
+      return self <=> a_block
     end
   end
 
   def +(a)
     if a.class == Block_time
-      raise if @scale_factor != a.scale_factor
       sum = Block_time.new
-      sum.scale_factor = @scale_factor
       i = TIME_ARRAY_MAX_LENGTH - 1
       carry = 0
       while i >= 0
@@ -82,7 +74,7 @@ class Block_time
       return sum
     end
     if a.class == Float or a.class == Fixnum
-      a_block = Block_time.new(a, @scale_factor)
+      a_block = Block_time.new(a)
       return self + a_block
     end
   end
@@ -92,7 +84,7 @@ class Block_time
       return self + (-a)
     end
     if a.class == Float or a.class == Fixnum
-      a_block = Block_time.new(a, @scale_factor)
+      a_block = Block_time.new(a)
       return self - a_block
     end
   end
@@ -101,25 +93,19 @@ class Block_time
 # well, why does this not work ???
 #
 #  def =(a)
-#    @scale_factor = a.scale_factor
-#    @time_int = a.time_int
-#    @time_array.each_index do |i|
-#      @time_array[i] = a.time_array[i]
+#    new_a = Block_time.new
+#    new_a.time_int = a.time_int
+#    a.time_array.each_index do |i|
+#      new_a.time_array[i] = a.time_array[i]
 #    end
-#  end
+#  end    
 
-  def clone                                               # this is a deep copy
-    a = Block_time.new
-    a.scale_factor = @scale_factor
-    a.time_int = @time_int
-    @time_array.each_index do |i|
-      a.time_array[i] = @time_array[i]
-    end
-    a
+  def copy                               # this is a deep copy (or deep clone)
+    Marshal.load(Marshal.dump(self))
   end
 
   def -@
-    minus_self = self.clone
+    minus_self = self.copy
     minus_self.contract
     arr = minus_self.time_array
     for i in 0..(arr.size-2)
@@ -136,11 +122,11 @@ class Block_time
   end
 
   def +@
-    self.clone
+    self
   end
 
   def contract
-    while @time_array.last == 0
+    while @time_array[@time_array.size - 1] == 0
       break unless @time_array.pop
     end
     self
@@ -156,18 +142,18 @@ class Block_time
   end
 
 #
-# t = t.int + t.bit + t.rest      :      integer part, leading binary bit, rest
+# t = t.int + t.block + t.rest  :  integer part, leading binary part, rest
 #
 
   def int
-    t = self.clone
+    t = self.copy
     t.time_array = []
     t.expand
     t
   end
 
-  def bit
-    t = self.clone
+  def block
+    t = self.copy
     t.time_int = 0
     n = t.time_array.size
     for i in 0...n
@@ -183,7 +169,7 @@ class Block_time
   end
 
   def rest
-    t = self.clone
+    t = self.copy
     t.time_int = 0
     n = t.time_array.size
     for i in 0...n
@@ -196,7 +182,15 @@ class Block_time
   end
 
   def commensurable?(t)
-    raise if @scale_factor != t.scale_factor
+    contract
+    t.contract
+    answer = @time_array.size >= t.time_array.size
+    expand
+    t.expand
+    answer
+  end
+
+  def commensurable?(t)
     answer = self.contract.time_array.size >= t.contract.time_array.size
     expand
     t.expand
@@ -222,8 +216,7 @@ class Block_time
 
   def to_s
     contract
-    s = "{" + @scale_factor.to_s + ", " + @time_int.to_s +
-        ", [" + @time_array.join(", ") + "]}\n"
+    s = "{" + @time_int.to_s + ", [" + @time_array.join(", ") + "]}\n"
     expand
     s
   end
@@ -232,24 +225,24 @@ end
 
 class Float
 
-  def to_b(scale_factor = 1)
-    Block_time.new(self, scale_factor)
+  def to_b
+    Block_time.new(self)
   end
 
 end
 
 class Fixnum
 
-  def to_b(scale_factor = 1)
-    Block_time.new(self, scale_factor)
+  def to_b
+    Block_time.new(self)
   end
 
 end
 
 class String
 
-  def to_b(scale_factor = 1)
-    Block_time.new(self.to_f, scale_factor)
+  def to_b
+    Block_time.new(self.to_f)
   end
 
 end
@@ -267,14 +260,5 @@ p (a-b).to_f
 p -(a-b).to_f
 p -((a-b).to_f)
 p (-(a-b)).to_f
-p 9.87654321.to_b.to_f
-print 2.75.to_b.contract.to_s
-p 2.75.to_b.contract.to_f
-print 2.75.to_b(2).contract.to_s
-p 2.75.to_b(2).contract.to_f
-print 2.75.to_b(0.25).contract.to_s
-p 2.75.to_b(0.25).contract.to_f
-print 2.75.to_b(3).contract.to_s
-p 2.75.to_b(3).contract.to_f
 
 end

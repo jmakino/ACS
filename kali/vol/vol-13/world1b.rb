@@ -1,16 +1,32 @@
 require "acs.rb"
+require "block_time.rb"
 
 class Worldpoint
 
   attr_accessor :mass, :pos, :vel, :acc, :jerk, :time, :next_time
 
-  def propagate(era, wl, dt_param, init_flag = false)
+  def propagate(era, wl, dt_param, init_flag = false, dt_era = 1)
     ss = era.take_snapshot(wl, @next_time)
     wp = ss.body.shift
     wp = self if init_flag
     wp.acc, wp.jerk = wp.get_acc_and_jerk(ss)
     wp.correct(self)
-    wp.next_time = wp.time + wp.collision_time_scale(ss) * dt_param
+    if init_flag
+      scale_factor = dt_era
+    else
+      scale_factor = era.end_time - era.start_time
+    end
+    dt_estimate = (wp.collision_time_scale(ss) * dt_param).to_b(scale_factor)
+    if dt_estimate.int > 0.to_b(scale_factor)
+      dt = 1.to_b
+      dt.scale_factor = scale_factor
+    else
+      dt = dt_estimate.bit
+    end
+    while not dt.commensurable?(wp.time)
+      dt.halve
+    end
+    wp.next_time = wp.time + dt
     wp
   end
 
@@ -86,8 +102,8 @@ class Worldpoint
     end
     wp = Worldpoint.new
     wp.mass = @mass
-    wp.time = t
-    dt = t - @time
+    wp.time = +t                               # this returns a deep clone of t
+    dt = (t - @time).to_f
     wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3
     wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2
     wp
@@ -96,8 +112,8 @@ class Worldpoint
   def interpolate(other, t)
     wp = Worldpoint.new
     wp.mass = @mass
-    wp.time = t
-    dt = other.time - @time
+    wp.time = +t                               # this returns a deep clone of t
+    dt = (other.time - @time).to_f
     snap = (-6*(@acc - other.acc) - 2*(2*@jerk + other.jerk)*dt)/dt**2
     crackle = (12*(@acc - other.acc) + 6*(@jerk + other.jerk)*dt)/dt**3
     dt = t - @time
@@ -109,7 +125,7 @@ class Worldpoint
   end
 
   def correct(old)
-    dt = @time - old.time
+    dt = (@time - old.time).to_f
     @vel = old.vel + (1/2.0)*(old.acc + @acc)*dt +         # first compute @vel
                      (1/12.0)*(old.jerk - @jerk)*dt**2     # since @vel is used
     @pos = old.pos + (1/2.0)*(old.vel + @vel)*dt +         # to compute @pos
@@ -123,8 +139,8 @@ class Worldpoint
     c.vel = @vel*1             # by overloading the = operator ; without 
     c.acc = @acc*1             # this silly trick, no deep vector copy !!
     c.jerk = @jerk*1
-    c.time = @time
-    c.next_time = @next_time
+    c.time = @time.clone                 # or: c.time = +@time
+    c.next_time = @next_time.clone       # or: c.next_time = +@next_time
     c
   end
 
@@ -201,7 +217,8 @@ class Worldline
   def read_initial_worldpoint(time)
     wp = @worldpoint[0] = Worldpoint.new
     wp.read
-    wp.time = wp.next_time = time
+    wp.time = time.clone
+    wp.next_time = time.clone
     wp.acc = wp.pos*0
     wp.jerk = wp.pos*0
   end
@@ -218,10 +235,10 @@ class Worldera
   end
 
   def shortest_extrapolated_worldline
-    t = VERY_LARGE_NUMBER
+    t = nil
     wl = nil
     @worldline.each do |w|
-      if t > w.worldpoint.last.next_time
+      if not t or t > w.worldpoint.last.next_time
         t = w.worldpoint.last.next_time
         wl = w
       end
@@ -230,10 +247,10 @@ class Worldera
   end
 
   def shortest_interpolated_worldline
-    t = VERY_LARGE_NUMBER
+    t = nil
     wl = nil
     @worldline.each do |w|
-      if t > w.worldpoint.last.time
+      if not t or t > w.worldpoint.last.time
         t = w.worldpoint.last.time
         wl = w
       end
@@ -288,12 +305,12 @@ class Worldera
   end
 
   def write_diagnostics(t, nsteps, initial_energy, x_flag, init_flag = false)
-    STDERR.print "at time t = #{sprintf("%g", t)} "
+    STDERR.print "at time t = #{sprintf("%g", t.to_f)} "
     STDERR.print "(from interpolation after #{nsteps} steps "
     if init_flag
-      STDERR.print "to time #{sprintf("%g", @start_time)}):\n"
+      STDERR.print "to time #{sprintf("%g", @start_time.to_f)}):\n"
     else
-      STDERR.print "to time #{sprintf("%g", @end_time)}):\n"
+      STDERR.print "to time #{sprintf("%g", @end_time.to_f)}):\n"
     end
     take_snapshot(nil, t).write_diagnostics(initial_energy, x_flag)
   end
@@ -301,9 +318,9 @@ class Worldera
 #  def read          # for self-documenting data, either Worldera or Snapshot
 #  end
 
-  def read_initial_snapshot
+  def read_initial_snapshot(scale_factor)
     n = gets.to_i
-    @start_time = gets.to_f
+    @start_time = gets.to_f.to_b(scale_factor)
     for i in 0...n
       @worldline[i] = Worldline.new
       @worldline[i].read_initial_worldpoint(@start_time)
@@ -313,7 +330,7 @@ class Worldera
   def write_snapshot(t)
     raise if not valid_time?(t)
     print @worldline.size, "\n"
-    printf("%24.16e\n", t)
+    printf("%24.16e\n", t.to_f)
     take_snapshot(nil, t).write
   end
 
@@ -321,17 +338,17 @@ end
 
 class World
 
-  def startup(dt_param)
+  def startup(dt_param, dt_era)
     @era.worldline.each do |wl|
-      wl.worldpoint[0].propagate(@era, wl, dt_param, true)
+      wl.worldpoint[0].propagate(@era, wl, dt_param, true, dt_era)
     end
     ss = @era.take_snapshot(nil, @era.start_time)
     ss.ekin + ss.epot
   end
 
   def evolve(c)
-    initial_energy = startup(c.dt_param)
-    time = @era.start_time
+    initial_energy = startup(c.dt_param, c.dt_era)
+    time = @era.start_time.clone
     nsteps = 0
     @era.write_diagnostics(time, nsteps, initial_energy, c.x_flag, true)
     t_dia = time + c.dt_dia
@@ -354,9 +371,9 @@ class World
     end
   end
 
-  def read_initial_snapshot
+  def read_initial_snapshot(c)
     @era = Worldera.new
-    @era.read_initial_snapshot
+    @era.read_initial_snapshot(c.dt_era)
   end
 
   def write_snapshot(time)
@@ -419,11 +436,13 @@ end
 
 options_text= <<-END
 
-  Description: Individual Time Step Hermite Code
+  Description: Block Time Step Hermite Code
   Long description:
     This program evolves an N-body code with a fourth-order Hermite Scheme,
-    using individual time steps.  Note that the program can be forced to let
-    all particles share the same (variable) time step with the option -a.
+    using block time steps.  The maximum length of a block time step is the
+    duration of an era, which can be set with the option -e.  Note that the
+    program can be forced to let all particles share the same (variable)
+    time step with the option -a.
     (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
 
     example:
@@ -554,7 +573,7 @@ options_text= <<-END
 clop = parse_command_line(options_text, true)
 
 w = World.new
-w.read_initial_snapshot                     # for now; "read" w. self-doc. data
+w.read_initial_snapshot(clop)               # for now; "read" w. self-doc. data
 #w.write_snapshot(0)
 #w.write
 w.evolve(clop)
