@@ -80,6 +80,10 @@ would think the files are updated each time source file is copied to
 the target directory. To avoid this, I simply run "diff" before
 actually updating file.
 
+Further question: What should be defined as environment valiables and
+how?
+
+
 
   
   

@@ -4,10 +4,12 @@
 # one should source this file somewhere
 #
 if ( $?ACSROOT) then
-  if (! $?ACSSCRIPTS ) then
-    setenv ACSDOCOPTIONS --reuseoutput
-    setenv ACSSCRIPTS $ACSROOT/bin
+   if (! $?ACSSCRIPTS ) then
+     set path=( $ACSSCRIPTS $path )
+   endif
+   setenv ACSDOCOPTIONS --reuseoutput
+   setenv ACSSCRIPTS $ACSROOT/bin
    setenv ACSLIBS $ACSROOT/lib
-   set path=( $ACSSCRIPTS $path )
-  endif
+   setenv RUBYPATH $ACSSCRIPTS
+   setenv RUBYLIB $ACSLIBS
 endif
