@@ -1,200 +1,24 @@
-= A Multi-Step Method
+= A Two-Step Method
 
 == xxx
 
-xxx
+Start with <tt>rk6body.rb</tt>
 
-Taylor series:
+First replace +nsteps+ by an instance variable <tt>@nsteps</tt>,
+since it will be used for starting up the multistep method.
 
-:equation:
-\ba \,=\, \ba_0 + \bj_0 dt + \hhalf \bs_0 (dt)^2 + \one{6} \bc_0 (dt)^3
+Call this <tt>ms2body.rb</tt>.
 
-For the three previous times:
+Extend <tt>vector.rb</tt> to allow "-" and why not "/" as well for
+good measure.
 
-:eqnarray:
-\label{threea}
-\ba_{-1} \,&=&\,
-\ba_0 - \bj_0 dt + \hhalf \bs_0 (dt)^2 - \one{6} \bc_0 (dt)^3       \nonumber\\
-\ba_{-2} \,&=&\,
-\ba_0 - 2\bj_0 dt + 2 \bs_0 (dt)^2
- - {\textstyle\frac{4}{3}} \bc_0 (dt)^3       \nonumber\\
-\ba_{-3} \,&=&\,
-\ba_0 - 3\bj_0 dt + {\textstyle\frac{9}{2}} \bs_0 (dt)^2
- - {\textstyle\frac{9}{2}} \bc_0 (dt)^3
+ :commandoutput: ruby integrator_driver4a.rb < euler.in
 
-From Eq. (ref(threea)):
+ :commandoutput: ruby integrator_driver4b.rb < euler.in
 
-:eqnarray:
-\label{twoa}
-2\ba_{-1} - \ba_{-2} \,&=&\,
-\ba_0 -  \bs_0 (dt)^2 + \bc_0 (dt)^3       \nonumber\\
-3\ba_{-1} - \ba_{-3} \,&=&\,
-2\ba_0 -  3\bs_0 (dt)^2 + 4\bc_0 (dt)^3
+looks like 2nd order  
 
-Now eliminate <tex>$\bs_0$</tex> :
+ :commandoutput: ruby integrator_driver4c.rb < euler.in
 
-<tex>$$
-3\left( 2\ba_{-1} - \ba_{-2} \right) - \left( 3\ba_{-1} - \ba_{-3} \right)
-\,=\, \ba_0 -  \bc_0 (dt)^3   \,\,\,\,\Rightarrow
-$$</tex>
+Even better; clearly 2nd order
 
-<tex>$$
-3\ba_{-1} - 3\ba_{-2} +  \ba_{-3}
-\,=\, \ba_0 -  \bc_0 (dt)^3   \,\,\,\,\Rightarrow
-$$</tex>
-
-:equation:
-\label{bc}
-\bc_0 \,=\, {1\over (dt)^3}\left\{
-\ba_0 -3\ba_{-1} + 3\ba_{-2} - \ba_{-3}
-\right\}
-
-Now substitute Eq. (ref(bc)) in the top line of Eq. (ref(twoa)) :
-
-:eqnarray:
-\bs_0(dt)^2 \,&=&\, 
--2\ba_{-1} + \ba_{-2} + \ba_0 + \bc_0 (dt)^3 \nonumber\\
-&=&\,
--2\ba_{-1} + \ba_{-2} + \ba_0 + 
-\left\{
-\ba_0 -3\ba_{-1} + 3\ba_{-2} - \ba_{-3}
-\right\}\,\,\,\,\Rightarrow \nonumber
-
-:equation:
-\label{bs}
-\bs_0 \,=\, {1\over (dt)^2}\left\{
-2\ba_0 -5\ba_{-1} + 4\ba_{-2} - \ba_{-3}
-\right\}
-
-Now substitute Eqs. (ref(bc)) and (ref(bs)) in the top line of
-Eq. (ref(threea)) :
-
-:eqnarray:
-\bj_0 dt \,\,\,=\,\,\, -\ba_1 \,\,+\,\, \ba_0 &+&
-\hhalf \bs_0(dt)^2 -\one{6} \bc_0(dt)^3          \nonumber\\
--\ba_1 \,\,+\,\, \ba_0 &+&
-\left\{
-\ba_0 -{\textstyle\frac{5}{2}}\ba_{-1} + 2\ba_{-2} - \hhalf\ba_{-3}
-\right\}             \nonumber\\
-&+&
-\left\{
--\one{6}\ba_0 +\hhalf\ba_{-1} -\hhalf\ba_{-2} +\one{6} \ba_{-3}
-\right\}\,\,\,\,\Rightarrow           \nonumber
-
-:equation:
-\label{bj}
-\bj_0 \,=\, {1\over dt}\left\{
-{\textstyle\frac{11}{6}}\ba_0 -3\ba_{-1} + \three{2}\ba_{-2} - \one{3}\ba_{-3}
-\right\}
-
-Now check whether we did not make a mistake:
-
-:eqnarray:
-&&\ba_0 - \bj_0 dt + \hhalf\bs_0 (dt)^2 - \one{6} \bc_0 (dt)^3 \,\,=\nonumber\\
-&&                                                                  \nonumber\\
-&&\,\,\,\,\,\,+\ba_0                                       \nonumber\\
-&&-{\textstyle\frac{11}{6}}\ba_0 +3\ba_{-1} - \three{2}\ba_{-2}
-  + \one{3}\ba_{-3}                                                 \nonumber\\
-&&\,\,\,\,\,\, +\ba_0
-  -{\textstyle\frac{5}{2}}\ba_{-1} + 2\ba_{-2} -\hhalf\ba_{-3}\nonumber\\
-&&\,\,-\one{6}\ba_0 +\hhalf\ba_{-1}
-  -\hhalf\ba_{-2} +\one{6}\ba_{-3}\,\,\,=\,\,\, \ba_{-1}         \nonumber
-
-:eqnarray:
-&&\ba_0 - 2\bj_0 dt + 2 \bs_0 (dt)^2
- - {\textstyle\frac{4}{3}} \bc_0 (dt)^3\,\,=                        \nonumber\\
-&&                                                                  \nonumber\\
-&&\,\,\,\,\,\,+\ba_0                                       \nonumber\\
-&&-{\textstyle\frac{11}{3}}\ba_0 \,+\,6\ba_{-1} - 3\ba_{-2}
-  + {\textstyle\frac{2}{3}}\ba_{-3}                                 \nonumber\\
-&&\,\,\, +4\ba_0
-  -10\ba_{-1} + 8\ba_{-2} -2\ba_{-3}\nonumber\\
-&&\,\,-{\textstyle\frac{4}{3}}\ba_0 \,\,+\,4\ba_{-1}
-  -4\ba_{-2} +{\textstyle\frac{4}{3}}\ba_{-3}\,\,\,=\,\,\, \ba_{-2}  \nonumber
-
-:eqnarray:
-&&\ba_0 - 3\bj_0 dt + {\textstyle\frac{9}{2}} \bs_0 (dt)^2
- - {\textstyle\frac{9}{2}} \bc_0 (dt)^3\,\,=                        \nonumber\\
-&&                                                                  \nonumber\\
-&&\,\,\,\,\,\,\,\,\,\,\,\ba_0                                       \nonumber\\
-&&-{\textstyle\frac{11}{2}}\ba_0 \,\,+\,\,9\ba_{-1}
- \,-\, {\textstyle\frac{9}{2}}\ba_{-2}
-  \,+\,\ba_{-3}                                                    \nonumber\\
-&&\,\,\,\, +9\ba_0
-  -{\textstyle\frac{45}{2}}\ba_{-1} + 18\ba_{-2}
-  -{\textstyle\frac{9}{2}}\ba_{-3}\nonumber\\
-&&\,\,\,-{\textstyle\frac{9}{2}}\ba_0 +{\textstyle\frac{27}{2}}\ba_{-1}
-  -{\textstyle\frac{27}{2}}\ba_{-2} +{\textstyle\frac{9}{2}}\ba_{-3}
-  \,\,\,=\,\,\, \ba_{-3}  \nonumber
-
-
-Then <tt>ms4body.rb</tt>.
-
-Ah, already using "/" method from <tt>vector.rb</tt>
-
- :commandoutput: ruby integrator_driver4d.rb < euler.in
-
- :commandoutput: ruby integrator_driver4e.rb < euler.in
-
-Not completely clear; let's try a factor 2
-
- :commandoutput: ruby integrator_driver4f.rb < euler.in
-
-Ah, now a factor of almost 16.  Great!
-
-== xxx
-
-Bob: if I were to do this for 6th order, I would definitely
-use a symbolic integrator; (actually use Mathematica and show it here??)
-
-Now for 6th order:
-
-Let's be bold and try:
-
- :commandoutput: ruby integrator_driver4g.rb < euler.in
-
-Wow!  A factor two smaller time step:
-
- :commandoutput: ruby integrator_driver4h.rb < euler.in
-
-A factor of about 60: hence really 6th order
-
-Hey, wait!  We've only tested rk4, so far!  We have to do many more steps.
-
- :commandoutput: ruby integrator_driver4i.rb < euler.in
-
-Ah, Yoshida's integrator is great, yappari.  Ten times shorter time step:
-
- :commandoutput: ruby integrator_driver4j.rb < euler.in
-
-Looks like 6th order.  Two times longer:
-
- :commandoutput: ruby integrator_driver4k.rb < euler.in
-
-Great!  Close to factor 64, and now really with the multi-step integrator.
-
-== xxx
-
-Now for eigth order:
-
-We don't have a start-up 8th-order.   But shall we hope that Yoshida's
-integrator is good enough?  Anyway, close to machine accuracy!!
-
-May as well try.  If we don't get beyond 6th, we'll have to extend Yoshida??
-Or go to quadruple precision?
-
- :commandoutput: ruby integrator_driver4l.rb < euler.in
-
-two times smaller time step:
-
- :commandoutput: ruby integrator_driver4m.rb < euler.in
-
-getting closer to a factor 256, but not there yet.
-
-two times smaller time step:
-
- :commandoutput: ruby integrator_driver4n.rb < euler.in
-
-Closer!  Certainly closer to 256 than 128.  I think we can declare victory.
-
-Yes, but it would be nice to have a rk8 to start it up.

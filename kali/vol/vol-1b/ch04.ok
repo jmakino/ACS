@@ -39,6 +39,8 @@ same style in which I had written the leapfrog and second-order Runge
 Kutta.  This means that I first had to rewrite the Abramowitz and
 Stegun expression.
 
+== Really Fourth Order?
+
 *Alice*: Let's write it out specifically, just to check what you did.
 I know from experience how easy it is to make a mistake in these kinds
 of transformations.
@@ -244,16 +246,197 @@ And then:
 
 *Alice*: The time step went down by a factor 10, and the energy
 conservation got better by a factor of almost exactly <tex>$10^4$</tex>.
-This proves it: we really have a fourth order integration scheme.
+We really seem to have a fourth order integration scheme.
 
-*Bob*: And I can keep the name <tt>rk4</tt>, since it lives up to its
-claim.  Good!
+*Bob*: This proves it.  And I can keep the name <tt>rk4</tt>,
+since it lives up to its claim.  Good!
 
-*Alice*: So, what's next?  A sixth order integrator?
+*Alice*: At least it comes close to living up to its name, and it
+sort-of proves it.
 
-*Bob*: I hadn't thought about that, but given the speed-up we got with
-going from <tt>rk2</tt> to <tt>rk2</tt>, it would be interesting to
-see whether this happy process will continue when we would go to a
-<tt>rk6</tt> method, for a sixth-order Runge-Kutta method.  The
-problem is that Abramowitz and Stegun don't go beyond fourth order
-methods.  Hmm.  I'll look around, and see what I can find.
+== Snap, Crackle, and Pop
+
+*Bob*: What do you mean with `comes close'?  What more proof would you
+like to have?
+
+*Alice*: I would still be happier if I could really prove it,
+with pen and paper, rather than through the plausibility of numerical
+experimentation.
+
+*Bob*: Go ahead, if you like!
+
+*Alice*: Let us take your implementation
+
+ :inccode:.rkbody.rb+rk4
+
+and let us determine analytically what the first five terms in a Taylor
+series in +dt+ look like.  We can then see directly whether the error term
+is proportionally to <tex>$h^4$</tex>, as the book claims, or <tex>$h^5$</tex>,
+as our calculations indicate.
+
+To start with, let us look at your variable <tt>a2</tt>, which is the
+acceleration after a time step +dt+, starting from an initial
+acceleration <tt>a0</tt>.  A Taylor expansion can approximate
+<tt>a2</tt> as:
+
+:equation:
+\label{a2}
+\ba_2 = \ba_0 + {d\ba\over dt} \Delta t
+              + {1 \over 2}{d^2\ba\over dt^2} (\Delta t)^2
+              + {1 \over 6}{d^3\ba\over dt^3} (\Delta t)^3
+              + {1 \over 24}{d^4\ba\over dt^4} (\Delta t)^4
+
+where all the derivatives are understood to be evaluated at the same
+time as <tex>$\ba_0$</tex>, namely at the beginning of our time step.
+
+*Bob*: The first derivative of the acceleration, <tex>$d\ba/dt$</tex>,
+is sometimes called the <i>jerk</i>.  How about the following notation:
+
+:equation:
+\bj = \frac{d^3}{dt^3} \br = \frac{d\ba}{dt}
+
+*Alice*: Fine with me.  I believe the term `jerk' has crept into the
+literature relatively recently, probably originally as a pun.  If a
+car or train changes acceleration relatively quickly you experience
+not a smoothly accelerating or decelerating motion, but instead a
+rather `jerky' one.
+
+*Bob*: It may be more difficult to come up with terms for the unevenness
+in the jerk.
+
+*Alice*: Actually, I saw somewhere that someone had used the words
+_snap_, _crackle_, and _pop_, to describe the
+next three terms.
+
+*Bob*: As in the rice crispies?  Now that will confuse astronomers
+who did not grow up in the United States!  If they haven't seen the
+rice crispy commercials, they will have no clue why we would use those
+names.  And come to think of it, I don't have much of a clue yet either.
+
+:figure: scp.jpg 5cm scp
+Snap, Crackle, and Pop
+
+*Alice*: Ah, but the point is that the names of these three cheerful
+characters lend themselves quite well to describe more-than-jerky behavior.
+After all, the popping of a rice crispy is a rather sudden change of state.
+
+*Bob*: Okay, now I get the drift of the argument.  A sudden snap comes to
+mind, as a change in jerk.  And what changes its state more suddenly than
+a snap?  Well, perhaps something that crackles, although that is pushing
+it a bit.  But a pop is certainly a good word for something that
+changes high derivatives of positions in a substantial way!
+
+== An Attempt at an Analytical Proof
+
+*Alice*: Okay, let's make it official:
+
+:eqnarray:
+\bs &=& \frac{d^4}{dt^4} \br \quad = \quad \frac{d^2}{dt^2} \ba \nonumber\\
+\bc &=& \frac{d^5}{dt^5} \br \quad = \quad \frac{d^3}{dt^3} \ba \nonumber\\
+\bp &=& \frac{d^6}{dt^6} \br \quad = \quad \frac{d^4}{dt^4} \ba
+
+Which turns my earlier equation into:
+
+:equation:
+\ba_2 = \ba_0 + \bj_0 \Delta t
+              + {\textstyle {1 \over 2}}\bs_0 (\Delta t)^2
+              + {\textstyle {1 \over 6}}\bc_0 (\Delta t)^3
+              + {\textstyle {1 \over 24}}\bp_0 (\Delta t)^4
+
+*Bob*: Much more readable.
+
+*Alice*: And your other variable <tt>a1</tt>, which indicates the acceleration
+after only half a time step, now becomes:
+
+:equation:
+\ba_1 = \ba_0 + {\textstyle {1 \over 2}}\bj_0 \Delta t
+              + {\textstyle {1 \over 8}}\bs_0 (\Delta t)^2
+              + {\textstyle {1 \over 48}}\bc_0 (\Delta t)^3
+              + {\textstyle {1 \over 384}}\bp_0 (\Delta t)^4
+
+*Bob*: Ah, and now we can evaluate the last two lines in my <tt>rk4</tt>
+method:
+
+ :inccode:.rkbody.rb-1
+
+*Alice*: Yes.  These two lines translate to:
+
+:eqnarray:
+\br_1 &=& \br_0 + \bv_0 \Delta t
+          + {\textstyle {1 \over 6}}(\ba_0+2\ba_1)(\Delta t)^2 \nonumber\\
+\bv_1 &=& \bv_0 + {\textstyle {1 \over 6}}(\ba_0+4\ba_1+\ba_2)\Delta t
+
+Upon substitution the first line becomes:
+
+:eqnarray:
+\br_1 &=& \br_0 + \bv_0 \Delta t
+          + {\textstyle {1 \over 6}}\ba_0(\Delta t)^2
+          + {\textstyle {1 \over 3}}\ba_1(\Delta t)^2 \nonumber\\
+&=& \br_0 + \bv_0 \Delta t
+          + {\textstyle {1 \over 2}}\ba_0(\Delta t)^2
+          + {\textstyle {1 \over 6}}\bj_0 (\Delta t)^3
+          + {\textstyle {1 \over 24}}\bs_0 (\Delta t)^4
+          + {\textstyle {1 \over 144}}\bc_0 (\Delta t)^5
+          + O((\Delta t)^6) \nonumber
+
+And the second line becomes:
+
+:eqnarray:
+\bv_1 &=& \bv_0
+          + {\textstyle {1 \over 6}}\ba_0\Delta t
+          + {\textstyle {2 \over 3}}\ba_1\Delta t
+          + {\textstyle {1 \over 6}}\ba_2\Delta t \nonumber\\
+&=& \bv_0 + \ba_0\Delta t
+          + {\textstyle {1 \over 2}}\bj_0 (\Delta t)^2
+          + {\textstyle {1 \over 6}}\bs_0 (\Delta t)^3
+          + {\textstyle {1 \over 24}}\bc_0 (\Delta t)^4
+          + {\textstyle {5 \over 576}}\bp_0 (\Delta t)^5
+          + O((\Delta t)^6) \nonumber
+
+*Bob*: Very nice.  In both cases the terms up to <tex>$(\Delta t)^4$</tex> are
+perfectly correct, and the error starts in the <tex>$(\Delta t)^5$</tex> term,
+where the Taylor series coefficient would have been <tex>${1 \over 120}$</tex>.
+So the leading error terms are:
+
+:eqnarray:
+\delta \br_1 &=& {\textstyle -{1 \over 720}}\bc_0 (\Delta t)^5 \nonumber\\
+\delta \bv_1 &=& {\textstyle {1 \over 2880}}\bp_0 (\Delta t)^5 \nonumber
+
+This proves that the <tt>rk4</tt> Runge-Kutta method is truly fourth-order,
+and that there was a typo in Abramowitz and Stegun.
+
+*Alice*: Or so it seems.  But I must admit, I'm not completely comfortable.
+
+== Shocked
+
+*Bob*: Boy, you're not easy to please!  I was ready to declare victory
+when we had our numerical proof, and you convinced me to do the additional
+work of doing an analytical check.  If it were up to me, I would believe
+numerics over analytics, any day.  Seeing is believing, the proof is
+in the pudding, and all that.
+
+*Alice*: Well, it _really_ is better to have _both_ a numerical
+demonstration _and_ an analytical proof.  It is just too easy to be
+fooled by coincidences or special cases, in numerical demonstrations.
+And at the same time it is also easy to make a mistake in doing
+analytical checks.  So I think it is only wise to do both, especially
+with something so fundamental as an N-body integrator.
+
+And I'm glad we did.  But something doesn't quite feel right.  Let me
+just review what we have done.  We first expanded the orbit in a Taylor
+series, writing everything as a function of time.  Then we showed that
+the orbit obeyed the equations of motion, and . . . .
+
+*Bob*: . . . and then you looked shocked.
+
+*Alice*: Not only do I look shocked, I _am_ shocked!  How could we make
+such a stupid mistake!?!
+
+*Bob*: I beg your pardon?
+
+*Alice*: We _assumed_ that we were sliding along the perfect orbit, and
+then we _proved_ that we were sliding at the right pace, but we never
+considered that our numerical orbit is only approximate, and that it
+will have errors in _space_ as well as in time.  So we proved only half
+of what we should have proved.  In other words, we haven't yet proven
+anything at all, really!

@@ -1,8 +1,256 @@
-= Running Hermite
+= The Hermite Algorithm
 
 == xxx
 
- :commandoutput: ruby integrator_driver2g.rb < euler.in
+The most symmetric Hermite version, and the one closest resembling the
+leapfrog is this one:
+
+:eqnarray:
+\label{hermite-step}
+\br_{i+1} & = & \br_i + \hhalf(\bv_i + \bv_{i+1}) dt +
+                \one{12}(\ba_i - \ba_{i+1})(dt)^2   \nonumber\\
+\bv_{i+1} & = & \bv_i + \hhalf(\ba_i + \ba_{i+1}) dt +
+                \one{12}(\bj_i - \bj_{i+1})(dt)^2
+
+Here <tex>$\bj = d\ba/dt$</tex> is the _jerk_, the time derivative of the
+acceleration, and therefore the third time derivative of position:
+
+:equation:
+\bj = \frac{d^3}{dt^3} \br
+
+The term `jerk' has crept into the literature relatively recently,
+probably originally as a pun.  If a car or train changes acceleration
+relatively quickly you experience not a smoothly accelerating or
+decelerating motion, but instead a rather `jerky' one.
+
+We start with Newton's gravitational equations:
+
+:equation:
+\label{newton}
+\ba_i = G \sum_{j=1 \atop j \neq i}^N
+\frac{M_j}{r_{ji}^2} \,\hat\br_{ji}
+
+The jerk can be computed through straightforward differentiation of
+Newton's gravitational equations, Eq. (ref(newton)) :
+
+:equation:
+\label{newton-jerk}
+\bj_i =  G \sum_{j=1 \atop j \neq i}^N \,M_j \left[
+\frac{\bv_{ji}}{r_{ji}^3} - 3 \frac{(\br_{ji}\cdot\bv_{ji})\br_{ji}}{r_{ji}^5}
+\right]
+
+where <tex>$\bv_{ji} = \bv_j - \bv_i$</tex>.
+
+As an aside, note that the jerk has one very convenient property.
+Although the expression above looks quite a bit more complicated than
+Newton's original equations, they can still be evaluated through one
+pass over the whole <tex>$N$</tex>-body system.  This is no longer true for
+higher derivatives.  For example, we can obtain the fourth derivative
+of the position of particle <tex>$i$</tex> (the _snap_, see next
+section) by differentiating Eq. (ref(newton-jerk)) :
+
+:eqnarray:
+\label{newton-snap}
+\frac{d^4}{dt^4}\br_i = G \sum_{j=1 \atop j \neq i}^N \,M_j \Bigg[ &\,&
+\!\!\!\!\!\!\!\!\!\! \frac{\ba_{ji}}{r_{ji}^3}
+-6 \frac{(\br_{ji}\cdot\bv_{ji})}{r_{ji}^5}\bv_{ji} \nonumber \\
+ &\,& \!\!\!\!\!\!\!\! + \left\{ -3\frac{v_{ji}^2}{r_{ji}^5}
+-3 \frac{(\br_{ji}\cdot\ba_{ji})}{r_{ji}^5}
++15 \frac{(\br_{ji}\cdot\bv_{ji})^2}{r_{ji}^7} \right\} \br_{ji} \,\,\Bigg]
+
+where <tex>$\ba_{ji} = \ba_j - \ba_i$</tex>, and this is the
+expression that thickens the plot.  Unlike the <tex>$\br_{ji}$</tex>
+and <tex>$\bv_{ji}$</tex> expressions, that are given by the initial
+conditions, <tex>$\ba_{ji}$</tex> has to be calculated from the
+positions and velocities.  However, this calculation does not only
+involve the pairwise attraction of particle <tex>$j$</tex> on particle
+<tex>$i$</tex>, but in fact all pairwise attractions of all particles
+on each other!  This follows immediately when we write out what the
+shorthand implies:
+
+:equation:
+\ba_{ji} = \ba_j - \ba_i = G \sum_{k=1 \atop k \neq j}^N
+\frac{M_k}{r_{kj}^3} \,\br_{kj} -  G \sum_{k=1 \atop k \neq i}^N
+\frac{M_k}{r_{ki}^3} \,\br_{ki}
+
+When we substitute this back into Eq. (ref(newton-snap)), we see that
+we have to do a double pass over the <tex>$N$</tex>-body system,
+summing over both indices <tex>$k$</tex> and <tex>$j$</tex> in order
+to compute a single fourth derivative for the position of particle
+<tex>$i$</tex>.
+
+== Comparison with the Leapfrog
+
+When we look at Eq. (ref(hermite-step)), we see
+some familiar features.  Neglecting the higher-order term for the
+moment, we recognize the leapfrog: the new position is effectively
+determined by the mid-point velocity <tex>$v_{i+1/2}$</tex>, here
+approximated as the average between the two adjacent values
+<tex>$v_{i}$</tex> and <tex>$v_{i+1}$</tex>.  Similarly, the new
+velocity is effectively determined by the mid-point acceleration.
+
+In fact, the analogy can be made more precise.  Recalling the leapfrog,
+as written centered on integer times:
+
+:eqnarray:
+\label{leapfrog-step}
+\br_{i+1} & = & \br_i + \bv_{i} dt + \ba_{i} (dt)^2/2             \nonumber\\
+\bv_{i+1} & = & \bv_i + (\ba_i + \ba_{i+1})dt / 2
+
+we can transform these back into a pseudo-leap form, without using
+half-integer times explicitly, by rewriting the first equation as:
+
+:eqnarray:
+\label{leapfrog-trick}
+\br_{i+1} & = & \br_i + \hhalf(\bv_{i} + \bv_{i+1}) dt
+                      + \hhalf(\bv_{i} - \bv_{i+1}) dt
+                      + \hhalf\ba_{i} (dt)^2 \nonumber \\
+	  & = & \br_i + \hhalf(\bv_{i} + \bv_{i+1}) dt
+                      + \quarter(-\ba_i-\ba_{i+1})(dt)^2
+                      + \hhalf\ba_{i}(dt)^2 \nonumber \\
+	  & = & \br_i + \hhalf(\bv_{i} + \bv_{i+1}) dt
+                      + \quarter(\ba_i-\ba_{i+1})(dt)^2 \nonumber \\
+	  & = & \br_i + \hhalf(\bv_{i} + \bv_{i+1}) dt - \quarter\bj_i (dt)^3
+
+In the second line, we have simply rearranged terms.  In the third
+line, we have used the second line in Eq. (ref(leapfrog-step)), and in
+the fourth line we
+have used the definition of <tex>$\bj$</tex>, while neglecting higher
+order terms in <tex>$dt$</tex>.
+
+The next step is to remember that the leapfrog is a second-order scheme.
+The errors per step are <tex>$\propto(dt^3)$</tex>, and therefore it does not
+matter whether or not we include the last term <tex>$-\bj_i
+(dt)^3/4$</tex> into 
+our leapfrog version: this term is lost in the noise, and is not going
+to improve the accuracy on second-level order.  Therefore, we may
+equally well leave it out.  Doing so transforms Eq. (ref((leapfrog-step))
+into:
+
+:eqnarray:
+\br_{i+1} & = & \br_i + \hhalf(\bv_i + \bv_{i+1})dt        \nonumber\\
+\bv_{i+1} & = & \bv_i + \hhalf(\ba_i + \ba_{i+1})dt
+
+Here we see explicitly that our good old leapfrog is equivalent, up to
+its second-order accuracy, with the leading terms <tex>$\propto (dt)$</tex> of
+the Hermite algorithm, Eq. (ref(hermite-step)).
+It is a curiosity of the leapfrog that at first sight it resembles a
+first-order scheme, since the second-order terms are hidden in the
+`leapy' way of using average quantities.  Yet, as we have seen, the
+leapfrog is fully second-order.
+
+In a very similar way, the Hermite scheme is fourth-order, even though
+it resembles a second-order scheme.  For details we refer to the
+literature, but it is interesting to see in a heuristic way why this
+is so.
+
+== Snap, Crackle, and Pop
+
+First a word about terminology.  We will need to introduce a few extra
+derivatives of the position.  It would be fun to give them names with
+a reasonable `feel' to them, just like with jerk.  What type of motion
+feels even more restless than jerking motion?  A sudden snap comes to
+mind.  A what changes its state more sudden than a snap --- how about
+a crackle?  And for those familiar with American rice crispies culture,
+a pop cannot be far away, and indeed, if something pops it really
+changes high derivatives of positions in a substantial way!  We are
+not making these names up: we have seen them used a few times before,
+although the precise source is likely to be lost in (recent) history.
+So here they are:
+
+:equation:
+\bs = \frac{d^4}{dt^4} \br \qquad ; \qquad
+\bc = \frac{d^5}{dt^5} \br \qquad ; \qquad
+\bp = \frac{d^6}{dt^6} \br
+
+_snap_, _crackle_, and _pop_, respectively.
+
+We are now in a position to write the Taylor series for the four
+quantities that appear in Eq. (ref(hermite-step)), up to crackle:
+
+:eqnarray:
+\label{taylor}
+\br_{i+1} & = & \br_i + \bv_i dt + \hhalf\ba_{i}(dt)^2 + \one{6}\bj_{i}(dt)^3
+                      + \one{24}\bs_{i}(dt)^4 + \one{120}\bc_{i}(dt)^5
+\nonumber\\
+\bv_{i+1} & = & \bv_i + \ba_i dt + \hhalf\bj_{i}(dt)^2 + \one{6}\bs_{i}(dt)^3
+                      + \one{24}\bc_{i}(dt)^4                     \nonumber\\
+\ba_{i+1} & = & \ba_i + \bj_i dt + \hhalf\bs_{i}(dt)^2 + \one{6}\bc_{i}(dt)^3
+                                                                 \nonumber\\
+\bj_{i+1} & = & \bj_i + \bs_i dt + \hhalf\bc_{i}(dt)^2
+
+We can now eliminate snap and crackle at time <tex>$t_i$</tex>, expressing them
+in terms of the acceleration and jerk at times <tex>$t_i$</tex> and
+<tex>$t_{i+1}$</tex>, using the last two lines of Eq. (ref(taylor)).  We find:
+
+:eqnarray:
+\bs_i &=& -6\ba_i +6\ba_{i+1} -4\bj_i -2\bj_{i+1} \nonumber\\
+\bc_i &=& 12\ba_i -12\ba_{i+1} +6\bj_i +6\bj_{i+1} 
+
+Substituting both expressions in the second line of Eq. (ref(taylor))
+we directly find:
+
+:equation:
+\label{hermite-step-a}
+\bv_{i+1} = \bv_i + \hhalf(\ba_i + \ba_{i+1}) dt +
+                \one{12}(\bj_i - \bj_{i+1})(dt)^2
+
+Indeed, we have recovered the second line of Eq. (ref(hermite-step)),
+and thereby 
+explained the mysterious factor <tex>$\one{12}$</tex> in the last term.
+
+Let us complete our mission, by making the same derivation for 
+the position vector, the first line of Eq. (ref(hermite-step)), in
+the Hermite scheme. 
+Using again the snap and crackle expressions derived above, we find:
+
+:equation:
+\br_{i+1} = \br_i + \bv_i dt + (\seven{20}\ba_i + \three{20}\ba_{i+1})(dt)^2
+            + (\one{20}\bj_i - \one{30}\bj_{i+1})(dt)^3
+
+Using the same trick we employed in Eq. (ref(leapfrog-trick)) to factor
+out the velocity terms, and using Eq. (ref(hermite-step-a)), we can
+rewrite the above expression as:
+
+:equation:
+\br_{i+1} = \br_i + \hhalf(\bv_i + \bv_{i+1}) dt
+            + \one{10}(\ba_i - \ba_{i+1})(dt)^2
+            + \one{120}(\bj_i + \bj_{i+1})(dt)^3
+
+While this result still looks quite different from the first line of
+Eq. (ref(hermite-step)), 
+we claim that it is identical up to fourth-order in <tex>$dt$</tex>,
+which is all we need.  Our final step thus parallels the discussion following
+Eq. (ref(leapfrog-trick)) for the leapfrog, where we had to show how
+terms up to second-order were identical.
+
+First we rewrite the above equation in terms of quantities defined at
+<tex>$t=i$</tex> : 
+
+:eqnarray:
+\br_{i+1} = \br_i + \hhalf(\bv_i + \bv_{i+1}) dt 
+             & + & \one{10}\ba_i(dt)^2 - \one{10}(\ba_i + \bj_i dt +
+              \hhalf\bs_i (dt)^2)(dt)^2                           \nonumber \\
+          & + & \one{120}\bj_i(dt)^3 + \one{120}(\bj_i + \bs_i dt)(dt)^3
+                                                                 \nonumber \\
+          = \br_i + \hhalf(\bv_i + \bv_{i+1}) dt 
+          & - & \one{12}\bj_i (dt)^3 - \one{24} \bs_i (dt)^4
+
+Here we have left out terms containing <tex>$\bc_i$</tex>, since they would be
+proportional to at least <tex>$(dt^5)$</tex> and only contribute to
+the error noise.  We can similarly write out the last term of the
+first line of Eq. (ref(hermite-step)) :
+
+:eqnarray:
+\one{12}(\ba_i - \ba_{i+1})(dt)^2  & = & 
+              \one{12}\left(\ba_i(dt)^2 - \one{12}(\ba_i + \bj_i dt +
+              \hhalf\bs_i (dt)^2)\right)(dt)^2                     \nonumber \\
+             & = & - \one{12}\bj_i (dt)^3 - \one{24} \bs_i (dt)^4
+
+This proves the desired result:
+
+:equation:
+\br_{i+1} = \br_i + \hhalf(\bv_i + \bv_{i+1}) dt +
+                \one{12}(\ba_i - \ba_{i+1})(dt)^2
 
 
- :commandoutput: ruby integrator_driver5a.rb < euler.in

@@ -1,187 +1,601 @@
-= A Sixth-Order Integrator
+= Orbit vs. Interaction
 
-== A Multiple leapfrog
+== Space and Time Dependent Interactions
 
-*Alice*: Hi, Bob!  To judge from the look at your face, I would bet you found
-a good recipe for a sixth-order Runge Kutta method.
+*Bob*: So you claim that our somewhat tedious proof isn't ironclad yet?
+You said something about having checked time variations but not space
+variations.  Could you explain that in a bit more detail?  I'm afraid
+I didn't quite get it.
 
-*Bob*: As a matter of ract, yes, I did.
+*Alice*: I'm still grappling with it myself.  This stuff is not easy.
+No wonder people can spend a life time on designing numerical methods.
+Linear and quadratic methods are not too hard, since you can still
+sketch on a piece of paper what is going on.  But by the time you're
+dealing with a fourth-order or higher method, you can no longer use
+your intuition.  And when you switch to formal proofs, it is easy to
+overlook things.  I'm sure we've done just that, but let me see whether
+I can really put my finger on it.
 
-*Alice*: Let me guess how long the code will be.  The <tt>rk2</tt> method was
-five lines long, and the <tt>rk4</tt> method was eight lines long.  I seem to
-remember that the complexity of Runge-Kutta methods increases rapidly with
-order, so the new code must at least be twice as long, more likely a bit more.
-Okay, I'll bet on twenty lines.
+What I meant was that any differential equation in a dynamical system
+has a left-hand side that tells us how the orbit of a particle changes
+in time as a result of interactions with the rest of the world.  The
+dynamics is specified on the right-hand side, while the left-hand side
+shows only the kinematics.  In other words, the physical forces can be
+found on the right-hand side, while the mathematical description of the
+deflection of the orbit, as a result of those forces, is given on the
+left-hand side.
 
-*Bob*: How much are you willing to bet?
+*Bob*: I find it always easier to look at a specific example.  Here
+we have our Newtonian equations of motion, for the gravitational two-body
+problem.
 
-*Alice*: I'm not much of a gambler.  Let's say you'll get my admiration if
-you did it for less than twenty lines.
+ :equation:
+\frac{d^2}{dt^2}{\bf r} \, = \,
+ - \,G\, \frac{M_1 + M_2}{r^3}{\bf r}
 
-*Bob*: How much admiration will I get if it would be less than ten lines?
+Indeed, the physical coupling constant _G_ appears only on the right-hand
+side, where the gravitational interaction is specified, while the
+left-hand side tells us how the orbit is bent: non-zero acceleration
+describes the deviation van uniform rectilinear motion.  Okay, I'm
+still with you.
 
-*Alice*: I don't know, since I wouldn't believe you.
+*Alice*: Now the trick is to make explicit what we normal vaguely understand,
+but rarely write down precisely, namely the space and time dependence of
+the interaction.  In any N-body system, whether we have two particles
+or a million, each particle feels a time-varying force field.
 
-*Bob*: It that case you must be ready for a really wild move.  How much are
-you willing to bet against me having written a sixth-order Runge-Kutta code
-in five lines?
+*Bob*: And that is what makes it non-trivial to do an N-body simulation.
+If we only had to integrate the orbit of a particle rolling through a
+fixed potential landscape, life would be a lot easier.  The problem is
+that everything changes all the time: one moment a particle is coasting
+along happily, and before you know it, suddenly it crosses the orbit
+of another particle, resulting is a sharp deflection.
 
-*Alice*: Hahaha!  I will bet a good laugh.  You can't be serious.
+*Alice*: So let's write that down in a general way, not worrying about any
+details of the actual interaction, but just making clear that the
+interaction is both space and time dependent:
 
-*Bob*: I am.
+<tex>$$
+\frac{d^2}{dt^2}{\bf r} \, = \, {\bf f}(\br, t)
+$$</tex>
 
-*Alice*: Huh?  You're not going to tell me that your sixth-order Runge-Kutta
-is as long as the second-order Runge-Kutta?
+*Bob*: Meaning that on the left you have the acceleration and on the right
+you have the force.
 
-*Bob*: Seeing is believing.  Here it is:
+*Alice*: Not quite: if we denote the actual force by <tex>${\bf F}$</tex>,
+we should write:
 
- :inccode: .rk6body.rb+rk6
+<tex>$$
+m\frac{d^2}{dt^2}{\bf r} \, = \, {\bf F}(\br, t)
+$$</tex>
 
-*Alice*: Seven leapfrog calls?  And that does it?
+which for the acceleration would give
 
-*Bob*: Yes, that does it, or so is the claim.  I haven't gotten the time to
-test it out yet.  I just finished it when you came in.
+<tex>$$
+\frac{d^2}{dt^2}{\bf r} \, = \, {1\over m}{\bf F}(\br, t)
+$$</tex>
 
-== Great!
+where <tex>$m$</tex> is the mass of the particle; or in the case of
+two-body motion, the reduced mass associated with the motion of the
+equivalent one-body system, for a pseudo-particle in a time varying
+force field.
 
-*Alice*: I'm not sure whether to call this incredible, shocking, or what.
-But before I look for the right adjective, let me first see that it does
-what you claim it does.
+Anyway, those details are irrelevant here.  My point is that I prefer
+to talk about orbit vs. interaction, not orbit vs. force calculation.
 
-*Bob*: I'm curious too.  Let us take our good old Kepler orbit for a spin:
-ten time units, as before.  We will start with the fourth-order Runge-Kutta
-method:
+*Bob*: In stellar dynamics, at least, people talk about force calculation
+all the time.
 
- :commandoutput: ruby integrator_driver2g.rb < euler.in
+*Alice*: I know, and then they write down the acceleration.  We've seen
+already how easy it is to get into trouble when forgetting to take the
+mass into account properly.
 
-for which we found this reasonable result, with a relative accuracy in
-the conservation of the total energy of a few in a billion.
-Presumably the sixth-order method should do significantly better, for
-the same time step value:
+*Bob*: Well, yes, I can't argue with that, I'm afraid, seeing how I
+blundered there, a while ago.
 
- :commandoutput: ruby integrator_driver3a.rb < euler.in
+*Alice*: So let us call <tex>${\bf f}(\br, t)$</tex> the general interaction
+term that causes an acceleration to occur.  That is in line with the notation
+in books about general differential equations.  Abramowitz and Stegun used
+the same notation too.
 
-== Too Good?
+== The One-Dimensional Case
 
-*Alice*: Significant, all right: almost machine accuracy.  Can you give a
-larger time step?  Make it ten times as large!  That may be way too large,
-but we can always make it smaller again.
+*Bob*: Now that we have settled nomenclature, can we look at what you claimed
+went wrong with our derivation?
 
-*Bob*: My pleasure!
+*Alice*: My point is that we have to be really explicit about the 
+space and time dependence of the interaction terms, as follows:
 
- :commandoutput: ruby integrator_driver3b.rb < euler.in
+<tex>$$
+\frac{d^2}{dt^2}{\bf r} \, = \, {\bf f}(\br, t)\, = \, {\bf f}(\br(t), t)
+$$</tex>
 
-*Alice*: No!  This is too good to be true.  Still essentially machine
-accuracy, for only a thousand steps, while <tt>rk2</tt> with ten-thousand steps
-did far worse, by a whopping factor of a hundred thousand.  Well, let's
-really push it: can you make the time step yet again ten times larger?
+*Bob*: This is what we did.  We considered the time dependence of the orbit,
+and how that fed back into the time dependence of the interaction term.
 
-*Bob*: Going around a rather eccentric Kepler orbits a few times, with only
-a hundred steps in total?  Well, we can always try.
+*Alice*: Yes, and we looked at the error term in terms of time dependence.
+But we did not check the other contribution to the error in the
+position, stemming from the fact that our orbit makes errors in space
+as well as in time.
 
- :commandoutput: ruby integrator_driver3c.rb < euler.in
+Eq. (ref(a2)) for <tex>$\ba_2$</tex>, for example, is written in terms
+of _orbit_ variables, using only concepts from the left-hand side of
+the differential equations that we are trying to solve.  But if you
+look at your code, just above that equation, you see that the term
+<tt>a2</tt> in your code is a call to the method +acc+, which does an
+_interaction_ calculation: it invokes the right-hand side of the
+differential equation.
 
-== Spooky
+*Bob*: I guess that that was not quite consistent.  How do you propose to
+remedy our analysis?
 
-*Alice*: All good things come to an end.  We finally found the limit of your
-new code, but only barely: while the error is of order unity, the system
-hasn't really exploded numerically yet.
+*Alice*: If we _really_ wanted to be formally correct, we could track
+the four-dimensional variations in space and time, taking into account
+the three-dimensional spatial gradient of the interaction terms.
 
-*Bob*: Let's change time step values a bit more carefully.  How about
-something in between 0.1 and 0.01.  I'll take 0.04:
+*Bob*: But from the way you just said that, I figure that that would be
+too much, even for you.  I'm glad to hear that even you have your limits
+in wanting to check things analytically!
 
- :commandoutput: ruby integrator_driver3d.rb < euler.in
+*Alice*: I sure have.  And also, I don't think such a formal treatment
+would be necessary.  If we can prove things in one dimension, I'm convinced
+that we could rewrite our prove to three dimensions without too many problems,
+albeit with a lot more manipulations.
 
-*Alice*: Ah, good, less than a percent error in relative total energy
-conservations.  We're getting somewhere in our testing.  Let's halve
-the time step.  If your <tt>rk6</tt> method is really sixth-order,
-halving the time step should make the result 64 times more accurate.
+*Bob*: You won't hear me arguing against simplification!  But I must admit,
+you have made me curious.  Go on!
 
-*Bob*: Here we go:
+*Alice*: What I propose is that we go back to the way Abramowitz and Stegun
+formulated their Runge-Kutta version.  After all, the whole discussion was
+about whether their claim of having a fourth-order error was a misprint or not.
+If we can prove that their method, as they stated it, is fourth-order accurate,
+with an error that scales like the fifth power of the time step, I'm satisfied.
 
- :commandoutput: ruby integrator_driver3e.rb < euler.in
+== A Change in Notation
 
-*Alice*: Hmm, that's much much more improvement than a factor 64.
-I guess the run with a time step of 0.04 was not yet in the linear regime.
+*Bob*: Same for me.  But I propose that we use a somewhat more intuitive
+notation than what they gave us.  To use _x_ to indicate time and _y_
+to indicate position is confusing, to say the least.  Let us look at
+the text again:
 
-*Bob*: I'll halve the time step again, too 0.01:
+link:rk4.gif
 
- :commandoutput: ruby integrator_driver3b.rb < euler.in
+How about the following translation, where the position _r_, velocity _v_,
+and _a_ are all scalar quantities, since we are considering an effectively
+one-dimensional problem:
 
-*Alice*: Again an improvement of far far more than a factor of 64.  What
-is going on?
+ :eqnarray:
+x \,\,\,\,\,\,\,\,\,\,\,\,\, &\rightarrow& \,\,\,\,\,\,\,\,\,t     \nonumber\\
+y \,\,\,\,\,\,\,\,\,\,\,\,\, &\rightarrow& \,\,\,\,\,\,\,\,\,r     \nonumber\\
+f(x,y) \,\,\,\,\, &\rightarrow& \,\,\,f(r,t)                       \nonumber\\
+y' = {dy \over dx}  \,\,\, &\rightarrow& \,\,\,
+\dot r = {dr \over dt} = v                                         \nonumber\\
+y'' = {d^2y \over dx^2}  &\rightarrow& \,\,\,\,
+\ddot r = {d^2r \over dt^2} = {dv\over dt} = a                     \nonumber\\
+h \,\,\,\,\,\,\,\,\,\,\,\,\, &\rightarrow&  \Delta t = \tau        \nonumber\\
+k_i \,\,\,\,\,\,\,\,\,\,\, &\rightarrow& \,\,\,\,\,\,\, k_i \tau   \nonumber\\
+n \,\,\,\,\,\,\,\,\,\,\,\, &\rightarrow& \,\,\,\,\,\,\,\,\,\, 0    \nonumber
 
-*Bob*: This is almost spooky.  The integrator has no right to converge
-_that_ fast.
+The equations, as proposed by Abramowitz and Stegun, then become:
 
-== An Orbit Segment
+ :eqnarray:
+\label{base}
+\ddot r\,&=&\,f(r, t)                                              \nonumber\\
+&&                                                                 \nonumber\\
+r_1 \,&=&\, r_0 + 
+\left(v_0+\one{6}\left(k_1+2k_2\right)\tau\right)\tau              \nonumber\\
+v_1 \,&=&\, v_0 + 
+\one{6}\left(k_1+4k_2+k_3\right)\tau                               \nonumber\\
+&&                                                                 \nonumber\\
+k_1\,&=&\,f(r_0, 0)                                                \nonumber\\
+k_2\,&=&\,f(r_0 + \hhalf v_0\tau + \one{8}k_1\tau^2, \hhalf\tau)   \nonumber\\
+k_3\,&=&\,f(r_0 + v_0\tau + \hhalf k_2\tau^2, \tau)
 
-*Alice*: The problem may be that we follow a particle through pericenter
-with enormously long time steps, compared with the pericenter passage time.
-Who knows how all the local errors accumulate and/or cancel out.  It
-may be better to take only a small orbit segment.  If we integrate for
-less than one time unit, we know for sure that the two bodies have not
-reached each other at periastron, according to what we saw before.
-Remember, we start our integration at apastron.
+== The Auxiliary _k_ Variables
 
-*Bob*: I'm happy to try that.  Let us take a total integration time of 0.2,
-and compare a few large time step choices.  Unless we make those steps pretty
-large, we will just get machine accuracy back, and we won't learn anything.
-Let's take a time step of 0.1 first:
+*Alice*: Yes, I find that notation much more congenial, and I'm glad to see
+the explicity space and time dependence now in the definitions of the three
+_k_ variables.
 
- :commandoutput: ruby integrator_driver3f.rb < euler.in
+Let us work out what these _k_ variables actually look like, when we
+substitute the orbit dependence in the right hand side.  What we see
+there is an interesting interplay between an physical interaction term
+_f_ that has as an argument the mathematical orbit <tex>$r(t)$</tex>.
 
-And then twice as long a time step, of 0.2.  Perhaps we will finally
-get a factor of 64 in degradation of energy conservation:
+Since you have introduced <tex>$\tau$</tex> as the increment in time,
+starting from time zero, let me introduce the variable <tex>$\rho_1$</tex>
+to indicate the increment in space, the increment in position at the time
+that we evaluate <tex>$k_1$</tex>
 
- :commandoutput: ruby integrator_driver3g.rb < euler.in
+:equation:
+\label{rho1}
+\rho_1 \,=\, \hhalf v_0\tau + \one{8}k_1\tau^2
 
-*Alice*: Much better this time.  A factor of 47, in between 32 and 64.
-This by itself would suggest that your new method is somewhere in
-between fifth order and sixth order in accuracy.
+For consistency, let me also use
 
-*Bob*: And most likely sixth order: the ratio of 64/47=1.4 is smaller
-than the ratio of 47/32=1.5, so we are logarithmically closer to 64 than
-to 32.
+:equation:
+\tau_1 \,=\, \hhalf \tau
 
-== Victory
+for the increment in time, when we evaluate <tex>$k_1$</tex>.
+Let me also abbreviate <tex>$f_0 = f(r_0,0)$</tex>.
 
-*Alice*: However, we should be able to settle this more unequivocally.
-The problem is, we don't have much wiggle room: we don't want the total
-time become so long that the particles reach pericenter, yet when we make
-the total integration time much shorter, we don't have room left for even
-a single time step -- unless we invite machine accuracy again.
+What I propose to do now is to expand <tex>$k_1$</tex> in a double Taylor
+series, simultaneously in space and in time.  This will hopefully repair
+the oversight we made before, when we only considered a time expansion.
 
-*Bob*: Of course, we can look for a different type of orbit, but then we
-have to start our analysis all over again.  How about this: let's take a
-total time of 0.5 units, while giving our particles the choice to cross
-this sea of time in either four or five time steps.  We can start with
-a time step of 0.1:
+*Bob*: How do you do a two-dimensional Taylor series expansion?
 
- :commandoutput: ruby integrator_driver3h.rb < euler.in
+*Alice*: Whenever you have mixed derivatives, such as
 
-And then repeat the procedure for a time step of 0.125.
+:equation:
+{\partial^3 f \over \partial r^2\partial t} \,=\, f_{rrt}
 
-*Alice*: Ah, before you start the run, let's make a prediction: the energy
-conservation degradation should be <tex>$(5/4)^6=3.81$</tex>.
+you multiply the coefficients you would give to each dimension separately;
+in this case you would get a factor of one half, because of the second
+partial derivative with respect to space; the single time derivative
+just gives a factor one.  You can easily check how this work when you
+look at a two-dimensional landscape, and you imagine how you pick up
+difference in height by moving North-South and East-West.  Anyway, here
+is the concrete example, for our case, where I use the abbreviation that
+I introduced above, with partial differentiation indicated with subscripts:
 
- :commandoutput: ruby integrator_driver3i.rb < euler.in
+ :eqnarray:
+k_2 \,=\, f_0 &+&\, f_r\rho_1 + f_t\tau_1                           \nonumber\\
+&+&\,\hhalf f_{rr}\rho_1^2+f_{rt}\rho_1\tau_1+\hhalf f_{tt}\tau_1^2 \nonumber\\
+&+&\,\one{6}f_{rrr}\rho_1^3+\hhalf f_{rrt}\rho_1^2\tau_1
+     +\hhalf f_{rtt}\rho_1\tau_1^2 + \one{6}f_{ttt}\tau_1^3
 
-*Bob*: And by dividing the total energy errors of the last two runs
-we get a ratio of 3.69.
+where I have grouped the different orders of expansion in terms of small
+variables on different lines.  Using the fact that
+<tex>$\tau_1 = \hhalf \tau$</tex>, we can also write this as
 
-*Alice*: Not bad at all!  Just three percent short of what we had expected
-for a sixth-order integration scheme.  I think we can now officially declare
-your <tt>rk6</tt> to be worthy of the <tt>6</tt> in it's name!
+ :eqnarray:
+\label{k2}
+k_2 \,=\, f_0 &+&\, f_r\rho_1 + \hhalf f_t\tau                    \nonumber\\
+&+&\,\hhalf f_{rr}\rho_1^2+
+\hhalf f_{rt}\rho_1\tau+\one{8}f_{tt}\tau^2                       \nonumber\\
+&+&\,\one{6}f_{rrr}\rho_1^3+\one{4}f_{rrt}\rho_1^2\tau
+     +\one{8}f_{rtt}\rho_1\tau^2 + \one{48}f_{ttt}\tau^3
 
-But I must say, I'm still deeply puzzled and surprised that seven leapfrog
-calls, involving four rather funny numbers, can suddenly emulate a Runge-Kutta.
+Similarly, we can introduce
 
-*Bob*: According to my source, it is more than `emulate': this particular
-combination of leapfrog calls _is_ nothing else but a Runge-Kutta
-scheme.
+:equation:
+\label{rho2}
+\rho_2 \,=\, v_0\tau + \hhalf k_2\tau^2
 
-*Alice*: I want to know more about this.  What did you find out about the
-theory behind this curious precedure?
+as the spatial offset in the argument for the interaction term for the
+calculation of <tex>$k_3$</tex>, for which we get:
 
+ :eqnarray:
+\label{k3}
+k_3 \,=\, f_0 &+&\, f_r\rho_2 + f_t\tau                           \nonumber\\
+&+&\,\hhalf f_{rr}\rho_2^2+f_{rt}\rho_2\tau+\hhalf f_{tt}\tau^2   \nonumber\\
+&+&\,\one{6}f_{rrr}\rho_2^3+\hhalf f_{rrt}\rho_2^2\tau
+     +\hhalf f_{rtt}\rho_2\tau^2 + \one{6}f_{ttt}\tau^3
 
+Now the next step is to substitute the definitions of the
+<tex>$\rho_i$</tex> variables in the <tex>$k_{i+1}$</tex> equations,
+and to keep terms up to the third order in <tex>$\tau$</tex>.
+
+== The Next Position
+
+*Bob*: That's going to be quite messy.
+
+*Alice*: Well, yes, but we have no choice.  Let me start with
+the substitution indicated in Eq. (ref(rho1)), where we may as well
+replace <tex>$k_1$</tex> by its value <tex>$f_0$</tex>:
+
+:equation:
+\label{rho1s}
+\rho_1 \,=\, \hhalf v_0\tau + \one{8}f_0\tau^2
+
+which is just its Taylor series expansion in time, up to second order.
+Using this substitution in Eq. (ref(k2)), we get:
+
+ :eqnarray:
+\label{k2s}
+k_2 \,=\, f_0 &+&\, \left\{
+\hhalf v_0 f_r + \hhalf f_t
+\right\} \tau                                           \nonumber\\
+&+&\, \left\{
+\one{8}f_0f_r + \one{8}v_0^2f_{rr}
++\one{4}v_0f_{rt}+\one{8}f_{tt}
+\right\} \tau^2                                           \nonumber\\
+&+&\, \left\{
+\one{16}v_0f_0f_{rr} + \one{16}f_0f_{rt} + \right.                \nonumber\\
+&& \ \ \left. \one{48}v_0^3f_{rrr}
++ \one{16}v_0^2f_{rrt}+ \one{16}v_0f_{rtt}+ \one{48}f_{ttt}
+\right\} \tau^3
+
+Similarly, we have to take Eq. (ref(k3)), where we have to use the
+substitution indicated in Eq. (ref(rho2)), which we can rewrite, using
+the expression for <tex>$k_2$</tex> that we just derived, up till third
+order in <tex>$\tau$</tex>, as;
+
+:equation:
+\label{rho2s}
+\rho_2 \,=\, v_0\tau + \hhalf f_0\tau^2 + \left\{
+\hhalf v_0 f_r + \hhalf f_t \right\} \tau^3
+
+*Bob*: And now I see concretely what you meant, when you said that our
+previous attempt at proving the fourth-order nature of the Runge-Kutta
+integrator neglected the treatment of the right-hand side of the
+differential equation, of the physical interaction terms.  They would
+not have showed up if we were trying to prove the correctness of a
+second-order Runge-Kutta scheme.  It is only at third order in
+<tex>$\tau$</tex> that they appear, in the form of partial derivatives
+of the interaction term.
+
+*Alice*: Yes, that must be right.  Okay, ready for a next round of
+substitution?  Eq. (ref(k3)) then becomes:
+
+ :eqnarray:
+\label{k3s}
+k_3 \,=\, f_0 &+&\, \left\{
+v_0 f_r + f_t
+\right\} \tau                                           \nonumber\\
+&+&\, \left\{
+\hhalf f_0f_r + \hhalf v_0^2f_{rr}
++v_0f_{rt}+\hhalf f_{tt}
+\right\} \tau^2                                           \nonumber\\
+&+&\, \Big\{
+\one{4}v_0\left(f_r\right)^2 + \one{4}f_rf_t +
+\hhalf v_0f_0f_{rr} + \hhalf f_0f_{rt} +                \nonumber\\
+&& \ \ \one{6}v_0^3f_{rrr}
++ \hhalf v_0^2f_{rrt}+ \hhalf v_0f_{rtt}+ \one{6}f_{ttt}
+\Big\} \tau^3
+
+We are now in a position to evaluate the solution that our Runge-Kutta
+scheme gives us for the value of the position and velocity in the next
+time step, as given in Eq. (ref(base)), since there we can now
+substitute <tex>$k_2$</tex> and <tex>$k_3$</tex> in the expressions for
+<tex>$r_1$</tex> and <tex>$v_1$</tex>.
+
+Starting with the position, we find:
+
+ :eqnarray:
+\label{r1}
+r_1 \,=\, r_0 &+&\, v_0\tau + \hhalf f_0\tau^2 + \one{6}\left\{
+v_0 f_r + f_t \right\} \tau^3                                      \nonumber\\
+&+&\, \one{24}\left\{
+f_0f_r + v_0^2f_{rr} +2v_0f_{rt}+ f_{tt}
+\right\} \tau^4
+
+== The Next Velocity
+
+*Bob*: And this shows how some of the higher time derivates of the position,
+which we introduced before, are related to the interaction terms.
+Let's write them down specifically, to show how these orbit
+characteristics on the left-hand side are related to interaction terms
+and their space and time derivatives on the right hand side.  For the
+jerk we read off:
+
+:equation:
+j_0 \,=\, v_0 f_r + f_t
+
+and for the snap we find:
+
+:equation:
+s_0 \,=\, f_0f_r + v_0^2f_{rr} +2v_0f_{rt}+ f_{tt}
+
+*Alice*: Yes, and we're going to get one more from the expression for the
+velocity term, I think, since for the same order in <tex>$\tau$</tex>
+we will go one order higher in the derivatives.  Let's see.  To solve
+for <tex>$v_1$</tex> in Eq. (ref(base)), we need to use the following
+combination of <tex>$k_i$</tex> values:
+
+ :eqnarray:
+4k_2+k_3 \,=\, 5f_0 &+&\, \left\{
+3v_0 f_r + 3f_t
+\right\} \tau                                           \nonumber\\
+&+&\, \left\{
+f_0f_r + v_0^2f_{rr}
++2v_0f_{rt}+ f_{tt}
+\right\} \tau^2                                           \nonumber\\
+&+&\, \Big\{
+\one{4}v_0\left(f_r\right)^2 + \one{4}f_rf_t +
+{\textstyle\frac{3}{4}} v_0f_0f_{rr} + {\textstyle\frac{3}{4}} f_0f_{rt}
++   \nonumber\\
+&& \ \ \,\one{4}v_0^3f_{rrr}
++ {\textstyle\frac{3}{4}} v_0^2f_{rrt}+ {\textstyle\frac{3}{4}} v_0f_{rtt}
++ \one{4}f_{ttt} \Big\} \tau^3                                     \nonumber
+
+Plugging this back into the expression for <tex>$v_1$</tex> in Eq. (ref(base)),
+we get:
+
+ :eqnarray:
+\label{v1}
+v_1 \,=\, v_0 &+&\, f_0\tau + \hhalf \left\{
+v_0 f_r + f_t \right\} \tau^2                                      \nonumber\\
+&+&\, \one{6}\left\{
+f_0f_r + v_0^2f_{rr} +2v_0f_{rt}+ f_{tt}
+\right\} \tau^3                                                    \nonumber\\
+&+&\, \one{24}\Big\{
+v_0\left(f_r\right)^2 + f_rf_t +
+3v_0f_0f_{rr} + 3f_0f_{rt} \nonumber\\
+&& \ \ \ \ \ \ v_0^3f_{rrr}
++ 3v_0^2f_{rrt}+ 3v_0f_{rtt}
++ f_{ttt} \Big\} \tau^4
+
+*Bob*: And from this we can read off the crackle:
+
+:equation:
+c_0 \,=\, v_0\left(f_r\right)^2 + f_rf_t + 3v_0f_0f_{rr} + 3f_0f_{rt} 
++ v_0^3f_{rrr} + 3v_0^2f_{rrt}+ 3v_0f_{rtt} + f_{ttt}
+
+*Alice*: Yes, and we can also see that indeed the velocity, Eq. (ref(v1)),
+is the time derivative of the position, Eq. (ref(r1)), up to the order given
+there.  So everything is consistent.
+
+== Does the Orbit Follow the Interaction?
+
+*Bob*: So where do we stand now?  This was all nice and fine, but I must
+admit, I'm beginning to lose the forest for the trees.
+
+*Alice*: What we have done now is to compute the predicted positions and
+velocities after one time step, and we have checked that if we vary the
+length of the time step, we indeed find that the velocity changes like the
+time derivative of the position.  Both are aspects of the _orbit_, and we
+can indeed take one more time derivative, to find the value of the
+acceleration at time <tex>$\tau$</tex>
+
+ :eqnarray:
+\label{a1}
+a_1 \,=\, f_0 &+&\, \left\{
+v_0 f_r + f_t \right\} \tau                                      \nonumber\\
+&+&\, \hhalf\left\{
+f_0f_r + v_0^2f_{rr} +2v_0f_{rt}+ f_{tt}
+\right\} \tau^2                                                    \nonumber\\
+&+&\, \one{6}\Big\{
+v_0\left(f_r\right)^2 + f_rf_t +
+3v_0f_0f_{rr} + 3f_0f_{rt} \nonumber\\
+&& \ \ \ \ \, v_0^3f_{rrr}
++ 3v_0^2f_{rrt}+ 3v_0f_{rtt}
++ f_{ttt} \Big\} \tau^3
+
+What we should do now is to check whether this is indeed a true
+solution of the equations of motion, true up to the level of accuracy
+we are working with.  In other words, we should similarly expand the
+_interaction_ term on the right-hand side of the equations of motion.
+We should then check whether the orbit and interaction results are the
+same, up to fourth order in <tex>$\tau$</tex>.
+
+To sum up, our final question is: after expandeding both <tex>$a(\tau)$</tex>
+and <tex>$f(\tau)$</tex>, are they the same op to <tex>$\tau^4$</tex>,
+as desired?  The expansion of <tex>$a(\tau)$</tex> is given in the equation
+above, and we can find the corresponding expression for <tex>$f(\tau)$</tex>
+using the space-time double Taylor series expansion technique we started out
+with:
+
+ :eqnarray:
+f_1 \ =\ 
+f(\tau) \,&=&\, f(r(\tau)) \ \,= \ \,f(\rho)                      \nonumber\\
+=\,\ \ \ \ f_0 &+&\, f_r\rho + f_t\tau                            \nonumber\\
+&+&\,\hhalf f_{rr}\rho^2+f_{rt}\rho\tau+\hhalf f_{tt}\tau^2    \nonumber\\
+&+&\,\one{6}f_{rrr}\rho^3+\hhalf f_{rrt}\rho^2\tau
+     +\hhalf f_{rtt}\rho\tau^2 + \one{6}f_{ttt}\tau^3          \nonumber
+
+where again we have used <tex>$\rho$</tex> as a shorthand expression
+for the position after time <tex>$\tau$</tex>.  This position is given
+in Eq. (ref(r1)), but here we only need to include those terms that
+contribute to the expression for <tex>$f_1$</tex> up to <tex>$\tau^4$</tex>.
+Substituting those terms, the last equation becomes:
+
+ :eqnarray:
+f_1 \,=\, f_0 &+&
+f_r\left\{v_0\tau + \hhalf f_0\tau^2 + \one{6}\left\{
+v_0 f_r + f_t \right\} \tau^3\right\}+ f_t\tau                 \nonumber\\
+&+&\,\hhalf f_{rr}\left\{ v_0^2\tau^2+v_0f_0\tau^3\right\}
++f_{rt}\left\{v_0\tau + \hhalf f_0\tau^2\right\}\tau
++\hhalf f_{tt}\tau^2                                            \nonumber\\
+&+&\,\one{6}f_{rrr}\left\{v_0\tau\right\}^3
++\hhalf f_{rrt}\left\{v_0\tau\right\}^2\tau
++\hhalf f_{rtt}\left\{v_0\tau\right\}\tau^2 + \one{6}f_{ttt}\tau^3    \nonumber
+
+Grouping the various powers of <tex>$\tau$</tex> together, we get:
+
+ :eqnarray:
+\label{f1}
+f_1 \,=\, f_0 &+&\, \left\{
+v_0 f_r + f_t \right\} \tau                                       \nonumber\\
+&+&\, \hhalf\left\{
+f_0f_r + v_0^2f_{rr} +2v_0f_{rt}+ f_{tt}
+\right\} \tau^2                                                   \nonumber\\
+&+&\, \one{6}\Big\{
+v_0\left(f_r\right)^2 + f_rf_t +
+3v_0f_0f_{rr} + 3f_0f_{rt}                                        \nonumber\\
+&& \ \ \ \ \, v_0^3f_{rrr}
++ 3v_0^2f_{rrt}+ 3v_0f_{rtt}
++ f_{ttt} \Big\} \tau^3
+
+*Bob*: And lo and behold, Eqs. (ref(a1)) and (ref(f1)) are the same,
+to within our accuracy:
+
+:equation:
+a_1(\tau) = f_1(\tau) + O(\tau^4)
+
+*Alice*: Or even more explicitly:
+
+:equation:
+a_1(\tau) = {d \over d\tau}v_1(\tau) = f_1(r_1(\tau)) + O(\tau^4)
+
+And this proves that the Runge-Kutta scheme listed in Abramowitz and Stegun
+is fourth-order accurate: given that the acceleration is the derivative
+of the velocity, we must have an error term in the velocity of
+<tex>$O(\tau^5)$</tex>.
+And since position and velocity are both calculated to the same power in
+<tex>$\tau$</tex>, the same must be true for the position.
+
+*Bob*: I wonder whether this conclusion would satisfy a mathamatician working
+in numerical analysis.
+
+*Alice*: Probably not.  Actually, I hope not.  I'm glad some people are more
+careful than we are, to make sure that our algorithms really do what
+we hope they do.  At the same time, I'm sure enough now that we have a
+reasonable understanding of what is going on, and I'm ready to move on.
+
+*Bob*: I certainly wouldn't ask my students to delve deeper into this matter
+than we have been doing so far.  At some point they will have to get results
+from their simulations.
+
+*Alice*: At the same time, unless they have a fair amount of understanding
+of the algorithms that they rely on, it will be easy for them to use those
+algorithms in the wrong way, or in circumstances where their use is
+not appropriate.  But I agree, too much of a good thing may simply be
+too much.  Still, if a student would come to be with a burning curiosity
+to find out more about what is _really_ going on with these
+higher-order integration methods, I would encourage that him or her to
+get deeper into the matter, through books or papers in numerical analysis.
+
+*Bob*: I don't think that is too likely to happen, but if such students
+appear on my doorsteps, I'm happy to send them to you!
+
+*Alice*: And I would be happy too, since I might well learn from them.
+I've the feeling that we've only scratched the surface so far.
+
+== Debugging All and Everything?
+
+*Bob*: Yes, and our scratching had some hits and some misses.
+If we are ever going to write up all this exploring we are doing now,
+for the benefit of our students, we have to decide what to tell them, and
+what to sweep under the rug.
+
+*Alice*: I suggest we tell them everything, the whole story of how and where
+we went wrong.  If we're going to clean up everything, we will wind up with
+a text book, and text books there are already enough of in this world.
+
+*Bob*: I wasn't thinking about any formal publication, good grief, that would
+be far too much work!  I was only thinking about handing out notes to the
+students in my class.  And I must say, I like the idea of showing them
+a look into our kitchen.  I think it will be much more interesting for the
+students, and after all, if you and I are making these kinds of mistakes,
+we can't very well pretend that the students would be above making those
+types of mistakes, can we?
+
+*Alice*: Precisely.  They may learn from our example, in two ways: they will
+realize that everyone makes mistakes all the time, and that every mistake
+is a good opportunity to learn more about the situation at hand.  Debugging
+is not only something you have to do with computer programs.  When doing
+analytical work, you also have to debug both the equations you write down,
+in which you will make mistake, as well as the understanding you bring to
+the writing down in the first place.
+
+You might even want to go so far as to say that life is one large debugging
+process.  I heard Gerald Sussman saying something like that, some day.  He
+was in a talkative mood, as usual.  Somebody asked him what he meant
+when he said that he considers himself to be a philosophical engineer, and
+that was his answer.
+
+*Bob*: I doubt that I will have to debug my beer, I sure hope not!  But as
+far as codes and math and physics, sure, I'd buy that.  So yes, let us
+present the students our temporary failures on the level of math as well
+as on the level of coding.  I'm all for it!
+
+*Alice*: So, what's next?  A sixth order integrator?
+
+*Bob*: I hadn't thought about that, but given the speed-up we got with
+going from <tt>rk2</tt> to <tt>rk4</tt>, it would be interesting to
+see whether this happy process will continue when we would go to a
+<tt>rk6</tt> method, for a sixth-order Runge-Kutta method.  The
+problem is that Abramowitz and Stegun don't go beyond fourth order
+methods.  Hmm.  I'll look around, and see what I can find.
