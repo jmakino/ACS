@@ -194,6 +194,48 @@ module Acsdoc
   end
   # :segment end: prep_rb
 
+  def prep_rb_defs(infile)
+    ifile = open(infile, "r")
+    method_level = 0
+    ofile = Array.new;
+    oname = Array.new;
+    olevel = Array.new;
+    while s = ifile.gets
+      s.gsub!(/([^\t]{8})|([^\t]*)\t/n){[$+].pack("A8")}
+      if s.split[0]== "def"
+	method_name = s.gsub(/\(/," ").split[1]
+	print method_name if $DEBUG
+	outfile = File.dirname(infile)+"/."+File.basename(infile) +
+	  "+" + method_name
+	if oname[0...method_level].index(outfile) != nil
+	  raise "Too many defs for file #{infile} line #{ARGF.lineno}"
+	end
+	oname[method_level]=outfile
+	ofile[method_level] = open(outfile, "w+")
+	olevel[method_level] = s.index("def")
+	method_level += 1
+      elsif  s.split[0] == "end"
+	loc = s.index("end")
+	# check if this "end" corresponds to the deepest level "def"
+	if method_level > 0
+	  lastlevel = method_level-1
+	  if olevel[lastlevel] == loc 
+	    ofile[lastlevel].print s
+	    ofile[lastlevel].close
+	    method_level -= 1
+	  elsif olevel[lastlevel] > loc 
+	    raise "Unexpected \"end\" with level #{loc} for expected level "+
+	      "#{olevel[lastlevel]} at line #{ARGF.lineno}"
+	  end
+	end
+      end
+      for i in 0...method_level do
+	ofile[i].print s
+      end
+    end
+    ifile.close
+  end
+  
   # :segment start: acsdoc
   def acsdoc()
     
@@ -208,6 +250,7 @@ module Acsdoc
 	del_file_list.push(dot_a)
       elsif a =~ /\.rb$/
 	prep_rb(a)
+	prep_rb_defs(a)
 	a
       elsif a == "--keep-dot-files"
 	del_flag = false

@@ -43,6 +43,12 @@ The changes we made are
 
 :inccode: .acsdoc.rb-acsdoc
 
+Now, by using "." + filename + "+" methodname, you can show a method
+defined in a file: The following is an example, using
+": inccode: .acsdoc.rb+prep_rb" (no space after the first ":")
+
+:inccode: .acsdoc.rb+prep_rb
+
 
 Here is an example of ":output:" with "echo foo" as arguments
 
