@@ -44,396 +44,237 @@ with reading and writing the data for a single particle.  For an
 object oriented language like Ruby, that suggests that we create a
 class +Body+ for a particle in an N-body system.
 
+*Alice*: Can you remind me what a class is?
+
+*Bob*: I thought you were going to tell me, while pointing out how
+important they are for your obsession with modular programming!
+
+*Alice*: Well, yes, I certainly know the general idea, but I must
+admit, I haven't really worked with object oriented languages very
+much.  At first I myself was stuck with some existing big codes that
+were written in rather arcane styles.  Later, when I got to supervise
+my own students and postdocs, I would have liked to let them get a
+better start.  However, I realized that they had to work within rather
+strict time limits, within which to learn everything: the background
+science, the idea of doing independent research, learning from your
+mistakes, and so on.
+
+The main problem for my students has been that there is hardly any
+literature that is both interesting for astrophysicists and inspiring
+in terms of a really modern programming attitude.  When students are
+pressed for time and eager to learn their own field, they are not
+likely to spend a long time delving in books on computer science,
+which will strike them as equally arcane, for different reasons, as
+the astrophysical legacy codes.
+
+Given that there was no middle ground, I did not want them to focus
+too much on computational techniques, because that would have just
+taken too much time.  My hope is, frankly, that our toy model approach
+will bridge the huge gap between the arcane and the arcane.
+
+*Bob*: You always find a way to introduce a world wide vision for
+every small task that you encounter.  As for me, I'm happy to just
+build a toy model, and if students will find it helpful, I'd be happy
+too.  But just to answer your question, defining a class is just a way
+to bundle a number of variables and functions together.  Just like a
+number of scalar values can be grouped together in one array, which
+can stand for a physical vector for example, you can group a more
+heterogeneous bunch of variables together.  You do this mainly for
+bookkeeping reasons, and to keep your program simpler and more robust.
+
+In practice, a good guide to choosing the appropriate class structure
+for a given problem is to start with the physical structures that
+occur naturally, but that may not always be the best option, and
+certainly not the only one.
+
 === A Body Class
 
-*Bob*: How about:
+*Bob*: For example, a single particle has as a minimum a mass,
+a position and velocity.  Whenever you deal with a particle, you
+would like to have all three variables at hand.  You can't put them in
+a single array, because mass is a scalar, and the other two variables
+are vectors, so you have to come up with a more general form of
+bundling.
+
+The basic idea of this kind of programming is called object-oriented
+programming.  In many older computer languages, you can pass variables
+around, where each variable can contain a number or an array of numbers;
+or you may pass pointers to such variables or arrays.  In an
+object-oriented programming language, you pass bundles of information
+around: for example all the information pertaining to a single
+particle, or even to a whole N-body system.  This provides convenient
+handles on the information.
+
+If you look in a computer science book, you will read that the
+glorious reason for object-oriented programming is the ability to make
+your life arbitrarily difficult by hiding any and all information
+within those objects, but I don't particularly care for that aspect.
+
+*Alice*: What exactly can be an object?  Do you always need to have
+a bunch of variables, or can you add functions as well?
+
+*Bob*: To take the specific case of Ruby, a typical class contains both.
+For a class to be useful, you have at least to be able to create an
+instance of a class, so you need an initializer, roughly what is
+called a constructor in C++.  This function can either be explicitly
+be present or be hidden, but it is always there.
+
+However, there are other objects in Ruby, besides classes.  Sometimes
+you have a group of functions that are either similar or just work
+together well, and you may want to pass them around as a bundle.  In
+Ruby, such bundles of functions are called modules.  But to get started,
+it is easier to stick to classes for now.
+
+Note as a matter of terminology that what I have called a function, or
+what would be called a subroutine in Fortran, is called a method in Ruby.
+
+*Alice*: Ah, that is nice!  Does this mean that we can define an
+integration algorithm as a module, independent of the particular
+variables in the classes that define a body or an N-body system?  I
+mean, can you write a leapfrog module that can propagate particles,
+independently of there type?  You could have point particles in either
+a two-dimensional of a three-dimensional world.  Or you could have
+particles with a finite radius, that stick together when they collide;
+as long as they are not too close, they could be propagated by the
+same leapfrog module.
+
+*Bob*: You really have an interesting way of approaching a problem.
+We haven't even defined a single particle, and you are already
+thinking about
+
+
+
+Can you show me the syntax for creating a class that
+contains those variables?
+
+*Bob*: I think this is how we introduce a minimal class for a single
+particle:
 
  :inccode: body1.rb
 
-*Alice*: That was quick!  I can see that you've studied a manual or two.
-What does +attr_accessor+ mean?
+*Alice*: That is remarkably short and simple!  In fact, it seems too
+simple.  I know that Ruby is an interpreted language and that is has
+no types [explain more???].  However, I am surprised that we do not
+have to declare the internal variables.  In other languages that I am
+familiar with, it is essential that you tell the computer which memory
+places to set aside before naming them.
 
-*Bob*: It is a short-hand expression.  The name itself is short for
-being an accessor for attributes of a class, namely instance variables
-for which the names start with the symbol <tt>@</tt>.  The meaning of the
-expression 
+*Bob*: I am not used to a untyped language either.  In a typed language,
+you have to declare [right word?] each variable, but I guess that it
+would be possible to allocate memory on the fly, as it is needed, from
+context.
 
- :inccode: .leap_attr_explanation.rb-attr
+*Alice*: It seems so, yes.  So here there is only one function, starting
+with +def+ and ending with the inner +end+, correct?
 
-is syntactic sugar for
+*Bob*: Indeed.  And the last +end+ is the end of the class definition, that
+starts with <tt>class Body</tt>.  Note the convention that the name of
+a class such as +Body+ always starts with a capital letter.  The names
+of normal variables, in contrast, start with a lower-case letters:
+we have three such variables, +mass+, +pos+, and +vel+.  All three are
+given here as possible parameters to the initialization function
++initialize+.
 
- :inccode: .leap_attr_explanation.rb-meaning
+*Alice*: So how do you create a particle?
 
-Here the first line is a type of `getter' which gets the value of such
-an instance variable.  Using it, we can assign the value of the mass
-of a Body to another variable, say +the_mass+:
+*Bob*: According to the book I read, you can simply type
+<tt>b = Body.new</tt>, to get a new particle with the default values,
+all zero in this case.  Or when you type <tt>b = Body.new(1)</tt> you
+give the particle mass an intial value 1, while keeping the other
+values 0, and so on.
 
- :inccode: .leap_attr_explanation.rb-use1
+*Alice*: And so on?  How do you give a value to a vector?
 
-The second line is a type of `setter' which sets the value of an
-instance variable.  We can assign a value to the mass of a Body as
-follows:
+*Bob*: That I'm not sure yet.  We should experiment and try it out.
 
- :inccode: .leap_attr_explanation.rb-use2
+*Alice*: Before doing that, what are the funny <tt>@</tt> signs?
 
-*Alice*: That makes sense, and I like the compact way in which <tt>mass=</tt>
-is in fact the name of an operator that assigns values to internal
-variables, what did you call them, instance variables?
+*Bob*: Those indicate the internal variables associated with a particle.
+In Ruby such variables are called <i>instance variables</i>.  The name
++Body+ applies to a class, namely the one defined above.  A command
+like <tt>b = Body.new</tt> creates an instance of this class, a
+specific object, for which we use the name +b+.  That is the reason
+that the variables <tt>@mass</tt>, <tt>@pos</tt> and <tt>@vel</tt> are
+called instance variables.  You see that the only thing the
+initializer does is to copy the values of the parameters of the class
+initialization to the instance variables.
 
-*Bob*: Yes, instance variables are internal variables that hold
-different values for each object you create of a class, where each
-object is a different instance of the class.  This in contrast to
-class variables, with names that start with <tt>@@</tt>, where there is only
-one variable with a given name that holds the same value across a
-class, for all instances of that class.
+*Alice*: All this reminds me of <tt>C++</tt>.
 
-*Alice*: Hmm, I guess I should have a quick look at one of the tutorials
-too, to keep up with you.
+*Bob*: Indeed, the logical structure of <tt>C++</tt> class definitions
+is very similar.
 
-*Bob*: Yes, and then you will start calling these functions `methods'
-instead of operators.
+*Alice*: The main difference is that a <tt>C++</tt> class definition is
+quite a bit longer.  I'm curious how much longer.  Do you remember how
+to write a similar particle class in <tt>C++</tt>?
 
-*Alice*: At least I didn't call them subroutines!  Is there a particular
-book you recommend?
+*Bob*: Let's see.  That shouldn't be too hard.  Always easiest to look at
 
-*Bob*: The standard book for learning the language is <i>Programming Ruby</i>
-by Dave Thomas and Andy Hunt, a.k.a. the Pragmatic Programmers.
+Here is the <tt>C++</tt> version:
 
-*Alice*: For now, let's move on, and I'll catch up with you later.  I
-presume that the +initialize+ method tells Ruby how a new instance of
-a Body class is created.
+ :inccode: body1.C
 
-*Bob*: Indeed.  And it is invoked by a predefined method <tt>Body.new</tt>;
-in general a method associated with a class is invoked by placing a
-period between the class name (starting with a capital letter) and its
-method (starting with a lower case method).  Let's try it out, and see
-whether we can make a print-out of a newly created Body instance:
+*Alice*: xxx
 
- :inccode: .body-init-demo1.rb-demo
+*Bob*: Let's see whether it behaves as we think it should.  We can use the
+interactive Ruby shell +irb+, and we can start it up with the
+<tt>-r</tt> option that specifies a file to be loaded:
 
-Let's call this file <tt>test.rb</tt>.
-Now let's run it:
+    |gravity> irb -r body01.rb
+    irb(main):001:0> b = Body.new
+     => #<Body:0x401c7e7c @mass=0, @vel=[0, 0, 0], @pos=[0, 0, 0]>
+    irb(main):002:0>
 
- :command: cp -f body-init-demo1.rb test.rb
- :commandoutput: ruby test.rb
- :command: rm -f test.rb
+*A*: So far so good.  The interpreter echoes the value of the object
++b+ that is created.  The first number +0x401c7e7c+ must be the id or
+identifier, the unique name of that particular object for Ruby.  Let
+me try to assign values other than the default zeroes:
 
-*Alice*: So far so good.  The +p+ command just dumps the value of the object
-+b+ that is created.  The first number after <tt>Body:</tt> must be the id or
-identifier, the unique name of that particular object for Ruby.
+    irb(main):002:0> c = Body.new(1, 0.5, 0, 0, 0, 0.7, 0)
+    ArgumentError: wrong # of arguments(7 for 3)</tt>
+	    from (irb):2:in `initialize'
+	    from (irb):2:in `new'
+	    from (irb):2
+    irb(main):003:0> 
 
-*Bob*: Aha!  I wondered whether you really had not looked at any manual yet.
-You're right, but how did you guess?
+*B*: How nice to get such clear instructions!  Quite a bit more helpful
+than <i>segmentation fault</i> or something cryptic like that.
 
-*Alice*: Okay, I admit, I did browse through a few Ruby books in the
-library, just for a few minutes, to get acquainted.
-
-*Bob*: Let me try to assign values other than the default zeroes:
-
- :inccode: .body-init-demo2.rb-demo
-
-And let's see a non-trivial output:
-
- :command: cp -f body-init-demo2.rb test.rb
- :commandoutput: ruby test.rb
- :command: rm -f test.rb
-
-*Alice*: Nontrivial indeed -- but how nice to get such clear instructions!
-Quite a bit more helpful than <i>segmentation fault</i> or something
-cryptic like that.
-
-*Bob*: Agreed!  And yes, I should have presented the positions and velocities
+*A*: Indeed.  And yes, I should have presented the positions and velocities
 as arrays, making three arguments in total.
 
- :inccode: .body-init-demo3.rb-demo
+    irb(main):003:0> c = Body.new(1, [0.5, 0, 0], [0, 0.7, 0])
+    => #<Body:0x4023b31c @mass=1, @vel=[0, 0.7, 0], @pos=[0.5, 0, 0]>
+    irb(main):004:0> 
 
-This should work:
+*B*: Let's try to getter and setter commands.
 
- :command: cp -f body-init-demo3.rb test.rb
- :commandoutput: ruby test.rb
- :command: rm -f test.rb
+    irb(main):004:0> c.mass
+    => 1
+    irb(main):005:0> c.pos[0]
+    => 0.5
+    irb(main):006:0> c.vel[1] = 0.8
+    => 0.8
+    irb(main):007:0> c.vel
+    => [0, 0.8, 0]
+    irb(main):008:0> 
 
-*Alice*: Much better.  Let's try the getter and setter commands.
-
- :inccode: .body-init-demo4.rb-demo
-
- :command: cp -f body-init-demo4.rb test.rb
- :commandoutput: ruby test.rb
- :command: rm -f test.rb
-
-Well, that's simple and straightforward.  You can even use array
+*A*: Well, that's simple and straightforward.  You can even use array
 notation, and everything works just like you would hope it would.
 
-*Bob*: I saw you hesitating when you typed that third line.  I would have
+*B*: I saw you hesitating when you typed line 6.  I would have
 thought you would type something like:
 
- :inccode: .body-init-demo5.rb-demo
+    irb(main):006:0> c.vel = [0, 0.8, 0]
+    => [0, 0.8, 0]
 
-which would have given the same effect:
+which would have given the same effect.
 
- :command: cp -f body-init-demo5.rb test.rb
- :commandoutput: ruby test.rb
- :command: rm -f test.rb
-
-*Alice*: Yes, you read my mind.  I had understood that "<tt>c.vel =</tt>"
+*A*: Yes, you read my mind.  I had understood that "<tt>c.vel =</tt>"
 is parsed by Ruby as an assignment operator "<tt>vel=</tt>"
 associated with +c+ and frankly I did not expect that I could throw in
 the component selector "<tt>[1]</tt>" without complaints from the
 interpreter.
 
-*Bob*: but it did the right thing!  This must be what they mean when
+*B*: but it did the right thing!  This must be what they mean when
 they say that Ruby is based on the principle of minimum surprise.
-
-<b>[This is how far I got with my rewrite, 2004/1/19 -- Piet]</b>
-
-== Improving the Output
-
-*Alice*: So far we've only use the general dump command "+p+".  Certainly
-useful when we run a script, since otherwise we would get no output at
-all.  Let us try "+print+", which seems to be a general output command
-in Ruby:
-
- :inccode: .body-print-demo.rb-demo
-
- :command: cp -f body-print-demo.rb test.rb
- :commandoutput: ruby test.rb
- :command: rm -f test.rb
-
-*Alice*: It still gives some information, but only the id.  And as with
-the previous command, it returns +nil+ which probably means that there
-is no particular internal value associated with this operation.  In
-order to get some useful output, it seems that we have to do some work.
-The manual page for +print+ states: "Objects that aren't strings
-will be converted by calling their +to_s+ method."
-
-*Bob*: And we haven't defined a +to_s+ method yet.  We will have to
-construct a single string that contains all the information in a
-nicely formatted way.  Following the principle of minimum surprise,
-arrays such as <tt>pos[]</tt> and <tt>vel[]</tt> as well as single
-variables such as +m+ will probably have already a +to_s+ method
-associated with them.  Let's check.  How about this:
-
- :inccode: .body-to_s-wrong.rb-to_s
-
-*Alice*: <i>[leave this paragraph out now? -- Piet]</i> Good idea to write
-a comment at the top, to remind us what this class is for.  We may as
-well get into the habit of writing comments as we code along, since
-what seems obvious today may no longer be so next week or next month.
-
-Let's see what this version will do.
-
- :inccode: .body-to_s-wrong-demo.rb-demo
-
- :command: cp -f body-to_s-wrong-demo.rb test.rb
- :commandoutput: ruby test.rb
- :command: rm -f test.rb
-
-*Bob*: Huh?  Why are the contents of the arrays smeared together this way?
-
-*Alice*: Remember that Ruby is an untyped language.  The interpreter has
-no way of knowing what to do with the components, as long as we don't
-give it a hint.  For example, if we would be dealing with an array of
-characters, then we might well want to get the all strung together;
-that's were the word "string" comes from, after all.
-
-== Pretty Printing
-
-*Bob*: Good point.  So we should define our own field separator.  I saw
-something to do that.  Here it is: the method +join+ converts an array
-to a string, and you can give a separator as an arguments.  How about:
-
- :inccode: .leap.rb+to_s
-
-*Alice*: Looks good, let's try:
-
- :inccode: .body-to_s-demo.rb-demo
-
- :command: cp -f body-to_s-demo.rb test.rb
- :commandoutput: ruby test.rb
- :command: rm -f test.rb
-
-*Bob*: Much better!  And I like the shorter prompt.  Interesting that
-the order of the dumped variables seems to be arbitrary: the mass
-value suddenly appeared at the end.  One more reason to define our own
-<tt>to_s</tt> method, to have consistency in the output.
-
-*Alice*: I'm curious to see what happens when we run a script directly
-from the command line, rather than using the interpreter.  We may as
-well use the <tt>to_s</tt> method to define a pretty printing method
-+pp+ that we can then invoke directly, as follows:
-
- :inccode: .leap.rb+pp
-
- :inccode: .body-pp-demo.rb-demo
-
-*Bob*: Let's run it:
-
- :command: cp -f body-pp-demo.rb test.rb
- :commandoutput: ruby test.rb
- :command: rm -f test.rb
-
-*Alice*: Pretty indeed, and much less clutter, only the essentials.
-
-*Bob*: But at the cost of having to edit the file each time you want to
-do something different.
-
-*Alice*: I guess it depends on your taste, whether you find it easier to
-make many small edits or to use an interpreter.
-
-== Full Accuracy I/O
-
-*Bob*: So where are we?  We have successfully defined a class +Body+,
-and have learned to give it an initial value and to print it out.
-Now we have to provide an input routine as well.
-
-*Alice*: And remember our plan to chain our integrator?  If we use the
-output of one invocation as the input for the next one, we don't want
-to use accuracy.  If we use 64-bit floating point accuracy, often
-called "double precision" for historical reasons, we'd better print
-everything out with enought digits.
-
-*Bob*: Good point.  Let's see.  If we use 15 digits, at roughly 10 bits
-for every 3 digits, we cover 50 bits, which may be good enough.
-
-*Alice*: And since this type of I/O is meant for machine-to-machine
-handshaking, I suggest we output all seven numbers on one line, so that
-it will be easy for the input routine to read particles in, having to
-read exactly one line per particle.
-
-*Bob*: Simple enough: let's call them <tt>simple_read</tt> and
-<tt>simple_print</tt>.  The first one is simple, once you are familiar
-with the C language.  For the second one we can use the +split+ method
-that by default splits a string into space separated pieces, each of
-which are loaded successively into an array.
-
-*Alice*: That sounds like a good strategy.  But now we have to tell Ruby
-that we live in a three-dimensional world, otherwise there would be no
-easy way of knowing where <tt>pos[]</tt> ends and <tt>vel[]</tt> begins.
-
-*Bob*: Of course we could count the number of fields in one line,
-subtract one, divide by two and take that to be the dimensionality of
-our problem.  But that is not very elegant.  And besides, different
-lines might have erroneously different numbers of input values.  But
-let us not worry about error handling for now.
-
-*Alice*: Yes, we have enough on our hands to get things going.  Okay,
-let's define the dimensionality as <tt>NDIM = 3</tt>.  This will make
-it easy to deal with, say, two-dimensional systems such as a two-body
-orbit, or a planetary system in a planar approximation, later on.
-
-*Bob*: Since I don't like global variables, let's encapsulate +NDIM+ as
-a class constant, with the +Body+ class:
-
- :inccode: .leap.rb+write
- :inccode: .leap.rb+read
-
-Here is a test file <tt>test.rb</tt>:
-
- :inccode: .body-simple-io-demo.rb-demo
-
-*Alice*: Let's see.  To run this, we now have to put in the values by hand:
-
- :command: cp -f body-simple-io-demo.rb test.rb
- :commandinputoutput: ruby test.rb END
-3
-0.1 0.2 0.3
-4 5 6
-END  
- :command: rm -f test.rb
-
-*Bob*: Now let's chain the commands, by invoking it twice, piping the
-values from the output of the first invocation to the input for the
-second one.
-
- :command: cp -f body-simple-io-demo.rb test.rb
- :commandinputoutput: ruby test.rb | ruby test.rb END
-3
-0.1 0.2 0.3
-4 5 6
-END
- :command: rm -f test.rb
-
-*Bob*: Congratulations!  This is what a mathematician would call a fixed point,
-if we would view the operation <tt>ruby body05.rb</tt> as a mapping.
-
-*Alice*: Which would be appropriate: when we finish our integrator, it
-will transform initial conditions to final conditions after a certain
-time +t+.  In that way, the integrator will act as a propagator,
-mapping initial conditions onto final conditions.
-
-*Bob*: I have noticed that you like to use terms from elementary
-particle physics.  Well, I guess that our point particles are about as
-elementary as they come, so it does make sense ;>).
-
-== Looking Back
-
-*Alice*: That was great, to be able to do such rapid prototyping in a
-language we hardly knew.  I can see the advantages of an interpreted
-typeless computer language.  If we had tried to do this in C++, it
-would have taken quite a bit more time, and we would have had to write
-quite a bit more lines of code.
-
-*Bob*: Yes.  Defining a class, getting it to behave, providing I/O, and
-letting it chain, all that is a nontrivial beginning.  This is
-encouraging!  Let's move on, to see how much we have to add before we
-can let the integrator integrate.
-
-== Moving right along
-
-<i>[I'm only putting in a few words for now; when we agree upon the
-story, I will flesh it out and provide a complete dialogue --
-Piet]</i>
-
-Next our friends write an +Nbody+ class:
-
- :inccode: .leap.rb-nbody
-
-Then they write a ruby script to generate files with sample initial conditions:
-
- :inccode: sample_init.rb
-
-*Alice*: Time for a demo:
-
- :inccode: .mk_binary-demo.rb-demo
-
-*Bob*: Let's run it:
-
- :command: cp -f mk_binary-demo.rb test.rb
- :commandoutput: ruby test.rb
- :command: rm -f test.rb
-
-*Alice*: Here is another one:
-
- :inccode: .mk_triple-demo.rb-demo
-
-*Bob*: Here goes:
-
- :command: cp -f mk_triple-demo.rb test.rb
- :commandoutput: ruby test.rb
- :command: rm -f test.rb
-
-*Alice*: We can also test the reading and writing, with another file
-<tt>test-io</tt>:
-
- :inccode: .nbody-simple-io-demo.rb-demo
-
-*Alice*: Now we can pipe the triple output through this last script to
-check whether we can the same result:
-
- :command: cp -f mk_triple-demo.rb       test.rb
- :command: cp -f nbody-simple-io-demo.rb test-io.rb
- :commandoutput: ruby test.rb | ruby test-io.rb
- :command: rm -f test.rb test-io.rb
-
-*Bob*: Or to make inspection even easier:
-
- :command: cp -f mk_triple-demo.rb test.rb
- :command: cp -f nbody-simple-io-demo.rb test-io.rb
- :command: rm -f test.out test-io.out
- :commandoutput: (ruby test.rb > test.out)
- :commandoutput: (ruby test.rb | ruby test-io.rb > test-io.out)
- :commandoutput: diff test.out test-io.out
- :command: rm -f test.out test-io.out
- :command: rm -f test.rb  test-io.rb
-
-
