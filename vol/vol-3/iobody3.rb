@@ -16,10 +16,10 @@ class Body
     subtag = if @type then " "+@type else "" end
     indent = base_indentation + additional_indentation
     " " * base_indentation + "begin " + TAG + subtag + "\n" +
-      f_to_s("mass", mass, precision, indent) +
-      f_v_to_s("position", pos, precision, indent) +
-      f_v_to_s("velocity", vel, precision, indent) +
-      rest_to_s(indent) +
+      f_to_s("mass", mass, precision, indent) +                              #2
+      f_v_to_s("position", pos, precision, indent) +                         #2
+      f_v_to_s("velocity", vel, precision, indent) +                         #2
+      rest_to_s(indent) +                                                    #3
       " " * base_indentation + "end" + "\n"
   end
 

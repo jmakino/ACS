@@ -368,14 +368,29 @@ not, it really is an error.
 *Alice*: Simple indeed!  But we have to make a change in our output
 mechanism as well.
 
-*Bob*: Yes, and that is simple too:
+*Bob*: That should be simple too.  After the current lines in <tt>to_s</tt>
+that handle the known quantities
 
- :inccode: .iobody3.rb+to_s
+ :inccode: .iobody3.rb-2
+
+we can add a similar line for the unknown quantities, where the only
+information that needs to be passed in the amount of indentation +indent+:
+
+ :inccode: .iobody3.rb-3
+
+and if I regularly express myself as follows
 
  :inccode: .iobody3.rb+rest_to_s
 
-*Bob*: Let's check this, by writing a test
-file <tt>test.rb</tt>:
+it should all work.  Te comman +gsub+ globally substitutes however
+many initial blank spaces there may be in any line within the string 
+<tt>@rest</tt> by the proper indentation length.
+
+== Testing
+
+*Alice*: Let's see whether it all works.
+
+*Bob*: I'll write a test file <tt>test.rb</tt>:
 
  :commandinput: cat > test.rb END
  require "iobody3.rb"
@@ -398,7 +413,8 @@ And here is the result:
     end
 END
 
-*Bob*: And now with bad indentation, to see whether it will get corrected?
+*Alice*: Looking good!  Shall we try some bad indentation, to see
+whether it will get corrected?
 
  :commandinputoutput: ruby test.rb END
       mass =      1
@@ -409,19 +425,9 @@ nearest_neighbor = 365
 end
 END
 
-*Alice*: Let's try to give a story line:
-
- :commandinput: cat > test.rb END
- require "iobody3.rb"
-
- b = Body.new
- b.read("begin particle star giant AGB")
- b.write
-END
-
- :output: cat test.rb
-
-And here is the result:
+*Bob*: So far, so good.  Let's try to give a story line, without a
+proper <tt>begin story</tt> header, to see whether we get a proper
+error message.
 
  :commandinputoutput: ruby test.rb END
       mass =      1
@@ -433,4 +439,20 @@ And here is the result:
     end
 END
 
-TODO: HIGHER LEVEL ACS READ-IN, HASH TABLE.
+*Alice*: Indeed: that is indeed the number of the last line in
+
+ :inccode: .iobody3.rb-1
+
+But we should really provide a more user friendly error message, that
+does not require counting lines of source code.
+
+*Bob*: Let us first handle proper stories, starting with <tt>begin story</tt>,
+as well as other particles that might be embedded within our current particle
+data, as members of a star cluster.
+
+*Alice*: Yes, and these two points are indeed what was left from our previous
+todo list:
+
+* write the +subread+ method
+
+* improve the error handling
