@@ -404,9 +404,6 @@ class World
         if c.world_output_flag
           acs_write($stdout, false, c.precision, c.add_indent)
         else
-#p @t_out
-#p @era.start_time
-#p @era.end_time
           @era.take_snapshot(@t_out).acs_write($stdout, true,
                                                c.precision, c.add_indent)
         end

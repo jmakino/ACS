@@ -1,6 +1,5 @@
 require "vector.rb"
 require "clop.rb"
-require "acsio.rb"
 
 class Body
 
@@ -74,6 +73,18 @@ class Body
     STDERR.print to_s + "   jerk = " + jerk(body_array, eps).join(", ") + "\n"
   end
 
+  def simple_print
+    printf("%24.16e\n", @mass)
+    @pos.each{|x| printf("%24.16e", x)}; print "\n"
+    @vel.each{|x| printf("%24.16e", x)}; print "\n"
+  end
+
+  def simple_read
+    @mass = gets.to_f
+    @pos = gets.split.map{|x| x.to_f}.to_v
+    @vel = gets.split.map{|x| x.to_f}.to_v
+  end
+
 end
 
 class Nbody
@@ -82,7 +93,6 @@ class Nbody
 
   def initialize
     @body = []
-    @time = 0.0
   end
 
   def evolve(integration_method, eps, dt, dt_dia, dt_out, dt_end,
@@ -96,7 +106,7 @@ class Nbody
     t_out = dt_out - 0.5*dt
     t_end = dt_end - 0.5*dt
 
-    acs_write if init_out
+    simple_print if init_out
 
     while @time < t_end
       send(integration_method)
@@ -107,7 +117,7 @@ class Nbody
         t_dia += dt_dia
       end
       if @time >= t_out
-        acs_write
+        simple_print
         t_out += dt_out
       end
     end
@@ -378,6 +388,21 @@ END
     @body.each{|b| b.ppx(@body, @eps)}
   end
 
+  def simple_print
+    print @body.size, "\n"
+    printf("%24.16e\n", @time)
+    @body.each{|b| b.simple_print}
+  end
+
+  def simple_read
+    n = gets.to_i
+    @time = gets.to_f
+    for i in 0...n
+      @body[i] = Body.new
+      @body[i].simple_read
+    end
+  end
+
 end
 
 options_text= <<-END
@@ -514,5 +539,6 @@ parse_command_line(options_text, true)
 
 include Math
 
-nb = ACS_IO.acs_read(Nbody)
+nb = Nbody.new
+nb.simple_read
 nb.evolve($method, $eps, $dt, $dt_dia, $dt_out, $dt_end, $init_out, $x_flag)
