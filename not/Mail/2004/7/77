@@ -1,0 +1,19 @@
+Date: Tue Jul 13 09:56:56 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+ > > With me, only the "Up" is clickable, none of the others; this is the
+ > > case both on top and on the bottom.  The normal chapters work fine;
+ > > there all eight are clickable (four on top; four on the bottom).
+ > > I wonder whether my systems is set up different from yours, in some
+ > > way, with respect to acsdoc?
+ > 
+ > Hmm, could you try "make clean" and then "make" at vol-0? It could be
+ > that something left out from previous build do something strange...
+
+Yes, that did it, somehow; now everything is fine.
+
+Thanks!
+
+Piet
+
