@@ -181,6 +181,39 @@ class Block_time
     return t
   end
 
+  def commensurable?(t)
+    contract
+    t.contract
+    answer = @time_array.size >= t.time_array.size
+    expand
+    t.expand
+    answer
+  end
+
+  def commensurable?(t)
+    answer = self.contract.time_array.size >= t.contract.time_array.size
+    expand
+    t.expand
+    answer
+  end
+
+  def halve
+    k = @time_array.size
+    while k > 1
+      k -= 1
+      @time_array[k] = @time_array[k-1]
+    end
+    i = @time_int
+    if 2*(i/2) == i          # i even
+      @time_int = i/2
+      @time_array[0] = 0
+    else                     # i odd
+      @time_int = (i/2.0).floor
+      @time_array[0] = 1
+    end
+    self
+  end
+
   def to_s
     contract
     s = "{" + @time_int.to_s + ", [" + @time_array.join(", ") + "]}\n"
