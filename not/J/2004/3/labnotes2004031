@@ -1,0 +1,38 @@
+== Thoughts on svn system on WWW
+
+Basic idea: www.artcompsci.org shows the complete acs source+whatever
+directory tree.
+
+Practical stuff.
+
+* I (JM) do not want to make svn tree publicly readable.
+  * Need to study subversion documents
+  * Need to switch to Apache 2 from 1.3
+  * Potential security problems
+
+* Question on where to put tarballs and how
+  * In principle (and probably in practice also), a tarball can be
+    generated from some earlier svn release.
+  * In that sense, it is not really critical to have a safe and
+    foolproof way to regenerate old versions
+  * On the other hand, svn release number itself need to be memorized
+
+Algorithm to generate tarball  
+
+  1) determine the version number. Echo previous version (if any) and
+     request keyin
+  2) create the list of files by svn list -R at the top level
+  3) Make sure the files, in particular the books ps, pdf, and html
+     files,  which are not under SVN version control are
+     actually the latest, by saying make book at the vol top level
+     directory.
+  4) The script to create tarball need to know about these files.
+     I *think* it's okay to just put the name (or directory) of the
+     files in something like bin/export.rb     
+
+Maybe better to keep HTML files etc in separate location?
+
+Yet another thought: Should we move everything currently under acs to
+asc/kali? Maybe not for now, but...
+
+

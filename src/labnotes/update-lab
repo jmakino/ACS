@@ -32,7 +32,7 @@ if ( $success == 1) then
     goto loopyear
 endif
 
-foreach dir ( [A-Z]*/*  [A-Z]*/* )
+foreach dir ( [A-Z]*/*  [A-Z]*/*/* )
     if ( ( -d $dir ) && ( !  ( -e $dir/.svn ) ) ) then
 	svn add $dir
 	echo New directory $dir added

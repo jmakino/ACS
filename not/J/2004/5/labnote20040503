@@ -1,0 +1,13 @@
+== Lab note web update scheme memo
+
+The basic scheme is to run update-acslab as cron scheduled command on
+grape, which is both svn and web server:
+
+ [acs@grape ~/bin]$ crontab -l
+ "* * * * *       /usr2/acs/bin/update-acslab"
+
+It does not seem like updating svn repository correctly after getting
+a mail. Need to be fixed.
+
+Adding local files (like this file) seems okay.
+ 

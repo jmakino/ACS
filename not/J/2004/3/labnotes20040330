@@ -1,0 +1,21 @@
+== Titles for the series and book
+
+* Top level: ACS
+
+* Second level: The Kali code for Dense Stellar Systems
+
+*Third level:
+  * Volume 0: A Vision
+  * Volume 1: The Two-Body Problem in Ruby
+  * Volume 2: The Hermite Integrator
+  * Volume 3: TBD
+
+
+== More thoughts on acsdoc
+
+* some way to make sections/chapters unnumbered
+
+* Clearly something needed for figures and its sizes, captions etc.
+
+* Similar need for equations, reference etc.
+  
