@@ -10,12 +10,13 @@ class Body
   NDIM = 3
 
   attr_accessor :mass, :pos, :vel, :acc, :jerk,
-                :old_pos, :old_vel, :old_acc, :old_jerk
+                :old_pos, :old_vel, :old_acc, :old_jerk, :cbody
 
   def initialize(mass = 0, pos = [0.0,0.0,0.0], vel = [0.0,0.0,0.0])
     @mass, @pos, @vel = mass, pos, vel
     @old_pos, @old_vel = [], []   # necessary to give the correct
     @old_acc, @old_jerk = [], []  # type to old_something
+    @cbody = Cbody.new
   end
 
   def to_s
@@ -187,8 +188,8 @@ x = Body.new
 y = Body.new
 x.mass = 1
 y.mass = 1
-x.pos = [1.0,0.0,0.0]
-y.pos = [-1.0,0.0,0.0]
+x.pos = [1.0,1.0,0.0]
+y.pos = [-1.0,-1.0,0.0]
 x.clear_acc_and_jerk
 y.clear_acc_and_jerk
 x.clear_epot
@@ -201,4 +202,26 @@ p x.mass
 print "pos = ";p x.pos
 print "acci = ";p x.acc
 print "accj = ";p y.acc
+p x.acc
+
+
+x.clear_acc_and_jerk
+y.clear_acc_and_jerk
+p x.acc
+x.cbody.set_pos_vel_and_mass(x);
+y.cbody.set_pos_vel_and_mass(y);
+
+x.cbody.set_acc_jerk(y);
+y.cbody.set_acc_jerk(y);
+
+p x.acc
+
+x.cbody.pairwize_force(y.cbody);
+
+x.cbody.get_acc_jerk(x);
+y.cbody.get_acc_jerk(y);
+
+p x.acc
+p y.acc
+
 
