@@ -1,0 +1,14 @@
+2003, December 24, Wednesday, Kyoto: Jun, Piet
+
+1. XML
+
+We experimented with XML, docbook, openjade, and Norm Walsh's literate
+programming implementation.
+
+We were able to make openjade work for docbook, which created a nice
+looking document.  For the literate programming example, we were able
+to tangle and weave, producing the code part and the XML part, but
+then we did not figure out how to transform the XML product into an
+HTML file.
+
+

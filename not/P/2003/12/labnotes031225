@@ -1,0 +1,63 @@
+2003, December 25, Thursday, Kyoto: Jun, Piet
+
+1. Literate Programming, Then and Now
+
+We looked back on the literate programming tool by Norman Walsh, and
+we realized that there were many modifications which we would need to
+make, in order to use it for our book series.  For example, we would
+want to produce many small code files, not one large code file; and
+these code files would be of different types, some written in Ruby,
+some in C, others would be Makefiles, etc.  In addition, we realized
+that it might be rather difficult to add a literate programming source
+file in emacs, since we would like to switch from, say, ruby mode to
+xml mode, each time we would move from a code fragment to a text
+fragment.
+
+We then stepped back a bit more from the whole problem, and we asked
+ourselves what really the core idea is behind literate programming,
+independent of Knuth's implementation of mixing code and book text
+into one file.  The spirit is: provide a mechanism to make it far more
+likely to let authors update book and code in unison, i.e., as soon as
+you add a few lines of code, it should be easy and actually inviting
+to add a few lines of text to the book as well, to describe what you
+did and how and why.
+
+When Knuth invented literate programming, more than 25 years ago, he
+was probably working with a very simple editor that could open only
+one file at a time, and only view a relatively small portion of that
+file.  Also, he was programming in Pascal, where the whole program is
+stored in a single file.  Both reasons contributed to the single-file
+orientation of the original literate programing idea.
+
+Today, however, it is easy to open many files in many windows in the
+same editor.  We want to stick to the spirit of literate programming,
+namely to provide strong incentive and encouragement to keep text and
+code in sync.  But the implementation can now be done most naturally
+in a hypertext-type tree with pointers between the nodes and branches.
+What is essential is the ease with which you are invited to jump from
+text to code and back, independently of whether the actual text and
+the actual code are part of the same file or not.
+
+So much for ease of use.  As for providing more of a safety mechanism,
+we are thinking of dividing each code source file into segments.  The
+start of a segment is indicated by a comment line of a prescribed form
+which includes the name of the segment.  A similar comment with the
+word `end' indicates the end of that segment.  Segments can be nested,
+but the top-level segments should together exactly cover the whole
+source file.  We will design a mechanism as a wrapped around the svn
+commit command that checks whether a code is fully covered, and if not
+it will refuse to commit, giving a `segmentation fault' instead.
+
+As an additional safety layer, we will require each segment to be
+pointed to, from at least one place somewhere in the book(s) we are
+writing about the code.  As a minimum, someone would be forced to
+write `this part of the code is not (yet) documented' before being
+able to commit the whole thing to svn.  It should not be too hard to
+write a wrapper script like that.
+
+Although we consider us to follow the spirit of literate programming,
+it is probably better to use a different name, given that our
+implementation is almost the opposite of that chosen by Knuth.
+For now at least, we will refer to our proposed system as lucid
+programming, since we hope it will elucidate both text and code in a
+reliable way.
