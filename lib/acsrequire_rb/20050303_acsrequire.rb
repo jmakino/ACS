@@ -33,13 +33,12 @@ class AcsRequire
 	finalname =subdir+"/"+fname
       end
     end
-    print "Acsrequire file=#{finalname} \n for arg #{name}\n" if verbose
+    print "Acsrequire for arg #{name}\n file=#{finalname} \n " if verbose
     finalname
   end
     
     
   def acsrequire(name)
-    p "acsrequire"
     $acsdate = datestring    if not defined? $acsdate
     raise "Env. var ACSLIB need to be defined " if LIBDIR == nil
     require appropriate_filename(name, $acsdate, LIBDIR)
