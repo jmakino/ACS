@@ -248,7 +248,7 @@ is called a scripting language, I thought it might work here too.
 
 *Bob*: Each scripting language has different conventions.  In your shell
 case, I bet you have to invoke the value of a variable +cat+ by typing
-<tt>$cat</tt>, each time you use it.  Ruby has another solution: typing
+<tt>cat</tt>, each time you use it.  Ruby has another solution: typing
 +cat+ echoes the value of +cat+.  When you want to introduce a string
 consisting of the three letters +c+, +a+, and +t+, you type <tt>"cat"</tt>.
 
