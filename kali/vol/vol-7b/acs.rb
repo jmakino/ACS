@@ -30,3 +30,17 @@ def max(a, b)
     return a
   end
 end
+
+# for debugging, to see the value of a variable name:
+#
+#   acsp "some_name"
+#
+# will produce
+#
+#   some_name = {it's value}
+
+def acsp(s)
+  STDERR.print s, " = ", eval(s), "\n"
+end
+
+

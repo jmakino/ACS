@@ -629,7 +629,7 @@ class World
       if c.world_output_flag
         acs_write($stdout, false, c.precision, c.add_indent)
       else
-        @era.take_snapshot(@t_out).acs_write($stdout, true,
+        @era.take_snapshot(@time).acs_write($stdout, true,
                                             c.precision, c.add_indent)
       end
     end

@@ -417,7 +417,7 @@ options_text= <<-END
     a constant time step code; the alternative, instead of softening, would
     be to use a variable time step algorithm.
 
-    (c) 2004, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
+    (c) 2005, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
 
     example:
     ruby #{$0} -t 1 < cube1.in
