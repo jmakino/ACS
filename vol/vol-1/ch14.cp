@@ -8,7 +8,7 @@ dynamically typed computer language.  If we had tried to do this in C++,
 it would have taken quite a bit more time, and we would have had to write
 much more lines of code.
 
-*B*: Yes.  Defining a class, getting it to behave, providing I/O, and
+*Bob*: Yes.  Defining a class, getting it to behave, providing I/O, and
 chaining it together by piping data from one program to another, all
 that is a nontrivial beginning.  This is encouraging!  Let's move on,
 to see how much we have to add before we can let the integrator
@@ -85,8 +85,11 @@ terms of the relative position, defined as:
 
 This can be visualized as a vector pointing from particle 1 to particle
 2, in other words with its head at the position of particle 2, and its
-tail at the position of particle 1.  Introducing
-<tex>$r = |{\bf r}_2 - {\bf r}_1|$</tex>, we then get:
+tail at the position of particle 1.
+
+link:../twopfig.gif
+
+Introducing <tex>$r = |{\bf r}_2 - {\bf r}_1|$</tex>, we then get:
 
 <tex>
 \begin{eqnarray}
@@ -155,14 +158,18 @@ only the actual integrator in our file <tt>test.rb</tt>.
 
 *Bob*: It may not be a bad idea, in this case.  Yes, you can do something
 similar as you do in C and C++ with an include file -- only more
-easily so.  Remember those constructs in C where you had to write things
+easily so.
+
+*Alice* I well remember those constructs in C where you had to write things
 like <tt>#ifndef</tt> _this_ and <tt>#ifndef</tt> _that_ before you could
 be sure that it was safe to include a file without including it more than
-once?  Well, in Ruby you can use a construct called <tt>require</tt>
+once?  You're saying that Ruby makes life easier?
+
+*Bob*: Yes, in Ruby you can use a construct called <tt>require</tt>
 <i>"filename"</i>: it only includes the file if it hasn't been
 included yet, directly or indirectly.
 
-Okay, so here is the file <tt>body.rb</tt>
+Here is the file <tt>body.rb</tt>:
 
  :inccode: body.rb
 
@@ -182,8 +189,8 @@ the top.
 to coding up integrators.  For the students, it would be good to spell
 out, just one time, what the equations above look like, in the simplest
 case where we are working with vectors in two dimensions.  To be specific
-in our notation, we can use underscore _x_ for the first component of
-each vector and underscore _y_ for the second component, as follows:
+in our notation, we can use subscript _x_ for the first component of
+each vector and subscript _y_ for the second component, as follows:
 
 <tex>
 \begin{eqnarray}
@@ -256,9 +263,9 @@ more efficient than component notation.
 == Writing Clean Code
 
 *Alice*: But now I want to understand how exactly you coded these six
-equations in the file <tt>test.br</tt> above.
+equations in the file <tt>test.rb</tt> above.
 
-*Bob*: The line <tt>input Math</tt> tells Ruby to load the +Math+ module.
+*Bob*: The line <tt>include Math</tt> tells Ruby to load the +Math+ module.
 This is merely a convenience.  We could have left that out, but then
 the square root +sqrt+ would not have been recognized; we would have
 had to write <tt>Math.sqrt</tt> instead.  It is just more convenient
@@ -290,7 +297,7 @@ three places.  But that is the _least_ important reason to use functions
 or subroutines in a program.
 
 Much more important reasons are the issue of code maintainance.  If the
-same piece of code occurs in more than one place, it is well neigh
+same piece of code occurs in more than one place, it becomes essentially
 impossible to maintain the code in a consistent way.  Change something
 in one place in someone's legacy code, and most likely you don't even
 know that it would have to be changed in the other place to.  Bugs
@@ -361,7 +368,7 @@ vector <tex>${\bf r}$</tex>.  What you need for the acceleration is
 the 3/2 power, so you compute that in the next line.
 
 Finally, you solve the three pairs of equations I wrote above.  The
-array methode +each_index+ presumably does what it says, it executes the
+array method +each_index+ presumably does what it says, it executes the
 next block of code once for each possible value of the index of the array?
 
 *Bob*: Yes.  In the case of a two-dimensional array +a+, the two components
