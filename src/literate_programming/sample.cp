@@ -20,17 +20,17 @@ be found.  Special programs are then emplied to extract both the book,
 for human consumption, and the source code, to be run on a computer.
 
 Our notion of `coherent programming' is similar in spirit, but quite
-different in implementation.  In the twenty-first century, it is easy
-to load multiple files in a coherent way into a screen editor with
-multiple windows, and to program the editor in such as way as to make
-it hard or impossible to modify one file without also modifying the
-corresponding places in related files.  This stands in stark contrast
-to the much more primitive editors that Knuth had to deal with.  In
-addition, Knuth wrote his original TeX system as one large Pascal file,
-which made the process of code extraction rather straightforward.  In
-any modern system, we need to deal with a large variety of shorter
-code files in different languages, scripts, make files, and so on.
-Since our implementation is so different from that chosen by Knuth, we
+different in implementation.  Nowadays, it is easy to load multiple
+files in a coherent way into a screen editor with multiple windows,
+and to program the editor in such as way as to make it hard or
+impossible to modify one file without also modifying the corresponding
+places in related files.  This stands in stark contrast to the much
+more primitive editors that Knuth had to deal with.  In addition,
+Knuth wrote his original TeX system as one large Pascal file, which
+made the process of code extraction rather straightforward.  In any
+modern system, we need to deal with a large variety of shorter code
+files in different languages, scripts, make files, and so on.  Since
+our implementation is so different from that chosen by Knuth, we
 decided not to stretch his term `literate programming' to include our
 version.
 
