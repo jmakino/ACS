@@ -775,6 +775,7 @@ class Worldsnapshot < Nbody
 
   def initialize
     super
+    @time = 0.0
   end
 
   def get_snap_and_crackle(pos, vel, acc, jerk)

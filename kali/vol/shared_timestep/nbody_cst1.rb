@@ -55,7 +55,7 @@ class Body
 
 end
 
-class Nbody
+class NBody
 
   def evolve(integration_method, eps, dt, dt_dia, dt_out, dt_end, init_out)
     @dt = dt
@@ -441,5 +441,5 @@ options_text= <<-END
 
 parse_command_line(options_text, true)
 
-nb = ACS_IO.acs_read(Nbody)
+nb = ACS_IO.acs_read(NBody)
 nb.evolve($method, $eps, $dt, $dt_dia, $dt_out, $dt_end, $init_out)

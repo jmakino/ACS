@@ -190,7 +190,7 @@ Similarly, when the two body will meet each other in a free fall time
 that is shorter than our time scale estimate so far, we make the same
 kind of replacement.  Looks good!
 
-== Implementation on the +Nbody+ Level
+== Implementation on the +NBody+ Level
 
 *Bob*: This gives us an individual time scale, an estimate of the amount
 of time after which to expect significant changes, but on a per-particle
@@ -209,7 +209,21 @@ shared time steps than we did with constant time steps.
 case.  Here is how we can implement the global time step finder, on
 the level of the <tt>N-body</tt> class:
 
- :inccode:.nbody_sh1.rb+collision_time_scale+Nbody
+ :inccode:.nbody_sh1.rb+collision_time_scale+NBody
+
+By the way, I decided to make a slight change in notation.  So far, we
+have called our N-body class <tt>Nbody</tt>.  However, it seems that in
+the Ruby community people have developed a clear convention to name all
+classes using the socalled MixedCase notation: each word is capitalized.
+Since in our case _N_ and _body_ are really different words, it would be
+much more consisten to call our N-body class <tt>NBody</tt>.
+
+*Alice*: Fine with me.  What's in a name, after all.  
+
+
+
+
+
 
 In addition, we have to make a few more changes.  For one thing, the
 documentation string for the +clop+ function has to be changed, and it

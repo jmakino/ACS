@@ -14,7 +14,7 @@ class Body
 
 end
 
-class Nbody
+class NBody
 
   ACS_OUTPUT_NAME = self.to_s
 
@@ -32,7 +32,7 @@ class Nbody
     if (n = other.body.size) != body.size
       raise "other.body.size = #{other.body.size} != #{body.size}"
     end
-    nb = Nbody.new
+    nb = NBody.new
     body.each_index do |i|
       if (id = body[i].body_id) == nil
         raise "body[#{i}].body_id == nil"

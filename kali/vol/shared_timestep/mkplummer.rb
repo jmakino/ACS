@@ -30,7 +30,7 @@ def mkplummer(c)
   else
     srand c.seed
   end
-  nb = Nbody.new
+  nb = NBody.new
   c.n.times do
     b = plummer_sample
     b.mass = 1.0/c.n

@@ -45,8 +45,8 @@ class Body
   attr_accessor :body_id
 end
 
-nb1 = ACS_IO.acs_read(Nbody)
-nb2 = ACS_IO.acs_read(Nbody)
+nb1 = ACS_IO.acs_read(NBody)
+nb2 = ACS_IO.acs_read(NBody)
 nb = nb1 - nb2
 d = nb.body[0].pos.size
 n = nb.body.size

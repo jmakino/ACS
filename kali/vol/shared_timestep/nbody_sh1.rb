@@ -76,7 +76,7 @@ class Body
 
 end
 
-class Nbody
+class NBody
 
   def collision_time_scale
     time_scale = VERY_LARGE_NUMBER
@@ -338,5 +338,5 @@ options_text= <<-END
 
 parse_command_line(options_text, true)
 
-nb = ACS_IO.acs_read(Nbody)
+nb = ACS_IO.acs_read(NBody)
 nb.evolve($method, $dt_param, $dt_dia, $dt_out, $dt_end, $init_out)

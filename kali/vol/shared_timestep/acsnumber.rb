@@ -33,7 +33,7 @@ class Body
   attr_accessor :body_id
 end
 
-nb = ACS_IO.acs_read(Nbody)
+nb = ACS_IO.acs_read(NBody)
 i = c.n
 nb.body.each do |b|
   b.body_id = i

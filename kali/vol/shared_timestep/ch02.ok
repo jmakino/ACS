@@ -44,7 +44,7 @@ defining a minus operator, that allows us to subtract two N-body systems,
 <tt>nb1</tt> and <tt>nb2</tt>, just by writing <tt>nb1-nb2</tt>?  That
 would give us a nicely compact notation.  And the 2DN-dimensional distance
 between the two systems could then be given by <tt>(nb1-nb2).abs</tt>
-if we define the correct absolute value operator +abs+ for the <tt>Nbody</tt>
+if we define the correct absolute value operator +abs+ for the <tt>NBody</tt>
 class.
 
 *Bob*: Good idea!  However, there is no guarantee that two N-body systems
@@ -61,7 +61,7 @@ Now that is easy to implement.  How about this:
 
 
 
-Switch from Nbody.rb to NBody.rb
+
 
  :inccode:acsnumber.rb
 
