@@ -4,10 +4,10 @@ include Math
 
 dt = 0.1           # time step
 dt_dia = 1           # diagnostics printing interval
-dt_out = 1           # output interval
+dt_out = 10          # output interval
 dt_end = 1           # duration of the integration
 init_out = false     # initial output requested ?
-x_flag = false       # extra diagnostics requested ?
+x_flag = true        # extra diagnostics requested ?
 #method = "forward"  # integration method
 #method = "leapfrog" # integration method
 #method = "rk2"      # integration method

@@ -1,6 +1,88 @@
 = Softening
 
-== 
+== Close Encounters
+
+*Alice*: Yes, I'm very glad to see that we can integrate eight bodies
+in a cold collapse system.  This is quite a bit more demanding than
+integrating a handful of bodies in a virialized system.  However, in
+both cases, sooner or later there will be close encounters between
+two or more of the particles.  Our code will never be able to handle
+all of those close encounters.  No matter how small a time step we
+give it, sooner or later there will be particles that approach each
+other closely enough to have a near miss that takes less time than the
+time step size.  This will necessarily lead to large numerical errors.
+
+*Bob*: And this is of course why people have introduced variable time
+steps, as well as a whole order set of algorithmic tools to tame the
+unruly behavior of particles that get too close to the inverse square
+singularities of Newtonian gravity.
+
+*Alice*: At some point we will introduce those extensions in our codes,
+but for now, there are more urgent things on our agenda.  I guess we
+just have to live with it, and make sure the students realize that
+this first N-body tool is not to be trusted under all circumstances.
+
+*Bob*: Hmm.  I don't much like the idea of giving someone a tool that cannot
+be trusted.  How about adding softening, as an option?
+
+*Alice*: You mean to soften the potential, from an inverse square law to
+a form that remains finite in the center?
+
+*Bob*: Indeed.  We start from the singular Newtonian potential
+energy between two particles with positions <tex>$\br_i$</tex> and
+<tex>$\br_j$</tex> and masses <tex>$M_i, M_j$</tex>:
+
+:equation:
+U(\br_i, \br_j) = G \frac{M_i M_j}{|\br_j - \br_i|}
+
+The standard softening approach is to replace this by a regular variant,
+simply by adding the square of a small quantity <tex>$\epsilon$</tex>:
+
+:equation:
+U(\br_i, \br_j, \epsilon) =
+    G \frac{M_i M_j}{\sqrt{|\br_j - \br_i|^2 + \epsilon^2}}
+
+When you differentiate this modified potential with respect to the
+position of a particle, you obtain a modified acceleration:
+
+:equation:
+\frac{d^2}{dt^2}\br_i =  G \sum_{j=1 \atop j \neq i}^N M_j
+\frac{\br_j - \br_i}{(|\br_j - \br_i|^2 + \epsilon^2)^{3/2}}
+
+And of course, in the limit that <tex>$\epsilon\rightarrow 0$</tex>, this
+last equation again returns to the Newtonian gravitational acceleration.
+
+== Fuzzy-Point Particles
+
+*Alice*: Yes, this is what is often used in collisionless stellar dynamics,
+to suppress the effect of close encounters.  I can't say I'm very happy
+with this softening approach, since it's not the real thing.  It is purely
+a mathematical trick, to avoid numerical problems.
+
+*Bob*: Well, you _can_ give it a physical interpretation.  Instead of using
+point particles, which are not very physical in the first place, each particle
+gets a more extended mass distribution.  In fact, you can easily show that
+a softened potential corresponds to a mass distribution given by a polytrope
+of index five, better known as a Plummer mass distribution:
+
+:equation:
+\rho(r) = G \frac{M}{(r^2 + \epsilon^2)^{5/2}}
+
+*Alice*: But look, your mass distribution stretches all the way to infinity!
+Even though most of the mass in concentrated in a small region, with a radius
+of order the softening length <tex>$\epsilon$</tex>.
+
+*Bob*: 
+
+
+  Our particles
+are being spread out over space
+
+
+
+
+
+*Bob*: You know, it would
 
  :commandoutput: ruby rknbody9a_driver.rb < figure8.in
 
