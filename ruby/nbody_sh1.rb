@@ -43,6 +43,21 @@ class Body
     @@time = time
   end
 
+  def clear_acc_and_jerk
+    @acc = [0,0,0]
+    @jerk = [0,0,0]
+  end
+
+  def clear_epot
+    @@epot = 0
+  end
+
+VERY_LARGE_NUMBER = 1e300
+
+  def reset_coll_time_q
+    @@coll_time_q = VERY_LARGE_NUMBER
+  end
+
 end
 
 def get_snapshot
@@ -133,13 +148,23 @@ def read_options(parser)
   return dt_param, dt_dia, dt_out, dt_tot, init_out, x_flag
 end
 
+def get_acc_jerk_pot_coll(nb)
+  nb.each do |b| b.clear_acc_and_jerk end
+  nb[0].clear_epot
+  nb[0].reset_coll_time_q
+end
+
 def evolve(nb, dt_param, dt_dia, dt_out, dt_tot, init_out, x_flag)
+
   STDERR.print "Starting a Hermite integration for a ", nb.size,
                "-body system,\n  from time t = ", nb[0].get_time, 
                " with time step control parameter dt_param = ", dt_param,
                "  until time ", nb[0].get_time + dt_tot,
                " ,\n  with diagnostics output interval dt_dia = ", dt_dia,
                ",\n  and snapshot output interval dt_out = ", dt_out, ".\n"
+
+  get_acc_jerk_pot_coll(nb)
+
 end
 
 dt_param, dt_dia, dt_out, dt_tot, init_out, x_flag = read_options(parser)
