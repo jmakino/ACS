@@ -42,7 +42,7 @@ pseudo particle or with _N_ particles, the top level instructions are
 basically the same.
 
 *Alice*: But of course the actual work is different, and in our case more
-complicated.  The forward Euler implementation is a bit hard to recognise,
+complicated.  The forward Euler implementation is a bit hard to recognize,
 at first sight.  Let me start with the new leapfrog method, which
 looks more familiar.  The two-body version was:
 
@@ -171,7 +171,7 @@ in case of a point mass.
 *Bob*: That's a nicely crisp summary.  And what is really
 nice in our Ruby implementation, is that we _never_ have to introduce
 the counters _i_ and _j_ that are so ubiquitous in any N-body code I have
-ever seen.  Just as we could dispence with the _k_ variable for the
+ever seen.  Just as we could dispense with the _k_ variable for the
 components of a vector, we can avoid the other two counters by asking
 arrays and vectors to just loop over themselves.
 
@@ -215,7 +215,7 @@ Isn't that a nifty and compact expression?
 *Alice*: I see.  In order to provide a null vector for the acceleration
 with the right number of components, you use the position as a template,
 and after copying the position, you fill all entries with zeroes.  I'm
-glad you put a command line in, since otherwise the meaning wouldn't
+glad you put a comment line in, since otherwise the meaning wouldn't
 have been so obvious at first reading.
 
 Hmmm.  While I agree that it is compact, perhaps a longer expression would
@@ -235,7 +235,7 @@ a vector.  You see, I avoided the last step by starting with a copy of
 the unsuspecting reader, who has to make sense of your cleverness.  In fact,
 in my more lengthy alternative, notice that I left your comment line
 in, since upon first reading, even my longer line would still not be fully
-clear, Im afraid.
+clear, I'm afraid.
 
 If I really wanted to be self-explanatory, I would write:
 
@@ -259,7 +259,7 @@ The difference is that the potential energy includes a product of the
 mass of the calling particle and the called particle:
 
 :equation:
-E_{pot} =  - G \sum_{j=1 \atop j \neq i}^N 
+E_{pot, i} =  - G \sum_{j=1 \atop j \neq i}^N 
 \frac{M_i M_j}{|\br_j - \br_i|}
 
 *Alice*: Yes, of course, and that is something that is easy to leave out.
@@ -325,10 +325,10 @@ that connects both traversals, keeping them in lock step.
 In addition, I had to introduce the array <tt>old_acc</tt>, which I
 did here in the first line of +forward+.  The third line did not
 contain any local variables, so there at least I could avoid the use
-of a _i_ variable.
+of an _i_ variable.
 
 *Alice*: That is a reasonable solution.  You are trading modularity for
-readibility.  And while I'm sure there are several alternatives, let's
+readability.  And while I'm sure there are several alternatives, let's
 first complete our guided tour here.  What is left to visit is the
 energy diagnostics part of the code
 
@@ -378,10 +378,22 @@ line in there, at the end of your +ekin+, for clarity.
 certainly nice to work with an interpreted, rather than a compiled language:
 this type of checking you can do extremely quickly and easily.
 
-*Alice*: Just like for the kinetic energy, the +Nbody+ method +epot+ gathers
+*Alice*: The story for the potential energy must be similar.  For each particle
+we have a method +epot+ associated with the +Body+ class:
+
+ :inccode: .rknbody1.rb+epot+Body
+
+and a method with the same name, but associated with the +Nbody+ class:
+
+ :inccode: .rknbody1.rb+epot+Nbody
+
+Just like for the kinetic energy, the +Nbody+ method +epot+ gathers
 all the contributions to the potential energy of the various bodies --
-with one twist: we have to divide by a factor two, since otherwise we
-would have counted each particle pair twice.
+with one twist: you are now dividing by a factor two.  Ah, of course:
+for each particle pair, the contribution is counted once when the one
+particle computes its potential energy, and once again when the other
+particle computes its potential energy.  Therefore, every particle pair
+contribution gets counted twice, and at the end we have to correct for that.
 
 *Bob*: Yes, indeed.  And yes, I had left that factor of two out, the first
 time I ran the program.  Diagnostics are wonderful; they sure keep you honest:

@@ -67,7 +67,7 @@ velocity output, so that we don't get too distracted.
  :inccode: .euler0d.rb-barebones
 
 I have given <tt>dt_out</tt> a value larger than the total run time
-<tt>dt_end</tt>, so we won't get the regular particle poutput, only
+<tt>dt_end</tt>, so we won't get the regular particle output, only
 the diagnostics.
 
  :command: cp -f euler0d.rb test.rb
@@ -127,7 +127,7 @@ passage, roughly.  So the period of the orbit must be 2.5, give or take.
 
 *Alice*: Let's check!
 
-*Bob*: We can only check when we use smaller stepsizes, since this one
+*Bob*: We can only check when we use smaller step sizes, since this one
 here is numerically exploding.  Let's try this:
 
  :inccode: .euler0g.rb-barebones

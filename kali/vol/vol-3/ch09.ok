@@ -12,12 +12,12 @@ give it, sooner or later there will be particles that approach each
 other closely enough to have a near miss that takes less time than the
 time step size.  This will necessarily lead to large numerical errors.
 
-*Bob*: And this is of course why people have introduced variable time
+*Bob*: This is of course why people have introduced variable time
 steps, as well as a whole order set of algorithmic tools to tame the
 unruly behavior of particles that get too close to the inverse square
 singularities of Newtonian gravity.
 
-*Alice*: At some point we will introduce those extensions in our codes,
+*Alice*: Soon we will introduce those extensions in our codes,
 but for now, there are more urgent things on our agenda.  I guess we
 just have to live with it, and make sure the students realize that
 this first N-body tool is not to be trusted under all circumstances.
@@ -171,7 +171,7 @@ value of <tt>@eps</tt> to +calc+ on the +Body+ level.
 
 *Bob*: And we could use shorter variables than +ba+ and +eps+, for
 example +a+ and +e+.  But let us not spend more time on such niceties,
-which give us dimishing return in clarity at the cost of making the
+which give us diminishing return in clarity at the cost of making the
 code more complex and hence less clear.
 
 *Alice*: I agree.  Instead, let's see how your new code performance

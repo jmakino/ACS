@@ -82,7 +82,7 @@ as an exotic collision product itself, the combinatorial richness of
 flavors of double stars and triples is enormous.  If we want to pick a
 particular double star, we not only have to choose a star type for
 each of its members, but in addition we have to specify the mass of
-each star, and the parameters of its orbit, such as the semimajor axis
+each star, and the parameters of its orbit, such as the semi-major axis
 (a measure for the typical separation of the two stars) as well as the
 orbital eccentricity.
 
@@ -127,7 +127,7 @@ consequence, the frequency of stellar collisions is strongly enhanced.
 Modeling the detailed behavior of stars in this region remains a great
 challenge, partly because of the complicated environmental features.
 A globular cluster forms a theorist's dream of a laboratory, with its
-absence of gas and dust and starforming regions.  All we find there
+absence of gas and dust and star forming regions.  All we find there
 are stars that can be modeled well as point particles unless they come
 close and collide, after which we can apply the point particle
 approximation once again.  In contrast, there are giant molecular

@@ -34,7 +34,7 @@ link:rk4.gif
 *Alice*: Quite a bit more complex than the second order one.
 
 *Bob*: Yes, and of course it is written in a rather different form
-that the way I chose to implement it.  I prefered to stay close to the
+that the way I chose to implement it.  I preferred to stay close to the
 same style in which I had written the leapfrog and second-order Runge
 Kutta.  This means that I first had to rewrite the Abramowitz and
 Stegun expression.
@@ -161,7 +161,7 @@ of ten time units.
 
 *Alice*: Just to compare, why don't you run them for all four schemes.
 
-*Bob*: I am happy to do so.  And while we are not sure yet wether our
+*Bob*: I am happy to do so.  And while we are not sure yet whether our
 higher-order Runge-Kutta scheme is 3rd order or 4th order, let me
 continue to call it 4th order, since I've called it <tt>rk4</tt> in my
 code.  If it turns out that it is 3rd order, I'll go back and rename

@@ -47,7 +47,7 @@ integration for a total of 2.1088 time units.
 
 *Bob*: Let's predict what will happen.  The third particle has velocity
 components that are negative, both in the _x_ and _y_ direction.  This
-means that it moves to the left and downwards.  That would suggest that
+means that it moves to the left and downward.  That would suggest that
 it will in due time reach the position of the second particle, the
 particle that starts off with a large negative _x_ value.  The second
 particle then has no choice but to replace the first particle, and the
@@ -91,25 +91,33 @@ large displacement, at least larger than you might have guessed.  I'm very
 pleased with this performance.  And the energy error is almost zero,
 basically to within machine accuracy.  Congratulations!
 
+*Bob*: Thanks!  So let's move on.
+
 == Single Links in +Body+
 
-*Bob*: Before we move on, let us revisit the choice I have made of
+*Alice*: Well, before we move on, let us revisit the choice you made of
 installing double links between the particles in an N-body system and
-their parents.  In the +Nbody+ class I have an array of bodies
+their parents.  In the +Nbody+ class you have an array of bodies
 <tt>@body</tt> that gives access to the members of the +Body+ class,
 while in the +Body+ class there is an instance variable <tt>@nb</tt>
 that gives each particle access to its parent.
 
-You were not happy with that choice, and I must say, I can see the
-danger of modifying, say, the downward link and forgetting to make a
-corresponding modification in the upward link.
+*Bob*: Yes, I remember that you were not happy with that choice.
 
-*Alice*: I'm glad you remembered that.  Yes, let's play with some
-alternatives.  The simplest way to do away with the need for a
-backward pointer <tt>@nb</tt> would be to give the +Body+ method +acc+
-an extra parameter.  Let me take out the declaration of <tt>@nb</tt>
-in the <tt>attr_accessor</tt> of the +Body+ class, and let me replace
-your +Body+ method
+*Alice*: The problem is, I can see the danger of modifying, say, the
+downward link and forgetting to make a corresponding modification in
+the upward link.  Let's play with some alternatives.
+
+*Bob*: Be my guest!  I'll keep a copy of the last, debugged, version,
+and it is fun to try out some alternative implementations.  After all,
+Ruby invites this type of prototyping.  Here, why don't you take the
+key board.
+
+*Alice*: The simplest way
+to do away with the need for a backward pointer <tt>@nb</tt> would be
+to give the +Body+ method +acc+ an extra parameter.  Let me take out
+the declaration of <tt>@nb</tt> in the <tt>attr_accessor</tt> of the
++Body+ class, and let me replace your +Body+ method
 
  :inccode: .rknbody2.rb+acc
 
@@ -120,11 +128,11 @@ by a new version, that takes the array of bodies as an explicit parameter:
 Of course, we have to do the same thing for the potential energy calculation,
 where we replace
 
- :inccode: .rknbody2.rb+epot
+ :inccode: .rknbody2.rb+epot+Body
 
 by the equivalent version:
 
- :inccode: .rknbody3.rb+epot
+ :inccode: .rknbody3.rb+epot+Body
 
 == Single Links in +Nbody+
 
@@ -132,25 +140,126 @@ by the equivalent version:
 Life gets a bit simpler for the +Nbody+ code: when it creates its daughters,
 it no longer has to tell them who their parent is.  Instead of the old version:
 
- :inccode: .rknbody2.rb+initialize
+ :inccode: .rknbody2.rb+initialize+Nbody
 
 we now will use the simpler and more natural version:
 
- :inccode: .rknbody3.rb+initialize
+ :inccode: .rknbody3a.rb+initialize+Nbody
 
 And similarly we can leave out the corresponding line in the
 <tt>simple_read</tt> method: instead of 
 
- :inccode: .rknbody2.rb+simple_read
+ :inccode: .rknbody2.rb+simple_read+Nbody
 
 we now have only:
 
- :inccode: .rknbody3.rb+simple_read
+ :inccode: .rknbody3.rb+simple_read+Nbody
+
+== The DRY Principle
 
 *Alice*: Good!  I was a bit worried about that repetition.  It would have
 been an easy mistake to make to modify the <tt>initialize</tt> method
 in one way, and to either forget to modify the <tt>simple_read</tt> method
-or worse, modify it in a different way.
+or worse, modify it in a different way.  Your original approach violated
+the DRY principle.
+
+*Bob*: I wasn't aware of violating anything, let alone a principle I
+hadn't even heard of.  What is the DRY principle?
+
+*Alice*: Don't Repeat Yourself.  The idea is that you should try to avoid
+stating the same information in more than one place, exactly because
+it is so easy to update information in one place, and to forget to update
+it in one or more other places.
+
+*Bob*: But in many cases it could never hurt you.  In C++, for
+example, you normally declare all your functions, and specify the
+types of the arguments and the return values, in a different places
+from where you actually define those functions.  Now if you make a
+mistake, and provide conflicting information, the compiler will give
+you an error message.  So there is nothing that can go wrong there.
+
+*Alice*: Even if there is little danger for errors, it is annoying to
+have to provide the same information in two places, especially if you
+work with header files, where the information may even reside in one
+or more different files.  Such requirements go against any notion of
+rapid prototyping.
+
+While violating the DRY principle may not always lead to likely
+errors, the consequences are equally bad that if it discourages free
+experimentation.  In that way you are likely to miss more optimal
+solution.  Missing out on more optimal solutions often enough in a
+large software project, and you get an end product that can be very
+far from optimal, through the aggregate effect of all the suboptimal
+decisions you have made.
+
+*Bob*: You sound like a manager.  I must say that I don't like to
+think in terms of principles, and I tend do develop an allergy against
+people who follow principles blindly.  But I must admit that this
+particular idea makes a lot of sense.  Having to repeat information in
+different places in C++ is certainly one of the things that I like
+least about that language.  In fact, I've developed an allergy against
+that feature already quite a while ago.
+
+*Alice*: I'm glad to hear that your allergy against C++ is stronger
+than your allergy against me, if I parse you correctly.
+
+*Bob*: So far, certainly.  Let's see how things develop.
+
+*Alice*: Given that C++ is less likely to change in any fundamental
+way soon, I guess it's up to us to see how our collaboration develops
+further.  As for me, I think our different attitudes have been
+balanced quite well, so far.
+
+*Bob*: I agree.  And I'm glad to take my recalcitrance with a sense of
+humor, since I'm not likely to become `principled' any time soon!
+
+== Simplifying Further
+
+*Alice*: This discussion about the DRY principle started when I told
+you I was glad that the +initialize+ method no longer had to
+repeat what the <tt>simple_read</tt> read method also did, namely the
+initialization of the upward links from particles to N-body system,
+links that you have now removed.  However, I still see some repetition
+left in the the initialization method, of stuff that is already taken
+care of in <tt>simple_read</tt>.  Here is your latest version of
++initialize+:
+
+ :inccode: .rknbody3a.rb+initialize+Nbody
+
+If you compare this with the input method <tt>simple_read</tt>:
+
+ :inccode: .rknbody3a.rb+simple_read+Nbody
+
+you see that the number of particles _N_ and the time are being
+used here only.  After reading in _N_, <tt>simple_read</tt> extends
+the array of bodies to contain _N_ elements, and in the process it
+reads in the values for each body.  And after reading in the time, 
+it assigns that value directly to <tt>@time</tt>.  It seems to me that
+we can simplify the +initialize+ method to just:
+
+ :inccode: .rknbody3.rb+initialize+Nbody
+
+*Bob*: That is a lot shorter, and yes, that would work fine in this case.
+The reason that I included the two arguments to +initialize+ is that I
+had been thinking about a situation where you may want to construct an
+initial model, say a Plummer model or a King model.  In that case, you
+probably do want to set up an array of _N_ bodies, at a specified
+time, before you internally assign values to the masses, positions and
+velocities of those bodies.
+
+*Alice*: Ah, yes, in that case these extra arguments would come in handy,
+I agree.  But so far yo have often made it clear to me that we should
+be demand-driven, and that we should not build in extra options for
+possible future use, unless we actually plan to use those pretty soon.
+
+*Bob*: I agree.  Yes, it would be fine with me to take your simpler
+version, at least for now.  We can easily extend +initialize+ back to
+the longer form later on, when needed.
+
+*Alice*: great, four lines saved and one line simplified.  What else
+is there left to be done?
+
+== Finishing the Revision
 
 *Bob*: Next we have to change the way in which +acc+ gets called from
 within +Nbody+.  Let us start with forward Euler, which I had written
@@ -171,11 +280,11 @@ on the one hand, and +acc+ on the other hand.
 +pos+ and +vel+ are actual variables whereas +acc+ is a method.  If
 you do not change +pos+ explicitly, you can count on it to keep its
 old values.  However, the same is not true for +acc+.  You can call +acc+
-and then when you chang +pos+ and call +acc+ again, you get a different
+and then when you change +pos+ and call +acc+ again, you get a different
 value.  In fact, as soon as you change the position +pos+ for only one
 particle, a call to +acc+ for _any_ particle will be affected!
 
-It is much better to warn the user of this side effect, by making
+It is much better to warn yourself of this side effect, by making
 it clear that there is a hidden dependency: and the best way to show this
 dependency is by expressing it in the form of an argument to the method
 +acc+.  In that case the dependency is no longer hidden, and the user

@@ -147,7 +147,7 @@ you encounter a final +end+.
 *Bob*: Yes, and the first thing to do is to check whether the +header+,
 which is really an echo of the last line read, really starts with the
 words <tt>begin particle</tt>.  In general there will be white space
-in front, because of the identation, and one or more pieces of white
+in front, because of the indentation, and one or more pieces of white
 space in between +begin+ and +particle+ but everything else is only
 allowed to follow those two words.
 
@@ -191,7 +191,7 @@ individual words, and a single blank space is the most natural choice.
 *Bob*: It stands for an endless loop.  In C you would write <tt>while(1)</tt>
 or <tt>for{;;}</tt> depending on your taste, but Ruby has a more clean and
 direct construct.  The only way to leave the loop +loop+ is to break
-out explicity: you break with +break+.
+out explicitly: you break with +break+.
 
 *Alice*: Ruby seems to do exactly what you tell it to do!  The +case+
 statement reminds me of the +switch+ statement in C and C++.
@@ -219,7 +219,7 @@ following pieces would wind up in <tt>s.split("=")[2]</tt>, etc.
 *Bob*: True.  Normally there should be one and exactly one equal sign,
 and I could have checked that by checking and raising an error condition
 in case <tt>s.split("=").size != 2</tt>.  However, at this stage I'm happy
-to live a bit dangerously.  And besides, the extra stuf will be ignored,
+to live a bit dangerously.  And besides, the extra stuff will be ignored,
 since it is not used.
 
 *Alice*: Even so, I wouldn't want to continue if there is was an second

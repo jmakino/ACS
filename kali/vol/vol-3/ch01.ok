@@ -47,7 +47,7 @@ apart for three +n+'s and one +N+.  The rest is exactly the same, with
 of course an extra +n+ in the file name that is being required on top.
 A very minimal change.
 
-*Bob*: Yes, I prefered to stay as close as I could to our initial 2-body
+*Bob*: Yes, I preferred to stay as close as I could to our initial 2-body
 relative coordinates integrator.
 
 *Alice*: I'm very curious to see how you integrated the combined equations
@@ -104,7 +104,7 @@ likely to occur in Ruby, because so much of the bookkeeping is handling
 behind the scenes, as long as you don't confuse <tt>0...n</tt> and
 <tt>0..n</tt>.  But I see your point, and perhaps we should change that,
 later on.  For now, let's just go through the code, and then we can decide
-whether it will be easy to unlink the backwards pointers from daughter
+whether it will be easy to unlink the backward pointers from daughter
 to parent.
 
 My motivation to provide backward links was to give each daughter the

@@ -13,7 +13,7 @@ program invokes, and that guides all the work.  Here it is, by itself:
  :inccode: .body.rb+evolve
 
 *Bob*: At the top, it sets two counters to zero.  One is +time+, which
-measures how the simulated time during wchich the two-body motion is
+measures how the simulated time during which the two-body motion is
 integrated, so that the calculation can be halted properly after an
 amount of time equal to <tt>dt_end</tt> has passed.  The other is
 +nsteps+, the number of time steps that the system has taken.  I keep
@@ -42,7 +42,7 @@ dialect.
 *Bob*: Without parentheses!  This is a method without arguments.
 So why put parentheses around nothing?
 
-*Alice*: But in any language I have worked with, if a fuction
+*Alice*: But in any language I have worked with, if a function
 <tt>do_something</tt> has no arguments, you still have to invoke it with
 <tt>do_something()</tt>, or <tt>call do_something</tt>.  Otherwise how
 will the compiler know that
@@ -71,7 +71,7 @@ and will realize that the name <tt>e_init</tt> belongs to a method.
 
 *Bob*: Indeed.  Of course, you are perfectly free to write <tt>e_init()</tt>
 instead, if you like, but I prefer brevity.  So this third line of +evolve+
-invokes the methode <tt>e_init</tt> below.  We'll look at that in a moment, but
+invokes the method <tt>e_init</tt> below.  We'll look at that in a moment, but
 all it does is to compute the total energy of the system at the beginning
 of a run, and stores the value in an internal variable, so that we can
 compare the energy at a later time with the initial value, to see how much
@@ -157,7 +157,7 @@ be interested in getting frequent output of these numbers, for example
 when we will make a movie of a particle motion, as we will do soon.
 At other occasions we may be more interested in studying the energy
 drift with a fine comb.  So by having <tt>dt_out</tt> and
-<tt>dt_dia</tt> as free dials to determing the output frequency of of
+<tt>dt_dia</tt> as free dials to determine the output frequency of of
 positions and velocities on the one hand, and the energy on the other
 hand, gives us a lot of flexibility.
 
@@ -289,20 +289,20 @@ You are sending something to the standard error stream, yes?
 by calling +STDERR+ 's +print+ method, we are now sending the string
 that follows it to the standard error stream.
 
-*Alice*: Why do you send positions and velocities to the standard ouput
+*Alice*: Why do you send positions and velocities to the standard output
 channel, and the energy diagnostics to the error channel?  Because you
 expect errors in your energy?
 
 *Bob*: Very funny.  No, because I may want to separate the two streams,
 later on.  In order to make a graphics movie, for example, we could
-output the positions every timestep, or every ten time steps or so.
+output the positions every time step, or every ten time steps or so.
 If we then would ask for energy diagnostics only occasionally, the
 diagnostics information would get completely lost in the middle of all
 that other ouput.  Besides, the graphics reader could get confused,
 if it expected only particle data.
 
 Of course you can work around all that with a little awking and grepping,
-but it is cleaner to separatings things right at the start.  In that way,
+but it is cleaner to separate things right at the start.  In that way,
 you can redirect the standard output to a file, while letting the
 diagnostics appear on your screen.  Or you can put both types of
 output into separate files.
@@ -377,10 +377,10 @@ is so easy to test things for yourself.  When it doubt, test it out!
     the here document.
     nil
     014:0> print <<END
-    015:0" Also, no space is allowed beteen << and END,
+    015:0" Also, no space is allowed between << and END,
     016:0" as I will show in a moment
     017:0" END
-    Also, no space is allowed beteen << and END,
+    Also, no space is allowed between << and END,
     as I will show in a moment
     nil
     018:0> << END

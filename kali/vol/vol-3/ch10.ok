@@ -35,7 +35,7 @@ of 0.01?  And let me suppress the snapshot output for now:
 
  :commandoutput: ruby rknbody9c_driver.rb < cube1.in
 
-*Alice*: Not too suprising.  With velocities of order unity, and a
+*Alice*: Not too surprising.  With velocities of order unity, and a
 softening length that is only ten times larger than the time step,
 a typical particle will step through the core of the potential of
 another particle in only a few steps.
@@ -43,9 +43,13 @@ another particle in only a few steps.
 *Bob*: And when doing so, the particle will be sped up already to
 velocities typical well above unity, leaving even fewer integration
 steps during which the attraction between the particles changes
-dramatically.  You are right, it would have been worrisome if the
-errors would _not_ have been large.  Let me use a ten times smaller
-time step:
+dramatically.  In fact, when they approach each other to a distance of
+order 0.01, there speed will be at least 10 in our units, and probably
+larger than that.  Two particles may pass each other through their
+softening radius in even less than one time step.
+
+So yes, it would have been worrisome if the errors would _not_ have
+been large.  Let me use a ten times smaller time step:
 
  :commandoutput: ruby rknbody9d_driver.rb < cube1.in
 
@@ -53,15 +57,15 @@ time step:
 found earlier, without softening.
 
 *Bob*: I guess this means that our eight particles did not come much
- closer to each other than distances of order 0.01.
+closer to each other than distances of order 0.01.
 
 *Alice*: Which is reasonable.  In three dimensions there are two
 independent directions in which two approaching particles can miss
 each other, and you have to aim carefully to come really close.
 
 *Bob*: Let me make the time step half as small again, just to check
- whether the error in the energy conservation drops by at least a
- factor of sixteen:
+whether the error in the energy conservation drops by at least a
+factor of sixteen:
 
  :commandoutput: ruby rknbody9e_driver.rb < cube1.in
 

@@ -75,12 +75,8 @@ class Nbody
 
   attr_accessor :time, :body
 
-  def initialize(n=0, time = 0)
-    @time = time
+  def initialize
     @body = []
-    for i in 0...n
-      @body[i] = Body.new
-    end
   end
 
   def evolve(integration_method, eps, dt, dt_dia, dt_out, dt_end,

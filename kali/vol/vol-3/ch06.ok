@@ -106,15 +106,45 @@ the +Body+ class.
 
 *Bob*: Hey, that is a great idea!  I would never have thought about that.
 Can you really do that?  Well, of course you can.  I guess I'm still
-thinking too much in Fortran and C terms.
+thinking too much in Fortran and C terms.  But I must say, I'm beginning
+to get really worried about speed; this may slow down execution of the
+code even more.  And Ruby is already slow to begin with.
 
-*Alice*: Yes, Ruby invites a different way of thinking.  Even if you could
-find a way to do such a trick in C++, in some convolved way, perhaps using
-templates, the point is that it would not occur to you to do so, since the
-language does not invite that way of thinking.  But when I browsed through
-some Ruby code on the web, I came across something similar as what I just
-suggested, and then I realized that that would be a very natural way of
-passing instructions between classes.
+*Alice*: Let us postpone efficiency discussions for later.  I'm pretty
+hopeful that we can find ways to speed things up later.  In the worst case
+we can switch back to a more traditional form in our final production code.
+If we can make the prototyping process easier and more transparent, that
+would already be a big gain.  I care less about elegance of the final
+version than I do about the intermediate test versions.
+
+*Bob*: Well, okay, but we shouldn't wait _too_ longing in checking the
+speed.  I would feel more comfortable if we had some hard-nosed proof
+that a Ruby-based N-body code can really compete with codes written in
+C or Fortran.  Meanwhile, I must admit, I do like the flexibility of Ruby.
+What a trick, to implement message passing between the Nbody system
+scheduler and the individual bodies, literally by passing messages in
+the form of a string!
+
+*Alice*: Yes, Ruby invites a different way of thinking.  Even if you
+could find a way to do such a trick in C++, in some convolved way, the
+point is that it would not occur to you to do so, since the language
+does not invite that way of thinking.
+
+*Bob*: Quite convolved: for one thing, you would need to find a way to
+implement a form of dynamic loading!  C++ is a compiled language, not
+an interpret language like Ruby.
+
+*Alice*: Ah, yes, of course, I'm already beginning to forget what it
+means to work with compile cycles in prototyping code!
+
+== Wishful Thinking
+
+*Bob*: How did you get this idea, of using message passing?
+
+*Alice*: When I browsed through some Ruby code on the web, I came
+across something similar as what I just suggested, and then I realized
+that that would be a very natural way of passing instructions between
+classes.
 
 *Bob*: Let's try it!  I'll create yet another file, <tt>rknbody5.rb</tt>,
 and see how we can implement your idea.
@@ -186,13 +216,17 @@ in an actual call to +calc+.
 
 == Indirect String Sending
 
-*Bob*: No matter how clever your approach is, I must say that the integration
-methods still look too cluttered for my taste.  They miss the simple elegance
-and brevity of expression of our previous version.  For one thing, in
-that version we did not have to break any statement up over two
-lines.  What bothers me especially is that for most statements, more
-than half of the line gets repeated exactly.  I wonder whether we can do
-something about that.
+*Bob*: Shall we move on?  Or do you have a suggestion for further
+improvements?
+
+*Alice*: I must say that the integration methods still look too
+cluttered for my taste.  They miss the simple elegance and brevity of
+expression of our previous version.  For one thing, in that version we
+did not have to break any statement up over two lines.  What bothers
+me especially is that for most statements, more than half of the line
+gets repeated exactly.
+
+*Bob*: I wonder whether we can do something about that.
 
 *Alice*: I think we can.  So far, we have introduced a +calc+ function on
 the +Body+ level.  How about introducing a second +calc+ function on the
@@ -220,7 +254,7 @@ which we just wrote, quite a bit shorter as:
 
 *Bob*: I like that: every statement now fits on one line, we don't have to
 modify the +Body+ class when we introduce a new integration scheme, and we
-don't mention the variable <tt>@body</tt> more than once per line.  I'm
+don't mention the variable <tt>@body</tt> anymore in each line.  I'm
 satisfied: this combines all good things in one.  And I must say, I'm growing
 fond of working with Ruby.
 

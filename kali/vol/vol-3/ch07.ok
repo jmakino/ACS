@@ -16,7 +16,7 @@ was even shorter.
 
 *Bob*: Yeah, but I really did not like the idea of giving this poor
 +Body+ class all possible helper variables for all possible application.
-I much prefered your suggestion to send a command string to be
+I much preferred your suggestion to send a command string to be
 evaluated dynamical, thereby generating the proper helper variables.
 Just-time-delivery, much better!
 
@@ -30,31 +30,32 @@ and in <tt>rknbody6.rb</tt>
 
  :inccode: .rknbody6.rb+forward
 
-*Bob*: The last one is ever so slightly shorter.
+*Bob*: The last one is clearly shorter.
 
 *Alice*: That I don't mind so much.  I'm just not happy with the fact that
-it is not clear, for a casual reader, what those variables <tt>@body</tt>
-and +dt+ are doing, as the first two arguments of +calc+, and the appearence
+it is not clear, for a casual reader, what that variable
++dt+ is doing there, as the first two arguments of +calc+, and the appearance
 of +ba+ is also a mystery; there is no indication here that +ba+ stands for
-`body array' and will get its value from <tt>@body</tt>.  In contrast,
+`body array' and will get its value from <tt>@body</tt>, somewhere else.
+In contrast,
 the earlier version has nothing hidden: the <tt>@body.each{|b| . . . }</tt>
 construct is vanilla flavor for someone familiar with Ruby.
 
 == Brevity
 
 *Bob*: Perhaps we can improve the +calc+ method of +Nbody+ further.
-How about redefining it in such a way that we can leave out the first two
-arguments altogether?
+How about redefining it in such a way that we can leave out the first
+argument altogether?
 
 *Alice*: Ah, that's a good idea.  It is also a logical next step, after
-introducing the short cut notion of sending a string in the first place.
+introducing the shortcut notion of sending a string in the first place.
 Once we do something that is somewhat dirty and not so self-explanatory,
 we might as well go all the way.
 
 *Bob*: I suppose that we would have to introduce an extra instance variable
-<tt>@dt</tt> for +Nbody+.  Otherwise it will not be possible to leave
-out the second argument +dt+ out of the current +calc+.  In fact, that would
-make the definition even shorter.  So it would look, very cleanly,
+<tt>@dt</tt> for +Nbody+.  Otherwise it will not be possible to remove
+the first argument +dt+ from the current +calc+.  In fact, that would
+make the definition even shorter.  So it would look very clean,
 like this:
 
  :inccode: .rknbody7.rb+forward

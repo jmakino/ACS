@@ -51,7 +51,7 @@ the whole system.
 *Bob*: You mean the six-dimensional space in which you plot for each
 particle its position and velocity?
 
-*Alice*: I was thinking aoubt the alternative way of picturing the whole
+*Alice*: I was thinking about the alternative way of picturing the whole
 system as one point in a <tex>$6N$</tex>-dimensional system.  The
 evolution of an N-body system can then be viewed as the
 complex motion of this one point through this huge space.  Now in this
@@ -149,7 +149,7 @@ those four parameters you just mentioned.
 *Bob*: Exactly.  Ruby is _very_ economical!  And just as a courtesy, I
 decided to let the program print out the values of the four parameters.
 We can then change those parameters in the current file to our hearts
-content, and we allways check from earlier outputs what parameters were
+content, and we always check from earlier outputs what parameters were
 used for a given integration.
 
 *Alice*: Good idea.  Clean and careful.  Of course, some day soon we will

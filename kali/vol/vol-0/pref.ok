@@ -43,8 +43,8 @@ with the original style and aim.
 The umbrella series within ACS is called <i>Open Knowledge</i>, to
 indicate the fact that we aim at far more than providing an `open
 source' project.  In that series we plan to publish what we have
-learned about the ACS approach, in sofar as it is generally
-applicable, to any area in computatonial science.
+learned about the ACS approach, insofar as it is generally
+applicable, to any area in computational science.
 
 == The Kali Code
 
@@ -177,7 +177,7 @@ We use the name <i>The Art of Computational Science</i> not only for
 our book series, but more generally for the software environment for
 which the books provide the narrative.  The environment includes the
 collection of computer codes discussed in the books, together with the
-infrastructure to make it all work together seemlessly.  This implies
+infrastructure to make it all work together seamlessly.  This implies
 extensive comments provided in the codes themselves, as well as manual
 pages.
 

@@ -79,8 +79,8 @@ half-integer values of time.
 
 *Alice*: A great summary!  I can see that you have taught numerical
 integration classes before.  At this point an attentive student might
-be surprized by the difference between the two descriptions, which you
-claim to describe the samen algorithm.  They may doubt that they really
+be surprised by the difference between the two descriptions, which you
+claim to describe the same algorithm.  They may doubt that they really
 address the same scheme.
 
 *Bob*: How would you convince them?
@@ -96,7 +96,7 @@ even though it may be obvious, let us write out the time reversibility.
 We will take one step forward, taking a time step <tex>$+dt$</tex>,
 to evolve <tex>$\{{\bf r}_i, {\bf v}_{i-1/2}\}$</tex> to
 <tex>$\{{\bf r}_{i+1}, {\bf v}_{i+1/2}\}$</tex>, and then we
-will take one step backwards, using the same scheme, taking a time
+will take one step backward, using the same scheme, taking a time
 step <tex>$-dt$</tex>.  Clearly, the time will return to the same value since
 <tex>$+dt-dt=0$</tex>, but we have to inspect where the final positions and
 velocities <tex>$\{{\bf r}_f(t=i), {\bf v}_f(t=i-1/2)\}$</tex> are

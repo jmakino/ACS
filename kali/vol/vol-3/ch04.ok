@@ -1,22 +1,12 @@
 = Debugging the N-body Code
 
-== A single Time Step
-
-Let us take a
-single time step, to see where and how things go wrong.  And let's take
-a relatively big step big.  That should make it easier to interpret
-the output:
-
- :commandoutput: ruby rknbody1b_driver.rb < test5.in
-
-*Bob*: But not _that_ easy.  I don't like to compute by hand all the steps
-in the fourth-order Runge-Kutta algorithm.  How about checking whether the
-forward Euler breaks down as well?  That will be far easier to check by hand.
-
 == Forward Euler
 
-*Alice*: Good idea!  And we may as well make the total integration time a
-bit shorter, to speed things up.
+*Bob*: Okay, reading to chase and catch our bug?
+
+*Alice*: Sure thing!  And I like your idea to simplify things and turn
+to our old friend, the forward Euler algorithm.  And we may as well
+make the total integration time a bit shorter, to speed things up.
 
  :commandoutput: ruby rknbody1c_driver.rb < test5.in
 
@@ -191,9 +181,59 @@ our energy drift warning light would not have come on!
 story is: test any new code for generic input data, not only for input data
 that are easy to generate and easy to interpret.
 
+== Hindsight
+
+*Alice*: Ah, but wait a minute!  Before we congratulate ourselves too much,
+I wonder whether we should not have noticed that there was something wrong
+with the energies in the case of the circular orbit where the masses
+of the two stars were equal to each other, but different from unity.  Let
+us look at that case again.  Where did we file those data.  Ah, here it is:
+we stored the initial conditions in the file <tt>test3.in</tt>:
+
+ :inccode: test3.in
+
+Let us run that case again:
+
+ :commandoutput: ruby rknbody1a_driver.rb < test3.in
+
+*Bob*: You are right!  Now that we know what to look for, it is obvious
+that the diagnostics output is totally wrong.  Already at time <tt>t = 0</tt>,
+the total energy is positive: <tt>E_tot = 0.04</tt>.  A binary with positive
+total energy will immediately fly apart.  We should have noticed that right
+away!
+
+*Alice*: We should have, yes, but we didn't.  It goes to show: even with
+good diagnostics, it is easy to overlook a trouble signal.  To
+continue with your analogy of a pilot, looking at a warning signal: in
+a cockpit with many different indicators, one can overlook the fact
+that one of the meters gives an impossible result.  We were staring at
+the red light of errors in energy conservation, and we overlooked the
+less obvious lights.
+
+*Bob*: Still, I feel pretty stupid that I didn't see that we were setting
+up a binary with binding energy of the wrong sign.
+
+*Alice*: Well, that makes two of us.  But the goal of good software
+development is not to make programmers perfect, since that is impossible.
+Instead, the goal should be to make debugging easy enough, so that
+imperfect people can still converge to an almost-perfect code, when
+they try hard enough.  This in itself is already enough of a reason
+for using a language like Ruby, where the programming is not bogged
+down with trying to keep the compiler happy.  We can at least spend
+all of our energy on the debugging process itself, without worrying
+about declarations and type checking and all the other constraints
+that the more classical languages always bring with them.
+
+*Bob*: You have a charitable interpretation of human weakness.  Even so,
+I really will try not to make this kind of silly mistake again.
+
+*Alice*: Famous last words!
+
 == Bug Fixed
 
-*Alice*: Agreed.  And in order to follow our own advice, let us now test our
+*Bob*: So, we're done!
+
+*Alice*: It seems that way.  But it would not hurt to test our
 original run again, now that you have fixed the code.  You know, it
 would not be the first time that a code contains more than one bug.
 Another common mistake people make is to find a glaring bug in a code,

@@ -115,7 +115,7 @@ the midpoint value by taking the average of the two accelerations.
 *Bob*: Yes, you can look at it both ways.  In fact, if you take your view,
 you can see that the leapfrog is twice as efficient as Runge-Kutta, in that
 it calculates only the accelerations at the integer time points.  In
-contrast, the Runge-Kutta method also calculates the accelerattions at the
+contrast, the Runge-Kutta method also calculates the accelerations at the
 half-integer points in time.  So it requires twice as many acceleration
 calculations.
 
@@ -241,7 +241,7 @@ of magnitude, about a factor 300, but still more than the factor
 hundred than we would have expected.  Also, with <tex>$10^{7}$</tex>
 integration steps, I'm surprised we got even that far.  At each time,
 round off errors must occur in the calculations that are of order
-<tex>$10^{-16}$</tex>.  Then statistical noice in so many calculations
+<tex>$10^{-16}$</tex>.  Then statistical noise in so many calculations
 must be larger than that by at least the square root of the number of
 time steps, or <tex>$10^{3.5}.10^{-16}=3.10^{-13}$</tex>.
 

@@ -52,26 +52,32 @@ Now let's see what my new N-body code will do:
 
  :commandoutput: ruby rknbody1a_driver.rb < test1.in
 
-== The Simplest Case
-
 *Alice*: Huh?  An energy conservation error of order unity?  And our old
 code was conserving energy almost on machine accuracy!  Are you sure you
 have tested your code?
 
 *Bob*: Yes, I'm sure, I can show you.  And yes, I'm deeply puzzled now.
 
+== The Simplest Case
+
 *Alice*: Let's try a very simple situation, where we absolutely know what
 the outcome will be, in explicit form.  Let us take a circular binary star
 with equal masses, just to see what will go wrong there.  Perhaps that will
-give us a hint.  We can give both stars a mass 1, and start with an initial
-distance of 1.  This gives us an initial potential of 1.1/1, since we are
-working with <tex>$G=1$</tex>, so the initial kinetic energy has to be 1/2,
-because of the virial theorem.  Each star thus needs to get a kinetic
-energy of 1/4 in the center-of-mass frame, and this means that the velocity
+give us a hint.  We can give both stars a mass <tex>$m_1 = m_2 = 1$</tex>,
+and start with an initial distance of <tex>$r_{i,j} = 1$</tex>.  This
+gives us an initial potential energy of <tex>$-m_1m_2/r_{i,j} = -1$</tex>,
+since we are working with <tex>$G=1$</tex>.  Because of the virial theorem,
+we know that the average kinetic energy has to be <tex>$-1/2$</tex> times
+that of the average potential energy.  In a circular binary, both kinetic
+and potential energies remain constant, and equal to their initial values,
+and therefore the total initial kinetic energy is <tex>$1/2$</tex>, in the
+center-of-mass frame.  This means that we need to give each star a kinetic 
+energy of <tex>$1/4$</tex>.  Since each star has a mass of <tex>$1$</tex>,
+the velocity
 _v_ of each star should be <tex>$1/\sqrt(2)$</tex>, in order to make
 <tex>$E_{kin} = \frac{1}{2}mv^2 = 1/4$</tex> for that star.
 
-*Bob*: Here we go.  I will call the inital file for the circular binary
+*Bob*: Here we go.  I will call the initial file for the circular binary
 <tt>test2.in</tt>.
 
  :inccode: test2.in
@@ -135,6 +141,22 @@ percent smaller, while leaving everything else the same.
 *Alice*: Here we clearly have a problem, and a big one: terrible energy
 conservation.  So now we know that the problem does not depend on
 having unequal masses, but it does seem to require both
-non-circularity and masses that differ from unity.  We're getting a
-little closer, but we still have a ways to go!
+non-circularity and masses that differ from unity.
 
+*Bob*: We're getting a little closer, but we may still have quite a ways to go!
+
+== A single Time Step
+
+*Alice*: Let us take a
+single time step, to see where and how things go wrong.  And let's take
+a relatively big step.  That should make it easier to interpret
+the output:
+
+ :commandoutput: ruby rknbody1b_driver.rb < test5.in
+
+*Bob*: But not _that_ easy.  I don't like to compute by hand all the steps
+in the fourth-order Runge-Kutta algorithm.  How about checking whether the
+forward Euler breaks down as well?  That will be far easier to check by hand.
+
+*Alice*: You may be right.  Let's take a break first, and then take a fresh
+look at the whole situation.

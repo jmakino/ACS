@@ -176,9 +176,9 @@ still makes sense to add the two and thus check for energy conservation?
 
 *Bob*: Ah yes, that rings a bell, from my celestial mechanics class.
 The relative motion of two bodies under the influence of gravity, or
-of electrostic forces for that matter, can be described by the
+of electrostatic forces for that matter, can be described by the
 equivalent motion of a pseudo-particle with a different mass, the
-reduced mass.  But how did that go?  We can look in any old celestical
+reduced mass.  But how did that go?  We can look in any old celestial
 mechanics book, but it would be more fun to try to reconstruct it
 ourselves.
 
@@ -316,7 +316,7 @@ code without changing more than a few dozen lines.
 *Alice*: A few dozen?  That still sounds like a lot, depending how large
 "a few" is in your dictionary.  You're so good at compressing things
 into a few lines.  What if I challenge you: can you introduce a
-second-order integrator, while adding or chaning no more than only a
+second-order integrator, while adding or changing no more than only a
 dozen lines?
 
 *Bob*: You are either joking or you have an unreasonably high opinion

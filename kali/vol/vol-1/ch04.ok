@@ -51,7 +51,7 @@ And because we are writing a toy model, I suggest we do our I/O in ASCII,
 not in binary form.
 
 *Alice*: Absolutely.  I am always happier when I can look into a file,
-and see the data there directly, without everything being incoded in
+and see the data there directly, without everything being encoded in
 some weird way.  Such encryptions are often machine dependent anyway, and
 ASCII characters are platform independent.
 

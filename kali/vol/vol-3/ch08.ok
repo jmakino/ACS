@@ -103,7 +103,7 @@ of the position components.
 
 *Bob*: And look, my guestimate for the accelerations was correct too.
 Going back to the first snapshot output, typical components for the
-accelaration at time zero are 0.6 and 0.7, which means in three
+acceleration at time zero are 0.6 and 0.7, which means in three
 dimensions that the magnitude of the acceleration vector must be
 something like <tex>0.65$\sqrt(3)$</tex>, say, or about 1.1; comfortable
 within my predicted range!

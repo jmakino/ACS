@@ -132,7 +132,7 @@ but I guess I can make sense of it.  What appears to the right of the
 <tt>=</tt> sign is a normal if-else construction, but without the
 usual indentation.
 
-*Bob*: Yes, it seemed a bit wastful of space to use five lines for what
+*Bob*: Yes, it seemed a bit wasteful of space to use five lines for what
 can be easily written in half a line.  But note that I added the word
 +then+, which you don't use when you write it over several lines.
 Ruby insists on using +then+ for inline constructs like this, since

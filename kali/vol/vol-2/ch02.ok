@@ -160,12 +160,12 @@ of the leapfrog look, in this notation?  You start by introducing variables
 
 So there: one line longer than my version, and with longer lines to boot.
 
-*Alice*: That is interesting, isn't it?  At first I really prefered my
+*Alice*: That is interesting, isn't it?  At first I really preferred my
 version, both because it was shorter and because it remained closer to
 the mathematical formulae that you had written down.  But I must admit
 that I like the way you encapsulated -- dear I say modularized -- the
 acceleration into a separate method.  And now suddenly my version looks
-a bit clumpsy and lengthy.
+a bit clumsy and lengthy.
 
 *Bob*: But I'm glad we're going over the code so carefully together.
 I wouldn't have thought about your way of writing the leapfrog, and
@@ -215,7 +215,7 @@ instance variable, and the right-hand side contains a method . . .
 *Alice*: Yes, I had already commented on that, praising you!  The left hand
 side is symmetric, because the variable holding <tt>@vel</tt> is exactly of
 the same sort of thing as the variable holding <tt>@pos</tt>.  How much
-further do you want to push me to spell everythign out?  Okay.  The right
+further do you want to push me to spell everything out?  Okay.  The right
 hand side is symmetric, because the method +acc+ . . .
 
 *Bob*: You see!  I can see from your face that you got it.
@@ -276,7 +276,7 @@ tested . . .
 == Ordering an Integrator
 
 *Alice*: Back to your two integrator methods.  I very much like the idea
-of seperating out the acceleration as a calculation that gets done in
+of separating out the acceleration as a calculation that gets done in
 a separate method.  But where is the magic that enables you to call
 the shots, when you call +evolve+?  How does +evolve+ know that a first
 argument of the string <tt>"forward"</tt> directs it to execute the

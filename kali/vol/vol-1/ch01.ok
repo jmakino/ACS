@@ -158,7 +158,7 @@ constructs, but here is the general idea: you can give three arguments
 in a call to +initialize+, to specify the mass, position, and velocity.
 If you don't specify some of these arguments, they will acquire the
 default values that are given here by all the zeroes in the first line
-of the definition of +initialize+.  The next line assignes these values
+of the definition of +initialize+.  The next line assigns these values
 to internal variables that have names starting with a <tt>@</tt> sign.
 
 *Alice*: That is remarkably short and simple!  In fact, it seems too
@@ -241,11 +241,6 @@ me try to change the type of +id+.
     NameError: undefined local variable or method `cat' for main
       :Object
     	from (irb):2
-
-#<i>[Note to the reader: because of limited page width, the characters
-#that overflow from a line are here printed on the next line (+ain+ in
-#this case); on a computer screen those characters all appear on the
-#original line]</i>
 
 *Bob*: Ah, Ruby treats your +cat+ in an equally friendly way as
 your +id+, assuming it is itself a name of a variable (or a method),

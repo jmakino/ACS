@@ -2,7 +2,7 @@ require "vector.rb"
 
 class Body
 
-  attr_accessor :mass, :pos, :vel, :old_pos, :half_vel, :a0, :a1, :a2        #1
+  attr_accessor :mass, :pos, :vel                                            #1
 
   def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
     @mass, @pos, @vel = mass, pos, vel
@@ -64,8 +64,11 @@ class Nbody
 
   attr_accessor :time, :body
 
-  def initialize
+  def initialize(n=0, time = 0)
+    @time = time
     @body = []
+    for i in 0...n
+      @body[i] = Body.new
     end
   end
 
@@ -94,9 +97,10 @@ class Nbody
   end
 
   def forward(dt)
-    @body.each{|b| b.old_acc = b.acc(@body)}
-    @body.each{|b| b.pos += b.vel*dt}                                        #2
-    @body.each{|b| b.vel += b.old_acc*dt}
+    old_acc = []
+    @body.each_index{|i| old_acc[i] = @body[i].acc(@body)}
+    @body.each{|b| b.pos += b.vel*dt}
+    @body.each_index{|i| @body[i].vel += old_acc[i]*dt}
   end
 
   def leapfrog(dt)
@@ -106,22 +110,33 @@ class Nbody
   end
 
   def rk2(dt)
-    @body.each{|b| b.old_pos = b.pos}
-    @body.each{|b| b.half_vel = b.vel + b.acc(@body)*0.5*dt}
+    old_pos = []
+    @body.each_index{|i| old_pos[i] = @body[i].pos}
+    half_vel = []
+    @body.each_index{|i|
+      half_vel[i] = @body[i].vel + @body[i].acc(@body)*0.5*dt}
     @body.each{|b| b.pos += b.vel*0.5*dt}
     @body.each{|b| b.vel += b.acc(@body)*dt}
-    @body.each{|b| b.pos = b.old_pos + b.half_vel*dt}
+    @body.each_index{|i| @body[i].pos = old_pos[i] + half_vel[i]*dt}
   end
 
   def rk4(dt)
-    @body.each{|b| b.old_pos = b.pos}
-    @body.each{|b| b.a0 = b.acc(@body)}
-    @body.each{|b| b.pos = b.old_pos + b.vel*0.5*dt + b.a0*0.125*dt*dt}
-    @body.each{|b| b.a1 = b.acc(@body)}
-    @body.each{|b| b.pos = b.old_pos + b.vel*dt + b.a1*0.5*dt*dt}
-    @body.each{|b| b.a2 = b.acc(@body)}
-    @body.each{|b| b.pos = b.old_pos + b.vel*dt + (b.a0+b.a1*2)*(1/6.0)*dt*dt}
-    @body.each{|b| b.vel += (b.a0+b.a1*4+b.a2)*(1/6.0)*dt}
+    old_pos = []
+    @body.each_index{|i| old_pos[i] = @body[i].pos}
+    a0 = []
+    @body.each_index{|i| a0[i] = @body[i].acc(@body)}
+    @body.each_index{|i|
+      @body[i].pos = old_pos[i] + @body[i].vel*0.5*dt + a0[i]*0.125*dt*dt}
+    a1 = []
+    @body.each_index{|i| a1[i] = @body[i].acc(@body)}
+    @body.each_index{|i|
+      @body[i].pos = old_pos[i] + @body[i].vel*dt + a1[i]*0.5*dt*dt}
+    a2 = []
+    @body.each_index{|i| a2[i] = @body[i].acc(@body)}
+    @body.each_index{|i|
+      @body[i].pos = old_pos[i] + @body[i].vel*dt +
+                     (a0[i]+a1[i]*2)*(1/6.0)*dt*dt}
+    @body.each_index{|i| @body[i].vel += (a0[i]+a1[i]*4+a2[i])*(1/6.0)*dt}
   end
 
   def ekin                        # kinetic energy

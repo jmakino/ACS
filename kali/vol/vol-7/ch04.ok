@@ -382,7 +382,7 @@ and if I regularly express myself as follows
 
  :inccode: .iobody3.rb+rest_to_s
 
-it should all work.  Te comman +gsub+ globally substitutes however
+it should all work.  The command +gsub+ globally substitutes however
 many initial blank spaces there may be in any line within the string 
 <tt>@rest</tt> by the proper indentation length.
 

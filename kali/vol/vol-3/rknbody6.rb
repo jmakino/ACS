@@ -70,12 +70,8 @@ class Nbody
 
   attr_accessor :time, :body
 
-  def initialize(n=0, time = 0)
-    @time = time
+  def initialize
     @body = []
-    for i in 0...n
-      @body[i] = Body.new
-    end
   end
 
   def evolve(integration_method, dt, dt_dia, dt_out, dt_end)
@@ -102,39 +98,39 @@ class Nbody
     end
   end
 
-  def calc(x,y,s)
-    x.each{|b| b.calc(x,y,s)}
+  def calc(y,s)
+    @body.each{|b| b.calc(@body,y,s)}
   end
 
   def forward(dt)
-    calc(@body,dt," @old_acc = acc(ba) ")
-    calc(@body,dt," @pos += @vel*dt ")
-    calc(@body,dt," @vel += @old_acc*dt ")
+    calc(dt," @old_acc = acc(ba) ")
+    calc(dt," @pos += @vel*dt ")
+    calc(dt," @vel += @old_acc*dt ")
   end
 
   def leapfrog(dt)
-    calc(@body,dt," @vel += acc(ba)*0.5*dt ")
-    calc(@body,dt," @pos += @vel*dt ")
-    calc(@body,dt," @vel += acc(ba)*0.5*dt ")
+    calc(dt," @vel += acc(ba)*0.5*dt ")
+    calc(dt," @pos += @vel*dt ")
+    calc(dt," @vel += acc(ba)*0.5*dt ")
   end
 
   def rk2(dt)
-    calc(@body,dt," @old_pos = @pos ")
-    calc(@body,dt," @half_vel = @vel + acc(ba)*0.5*dt ")
-    calc(@body,dt," @pos += @vel*0.5*dt ")
-    calc(@body,dt," @vel += acc(ba)*dt ")
-    calc(@body,dt," @pos = @old_pos + @half_vel*dt ")
+    calc(dt," @old_pos = @pos ")
+    calc(dt," @half_vel = @vel + acc(ba)*0.5*dt ")
+    calc(dt," @pos += @vel*0.5*dt ")
+    calc(dt," @vel += acc(ba)*dt ")
+    calc(dt," @pos = @old_pos + @half_vel*dt ")
   end
 
   def rk4(dt)
-    calc(@body,dt," @old_pos = @pos ")
-    calc(@body,dt," @a0 = acc(ba) ")
-    calc(@body,dt," @pos = @old_pos + @vel*0.5*dt + @a0*0.125*dt*dt ")
-    calc(@body,dt," @a1 = acc(ba) ")
-    calc(@body,dt," @pos = @old_pos + @vel*dt + @a1*0.5*dt*dt ")
-    calc(@body,dt," @a2 = acc(ba) ")
-    calc(@body,dt," @pos = @old_pos + @vel*dt + (@a0+@a1*2)*(1/6.0)*dt*dt ")
-    calc(@body,dt," @vel += (@a0+@a1*4+@a2)*(1/6.0)*dt ")
+    calc(dt," @old_pos = @pos ")
+    calc(dt," @a0 = acc(ba) ")
+    calc(dt," @pos = @old_pos + @vel*0.5*dt + @a0*0.125*dt*dt ")
+    calc(dt," @a1 = acc(ba) ")
+    calc(dt," @pos = @old_pos + @vel*dt + @a1*0.5*dt*dt ")
+    calc(dt," @a2 = acc(ba) ")
+    calc(dt," @pos = @old_pos + @vel*dt + (@a0+@a1*2)*(1/6.0)*dt*dt ")
+    calc(dt," @vel += (@a0+@a1*4+@a2)*(1/6.0)*dt ")
   end
 
   def ekin                        # kinetic energy

@@ -49,7 +49,7 @@ practical ease of allowing rapid prototyping that appealed to us most.
 
 An essential requirement for any computer code to be used in
 scientific simulations is its ability to deliver sufficient raw
-speed.  Without that, no matter how much a language excells in
+speed.  Without that, no matter how much a language excels in
 elegance and clarity, it would not be practically useful.  Therefore,
 one of our first checks, after turning to Ruby, was to investigate its
 speed.  We knew that we could not expect any significant speed from

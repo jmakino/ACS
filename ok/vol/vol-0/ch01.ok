@@ -68,7 +68,7 @@ piece of software comfortably, wearing it like well fitting clothes,
 it should not harbor any secrets.  And the best kept secret, even for
 codes with great manuals and worked-out examples of usage, is often
 the path that was taken to arrive at the code, while building it.
-Unfortunately, whithout that knowledge, any attempt to modify or
+Unfortunately, without that knowledge, any attempt to modify or
 extend the code is likely to be haphazard at best, and likely to lead
 to proliferation of code growth with dissonant and poorly connected
 pieces, leading to the phenomenon of `spaghetti code' before long.

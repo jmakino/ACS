@@ -166,7 +166,7 @@ _any_ object to a string?
 to the class that defines that object, since Ruby has no way of
 guessing beforehand how a new object should be printed out.  That is
 our responsibility, and I have just done that.  Ruby's task is to sow
-it altogether seemlessly.
+it altogether seamlessly.
 
 *Alice*: Which it can do well, because it is designed in such a modular
 way: there is a nice hierarchy of separate <tt>to_s</tt>'s that are calling

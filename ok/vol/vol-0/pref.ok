@@ -64,6 +64,70 @@ the Rdoc system (see "http://rdoc.sourceforge.net/"), which we found
 to have a type of balance between generality and ease of implementation
 which was just right for our purpose.
 
+== ACS versions
+
+We use the name <i>The Art of Computational Science</i> not only for
+our book series, but more generally for the software environment for
+which the books provide the narrative.  The environment includes the
+collection of computer codes discussed in the books, together with the
+infrastructure to make it all work together seamlessly.  This implies
+extensive comments provided in the codes themselves, as well as manual
+pages.
+
+Our plan is to make successive stable versions of this software
+environment available, starting with ACS 1.0, which contains a small
+but self-sufficient core of simple N-body programs and accompanying
+documentation and narrative.  These versions can be freely downloaded
+from our web site "http://www.ArtCompSci.org".  They include all
+completed and partly completed volumes in our book series.  Text,
+code, and everything else is presented as open source software under
+the conditions of the MIT license:
+
+    Copyright (c) 2004 -- present, Piet Hut & Jun Makino
+
+    Permission is hereby granted, free of charge, to any
+    person obtaining a copy of this software and associated
+    documentation files (the "Software"), to deal in the
+    Software without restriction, including without
+    limitation the rights to use, copy, modify, merge,
+    publish, distribute, sublicense, and/or sell copies of
+    the Software, and to permit persons to whom the Software
+    is furnished to do so, subject to the following
+    conditions:
+
+    The above copyright notice and this permission notice
+    shall be included in all copies or substantial portions
+    of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+    ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+    TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
+    PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT
+    SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+    OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR
+    IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE SOFTWARE.
+
+== A Historical Note
+
+In preparing for our project, we wrote a complete manuscript, titled
+<i>Moving Stars Around MSA)</i>, also in dialogue form, but aimed more
+at beginning students who may not yet have much familiarity with
+computer programming and the use of numerical methods.  We have no
+current plans to continue that particular approach, but even so, the
+manuscript will remain a useful guide for N-body calculations, with a
+somewhat different emphasis than the one presented in the _Kali_
+series.
+
+For example, MSA provides a very quick shortcut to playing with simple
+algorithms and simple graphics representations of orbit calculations.
+Both topics are treated in far more detail in the _Kali_ series,
+leading to far more robust and general code, but it will also require
+far more patience from the reader to get there.  This is one of the
+reasons that we decided to keep the MSA volume on our web site
+indefinitely, as additional introductory material.
+
 == Acknowledgments
 
 Besides thanking our home institutes, the Institute for Advanced Study
