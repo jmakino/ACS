@@ -208,4 +208,4 @@ rapid beginning with the current volume.
 We thank Douglas Heggie, xxx, and xxx for their comments on the
 manuscript.
 
-[ ]  Piet Hut and Jun Makino
+Piet Hut and Jun Makino

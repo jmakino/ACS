@@ -18,7 +18,7 @@ done, while also being flexible enough to be put to new and
 unanticipated use.  In practice, few software packages live up to this
 combined ideal of transparency and flexibility.
 
-== In Software, Research Equals Education
+== In Software, Research = Education
 
 Software architecture is a very young craft.  Humanity has had
 experience with building material buildings for many thousands of
