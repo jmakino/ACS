@@ -25,7 +25,7 @@ where <tex>$t_{i+1} - t_{i + 1/2} = t_{i + 1/2} - t_i = dt / 2$</tex>.
 The leapfrog integration scheme then reads:
 
 <tex>\begin{eqnarray}
-{\bf r}_{i} & = & {\bf r}_{i-1} + {\bf v}_{i-1/2} dt \nonumber \\
+\br_{i} & = & {\bf r}_{i-1} + {\bf v}_{i-1/2} dt \nonumber \\
 {\bf v}_{i+1/2} & = & {\bf v}_{i-1/2} + {\bf a}_i dt \nonumber
 \end{eqnarray}</tex>
 
