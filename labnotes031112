@@ -154,10 +154,10 @@ Jun redrew it, using the program {\tt tgif}.  In order to include that
 figure in our lab notes for yesterday's session, we had to define a
 syntax for figure inclusion.  We decided that it would be of the type
 "\\fig{filename, size}", written on a separate line, with blank lines
-before and after.  For example, the figure below is included using
+before and after.  For example, yesterday's figure was included using
 the following line:
 
-\\fig{labnote-031112.eps, 15 cm}
+\\fig{labnote.eps, 15 cm}
 
 3.4. Italic, Boldface, Colors, and all that
 
@@ -205,8 +205,6 @@ to take an intermediary approach, to keep for example a file with the
 last few dozen sessions, and write the new session's note at the end
 of that file.
 
-\fig{labnote-031112.eps, 15 cm}
-
 4.5. Warnings and Errors
 
 When uploading a new lab session, the automated software will flag
@@ -222,7 +220,7 @@ went wrong and how it could possible be corrected automatically.
 
 5. Generation of Lab Notes
 
-We extended our ideas about generation of labnotes (yesterday's 2.4.3),
+We extended our ideas about generation of labnotes \ref 2003-11-11-1-2.4.3.
 to include not only the automatic generation of HTML files, but also
 the generation of pdf files.  In addition, we will keep a mother file
 that contains all submissions of .not files in chronological order.
