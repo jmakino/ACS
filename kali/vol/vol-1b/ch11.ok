@@ -318,7 +318,8 @@ subscript _s_ :
 
 *Alice*: Does that really work?  Let's see whether your procedure is
 actally fourth-order accurate.  In Eq. (ref(hermiterules)), you leave
-out terms of order <tex>$(\Delta t)^3$</tex>, but those predictor values
+out terms of order <tex>$(\Delta t)^3$</tex> in the velocity, and terms
+of order <tex>$(\Delta t)^4$</tex> in the position, but those predictor values
 for position and velocity are only used to compute acceleration and jerk,
 terms that are always multiplied with factors of <tex>$(\Delta t)^2$</tex>,
 so the resulting errors are of order <tex>$(\Delta t)^5$</tex>.  Good!
