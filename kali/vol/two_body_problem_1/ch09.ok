@@ -124,9 +124,9 @@ energy conservation diagnostics.
 
 *Alice*: How nice!  Can I see it?
 
-*Bob*: First of all, here is the driver, the only part of the program
-that we will change, while exploring the effect of different time step
-sizes and integration times:
+*Bob*: First of all, here is the driver, in file <tt>euler.rb</tt>,
+the only part of the program that we will change, while exploring the
+effect of different time step sizes and integration times:
 
  :inccode: euler.rb
 

@@ -243,8 +243,17 @@ list of its elements.
 
 *Bob*: So I'll just clothe the right hand side of the <tt>@pos</tt> and 
 <tt>@vel</tt> assignments in <tt>Vector[* ]</tt> garb.  Let me call
-this file <tt>euler2b.rb</tt> with +b+ for beta version.  I think
-we're getting closer now:
+this file <tt>euler2b.rb</tt> with +b+ for beta version.  The only
+difference is that in <tt>euler2a.rb</tt> I started at the top with
+
+ :inccode: .euler2a.rb-1
+
+while in <tt>euler2b.rb</tt> I started at the top with 
+
+ :inccode: .euler2b.rb-1
+
+instead.  I think we're getting closer now.  Here it is,
+in <tt>vbody2.rb</tt>:
 
  :inccode: .vbody2.rb+simple_read
 
@@ -298,11 +307,11 @@ Here, it is short, let me show the whole file:
 == <i>Voila</i>
 
 *Alice*: That's much better.  I don't mind the <tt>[*...}</tt> <i>per se</i>,
-it is only that the line with <tt>gets.split.map</tt> followed by a block
-of code just got too crowded for comfort.  But your definition of +to_v+
-is clean and simple.  So let me check: by writing <tt>class Array</tt>
-and so on, you are just extending the Ruby-defined standard array
-definition, right?
+it is only that the line with <tt>gets.split.map</tt> followed by a
+block of code just got too crowded for comfort.  But your definition
+of <tt>to_v</tt> is clean and simple.  So let me check: by writing
+<tt>class Array</tt> and so on, you are just extending the
+Ruby-defined standard array definition, right?
 
 *Bob*: Right.  Not only can you extend your own classes by giving new
 bits and pieces like this, as we have seen before, you can do the same
@@ -313,8 +322,8 @@ had just written it all yourself.
 *Alice*: That's really neat.  So now can we get rid of the clutter
 at the bottom of the <tt>vbody2.rb</tt> file?
 
-*Bob*: Sure thing.  Here is our +simple_read+, no clutter, and with
-the new +to_v+ at the end.  And let me call this one <tt>vbody.rb</tt>,
+*Bob*: Sure thing.  Here is our <tt>simple_read</tt>, no clutter, and with
+the new <tt>to_v</tt> at the end.  And let me call this one <tt>vbody.rb</tt>,
 to celebrate that now we know what we are doing:
 
  :inccode: .vbody.rb+simple_read
@@ -322,8 +331,8 @@ to celebrate that now we know what we are doing:
 *Alice*: Very nice.  And presumably it runs?
 
 *Bob*: I bet you it will!  And to show my confidence, I will call the
-file <tt>euler2.rb</tt>, since I think we will be beyond alpha and beta
-testing once we see this.
+file that includes <tt>vbody.rb</tt> now <tt>euler2.rb</tt>, since I
+think we will be beyond alpha and beta testing once we see this.
 
 *Alice*: You do sound confident.  Let's see.
 

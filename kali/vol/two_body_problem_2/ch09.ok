@@ -217,7 +217,7 @@ of the time step, <tex>$\bs(\Delta t)^2$</tex> and
 <tex>$\bc(\Delta t)^3$</tex>, respectively.
 
 Here are the equations that we have to code up, as a generalization of
-Eq. (ref(ms)):
+Eq. (ref(ms2)):
 
 :eqnarray:
 \label{ms4}

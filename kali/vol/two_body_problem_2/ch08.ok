@@ -169,7 +169,9 @@ in the file <tt>vector.rb</tt>, where I gave an extra method to our
 before, but when you compute the jerk in <tt>ms2</tt> it is most
 natural to use subtraction.
 
-*Bob*: And for good measure, I added a division method as well:
+*Bob*: And for good measure, I added a division method as well.
+Note that +raise+ is a standard way for Ruby to report an error
+condition.  Here it is:
 
  :inccode: .vector.rb+_divide_
 

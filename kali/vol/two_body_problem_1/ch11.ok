@@ -59,7 +59,7 @@ criteria.
 
 *Alice*: Let's follow your earlier suggestion to do a longer integration,
 for ten time units.  And let's use your flexible output options.  I would
-like to see four energy diagnostics, but only one final position and
+like to see four energy diagnostics, but at most one final position and
 velocity output, so that we don't get too distracted.
 
 *Bob*: That means:

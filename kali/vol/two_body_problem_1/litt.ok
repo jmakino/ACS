@@ -1,7 +1,12 @@
 = Literature References
 
 <i>Programming Ruby -- The Pragmatic Programmer's Guide</i>, by
-David Thomas and Andrew Hunt, 2001 [Addison Wesley].  This is a
-great introduction to Ruby.  There is a complete
+Dave Thomas, with Chad Fowler and Andy Hunt, 2004 [Pragmatic Bookshelf].
+
+This is a wonderful introduction to Ruby.  There is a complete
 <web>http://www.rubycentral.com/book/index.html|online version</web>
-available for this book.
+available for the first edition of this book, but it is far better to
+read the second edition, which is available in both paper form and pdf
+form, from the
+<web>http://www.pragmaticprogrammer.com/titles/ruby/index.html|pragmatic programmer's</web>
+web site.

@@ -1,29 +1,125 @@
-= XXX
+= <tt>World</tt> Input and Output
 
-== xxx
+== A Bad Thing
+
+*Alice*: It's great to have such a well structured code now, and
+I'm especially happy that output issues are now much better decoupled
+from running the orbit integrator.
+
+*Bob*: I thought you'd like that kind of modularity!
+
+*Alice*: Indeed.  And not only that, we are now guaranteed that orbit
+integration will not be affected at all by any type of diagnostics
+output.  In contrast, in the earlier code <tt>nbody_ind1.rb</tt>, we
+had to synchronize all particles in order to do any type of output.
+That meant that a change of diagnostics affected the actual outcome of
+the code.  Here is an example, starting again from our standard input
+choice:
+
+ :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby acsnumber.rb > test.in
+
+We will run the code first with two energy reports, only at the beginning
+and the end:
+
+ :commandoutput: ruby nbody_ind1.rb -t 1 -e 1 < test.in > test1.out
+
+and then with three reports:
+
+ :commandoutput: ruby nbody_ind1.rb -t 1 -e 0.5 < test.in > test2.out
+
+Note, first of all, that the total number of steps is different, which
+is a dead giveaway that something has changed.  And indeed, we can
+check directly that the particles have not landed at exactly the same
+place.
+
+ :commandoutput: cat test[12].out | ruby acsdiff.rb
+
+This is definitely a bad thing.  Unlike in quantum mechanics, a classical
+mechanics system should not be influenced by a measurement!
+
+== Modularity in Practice
+
+*Bob*: And the claim is that this problem does not occur for our new
+code, since we evolve all particles one era at a time, and then do the
+diagnostics off-line, so to speak.  Well, we'd better check:
+
+ :commandoutput: ruby world1.rb -t 1 -d 1 < test.in > test1.out
+
+ :commandoutput: ruby world1.rb -t 1 -d 0.5 < test.in > test2.out
+
+*Alice*: At least the number of steps has not been changed.
+
+*Bob*: A good sign already!  Let's inspect the phase space distance:
+
+ :commandoutput: cat test[12].out | ruby newacsdiff.rb
+
+*Alice*: Perfect.  Modularity in practice, not only in theory!
+
+== A Test Suite
+
+*Bob*: Ah, but there is more!  Not only can we safely put our a report
+about energy conservation, any time we want, but we can even do a full
+output, and then restart from that output, as often as we want, without
+affecting the trajectories of any of the particles in the slightest.
+
+*Alice*: Again, that is the claim.  We'd better test that, too!
+Of course, this idea only works for a full output, one that dumps the
+whole internal data structure, for which we had the command line option
+<tt>-r</tt>.  Without that option, you get a synchronized snapshot, and
+changing the frequency of synchronization will lead to the same problem
+we saw above with the previous code.
+
+*Bob*: Let's build a little test suite.  We'll create an input file,
+and then ask for output in different ways.
+
+To start with, let's compare a run that directly integrates for two
+time units with a run that restarts from a dump halfway.  We can do
+that comparison in two ways: compare a dump for each type of run,
+direcly and in stages, and compare a snapshot output for each type of
+run, where in the latter case of course the intermediate output still
+has to be a dump.
+
+Then, for good measure, let's integrate till three time units.  We can
+then compare a run that goes there non-stop with a run that makes one
+stop, and with a run that makes two stops along the way.  We'll make
+those two comparisons on the dump level.
+
+And since we require that _everything_ should be unchanged, I want to
+do more than measuring phase space distances: I'll do a +diff+ on the
+whole output file, to check whether _any_ variable, important or not,
+has _any_ change whatsoever.  Here is the test suite:
 
  :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby acsnumber.rb > tmp0
- :commandoutput: ruby world1.rb -t 1 < tmp0 | ruby acstail.rb > tmp1s
  :commandoutput: ruby world1.rb -t 1 -r < tmp0 | ruby acstail.rb > tmp1w
  :commandoutput: ruby world1.rb -t 1 -r < tmp1w | ruby acstail.rb > tmp2ww
  :commandoutput: ruby world1.rb -t 2 -o 2 -r < tmp0 | ruby acstail.rb > tmp2w
  :commandoutput: ruby world1.rb -t 2 -o 2 < tmp0 | ruby acstail.rb > tmp2s
- :commandoutput: ruby world1.rb -t 1 < tmp1s | ruby acstail.rb > tmp2ss
  :commandoutput: ruby world1.rb -t 1 < tmp1w | ruby acstail.rb > tmp2ws
- :commandoutput: ruby world1.rb -t 1 -r < tmp1s | ruby acstail.rb > tmp2sw
- :commandoutput: ruby world1.rb -t 1 -r < tmp2ww | ruby acstail.rb > tmp3www
  :commandoutput: ruby world1.rb -t 1 -r < tmp2w | ruby acstail.rb > tmp3ww
  :commandoutput: ruby world1.rb -t 3 -o 3 -r < tmp0 | ruby acstail.rb > tmp3w
- :commandoutput: echo "diff tmp2w tmp2ww | wc:"
+ :commandoutput: ruby world1.rb -t 1 -r < tmp2ww | ruby acstail.rb > tmp3www
  :commandoutput: diff tmp2w tmp2ww | wc
- :commandoutput: echo "diff tmp2ws tmp2s | wc:"
- :commandoutput: diff tmp2ws tmp2s | wc
- :commandoutput: echo "diff tmp3w tmp3ww | wc:"
+ :commandoutput: diff tmp2s tmp2ws | wc
  :commandoutput: diff tmp3w tmp3ww | wc
- :commandoutput: echo "diff tmp3w tmp3www | wc:"
  :commandoutput: diff tmp3w tmp3www | wc
- :commandoutput: echo "diff tmp2ss tmp2s | wc:"
+
+== Using Snapshots Instead
+
+*Alice*: Wonderful.  That gives you confidence!  We really seem to have
+things under control now.  But wouldn't it be nice to check that there
+are still differences when you do _not_ use a full dump at
+intermediate times, but use snapshots instead?
+
+*Bob*: Sure.  Easy to add.  And since we now expect differences, let me
+do a phase space distance measurement at the end as well.  Here you are:
+
+ :commandoutput: ruby world1.rb -t 1 < tmp0 | ruby acstail.rb > tmp1s
+ :commandoutput: ruby world1.rb -t 1 < tmp1s | ruby acstail.rb > tmp2ss
  :commandoutput: diff tmp2ss tmp2s | wc
- :commandoutput: echo "cat tmp2s | wc:"
  :commandoutput: cat tmp2s | wc
  :commandoutput: cat tmp2ss tmp2s | ruby newacsdiff.rb
+
+*Alice*: As we expected, many lines are different, as you can see from
+the wordcount +wc+ after the +diff+, which is comparable in size to the file
+itself.  And in phase space there is a definite distance between the two
+types of runs as well.
