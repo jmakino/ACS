@@ -93,6 +93,7 @@ class Nbody
     k = second_guess_for_k(cube_root_of_k)
     setup_helper(k)
     smoothing_length
+    make_index
   end
 
   def setup_helper(k)
@@ -345,7 +346,6 @@ class Nbody
   end
 
   def phi(r)                          # smoothed with K_0 Dehnen kernel
-    make_index             # this is necessary before anything else can be done
     k = next_outer_shell_index(r)
     if k == 0
       kepler_part = 0 
@@ -361,7 +361,7 @@ class Nbody
   end
 
 ##-----------------------------------------------------------------------------
-## these methods computer the distribution function:
+## these methods compute the distribution function:
 ##-----------------------------------------------------------------------------
 
   def setup_f_of_e_helpers(zeta)
@@ -467,6 +467,100 @@ class Nbody
     energy_kernel(x) / eps
   end
 
+  def f_of_E(energy)
+    return 0 if energy < phi(0) or energy >= 0
+    n_of_E(energy) / omega(energy)
+  end
+
+  def omega(energy)
+    if energy < phi(0)
+      STDERR.print "error: omega(energy): energy = ", energy, " < phi(0) = "
+      STDERR.print phi(0), "\n"
+      exit
+    end
+    if energy > 0
+      STDERR.print "error: omega(energy): energy = ", energy, " > 0\n"
+      exit
+    end
+    r_max = r_phi(energy)
+    trapeziumrule(energy, 1.0/(1+r_max), 1, 100)  # for 100 points
+  end
+
+  PRECISION = 1e-6
+
+  def integrand(parameter, s)
+    x = 2*(parameter - phi(1.0/s-1))
+    if x < 0
+      if x > -PRECISION
+        return 0                           # small round-off tolerated
+      else
+        STDERR.print "error: integrand: cannot take sqrt(", x, ")\n"
+        exit
+      end
+    end
+    sqrt(x) * (1.0-s)**2/s**4
+  end
+
+# simple integral evaluator for:
+#
+#           x_max
+#          --
+#         /
+#        |
+#        |  f( parameter, x) dx
+#       / 
+#     --
+#     x_min
+#
+# for now, it uses the function "integrand()" above; we should make this
+# more general soon.
+
+  def trapeziumrule(parameter, x_min, x_max, n)
+    delta_x = (x_max - x_min).to_f/n
+    sum = 0.5*( integrand(parameter, x_min) + integrand(parameter, x_max) )
+    for i in 1..n-1
+      sum += integrand(parameter, x_min + i * delta_x)
+    end
+    sum * delta_x
+  end
+
+  def r_phi(energy)
+    if energy < phi(0)
+      STDERR.print "error: r_phi(energy): energy = ", energy, " < phi(0) = "
+      STDERR.print phi(0), "\n"
+      exit
+    end
+    if energy > 0
+      STDERR.print "error: r_phi(energy): energy = ", energy, " > 0\n"
+      exit
+    end
+    if energy < phi(1)
+      r_min = 0
+      r_max = 1
+      while r_max - r_min > PRECISION
+        r_mid = (r_min + r_max)/2.0
+        if energy < phi(r_mid)
+          r_max = r_mid
+        else
+          r_min = r_mid
+        end
+      end
+      return r_mid
+    else
+      rinv_min = 0
+      rinv_max = 1
+      while rinv_max - rinv_min > PRECISION
+        rinv_mid = (rinv_min + rinv_max)/2.0
+        if energy < phi(1.0/rinv_mid)
+          rinv_min = rinv_mid
+        else
+          rinv_max = rinv_mid
+        end
+      end
+    end
+    return 1.0/rinv_mid
+  end
+
 ##-----------------------------------------------------------------------------
 ## remaining methods: 
 ##-----------------------------------------------------------------------------
@@ -533,3 +627,6 @@ end
 
 print "r_c = ", nb.r_c, "\n"
 print "n_c = ", nb.n_c, "\n"
+
+print "f_of_E(-1) = ", nb.f_of_E(-1), "\n"
+print "f_of_E(-0.5) = ", nb.f_of_E(-1), "\n"
