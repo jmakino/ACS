@@ -45,6 +45,6 @@ class Float
   def to_s(name = nil, precision = 16, indentation = 0)
     s = " " * indentation
     s += name + " = " if name
-    s += sprintf(" %#{precision+8}.#{precision}e", self.to_f)
+    s += sprintf(" %#{precision+8}.#{precision}e", self)
   end
 end
