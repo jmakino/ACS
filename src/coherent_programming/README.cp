@@ -22,16 +22,12 @@ The changes we made are
   since rdoc does not recognize ":xxxx:" if "xxxx" includes white spaces.
 
 * One can do inline image by saying 'link: filename' (no space allowed
-  between link: and filename). Note that the
-  link is relative to the place the index.html file is put, which is
-  normally the "doc" directory under the directory rdoc source files
-  live. In other words, you need to add additional "../" to any file
-  name... Hmm, a bit inconvenient?  Anyway, here is a sample inline
+  between link: and filename). Here is a sample inline
   image: 
 
-  link:../sample.gif
+  link:sample.gif
 
-  This is made with "link: ../sample.gif" but without space after link:
+  This is made with "link: sample.gif" but without space after link:
 
 * added a pair of directives, ":segment start:" and ":segment end:".
   texts between  ":segment start: segment_name" and corresponding
@@ -54,10 +50,6 @@ Here is an example of ":output:" with "echo foo" as arguments
 
  :output: echo foo
 
-I changed the prompt to "yebisu>" using ":prompt:" directive here.
-
-:prompt: yebisu>
- 
 
 Here is an example of ":commandoutput:" with "setenv LANG C ; date"
 as arguments
@@ -85,7 +77,12 @@ END
 
   :commandoutput: cat aho
   :command: rm aho
-  
+
+I changed the prompt to "yebisu>" using ":prompt:" directive here.
+
+:prompt: yebisu>
+ 
+    
 
 * In  .cp files, lines start with "#" (only at the begining of the
   line. No white space or whatever before "#" would suppress this

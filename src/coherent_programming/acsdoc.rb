@@ -241,8 +241,8 @@ END
 	imgdir =  imgbase
 	epsfilename = @@imglinkcount.to_s+".eps"
 	Dir.mkdir(imgdir) unless File.exist?(imgdir)
-	print "cd #{imgdir}; convert  #{imglinkfile} #{epsfilename}\n"
-	system "cd #{imgdir}; convert  #{imglinkfile} #{epsfilename}"
+	print "convert  #{imglinkfile} #{imgdir}#{epsfilename}\n"
+	system "convert  #{imglinkfile} #{imgdir}#{epsfilename}"
 	s.sub!(/(^|\s)link\:(\S+)/,
 	       "\n\\scalebox{#{@@latexscalingforimage}}{\\includegraphics{#{imgbase+epsfilename}}}\n")
 	@@imglinkcount+=1
@@ -362,6 +362,20 @@ END
     end	
     ostr
   end
+
+  def post_process_verbatim(instring)
+    ostr=[]
+    while s=instring.shift
+      if s =~ /\\end\{verbatim}/
+	unless (last = ostr.pop) =~ /^\s*$/
+	  ostr.push last
+	end
+      end
+      ostr.push s
+    end
+    ostr
+  end
+
   
   
   def convert_to_latex(instring,dirname)
@@ -745,7 +759,11 @@ module Acsdoc
       instring.push(s)
     end
     ifile.close
-    s = convert_link_to_rdoc_style(instring,dirname)
+    unless tolatex_flag
+      s = convert_link_to_rdoc_style(instring,dirname)
+    else
+      s = instring
+    end
     tmpstring=prep_cp_string(s,dirname).split("\n");
     if tolatex_flag
       tmp2= Rdoctotex::convert_to_latex(tmpstring,dirname);
