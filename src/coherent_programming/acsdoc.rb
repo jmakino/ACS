@@ -443,6 +443,24 @@ module Acsdoc
     ostring
   end
 
+
+  def convert_link_to_rdoc_style(instring,dirname)
+    ostring=[] 
+    while s=instring.shift
+      if /(^|\s)link\:(\S+)/  =~ s
+	print "rdoc style line #{s}\n"
+	preceedingspaces = $1
+	imglinkfile = $2
+	s.sub!(/(^|\s)link\:(\S+)/,
+	       "#{preceedingspaces}link:../#{dirname}/#{imglinkfile}")
+	print "converted to: #{s}\n"
+      end
+      ostring.push(s)
+    end
+    ostring
+  end
+
+
   def process_texcode(texcode,dirname)
     imgbase =".imgs/"
     imgdir =  imgbase 
@@ -528,7 +546,8 @@ module Acsdoc
       instring.push(s)
     end
     ifile.close
-    tmpstring=prep_cp_string(instring,dirname).split("\n");
+    s = convert_link_to_rdoc_style(instring,dirname)
+    tmpstring=prep_cp_string(s,dirname).split("\n");
     if tolatex_flag
       tmp2= Rdoctotex::convert_to_latex(tmpstring,dirname);
     else
