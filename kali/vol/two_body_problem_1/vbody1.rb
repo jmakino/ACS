@@ -1,4 +1,4 @@
-require "vector.rb"
+require "vector3.rb"
 
 class Body
 

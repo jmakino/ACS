@@ -56,7 +56,7 @@ amount of people?  But still, I sure would like to have my vector addition.
 you need to do is to introduce a new class, let us call it +Vector+,
 and implement it as an array for which the addition operator <tt>+</tt>
 does what you want it to do.  Let's try it right away.  I will put the 
-definition of the +Vector+ class in the file <tt>vector.rb</tt>
+definition of the +Vector+ class in the file <tt>vector1.rb</tt>:
 
  :inccode: vector1.rb
 
@@ -99,12 +99,12 @@ a mistake.  Very clever!
 == Debugging
 
 *Alice*: Before further analyzing what it all means, what you have put
-in the +Vector+ class definition in <tt>vector.rb</tt>,
+in the +Vector+ class definition in <tt>vector1.rb</tt>,
 let us first see whether it works.
 
 *Bob*: Here we are:
 
-    |gravity> irb --prompt short_prompt -r vector.rb
+    |gravity> irb --prompt short_prompt -r vector1.rb
     001:0> a = Vector[1, 2, 3]
     [1, 2, 3]
     002:0> b = Vector[0.1, 0.01, 0.001]
@@ -151,14 +151,15 @@ complaining that a +Vector+ cannot be converted to an +Integer+?
 
 If my theory is right, I should be able to resolve it by giving two
 different names to the product, +iproduct+ for inner product, and
-+sproduct+ for scalar product.  Let me try that:
++sproduct+ for scalar product.  Let me try that, and name the file
+<tt>vector2.rb</tt>:
 
  :inccode: vector2.rb
 
 We have seen that addition and scalar multiplication all went fine.
 Let me see whether we can get the inner product to work now.
 
-    |gravity> irb --prompt short_prompt -r vector.rb
+    |gravity> irb --prompt short_prompt -r vector2.rb
     001:0> a = Vector[1, 2, 3]
     [1, 2, 3]
     002:0> b = Vector[0.1, 0.01, 0.001]
@@ -191,7 +192,7 @@ about the way they worked!
 
 *Bob*: Oh, well, it's only six lines typing.  Here you are:
 
-    |gravity> irb --prompt short_prompt -r vector.rb
+    |gravity> irb --prompt short_prompt -r vector2.rb
     001:0> a = Vector[1, 2, 3]
     [1, 2, 3]
     002:0> b = Vector[0.1, 0.01, 0.001]
@@ -225,7 +226,7 @@ I just said that.  All bets are off now, for me.  I will multiply those
 last two vector values.  I won't go home before I've traced this bug,
 somehow.  This is perplexing.  Okay:
 
-    |gravity> irb --prompt short_prompt -r vector.rb
+    |gravity> irb --prompt short_prompt -r vector2.rb
     001:0> a = Vector[0.2, 0.02, 0.002]
     [0.2, 0.02, 0.002]
     002:0> b = Vector[0.1, 0.01, 0.001]
@@ -243,7 +244,7 @@ we have to do is to find out why.  Just to put it back to back, let me
 repeat all six commands again, and print out the values of +a+ and +b+
 before taking their inner product:
 
-    |gravity> irb --prompt short_prompt -r vector.rb
+    |gravity> irb --prompt short_prompt -r vector2.rb
     001:0> a = Vector[1, 2, 3]
     [1, 2, 3]
     002:0> b = Vector[0.1, 0.01, 0.001]
@@ -290,7 +291,7 @@ addition, rather than the <tt>+=</tt> combination.
 *Bob*: Good, more divide and conquer strategy!  Let's see what
 sort of surprise we'll run into next.
 
-    |gravity> irb --prompt short_prompt -r vector.rb
+    |gravity> irb --prompt short_prompt -r vector2.rb
     001:0> a = Vector.new
     []
     002:0> a = [1, 2, 3]
@@ -332,7 +333,7 @@ they are, with the <tt>class</tt> method we have seen before.
 
 *Bob*: That's not a bad idea.  Actually a great idea.  Let's try it.
 
-    |gravity> irb --prompt short_prompt -r vector.rb
+    |gravity> irb --prompt short_prompt -r vector2.rb
     001:0> a = Vector.new
     []
     002:0> a.class
@@ -386,7 +387,7 @@ value, confusing us no end.  It all makes sense now . . . .
 
 *Bob*: I know, I know.  But no I can _prove_ to you that we have traced
 the bug.  We can easily repair our +Vector+ class.  So let's go back
-into the file <tt>vector.rb</tt>.  Ahh, no, it is even easier!
+into the file <tt>vector2.rb</tt>.  Ahh, no, it is even easier!
 
 *Alice*: What is?
 
@@ -437,7 +438,8 @@ an array.
 
 So the remedy is really simple.  We just have to return vectors
 instead of arrays.  And we can do that by declaring both +sum+ and
-+product+ to be vectors from the start.  That is all!  Here it is:
++product+ to be vectors from the start.  That is all!  Here it is,
+in file <tt>vector3.rb</tt>:
 
  :inccode: vector3.rb
 
@@ -448,7 +450,7 @@ as before?
 
 *Bob*: My pleasure!  And a pleasure it will be.  Here you go:
 
-    |gravity> irb --prompt short_prompt -r vector.rb
+    |gravity> irb --prompt short_prompt -r vector3.rb
     001:0> a = Vector[1, 2, 3]
     [1, 2, 3]
     002:0> b = Vector[0.1, 0.01, 0.001]
