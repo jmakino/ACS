@@ -291,29 +291,31 @@ a class constant, with the +Body+ class:
 
  :inccode: .body.rb-simple-IO
 
+Here is a test file <tt>test.rb</tt>:
+
  :inccode: .body-simple-io-demo.rb-demo
 
 *A*: Let's see.  To run this, we now have to put in the values by hand:
 
-    |gravity> ruby body-simple-io-demo
-    3
-    0.1 0.2 0.3
-    4 5 6
-     3.000000000000000e+00
-     1.000000000000000e-01  2.000000000000000e-01  3.000000000000000e-01
-     4.000000000000000e+00  5.000000000000000e+00  6.000000000000000e+00
-    |gravity> 
+ :command: cp -f body-simple-io-demo.rb test.rb
+ :commandinputoutput: ruby test.rb END
+3
+0.1 0.2 0.3
+4 5 6
+END  
+ :command: rm -f test.rb
 
 *B*: Now let's chain the commands, by invoking it twice, piping the
 values from the output of the first invocation to the input for the
 second one.
 
-    |gravity> ruby body-simple-io-demo | ruby body-simple-io-demo
-    3 0.1 0.2 0.3 4 5 6
-     3.000000000000000e+00 \
-     1.000000000000000e-01  2.000000000000000e-01  3.000000000000000e-01 \
-     4.000000000000000e+00  5.000000000000000e+00  6.000000000000000e+00
-    |gravity> 
+ :command: cp -f body-simple-io-demo.rb test.rb
+ :commandinputoutput: ruby test.rb | ruby test.rb END
+3
+0.1 0.2 0.3
+4 5 6
+END
+ :command: rm -f test.rb
 
 *B*: Congratulations!  This is what a mathematician would call a fixed point,
 if we would view the operation <tt>ruby body05.rb</tt> as a mapping.

@@ -50,7 +50,7 @@ module Acsdoc
     a = s.chomp.split
     endtag = a.pop
     indata=""
-    until (line= ifile.gets.chomp) == endtag
+    until (line= ifile.gets.chomp) =~ /#{endtag}/
       p indata
       print "\n"
       p line
