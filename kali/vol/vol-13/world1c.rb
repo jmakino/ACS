@@ -56,7 +56,7 @@ class Worldpoint < Body
     @crackle = @pos*0
     @pop = @pos*0
   end
-
+
   def forward_init(acc, timescale, dt_param, dt_max)
     @acc = acc
     dt = timescale * dt_param
@@ -91,7 +91,7 @@ class Worldpoint < Body
     @snap = snap
     @crackle = crackle
   end    
-
+
   def forward_correct(old_point, acc, timescale, dt_param, dt_max)
     @acc = acc
     dt = timescale * dt_param
@@ -130,7 +130,7 @@ class Worldpoint < Body
     admin(old_point.time)
     self
   end
-
+
   def ms4_correct(wa, acc, timescale, dt_param, dt_max)
     d = [[acc]]
     t = [@time]
@@ -180,7 +180,7 @@ class Worldpoint < Body
   def interpolate(other, t, method)
     eval("#{method}_interpolate(other, t)")
   end
-
+
   def forward_extrapolate(t)
     if t > @next_time
       raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
@@ -236,7 +236,7 @@ class Worldpoint < Body
     wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2
     wp
   end
-
+
   def ms4_full_extrapolate(t)
     if t > @next_time
       raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
@@ -290,7 +290,7 @@ class Worldpoint < Body
     wp.vel = @vel + @acc*dt
     wp
   end
-
+
   def leapfrog_interpolate(other, t)
     wp = Worldpoint.new
     wp.minstep = @minstep
@@ -402,7 +402,7 @@ class Binary < Worldpoint
 #STDERR.print "most_recent_return_time:  time = #{time} ; phase = #{phase} ; p = #{p} ; time - phase*p = #{time - phase*p}\n"
     time - phase*p
   end
-
+
   def dissolve
     b1 = Body.new
     b2 = Body.new
@@ -478,7 +478,7 @@ class Worldline
     wp.leapfrog_init(acc, timescale, @dt_param, dt_max)
     true
   end
-
+
   def hermite_startup_done?(era, dt_max)
     wp = @worldpoint[0]
     acc, jerk = era.acc_and_jerk(self, wp)
@@ -533,7 +533,7 @@ class Worldline
     new_point.hermite_correct(@worldpoint.last, acc, jerk,
                               timescale, @dt_param, dt_max)
   end
-
+
   def take_ms4_step(era, dt_max)
     new_point = ms4_predict
     acc = era.acc(self, new_point)
@@ -588,7 +588,7 @@ class Worldline
       end
     end
   end
-
+
   def next_worldpoint_after(time)
     @worldpoint.each do |wp|
       if wp.time > time
@@ -640,7 +640,7 @@ class Worldline
       end
     end
   end
-
+
   def next_worldline(time)
     valid_interpolation?(time)
     i = @worldpoint.size
@@ -728,7 +728,7 @@ class Worldera
     end
     wl
   end
-
+
   def shortest_interpolated_worldline
     t = VERY_LARGE_NUMBER
     wl = nil
@@ -774,7 +774,7 @@ Safety_hysteris_factor = 1.5
   def take_snapshot(time)
     take_snapshot_except(nil, time)
   end
-
+
   def take_full_snapshot(time)       # WRONG ! ! ! should be synchronized !!!!!
 # hack to get binary stuff to work, for now
 # the problem arises when a binary shows its members in the middle of an
@@ -812,7 +812,7 @@ return nil unless okay_flag
     end
     ws
   end
-
+
   def show_binary(w, dt_max)
     wp = w.worldpoint.last
     t = wp.most_recent_return_time(wp.time)
@@ -853,7 +853,7 @@ STDERR.printf("%d -> %d particles\n", @worldline.size, @worldline.size + 1)
       merge_worldlines(pair[0], pair[1], dt_max)
     end  
   end
-
+
   def merge_worldlines(w1, w2, dt_max)
     if w1.worldpoint.last.class == Binary or w2.worldpoint.last.class == Binary
       return   # no hierarchical merging yet
@@ -967,7 +967,7 @@ class World
     @t_dia += c.dt_dia
     @t_end += c.dt_end
   end
-
+
   def init_output(c)
     @era.write_diagnostics(@time, @nsteps, @initial_energy, true)
     if c.init_out
@@ -1050,7 +1050,7 @@ class Worldsnapshot < Nbody
     end
     [snap, crackle]
   end    
-
+
   def collision_time_scale(mass, pos, vel)
     time_scale_sq = VERY_LARGE_NUMBER              # square of time scale value
     @body.each do |b|
@@ -1102,7 +1102,7 @@ class Worldsnapshot < Nbody
       end
     end
   end
-
+
   def nearest_neighbor_distance(wp)
     dsq = VERY_LARGE_NUMBER
     @body.each do |b|
@@ -1148,7 +1148,7 @@ class Worldsnapshot < Nbody
     end
     list
   end
-
+
   def kinetic_energy
     e = 0
     @body.each{|b| e += b.kinetic_energy}
@@ -1250,6 +1250,7 @@ options_text= <<-END
     world line has an earliest world point before the beginning of the era,
     and a latest world point past the end of the era.  This guarantees
     accurate interpolation at each time within an era.
+
 
 
   Short name: 		-m
@@ -1287,6 +1288,7 @@ options_text= <<-END
   Long description:
     This option sets the time interval between diagnostics output,
     which will appear on the standard error channel.
+
 
 
   Short name: 		-o
@@ -1342,6 +1344,7 @@ options_text= <<-END
   Long description:
     If this flag is set to true, the initial snapshot will be output
     on the standard output channel, before integration is started.
+
 
 
   Short name:		-r

@@ -48,7 +48,7 @@ class Vector < Array
     end
   end
 end
-
+
 class Array
   def to_v
     Vector[*self]

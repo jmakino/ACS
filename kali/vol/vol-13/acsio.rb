@@ -33,7 +33,7 @@ class Vector
     s.split.map{|x| x.to_f}.to_v
   end
 end
-
+
 class String
   def to_acs_special_s(indent, add_indent)
     s = " " + add_indent.to_s + "\n"
@@ -81,7 +81,7 @@ class Array
     end
   end
 end
-
+
 module ACS_IO
 
   ACS_HEADER = "ACS\n"
@@ -125,7 +125,7 @@ module ACS_IO
                   add_indent) +
                ACS_FOOTER
   end
-
+
   def ACS_IO.read_acs_string(file = $stdin)
     s = file.gets
     while s =~ /^\s*$/
@@ -180,7 +180,7 @@ module ACS_IO
     separator = ", "
     raise "#{class_name} not in [#{class_request.join(separator).to_s}]"
   end
-
+
   def ACS_IO.define_new_class(name)
     eval("class #{name} \nend", TOPLEVEL_BINDING)
   end   
@@ -234,7 +234,7 @@ module ACS_IO
       return x.acs_parse(a, indent)
     end
   end
-
+
   def ACS_IO.next_line?(a, base_indent)
     first_line = a.shift
     return nil unless first_line

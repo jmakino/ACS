@@ -30,7 +30,7 @@ class Nbody
   end
 
 end
-
+
 options_text= <<-END
 
   Description: Find and report gravitationally bound pairs of stars

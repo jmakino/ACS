@@ -36,7 +36,7 @@ class Body
   end
 
 end
-
+
 class Nbody
 
   def ekin                        # kinetic energy
@@ -90,7 +90,7 @@ class Nbody
     end
       @cod
   end
-
+
   def recenter(new_pos, new_vel)
     @body.each do |b|
       b.pos -= new_pos
@@ -141,7 +141,7 @@ class Nbody
       change = find_new_escapers?
     end
   end
-
+
   def report_escapers(clop)
     find_escapers(clop.n_neighbor)
     STDERR.printf("  time = %8.3f :    ", @time) if @time   # to be improved <==
@@ -159,7 +159,7 @@ class Nbody
   end
 
 end
-
+
 options_text= <<-END
 
   Description: Find and report escaping stars
