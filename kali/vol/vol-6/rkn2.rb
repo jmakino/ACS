@@ -14,7 +14,7 @@ options_definition_string = <<-END
   Long name:		--integration_method
   Value type:		string
   Default value:	rk4
-  Global variable:	method
+  Variable name:	method
   Print name:		                    # blank: suppresses glob. var. name
   Description:		Integration method
   Long description:
@@ -30,7 +30,7 @@ options_definition_string = <<-END
   Long name:		--step_size
   Value type:		float
   Default value:	0.001
-  Global variable:	dt
+  Variable name:	dt
   Description:		Integration time step
   Long description:
     In this code, the integration time step is held constant,
@@ -41,7 +41,7 @@ options_definition_string = <<-END
   Long name:		--diagnostics_interval
   Value type:		float
   Default value:	1
-  Global variable:	dt_dia
+  Variable name:	dt_dia
   Description:		Diagnostics output interval
   Long description:
     The time interval between successive diagnostics output.
@@ -56,7 +56,7 @@ options_definition_string = <<-END
   Long name:		--output_interval
   Value type:		float
   Default value:	1
-  Global variable:	dt_out
+  Variable name:	dt_out
   Description:		Snapshot output interval
   Long description:
     The time interval between output of a complete snapshot
@@ -90,7 +90,7 @@ options_definition_string = <<-END
   Long name:		--total_duration
   Value type:		float
   Default value:	10
-  Global variable:	dt_end
+  Variable name:	dt_end
   Description:		Duration of the integration
   Long description:
     This option allows specification of the time interval, after which
@@ -101,7 +101,7 @@ options_definition_string = <<-END
   Long name:		--softening_length
   Value type:		float
   Default value: 	0
-  Global variable: 	eps
+  Variable name: 	eps
   Description:		Softening length
   Long description:
     This option sets the softening length used to calculate the force
@@ -112,7 +112,7 @@ options_definition_string = <<-END
   Short name:		-i
   Long name:  		--initial_output
   Value type:  		bool
-  Global variable:	init_out
+  Variable name:	init_out
   Description:		Extra diagnostics
   Long description:
     The following extra diagnostics will be printed:
@@ -124,7 +124,7 @@ options_definition_string = <<-END
   Short name:		-x
   Long name:  		--extra_diagnostics
   Value type:  		bool
-  Global variable:	x_flag
+  Variable name:	x_flag
   Description:		Extra diagnostics
   Long description:
     The following extra diagnostics will be printed:

@@ -189,7 +189,7 @@ options_text= <<-END
   Long name:            --n_particles
   Value type:           int
   Default value:        1
-  Global variable:      n_particles
+  Variable name:      n_particles
   Print name:           N
   Description:          Number of particles
   Long description:
@@ -211,7 +211,7 @@ options_text= <<-END
   Long name:		--output_file_name
   Value type:		string
   Default value:	                # nothing, leading to output on $stdout
-  Global variable:	output_file_name
+  Variable name:	output_file_name
   Print name:	 	                       # no name, hence name suppressed
   Description:		Name of the output file
   Long description:
@@ -225,7 +225,7 @@ options_text= <<-END
   Value type:           int
   Default value:        16
   Description:          floating point precision
-  Global variable:      precision
+  Variable name:      precision
   Long description:
     The precision with which floating point numbers are printed in the output.
     The default precision is comparable to double precision accuracy.
@@ -236,7 +236,7 @@ options_text= <<-END
   Value type:           int
   Default value:        2
   Description:          incremental indentation
-  Global variable:      add_indent
+  Variable name:      add_indent
   Long description:
     This option allows the user to set the incremental indentation, i.e.
     the number of white spaces added in front of the output of data, for
@@ -253,7 +253,7 @@ options_text= <<-END
   Default value:        0
   Description:          pseudorandom number seed given
   Print name:           
-  Global variable:      seed
+  Variable name:      seed
   Long description:
     Seed for the pseudorandom number generator.  If a seed is given with
     value zero, a preudorandom number is chosen as the value of the seed.
@@ -276,6 +276,6 @@ options_text= <<-END
 
   END
 
-  parse_command_line(options_text)
+  parse_command_line(options_text, true)
 
 mkplummer($n_particles, $seed, $output_file_name, $precision, $add_indent)

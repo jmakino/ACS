@@ -98,7 +98,7 @@ options_text= <<-END
   Long name:            --n_particles
   Value type:           int
   Default value:        1
-  Global variable:      n_particles
+  Variable name:      n_particles
   Print name:           N
   Description:          Number of particles
   Long description:
@@ -120,7 +120,7 @@ options_text= <<-END
   Default value:        0
   Description:          pseudorandom number seed given
   Print name:           
-  Global variable:      seed
+  Variable name:      seed
   Long description:
     Seed for the pseudorandom number generator.  If a seed is given with
     value zero, a preudorandom number is chosen as the value of the seed.
@@ -143,6 +143,6 @@ options_text= <<-END
 
   END
 
-parse_command_line(options_text)
+parse_command_line(options_text, true)
 
 mkplummer($n_particles, $seed)

@@ -3,7 +3,7 @@ require "vector.rb"
 
 class Clop_Option
 
-  attr_reader :shortname, :longname, :type, :globalname,
+  attr_reader :shortname, :longname, :type, :variablename,
               :description, :longdescription, :printname, :defaultvalue
   attr_accessor :valuestring
 
@@ -38,8 +38,8 @@ class Clop_Option
       when /Default\s+(V|v)alue/
         @defaultvalue = content.sub(/^\s+/,"").sub(/\s*(#.*|$)/,"")
         @valuestring = @defaultvalue
-      when /Global\s+(V|v)ariable/
-        @globalname = content.split[0]
+      when /Variable\s+(N|n)ame/
+        @variablename = content.split[0]
       when /Print\s+(N|n)ame/
         @printname = content.sub(/^\s+/,"").sub(/\s*(#.*|$)/,"")
       when /Description/
@@ -91,7 +91,7 @@ class Clop_Option
       if @printname
         s += @printname
       else
-        s += @globalname
+        s += @variablename
       end
       s += " = " unless @printname == ""
       s += "\n  " if @type =~ /^float\s*vector$/
@@ -151,7 +151,7 @@ class Clop
   end
 
   def print_values
-    for i in 1...@options.size - 1 do    # exclude header & help (first & last)
+    for i in 1...@options.size - 2   # exclude header & help (first & last two)
       STDERR.print @options[i].to_s
     end
   end
@@ -188,21 +188,21 @@ class Clop
   end
 
 #  def initialize_variables(magic)                     # for connoisseurs . . .
-#    @options.each{|x| eval("#{magic}#{x.globalname}=x.eval_value") if
-#                                                                x.globalname}
+#    @options.each{|x| eval("#{magic}#{x.variablename}=x.eval_value") if
+#                                                               x.variablename}
 #  end
 
   def initialize_option_variables
-    @options.each{|x| eval("@#{x.globalname} = x.eval_value") if x.globalname}
+    @options.each{|x| eval("@#{x.variablename}=x.eval_value") if x.variablename}
   end    
 
   def initialize_global_variables
-    @options.each{|x| eval("$#{x.globalname} = x.eval_value") if x.globalname}
+    @options.each{|x| eval("$#{x.variablename}=x.eval_value") if x.variablename}
   end    
 
   def mk_reader
     s = "class Clop \n attr_reader"
-    @options.each{|x| s += " :#{x.globalname}," if x.globalname}
+    @options.each{|x| s += " :#{x.variablename}," if x.variablename}
     s.chop!
     s + "\n end"
   end
@@ -253,10 +253,10 @@ class Clop
 
   def help_string(option, long_flag)
     s = ""
-    if option.type or option.shortname == "-h"
+    if option.type or option.longname =~ /-+-help/
       s += option_name_string(option)
     end
-    if option.type or option.shortname == "-h" or not long_flag
+    if option.type or option.longname =~ /-+-help/ or not long_flag
       s += "#{option.description}"
       s += default_value_string(option)
       s += "\n"
@@ -315,6 +315,15 @@ class Clop
     typing "some_command -h -x"
 
 
+  Long name:		---help
+  Description:		Program description (the header part of --help)
+  Long description:
+    This option prints only the header part of what would be printed with
+    the option --help, without printing all the information about specific
+    option.  In other words, it provides only the general information about
+    the program itself.
+
+
   END
 
 end
@@ -345,7 +354,7 @@ if __FILE__ == $0
   Long name:		--softening_length
   Value type:		float              # double/real/...
   Default value: 	0.0
-  Global variable: 	eps                # any comment allowed here
+  Variable name: 	eps                # any comment allowed here
   Description:		Softening length   # and here too
   Long description:                        # and even here
     This option sets the softening length used to calculate the force
@@ -357,7 +366,7 @@ if __FILE__ == $0
   Long name:		--end_time
   Value type:		float
   Default value:	10
-  Global variable:	t_end
+  Variable name:	t_end
   Print name:		t
   Description:		Time to stop integration
   Long description:
@@ -368,7 +377,7 @@ if __FILE__ == $0
   Long name:		--number_of_particles
   Value type:		int
   Default value:	none
-  Global variable:	n_particles
+  Variable name:	n_particles
   Print name:		N
   Description:		Number of particles
   Long description:
@@ -378,7 +387,7 @@ if __FILE__ == $0
   Short name:		-x
   Long name:  		--extra_diagnostics
   Value type:  		bool
-  Global variable:	xdiag
+  Variable name:	xdiag
   Description:		Extra diagnostics
   Long description:
     The following extra diagnostics will be printed:
@@ -391,7 +400,7 @@ if __FILE__ == $0
   Long name:		--shift_velocity
   Value type:		float vector          # numbers in between [ ] brackets
   Default value:	[3, 4, 5]
-  Global variable:	vcom
+  Variable name:	vcom
   Description:		Shifts center of mass velocity
   Long description:
     The center of mass of the N-body system will be shifted by this amount.
@@ -405,7 +414,7 @@ if __FILE__ == $0
   Long name:		--output_file_name
   Value type:		string
   Default value:	none
-  Global variable:	output_file_name
+  Variable name:	output_file_name
   Print name:	 	                      # no name, hence name suppressed
   Description:		Name of the outputfile
   Long description:
@@ -417,7 +426,7 @@ if __FILE__ == $0
   Long name:		--star_type             # no short option given here
   Value type:		string
   Default value:	star: MS                # parser cuts only at first ":"
-  Global variable:	star_type
+  Variable name:	star_type
   Description:		Star type
   Long description:
     This options allows you to specify that a particle is a star, of a
@@ -433,7 +442,8 @@ if __FILE__ == $0
   END
 
   clop = parse_command_line(options_definition_string, false)
-  print "clop.rb: testing automatic generation of attribute readers:\n"
+
+  print "\nclop.rb: testing automatic generation of attribute readers:\n"
   print "  clop.t_end = ", clop.t_end, "\n"
   
 end

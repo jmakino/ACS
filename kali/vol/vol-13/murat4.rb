@@ -294,7 +294,7 @@ options_text= <<-END
   Long name:		--step_size_control
   Value type:		float
   Default value:	0.01
-  Global variable:	dt_param
+  Variable name:	dt_param
   Description:		Parameter to determine time step size
   Long description:
     This option sets the step size control parameter dt_param << 1.  Before
@@ -308,7 +308,7 @@ options_text= <<-END
   Long name:		--diagnostics_interval
   Value type:		float
   Default value:	1
-  Global variable:	dt_dia
+  Variable name:	dt_dia
   Description:		Interval between diagnostics output
   Long description:
     This option sets the time interval between diagnostics output,
@@ -319,7 +319,7 @@ options_text= <<-END
   Long name:		--output_interval
   Value type:		float
   Default value:	1
-  Global variable:	dt_out
+  Variable name:	dt_out
   Description:		Time interval between snapshot output
   Long description:
     This option sets the time interval between output of a snapshot
@@ -350,7 +350,7 @@ options_text= <<-END
   Long name:		--duration
   Value type:		float
   Default value:	10
-  Global variable:	dt_end
+  Variable name:	dt_end
   Print name:		t
   Description:		Duration of the integration
   Long description:
@@ -363,7 +363,7 @@ options_text= <<-END
   Short name:		-i
   Long name:  		--init_out
   Value type:  		bool
-  Global variable:	init_out
+  Variable name:	init_out
   Description:		Output the initial snapshot
   Long description:
     If this flag is set to true, the initial snapshot will be output
@@ -373,7 +373,7 @@ options_text= <<-END
   Short name:		-x
   Long name:  		--extra_diagnostics
   Value type:  		bool
-  Global variable:	x_flag
+  Variable name:	x_flag
   Description:		Extra diagnostics
   Long description:
     If this flag is set to true, the following extra diagnostics
