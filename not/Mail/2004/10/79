@@ -1,0 +1,172 @@
+Date: Sun Oct 03 00:10:10 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Hi Jun and Murat:
+
+I'm still amazed at how beautiful our new world1.rb code is!!
+
+I went through it, and cleaned things up here and there.  Many
+of the changes are just cosmetic, as you will see when you do an
+svn update.  The more interesting changes are:
+
+1)
+I applied the DRY principle and made the startup function much
+shorter:
+
+  def startup(dt_param)
+    @era.worldline.each do |wl|
+      wl.worldpoint[0].propagate(@era, wl, dt_param, true)
+    end
+    ss = @era.take_snapshot(nil, @era.start_time)
+    ss.ekin + ss.epot
+  end
+
+while propagate got one more (default) argument, and one more line:
+
+  def propagate(era, wl, dt_param, init_flag = false)
+    ss = era.take_snapshot(wl, @next_time)
+    wp = ss.body.shift
+    wp = self if init_flag
+    wp.acc, wp.jerk = wp.get_acc_and_jerk(ss)
+    wp.correct(self)
+    wp.next_time = wp.time + wp.collision_time_scale(ss) * dt_param
+    wp
+  end
+
+Note that wp.correct(self) does the "correct" thing for wp = self ;>).
+
+2)
+The name "oldest_time" was *very* confusing when I reread the code.
+I changed "shortest_worldline" to "shortest_extrapolated_worldline",
+and instead of "oldest_time" I wrote "shortest_interpolated_worldline".
+Now it is much more clear from the name what they do, and they are used
+in evolve as follows:
+
+  def evolve(dt_era, dt_param)
+    nsteps = 0
+    @end_time = @start_time + dt_era
+    while shortest_interpolated_worldline.worldpoint.last.time < @end_time
+      shortest_extrapolated_worldline.extend(self, dt_param)
+      nsteps += 1
+    end
+    [next_era, nsteps]
+  end
+
+3)
+I added various check functions, for checking whether a given time argument
+is valid, in the Worldline Class as well as the Worldera class.  An example:
+
+  def take_point(time)
+    if time >= @worldpoint.last.time
+      raise if not valid_extrapolation?(time)
+      @worldpoint.last.extrapolate(time)
+    else
+      raise if not valid_interpolation?(time)
+      @worldpoint.each_index do |i|
+  ....
+
+4)
+I am now passing the clop object only to the World class, and not further
+down into the era.  So only the World decides what option values to pass
+down, which is more modular.  Specifically, Worldera#evolve(c) has now
+changed to Worldera#evolve(dt_era, dt_param).
+
+5)
+The way we were reading the initial snapshot into the code was rather dirty.
+On the level of era, we had:
+
+  def read_snapshot
+    n = gets.to_i
+    @start_time = gets.to_f
+    @end_time = @start_time      # for now, to allow initial diagnostics output
+    for i in 0...n
+      @worldline[i] = Worldline.new
+      @worldline[i].read_worldpoint         # for now; "read" w. self-doc. data
+      @worldline[i].worldpoint[0].time = @start_time
+      @worldline[i].worldpoint[0].next_time = @start_time
+      @worldline[i].worldpoint[0].acc = @worldline[i].worldpoint[0].pos*0
+      @worldline[i].worldpoint[0].jerk = @worldline[i].worldpoint[0].pos*0
+    end
+  end
+
+which assumes that the era has to know about the detailed internal
+structure of worldlines and worldpoints.  I replaced this by:
+
+  def read_initial_snapshot
+    n = gets.to_i
+    @start_time = gets.to_f
+    @end_time = @start_time      # for now, to allow initial diagnostics output
+    for i in 0...n
+      @worldline[i] = Worldline.new
+      @worldline[i].read_initial_worldpoint(@start_time)
+    end
+  end
+
+and I extended this last method by two lines, while shortening the lines:
+
+  def read_initial_worldpoint(time)
+    wp = @worldpoint[0] = Worldpoint.new
+    wp.read
+    wp.time = wp.next_time = time
+    wp.acc = wp.jerk = wp.pos*0
+  end
+
+6)
+Yesterday, we had the problem that the output continued until a whole
+era integration was finished.  I corrected this bug by adding an extra
+halting condition in evolve on the World level.  I replaced:
+
+      time = @old_era.end_time
+      while time >= t_dia
+        @old_era.write_diagnostics(t_dia, nsteps, initial_energy, c.x_flag)
+        t_dia += c.dt_dia
+      end
+      if time >= t_out
+by 
+      while t_dia <= @old_era.end_time and t_dia <= t_end
+        @old_era.write_diagnostics(t_dia, nsteps, initial_energy, c.x_flag)
+        t_dia += c.dt_dia
+      end
+      while t_out <= @old_era.end_time and t_out <= t_end
+
+Note that I also corrected a tricky typo: we had "if" in the last line
+above, which should be "while"!!
+
+7)
+We had in several place 1e30 as a large number; I put that into acs.rb, as:
+
+  VERY_LARGE_NUMBER = 1e30
+
+I also added a very small number to the velocity squared in the collision
+time estimate:
+
+  v2 = v*v + 1.0/VERY_LARGE_NUMBER          # always non-zero, for division
+  estimate_sq = r2 / v2              # [distance]^2/[velocity]^2 = [time]^2
+
+8)
+We had forgotten to write the correct description of the -e option, for
+determining the era length.  I have added that.
+
+Finally, I also made sure that the same changes are all encorporated
+in world1_sh.rb as well.  The diff between the two has remained almost
+the same, the amazingly short list:
+
+|gravity> diff world1.rb world1_sh.rb
+244,245c244,249
+<       shortest_extrapolated_worldline.extend(self, dt_param)
+<       nsteps += 1
+---
+ >       t = shortest_extrapolated_worldline.worldpoint.last.next_time
+ >       @worldline.each do |w|
+ >         w.worldpoint.last.next_time = t
+ >         w.extend(self, dt_param)
+ >         nsteps += 1
+ >       end
+409c413
+<     using individual time steps.
+---
+ >     using shared time steps.
+
+Piet
+
