@@ -1,4 +1,4 @@
-require "hnbody.rb"
+require "yo6nbody6.rb"
 
 include Math
 

@@ -2,9 +2,17 @@
 	
 = Preface
 
-== xxx
+The current version of this volume only contains the sixth-order
+Yoshida algorithm, and the Hermite algorithm, both for a general
+N-body system, with shared fixed time steps.  We plan to make a
+variety of other algorithms available here, following the two-body
+prototypes given in volume 1b, by later 2004 or early 2005.
+
+== Acknowledgments
 
 We thank xxx, xxx, and xxx for their comments on the
 manuscript.
 
-[ ]  Piet Hut and Jun Makino
+Piet Hut and Jun Makino
+
+Kyoto, July 2004
