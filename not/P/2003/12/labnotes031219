@@ -1,0 +1,72 @@
+2003, December 19, Friday, Kyoto: Jun, Piet
+
+1. Our Book Project: Guided Tours
+
+We discussed at length how to set up our whole ACS book project.
+A useful metaphor is a zoo: each chapter can be considered an
+exhibition of one or more animals.  The zoo contains many exhibits,
+but there is not one particular linear ordering in which to see the
+exhibits.  Rather, a number of different guided tours can be defined,
+and pointers for those tours can be provided.  One tour could highlight
+the astrophysics, another one the code structure, yet another one would
+be aimed at mathematicians or physicists interested in studying the
+N-body problem by itself.
+
+So instead of planning to write ten books, each with ten or so chapters,
+we will concentrate on writing individual chapters without too much
+concern of how it all fits together.  Rather, we will work towards the
+next release of ACS version X.Y, and decide at each point where to go
+next.  In due time, the zoo will grow, more exhibits will be added by
+us and by others, and more tours will be defined, also by us and by
+others.
+
+2. Chapters
+
+We made a list of groups/types of chapters that we can imagine to appear:
+
+  Integrators, such as the Kali code
+
+  Initial models, such as King models
+
+  Analysis modules, such as Lagrangian radii
+
+  Scattering packages
+
+  Introductions, to gravitation, diff. eq., and numerical methods
+
+  Labnotes and Docbook
+
+  I/O
+
+  Story mechanism, as in Starlab
+
+  Ruby-C-Fortran interfaces and other utilities
+
+  Graphics
+
+  Experimentation Projects
+
+3. Directory Structure
+
+We chose a new directory structure for the svn-controlled acs site.
+On the top level we now have:
+
+  src: this contains a tree of chapters, with corresponding codes and
+       manual pages
+
+  doc: this contains automatically generated versions of the book chapters,
+       in ps, pdf, and html format
+
+  not: this contains a tree of directories where labnotes are deposited,
+       one file for each session
+
+  log: this contains automatically generated version of the lab notes,
+       in ps, pdf, and html format
+
+  bin: this contains all executables
+
+We managed to transfer all files, using svn's capability to mv files
+and even whole directories.  At some point something went wrong and
+Piet's svn working copy became corrupted.  By checking out a new copy,
+nothing turned out to be lost, and it was relatively easy to restore
+everything.
