@@ -1,0 +1,68 @@
+Date: Mon Jan 10 11:50:40 JST 2005
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Hi Piet,
+
+The following is a demonstration of the using "extend" method to
+change the behavior of the objects of the same class.
+
+  module A
+    def pp
+      print "Hellow, I am A\n"
+    end
+  end
+  
+  module B
+    def pp
+      print "Hellow, I am B\n"
+    end
+  end
+  
+  module C
+    def pp
+      print "Hellow, I am C\n"
+    end
+  end
+  
+  class Body
+    include A
+  end
+  
+  a = Body.new
+  
+  print "Original a: "
+  a.pp
+  a.extend(B)
+  print "Extended a (with B): "
+  a.pp
+  
+  b = Body.new
+  
+  print "New b: "
+  b.pp
+  b.extend(C)
+  print "Extended b (with C): "
+  b.pp
+  
+  c = Body.new
+  
+  print "a, b and c:\n"
+  a.pp
+  b.pp
+  c.pp
+
+  --- sample output --- 
+  <yebisu:/home/makino/src/rubyutils>ruby test.rb
+  Original a: Hellow, I am A
+  Extended a (with B): Hellow, I am B
+  New b: Hellow, I am A
+  Extended b (with C): Hellow, I am C
+  a, b and c:
+  Hellow, I am B
+  Hellow, I am C
+  Hellow, I am A
+
+Jun
+  
+
