@@ -265,6 +265,8 @@ sort of surprise we'll run into next.
 AAHHHAAAA!!  There we have a clear smoke signal.  A new trail to follow!
 But the trail seems to hang in mid air . . .
 
+== Using a Microscope
+
 *Alice*: Somehow Ruby has fallen back onto its old habit of adding by
 concatenation.  But I thought you had taught Ruby to not do that any
 longer?
@@ -323,6 +325,8 @@ values to the vector and . . . hey, that must be it!
 *Bob*: Dynamic typing!!
 
 *Alice*: Yes, Ruby has dynamic types, how does that solve our problem?
+
+== Following the Trail
 
 *Bob*: Elementary, my dear Watson.  Because Ruby has dynamic typing,
 upon assignment of an array to a vector, the vector changes into an
@@ -397,6 +401,8 @@ instead of arrays.  And we can do that by declaring both +sum+ and
 
  :inccode: vector3.rb
 
+== Extreme Programming
+
 *Alice*: Mind if we test it, by going through the _exact_ same moves
 as before?
 
@@ -466,12 +472,17 @@ days, again as if they have just invented something new.
 talk.  We have certified our vector class, let's now put it to work for
 our integrator.
 
-*Bob*: Certified, he?  You must be born to become a manager.  Okay, here
-is the next step.  We first have to tell our +Body+ class that the
-positions and velocities are no longer arrays, but vectors.  Let me
-create a new file +vbody.rb+ for this modified class.  I will call the
-modified class +Body+ as well.  If we are happy with it, we can discard
-the previous +Body+ class definition.
+*Bob*: Certified, he?  You must be born to become a manager.
+
+*Alice*: Go integrate.
+
+== A Body with Vectors
+
+*Bob*: Okay, here is the next step.  We first have to tell our +Body+
+class that the positions and velocities are no longer arrays, but
+vectors.  Let me create a new file +vbody.rb+ for this modified class.
+I will call the modified class +Body+ as well.  If we are happy with
+it, we can discard the previous +Body+ class definition.
 
  :inccode: vbody1.rb
 
@@ -490,8 +501,10 @@ that started us off on this long trek.
 
 *Alice*: But we learned a lot on our journey.  Yes, I remember now.
 I was complaining about component notation, and then you decided you
-can give me real vector notation, without components.  Seem like a
+can give me real vector notation, without components.  Seems like a
 while ago!
+
+== Shrinking Code
 
 *Bob*: But now we're getting close.  Let me rename the old file
 <tt>euler1.rb</tt>, and then add vectors to <tt>euler2.rb</tt>.
@@ -517,6 +530,8 @@ Are you ready for this?
 lines shorter in length as well:
 
  :inccode: euler2a.rb
+
+== FORTRAN
 
 *Alice*: One of these days you'll shorten it so much that you can hand
 me a one-line integrator, just like you produced one-line read and write
@@ -581,6 +596,8 @@ each.
 
  :commandoutput: ruby euler2a.rb < euler.in
 
+== An Old Friend
+
 *Alice*: Where did we see that error message before?
 
 *Bob*: I know, it is an old friend, isn't it?  I had hoped we had banned
@@ -637,6 +654,8 @@ right, after all, suspecting that <tt>simple_read</tt> was the culprit.
 
 *Bob*: What do you mean `after all'?  I was almost certain, but now
 I know for sure.
+
+== Magic
 
 *Alice*: Right you are!  Now what is wrong with <tt>simple_read</tt>?
 
@@ -712,6 +731,8 @@ And let me try it:
 
 *Alice*: Congratulations!
 
+== A Matter of Taste
+
 *Bob*: Thanks.  So now we have a FORmula TRANslation device
 that actually works!
 
@@ -747,6 +768,8 @@ know how to do that!  I only have to add a few lines to the
 <tt>vector.rb</tt> file.  Here, it is short, let me show the whole file:
 
  :inccode: vector.rb
+
+== <i>Voila</i>
 
 *Alice*: That's much better.  I don't mind the <tt>[*...}</tt> <i>per se</i>,
 it is only that the line with <tt>gets.split.map</tt> followed by a block
