@@ -1,6 +1,7 @@
 require "vector.rb"
 require "clop.rb"
 require "basic_nbody.rb"
+require "block_time.rb"
 
 class Body
 
