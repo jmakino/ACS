@@ -12,6 +12,7 @@ if ( $?ACSROOT) then
    setenv ACSLIBS $ACSROOT/lib
    setenv RUBYPATH .:${ACSSCRIPTS}:${ACSSCRIPTS}/kali
    setenv RUBYLIB .:${ACSLIBS}:${ACSLIBS}/kali
+   alias ruby 'ruby -S'
    if ( -e $ACSSCRIPTS/acsstart.local ) then
       source   $ACSSCRIPTS/acsstart.local
    endif
