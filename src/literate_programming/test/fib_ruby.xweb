@@ -45,7 +45,7 @@ calculates the members of the Fibonacci series.</para>
 <src:fragment id="sub.fib">
 def fibUpTo(max)
   i1, i2 = 1, 1
-  while i1 &lt; = max
+  while i1 &lt;= max
     yield i1
     <src:fragref linkend="sub.fib.recursion"/>
   end
