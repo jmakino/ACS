@@ -1,19 +1,5 @@
-= What Package to Use
+= Introduction
 
-== Test of TeX Math macros
+== xxx
 
-Try <$a^2 = b^2 + c^2$> first and then 
-
-and <$$a^2 = b^2 + c^2$$> and also
-
-<$$
-a^2 = b^ + c^2
-$$>
-
-to see what happens.
-
-Ah: the first two work, but the last one doesn't.
-
-
-
-
+xx
