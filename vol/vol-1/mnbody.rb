@@ -56,7 +56,7 @@ class Body
        dt = @history.last[0] - @history[@history.size-2][0]
         send(@nb.integration_method, @history[@history.size-2][0], dt)
 #print "never!\n"
-print "id = ", self.id, " ; nsteps = ", nsteps, " ; time = ", time, "\n"
+###print "id = ", self.id, " ; nsteps = ", nsteps, " ; time = ", time, "\n"
         @history.last[1] = [@pos, @vel, acc(@history.last[0])]
         tmp = @history.last[0] +
               time_step(@history.last[0])
@@ -203,7 +203,7 @@ END
     position.each{|x| printf("%24.16e", x)}; print "\n"
     velocity = vel(time)
     velocity.each{|x| printf("%24.16e", x)}; print "\n"
-p @history
+###p @history
   end
 
   def simple_read
