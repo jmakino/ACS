@@ -18,25 +18,30 @@
 module Acsdoc
 
   def add_output(s, ofile, dirname, tag)
-    ofile.print "---\n"
     a = s.split
     indent = s.index(tag) 
+    noout = false
+    noout = true if tag == ":command:" 
     tmpname = ".acsdoc.command-out"
     tmpcommand = ".acsdoc.command-file"
     prompt = " "* indent + "|gravity>"
     commandline = a[1..a.size].join(" ").chomp
+    ofile.print "---\n"     unless noout
     outfile = open(tmpname, "w+")
-    fullcommand = "cd #{dirname}; "+commandline + ">& " + tmpname
+    fullcommand = "cd #{dirname}; "+commandline
+    fullcommand  += ">& " + tmpname unless noout
     print "Generating output of \"#{commandline}\"...\n"
     print "command to run = ", fullcommand, "\n" if $DEBUG
     open(tmpcommand,"w+"){ |f|  f.print fullcommand + "\n"}
     system("cat  #{tmpcommand}") if $DEBUG
     system("csh -f #{tmpcommand}");
     outfile.close
-    ofile.print prompt + commandline, "\n" if tag == ":commandoutput:"
-    output = `cat #{dirname}/#{tmpname}`
-    output.each{|x| ofile.print " "*indent + x}
-    ofile.print "---\n"
+    unless noout
+      ofile.print prompt + commandline, "\n" if tag == ":commandoutput:"
+      output = `cat #{dirname}/#{tmpname}`
+      output.each{|x| ofile.print " "*indent + x}
+      ofile.print "---\n"
+    end
   end
 
   def prep_cp(infile, outfile)
@@ -61,6 +66,8 @@ module Acsdoc
 	add_output(s, ofile, dirname, ":output:")
       elsif loc = s.index(":commandoutput:")  and s.index("\":commandoutput:\"")==nil
 	add_output(s, ofile, dirname, ":commandoutput:")
+      elsif loc = s.index(":command:")  and s.index("\":command:\"")==nil
+	add_output(s, ofile, dirname, ":command:")
       else
 	ofile.print s
       end
@@ -84,7 +91,7 @@ module Acsdoc
     while s = ifile.gets
       if loc = s.index(":segment start:")  and s.index("\":segment start:\"")==nil
 	segment_name = s[loc,s.length].split[2];
-	print segment_name;
+	print segment_name if $DEBUG
 	outfile = File.dirname(infile)+"/."+File.basename(infile) +
 	  "-" + segment_name
 	if oname[0...segment_level].index(outfile) != nil

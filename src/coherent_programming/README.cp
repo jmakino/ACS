@@ -46,3 +46,7 @@ The changes we made are
  :output: echo foo
 
  :commandoutput: date
+
+ :command: echo test
+
+ 
