@@ -9,6 +9,7 @@ class Body
   def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
     @mass, @pos, @vel = mass, pos, vel
     @type = nil
+    @story = []
   end
 
   def to_s(precision = 16, base_indentation = 0, additional_indentation = 2)
@@ -36,7 +37,7 @@ class Body
     file.print to_s(precision, base_indentation, additional_indentation)
   end
 
-  def read(header, file = $stdin)                                            #1
+  def read(header, file = $stdin)
     raise unless header =~ /^\s*begin\s+particle/
     a = header.split
     if a.size > 2
@@ -58,8 +59,8 @@ class Body
           subread(file, s)
         when "end"
           break
-        else                                                                 #2
-          raise                                                              #2
+        else                                                                 #1
+          @story.push(s)                                                     #1
       end
     }
   end

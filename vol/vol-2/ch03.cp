@@ -265,7 +265,7 @@ particle, to start with, and then hand execution to that particle.
 *Alice*: Well done!  This is clean and elegant, but I'm still worrying about
 handling unusual lines.  If somebody hands you a line with
 
- acceleration = 0.1
+ acceleration = 0.1 -0.3
 
 your program will raise an error.  But there is nothing wrong with
 providing extra information.  How about creating a little scratch pad
