@@ -1,0 +1,12 @@
+2005-02-06   Piet
+
+I ran the following commands for frequent output
+
+ruby mkplummer.rb -n 8 -s 2 | ruby world4.rb -i -t 35 -d 5 -o 0.01 > plum8s2t35o01.out
+
+ruby mkplummer.rb -n 8 -s 8 | ruby world4.rb -i -t 20 -d 5 -o 0.01 > plum8s8t20o01.out
+
+and for a complete dump:
+
+ruby mkplummer.rb -n 8 -s 8 | ruby acsnumber.rb | ruby world4.rb -t 20 -d 5 -z > plum8s8.dump
+

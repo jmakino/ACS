@@ -11,7 +11,7 @@ options_text= <<-END
     the last line.  It passes on only one out of n chunks, where the value
     of n can be specified by the user
 
-    (c) 2004, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
+    (c) 2005, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
     example:
                ruby #{$0} -n 10
@@ -32,7 +32,6 @@ options_text= <<-END
 
 c = parse_command_line(options_text)
 
-chunk = []
 i = 0
 a = ACS_IO.acs_read
 while a

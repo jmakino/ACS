@@ -241,7 +241,8 @@ class Worldpoint
 
   ACS_OUTPUT_NAME = "Body"
 
-  INIT_TIMESCALE_FACTOR = 1.0e-06
+#  INIT_TIMESCALE_FACTOR = 1.0e-06
+  INIT_TIMESCALE_FACTOR = 1.0e-02
   MAX_TIMESTEP_INCREMENT_FACTOR = 2
 
   attr_accessor :pos, :vel
@@ -575,9 +576,13 @@ class World
         @era.write_diagnostics(@t_dia, @nsteps, @initial_energy)
         @t_dia += c.dt_dia
       end
-      while @t_out <= @era.end_time and @t_out <= @t_end
-        output(c)
-        @t_out += c.dt_out
+      if c.dump_flag
+        @era.acs_write($stdout, false, c.precision, c.add_indent)
+      else
+        while @t_out <= @era.end_time and @t_out <= @t_end
+          output(c)
+          @t_out += c.dt_out
+        end
       end
       @old_era = @era
       @era = @new_era
@@ -625,7 +630,7 @@ class World
 
   def init_output(c)
     @era.write_diagnostics(@time, @nsteps, @initial_energy, true)
-    if c.init_out
+    if c.init_out_flag and not c.dump_flag
       if c.world_output_flag
         acs_write($stdout, false, c.precision, c.add_indent)
       else
@@ -837,23 +842,7 @@ options_text= <<-END
     standard output channel.
 
     The snapshot contains the mass, position, and velocity values
-    for all particles in an N-body system.
-
-    The program expects input of a single snapshot of an N-body
-    system, in the following format: the number of particles in the
-    snapshot n; the time t; mass mi, position ri and velocity vi for
-    each particle i, with position and velocity given through their
-    three Cartesian coordinates, divided over separate lines as
-    follows:
-
-                  n
-                  t
-                  m1 r1_x r1_y r1_z v1_x v1_y v1_z
-                  m2 r2_x r2_y r2_z v2_x v2_y v2_z
-                  ...
-                  mn rn_x rn_y rn_z vn_x vn_y vn_z
-
-    Output of each snapshot is written according to the same format.
+    for all particles in an N-body system, in ACS format
 
 
   Short name: 		-t
@@ -873,7 +862,7 @@ options_text= <<-END
   Short name:		-i
   Long name:  		--init_out
   Value type:  		bool
-  Variable name:	init_out
+  Variable name:	init_out_flag
   Description:		Output the initial snapshot
   Long description:
     If this flag is set to true, the initial snapshot will be output
@@ -891,6 +880,17 @@ options_text= <<-END
     such an world again will allow an fully accurate restart of the
     integration,  since no information is lost in the process of writing
     out and reading in in terms of world format.
+
+
+  Short name:		-z
+  Long name:  		--full_output_dump
+  Value type:  		bool
+  Variable name:	dump_flag
+  Description:		Full output of all worldpoints in World output format
+  Long description:
+    If this flag is set to true, the full information of all worldpoints will
+    be written out.  This option, when switched on, overrides the normal output
+    option (a specified value for the normal output interval will be ignored).
 
 
   Short name:		-a
