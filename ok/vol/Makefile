@@ -1,0 +1,6 @@
+all:
+	$(MAKE) -C vol-0
+	$(MAKE) -C vol-1
+clean:
+	$(MAKE) -C vol-0 clean
+	$(MAKE) -C vol-1 clean
