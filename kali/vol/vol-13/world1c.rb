@@ -1,5 +1,23 @@
 require "nbody.rb"
-require "binary.rb"
+
+class Body
+
+  def kinetic_energy
+    0.5*@mass*@vel*@vel
+  end
+
+  def potential_energy(body_array)
+    p = 0
+    body_array.each do |b|
+      unless b == self
+        r = b.pos - @pos
+        p += -@mass*b.mass/sqrt(r*r)
+      end
+    end
+    p
+  end
+
+end
 
 class Worldpoint < Body
 
@@ -149,8 +167,9 @@ class Worldpoint < Body
 
   def admin(old_time)
     dt = @time - old_time
-    @maxstep = dt if @maxstep < dt
-    @minstep = dt if @minstep > dt
+    @maxstep = dt if @maxstep == nil or @maxstep < dt
+    @minstep = dt if @minstep == nil or @minstep > dt
+    @nsteps = 0 if @nsteps == nil
     @nsteps = @nsteps + 1
   end
 
@@ -199,7 +218,14 @@ class Worldpoint < Body
       raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
     end
     wp = nil
-    eval("wp = #{self.class}.new")
+#    eval("wp = #{self.class}.new")
+    if self.class == Binary
+      wp = self.deep_copy
+    elsif self.class == Worldpoint
+      wp = Worldpoint.new
+    else
+      raise
+    end
     wp.minstep = @minstep
     wp.maxstep = @maxstep
     wp.nsteps = @nsteps
@@ -321,19 +347,76 @@ class Worldpoint < Body
     wp
   end
 
-  def kinetic_energy
-    0.5*@mass*@vel*@vel
+end
+
+class Binary < Worldpoint
+
+  def initialize(body1, body2, init_time = 0)
+    @init_time = init_time
+    @m1 = body1.mass
+    @m2 = body2.mass
+    @mass = @m1 + @m2
+    @reduced_mass = ( @m1 * @m2 ) / ( @mass )
+    @pos = (body1.pos + body2.pos)/@mass
+    @vel = (body1.vel + body2.vel)/@mass
+    @rel_pos = body2.pos - body1.pos
+    @rel_vel = body2.vel - body1.vel
   end
 
-  def potential_energy(body_array)
-    p = 0
-    body_array.each do |b|
-      unless b == self
-        r = b.pos - @pos
-        p += -@mass*b.mass/sqrt(r*r)
-      end
-    end
-    p
+  def rel_kinetic_energy
+    0.5 * @reduced_mass * @rel_vel * @rel_vel
+  end
+
+  def rel_potential_energy
+    -( @m1 * @m2 / sqrt( @rel_pos * @rel_pos ) )
+  end
+
+  def rel_energy
+    rel_kinetic_energy + rel_potential_energy
+  end
+
+  def angular_momentum_squared
+    r_cross_v = @rel_pos.cross(@rel_vel)
+    @reduced_mass**2 * r_cross_v * r_cross_v
+  end
+
+  def semi_major_axis
+    -( @m1 * @m2 ) / ( 2 * rel_energy )
+  end
+
+  def eccentricity
+    e_sq = 1 - angular_momentum_squared /
+                 ( @reduced_mass * @m1 * @m2 * semi_major_axis )
+    e_sq = 0.0 if e_sq < 0.0  # to avoid round-off to slightly negative numbers
+    sqrt(e_sq)
+  end
+
+  def period
+    2*PI/sqrt( @mass / semi_major_axis**3 )
+  end
+
+  def most_recent_return_time(time)
+    p = period
+    phase = (time - @init_time)/p
+    phase = phase - phase.floor
+#STDERR.print "most_recent_return_time:  time = #{time} ; phase = #{phase} ; p = #{p} ; time - phase*p = #{time - phase*p}\n"
+    time - phase*p
+  end
+
+  def dissolve
+    b1 = Body.new
+    b2 = Body.new
+    b1.mass = @m1
+    b2.mass = @m2
+    b1.pos = -(@m2/@mass)*@rel_pos
+    b2.pos = (@m1/@mass)*@rel_pos
+    b1.vel = -(@m2/@mass)*@rel_vel
+    b2.vel = (@m1/@mass)*@rel_vel
+    [b1, b2]
+  end
+
+  def deep_copy
+    Marshal.load(Marshal.dump(self))
   end
 
 end
@@ -486,6 +569,8 @@ class Worldline
     end
   end
 
+#### (was) TEMPORARILY DISABLED: NEWLY SHOWN BINARY COMPONENTS MAY VIOLATE THIS
+
   def valid_interpolation?(time)
     unless @worldpoint[0].time <= time and time <= @worldpoint.last.time
       raise "#{time} not in [#{@worldpoint[0].time}, #{@worldpoint.last.time}]"
@@ -576,11 +661,13 @@ class Worldline
 
   def setup_from_single_worldpoint(b, method, dt_param, time)
     if b.class == Binary
-      @worldpoint[0] = b.to_binary
+      @worldpoint[0] = b
     elsif b.class == Body
       @worldpoint[0] = b.to_worldpoint
+    elsif b.class == Worldpoint
+      @worldpoint[0] = b
     else
-      raise
+      raise "class #{b.class} not supported"
     end
     @method = method
     @dt_param = dt_param
@@ -659,15 +746,16 @@ class Worldera
 Safety_hysteris_factor = 1.5
 
   def evolve(dt_era, dt_max, isolation_factor)
+    STDERR.print "at time #{@start_time} : #{@worldline.size} particles\n"
     hide_binaries(@start_time, Safety_hysteris_factor*isolation_factor, dt_max)
     nsteps = 0
     while shortest_interpolated_worldline.worldpoint.last.time < @end_time
       wl = shortest_extrapolated_worldline
       if wl.worldpoint.last.class == Binary
-ss.acs_write($stderr)
         ss = take_snapshot_except(wl, wl.worldpoint.last.time)
+#ss.acs_write($stderr)
         unless ss.isolated?(wl.worldpoint.last, isolation_factor)
-          show_binary(wl)
+          show_binary(wl, dt_max)
           wl = shortest_extrapolated_worldline
         end
       end
@@ -707,7 +795,7 @@ ss.acs_write($stderr)
       ba.push(pair[0])
       ba.push(pair[1])
     end
-ss_deep_copy.acs_write($stderr)
+#ss_deep_copy.acs_write($stderr)
     ss_deep_copy
   end
 
@@ -721,9 +809,10 @@ ss_deep_copy.acs_write($stderr)
     ws
   end
 
-  def show_binary(w)
+  def show_binary(w, dt_max)
     wp = w.worldpoint.last
     t = wp.most_recent_return_time(wp.time)
+    return if t < w.worldpoint[0].time
 STDERR.print "entering show_binary for time t = #{t}\n"
     w.cap_at(t)
     b1, b2 = w.worldpoint.last.dissolve
@@ -745,17 +834,17 @@ STDERR.print "entering show_binary for time t = #{t}\n"
     @worldline.compact!
     @worldline.push(w1)
     @worldline.push(w2)
+w1.acs_write($stderr)
+w2.acs_write($stderr)
   end
 
   def hide_binaries(time, factor, dt_max)
     ss = take_snapshot(time)
     ar = ss.find_isolated_binaries(factor)
-p ar if ar != []
     list = []
     ar.each do |a|
       list.push([ @worldline[ a[0] ], @worldline[ a[1] ] ])
     end
-#p list
     list.each do |pair|
       merge_worldlines(pair[0], pair[1], dt_max)
     end  
@@ -765,15 +854,10 @@ p ar if ar != []
     t1 = w1.next_worldpoint_at_or_after(@start_time).time
     t2 = w2.next_worldpoint_at_or_after(@start_time).time
     t = min(t1, t2)
-STDERR.print "entering merge_worldlines for time t = #{t}\n"
+STDERR.print "entering merge_worldlines for time t = #{t} and "
     w1.cap_at(t)
     w2.cap_at(t)
-p "numbers for w1 and w2:"
-p w1.worldpoint.last.number
-p w2.worldpoint.last.number
     b = Binary.new(w1.worldpoint.last, w2.worldpoint.last, t)
-p "hihi"
-b.acs_write
     method = w1.method
     if w2.method != method
       raise "w1.method = #{1.method} != w2.method = #{w2.method}"
@@ -784,20 +868,18 @@ b.acs_write
     end
     @worldline.each_index do |i|
       if @worldline[i] == w1 or @worldline[i] == w2
+STDERR.print "#{i} "
         @worldline[i] = nil
       end
     end
+STDERR.print "\n"
     @worldline.compact!
     w = Worldline.new
     w.setup_from_single_worldpoint(b, method, dt_param, t)
-p "huhu"
-w.acs_write
     loop do
       break if w.startup_done?(self, dt_max)
     end    
     @worldline.push(w)
-p "haha"
-@worldline.acs_write
   end
 
   def write_diagnostics(t, nsteps, initial_energy, init_flag = false)
@@ -808,7 +890,6 @@ p "haha"
     else
       STDERR.print "to time #{sprintf("%g", @end_time)}):\n"
     end
-STDERR.print "ho\n"
     take_full_snapshot(t).write_diagnostics(initial_energy)
   end
 
@@ -1013,9 +1094,6 @@ class Worldsnapshot < Nbody
   end
 
   def isolated?(binary, factor)
-#STDERR.print "nearest_neighbor_distance(binary) = #{nearest_neighbor_distance(binary)}\n"
-#STDERR.print "factor = #{factor}\n"
-#STDERR.print "binary.semi_major_axis = #{binary.semi_major_axis}\n"
     if nearest_neighbor_distance(binary) > factor * binary.semi_major_axis
       true
     else
@@ -1027,16 +1105,12 @@ class Worldsnapshot < Nbody
     find_first_and_second_nearest_neighbors
     list = []
     return [[0, 1]] if @body.size == 2
-#    return [] if @body.size == 2
     @body.each_index do |i|
       @body.each_index do |j|
         if j > i
           if @body[i].nearest_neighbor == j and @body[j].nearest_neighbor == i
             b = Binary.new(@body[i], @body[j])
             if b.rel_energy < 0
-#STDERR.print "i = #{i}, j = #{j}\n"
-#@body[i].acs_write($stderr)
-#@body[j].acs_write($stderr)
               r = @body[i].pos - @body[@body[i].second_nearest_neighbor].pos
               ri2 = r*r
               r = @body[j].pos - @body[@body[j].second_nearest_neighbor].pos
