@@ -154,10 +154,10 @@ Jun redrew it, using the program {\tt tgif}.  In order to include that
 figure in our lab notes for yesterday's session, we had to define a
 syntax for figure inclusion.  We decided that it would be of the type
 "\\fig{filename, size}", written on a separate line, with blank lines
-before and after.  For example, yesterday's figure was included using
+before and after.  For example, the figure below is included using
 the following line:
 
-\\fig{labnote.eps, 15 cm}
+\\fig{labnote-031112.eps, 15 cm}
 
 3.4. Italic, Boldface, Colors, and all that
 
@@ -204,6 +204,8 @@ append that to the mother file.  And finally, it should also be okay
 to take an intermediary approach, to keep for example a file with the
 last few dozen sessions, and write the new session's note at the end
 of that file.
+
+\fig{labnote-031112.eps, 15 cm}
 
 4.5. Warnings and Errors
 
