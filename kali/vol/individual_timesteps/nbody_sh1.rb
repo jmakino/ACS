@@ -11,7 +11,7 @@ class Body
   end
 
   def collision_time_scale(body_array)
-    time_scale_sq = VERY_LARGE_NUMBER              # square of time scale value
+    time_scale_sq = VERY_LARGE_NUMBER
     body_array.each do |b|
       unless b == self
         r = b.pos - @pos
@@ -29,7 +29,7 @@ class Body
 	end
       end
     end
-    sqrt(time_scale_sq)                  # time scale value
+    sqrt(time_scale_sq)
   end
 
   def acc(body_array)
@@ -89,32 +89,30 @@ class NBody
     time_scale
   end
 
-  def evolve(integration_method, dt_param, dt_dia, dt_out, dt_end, init_out,
-             exact_time_flag)
+  def evolve(c)
     @nsteps = 0
-    e_init
+    @e0 = ekin + epot
     write_diagnostics
-    t_dia = @time + dt_dia                                                   #1
-    t_out = @time + dt_out                                                   #1
-    t_end = @time + dt_end                                                   #1
-
-    acs_write if init_out
+    t_dia = @time + c.dt_dia                                                 #1
+    t_out = @time + c.dt_out                                                 #1
+    t_end = @time + c.dt_end                                                 #1
+    acs_write if c.init_out_flag
 
     while @time < t_end
-      @dt = dt_param * collision_time_scale
-      if exact_time_flag and @time + @dt > t_out
+      @dt = c.dt_param * collision_time_scale
+      if c.exact_time_flag and @time + @dt > t_out
         @dt = t_out - @time
       end
-      send(integration_method)
+      send(c.method)
       @time += @dt
       @nsteps += 1
       if @time >= t_dia
         write_diagnostics
-        t_dia += dt_dia
+        t_dia += c.dt_dia
       end
       if @time >= t_out - 1.0/VERY_LARGE_NUMBER
         acs_write
-        t_out += dt_out
+        t_out += c.dt_out
       end
     end
   end
@@ -230,10 +228,6 @@ class NBody
     e/2                           # pairwise potentials were counted twice
   end
 
-  def e_init                      # initial total energy
-    @e0 = ekin + epot
-  end
-
   def write_diagnostics
     etot = ekin + epot
     STDERR.print <<END
@@ -344,7 +338,7 @@ options_text= <<-END
   Short name:		-i
   Long name:  		--init_out
   Value type:  		bool
-  Variable name:	init_out
+  Variable name:	init_out_flag
   Description:		Output the initial snapshot
   Long description:
     If this flag is set to true, the initial snapshot will be output
@@ -353,8 +347,7 @@ options_text= <<-END
 
   END
 
-parse_command_line(options_text, true)
+clop = parse_command_line(options_text, true)
 
 nb = ACS_IO.acs_read(NBody)
-nb.evolve($method, $dt_param, $dt_dia, $dt_out, $dt_end, $init_out,
-          $exact_time_flag)
+nb.evolve(clop)

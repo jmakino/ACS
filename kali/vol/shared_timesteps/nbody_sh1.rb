@@ -11,7 +11,7 @@ class Body
   end
 
   def collision_time_scale(body_array)
-    time_scale_sq = VERY_LARGE_NUMBER              # square of time scale value
+    time_scale_sq = VERY_LARGE_NUMBER
     body_array.each do |b|
       unless b == self
         r = b.pos - @pos
@@ -29,7 +29,7 @@ class Body
 	end
       end
     end
-    sqrt(time_scale_sq)                  # time scale value
+    sqrt(time_scale_sq)
   end
 
   def acc(body_array)
@@ -91,12 +91,11 @@ class NBody
 
   def evolve(c)
     @nsteps = 0
-    e_init
+    @e0 = ekin + epot
     write_diagnostics
     t_dia = @time + c.dt_dia                                                 #1
     t_out = @time + c.dt_out                                                 #1
     t_end = @time + c.dt_end                                                 #1
-
     acs_write if c.init_out_flag
 
     while @time < t_end
@@ -227,10 +226,6 @@ class NBody
     e = 0
     @body.each{|b| e += b.epot(@body)}
     e/2                           # pairwise potentials were counted twice
-  end
-
-  def e_init                      # initial total energy
-    @e0 = ekin + epot
   end
 
   def write_diagnostics

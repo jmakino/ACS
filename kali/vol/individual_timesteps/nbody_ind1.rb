@@ -1,3 +1,5 @@
+#!/usr/local/bin/ruby -w
+
 require "acs.rb"
 
 class Body
@@ -50,7 +52,7 @@ class Body
   end  
 
   def collision_time_scale(body_array)
-    time_scale_sq = 1e30                 # square of time scale value
+    time_scale_sq = VERY_LARGE_NUMBER
     body_array.each do |b|
       unless b == self
         r = b.pred_pos - @pred_pos    # NOTE: we use only predicted pos & vel
@@ -68,7 +70,7 @@ class Body
 	end
       end
     end
-    sqrt(time_scale_sq)                  # time scale value
+    sqrt(time_scale_sq)
   end
 
   def get_acc_and_jerk(body_array)
@@ -106,15 +108,13 @@ end
 class NBody
 
   def startup(dt_param)
-    @e0 = ekin + epot                      # initial total energy
+    @e0 = ekin + epot
     @body.each do |b|
-      b.pred_pos = b.pos             # first compute pred_pos & pred_vel
+      b.pred_pos = b.pos
       b.pred_vel = b.vel
     end
     @body.each do |b|
-      b.acc, b.jerk = b.get_acc_and_jerk(@body)   # acc & jerk use pred_pos/vel
-    end
-    @body.each do |b|
+      b.acc, b.jerk = b.get_acc_and_jerk(@body)
       b.time = @time
       b.next_time = @time + b.collision_time_scale(@body) * dt_param
     end
@@ -127,7 +127,6 @@ class NBody
     t_dia = @time + c.dt_dia
     t_out = @time + c.dt_out
     t_end = @time + c.dt_end
-
     acs_write if c.init_out
 
     while @time < t_end
@@ -184,7 +183,7 @@ class NBody
   def write_diagnostics
     etot = ekin + epot
     STDERR.print <<END
-at time t = #{sprintf("%g", time)}, after #{@nsteps} steps :
+at time t = #{sprintf("%g", @time)}, after #{@nsteps} steps :
   E_kin = #{sprintf("%.3g", ekin)} ,\
  E_pot =  #{sprintf("%.3g", epot)} ,\
  E_tot = #{sprintf("%.3g", etot)}
@@ -204,7 +203,7 @@ options_text= <<-END
     (c) 2004, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
     example:
-    ruby mkplummer3.rb -n 5 | ruby #{$0} -t 1
+    ruby mkplummer.rb -n 5 -s 1 | ruby #{$0} -t 1 > /dev/null
 
 
   Short name: 		-d
