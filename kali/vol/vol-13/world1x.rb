@@ -896,6 +896,24 @@ class Worldsnapshot < Nbody
     sqrt( (a*s + j*j) / (j*c + s*s) )
   end
 
+  def complex_encounter(mass, pos, vel, acc, jerk, snap, crackle)
+    time_scale_sq = VERY_LARGE_NUMBER              # square of time scale value
+    @body.each do |b|
+      r_vector = b.pos - pos
+      v_vector = b.vel - vel
+      r = sqrt(r_vector * r_vector)
+      v = sqrt(v_vector * v_vector)
+      a = (mass + b.mass)/r**2
+      p = v_vector/r**3 - r_vector*(r_vector*v_vector)*(3/r**5)
+      j = (mass + b.mass) * sqrt(p*p)
+      estimate_sq = sqrt( (r*a + v*v) / (v*j + a*a) )
+      if time_scale_sq > estimate_sq
+        time_scale_sq = estimate_sq
+      end
+    end
+    sqrt(time_scale_sq)                  # time scale value
+  end
+
   def min_aarseth_encounter(mass, pos, vel, acc, jerk, snap, crackle)
     time_scale_a = 2*aarseth_eq_2_13(mass, pos, vel, acc, jerk, snap, crackle)
     time_scale_e = encounter(mass, pos, vel, acc, jerk, snap, crackle)
