@@ -69,5 +69,13 @@ aaa
 bbb
 ccc
 END
+  :commandinput: cat > aho END
+aaa
+bbb
+ccc
+END
+  :commandoutput: cat aho
+  :command: rm aho
+  
 
  

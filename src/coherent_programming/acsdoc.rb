@@ -29,15 +29,17 @@ module Acsdoc
     prompt = " "* indent + @@prompt
     commandline = a[1..a.size].join(" ").chomp
     ofile.print "---\n"     unless noout
-    outfile = open(tmpname, "w+")
     fullcommand = "cd #{dirname}; "+commandline
-    fullcommand  += ">& " + tmpname unless noout
-    print "Generating output of \"#{commandline}\"...\n"
+    unless noout
+      fullcommand  += ">& " + tmpname
+      print "Generating output of \"#{commandline}\"...\n" 
+    else
+      print "Executing command \"#{commandline}\"...\n" 
+    end
     print "command to run = ", fullcommand, "\n" if $DEBUG
     open(tmpcommand,"w+"){ |f|  f.print fullcommand + "\n"}
     system("cat  #{tmpcommand}") if $DEBUG
     system("csh -f #{tmpcommand}");
-    outfile.close
     unless noout
       ofile.print prompt + commandline, "\n" if tag == ":commandoutput:"
       output = `cat #{dirname}/#{tmpname}`
@@ -46,18 +48,20 @@ module Acsdoc
     end
   end
 
-  def command_with_input(s,tag, ifile, ofile, dirname )
+  def command_with_input(s,tag, ifile, ofile, dirname, showout )
     a = s.chomp.split
     endtag = a.pop
     indata=""
     until (line= ifile.gets.chomp) =~ /#{endtag}/
-      p indata
-      print "\n"
-      p line
-      print "\n"
+      if $DEBUG
+	p indata
+	print "\n"
+	p line
+	print "\n"
+      end
       indata += line+ "\n"
     end
-    print "indata:\ ", indata, "indata end\n"
+#    print "indata:\ ", indata, "indata end\n" 
     tmpinname =   ".acsdoc.command-in"
     open(dirname+"/"+tmpinname, "w+"){|f| f.print indata}
         indent = s.index(tag) 
@@ -66,17 +70,20 @@ module Acsdoc
     prompt = " "* indent + @@prompt
     commandline = a[1..a.size].join(" ").chomp
     ofile.print "---\n"
-    outfile = open(tmpname, "w+")
-    fullcommand = "cd #{dirname}; "+commandline
-    fullcommand  += "<" + tmpinname +  " >& " + tmpname 
-    print "Generating output of \"#{commandline}\"...\n"
+    fullcommand = "cd #{dirname}; (" +commandline+ "<" + tmpinname + " )"
+    if showout
+      fullcommand  +=   " >& " + tmpname if showout
+      print "Generating output of \"#{commandline}\"...\n" 
+    else
+      print "Executing command \"#{commandline}\"...\n" 
+    end
     print "command to run = ", fullcommand, "\n" if $DEBUG
     open(tmpcommand,"w+"){ |f|  f.print fullcommand + "\n"}
     system("cat  #{tmpcommand}") if $DEBUG
     system("csh -f #{tmpcommand}");
-    outfile.close
     ofile.print prompt + commandline, "\n"
-    output = indata + `cat #{dirname}/#{tmpname}`
+    output = indata 
+    output += `cat #{dirname}/#{tmpname}`  if  showout
     output.each{|x| ofile.print " "*indent + x}
     ofile.print "---\n"
   end
@@ -135,7 +142,9 @@ module Acsdoc
       elsif loc = s.index(":prompt:")  and s.index("\":prompt:\"")==nil
 	set_prompt(s)
       elsif loc = check_tag(s,":commandinputoutput:")
-	command_with_input(s,":commandinputoutput:", ifile, ofile, dirname )
+	command_with_input(s,":commandinputoutput:", ifile,ofile,dirname,true)
+      elsif loc = check_tag(s,":commandinput:")
+	command_with_input(s,":commandinput:", ifile, ofile, dirname,false)
       else
 	ofile.print s
       end
