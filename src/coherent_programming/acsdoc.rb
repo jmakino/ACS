@@ -1417,6 +1417,7 @@ else
 end
 
 unless tolatex_flag
+  print "rdoc #{coptions} #{ARGV.join(" ")} \n" 
   system("rdoc #{coptions} #{ARGV.join(" ")}") 
   add_toc
   process_css
