@@ -78,7 +78,8 @@ single particle.  For an object oriented language like Ruby, that
 suggests that we create a class +Body+ for a particle in an N-body
 system.  How about:
 
-:include code: body01.rb
+:inccode: .body.rb-barebones
+  
 
 *B*: Let's see whether it behaves as we think it should.  We can use the
 interactive Ruby shell +irb+, and we can start it up with the
@@ -178,7 +179,7 @@ arrays such as <tt>pos[]</tt> and <tt>vel[]</tt> as well as single
 variables such as +m+ will probably have already a +to_s+ method
 associated with them.  Let's check.  How about this:
 
-:include code: body02.rb
+:inccode: .body.rb.to-s-wrong
 
 *A*: Good idea to write a comment at the top, to remind us what this
 class is for.  We may as well get into the habit of writing comments
@@ -209,7 +210,7 @@ that's were the word "string" comes from, after all.
 something to do that.  Here it is: the method +join+ converts an array
 to a string, and you can give a separator as an arguments.  Let's try:
 
-:include code: body03.rb
+:inccode: .body.rb.to_s
 
 *A*: The rather lengthy prompt of +irb+ is beginning to bother me.  I
 read that we can customize it.  Shall we leave out the <tt>irb(main)</tt>
@@ -264,7 +265,7 @@ from the command line, rather than using the interpreter.  We may as
 well use the <tt>to_s</tt> method to define a pretty printing method
 +pp+ that we can then invoke directly, as follows:
 
-:include code: body04.rb
+:inccode: body04.rb
 
 *B*: Let's run it:
 
@@ -326,7 +327,7 @@ orbit, or a planetary system in a planar approximation, later on.
 *B*: Since I don't like global variables, let's encapsulate +NDIM+ as
 a class constant, with the +Body+ class:
 
-:include code: body05.rb
+:inccode: body05.rb
 
 *A*: Let's see.  To run this, we now have to put in the values by hand:
 
