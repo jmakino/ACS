@@ -1,0 +1,43 @@
+Date: Fri Jan 02 12:16:27 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+ > > So if you don't mind, I would prefer to start a "not@acs.org", with
+ > > the type of implementation you mentioned above (as *fairly* easy).
+ > 
+ > Now it is *more or less* working. If you have comments on style etc,
+ > please let me know.
+
+Wonderful, very nice and convenient.  I also like the style.
+
+ > > For now, shall I simply dump our current email in lab notes, perhaps
+ > > one session per day with all the emails together?  If so, one session,
+ > > or two separate sessions, one for your emails, and one for mine?
+ > > Alternatively, to keep the flow of thoughts, I could make one loooong
+ > > session, in which I just add all the emails together, but then related
+ > > emails following each other.  Any preference?
+ > 
+ > Well, either way.... It's certainly better to keep time sequence
+ > right, though.
+
+Okay, I added all the email of the last few days, before you started
+the "not@..." mechanism.  It was a bit tricky, since the date at which
+I was writing was sometimes switching past midnight in Princeton,
+although it was in the middle of the day here.  Oh well, at least it
+is all there now.
+
+So now the lab notes for the last two months should be self contained
+and complete!
+
+However, I think I did something wrong, since now the labnotes file
+for 2003/12 comes up in my rdoc window with a grey-white color smeared
+over the normally bright blue color of the banner at the file header.
+The grey smear continues for about the first half of the file, then
+things get clearer again.  I put a white space at the front of each
+line in all the email files that I committed, but I guess there are
+still other commands somewhere that are funny, some email directives
+that confuse rdoc?  Well, I guess we can check that later, unless you
+immediately see what went wrong.
+
+Piet
+
