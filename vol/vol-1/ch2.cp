@@ -1003,26 +1003,80 @@ of the Unix system: a large number of small tools, where you can pipe
 the results from one tool into the next one.
 
 *Alice*: That would be one example of what I had in mind, but it is not
-the only one.  
+the only one.  There are other ways of combining a number of small tools.
+However, this type of decision we can make later.  The main thing now
+is to agree upon the general approach: to provide a number of simple
+tools that can be used together to analyze the results of a calculation.
+
+*Bob*: Fair enough.  But you started out talking about choices we have
+to make with respect to the software environment.  I thought you would
+talk about operating systems and languages and stuff like that.  In
+short: what type of platform do we run our toy model integrator and
+toolbox on?
 
 === Operating System
 
-*Alice*: 
+*Alice*: Given that we are both used to working in Unix, there is not
+much of a question, as for as the operating system goes.  Most of my
+work I do on a laptop, running Linux.
 
-*Bob*: 
+*Bob*: me too, but that is not necessarily true for most of the students.
+If we do not make our environment available for Windows and for the Mac,
+we may not have much of an audience.
+
+*Alice*: I have no experience at all, porting software to a different
+platform.
+
+*Bob*: I have some.  For example, putting stuff on a Mac is not that
+hard, after they switched to Unix as the underlying environment.  As
+for windows, a lot of the GNU tools have been ported there as well.
+If you use cygwin, basically any program written for Unix is likely
+to work.
+
+*Alice*: Can you just type gcc and expect to find a GNU compiler,
+under cygwin?
+
+*Bob*: Yes, you can.
+
+*Alice*: Amazing.  And how about emacs?
+
+*Bob*: Yes, emacs is there, as well as all the standard Unix commands
+and programs.
+
+*Alice*: Does that mean that when we develop our toymodel under Linux,
+we can make a tar ball, copy that to a machine running Windows and
+cygwin, untar it, and expect everything to work right away?
+
+*Bob*: Well, you can be lucky, but realistically speaking, you'll have
+to test it first, and you may well find some minor problems here and
+there.  But of course, if you would switch from one Unix system to
+another, you would also have to make minor adjustments.
+
+*Alice*: I know.  Even switching from one Linux distribution to another
+has given me plenty of surprises in the past.  Often it was just a
+question of tools being stored in different places.
+
+*Bob*: Yes, but that's no big deal, and easy to fix.
+
+*Alice*: For you perhaps, but if I had to do that myself I might be
+stuck for hours, without someone more experienced to help me.  Well,
+I'm glad we're doing this project together.  I'll count on you to
+do what you call the easy things.
+
+*Bob*: We aim to please!
 
 === Choosing a Language
 
-*Bob*: Before we get started, we have to pick a particular language.
-I have no strong preference among Fortran, C, or C++.  They all have
-their strengths and weaknesses.  C is nice and fast and straightforward.
-Fortran has by now caught up with C quite well, after lagging behind for
-a long time in a lack of appropriate date structures.  C++ is an unwieldy
-beast of a language, but if you use an appropriate subset, and you don't
-try to become a language lawyer dealing with multiple inheritance and all
-that stuff, it's a good tool; it's fast enough, and you don't look at
-the unreadable stuff the compiler produces.  Your choice: which of the
-three?
+*Bob*: Finally we will have to make the decision which programming
+language to use.  I have no strong preference among Fortran, C, or
+C++.  They all have their strengths and weaknesses.  C is nice and
+fast and straightforward.  Fortran has by now caught up with C quite
+well, after lagging behind for a long time in a lack of appropriate
+date structures.  C++ is an unwieldy beast of a language, but if you
+use an appropriate subset, and you don't try to become a language
+lawyer dealing with multiple inheritance and all that stuff, it's a
+good tool; it's fast enough, and you don't look at the unreadable
+stuff the compiler produces.  Your choice: which of the three?
 
 *Alice*: Perhaps none of the above?
 
@@ -1072,7 +1126,7 @@ everything all over the place to make the gods of the C++ compiler happy.
 Python.  But in fact, there is another choice, even better in my eyes.
 It is called Ruby.
 
-*Bob*: Never heard of it.  What's the difference with Perl and Python.
+*Bob*: Never heard of it.  What's the difference with Perl and Python?
 
 *Alice*: Since it was developed after Perl and Python had already come
 into being, the author of the language, Yukihiro Matsumoto, had the
@@ -1129,17 +1183,123 @@ your toy model have much to do with the reality of production runs!
 
 === Graphics
 
-*Alice*:
+*Bob*: One more thing to decide, that is just as essential as choosing
+an operating system and a programming language.  We have to pick a
+plotting package.  The students must have a way to display the results
+of their calculations on the screen, and also a good way to print the
+pictures they produce.
 
-*Bob*:
+*Alice*: I am using pgplot for my own work.  That seems to be doing all
+that I want, normally.
+
+*Bob*: Same here.  I have some familiarity with Matlab, as well as a
+number of other packages, but none of them are open source.  And since
+we decided to go the route of free software, we cannot rely on
+proprietary packages.  So pgplot would be a reasonable choice.
+However, I'm not hundred percent sure that it is open source.
+
+*Alice*: No?  I was convinced it was open source.  I've never paid
+for it, or signed any licence.
+
+*Bob*: I know.  But when I checked on their web site, it was not really
+clear to me what their status was.  Yes, they are open source in the
+sense that their source is open: you have free access to all the
+source code.  However, in their case this does not automatically imply
+that you can distribute it freely to third parties.
+
+*Alice*: That would be inconvenient.  It would be far easier if we can
+bundle our own environment together with the libraries that we invoke.
+And graphics will indeed form an essential part of our whole package.
+Are you sure we can't make it available?  If we and everybody else can
+copy it freely from the web, what difference would it make if we put
+up our own copy?
+
+*Bob*: That's the point: not everybody can pick it up freely.  If you
+read the fine print, you will see that it is only really free for
+educational purpose.
+
+*Alice*: That may be good enough for us, since we are only dealing
+with students.
+
+*Bob*: For our classes, yes, we can make pgplot available.  But it seems
+that we cannot make it available on the web, since anybody can access
+our web site, also people who are not officially within the educational
+sphere.
+
+*Alice*: In that case, we can put a pointer on our web site to the
+place where one can pick up the source code.  That's not as convenient
+as providing everything in a bundled way, though.
+
+*Bob*: I know.  They have a line on their web site, saying that you
+can only copy their software to your web site after getting official
+permission from them.  Right now may be premature, but once we have a
+reasonable package installed on our web site, we may want to send
+them an email, asking for permission to put a copy of pgplot directly
+on our web site.
+
+*Alice*: That seems like a good idea.  Are there any alternatives?
+
+*Bob*: The only thing I can think of is Gnuplot, but I have found pgplot
+to be far more convenient for scientific plotting.
+
+*Alice*: I have tried Gnuplot too, and I agree.  So let's at least get
+started with pgplot.  But here is an idea.  Since we may want to switch
+to a differen graphics package in the future, it would be very unpleasant
+if we then had to translate all pgplot commands into the equivalent
+commands in that other package.  We could instead define our own
+virtual plotting commands, and write a simple wrapper to translate them
+into a subset of pgplot commands that is large enough for our purposes.
+
+*Bob*: Well, I don't like all those extra layers of code, and I'm afraid
+I've already given you too much leeway with your interface demands.  Why
+not just write everything in pgplot for now.  If and when we switch to
+a different plotting package, only then do we write a wrapper that
+emulates pgplot.
+
+*Alice*: But it might be a lot of work to write a wrapper around a
+whole package.  If we decide right from the beginning to use only a
+small subset of pgplot, and if we keep a list of the commands we use,
+we only have to write a wrapper around those commands, not around the
+whole package.  Finally, the best way to insure that we really don't
+use anything else but our small list of commands is to give each
+command we use an alias.  That way we cannot make any mistakes.
+
+*Bob*: If a very good function is available in pgplot, why not use it?
+
+*Alice*: Oh, it would be fine to add extra functions to our list of what
+we use.  We can certainly extend the subset, whenever we like.  My main
+point is that we keep close tabs on exactly what we use, and that we think
+carefully, before adding something to the subset.
+
+*Bob*: The problem with providing a virtual layer between the user and
+pgplot is that we have to make a decision of what type of plotting model
+we want to use.  Even if we restrict ourselves to two dimensional plots,
+there are several models.  For example, in postscript you deal  directly
+with a set of coordinates on paper, in terms of inches.  And other
+graphics packages provide transformations between model coordinates,
+often called world coordinates, and device coordinates.  So we are dealing
+with a situation that is much more complex than just providing a set of
+aliases.
+
+*Alice*: I see.  Well, perhaps you are right.  Maybe it would be okay to
+go ahead with pgplot for now.  But let us come back to this question
+before too long, after we have build a skeleton version of our toy model.
+By that time, we might have a better idea of how fancy our requirements
+will turn out to be.
+
+*Bob*: I'm glad I could finally convince you not to add an extra layer
+of software somewhere.  So now we can finally get started?
 
 == Style
 
 === Literate Programming
 
-*Alice*:
+*Alice*: Not quite.  We have talked about writing programs and providing
+an environment, but we haven't said anything yet about documentation.
 
-*Bob*:
+*Bob*: Well, my class notes will be the documentation, I thought.
+
+*Alice*: 
 
 === Coherent Programming
 
