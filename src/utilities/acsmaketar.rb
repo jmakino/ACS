@@ -55,9 +55,9 @@ New release name (specify "1.0" for version 1.0). If not specified,
 #{$0} requests input from standard input.
 
 
-  END
+END
 
-  clop= Clop.new(optionstext,ARGV)
+clop= Clop.new(optionstext,ARGV)
 p $webonly
 p $localonly
 p $releasename
