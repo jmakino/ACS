@@ -46,14 +46,15 @@ method</i> +new+ calls the <i>instance method</i> +initialize+ to give
 each particle its proper internal values.
 
 Note also the hierarchy.  When you issue the command +new+, then in
-turn +new+ invokes the method +initialize+, in a way that is hidden
-from the user.  Note that the error message mentioned a <tt>private
-method `initialize'</tt>.  This means that the method initialize is
-there alright, it just is not publicly avaible -- which means in turn
-that you cannot use the function from outside the scope of the class
-definition.  The method <tt>Body.new</tt>, however, does have access;
-it is defined to be part of the class +Body+, so it does have access
-to all the methods of +Body+, even those that are private.
+turn +new+ invokes the _instance_ method +initialize+, in a way that
+is hidden from the user.  Note that the error message mentioned a
+<tt>private method `initialize'</tt> of the class +Body+.  This means
+that the _class_ method +initialize+ is there alright, it just is not
+publicly avaible -- which means in turn that you cannot use the
+function from outside the scope of the class definition.  The method
+<tt>Body.new</tt>, however, does have access; it is defined to be part
+of the class +Body+, so it does have access to all the methods of
++Body+, even those that are private.
 
 Finally, at the danger of confusing you, but to make the explanation
 complete, note that methods are by default always public.  This makes
@@ -214,3 +215,202 @@ shortcut.
 
 In order to change the mass we have to add the following line to the
 class definition.
+
+    irb(main):018:0> class Body
+    irb(main):019:1>   def mass
+    irb(main):020:2>     @mass
+    irb(main):021:2>   end
+    irb(main):022:1>   def mass=(m)
+    irb(main):023:2>     @mass = m
+    irb(main):024:2>   end
+    irb(main):025:1> end
+    => nil
+
+*Alice*: Wait a minute!  You are now giving a new definition of the class
++Body+.  Doesn't that override the older definition that we have give
+before?
+
+*Bob*: Ah, but that's the beauty of Ruby, one of its many beauties, that
+you can always add new features to a class, whenever you want!  Each time
+you define features of a class or a module that already exists, Ruby adds
+those features to whatever is already there.
+
+*Alice*: It does look as if Ruby will make both of us happy!  You don't
+feel encapsulated, because you can add anything any time, and I still
+feel modular, since I know it all winds up internally inside one class
+definition.  As for the two methods you introduced, they are effectively
+`get' and `set' functions, I presume?
+
+*Bob*: Yes.  The first method echoes the value of the internal variable
+<tt>@mass</tt>.  While the variable <tt>@mass</tt> itself is private,
+the methode <tt>mass</tt> is public by default, so this gives you the
+simple way I promised, to access data that would be hidden otherwise.
+
+The second method allows you to change the internal state of an object.
+Note that the equal sign is part of the name.  The method is called
+<tt>mass=</tt>, with one parameter +m+.  And the effect of calling
+this method is to assign the value of its parameter to the internal
+variable <tt>@mass</tt>.
+
+*Alice*: The syntax <tt>mass=(m)</tt> looks rather odd, if you ask me,
+this combination of an equal sign and parentheses.  Anyway, let's see
+whether I understand it correctly.
+
+    irb(main):026:0> d.mass
+    => 1
+    irb(main):027:0> d.mass=(2)
+    => 2
+    irb(main):028:0> d.mass
+    => 2
+
+Great!  It works as advertised.  Of course there was no need to type
+the third line, but I just wanted to be sure that everything was
+consistent.  However, I still don't like the syntax of <tt>=()</tt>.
+
+*Bob*: Ah, but here is where Ruby's freedom of expression helps out:
+those parentheses are optionally.  You needed them in the method
+definition, to tell the Ruby interpreter that you were dealing with a
+parameter that was an argument of a method.  But once defined, you can
+leave them out when you give a command.  And you can even introduce a
+space between <tt>mass</tt> and <tt>=</tt> if you like.  In general,
+of course you can introduce spaces in the middle of a name, but in the
+case of a method name ending on <tt>=</tt>, this is allowed.  This is
+one of the many places where Ruby caters to the pleasure of the user,
+and not to the pleasure of someone with a rigid logical bend.  Here
+are a couple examples.
+
+    irb(main):029:0> d.mass = 3
+    => 3
+    irb(main):030:0> d.mass=4
+    => 4
+
+*Alice*: Much better!  I like the pragmatic compromise between clarity
+and ease of use.
+
+== Syntactic Sugar
+
+*Bob*: You may guess how we can give `get' and `set' functions for the
+other internal variables.  Here is how we deal with the position
+
+    irb(main):031:0> class Body
+    irb(main):032:1>   def pos
+    irb(main):033:2>     @pos
+    irb(main):034:2>   end
+    irb(main):035:1>   def pos=(p)
+    irb(main):036:2>     @pos = p
+    irb(main):037:2>   end
+    irb(main):038:1> end
+    => nil
+    irb(main):039:0> d.pos
+    => [0.5, 0, 0]
+    irb(main):040:0> d.pos = [0.5, 0, 0.1]
+    => [0.5, 0, 0.1]
+
+*Alice*: The way you use the `set' function is different, in the sense
+that for the position you now provide a vector, rather than a scalar.
+But everything else is the same, in particular the definition.  It is
+nice that Ruby is so homogeneous in its notion: it doesn't care at the
+level of the definition whether a variable describes a scalar or a vector.
+
+*Bob*: That is a nice aspect of dynamic typing.  And it also invites a
+more compact notion.  Rather than writing everything all over again for
++vel+ instead of +pos+ above, you can use a convenient shorthand
+notation, a piece of syntactic sugar as these are sometimes called.
+The six lines above that define the two methods to read and write
++pos+ values can be replaced by the following single line:
+
+    attr_accessor :pos
+
+You can even add more than one variable on one line.  This line:
+
+    attr_accessor :mass, :pos, :vel
+
+replaces no less than eighteen lines of code written out in full.
+
+*Alice*: Why the cryptic name?
+
+*Bob*: Because there are two more elementary commands:
+
+    attr_reader :pos
+
+replaces the first method definition above, and
+
+    attr_writer :pos
+
+replaces the second method definition.  The word +accessor+ is meant
+to suggest that you can both read and write, <i>i.e.</i> you have
+two-way access to the variables, from outside.
+
+*Alice*: I certainly prefer this compact notation.  But if we now add
+that to our class definition, I may get confused, with bits and pieces
+of the class definitions spread here and there throughout our +irb+
+session.  Is it possible to put everything in a file, and somehow let
++irb+ have access to the definitions in that file?
+
+*Bob*: Yes, that can be done.  First we put all the definitions in the
+file <tt>body2.rb</tt>, where <tt>.rb</tt> is the standard ending for
+a file name that contains Ruby code.  I added the <tt>2</tt> here because
+this is our second attempt to define a +Body+ class, and I'm sure
+there will be more.  I'll type it straight into the file, since it's
+so short.  Here it is, <tt>body2.rb</tt>:
+
+ :inccode: body2.rb
+
+Now we can start a new +irb+ session by giving the name of a file that
+will be loaded when +irb+ starts up, as follows:
+
+    |gravity> irb -r body2.rb
+    irb(main):001:0> b = Body.new
+    => #<Body:0x400d4930 @pos=[0, 0, 0], @mass=0, @vel=[0, 0,
+       0]>
+    irb(main):002:0> b.mass
+    => 0
+
+*Alice*: That is much more convenient, to start a session with the
+previous knowledge already in place.  Let me try something new
+
+    irb(main):003:0> b.pos[1]
+    => 0
+
+Ah, that works.  So you can select a component of a vector and use
+that directly in a reader function, and presumably also in a writer:
+
+    irb(main):004:0> b.pos[1] = 0.5
+    => 0.5
+    irb(main):005:0> b
+    => #<Body:0x400d4930 @pos=[0, 0.5, 0], @mass=0, @vel=[0, 
+      0, 0]>
+
+As expected.  And an array index in Ruby obviously start with a 0,
+as in C and C++, rather than with a 1, as in Fortran.  <tt>b.pos[1]</tt>
+is the second element of the array, while <tt>b.pos[0]</tt> is the
+first element.
+
+*Bob*: I saw you hesitating when you typed line 4.  I would have
+thought you would type something like:
+
+    irb(main):006:0> b.vel = [0.1, 0, 0]
+    => [0.1, 0, 0]
+    irb(main):007:0> b
+    => #<Body:0x400d4930 @pos=[0, 0.5, 0], @mass=0, @vel=[0.1
+      , 0, 0]>
+    irb(main):008:0> 
+
+which is an alternative but more clumsy way to change the element in
+an array.  When you want to change more than one value, it is of course
+easier to use array notation:
+
+    irb(main):008:0> b.vel = [1, 2, 3]
+    => [1, 2, 3]
+    irb(main):009:0> b
+    => #<Body:0x400d4930 @pos=[0, 0.5, 0], @mass=0, @vel=[1, 
+      2, 3]>
+
+*Alice*: Yes, you read my mind.  I had understood that "<tt>b.pos =</tt>"
+is parsed by Ruby as an assignment operator "<tt>pos=</tt>"
+associated with +b+ and frankly I did not expect that I could throw in
+the component selector "<tt>[1]</tt>" without complaints from the
+interpreter.
+
+*Bob*: but it did the right thing!  This must be what they mean when
+they say that Ruby is based on the principle of minimum surprise.

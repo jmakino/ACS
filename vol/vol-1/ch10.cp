@@ -14,8 +14,6 @@ add to each variable its derivative multiplied by the value of the
 time step.  In other words, you just step forward by incrementing each
 variable by its derivative, as specified by the differential equation.
 
-#<i>[We will have to put an equation here -- Piet]</i>
-
 <tex> $$\frac{dx}{dt} = f(x)$$</tex>
 
 <tex> $$x_{\rm new} = x_{\rm old}+ f(x_{\rm old})\Delta t$$</tex>
@@ -115,22 +113,26 @@ your life arbitrarily difficult by hiding any and all information
 within those objects, but I don't particularly care for that aspect.
 
 *Alice*: I do think encapsulation has its good sides, but we can come
-back to that later.  What exactly can be an object?  Do you always
-need to have a bunch of variables, or can you add functions as well?
+back to that later.  What exactly is it that you can put inside an object?
+I guess an object can contain internal variables.  Can it contain
+functions as well?
 
 *Bob*: To take the specific case of Ruby, a typical class contains both.
-For a class to be useful, you have at least to be able to create an
-instance of a class, so you need an initializer, roughly what is
-called a constructor in C++.  This function can either be explicitly
-be present or be hidden, but it is always there.  Note as a matter of
-terminology that what I have called a function, or what would be
-called a subroutine in Fortran, is called a method in Ruby.
+For a class to be useful, at least you have to be able to create an
+instance of a class, so you need something like what is called a
+constructor in C++.  In the case of Ruby, like in the case of C++, you
+have the freedom to define an initializer, through which you can
+create an instance of a class with your desired values for the
+internal variable.  Or you can choose not to define an initializer,
+that is fine too.
 
-There are other objects in Ruby, besides classes.  Sometimes you have
-a group of functions that are either similar or just work together
-well, and you may want to pass them around as a bundle.  In Ruby, such
-bundles of functions are called modules.  But to get started, it is
-easier to stick to classes for now.
+Note as a matter of terminology that what I have called a function, or
+what would be called a subroutine in Fortran, is called a method in
+Ruby.  There are other objects in Ruby, besides classes.  Sometimes
+you have a group of functions that are either similar or just work
+together well, and you may want to pass them around as a bundle.  In
+Ruby, such bundles of functions are called modules.  But to get
+started, it is easier to stick to classes for now.
 
 *Alice*: Ah, that is nice!  Does this mean that we can define an
 integration algorithm as a module, independent of the particular
@@ -195,7 +197,7 @@ down below, does not occur in your short and sweet Ruby class definition.
 values.  You can let Ruby do that for you without even asking for it.
 
 Here is what you do.  The easiest way to work with Ruby is to use the
-shell +irb+.  The acronym stands for <i>interactive Ruby</i>.  You
+command +irb+.  The acronym stands for <i>interactive Ruby</i>.  You
 invoke it by simply typing +irb+ on the command line.  Now As soon as
 you create an instance of a class in Ruby, the interpreter echoes the
 content to you, for free!
@@ -295,7 +297,8 @@ a block of text that ends with +end+.
 
 *Bob*: And since you only give the definition of +Body+ without yet
 creating any instances, there is no value associated with it.  Here
-+nil+ means effectively `undefined'.
++nil+ means effectively `undefined'.  In Ruby, the definition of a
+class does not return a value.
 
 *Alice*: That makes sense.  So the class +Body+ has only one function,
 starting with +def+ and ending with the inner +end+, correct?
