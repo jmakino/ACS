@@ -1,5 +1,5 @@
-#SRC =  ch01.cp  ch02.cp  ch03.cp  ch04.cp  ch05.cp \
-#              ch06.cp  ch07.cp  ch08.cp  ch09.cp ch10.cp ch11.cp ch12.cp
+#SRC =  ch01.cp  ch02.cp  ch03.cp  ch04.cp  ch05.cp ch06.cp ch07.cp ch08.cp \
+#       ch09.cp  ch10.cp  ch11.cp  ch12.cp  ch13.cp  ch14.cp  ch15.cp
 SRC =  ch13.cp
 
 vol1.tex: $(SRC) .acsdocinitrc 

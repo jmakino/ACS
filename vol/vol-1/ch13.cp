@@ -200,19 +200,19 @@ new file <tt>lbody.rb</tt>.  Let's do a diff:
     |gravity> diff body.rb
     11c11
     <   def evolve(dt, dt_dia, dt_out, dt_end)
-    ---
+    - -
     >   def evolve(integration_method, dt, dt_dia, dt_out, dt_end)
     22c22
     <       evolve_step(dt)
-    ---
+    - -
     >       self.send(integration_method,dt)
     36c36
     <   def evolve_step(dt)
-    ---
+    - -
     >   def acc
     39c39,42
     <     acc = @pos*(-@mass/r3)
-    ---
+    - -
     >     @pos*(-@mass/r3)
     >   end    
     > 

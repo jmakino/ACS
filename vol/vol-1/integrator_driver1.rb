@@ -2,10 +2,10 @@ require "lbody.rb"
 
 include Math
 
-dt = 0.0001           # time step
-dt_dia = 10           # diagnostics printing interval
-dt_out = 10           # output interval
-dt_end = 10           # duration of the integration
+dt = 0.001           # time step
+dt_dia = 10          # diagnostics printing interval
+dt_out = 10          # output interval
+dt_end = 10          # duration of the integration
 #method = "forward"  # integration method
 method = "leapfrog"  # integration method
 

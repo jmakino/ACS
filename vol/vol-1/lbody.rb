@@ -19,7 +19,7 @@ class Body
     t_end = dt_end - 0.5*dt
 
     while time < t_end
-      self.send(integration_method,dt)
+      send(integration_method,dt)
       time += dt
       nsteps += 1
       if time >= t_dia
