@@ -157,7 +157,7 @@ class Body
   end
 
   def dump_history
-    p @history
+    p @hist
   end
 
   def to_s
@@ -211,6 +211,13 @@ class Nbody
     print "     N = ", @body.size, "\n"
     print "  time = ", @time, "\n"
     @body.each do |b| b.pp end
+  end
+
+  def dump_history
+    @body.each do |b|
+      print "Full history for body ", b.id, " : \n"
+      b.dump_history
+    end
   end
 
   def write(time)

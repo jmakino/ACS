@@ -22,3 +22,6 @@ STDERR.print "eta = ", eta, "\n",
 nb = Nbody.new(method, eta)
 nb.read
 nb.write(t_end)
+
+print "\n"
+nb.dump_history
