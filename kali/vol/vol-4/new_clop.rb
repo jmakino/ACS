@@ -4,7 +4,7 @@ require "vector.rb"
 #:segment start: helperclass
 class Clop_Option
 
-  attr_reader :shortname, :longname, :type,
+  attr_reader :shortname, :longname, :type, :globalname,
               :description, :longdescription, :printname, :defaultvalue
   attr_accessor :valuestring
 
@@ -54,10 +54,6 @@ class Clop_Option
     return false
   end
 
-  def initialize_global_variable
-    eval("$#{@globalname} = eval_value") if @globalname
-  end
-
   def eval_value
     case @type
       when "bool"
@@ -100,7 +96,7 @@ class Clop_Option
       end                                                                   #16
       s += " = " unless @printname == ""                                    #17
       s += "\n  " if @type =~ /^float\s*vector$/                            #18
-      s += "#{eval("$#{@globalname}")}\n"                                   #19
+      s += eval_value.to_s + "\n"                                           #19
     end
     return s
   end
@@ -110,12 +106,12 @@ end
 
 class Clop
 
-  def initialize(def_str, argv_array = nil)
+  def initialize(def_str, argv_array, global_variables_flag)
     parse_option_definitions(def_str)                                        #8
-    if argv_array
-      parse_command_line_options(argv_array)
-    end
-    initialize_global_variables
+    parse_command_line_options(argv_array)
+    initialize_option_variables
+    initialize_global_variables if global_variables_flag
+    check_required_options
     print_values
   end
 
@@ -156,7 +152,9 @@ class Clop
   end
 
   def print_values
-    @options.each{|x| STDERR.print x.to_s}
+    for i in 1...@options.size - 1 do    # exclude header & help (first & last)
+      STDERR.print @options[i].to_s
+    end
   end
 
   def find_option(s)
@@ -190,10 +188,25 @@ class Clop
     end
   end
 
-  def initialize_global_variables
-    @options.each{|x| x.initialize_global_variable}
-    check_required_options
+#  def initialize_variables(magic)                     # for connoisseurs . . .
+#    @options.each{|x| eval("#{magic}#{x.globalname}=x.eval_value") if
+#                                                                x.globalname}
+#  end
+
+  def initialize_option_variables
+    @options.each{|x| eval("@#{x.globalname} = x.eval_value") if x.globalname}
   end    
+
+  def initialize_global_variables
+    @options.each{|x| eval("$#{x.globalname} = x.eval_value") if x.globalname}
+  end    
+
+  def mk_reader
+    s = "class Clop \n attr_reader"
+    @options.each{|x| s += " :#{x.globalname}," if x.globalname}
+    s.chop!
+    s + "\n end"
+  end
 
   def check_required_options
     options_missing = 0
@@ -307,8 +320,10 @@ class Clop
 
 end
 
-def parse_command_line(def_str)
-  Clop.new(def_str, ARGV)
+def parse_command_line(def_str, global_variables_flag = false)
+  c = Clop.new(def_str, ARGV, global_variables_flag)  
+  eval(c.mk_reader)
+  c
 end
 
 if __FILE__ == $0
@@ -418,6 +433,8 @@ if __FILE__ == $0
 
   END
 
-  parse_command_line(options_definition_string)
-
+  clop = parse_command_line(options_definition_string, false)
+  print "clop.rb: testing automatic generation of attribute readers:\n"
+  print "  clop.t_end = ", clop.t_end, "\n"
+  
 end
