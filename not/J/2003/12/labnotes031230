@@ -1,0 +1,25 @@
+=Memo on the changes in acsdoc.rb
+
+* I have changed the structure so that everything is in module
+  Acsdoc. In this way, you can let rdoc to generate proper entries for
+  methods.
+
+* I added the new function, prep_rb, which cuts out code fragments
+  between ":segment start: name" and ":segment end:". This function
+  does minimal error check:
+
+  * If the name of the segment file is the same as one of the
+    currently opened files, print error and abort
+  * If there are too many ":segment end:", print error and abort
+
+* A rather tricky thing is that this program should be able to handle
+  itself as input. This means, the strings like ":segment start:" in
+  program string constant must be escaped. I did it in a rather nasty
+  way, putting the following condition:
+
+      if loc = s.index(":segment start:")  and s.index("\":segment start:\"")==nil
+
+  As you can see, when ":segment start:" is found, the code checks if
+  it is actually ":segment start:" (with double quotes) or not, and if
+  that's the case, does not process that line.
+  
