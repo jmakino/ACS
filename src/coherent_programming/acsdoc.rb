@@ -313,7 +313,7 @@ module Acsdoc
     ostring = ostring +  "---\n"     unless noout
     fullcommand = "cd #{dirname}; "+commandline
     unless noout
-      fullcommand  += ">& " + tmpname
+      fullcommand  = "(#{fullcommand})>&  #{tmpname}" 
       print "Generating output of \"#{commandline}\"...\n" 
     else
       print "Executing command \"#{commandline}\"...\n" 
@@ -359,7 +359,9 @@ module Acsdoc
     ostring = ostring +  "---\n"
     fullcommand = "cd #{dirname}; (" +commandline+ "<" + tmpinname + " )"
     if showout
-      fullcommand  +=   " >& " + tmpname if showout
+#      fullcommand  +=   " >& " + tmpname 
+      fullcommand  = "(#{fullcommand})>& #{tmpname}" if showout
+
       print "Generating output of \"#{commandline}\"...\n" 
     else
       print "Executing command \"#{commandline}\"...\n" 
