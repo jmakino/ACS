@@ -6,7 +6,7 @@ require "mnbody.rb"
 
 include Math
 
-eta = 0.000001          # accuracy parameter
+eta = 0.0001          # accuracy parameter
 #dt_dia = 1           # diagnostics printing interval
 #dt_out = 1           # output interval
 t_end = 0.01         # time of termination of the integration
@@ -20,5 +20,5 @@ STDERR.print "eta = ", eta, "\n",
       "method = ", method, "\n"
 
 nb = Nbody.new(method, eta)
-nb.simple_read
+nb.read
 nb.write(t_end)
