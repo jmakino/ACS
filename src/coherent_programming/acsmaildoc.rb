@@ -52,10 +52,13 @@ module Acsmaildoc
 	end
 	if s.empty? 
 	  inheader = 0
-	  outfile=open($docroot + "/"+ year.to_s + "/"+ month.to_s + 
-		       seqnum.to_s, "w+")
-	  print "open file ", $docroot + "/"+ year.to_s + "/"+ month.to_s + 
-	    seqnum.to_s, "\n";
+	  dirname = $docroot
+	  for subdirname in [year.to_s, month.to_s]
+	    dirname = dirname + "/" + subdirname
+	    mkdir(dirname) unless File.exist?(dirname)
+	  end
+	  print "open file ", dirname+   "/" + seqnum.to_s, "\n";
+	  outfile=open(dirname+ "/"+ seqnum.to_s, "w+")
 	end
       else
 	outfile.print s
