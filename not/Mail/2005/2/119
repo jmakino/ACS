@@ -1,0 +1,87 @@
+Date: Sun Feb 13 19:34:09 JST 2005
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+Well, I made something up... Please look at kali/vol/code_management
+
+ > > Okay, well, so we should have, for each volume directory
+ > > 
+ > >  * some way to specify which files are commnds
+ > >  * some way to specify which files are libraries
+
+These are specified in Makefile, as
+
+ SCRIPTSRCS = check_and_install.rb acsstart.cshrc
+
+in code_management/Makefile  and
+
+ LIBSRCS = clop.rb
+
+vol-3b/Makefile
+
+"make all" should automatically install these to the right places.
+
+ > > And, we need a way to specify
+ > > 
+ > >  * directory to install commands
+ > >  * directory to install libraries
+
+For these, I just made the following two directories
+
+* $ACSROOT/bin ($ACSSCRIPTS)
+* $ACSROOT/lib ($ACSLIBS)
+
+You need to source $ACSROOT/bin/acsstart.cshrc in, for example, your
+.cshrc file.
+
+For this, 
+
+ > >  * (checking stuff I wrote above)
+
+I wrote check_and_install.rb, which is rather clude...
+If you have "clop.rb" defined and placed in two different Makefiles,
+you would get the error message like:
+
+/home/makino/papers/acs/bin/check_and_install.rb:19:in `check_and_install': Target file comes from /home/makino/papers/acs/kali/vol/vol-3b/clop.rb, different from /home/makino/papers/acs/kali/vol/code_management/clop.rb (RuntimeError)
+        from /home/makino/papers/acs/bin/check_and_install.rb:41
+make: *** [libs] Error 1
+
+when you try make (or make libs or make scripts) in the directory
+different from the directory from where the current version comes. So
+if you want to change the location of the original file, you can just
+remove the file named
+
+$ACSSCRIPTS/.sourcenames/file_name
+
+(or $ACSLIBS/.sourcenames/file_name)
+
+These file contain just the information of where the real file comes
+from.
+
+There are still quite a few things to be set up correctly.
+For example, I have not added any execution permission. So for the
+files in "bin" ($ACSSCRIPTS) directory, you cannot say, for example,
+
+ mkplummer.rb
+
+You can  say
+
+ ruby -S mkplummer.rb
+
+(if you have put mkplummer.rb to $ACSSCRIPTS directory), though, and
+you can use "require" to any files in $ACSLIBS without specifying the
+full path (I believe...).
+
+Questions are
+
+ --- should someone set the execution permission? If so, who and how?
+ --- or should we have something like "acsruby" command, which takes
+     care of all the complex things?
+
+Well, anyway, do you think this is in the right direction?
+
+Jun
+     
+
