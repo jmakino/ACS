@@ -278,11 +278,13 @@ more efficient than component notation.
 *Alice*: But now I want to understand how exactly you coded these six
 equations in the file <tt>test.rb</tt> above.
 
-*Bob*: The line <tt>include Math</tt> tells Ruby to load the +Math+ module.
-This is merely a convenience.  We could have left that out, but then
-the square root +sqrt+ would not have been recognized; we would have
-had to write <tt>Math.sqrt</tt> instead.  It is just more convenient
-to load +Math+ right at the beginning.
+*Bob*: The line <tt>include Math</tt> tells Ruby to make the +Math+ module
+visible to the program.  This is an example of what is called a mixin.
+
+However, this is merely a convenience.  We could have left that out,
+but then the square root +sqrt+ would not have been recognized; we
+would have had to write <tt>Math.sqrt</tt> instead.  It is just more
+convenient to mixin +Math+ right at the beginning.
 
 *Alice*: Then you define the size of the time step and the number of
 steps you want to take.  That is a good idea, to introduce them as
