@@ -1,45 +1,10 @@
-2004, May 29, Saturday, Kyoto: Piet
+2004, June 5, Saturday, Kyoto: Piet
 
-Here is the list of breakthroughs, of qualitatively new ideas that we
-encountered while working on our ACS project:
+I created a new directory, kali/vol/vol-11, for volume 11 with as title:
+<i>Plummer's Model</i>.  I plan to write the following contents:
 
-   --  3/2001: in Tucson, first stellar evolution toy model
-   -- 11/2001: in Princeton, start writing MSA
-   --  6/2002: in New York, interface definition st.ev./st.dyn.
-   --  6/2003: in Kyoto, Kali code layout
-   --  9/2003: in Princeton, ACS name and web site
-   -- 11/2003: in Kyoto, Ruby with C speed-up
-   -- 12/2003: in Kyoto, rdoc, acsdoc, lab notes
-   --  1/2004: in Tokyo, from student dialogue to professor dialogue
-   --  5/2004: in Kyoto, Open Knowledge, and ACS 1.0
+* an analytic derivation of the main expressions related to Plummer's model;
 
-   So here is the time line:
+* several versions of the code, including com adjustment, quiet start, etc.
 
-             2001        2002        2003        2004
-         +-|-------|-+----|------+----|--|-||+---|---
-           |       |      |          /  / / | \  |
-         st.ev.   msa   ev/dyn   kali acs/  |  \ ok
-                                     ruby rdoc prof
-
-   Or per semester:
-                                        _____
-                                       |_____|_____
-          _________________       _____|_____|_____|
-         |_____|_____|_____|_____|_____|_____|_____|
-             2001        2002        2003        2004
-
-   Or per academic year:                ___________
-                                       |___________|
-                                       |___________|
-                ___________            |___________|
-    ___________|___________|___________|___________|
-   |___________|___________|___________|___________|
-         2000/2001   2001/2002   2002/2003   2003/2004
-
-   Or per location:
-
-       Kyoto:     4 x
-       Princeton: 2 x
-       Tokyo:     1 x
-       New York:  1 x
-       Tucson:    1 x
+* diagnostic tools, such as energy check and Lagrangian quartiles check.
