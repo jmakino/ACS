@@ -1,0 +1,356 @@
+= N-Body Integrators
+
+== Inspecting the Leapfrog
+
+*Alice*: Yes, I get the idea, and that all makes a lot of sense.
+And now that understand how the data get read in, let's see what will happen
+with them.
+
+In <tt>rknbody1.rb</tt>, I see that you have shifted all the integration
+methods from the +Body+ to the +Nbody class, as well as the +evolve+ function
+that calls them.
+
+*Bob*: The +evolve+ function orchestrates the whole integration process, and
+it is called by the driver, which only knows about the one +Nbody+
+instance that it has created.  So it is logical to put the +evolve+
+method inside the +Nbody+ class.  And since +evolve+ calls the various
+integration methods, it also seemed logical to have +leapfrog+,
+<tt>rk2</tt>, and so on, reside there.
+
+*Alice*: I could imagine an alternative, where each particle is given the
+freedom to use its own integration method, in which case you would
+want to shift those methods back into the +Body+ class, but that would make
+more sense when you use an individual time step algorithm, where each
+particle has its own time step length.  For the simple shared time step case
+that we are starting with, your choice is surely the best.
+
+*Bob*: I could imagine many things, but coding them takes more time than
+imagining them!  I do like the idea of relatively autonomous particles,
+integrating themselves as they want, with stars in denser regions having
+perhaps more specialized integrators, but not today.
+
+*Alice*: Looking at +evolve+, I see almost exactly the same function that
+we used for the two-body problem.  The only difference is that now the
+time is an instance variable for the +Nbody+ class, which means that we
+don't have to pass the time as an argument to the <tt>write_diagnostics</tt>
+class.
+
+*Bob*: Yes.  If I would have left the time as a normal variable that would
+be passed around, the +evolve+ method would have been _exactly_ the same.
+A nice example of recycling code: whether you are dealing with one
+pseudo particle or with _N_ particles, the top level instructions are
+basically the same.
+
+*Alice*: But of course the actual work is different, and in our case more
+complicated.  The forward Euler implementation is a bit hard to recognise,
+at first sight.  Let me start with the new leapfrog method, which
+looks more familiar.  The two-body version was:
+
+ :inccode: .rkbody.rb+leapfrog
+
+while now we have
+
+ :inccode: .rknbody1.rb+leapfrog
+
+This is easy to understand: for each body, basically the same actions are
+taken as was the case for our single pseudo-body, containing the relative
+position information for the two-body case.
+
+*Bob*: The difference being that, invisibly at this level, the +Body+
+method +acc+, which computes the acceleration, has to ask all other
+particles for their position.
+
+== Acceleration
+
+*Alice*: Indeed, +acc+ has grown quite a bit bigger.  In the two-body case,
+we started with
+
+ :inccode: .rkbody.rb+acc
+
+and your new N-body version reads:
+
+ :inccode: .rknbody1.rb+acc
+
+*Bob*: The main difference is the loop that our body has to execute over
+all other bodies.  It is here that I am using my backpointer <tt>@nb</tt>
+that links back to the parent +Nbody+ instance.  In that way, the array of
+bodies becomes visible for our particular body as <tt>@nb.body</tt>, and
+it is this array over which we iterate using the familiar +each+ construct.
+
+*Alice*: And you are excluding the body itself from the loop, to avoid
+getting an infinitely large self interaction, through the line
+
+ :include: .rknbody1.rb-2
+
+*Bob*: Indeed.  For all other bodies, we compute the in a similar way
+as before.  The main difference is that the vector connecting the two
+bodies is not given, as was the case for the two-body problem, where
+there was only one relative vector.  Here we compute the vector pointing
+from the calling particle to the called particle first, as follows:
+
+ :include: .rknbody1.rb-3
+
+*Alice*: And the acceleration _seems_ to have the same mass dependence
+in both cases, the two-body and the N-body case, but here appearances
+deceive: in the two-body case we had an equation of moment for our
+pseudo particle, while here we are now dealing with real particles.
+
+*Bob*: Yes, I thought about that carefully.  Actually, the tricky thing is
+to get the two-body case right, where it is easy to make a mistake, as we
+saw when I was a bit too quick in coding up the diagnostics there.
+For the N-body case, in contrast, it is all a piece of cake.  The line
+
+ :include: .rknbody1.rb-4
+
+Directly implements Newton's law of gravity.
+
+== Newtonian Gravity
+
+*Alice*: When we present this to our students, it would be good to summarize
+the connection specifically.  To wit: the expression for the
+acceleration felt by particle _i_ is given by summing together the
+Newtonian gravitational attraction of all other particles _j_, where
+both _i_ and _j_ take on values from 1 up to and including _N_:
+
+:equation:
+\frac{d^2}{dt^2}\br_i =  G \sum_{j=1 \atop j \neq i}^N M_j
+\frac{\br_j - \br_i}{\,|\br_j - \br_i|^3}
+
+Here <tex>$M_j$</tex> and <tex>$\br_j$</tex> are the mass and position
+vector of particle _j_, and _G_ is the gravitational constant.  To
+bring out the inverse square nature of gravity, we can define
+<tex>$\br_{ji} = \br_j - \br_i$</tex>, with <tex>$r_{ji} = |\br_{ji}|$</tex>,
+and unit vector <tex>$\hat \br_{ji} = \br_{ji} / r_{ji}$</tex>:
+
+:equation:
+\ba_i = G \sum_{j=1 \atop j \neq i}^N
+\frac{M_j}{r_{ji}^2} \,\hat\br_{ji}
+\label{newton}
+
+Note that the summation excludes self-interactions: every particle
+feels the forces of the other <tex>$N-1$</tex> particles, but not its
+own force, which, as we already mentioned, would be infinitely large
+in case of a point mass.
+
+*Bob*: That's a nicely crisp summary.  And what is really
+nice in our Ruby implementation, is that we _never_ have to introduce
+the counters _i_ and _j_ that are so ubiquitous in any N-body code I have
+ever seen.  Just as we could dispence with the _k_ variable for the
+components of a vector, we can avoid the other two counters by asking
+arrays and vectors to just loop over themselves.
+
+*Alice*: And this is one of the features that makes Ruby eminently suited
+for prototyping and development work in general.  Whether Ruby will be used
+eventually for an industrial-strength production-type code, that remains
+to be seen.
+
+*Bob*: If so, we'll have to do some very serious speed-up.  My impression
+so far has been that Ruby is at least a couple orders of magnitude slower
+than the equivalent C or Fortran implementation.
+
+*Alice*: And in addition, our leapfrog calculates the acceleration twice
+on the +Nbody+ level, and for each particle pair, the relative acceleration
+is also computed twice.
+
+*Bob*: If we had been a little more clever, we would have saved a factor
+four there too.  I bet we can speed up our code by a stunning factor of
+a thousand or so, if we pull all stops!
+
+*Alice*: Maybe, we'll see in due time.  For now, I think we _are_ being
+clever, by not worrying at all about optimization.  The point is to bring
+out the underlying structure, which is complex enough all by itself.  Once
+we really see that clearly, we can start optimizing while avoiding confusing
+clutter.
+
+== A Matter of Taste
+
+*Bob*: Note, by the way, one more difference between the 2-body and
+N-body case: in the latter case we have to accumulate the results,
+through the summation you just showed.  Before traversing the loop
+over particles, we have to clear the vector where the acceleration +a+
+on our particle is being stored.  I experimented with various ways to
+do so, but the most compact notation I found was what I wrote on the top
+of the +acc+ method:
+
+ :include: .rknbody1.rb-5
+
+Isn't that a nifty and compact expression?
+
+*Alice*: I see.  In order to provide a null vector for the acceleration
+with the right number of components, you use the position as a template,
+and after copying the position, you fill all entries with zeroes.  I'm
+glad you put a command line in, since otherwise the meaning wouldn't
+have been so obvious at first reading.
+
+Hmmm.  While I agree that it is compact, perhaps a longer expression would
+have been a bit more clear.  How about
+
+    a = ([0]*@pos.size).to_v            # null vector of the correct length
+
+*Bob*: Yes, that would bring out the fact that you use the position vector
+_only_ because you want to extract its size, and not for any other reason.
+And you explicitly show how you start with an array of length 1,
+filled with a single 0, and then extend that array to contain
+<tt>@pos.size</tt> components.  But then you still have to convert it into
+a vector.  You see, I avoided the last step by starting with a copy of
+<tt>@pos</tt>, which was already a vector.
+
+*Alice*: Yes, your construction was clever, but I'm still wondering about
+the unsuspecting reader, who has to make sense of your cleverness.  In fact,
+in my more lengthy alternative, notice that I left your comment line
+in, since upon first reading, even my longer line would still not be fully
+clear, Im afraid.
+
+If I really wanted to be self-explanatory, I would write:
+
+    vector_size = @pos.size
+    a = ([0]*vector_size).to_v
+
+That way I would express the fact that +a+ is a vector, that it needs
+to be off the right size, that it should contain all zeroes, and that
+it should be converted to a proper vector at the end of the day.
+
+*Bob*: A long day, if you ask me.  I prefer to stick with my 
+
+ :include: .rknbody1.rb-5
+
+*Alice*: Fine with me.  This is really a matter of taste.
+
+*Bob*: While we're at in, let me walk you through the rest of the +Body+
+class definition.  The potential is constructed in a very similar way
+as the acceleration, by doing a body walk through the whole system.
+The difference is that the potential energy includes a product of the
+mass of the calling particle and the called particle:
+
+:equation:
+E_{pot} =  - G \sum_{j=1 \atop j \neq i}^N 
+\frac{M_i M_j}{|\br_j - \br_i|}
+
+*Alice*: Yes, of course, and that is something that is easy to leave out.
+If I would have written the potential method +epot+, using the
+acceleration method +acc+ as a template, I might have forgotten to include
+the factor <tt>@mass</tt> for the calling particle.  And such a bug might
+be hard to find at first, since we tend to test a code with simple values
+for the masses, often just unity.  In general, it is important to run
+tests with masses that were not all unity.
+
+== Local Arrays
+
+*Bob*: The rest of the input and output routines are unchanged, compared to
+our earlier two-body code.  Let's return to the +Nbody+ class.  You mentioned
+that the +leapfrog+ method was almost the same as before.  Unfortunately,
+that is the only one of our four integration methods that remained quite
+simple to read.  The other three have become a bit more crowded, I'm afraid.
+
+*Alice*: I'll start with the forward Euler case again.  In +forward+, you
+have replaced the previous form
+
+ :inccode: .rkbody.rb+forward
+
+by:
+
+ :inccode: .rknbody1.rb+forward
+
+*Bob*: This is a tricky point.  Before we stored the original acceleration
+in the vector <tt>old_acc</tt>, which was a single physical vector, containing
+the relative acceleration between our two particles.  In the N-dimensional
+analogue that we have here, we need to store _N_ initial acceleration vectors,
+one for each particle.
+
+The most straightforward solution would be to define a new instance variable
+for the +Body+ class, <tt>@old_acc</tt>, but I rejected that solution.
+As you will be happy to hear, I wanted to keep the code modular, without
+letting the +Body+ class know what the +Nbody+ class might decide to be
+good algorithms.  The alternative would be to saddle the poor +Body+ class
+simultaneously with all the possible variables that would be needed in all
+the algorithms you could choose from.
+
+*Alice*: I indeed applaud your desire for modularity.  However, in this
+particular case I'm not so sure whether we should insist on such a strong
+separation.  Let's get back to that in a moment.
+
+*Bob*: Since I wanted to keep the auxiliary variables, such as
+<tt>old_acc</tt>, local, I could not loop over them using the
+<tt>@body.each</tt> construct used in +leapfrog+.  Of course, you can
+loop over <tt>old_acc</tt> alone easily enough, in a <tt>old_acc.each</tt>
+construction, but that would in turn not allow the <tt>@body</tt> array
+to be traversed.
+
+The only solution I saw was to introduce an index _i_ -- yes, I know,
+we just celebrated the lack of indices _i_ and _j_ in Ruby, and I'm
+not happy with it, but at least for now, it works.  In that way, I
+could use the +Array+ method <tt>@body.each_index</tt>, which does
+what it says it does, namely traversing the <tt>@body</tt> array.
+Now since <tt>old_acc</tt> and <tt>@body</tt> have the same number of
+components, equal to the number of particles _N_, this one construct
+can simultaneously traverse both arrays.  The _i_ index is the glue
+that connects both traversals, keeping them in lock step.
+
+In addition, I had to introduce the array <tt>old_acc</tt>, which I
+did here in the first line of +forward+.  The third line did not
+contain any local variables, so there at least I could avoid the use
+of a _i_ variable.
+
+*Alice*: That is a reasonable solution.  You are trading modularity for
+readibility.  And while I'm sure there are several alternatives, let's
+first complete our guided tour here.  What is left to visit is the
+energy diagnostics part of the code
+
+== Energy Diagnostics
+
+*Bob*: That turned out to be really simple.  For each +Body+ method
++ekin+ there is a corresponding +Nbody+ method +ekin+ that gathers all
+the individual results, and sums them up to find the total kinetic energy.
+Here is the +Body+ version:
+
+ :inccode: .rknbody1.rb+ekin+Body
+
+and here is the +Nbody+ version:
+
+ :inccode: .rknbody1.rb+ekin+Nbody
+
+In order to sum it all up, I introduce a variable +e+, initialize it to
+zero, add the various contributions, and then I list +e+ again, in the
+final line.  In that way, the method +ekin+ returns the correct value +e+.
+
+*Alice*: Just curious: couldn't you have left out the last line, with the
+single +e+?  At the last time that the statement in the previous line will
+be executed, some particle's kinetic energy will be added to +e+, so +e+
+will be what is going to be returned anyway, no?
+
+*Bob*: I'm not sure.  You're talking about the last action in a loop, and
+then control is being returned to the +each+ method.  But it is easy enough
+to find out whether that would work.  Let's call +irb+ for help:
+
+  |gravity> irb
+  irb(main):001:0> a = [1, 2, 3]
+  => [1, 2, 3]
+  irb(main):002:0> e = 2
+  => 2
+  irb(main):003:0> a.each{|b| e += b}
+  => [0, 1, 2, 3]
+  irb(main):004:0> e
+  => 8
+
+*Alice*: I see.  You were correct in worrying about the control coming back
+to the array.  Actually, that makes sense: it was the array +a+ in
+this example that called the each method.  And frankly, even if it
+would have worked, it might have been better to leave the final +e+
+line in there, at the end of your +ekin+, for clarity.
+
+*Bob*: Well, I wasn't sure either.  Learn something new everyday.  And it is
+certainly nice to work with an interpreted, rather than a compiled language:
+this type of checking you can do extremely quickly and easily.
+
+*Alice*: Just like for the kinetic energy, the +Nbody+ method +epot+ gathers
+all the contributions to the potential energy of the various bodies --
+with one twist: we have to divide by a factor two, since otherwise we
+would have counted each particle pair twice.
+
+*Bob*: Yes, indeed.  And yes, I had left that factor of two out, the first
+time I ran the program.  Diagnostics are wonderful; they sure keep you honest:
+of course I could get no good energy conservation no matter what I tried,
+until I realized what was going wrong.  I found it by computing the initial
+kinetic energy and potential energy for a two-body system, which was easy
+enough to do on paper.  Comparing it with the numerical result, it was
+immediately clear that the potential energy was counted twice.
