@@ -2,7 +2,11 @@ require "acs.rb"
 
 class Worldpoint
 
-  attr_accessor :mass, :pos, :vel, :acc, :jerk, :time
+  attr_accessor :mass, :pos, :vel, :acc, :jerk, :time, :next_time
+
+  def propagate(era, wl, dt_param)
+    ss = era.make_snapshot(wl, @next_time)
+  end
 
   def read
     @mass = gets.to_f
@@ -16,6 +20,18 @@ class Worldpoint
     @vel.each{|x| printf("%24.16e", x)}; print "\n"
   end
 
+  def extrapolate
+
+#
+      if wpl.next_time < time
+        raise "wpl.next_time = " + wpl.next_time.to_s + " < " + time.to_s
+      end
+#
+  end
+
+  def interpolate
+  end
+
 end
 
 class Worldline
@@ -24,6 +40,22 @@ class Worldline
 
   def initialize
     @worldpoint = []
+  end
+
+  def extend(era, dt_param)
+    @worldpoint.push(@worldpoint.last.propagate(era, self, dt_param))
+  end
+
+  def make_snapshot(time)
+    if @worldpoint.last.time <= time
+      @worldpoint.last.extrapolate(time)
+    else
+      @worldpoint.each_index do |i|
+        if @worldpoint[i].time > time
+          return @worldpoint[i-1].interpolate(@worldpoint[i], time)
+        end
+      end
+    end
   end
 
 #  def read                               # for self-documenting data
@@ -64,28 +96,34 @@ class Worldera
   def find_next_worldline
   end
 
-  def evolve(c, t_dia, t_out, t_end)
+  def evolve(c)
     startup(c.dt_param) if not @worldline[0].worldpoint[0].acc
     @end_time = @start_time + c.dt_era
     time = @start_time
-    while time < t_end and time < @end_time
+    while time < @end_time
       nwl = find_next_worldline
-      time = nwl.next_time
-      if (time < t_end)
-        nwl.extend(@wordline, c.dt_param)
-        @nsteps += 1
-      end
-      if time >= t_dia
-        write_diagnostics(t_dia, c.x_flag)
-        t_dia += c.dt_dia
-      end
-      if @time >= t_out
-        sync(t_out, c.dt_param)    # we are now syncing twice, if t_dia = t_out
-        nsteps += @body.size
-        simple_print
-        t_out += c.dt_out
+      time = nwl.worldpoint.last.next_time
+      nwl.extend(self, c.dt_param)
+      @nsteps += 1
+    end
+  end
+
+  def make_snapshot(wl, time)
+    ws = Worldsnapshot.new
+    @worldline.each do |w|
+      s = w.make_snapshot(time)
+      if w == wl
+        ws.body.unshift(s)
+      else
+        ws.body.push(s)
       end
     end
+  end
+
+  def write_snapshot
+  end
+
+  def write_diagnostics
   end
 
 #  def read          # for self-documenting data, either Worldera or Snapshot
@@ -129,9 +167,18 @@ class World
     t_end = time + c.dt_end
     @era.write_snapshot if c.init_out
     while @era.start_time < t_end
-      @new_era = @era.evolve(c, t_dia, t_out, t_end)
+      @new_era = @era.evolve(c)
       @old_era = @era
       @era = @new_era
+      time = @old_era.end_time
+      while time >= t_dia
+        @old_era.write_diagnostics(t_dia, c.x_flag)
+        t_dia += c.dt_dia
+      end
+      if time >= t_out
+        @old_era.write_snapshot(t_out)
+        t_out += c.dt_out
+      end
     end
 
   def read_snapshot
@@ -151,8 +198,15 @@ class World
 
 end
 
-#class Worldsnapshot
-#end
+class Worldsnapshot
+
+  attr_accessor :body
+
+  def initialize
+    @body = []
+  end
+
+end
 
 options_text= <<-END
 
