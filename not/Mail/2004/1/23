@@ -1,0 +1,31 @@
+Date: Fri Jan 02 10:58:49 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+ > Well, the directory structure has little to do with the way the files
+ > appear to the brouser.  We can make
+ > 
+ > * list of BUGS as single, big file
+ > * list of BUGS as links to single files
+ > * or whatever we can think of
+ > 
+ > from BUGS/200x/x structure.
+ > 
+ > I guess a question would be what we want to do with additional
+ > comments on bug reports, or bug fixes. At least for the time being, we
+ > can just add notes to the particular BUG report file, I think.
+
+Okay, that's fine.  Perhaps we can start with a single big file, on
+the browser at least, so that we keep all the information together;
+of course we can enter the information from BUGS/200x/x structure,
+as you mentioned.
+
+ > No. I think TODO list must be short. It may be a good exercise to move
+ > the entries of TODO list to lab notes, presumablly manually.
+
+Sorry, what do you mea with "move"?  Copy them and delete them after
+they are done, or copy them to lab notes to remind ourselves what
+still needs to be done, or something else?
+
+Piet
+
