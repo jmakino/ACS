@@ -1,0 +1,28 @@
+Date: Tue Feb 15 10:28:03 JST 2005
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > This I did, by adding to my .cshrc file the line
+ > 
+ >   source $ACSROOT/bin/acsstart.cshrc
+ > 
+ > but then there was the following problem
+ > 
+ >   <kamuy|code_management> source .cshrc
+ >   .cshrc: No such file or directory.
+ >   <kamuy|code_management> source ~/.cshrc
+ >   ACSSCRIPTS: Undefined variable.
+ > 
+ > Hmmm.  Can you tell me what I should do next?
+
+Sorry, this is due to a bug in the script. I fixed it and put it to
+svn.
+
+After you do this, you would probably have trouble with clop.rb since
+I put the rather "old" version of clop.rb (but from where it should
+be... vol-3b) to the library directory. So you need to update it...
+
+Jun
+

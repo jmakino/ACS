@@ -1,0 +1,81 @@
+Date: Tue Feb 15 08:52:56 JST 2005
+
+From: Piet Hut <piet@ias.edu>
+
+Jun, 
+
+ > Well, I made something up... Please look at kali/vol/code_management
+ > 
+ > > > Okay, well, so we should have, for each volume directory
+ > > > 
+ > > >  * some way to specify which files are commnds
+ > > >  * some way to specify which files are libraries
+ > 
+ > These are specified in Makefile, as
+ > 
+ >  SCRIPTSRCS = check_and_install.rb acsstart.cshrc
+ > 
+ > in code_management/Makefile  and
+ > 
+ >  LIBSRCS = clop.rb
+ > 
+ > vol-3b/Makefile
+ > 
+ > "make all" should automatically install these to the right places.
+
+I first tried:
+
+  <kamuy|/home/piet/acs/kali/vol/code_management> make all
+  make: *** No rule to make target `.acsdocinitrc', needed by `doc'.  Stop.
+
+So then I copied that file (using svn) and then it worked better:
+
+  <kamuy|code_management> svn cp ../vol-1a/.acsdocinitrc .
+  A         .acsdocinitrc
+  <kamuy|code_management> make all
+  ruby ../../../src/coherent_programming/acsdoc.rb --reuseoutput  memo.ok *.rb
+  Loading initialization file .acsdocinitrc
+  Common initialization file loaded from etc/acsdocinitrc
+  reuse flag set
+  rdoc    ./.memo.ok check_and_install.rb 
+  
+  . . . .
+  
+  code_management.dvi -> code_management.pdf
+  [1][2]
+  47353 bytes written
+  ruby -S check_and_install.rb ACSSCRIPTS check_and_install.rb acsstart.cshrc
+  ./check_and_install.rb:35: ./check_and_install.rb:Env var ACSSCRIPTS not defined (RuntimeError)
+  make: *** [scripts] Error 1
+  
+So then I tried to follow your advice:
+
+ > > > And, we need a way to specify
+ > > > 
+ > > >  * directory to install commands
+ > > >  * directory to install libraries
+ > 
+ > For these, I just made the following two directories
+ > 
+ > * $ACSROOT/bin ($ACSSCRIPTS)
+ > * $ACSROOT/lib ($ACSLIBS)
+ > 
+ > You need to source $ACSROOT/bin/acsstart.cshrc in, for example, your
+ > .cshrc file.
+
+This I did, by adding to my .cshrc file the line
+
+  source $ACSROOT/bin/acsstart.cshrc
+
+but then there was the following problem
+
+  <kamuy|code_management> source .cshrc
+  .cshrc: No such file or directory.
+  <kamuy|code_management> source ~/.cshrc
+  ACSSCRIPTS: Undefined variable.
+
+Hmmm.  Can you tell me what I should do next?
+
+Piet
+
+
