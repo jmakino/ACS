@@ -1,3 +1,9 @@
+SRC =  ch01.cp  ch02.cp  ch03.cp  ch04.cp  ch05.cp \
+              ch06.cp  ch07.cp  ch08.cp  ch09.cp ch10.cp ch11.cp
+vol1.tex: $(SRC) .acsdocinitrc 
+	cat $(SRC) > vol1.cp
+	acsdoc.rb --tolatex vol1.cp
+
 all: twopfig.gif  twopfig2.gif
 	ls -al $<
 twopfig.gif: twopfig.eps
