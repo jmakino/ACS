@@ -401,6 +401,10 @@ class Nbody
     a[k]
   end
 
+# note: n_of_E gives N(E), normalized to 1 when integrated over all E
+#       i.e. normalized to the total mass in standard units, although
+#       for now, we only use equal-mass particles.
+
   def n_of_E(energy)
     low = lowest_index(energy)
     high = highest_index(energy)
@@ -408,7 +412,7 @@ class Nbody
     for i in low..high
       result += n_of_E_contribution(i, energy)
     end
-    result
+    result/(@body.size).to_f
   end
   
   def lowest_index(energy)
@@ -483,17 +487,17 @@ class Nbody
       exit
     end
     r_max = r_phi(energy)
-    trapeziumrule(energy, 1.0/(1+r_max), 1, 100)  # for 100 points
+    16*PI**2*trapeziumrule(energy, 1.0/(1+r_max), 1, 100)  # for 100 points
   end
 
-  PRECISION = 1e-6
+  PRECISION = 1e-9
 
   def integrand(parameter, s)
     x = 2*(parameter - phi(1.0/s-1))
     if x < 0
-      if x > -PRECISION
-        return 0                           # small round-off tolerated
-      else
+      if x > -10*PRECISION     # negative values should really be exactly zero,
+        return 0               # at the endpoint of the integration; taking
+      else                     # phi(inverse-phi(E)) does not give exactly E
         STDERR.print "error: integrand: cannot take sqrt(", x, ")\n"
         exit
       end
@@ -628,5 +632,7 @@ end
 print "r_c = ", nb.r_c, "\n"
 print "n_c = ", nb.n_c, "\n"
 
-print "f_of_E(-1) = ", nb.f_of_E(-1), "\n"
-print "f_of_E(-0.5) = ", nb.f_of_E(-1), "\n"
+for i in 1..32
+  en = -1.7+i*0.05
+  print en, " ",nb.f_of_E(en), "\n"
+end
