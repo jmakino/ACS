@@ -127,7 +127,7 @@ class Clop
   end
 
   def parse_command_line_options(argv_array)
-    s1 = argv_array.one_level_deep_copy
+    s1 = argv_array.clone
     while s = s1.shift
       if s == "-h"
         parse_help(s1, false)

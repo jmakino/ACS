@@ -2,7 +2,8 @@ require "nbody.rb"
 
 class Worldpoint < Body
 
-  attr_accessor :mass, :pos, :vel, :acc, :jerk, :time, :next_time, :nsteps,
+  attr_accessor :mass, :pos, :vel, :acc, :jerk, :snap, :crackle,
+                :time, :next_time, :nsteps,
                 :minstep, :maxstep
 
   def initialize
@@ -11,34 +12,137 @@ class Worldpoint < Body
     @maxstep = 0
   end
 
-  def setup(time)
+  def forward_setup(time)
+    @time = @next_time = time
+    @acc = @pos*0
+  end
+
+  def leapfrog_setup(time)
+    @time = @next_time = time
+    @acc = @pos*0
+  end
+
+  def hermite_setup(time)
     @time = @next_time = time
     @acc = @pos*0
     @jerk = @pos*0
+  end
+
+  def ms4_setup(time)
+    @time = @next_time = time
+    @acc = @pos*0
+    @jerk = @pos*0
+    @snap = @pos*0
+    @crackle = @pos*0
+    @pop = @pos*0
+  end
+
+  def forward_init(acc, timescale, dt_param, dt_max)
+    @acc = acc
+    dt = timescale * dt_param
+    dt = dt_max if dt > dt_max
+    @next_time = @time + dt
+  end    
+
+  def leapfrog_init(acc, timescale, dt_param, dt_max)
+    @acc = acc
+    dt = timescale * dt_param
+    dt = dt_max if dt > dt_max
+    @next_time = @time + dt
+  end    
+
+  def hermite_init(acc, jerk, timescale, dt_param, dt_max)
+    @acc = acc
+    @jerk = jerk
+    dt = timescale * dt_param
+    dt = dt_max if dt > dt_max
+    @next_time = @time + dt
+  end    
+
+  def ms4_init_first_round(acc, jerk, timescale, dt_param, dt_max)
+    @acc = acc
+    @jerk = jerk
+    dt = timescale * dt_param
+    dt = dt_max if dt > dt_max
+    @next_time = @time + dt
+  end    
+
+  def ms4_init_second_round(snap, crackle)
+    @snap = snap
+    @crackle = crackle
+  end    
+
+  def forward_correct(old_point, acc, timescale, dt_param, dt_max)
+    @acc = acc
+    dt = timescale * dt_param
+    dt = dt_max if dt > dt_max
+    @next_time = @time + dt
+    dt = @time - old_point.time
+    @vel = old_point.vel + (old_point.acc)*dt
+    @pos = old_point.pos + (old_point.vel)*dt
+    admin(old_point.time)
     self
   end
 
-  def start_step(worldline)
-    worldline.take_snapshot(@next_time)
-  end
-
-  def finish_step(old_point, snapshot, dt_param, dt_max)
-    set_acc_and_jerk_and_next_time(snapshot, dt_param, dt_max)
-    correct(old_point)
+  def leapfrog_correct(old_point, acc, timescale, dt_param, dt_max)
+    @acc = acc
+    dt = timescale * dt_param
+    dt = dt_max if dt > dt_max
+    @next_time = @time + dt
+    dt = @time - old_point.time
+    @vel = old_point.vel + (1/2.0)*(old_point.acc + @acc)*dt
+    @pos = old_point.pos + (1/2.0)*(old_point.vel + @vel)*dt
     admin(old_point.time)
+    self
   end
 
-  def set_acc_and_jerk_and_next_time(snapshot, dt_param, dt_max)
-    get_acc_and_jerk(snapshot)
-    set_next_time(snapshot, dt_param, dt_max)
-  end
-
-  def correct(old_point)
+  def hermite_correct(old_point, acc, jerk, timescale, dt_param, dt_max)
+    @acc = acc
+    @jerk = jerk
+    dt = timescale * dt_param
+    dt = dt_max if dt > dt_max
+    @next_time = @time + dt
     dt = @time - old_point.time
     @vel = old_point.vel + (1/2.0)*(old_point.acc + @acc)*dt +
                            (1/12.0)*(old_point.jerk - @jerk)*dt**2
     @pos = old_point.pos + (1/2.0)*(old_point.vel + @vel)*dt +
                            (1/12.0)*(old_point.acc - @acc)*dt**2
+    admin(old_point.time)
+    self
+  end
+
+  def ms4_correct(wa, acc, timescale, dt_param, dt_max)
+    d = [[acc]]
+    t = [@time]
+    dt = [0]
+    wa.each do |wp|
+      d[0].push(wp.acc)
+      d.push([])
+      t.push(wp.time)
+      dt.push(@time - wp.time)
+    end
+    for k in (1..wa.size)
+      for i in (0..wa.size-k)
+        d[k][i] = (d[k-1][i] - d[k-1][i+1])/(t[i]-t[i+k])
+      end
+    end
+    @pop = 24*d[4][0]
+    @crackle = 6*(d[3][0] + d[4][0]*(dt[1] + dt[2] + dt[3]))
+    @snap = 2*(d[2][0] + d[3][0]*(dt[1]+dt[2]) +
+                         d[4][0]*(dt[1]*dt[2] + dt[2]*dt[3] + dt[3]*dt[1]))
+    @jerk = d[1][0] + dt[1]*( d[2][0] + dt[2]*( d[3][0] + dt[3]*d[4][0] ) )
+    @acc = acc
+    dt = wa[0].time - @time
+    @vel = wa[0].vel - ( @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*@snap*dt**3 +
+                         (1/24.0)*@crackle*dt**4 + (1/120.0)*@pop*dt**5 )
+    @pos = wa[0].pos - ( @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
+                         (1/24.0)*@snap*dt**4 + (1/120.0)*@crackle*dt**5 +
+                         (1/720.0)*@pop*dt**6 )
+    dt = timescale * dt_param
+    dt = dt_max if dt > dt_max
+    @next_time = @time + dt
+    admin(wa[0].time)
+    self
   end
 
   def admin(old_time)
@@ -48,45 +152,47 @@ class Worldpoint < Body
     @nsteps = @nsteps + 1
   end
 
-  def get_acc_and_jerk(snapshot)
-    @acc = @jerk = @pos*0                  # null vectors of the correct length
-    snapshot.body.each do |b|
-      r = b.pos - @pos
-      r2 = r*r
-      r3 = r2*sqrt(r2)
-      v = b.vel - @vel
-      @acc += b.mass*r/r3
-      @jerk += b.mass*(v-3*(r*v/r2)*r)/r3
-    end
-  end    
-
-  def set_next_time(snapshot, dt_param, dt_max)
-    dt = collision_time_scale(snapshot) * dt_param
-    dt = dt_max if dt > dt_max
-    @next_time = @time + dt
+  def extrapolate(t, method)
+    eval("#{method}_extrapolate(t)")
   end
 
-  def collision_time_scale(snapshot)
-    time_scale_sq = VERY_LARGE_NUMBER              # square of time scale value
-    snapshot.body.each do |b|
-      r = b.pos - @pos
-      v = b.vel - @vel
-      r2 = r*r
-      v2 = v*v + 1.0/VERY_LARGE_NUMBER          # always non-zero, for division
-      estimate_sq = r2 / v2              # [distance]^2/[velocity]^2 = [time]^2
-      if time_scale_sq > estimate_sq
-        time_scale_sq = estimate_sq
-      end
-      a = (@mass + b.mass)/r2
-      estimate_sq = sqrt(r2)/a           # [distance]/[acceleration] = [time]^2
-      if time_scale_sq > estimate_sq
-        time_scale_sq = estimate_sq
-      end
-    end
-    sqrt(time_scale_sq)                  # time scale value
+  def interpolate(other, t, method)
+    eval("#{method}_interpolate(other, t)")
   end
 
-  def extrapolate(t)
+  def forward_extrapolate(t)
+    if t > @next_time
+      raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
+    end
+    wp = Worldpoint.new
+    wp.minstep = @minstep
+    wp.maxstep = @maxstep
+    wp.nsteps = @nsteps
+    wp.mass = @mass
+    wp.time = t
+    dt = t - @time
+    wp.pos = @pos + @vel*dt
+    wp.vel = @vel + @acc*dt
+    wp
+  end
+
+  def leapfrog_extrapolate(t)
+    if t > @next_time
+      raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
+    end
+    wp = Worldpoint.new
+    wp.minstep = @minstep
+    wp.maxstep = @maxstep
+    wp.nsteps = @nsteps
+    wp.mass = @mass
+    wp.time = t
+    dt = t - @time
+    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2
+    wp.vel = @vel + @acc*dt
+    wp
+  end
+
+  def hermite_extrapolate(t)
     if t > @next_time
       raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
     end
@@ -102,7 +208,76 @@ class Worldpoint < Body
     wp
   end
 
-  def interpolate(other, t)
+  def ms4_full_extrapolate(t)
+    if t > @next_time
+      raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
+    end
+    wp = Worldpoint.new
+    wp.minstep = @minstep
+    wp.maxstep = @maxstep
+    wp.nsteps = @nsteps
+    wp.mass = @mass
+    wp.time = t
+    dt = t - @time
+    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
+             (1/24.0)*@snap*dt**4 + (1/120.0)*@crackle*dt**5
+    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*@snap*dt**3 +
+             (1/24.0)*@crackle*dt**4
+    wp.acc = @acc + @jerk*dt + (1/2.0)*@snap*dt**2 + (1/6.0)*@crackle*dt**3
+    wp.jerk = @jerk + @snap*dt + (1/2.0)*@crackle*dt**2
+    wp.snap = @snap + @crackle*dt
+    wp.crackle = @crackle
+    wp
+  end
+
+  def ms4_extrapolate(t)
+    if t > @next_time
+      raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
+    end
+    wp = Worldpoint.new
+    wp.minstep = @minstep
+    wp.maxstep = @maxstep
+    wp.nsteps = @nsteps
+    wp.mass = @mass
+    wp.time = t
+    dt = t - @time
+    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3
+    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2
+    wp.acc = @acc + @jerk*dt
+    wp.jerk = @jerk
+    wp
+  end
+
+  def forward_interpolate(other, t)
+    wp = Worldpoint.new
+    wp.minstep = @minstep
+    wp.maxstep = @maxstep
+    wp.nsteps = @nsteps
+    wp.mass = @mass
+    wp.time = t
+    dt = other.time - @time
+    dt = t - @time
+    wp.pos = @pos + @vel*dt
+    wp.vel = @vel + @acc*dt
+    wp
+  end
+
+  def leapfrog_interpolate(other, t)
+    wp = Worldpoint.new
+    wp.minstep = @minstep
+    wp.maxstep = @maxstep
+    wp.nsteps = @nsteps
+    wp.mass = @mass
+    wp.time = t
+    dt = other.time - @time
+    jerk = (other.acc - @acc)/dt
+    dt = t - @time
+    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*jerk*dt**3
+    wp.vel = @vel + @acc*dt + (1/2.0)*jerk*dt**2
+    wp
+  end
+
+  def hermite_interpolate(other, t)
     wp = Worldpoint.new
     wp.minstep = @minstep
     wp.maxstep = @maxstep
@@ -117,6 +292,23 @@ class Worldpoint < Body
              (1/24.0)*snap*dt**4 + (1/120.0)*crackle*dt**5
     wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*snap*dt**3 + 
              (1/24.0)*crackle*dt**4
+    wp
+  end
+
+  def ms4_interpolate(other, t)
+    wp = Worldpoint.new
+    wp.minstep = @minstep
+    wp.maxstep = @maxstep
+    wp.nsteps = @nsteps
+    wp.mass = @mass
+    wp.time = t
+    dt = other.time - @time
+    dt = t - @time
+    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
+             (1/24.0)*@snap*dt**4 + (1/120.0)*@crackle*dt**5 +
+             (1/720.0)*@pop*dt**6
+    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*@snap*dt**3 + 
+             (1/24.0)*@crackle*dt**4 + (1/120.0)*@pop*dt**5
     wp
   end
 
@@ -136,30 +328,148 @@ class Worldpoint < Body
   end
 
 end
-
+
 class Worldline
 
   TAG = "worldline"
 
-  attr_accessor  :worldpoint
+  attr_accessor  :worldpoint, :method
 
-  def initialize(wp = nil, time = 0.0)
+  def initialize
     @worldpoint = []
-    return unless wp
-    @worldpoint[0] = wp.setup(time)
   end
 
-  def startup(era, dt_param, dt_max)
-    ss = era.take_snapshot_except(self, @worldpoint[0].time)
-    @worldpoint[0].set_acc_and_jerk_and_next_time(ss, dt_param, dt_max)
+  def setup(time)
+    eval("#{@method}_setup(time)")
   end
 
-  def extend(era, dt_param, dt_max)
-    old_point = @worldpoint.last
-    new_point = old_point.start_step(self)
-    snapshot = era.take_snapshot_except(self, worldpoint.last.next_time)
-    new_point.finish_step(old_point, snapshot, dt_param, dt_max)
+  def startup_done?(era, dt_max)
+    eval("#{@method}_startup_done?(era, dt_max)")
+  end
+
+  def extend(era, dt_max)
+    new_point = eval("take_#{@method}_step(era, dt_max)")
     @worldpoint.push(new_point)
+  end
+
+  def forward_setup(time)
+    @worldpoint[0].forward_setup(time)
+  end
+
+  def leapfrog_setup(time)
+    @worldpoint[0].leapfrog_setup(time)
+  end
+
+  def hermite_setup(time)
+    @worldpoint[0].hermite_setup(time)
+  end
+
+  def ms4_setup(time)
+    @worldpoint[0].ms4_setup(time)
+  end
+
+  def ms4_number_of_steps
+    4
+  end
+
+  def forward_startup_done?(era, dt_max)
+    wp = @worldpoint[0]
+    acc = era.acc(self, wp)
+    timescale = era.timescale(self, wp)
+    wp.forward_init(acc, timescale, @dt_param, dt_max)
+    true
+  end
+
+  def leapfrog_startup_done?(era, dt_max)
+    wp = @worldpoint[0]
+    acc = era.acc(self, wp)
+    timescale = era.timescale(self, wp)
+    wp.leapfrog_init(acc, timescale, @dt_param, dt_max)
+    true
+  end
+
+  def hermite_startup_done?(era, dt_max)
+    wp = @worldpoint[0]
+    acc, jerk = era.acc_and_jerk(self, wp)
+    timescale = era.timescale(self, wp)
+    wp.hermite_init(acc, jerk, timescale, @dt_param, dt_max)
+    true
+  end
+
+  def ms4_startup_done?(era, dt_max)
+    wp = @worldpoint[0]
+    if not defined? @startup_cycle
+      @startup_cycle = 1
+      acc, jerk = era.acc_and_jerk(self, wp)
+      timescale = era.timescale(self, wp)
+      wp.ms4_init_first_round(acc, jerk, timescale, @dt_param, dt_max)
+      return false
+    elsif @startup_cycle == 1
+      @startup_cycle += 1
+      snap, crackle = era.snap_and_crackle(self, wp)
+      wp.ms4_init_second_round(snap, crackle)
+      time = wp.time
+      dt = wp.next_time - time
+      for i in (1..3)
+        @worldpoint.unshift(wp.ms4_full_extrapolate(time - i*dt))
+      end
+      return true
+    else
+      raise "@startup_cycle = #{@startup_cycle} != 1"
+    end
+  end
+
+  def take_forward_step(era, dt_max)
+    new_point = forward_predict
+    acc = era.acc(self, new_point)
+    timescale = era.timescale(self, new_point)
+    new_point.forward_correct(@worldpoint.last, acc,
+                              timescale, @dt_param, dt_max)
+  end
+
+  def take_leapfrog_step(era, dt_max)
+    new_point = leapfrog_predict
+    acc = era.acc(self, new_point)
+    timescale = era.timescale(self, new_point)
+    new_point.leapfrog_correct(@worldpoint.last, acc,
+                              timescale, @dt_param, dt_max)
+  end
+
+  def take_hermite_step(era, dt_max)
+    new_point = hermite_predict
+    acc, jerk = era.acc_and_jerk(self, new_point)
+    timescale = era.timescale(self, new_point)
+    new_point.hermite_correct(@worldpoint.last, acc, jerk,
+                              timescale, @dt_param, dt_max)
+  end
+
+  def take_ms4_step(era, dt_max)
+    new_point = ms4_predict
+    acc = era.acc(self, new_point)
+    timescale = era.timescale(self, new_point)
+    k = @worldpoint.size
+    wp_array = @worldpoint[k-4...k].reverse
+    new_point.ms4_correct(wp_array, acc, timescale, @dt_param, dt_max)
+  end
+
+  def forward_predict
+    wp = @worldpoint.last
+    wp.forward_extrapolate(wp.next_time)
+  end
+
+  def leapfrog_predict
+    wp = @worldpoint.last
+    wp.leapfrog_extrapolate(wp.next_time)
+  end
+
+  def hermite_predict
+    wp = @worldpoint.last
+    wp.hermite_extrapolate(wp.next_time)
+  end
+
+  def ms4_predict
+    wp = @worldpoint.last
+    wp.ms4_extrapolate(wp.next_time)
   end
 
   def valid_extrapolation?(time)
@@ -182,12 +492,12 @@ class Worldline
   def take_snapshot(time)
     if time >= @worldpoint.last.time
       valid_extrapolation?(time)
-      @worldpoint.last.extrapolate(time)
+      @worldpoint.last.extrapolate(time, @method)
     else
       valid_interpolation?(time)
       @worldpoint.each_index do |i|
         if @worldpoint[i].time > time
-          return @worldpoint[i-1].interpolate(@worldpoint[i], time)
+          return @worldpoint[i-1].interpolate(@worldpoint[i], time, @method)
         end
       end
     end
@@ -199,15 +509,30 @@ class Worldline
     loop do
       i -= 1
       if @worldpoint[i].time <= time
-        wl = Worldline.new
-        wl.worldpoint = @worldpoint[i...@worldpoint.size]
+        wl = self.clone
+        if i-@number_of_steps+1 < 0
+          raise "i-@number_of_steps+1 = #{i-@number_of_steps+1} < 0"
+        end
+        wl.worldpoint = @worldpoint[i-(@number_of_steps-1)...@worldpoint.size]
         return wl
       end
     end
   end
 
-end
+  def setup_from_single_worldpoint(b, method, dt_param, time)
+    @worldpoint[0] = b.to_worldpoint
+    @method = method
+    @dt_param = dt_param
+    if eval("defined? #{@method}_number_of_steps")
+      eval("@number_of_steps = #{@method}_number_of_steps")
+    else
+      @number_of_steps = 1
+    end
+    setup(time)
+  end
 
+end
+
 class Worldera
 
   TAG = "worldera"
@@ -218,9 +543,32 @@ class Worldera
     @worldline = []
   end
 
-  def startup_and_report_energy(dt_param, dt_max)
-    worldline.each do |wl|
-      wl.startup(self, dt_param, dt_max)
+  def acc(wl, wp)
+    take_snapshot_except(wl, wp.time).get_acc(wp.pos)
+  end
+
+  def acc_and_jerk(wl, wp)
+    take_snapshot_except(wl, wp.time).get_acc_and_jerk(wp.pos, wp.vel)
+  end
+
+  def snap_and_crackle(wl, wp)
+    take_snapshot_except(wl, wp.time).get_snap_and_crackle(wp.pos, wp.vel,
+                                                           wp.acc, wp.jerk)
+  end
+
+  def timescale(wl, wp)
+    take_snapshot_except(wl, wp.time).collision_time_scale(wp.mass,
+                                                           wp.pos, wp.vel)
+  end
+
+  def startup_and_report_energy(dt_max)
+    list = @worldline.clone
+    while list.size > 0
+      new_list = []
+      list.each do |wl|
+        new_list.push(wl) unless wl.startup_done?(self, dt_max)
+      end
+      list = new_list
     end
     take_snapshot(@start_time).total_energy
   end
@@ -249,17 +597,17 @@ class Worldera
     wl
   end
 
-  def evolve(dt_era, dt_param, dt_max, shared_flag)
+  def evolve(dt_era, dt_max, shared_flag)
     nsteps = 0
     while shortest_interpolated_worldline.worldpoint.last.time < @end_time
       unless shared_flag
-        shortest_extrapolated_worldline.extend(self, dt_param, dt_max)
+        shortest_extrapolated_worldline.extend(self, dt_max)
         nsteps += 1
       else
         t = shortest_extrapolated_worldline.worldpoint.last.next_time
         @worldline.each do |w|
           w.worldpoint.last.next_time = t
-          w.extend(self, dt_param, dt_era)
+          w.extend(self, dt_era)
           nsteps += 1
         end
       end
@@ -307,21 +655,25 @@ class Worldera
     take_snapshot(t).write_diagnostics(initial_energy)
   end
 
-  def setup_from_snapshot(ss, dt_era)
+  def setup_from_snapshot(ss, method, dt_param, dt_era)
     @start_time = ss.time
     @end_time = @start_time + dt_era
-    ss.body.each{|b| @worldline.push(Worldline.new(b.to_worldpoint, ss.time))}
+    ss.body.each do |b|
+      wl = Worldline.new
+      wl.setup_from_single_worldpoint(b, method, dt_param, ss.time)
+      @worldline.push(wl)
+    end
   end
 
 end
-
+
 class World
 
   TAG = "world"
 
   def evolve(c)
     while @era.start_time < @t_end
-      @new_era, dn = @era.evolve(c.dt_era, c.dt_param, @dt_max, c.shared_flag)
+      @new_era, dn = @era.evolve(c.dt_era, @dt_max, c.shared_flag)
       @nsteps += dn
       @time = @era.end_time
       while @t_dia <= @era.end_time and @t_dia <= @t_end
@@ -358,10 +710,10 @@ class World
 
   def setup_from_snapshot(ss, c)
     @era = Worldera.new
-    @era.setup_from_snapshot(ss, c.dt_era)
+    @era.setup_from_snapshot(ss, c.integration_method, c.dt_param, c.dt_era)
     @nsteps = 0
     @dt_max = c.dt_era * c.dt_max_param
-    @initial_energy = @era.startup_and_report_energy(c.dt_param, @dt_max)
+    @initial_energy = @era.startup_and_report_energy(@dt_max)
     @time = @era.start_time
     @t_out = @time
     @t_dia = @time
@@ -399,7 +751,7 @@ class World
   end
 
 end
-
+
 class Worldsnapshot < Nbody
 
   attr_accessor :time
@@ -407,6 +759,72 @@ class Worldsnapshot < Nbody
   def initialize
     super
     @time = 0.0
+  end
+
+  def get_acc(pos)
+    acc = pos*0                            # null vectors of the correct length
+    @body.each do |b|
+      r = b.pos - pos
+      r2 = r*r
+      r3 = r2*sqrt(r2)
+      acc += b.mass*r/r3
+    end
+    acc
+  end    
+
+  def get_acc_and_jerk(pos, vel)
+    acc = jerk = pos*0                  # null vectors of the correct length
+    @body.each do |b|
+      r = b.pos - pos
+      r2 = r*r
+      r3 = r2*sqrt(r2)
+      v = b.vel - vel
+      acc += b.mass*r/r3
+      jerk += b.mass*(v-3*(r*v/r2)*r)/r3
+    end
+    [acc, jerk]
+  end    
+
+  def get_snap_and_crackle(pos, vel, acc, jerk)
+    snap = crackle = pos*0                 # null vectors of the correct length
+    @body.each do |b|
+      r = b.pos - pos
+      r2 = r*r
+      r3 = r2*sqrt(r2)
+      v = b.vel - vel
+      a = b.acc - acc
+      j = b.jerk - jerk
+      c1 = r*v/r2
+      c2 = (v*v + r*a)/r2 + c1*c1
+      c3 = (3*v*a + r*j)/r2 + c1*(3*c2 - 4*c1*c1)
+      d_acc = b.mass*r/r3
+      d_jerk = b.mass*v/r3 - 3*c1*d_acc
+      d_snap = b.mass*a/r3 - 6*c1*d_jerk - 3*c2*d_acc
+      d_crackle = b.mass*j/r3 - 9*c1*d_snap - 9*c2*d_jerk - 3*c3*d_acc
+      snap += d_snap
+      crackle += d_crackle
+    end
+    [snap, crackle]
+  end    
+
+  def collision_time_scale(mass, pos, vel)
+    time_scale_sq = VERY_LARGE_NUMBER              # square of time scale value
+    @body.each do |b|
+      r = b.pos - pos
+      v = b.vel - vel
+      r2 = r*r
+      v2 = v*v + 1.0/VERY_LARGE_NUMBER          # always non-zero, for division
+      estimate_sq = r2 / v2              # [distance]^2/[velocity]^2 = [time]^2
+      if time_scale_sq > estimate_sq
+        time_scale_sq = estimate_sq
+      end
+      a = (mass + b.mass)/r2
+      estimate_sq = sqrt(r2)/a           # [distance]/[acceleration] = [time]^2
+      if time_scale_sq > estimate_sq
+        time_scale_sq = estimate_sq
+      end
+    end
+    sqrt(time_scale_sq)                  # time scale value
   end
 
   def kinetic_energy
@@ -440,7 +858,7 @@ class Worldsnapshot < Nbody
   end
 
 end
-
+
 class Body
 
   def to_worldpoint
@@ -452,7 +870,7 @@ end
 
 options_text= <<-END
 
-  Description: Individual Time Step Hermite Code
+  Description: Individual Time Step, Individual Integration Scheme Code
   Long description:
     This program evolves an N-body code with a fourth-order Hermite Scheme,
     using individual time steps.  Note that the program can be forced to let
@@ -464,6 +882,18 @@ options_text= <<-END
 
     example:
     ruby mkplummer.rb -n 5 | ruby #{$0} -t 1
+
+
+  Short name: 		-g
+  Long name:		--integration_method
+  Value type:		string
+  Default value:	hermite
+  Variable name:	integration_method
+  Description:		Choice of integration method
+  Long description:
+    This option chooses the integration method.  The user is expected to
+    provide a string with the name of the method, for example "leapfrog",
+    "hermite".
 
 
   Short name: 		-c
