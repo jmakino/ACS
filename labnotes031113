@@ -1,13 +1,34 @@
 2003, November 13, Thursday, Kyoto: Jun and Piet
 
+1. Yesterday's Lab Notes
 
+We finished writing yesterday's lab notes.  Now that we have decided
+upon a format and mechanism, we will try to finish each set of notes
+on the day the work described is done.
 
-Todo list
+2. Todo List
 
+We discussed various ways to automate the updating of our todo list.
+One option is to include a current version at the end of our local
+file, in which we write our session reports.  In that case we could
+simply synchronize our todo list by hand.  Another option is to create
+a separate todo file and put that under svn; however, chances are that
+we then never look at it.
 
+3. Remaining Work for This Week
 
+We decided to write a minimum version of whatever software is needed
+to make it possible to put at least some material on our ACS web site,
+both the labnotes of the last few days, and a beginning of volume 4,
+which could describe the labnote mechanism.
 
+4. Open Kitchen
 
+On our ACS web site, we will add a clickable line, called {\it open kitchen},
+which contains in a publicly visible way our ongoing labnotes and
+latest drafts of our various volumes.  This will make it much easier
+to communicate with others; when asking for comments and suggestions,
+we can simply point them to the appropriate descriptions in our book
+manuscripts and labnotes.
 
-1. Finishing Yesterday's Lab Notes
 
