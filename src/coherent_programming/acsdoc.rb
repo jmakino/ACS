@@ -1121,7 +1121,7 @@ END
     'doc/files/'+name.gsub(/\./, '_')+ '.html'
   end
   def create_navigations_for_cp_files(args)
-    cpfiles = args.select{|x| x =~/\.cp$/}
+    cpfiles = args.select{|x| x =~/\.((cp)|(ok))$/}
     cpfiles.collect!{|x|convert_cpfilename_to_rdoc_htmlfilename(x)}
     add_navigation_links(cpfiles)
   end
@@ -1176,12 +1176,13 @@ del_file_list = Array.new
 tolatex_flag = false
 
 ARGV.collect! do |a|
-  if a =~ /\.cp$/
+  if a =~ /\.((cp)|(ok))$/
+    extention = "."+$1
     if File.exist?(a)
       unless tolatex_flag 
 	dot_a = File.dirname(a)+"/."+File.basename(a);
       else
-	dot_a = File.dirname(a)+"/"+File.basename(a,".cp")+ ".tex"
+	dot_a = File.dirname(a)+"/"+File.basename(a,extention)+ ".tex"
       end
       prep_cp(a, dot_a, tolatex_flag)
       a = dot_a

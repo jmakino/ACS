@@ -6,5 +6,5 @@ END
 @@additional_commands_for_inline_tex = <<END
 \\input ../etc/def
 END
-@@toppagefilename= "../../kali/index.html"
+@@toppagefilename= "../../index.html"
 print "Common initialization file loaded from etc/acsdocinitrc\n"
