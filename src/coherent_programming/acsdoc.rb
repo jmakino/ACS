@@ -57,11 +57,7 @@ module Rdoctotex
   @@addtional_commands_for_tex = ""
 
   def escapetexspecialcharacters(instring)
-    print "escapeto ... "
-    p instring
     s=instring.gsub(@@charstoescape){|word| "\\"+word}
-    print "after conversion "
-    p s
     s
   end
   
@@ -98,6 +94,7 @@ module Rdoctotex
 
   def process_headers(instring)
     ostring=[]
+    afterverbatim = nil
     while s=instring.shift
       header_candidate =s.split[0] 
       if /^=+$/ =~ header_candidate
@@ -110,9 +107,19 @@ module Rdoctotex
 	ostring.push(header_text)
 	instring.unshift(s)
       elsif /^---+/ =~ header_candidate
-	ostring.push("\\hrule\n\\smallskip\n\n")
+	if afterverbatim
+	  ostring.push("\\hrule\n\n\\bigskip\n\n")
+	else
+	  ostring.push("\n\\bigskip\n\n\\hrule\n\n")
+	end
+	afterverbatim = nil
       else
 	ostring.push(s)
+      end
+      if /\\end\{verbatim/  =~ s
+	afterverbatim = 1  
+      elsif /\S+/ =~ s
+	afterverbatim = nil
       end
     end
     ostring
@@ -124,7 +131,7 @@ module Rdoctotex
       if /^(\s*)\:include\:\s*(\S+)$/  =~ s
 	indent = $1
 	infile= open($2,"r")
-	print "indent = ", indent, "\n"
+#	print "indent = ", indent, "\n"
 	while ss=infile.gets
 	  ostring.push(indent+ss.chomp!)
 	end
@@ -162,11 +169,9 @@ module Rdoctotex
     s = instring
     ostring =""
     while s.length > 0
-      p s
       if @@intex_state == 0
 	texloc = /<tex>/ =~ s
 	if texloc
-	  print "tex start tag found in |#{s}|\n"
 	  ostring+=escapetexspecialcharacters(s[0,texloc])+"<tex>"
 	  @@intex_state = 1
 	  s = s[texloc+5,s.length]
@@ -177,7 +182,6 @@ module Rdoctotex
       else
 	texloc = /<\/tex>/ =~ s
 	if texloc
-	  print "tex end tag found in |#{s}|\n"
 	  ostring+=s[0,texloc]+"</tex>"
 	  @@intex_state = 0
 	  s = s[texloc+6,s.length]
@@ -232,9 +236,7 @@ module Rdoctotex
       end
 	  
       new_type = 4 if new_indent > 0 and new_item == nil
-      print "before calling process tex "; p s1
       s1= process_tex_special_chars(s1) unless new_type == 4
-      print "after  calling process tex "; p s1
       if new_indent > indent
 	instring.unshift(s)
 	new=1
@@ -697,7 +699,7 @@ ARGV.collect! do |a|
   a
 end
 
-system("rdoc #{ARGV.join(" ")}")
+system("rdoc #{ARGV.join(" ")}") unless tolatex_flag
 
 if del_flag
   del_file_list.each do |f|
