@@ -6,7 +6,7 @@ Tex sample code <tex>This is sample tex code</tex>
 
 This is a normal text.
 
-Complex simbols $ \ { } ~ _ ^ \< \>
+Complex simbols $ \ { } ~ _ ^ \< \> & & Why? && IS &THIS& OKAY&&&???
 
 Equation sample:
 
