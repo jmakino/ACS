@@ -1,0 +1,51 @@
+#!/usr/bin/env ruby
+#
+# acs --- simple wrapper script to take care of acs ruby script
+#
+# This scriot assumes that ACSROOT is defined
+#
+# id SUBPATH is defined, this commannd tries to add them to
+# RUBYPATH and RUBYLIB, if not defined in there
+# 
+# 
+#
+# J. Makino and P. Hut 2005/3
+#
+def addtoenv(name,w,base)
+  if ENV[name] == nil
+    ENV[name] = base + "/" + w
+  elsif ENV[name].index(w) == nil
+    ENV[name] += ":"+base + "/" + w
+  end
+end
+
+def reconstruct_arglist(args)
+  args.collect{|x|
+    ( x =~ /\s/ ) ? "\""+x+"\"" : x
+  }.join(" ")
+end
+
+basename = ENV["ACSROOT"]
+raise "Env. var ACSROOT is not defined " unless basename
+ENV["RUBYPATH"] = ".:"+basename+"/bin" unless  ENV["RUBYPATH"]
+ENV["RUBYLIB"] = ".:"+basename+"/lib" unless  ENV["RUBYLIB"]
+
+if ENV["ACSSUBPATH"]
+  ENV["ACSSUBPATH"].split.each{|subname|
+    ["RUBYPATH",  "RUBYLIB"].each{|envname|
+      addtoenv(envname, subname, basename)
+    }
+  }
+end
+print "RUBYPATH=", ENV["RUBYPATH"],"\n" if $DEBUG
+print "RUBYLIB=", ENV["RUBYLIB"],"\n" if $DEBUG
+rubyoptions = "-S "
+while ARGV[0] =~ /^-/
+  rubyoptions += ARGV.shift+" "
+end
+sourcename = ARGV.shift
+sourcename += ".rb" if sourcename !~ /\.rb$/
+commandstring = "ruby #{rubyoptions} #{sourcename} #{reconstruct_arglist(ARGV)}"
+print "Command to run: #{commandstring}\n" if $DEBUG
+system "ruby -S #{sourcename} #{reconstruct_arglist(ARGV)}"
+

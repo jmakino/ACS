@@ -46,12 +46,13 @@ locallibs : $(LOCALLIBSRCS) $(KALI_LIBSRCS)
 clean : 
 	-rm -r doc .imgs .acsdoc.commandoutdir
 	-rm .[a-z]*\.rb[-+]* .[a-z]*\.rb .acsdoc.command-* 
+	-rm .[0-9]*\.rb[-+]* .[o-9]*\.rb .acsdoc.command-* 
 	-rm $(TARGET).tex $(TARGET).aux $(TARGET).cp $(TARGET).dvi \
 	    $(TARGET).log $(TARGET).ps $(TARGET).toc
 	-rm tmp.tex tmp.aux tmp.dvi tmp.log tmp.ps tmp.toc tmp.jpeg*
 
 %.tex : %.ok
-	$(ACSDOC)  $< *.rb
+	    $(ACSDOC)  $< [a-z,A-Z]*.rb
 	$(ACSDOC)  --tolatex  $<
 %.dvi : %.tex
 	latex  $< 

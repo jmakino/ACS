@@ -1,0 +1,2 @@
+#!/bin/csh -f
+/usr/bin/env ACSSUBPATH=kali acs $*
