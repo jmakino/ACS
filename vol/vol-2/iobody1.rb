@@ -2,30 +2,13 @@ require "vector.rb"
 
 class Body
 
-#:segment start: tag
-  TAG = "particle"                                          #1 vol 2, 2.3 ka na
-#:segment end:
+  TAG = "particle"                                              #1 vol 2, ch. 2
 
-#:segment start: type_acc
-  attr_accessor :mass, :pos, :vel, :type
-#:segment end:
+  attr_accessor :mass, :pos, :vel, :type                                     #2
 
   def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
     @mass, @pos, @vel = mass, pos, vel
-#:segment start: type
-    @type = nil                                                   #2 vol 2, 2.3
-#:segment end:
-    @story = []
-  end
-
-  def f_to_s(name, value, precision, indentation)  # from floating-point number
-    " " * indentation +
-      name + " = " + sprintf(" %#{precision+8}.#{precision}e\n", value)
-  end
-
-  def f_v_to_s(name, value, precision, indentation)   # from floating-pt vector
-    " " * indentation + name + " = " + 
-      value.map{|x| sprintf(" %#{precision+8}.#{precision}e", x)}.join + "\n"
+    @type = nil                                                              #3
   end
 
 #:segment start: to_s_def
@@ -38,6 +21,16 @@ class Body
       f_v_to_s("position", pos, precision, indent) +
       f_v_to_s("velocity", vel, precision, indent) +
       " " * base_indentation + "end" + "\n"
+  end
+
+  def f_to_s(name, value, precision, indentation)  # from floating-point number
+    " " * indentation +
+      name + " = " + sprintf(" %#{precision+8}.#{precision}e\n", value)
+  end
+
+  def f_v_to_s(name, value, precision, indentation)   # from floating-pt vector
+    " " * indentation + name + " = " + 
+      value.map{|x| sprintf(" %#{precision+8}.#{precision}e", x)}.join + "\n"
   end
 
   def write(file = $stdout, precision = 16,

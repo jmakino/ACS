@@ -109,7 +109,7 @@ convenience in other languages.  But you're right, it does look very natural.
 *Bob*: I then have to provide the main tag +particle+, which I have encoded
 as a +Body+ class constant, by adding the following line to the +Body+ class:
 
- :inccode: .iobody1.rb-tag
+ :inccode: .iobody1.rb-1
 
 The rest of the tag, in our example <tt>star giant AGB</tt>, which I call
 the type, in our case the type of particle, I assume will be stored in
@@ -117,11 +117,11 @@ an instance variable <tt>@type</tt>.  By default, when you create a
 vanilla flavor +Body+ instance, there is no extra type information,
 so I have added the following line to the +initialize+ method:
 
- :inccode: .iobody1.rb-type
+ :inccode: .iobody1.rb-3
 
 and I added <tt>@type</tt> to the list of accessor macros:
 
- :inccode: .iobody1.rb-type_acc
+ :inccode: .iobody1.rb-2
 
 If a type is specified, then the string <tt>@type</tt> is inserted after
 the string +TAG+, with a space in between, as you can see in the +if+ clause;
