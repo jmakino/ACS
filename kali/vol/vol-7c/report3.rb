@@ -71,16 +71,72 @@ class Nbody
     @body = []
   end
 
-  def ekin                        # kinetic energy
+  def ekin                        # total kinetic energy
     e = 0
     @body.each{|b| e += b.ekin}
     e
   end
 
-  def epot                        # potential energy
+  def epot                        # total potential energy
     e = 0
     @body.each{|b| e += b.epot(@body)}
     e/2                           # pairwise potentials were counted twice
+  end
+
+  def soft_kernel(r, eps)            # softening kernel
+    if r < eps
+      raux = r / eps
+      pot = (1.0/eps)*(1.0+0.5*(1.0-raux**2)+(21.0/16.0)*(1.0-raux**2)**2)
+    else
+      pot = 1.0 / r
+    end
+  end
+
+  def soft_potential(location, eps)         # softened potential
+    p = 0
+    @body.each do |b|
+      unless b == b.escaper_flag
+        r = b.pos - location
+        p += - b.mass * soft_kernel(sqrt(r*r), eps)
+      end
+    end
+    p 
+  end
+
+  def central_potential
+    location = @body[0].pos*0               # null vector of the correct length
+    eps = 1.0 / @body.size**(1.0/3.0)
+    soft_potential(location, eps)
+  end
+
+  def cumulative_mass
+    cum_mass = []    
+    cum_mass_ordered = []
+    r =[]
+    r_ordered = []
+    index = []
+    @body.each_index do |i|
+      r[i] = sqrt(@body[i].pos * @body[i].pos)
+    end
+    sorted_array = sort_and_index(r)
+    sorted_array.each_index do |i|
+      r_ordered[i]=sorted_array[i][1]
+      index[i]=sorted_array[i][0]
+    end
+    cum_mass_ordered[0]=@body[index[0]].mass
+    for i in 1...r_ordered.size
+      j = index[i]
+      cum_mass_ordered[i]=cum_mass_ordered[i-1]+@body[j].mass
+      cum_mass[j]=cum_mass_ordered[i]
+    end
+    cum_mass
+  end
+
+  def sort_and_index(a)
+    aux_a = []
+    a.each_index{|i| aux_a[i] = [i,a[i]] }
+    aux_a.sort!{|x,y| x[1] <=> y[1]}
+    aux_a 
   end
 
   def find_density(k)                        # based on k-th nearest neighbor
@@ -137,9 +193,10 @@ class Nbody
     @cod.pos = @cod.vel = @body[0].pos*0    # null vector of the correct length
     @body.each do |b|
       unless b.escaper_flag
-        @cod.mass += b.find_density(@body, k)    # pseudo-mass, really, defined
-        @cod.pos += b.pos * b.mass               # in terms of density !
-        @cod.vel += b.vel * b.mass
+        rho = b.find_density(@body, k)
+        @cod.mass += rho                    # pseudo-mass, really, defined
+        @cod.pos += b.pos * rho             #   in terms of density !
+        @cod.vel += b.vel * rho
       end
     end
     if @cod.mass > 0
@@ -211,7 +268,7 @@ class Nbody
           " bound particles and ", number_of_escapers, " escapers\n"
   end
 
-  def report_com_cod_etc_distances(k)
+  def report_com_cod_etc_pos_distances(k)
     com_pos = center_of_mass.pos
     cod_pos = center_of_density(k).pos
     hid_pos = find_highest_density(k).pos
@@ -226,9 +283,19 @@ class Nbody
     print "|hid_pos - com_pos| = ", sqrt(dist * dist), "\n"
   end
 
-  def com_cod_distance(k)
-    d = center_of_mass.pos - center_of_density(k).pos
-    sqrt(d*d)
+  def report_com_cod_etc_vel_distances(k)
+    com_vel = center_of_mass.vel
+    cod_vel = center_of_density(k).vel
+    hid_vel = find_highest_density(k).vel
+    print "|com_vel| = ", sqrt(com_vel * com_vel), "\n"
+    print "|cod_vel| = ", sqrt(cod_vel * cod_vel), "\n"
+    print "|hid_vel| = ", sqrt(hid_vel * hid_vel), "\n"
+    dist = com_vel - cod_vel
+    print "|com_vel - cod_vel| = ", sqrt(dist * dist), "\n"
+    dist = hid_vel - cod_vel
+    print "|hid_vel - cod_vel| = ", sqrt(dist * dist), "\n"
+    dist = hid_vel - com_vel
+    print "|hid_vel - com_vel| = ", sqrt(dist * dist), "\n"
   end
 
 end
@@ -240,4 +307,5 @@ nb.simple_read
 #nb.write_report
 k = 5
 nb.find_escapers(k)
-nb.report_com_cod_etc_distances(k)
+nb.report_com_cod_etc_pos_distances(k)
+p nb.central_potential
