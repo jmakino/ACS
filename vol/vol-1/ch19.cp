@@ -287,5 +287,27 @@ you anymore.
 
 *Bob*: Only praise me?  That's fine, that I don't mind at all.
 
-== 
+== A Here Document
+
+*Alice*: While I get the idea of what you want to print out, in the
+statement starting with <tt>STDERR.print</tt>, I'm completely confused
+by what follows on the next few lines.  Here, let me have the key board,
+and let me at least properly indent it, it hurts my eyes.
+
+*Bob*: No, stop, don't do that!  It has a meaning.
+
+*Alice*: Meaning?
+
+*Bob*: I'm glad emacs has an undo.  Yes, meaning.  The funny symbols
+<tt><<END</tt> indicate the beginning of what is called a "here document".
+
+*Alice*: As opposed to a "there document"?
+
+*Bob*: It is really called like that, and for a good reason.
+
+<i>[Jun, onegai shimasu, yoku wakaranai, kono `good reason' -- Piet]</i>.
+
+
+
+
 
