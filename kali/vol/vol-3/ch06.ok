@@ -35,6 +35,56 @@ Ah, this is the only modification that we have to make to the +Body+ class,
 so you're right, it is not as bad as I thought.  All other changes happen
 only in the +Nbody+ class!
 
+== Alternatives
+
+*Alice*: But is this really necessary?  I thought that in Ruby you can take
+any class definition, whether you defined the class yourself or
+whether you get it from a library, and extend that class by adding something
+like
+
+  class Body
+    . . .
+  end
+
+*Bob*: Yes, that is true.  Indeed, we have used that procedure to define
+the method <tt>to_v</tt> for the +Array+ class.  However, in our code we
+have two class definitions directly following each other in a single file.
+The first one gives the +Body+ class, and the second one gives the +Nbody+
+class.  I suppose I could have given three definitions: first a standard
+one for +Body+, then the particular extension in the form of a second,
+additional definition for +Body+ as you just indicated, and finally
+the +Nbody+ class definition.  But since everything is bundled in the
+same file anyway, that seemed to me to be a rather unnecessary maneuver.
+
+*Alice*: Well, you know I like modularity.  And you yourself were just
+complaining about the fact that a modification in the +Nbody+ class forced
+you to intrude in the earlier definition of the +Body+ class.  At the very
+least, writing three definitions that way will make it more clear what is
+going on.
+
+In fact, I would probably prefer to put the standard +Body+ class definition in
+one file, and the +Nbody+ class definition in another file.  In that case,
+you can add the necessary +Body+ extensions to the second file,
+together with the +Nbody+ class definition that triggered the extensions.
+
+*Bob*: I don't like to create a plethora of small files.  But I see your point.
+And come to think of it, there must be other solutions.
+
+*Alice*: Well, the best thing would be if you could modify the definition
+of the +Body+ class from within +Nbody+, but I'm pretty sure that would violate
+some Ruby rules.
+
+*Bob*: Actually, I'm not so sure.  In Ruby you can do almost anything.  The
+trick is to find out how.  Hmmm.  I have read something about a Ruby class
+called +Binding+, and a method +binding+, both of which seem to be related
+to creating the possibility to do just the sort of thing you brought up.
+
+*Alice*: What do you know.  Well, not now, I suggest.
+
+*Bob*: I agree.
+
+== Forward
+
 *Alice*: Let's start again with the forward Euler method, listing now all three
 versions in order: your original one; the one we got by including an explicit
 parameter in the +acc+ call; and the new version you're writing now with extra
@@ -252,9 +302,11 @@ which we just wrote, quite a bit shorter as:
 
  :inccode: .rknbody6.rb+rk4
 
+== The Same, Yet Different
+
 *Bob*: I like that: every statement now fits on one line, we don't have to
-modify the +Body+ class when we introduce a new integration scheme, and we
-don't mention the variable <tt>@body</tt> anymore in each line.  I'm
+modify or extend the +Body+ class when we introduce a new integration scheme,
+and we don't mention the variable <tt>@body</tt> anymore in each line.  I'm
 satisfied: this combines all good things in one.  And I must say, I'm growing
 fond of working with Ruby.
 
@@ -266,12 +318,40 @@ we will start doing soon, clarity of expression is more important than anything
 else.  Nothing else will allow you to maintain an overview over the whole
 situation.
 
+However, just one point: you mentioned that the +Body+ class did not
+need to be extended.  But that is not true.  We _have_ extended the 
++Body+ class by adding a +calc+ method to i.
+
+*Bob*: I meant that we don't have to make a different and separate extension
+to the +Body+ class, each time we introduce a new integrator in +Nbody+.  We
+only modify +Body+ once, by adding +calc+, and the same +calc+ will do
+different things for different integrators.
+
+*Alice*: Which means that in practice, dynamically, we _are_ augmenting
+the +Body+ class, each time we add an integrator to the +Nbody+ class.
+
+*Bob*: That is true, but it is invisible as far as the code is concern.
+If the +Body+ class would be written in a separate file, that file would
+not have to be changed, upon adding an integrator.
+
+*Alice*: But I thought you didn't like to cut up our file into, what did you
+call it again, ah yes, a _plethora_ of small files.
+
+*Bob*: Very funny.  I'm not really suggesting to split up the file, I just
+tried to make a clear point even clearer.  But of course we are both right:
+I am right to say that the <i>written definition</i> of the +Body+ class
+remains unchanged, and you are right if you say that the <i>actual
+definition</i>, as it is dynamically changed during execution of the
+code by the interpreted, _does_ change.
+
+*Alice*: Right you are!  And right I am.  Okay, let's move on.
+
 == Testing
 
-*Bob*: However, we haven't tested yet any of our latest three versions.
-For now, let's just try the figure-8 triple.  I'll run the first
-singly-linked code version again, to make sure we got the right
-output.
+*Bob*: With all this bickering, we haven't tested yet any of our latest
+three versions.  For now, let's just try the figure-8 triple.  I'll
+run the first singly-linked code version again, to make sure we got
+the right output.
 
  :commandoutput: ruby rknbody3b_driver.rb < figure8.in
 

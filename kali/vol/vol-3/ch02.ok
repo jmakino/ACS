@@ -146,36 +146,52 @@ Directly implements Newton's law of gravity.
 the connection specifically.  To wit: the expression for the
 acceleration felt by particle _i_ is given by summing together the
 Newtonian gravitational attraction of all other particles _j_, where
-both _i_ and _j_ take on values from 1 up to and including _N_:
+both _i_ and _j_ take on values from 1 up to and including _N_, according
+to the text books.  In our case, of course, we label particles with numbers
+starting from 0 and running up to and including <i>N-1</i>, since that
+is Ruby's default way of numbering arrays.  Let's write the equations
+accordingly:
 
 :equation:
-\frac{d^2}{dt^2}\br_i =  G \sum_{j=1 \atop j \neq i}^N M_j
+\frac{d^2}{dt^2}\br_i =  G \sum_{j=0 \atop j \neq i}^{N-1} M_j
 \frac{\br_j - \br_i}{\,|\br_j - \br_i|^3}
 
 Here <tex>$M_j$</tex> and <tex>$\br_j$</tex> are the mass and position
-vector of particle _j_, and _G_ is the gravitational constant.  To
-bring out the inverse square nature of gravity, we can define
+vector of particle _j_, and _G_ is the gravitational constant.
+
+When I write this equation on a black board in front of a class, there
+is always someone who asks me where the power of 3 in the denominator
+comes from, given that Newtonian gravity is an inverse square law, and
+therefore should be proportional to the power 2 of the distance, in
+the denominator.  To bring out the inverse square nature of gravity,
+I then write
 <tex>$\br_{ji} = \br_j - \br_i$</tex>, with <tex>$r_{ji} = |\br_{ji}|$</tex>,
-and unit vector <tex>$\hat \br_{ji} = \br_{ji} / r_{ji}$</tex>:
+after which I define the unit
+vector <tex>$\hat \br_{ji} = \br_{ji} / r_{ji}$</tex>.  This allows the
+above equation to be written as:
 
 :equation:
-\ba_i = G \sum_{j=1 \atop j \neq i}^N
+\ba_i = G \sum_{j=0 \atop j \neq i}^{N-1}
 \frac{M_j}{r_{ji}^2} \,\hat\br_{ji}
 \label{newton}
 
-Note that the summation excludes self-interactions: every particle
+with the expected power of 2 in the denominator.
+
+Finally, I note that the summation excludes self-interactions: every particle
 feels the forces of the other <tex>$N-1$</tex> particles, but not its
 own force, which, as we already mentioned, would be infinitely large
 in case of a point mass.
 
-*Bob*: That's a nicely crisp summary.  And what is really
+*Bob*: That's a nicely crisp summary.
+
+*Alice*: What is really
 nice in our Ruby implementation, is that we _never_ have to introduce
 the counters _i_ and _j_ that are so ubiquitous in any N-body code I have
 ever seen.  Just as we could dispense with the _k_ variable for the
 components of a vector, we can avoid the other two counters by asking
 arrays and vectors to just loop over themselves.
 
-*Alice*: And this is one of the features that makes Ruby eminently suited
+And this is one of the features that makes Ruby eminently suited
 for prototyping and development work in general.  Whether Ruby will be used
 eventually for an industrial-strength production-type code, that remains
 to be seen.
@@ -184,7 +200,7 @@ to be seen.
 so far has been that Ruby is at least a couple orders of magnitude slower
 than the equivalent C or Fortran implementation.
 
-*Alice*: And in addition, our leapfrog calculates the acceleration twice
+*Alice*: In addition, our leapfrog calculates the acceleration twice
 on the +Nbody+ level, and for each particle pair, the relative acceleration
 is also computed twice.
 
@@ -246,7 +262,10 @@ That way I would express the fact that +a+ is a vector, that it needs
 to be off the right size, that it should contain all zeroes, and that
 it should be converted to a proper vector at the end of the day.
 
-*Bob*: A long day, if you ask me.  I prefer to stick with my 
+*Bob*: A long day, if you ask me.  I would never have guessed your explanation
+completely just from looking at that piece of code, so I would insist
+a comment there as well -- which makes your alternative longer than mine.
+I prefer to stick with my 
 
  :include: .rknbody1.rb-5
 

@@ -34,14 +34,14 @@ components of the positions of the particles should not be affected.
 Indeed, they remain at 0.5.
 
 The _y_ components of the positions should be equal to
-<tex>$\bv dt = 0.01 \bv$</tex>.  And so they are.
+<tex>$\bv \Delta t = 0.01 \bv$</tex>.  And so they are.
 
 As for the velocities, their _y_ components should be unchanged,
 and indeed that is the case.
 
 Finally, the _x_ components of the velocities should be equal to
-<tex>$\ba dt = 0.01 \ba$</tex>.  The acceleration, for particles of
-mass 0.9, at distance 1, should be 0.9, which means that <tex>$|\ba dt| =
+<tex>$\ba \Delta t = 0.01 \ba$</tex>.  The acceleration, for particles of
+mass 0.9, at distance 1, should be 0.9, which means that <tex>$|\ba \Delta t| =
 0.009$</tex>.  All that checks too.
 
 *Alice*: Yes, it is much easier to visually inspect a forward Euler scheme

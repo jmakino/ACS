@@ -80,16 +80,9 @@ significant digit in all coordinates.
 
 *Alice*: I'd say!  And you were right about the order of the particles.
 The first particle did indeed reach very close to the center, and all
-other particles reached your predicted position to within a small fraction
-of a percent: in all cases the first three digits are correct.
-
-*Bob*: I would have expected the first four digits to be correct, at least.
-
-*Alice*: Not necessarily.  Don't forget that, although our system is stable,
-it is only marginally so.  Therefore, a small error can lead to a relatively
-large displacement, at least larger than you might have guessed.  I'm very
-pleased with this performance.  And the energy error is almost zero,
-basically to within machine accuracy.  Congratulations!
+other particles reached your predicted position to within a fraction
+of a tenth of a percent: in all cases the first three digits are
+correct.  Congratulations!
 
 *Bob*: Thanks!  So let's move on.
 

@@ -14,13 +14,21 @@ everything fits on one line.  However, the version where we gave the
 +Body+ class explicit helper variables, in file <tt>rknbody4.rb</tt>,
 was even shorter.
 
-*Bob*: Yeah, but I really did not like the idea of giving this poor
+*Bob*: Yeah, I did not particularly like the idea of giving this poor
 +Body+ class all possible helper variables for all possible application.
-I much preferred your suggestion to send a command string to be
-evaluated dynamical, thereby generating the proper helper variables.
-Just-time-delivery, much better!
+Even though we discussed more clever ways to do this, frankly, I don't
+care too much what we will choose in the end.  I liked your suggestion
+to send a command string to be evaluated dynamical, thereby generating
+the proper helper variables, mostly because of its novelty.
 
-*Alice*: But when clarity is really the criterion, I am not sure whether
+*Alice*: And it goes with the spirit of the times: just-in-time-delivery!
+But what I like best about this latest method is that it obeys the DRY
+principle: we are not repeating ourselves.
+
+*Bob*: Apart from the fact that you repeatedly bring up particular principles.
+
+*Alice*: I'll repeatedly ignore that.  Apart from that point,
+when clarity is really the criterion, I am not sure whether
 the last version is really clearer.  Let us compare the forward Euler
 algorithm in both cases, in <tt>rknbody4.rb</tt>:
 
