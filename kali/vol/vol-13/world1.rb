@@ -135,29 +135,6 @@ class Worldpoint < Body
     p
   end
 
-  def to_s
-    "  mass = " + @mass.to_s + "\n" +
-    "   pos = " + @pos.join(", ") + "\n" +
-    "   vel = " + @vel.join(", ") + "\n"
-  end
-
-  def ppx(body_array)        # pretty print, with extra information (acc, jerk)
-    STDERR.print to_s
-    a = j = @pos*0              # this repeats the get_acc_and_jerk calculation
-    body_array.each do |b|      # above; a kludge for now to get it working,
-      unless b == self          # but this should be cleaned up soon.
-        r = b.pos - @pos
-        r2 = r*r
-        r3 = r2*sqrt(r2)
-        v = b.vel - @vel
-        a += b.mass*r/r3
-        j += b.mass*(v-3*(r*v/r2)*r)/r3
-      end
-    end    
-    STDERR.print "   acc = " + a.join(", ") + "\n"
-    STDERR.print "   jerk = " + j.join(", ") + "\n"
-  end
-
 end
 
 class Worldline
@@ -214,21 +191,6 @@ class Worldline
         end
       end
     end
-  end
-
-  def next_worldline(time)
-    valid_interpolation?(time)
-    wl = Worldline.new
-    @worldpoint.each_index do |i|
-      if @worldpoint[i].time > time
-        wl.worldpoint = @worldpoint[i-1...@worldpoint.size]
-        break
-      elsif @worldpoint[i].time == time
-        wl.worldpoint = @worldpoint[i...@worldpoint.size]
-        break
-      end
-    end
-    wl
   end
 
   def next_worldline(time)
@@ -334,7 +296,7 @@ class Worldera
     false
   end
 
-  def write_diagnostics(t, nsteps, initial_energy, x_flag, init_flag = false)
+  def write_diagnostics(t, nsteps, initial_energy, init_flag = false)
     STDERR.print "at time t = #{sprintf("%g", t)} "
     STDERR.print "(from interpolation after #{nsteps} steps "
     if init_flag
@@ -342,20 +304,13 @@ class Worldera
     else
       STDERR.print "to time #{sprintf("%g", @end_time)}):\n"
     end
-    take_snapshot(t).write_diagnostics(initial_energy, x_flag)
+    take_snapshot(t).write_diagnostics(initial_energy)
   end
 
   def setup_from_snapshot(ss, dt_era)
     @start_time = ss.time
     @end_time = @start_time + dt_era
     ss.body.each{|b| @worldline.push(Worldline.new(b.to_worldpoint, ss.time))}
-  end
-
-  def write_snapshot(t)
-    raise if not valid_time?(t)
-    print @worldline.size, "\n"
-    printf("%24.16e\n", t)
-    take_snapshot(t).write
   end
 
 end
@@ -370,7 +325,7 @@ class World
       @nsteps += dn
       @time = @era.end_time
       while @t_dia <= @era.end_time and @t_dia <= @t_end
-        @era.write_diagnostics(@t_dia, @nsteps, @initial_energy, c.x_flag)
+        @era.write_diagnostics(@t_dia, @nsteps, @initial_energy)
         @t_dia += c.dt_dia
       end
       while @t_out <= @era.end_time and @t_out <= @t_end
@@ -418,7 +373,7 @@ class World
   end
 
   def init_output(c)
-    @era.write_diagnostics(@time, @nsteps, @initial_energy, c.x_flag, true)
+    @era.write_diagnostics(@time, @nsteps, @initial_energy, true)
     if c.init_out
       if c.world_output_flag
         acs_write($stdout, false, c.precision, c.add_indent)
@@ -441,15 +396,6 @@ class World
     else
       raise "#{object.class} not recognized"
     end
-  end
-
-  def read_initial_snapshot(c)
-    @era = Worldera.new
-    @era.read_initial_snapshot(c.dt_era)
-  end
-
-  def write_snapshot(time)
-    @era.write_snapshot(time)
   end
 
 end
@@ -479,7 +425,7 @@ class Worldsnapshot < Nbody
     kinetic_energy + potential_energy
   end
 
-  def write_diagnostics(initial_energy, x_flag)
+  def write_diagnostics(initial_energy)
     e0 = initial_energy
     ek = kinetic_energy
     ep = potential_energy
@@ -491,16 +437,6 @@ class Worldsnapshot < Nbody
        E_tot - E_init = #{sprintf("%.3g", etot - e0)}
         (E_tot - E_init) / E_init = #{sprintf("%.3g", (etot - e0)/e0 )}
     END
-    if x_flag
-      STDERR.print "  for debugging purposes, here is the internal data ",
-                   "representation:\n"
-      ppx
-    end
-  end
-
-  def ppx                          # pretty print, with extra information (acc)
-    print "     N = ", @body.size, "\n"
-    @body.each{|b| b.ppx(@body)}
   end
 
 end
@@ -638,19 +574,6 @@ options_text= <<-END
     on the standard output channel, before integration is started.
 
 
-  Short name:		-x
-  Long name:  		--extra_diagnostics
-  Value type:  		bool
-  Variable name:	x_flag
-  Description:		Extra diagnostics
-  Long description:
-    If this flag is set to true, the following extra diagnostics
-    will be printed: 
-
-      acceleration (for all integrators)
-      jerk (for the Hermite integrator)
-
-
   Short name:		-r
   Long name:  		--world_output
   Value type:  		bool
@@ -659,7 +582,7 @@ options_text= <<-END
   Long description:
     If this flag is set to true, each output will take the form of a
     full world dump, instead of a snapshot (the default).  Reading in
-    such an world again will allow an fully (?) accurate restart of the
+    such an world again will allow an fully accurate restart of the
     integration,  since no information is lost in the process of writing
     out and reading in in terms of world format.
 

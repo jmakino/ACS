@@ -149,29 +149,6 @@ class Worldpoint < Body
     p
   end
 
-  def to_s
-    "  mass = " + @mass.to_s + "\n" +
-    "   pos = " + @pos.join(", ") + "\n" +
-    "   vel = " + @vel.join(", ") + "\n"
-  end
-
-  def ppx(body_array)        # pretty print, with extra information (acc, jerk)
-    STDERR.print to_s
-    a = j = @pos*0              # this repeats the get_acc_and_jerk calculation
-    body_array.each do |b|      # above; a kludge for now to get it working,
-      unless b == self          # but this should be cleaned up soon.
-        r = b.pos - @pos
-        r2 = r*r
-        r3 = r2*sqrt(r2)
-        v = b.vel - @vel
-        a += b.mass*r/r3
-        j += b.mass*(v-3*(r*v/r2)*r)/r3
-      end
-    end    
-    STDERR.print "   acc = " + a.join(", ") + "\n"
-    STDERR.print "   jerk = " + j.join(", ") + "\n"
-  end
-
 end
 
 class Worldline
@@ -226,21 +203,6 @@ class Worldline
         end
       end
     end
-  end
-
-  def next_worldline(time)
-    valid_interpolation?(time)
-    wl = Worldline.new
-    @worldpoint.each_index do |i|
-      if @worldpoint[i].time > time
-        wl.worldpoint = @worldpoint[i-1...@worldpoint.size]
-        break
-      elsif @worldpoint[i].time == time
-        wl.worldpoint = @worldpoint[i...@worldpoint.size]
-        break
-      end
-    end
-    wl
   end
 
   def next_worldline(time)
@@ -346,7 +308,7 @@ class Worldera
     false
   end
 
-  def write_diagnostics(t, nsteps, initial_energy, x_flag, init_flag = false)
+  def write_diagnostics(t, nsteps, initial_energy, init_flag = false)
     STDERR.print "at time t = #{sprintf("%g", t.to_f)} "
     STDERR.print "(from interpolation after #{nsteps} steps "
     if init_flag
@@ -354,24 +316,16 @@ class Worldera
     else
       STDERR.print "to time #{sprintf("%g", @end_time.to_f)}):\n"
     end
-    take_snapshot(t).write_diagnostics(initial_energy, x_flag)
+    take_snapshot(t).write_diagnostics(initial_energy)
   end
 
-  def read_initial_snapshot(dt_era, dt_max_param)
+  def setup_from_snapshot(ss, dt_era, dt_max_param)
     scale_factor = dt_era * dt_max_param
-    ss = ACS_IO.acs_read(Worldsnapshot)
     @start_time = ss.time.to_b(scale_factor)
     @end_time = @start_time + dt_era.to_b(scale_factor)
     ss.body.each do |b|
       @worldline.push(Worldline.new(b.to_worldpoint, @start_time))
     end
-  end
-
-  def write_snapshot(t)
-    raise if not valid_time?(t)
-    print @worldline.size, "\n"
-    printf("%24.16e\n", t)
-    take_snapshot(t).write
   end
 
 end
@@ -381,63 +335,86 @@ class World
   TAG = "world"
 
   def evolve(c)
-    scale_factor = c.dt_era * c.dt_max_param
-    dt_max = 1.to_b
-    dt_max.scale_factor = scale_factor
-    if c.world_input_flag
-      @new_era = @era.next_era(c.dt_era.to_b(scale_factor))
+    while @era.start_time < @t_end
+      @new_era, dn = @era.evolve(c.dt_era, c.dt_param, @dt_max, c.shared_flag)
+      @nsteps += dn
+      @time = @era.end_time
+      while @t_dia <= @era.end_time and @t_dia <= @t_end
+        @era.write_diagnostics(@t_dia, @nsteps, @initial_energy)
+        @t_dia += c.dt_dia.to_b(@t_dia.scale_factor)
+      end
+      while @t_out <= @era.end_time and @t_out <= @t_end
+        output(c)
+        @t_out += c.dt_out.to_b(@t_out.scale_factor)
+      end
       @old_era = @era
       @era = @new_era
-    else
-      @nsteps = 0
-      @initial_energy = @era.startup_and_report_energy(c.dt_param, dt_max)
     end
-    time = @era.start_time
-    if c.world_input_flag
-      @t_end += c.dt_end.to_b(scale_factor)
+  end
+
+  def output(c)
+    if c.world_output_flag
+      acs_write($stdout, false, c.precision, c.add_indent)
     else
-      @t_out = time + c.dt_out.to_b(scale_factor)
-      @t_dia = time + c.dt_dia.to_b(scale_factor)
-      @t_end = time + c.dt_end.to_b(scale_factor)
+      @era.take_snapshot(@t_out).acs_write($stdout, true,
+                                           c.precision, c.add_indent)
     end
-    @era.write_diagnostics(time, @nsteps, @initial_energy, c.x_flag, true)
+  end
+
+  def setup_from_world(c)
+    scale_factor = c.dt_era * c.dt_max_param
+    @dt_max = 1.to_b
+    @dt_max.scale_factor = scale_factor
+    init_output(c)
+    @t_out += c.dt_out.to_b(scale_factor)
+    @t_end += c.dt_end.to_b(scale_factor)
+    @new_era = @era.next_era(c.dt_era.to_b(scale_factor))
+    @old_era = @era
+    @era = @new_era
+  end
+
+  def setup_from_snapshot(ss, c)
+    scale_factor = c.dt_era * c.dt_max_param
+    @dt_max = 1.to_b
+    @dt_max.scale_factor = scale_factor
+    @era = Worldera.new
+    @era.setup_from_snapshot(ss, c.dt_era, c.dt_max_param)
+    @nsteps = 0
+    @initial_energy = @era.startup_and_report_energy(c.dt_param, @dt_max)
+    @time = @era.start_time
+    @t_out = @time
+    @t_dia = @time
+    @t_end = @time
+    init_output(c)
+    @t_out += c.dt_out.to_b(scale_factor)
+    @t_dia += c.dt_dia.to_b(scale_factor)
+    @t_end += c.dt_end.to_b(scale_factor)
+  end
+
+  def init_output(c)
+    @era.write_diagnostics(@time, @nsteps, @initial_energy, true)
     if c.init_out
       if c.world_output_flag
         acs_write($stdout, false, c.precision, c.add_indent)
       else
         @era.take_snapshot(@t_out).acs_write($stdout, true,
-                                             c.precision, c.add_indent)
+                                            c.precision, c.add_indent)
       end
-    end
-    while @era.start_time < @t_end
-      @new_era, dn = @era.evolve(c.dt_era, c.dt_param, dt_max,
-                                 c.shared_flag)
-      @nsteps += dn
-      while @t_dia <= @era.end_time and @t_dia <= @t_end
-        @era.write_diagnostics(@t_dia, @nsteps, @initial_energy, c.x_flag)
-        @t_dia += c.dt_dia
-      end
-      while @t_out <= @era.end_time and @t_out <= @t_end
-        if c.world_output_flag
-          acs_write($stdout, false, c.precision, c.add_indent)
-        else
-          @era.take_snapshot(@t_out).acs_write($stdout, true,
-                                               c.precision, c.add_indent)
-        end
-        @t_out += c.dt_out.to_b(scale_factor)
-      end
-      @old_era = @era
-      @era = @new_era
     end
   end
 
-  def read_initial_snapshot(c)
-    @era = Worldera.new
-    @era.read_initial_snapshot(c.dt_era, c.dt_max_param)
-  end
-
-  def write_snapshot(time)
-    @era.write_snapshot(time)
+  def World.admit(file, c)
+    object = acs_read([self, Worldsnapshot], file)
+    if object.class == self
+      object.setup_from_world(c)
+      return object
+    elsif object.class == Worldsnapshot
+      w = World.new
+      w.setup_from_snapshot(object, c) if object.class == Worldsnapshot
+      return w
+    else
+      raise "#{object.class} not recognized"
+    end
   end
 
 end
@@ -467,7 +444,7 @@ class Worldsnapshot < Nbody
     kinetic_energy + potential_energy
   end
 
-  def write_diagnostics(initial_energy, x_flag)
+  def write_diagnostics(initial_energy)
     e0 = initial_energy
     ek = kinetic_energy
     ep = potential_energy
@@ -479,16 +456,6 @@ class Worldsnapshot < Nbody
        E_tot - E_init = #{sprintf("%.3g", etot - e0)}
         (E_tot - E_init) / E_init = #{sprintf("%.3g", (etot - e0)/e0 )}
     END
-    if x_flag
-      STDERR.print "  for debugging purposes, here is the internal data ",
-                   "representation:\n"
-      ppx
-    end
-  end
-
-  def ppx                          # pretty print, with extra information (acc)
-    print "     N = ", @body.size, "\n"
-    @body.each{|b| b.ppx(@body)}
   end
 
 end
@@ -525,7 +492,7 @@ options_text= <<-END
   Value type:		float
   Default value:	0.01
   Variable name:	dt_param
-  Description:		Parameter to determine time step size
+  Description:		Determines the time step size
   Long description:
     This option sets the step size control parameter dt_param << 1.  Before
     each new time step, we first calculate the time scale t_scale on which
@@ -555,7 +522,7 @@ options_text= <<-END
   Value type:		float
   Default value:	1
   Variable name:	dt_max_param
-  Description:		Maximum time step in units of dt_era
+  Description:		Maximum time step (units dt_era)
   Long description:
     This option sets an upper limit to the size dt of a time step,
     as the product of the duration of an era and this parameter:
@@ -567,7 +534,7 @@ options_text= <<-END
   Value type:		float
   Default value:	1
   Variable name:	dt_dia
-  Description:		Interval between diagnostics output
+  Description:		Diagnostics output interval
   Long description:
     This option sets the time interval between diagnostics output,
     which will appear on the standard error channel.
@@ -578,7 +545,7 @@ options_text= <<-END
   Value type:		float
   Default value:	1
   Variable name:	dt_out
-  Description:		Time interval between snapshot output
+  Description:		Snapshot output interval
   Long description:
     This option sets the time interval between output of a snapshot
     of the whole N-body system, which which will appear on the
@@ -628,20 +595,7 @@ options_text= <<-END
     on the standard output channel, before integration is started.
 
 
-  Short name:		-x
-  Long name:  		--extra_diagnostics
-  Value type:  		bool
-  Variable name:	x_flag
-  Description:		Extra diagnostics
-  Long description:
-    If this flag is set to true, the following extra diagnostics
-    will be printed: 
-
-      acceleration (for all integrators)
-      jerk (for the Hermite integrator)
-
-
-  Short name:		-q
+  Short name:		-r
   Long name:  		--world_output
   Value type:  		bool
   Variable name:	world_output_flag
@@ -649,20 +603,9 @@ options_text= <<-END
   Long description:
     If this flag is set to true, each output will take the form of a
     full world dump, instead of a snapshot (the default).  Reading in
-    such an world again will allow an fully (?) accurate restart of the
+    such an world again will allow an fully accurate restart of the
     integration,  since no information is lost in the process of writing
     out and reading in in terms of world format.
-
-
-  Short name:		-r
-  Long name:  		--world_input
-  Value type:  		bool
-  Variable name:	world_input_flag
-  Description:		World input format, instead of snapshot
-  Long description:
-    If this flag is set to true, input data should have the form of a
-    full world dump, instead of a snapshot (the default).  See also the
-    option --world_output
 
 
   Short name:		-a
@@ -705,10 +648,7 @@ options_text= <<-END
 
 clop = parse_command_line(options_text, true)
 
-if (clop.world_input_flag)
-  w = ACS_IO.acs_read(World)
-else
-  w = World.new
-  w.read_initial_snapshot(clop)
-end
-w.evolve(clop)
+#w = World.admit($stdin, clop)
+#w.evolve(clop)
+
+World.admit($stdin, clop).evolve(clop)
