@@ -265,6 +265,8 @@ well use the <tt>to_s</tt> method to define a pretty printing method
 
 *B*: Let's run it:
 
+ :output: ruby body-pp-demo.rb
+
     |gravity> ruby body04.rb
       mass = 3
        pos = 0.1, 0.2, 0.3
