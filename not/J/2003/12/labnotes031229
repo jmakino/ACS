@@ -1,0 +1,32 @@
+I installed ruby 1.8.1 and made a few changes:
+
+   428  11:08   tar xvzf ruby-1.8.1.tar.gz
+   429  11:08   cd ruby-1.8.1
+   433  11:09   ./configure
+   434  11:09   make
+   435  11:12   sudo make install
+
+   Ruby-sumo (includes rdoc and many other utilities)   
+   
+   442  11:13   cd ../ruby-sumo*7
+   446  11:13   ./rubysumo-setup --sudo sudo
+   450  11:14   cd-
+
+   Update local changes for rdoc
+   
+   461  11:17   sudo cp -pi /usr/local/lib/ruby/site_ruby/1.6*/markup/simple_markup/*rb /usr/local/lib/ruby/site_ruby/1.8*/markup/simple_markup/
+
+   Narray
+   
+   467  11:20   cd ../na*7
+   472  11:20   ruby extconf.rb
+   473  11:20   make
+   475  11:20   sudo make install
+
+   Ruby/PGPLOT
+   
+   477  11:22   cd ..
+   479  11:22   cd rb_pgplot-0.1.2/
+   486  11:25   ruby extconf.rb --with-pgplot-include=/usr/local/pgplot --with-x11-dir=/usr/X11R6
+   487  11:25   make
+   488  11:25   sudo make install
