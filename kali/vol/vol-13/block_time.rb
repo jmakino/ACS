@@ -85,7 +85,7 @@ class Block_time
     end
     if a.class == Float or a.class == Fixnum
       a_block = Block_time.new(a)
-      return self + a_block
+      return self - a_block
     end
   end
 
@@ -115,7 +115,8 @@ class Block_time
         arr[i] = 1
       end
     end
-    minus_self.time_int = -minus_self.time_int - 1
+    minus_self.time_int = -minus_self.time_int
+    minus_self.time_int -= 1 if arr.size > 0
     minus_self.expand
     minus_self
   end
@@ -128,6 +129,7 @@ class Block_time
     while @time_array[@time_array.size - 1] == 0
       break unless @time_array.pop
     end
+    self
   end
 
   def expand
@@ -136,6 +138,7 @@ class Block_time
       @time_array[i] = 0
       i += 1
     end
+    self
   end
 
 #

@@ -286,6 +286,9 @@ options_text= <<-END
     using individual time steps.
     (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
 
+    example:
+    ruby mkplummer3.rb -n 5 | ruby murat4.rb -t 1
+
 
   Short name: 		-d
   Long name:		--step_size_control

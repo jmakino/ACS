@@ -302,6 +302,9 @@ options_text= <<-END
     dt = 2^(-k) with k >= 0.
     (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
 
+    example:
+    ruby mkplummer3.rb -n 5 | ruby murat5.rb -t 1
+
 
   Short name: 		-d
   Long name:		--step_size_control
