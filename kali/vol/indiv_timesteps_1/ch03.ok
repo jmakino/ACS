@@ -8,7 +8,7 @@ also print out the whole +NBody+ class?
 *Bob*: Sure.  It's not very long, about the same size as the +Body+ class.
 I keep being surprised at how compact Ruby code is.
 
- : inccode:.nbody_ind1.rb+NBody
+ :inccode:.nbody_ind1.rb-NBody
 
 == Starting Up
 

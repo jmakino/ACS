@@ -15,7 +15,7 @@ this means starting at the end, or at least close to the end, with the
 
 *Bob*: Okay, let's print it out.
 
- : inccode:.world1.rb+World
+ :inccode:.world1.rb-World
 
 == Admittance
 

@@ -7,7 +7,7 @@ to get an idea of what is happening on the ground level.
 
 *Bob*: My pleasure!  Here it all is.
 
- : inccode:.nbody_ind1.rb+Body
+ :inccode:.nbody_ind1.rb-Body
 
 == A Familiar Part
 

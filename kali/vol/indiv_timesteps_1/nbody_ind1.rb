@@ -2,6 +2,7 @@
 
 require "nbody.rb"
 
+#:segment start: Body
 class Body
 
   attr_accessor :acc, :jerk, 
@@ -104,7 +105,9 @@ class Body
   end
 
 end
+#:segment end:
 
+#:segment start: NBody
 class NBody
 
   def startup(dt_param)
@@ -193,6 +196,7 @@ END
   end
 
 end
+#:segment end:
 
 options_text= <<-END
 

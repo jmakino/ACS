@@ -2,6 +2,7 @@
 
 require "nbody.rb"
 
+#:segment start: Body
 class WorldPoint < Body
 
   attr_accessor :acc, :jerk,
@@ -101,7 +102,9 @@ class WorldPoint < Body
   end
 
 end
+#:segment end:
 
+#:segment start: WorldLine
 class WorldLine
 
   attr_accessor  :worldpoint
@@ -189,7 +192,9 @@ class WorldLine
   end
 
 end
+#:segment end:
 
+#:segment start: WorldEra
 class WorldEra
 
   attr_accessor  :start_time, :end_time, :worldline
@@ -302,7 +307,9 @@ class WorldEra
   end
 
 end
+#:segment end:
 
+#:segment start: World
 class World
 
   def evolve(c)
@@ -385,7 +392,9 @@ class World
   end
 
 end
+#:segment end:
 
+#:segment start: WorldSnapshot
 class WorldSnapshot < NBody
 
   def get_acc_and_jerk(pos, vel)
@@ -452,6 +461,7 @@ class WorldSnapshot < NBody
   end
 
 end
+#:segment end:
 
 class Body
 
