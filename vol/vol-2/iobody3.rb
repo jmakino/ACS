@@ -19,6 +19,7 @@ class Body
       f_to_s("mass", mass, precision, indent) +
       f_v_to_s("position", pos, precision, indent) +
       f_v_to_s("velocity", vel, precision, indent) +
+      
       " " * base_indentation + "end" + "\n"
   end
 

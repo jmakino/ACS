@@ -51,8 +51,9 @@ We all know how many emails we get every day, and how difficult it is to
 retrieve the right one, after weeks or months.
 
 *Bob*: But there is no way of knowing the form that a human narrative
-can take.  People may write !@#$% if they are in a bad mood.  So then
-you would allow literally any line!
+can take.  People might write <tt>!@#*!!</tt> if they are in a bad
+mood.  By letting people write what they want you would allow
+literally any line!
 
 *Alice*: Why not?
 
