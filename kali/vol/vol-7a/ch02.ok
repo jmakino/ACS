@@ -1,8 +1,70 @@
-= 
+= Distance Measures
 
 == xxx
 
-Start with the old rknbody8.rb code, for fixed time steps
+Switch from Nbody.rb to NBody.rb
+
+ :inccode:acsnumber.rb
+
+ :inccode:.nbody.rb+-
+
+ :inccode:.nbody.rb+abs
+
+ :inccode:.nbody.rb+abs_pos
+
+ :inccode:acsdiff.rb
+
+ :inccode:circular_binary.in
+
+ :inccode:pert_circ_binary.in
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ :commandoutput: acsnumber.rb < circular_binary.in > tmp0.in
+ :commandoutput: acsnumber.rb < pert_circ_binary.in > tmp1.in
+ :commandoutput: cat tmp0.in tmp0.in | acsdiff.rb
+ :commandoutput: cat tmp0.in tmp1.in | acsdiff.rb
+ :commandoutput: cat tmp0.in tmp1.in | acsdiff.rb -r -p 5
+ :command: rm -f tmp0.in tmp1.in
+
+
+
+
+
+
+
+
+
+
+
+why not more accurate for variable time step?
+		    write nbodydiff
 
 discuss how to extend it to variable time steps, then implement:
 nbody_cst1.rb

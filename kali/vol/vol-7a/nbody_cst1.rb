@@ -63,15 +63,15 @@ class Nbody
     @nsteps = 0
     e_init
     write_diagnostics
-    t_dia = @time + dt_dia - 0.5*dt
-    t_out = @time + dt_out - 0.5*dt
-    t_end = @time + dt_end - 0.5*dt
+    t_dia = @time + dt_dia - 0.5*dt                                          #1
+    t_out = @time + dt_out - 0.5*dt                                          #1
+    t_end = @time + dt_end - 0.5*dt                                          #1
 
     acs_write if init_out
 
     while @time < t_end
       send(integration_method)
-      @time += dt
+      @time += @dt
       @nsteps += 1
       if @time >= t_dia
         write_diagnostics
