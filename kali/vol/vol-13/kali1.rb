@@ -114,7 +114,7 @@ module Integrator_multistep
 
   attr_reader :acc, :acc_0_history, :time_history
 
-  ORDER = 5
+  ORDER = 4
 
   def setup_integrator
     @acc_0_history = []
@@ -160,7 +160,7 @@ module Integrator_multistep
       c[k][k] = 1
     end
     for j in (1...order)
-      @acc[j] = acc[0]*0
+      @acc[j] = @acc[0]*0
       for k in (j...order)
         @acc[j] += c[k][j] * d[k][0]
       end
@@ -229,7 +229,7 @@ class Worldpoint
 
   ACS_OUTPUT_NAME = "Body"
 
-  INIT_TIMESCALE_FACTOR = 0.001
+  INIT_TIMESCALE_FACTOR = 0.000000001
   MAX_TIMESTEP_INCREMENT_FACTOR = 2
 
   attr_accessor :pos, :vel
