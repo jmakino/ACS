@@ -4,7 +4,7 @@
 ~\\
 The Kali code for Dense Stellar Systems\\
 ~\\
- Volume 8: Individual Time Steps
+ Volume 9: Individual Time Steps
 }
 \author{Piet Hut and Jun Makino}
 \maketitle

@@ -4,7 +4,7 @@
 ~\\
 The Kali code for Dense Stellar Systems\\
 ~\\
- Volume 2: Introduction to the N-Body Problem
+ Volume 2: Integration Algorithms
 }
 \author{Piet Hut and Jun Makino}
 \maketitle

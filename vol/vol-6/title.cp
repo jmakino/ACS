@@ -4,7 +4,7 @@
 ~\\
 The Kali code for Dense Stellar Systems\\
 ~\\
- Volume 6: The Hermite Algorithm
+ Volume 6: Graphics
 }
 \author{Piet Hut and Jun Makino}
 \maketitle
