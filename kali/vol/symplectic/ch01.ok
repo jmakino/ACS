@@ -1,4 +1,4 @@
-= Shared Time Steps
+= A Surprising Algorithm
 
 == Picking up the Pieces
 
@@ -18,32 +18,151 @@ instead of astrophysicists.
 *Alice*: I'm afraid we had no choice.  The alternative would have been
 to come up with stopgap solutions at every turn in the road.  Now at least
 we have a reliable and flexible data format and corresponding I/O routines,
-and we have an extendable command line options argument which makes our codes
-self-describing through a detailed help facility, and so on.
+and we have a library structure that allows us to organize our codes.  And
+even before we built that, we introduced extendable command line options
+that maked our codes self-describing through a detailed help facility.
 
 *Bob*: I must admit, all those features do make life easier.  I remember
-getting rather tired, editing a file each time I wanted to perform a different
-run.  Okay, where were we?
+getting rather tired, editing a file each time I wanted to perform a
+different run, before we had command line options.  That seems like a
+long time ago!  Okay, where were we?
 
 *Alice*: In volume ???acsio??? we had collected the various integrators in a
 single file <tt>nbody_cst1.rb</tt>, while we were getting the ACS data format
 straightened out.  Let us start from the same file, in this new directory,
 corresponding to the current volume.
 
-*Bob*: Do you remember how to run it?
+*Bob*: And let us start by calling it <tt>nbody_cst1a.rb</tt>, so that we
+can experiment with a few versions 1a, 1b, etc, until we are happy with a
+more stable version, which we can then call <tt>nbody_cst1.rb</tt> again,
+in this directory.  At that point, we can export that version once more
+to our "bin/kali" directory.
 
-*Alice*: Don't have to!  Remember, we had a <tt>---help</tt> option, which
+*Alice*: Do you remember how to run <tt>nbody_cst1a.rb</tt>?
+
+*Bob*: Don't have to!  Remember, we had a <tt>---help</tt> option, which
 should give not only a detailed description of what the codes does, but in
 addition it should give a simple example invocation.
 
-*Bob*: Ah, yes, that's one of the nifty features we added.  We've sure done
+*Alice*: Ah, yes, that's one of the nifty features we added.  We've sure done
 a lot!  Let's try:
 
- :commandoutput: ruby nbody_cst1.rb ---help
+ :commandoutput: Kali nbody_cst1a.rb ---help
 
 Well, let's follow the advice:
 
- :commandoutput: ruby mkplummer.rb -n 4 -s 1 | ruby nbody_cst1.rb -t 1 > /dev/null
+ :commandoutput: Kali mkplummer.rb -n 4 -s 1 | Kali nbody_cst1a.rb -t 1 > /dev/null
 
-== Estimating the Time Step Size
+== The Chin and Chen paper
+
+*Alice*: That all seems quite reasonable.  And we do have quite a number of
+different algorithms implemented, by now.  Shall we move on, from constant
+time steps to adaptive time steps, and after that, to individual time steps?
+
+*Bob*: Yes, we should do that soon.  However, before moving on, let me show
+you a paper that I stumbled upon, by Sia. A. Chin and C. R. Chen.
+I found it on astro-ph, under
+<web>http://arxiv.org/abs/astro-ph/0304223|astro-ph/0304223</web>.
+This paper presents an algorithm that is totally different from what
+I've seen so far.
+
+== xxx
+
+:equation:
+\frac{d^2}{dt^2}\br_i =  G \sum_{j \neq i} M_j
+\frac{\br_j - \br_i}{\,|\br_j - \br_i|^3}
+
+We will omit the term _G_ by putting it equal to unity; we can always
+restore it, whenever we want, by applying dimensional analysis.
+
+Let me remind you how this equation can be derived, starting with the
+gravitational potential
+
+:equation:
+V(\br_i) = -\sum_{j \neq i} {M_j \over r_{ij}}
+
+with
+
+:equation:
+r_{ij} = |\br_{ij}| = |\br_j - \br_i|
+
+The equations of motion are defined as:
+
+:equation:
+\frac{d^2}{dt^2}\br_i =  -\nabla_{\br_i} V(\br_i)
+
+Let us write these last two equation in terms of vector components, in
+order to make it absolutely clear what we are doing.
+If we are working in _D_ dimensions, we can write
+<tex>$\br_i = \{r_{i,1}, r_{i,2}, \dots, r_{i,D}\}$</tex>, and
+similarly for the other vectors.  The last equations then become:
+
+:equation:
+r_{i,j} = \sqrt{\sum_k \left(r_{i,k} - r_{j,k}\right)^2}
+
+and
+
+:equation:
+\frac{d^2}{dt^2}r_{i,k} =  -{\partial\over\partial_{r_{i,k}}} V
+
+In order to evaluate the right-hand side of this last equation, we
+will need to compute
+
+:eqnarray:
+{\partial\over\partial_{r_{i,k}}} r_{ij}
+&=& {\partial\over\partial_{r_{i,k}}}
+\left[\sum_{k'} \left(r_{i,k'} - r_{j,k'}\right)^2\right]^{1/2}     \nonumber\\
+&=& \hhalf \left[\sum_{k'} \left(r_{i,k'} - r_{j,k'}\right)^2\right]^{-1/2}
+{\partial\over\partial_{r_{i,k}}}
+\left[\sum_{k'} \left(r_{i,k'} - r_{j,k'}\right)^2\right]           \nonumber\\
+&=& \hhalf{1\over r_{ij}} \sum_{k'} 2 \left(r_{i,k'} - r_{j,k'}\right)
+{\partial\over\partial_{r_{i,k}}} \left(r_{i,k'} - r_{j,k'}\right)  \nonumber\\
+&=& \hhalf{1\over r_{ij}} \sum_{k'} 2 \left(r_{i,k'} - r_{j,k'}\right)
+\delta_{k,k'}                                                       \nonumber\\
+&=& {1\over r_{ij}} \left(r_{i,k} - r_{j,k}\right)
+
+where we have used the fact that <tex>$i \neq j$</tex> and therefore
+
+:equation:
+{\partial\over\partial_{r_{i,k}}}r_{j,k'} = 0 \quad {\rm and} \quad 
+{\partial\over\partial_{r_{i,k}}}r_{i,k'} = \delta_{k,k'}
+
+When we write this again in vector notation, the expression becomes
+more compact:
+
+:equation:
+\nabla_{\br_i} r_{ij} = {1\over r_{ij}} \br_{ij}
+
+We can now complete our derivation of the equations of motion for the
+N-body problem:
+
+:eqnarray:
+\frac{d^2}{dt^2}\br_i &=&  -\nabla_{\br_i} V(\br_i)            \nonumber\\
+&=& \nabla_{\br_i} \sum_{j \neq i} {M_j \over r_{ij}}             \nonumber\\
+&=& \sum_{j \neq i} M_j \nabla_{\br_i} r_{ij}^{-1}              \nonumber\\
+&=& -\sum_{j \neq i} M_j r_{ij}^{-2} \nabla_{\br_i} r_{ij}         \nonumber\\
+&=& -\sum_{j \neq i} M_j r_{ij}^{-2} \left\{{1\over r_{ij}} \br_{ij}\right\}
+                                                                  \nonumber\\
+&=& -\sum_{j \neq i} M_j r_{ij}^{-3}\br_{ij}                  \nonumber\\
+&=& \sum_{j \neq i} M_j \frac{\br_j - \br_i}{\,|\br_j - \br_i|^3}
+
+== xxx
+
+:equation:
+\tilde V = V + {1\over 48} \tau^2 U
+
+:equation:
+\tilde \ba = \ba + {1\over 48} \tau^2 \bb
+
+:equation:
+U(\br_i) = \sum_j M_j a_j^2
+
+where, as usual, <tex>$a_j = |\ba_j|$</tex>, which implies
+
+:equation:
+a_j^2 = (\ba_j\cdot\ba_j)^2
+
+
+
+== xxx
 
