@@ -357,6 +357,7 @@ class Worldline
 #p "extend worldline #{@number}"
     new_point = eval("take_#{@method}_step(era, dt_max)")
     @worldpoint.push(new_point)
+#p "for worldline #{@number}: new_point.pos = #{new_point.pos}"
   end
 
   def forward_setup(time)
@@ -647,7 +648,10 @@ class Worldera
       else
         nsteps_old = nsteps_new = 0
         @worldline.each{|w| nsteps_old += w.worldpoint.last.nsteps}
-        @worldline[0].reach(@end_time, self, dt_max)
+#        @worldline[0].reach(@end_time, self, dt_max)
+        @worldline.each do |wl|
+          wl.reach(@end_time, self, dt_max)
+        end
         @worldline.each{|w| nsteps_new += w.worldpoint.last.nsteps}
         nsteps = nsteps_new - nsteps_old
       end
