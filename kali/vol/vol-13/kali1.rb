@@ -53,6 +53,8 @@ end
 
 module Integrator_adams2kana
 
+  attr_reader :acc
+
   def clear_force
     @acc = @pos*0
   end
@@ -70,6 +72,11 @@ module Integrator_adams2kana
   def correct(old, dt)
     @vel = old.vel + (1/2.0)*(old.acc + @acc)*dt
     @pos = old.pos + (1/2.0)*(old.vel + @vel)*dt
+# same as:
+#   @pos = old.pos + old.vel*dt + (1/4.0)*(old.acc + @acc)*dt^2
+#   @vel = old.vel + (1/2.0)*(old.acc + @acc)*dt
+# the last expression is fixed, as for leapfrog; the first one differs from
+# leapfrog only in mixing in a 3rd-order term proportional to the jerk
   end
 
   def interpolate_pos_vel(wp, dt)
@@ -82,6 +89,8 @@ module Integrator_adams2kana
 end
 
 module Integrator_leapfrog
+
+  attr_reader :acc
 
   def clear_force
     @acc = @pos*0
@@ -98,8 +107,8 @@ module Integrator_leapfrog
   end
 
   def correct(old, dt)
-    @vel = old.vel + (1/2.0)*(old.acc + @acc)*dt
     @pos = old.pos + old.vel*dt + (1/2.0)*old.acc*dt**2
+    @vel = old.vel + (1/2.0)*(old.acc + @acc)*dt
   end
 
   def interpolate_pos_vel(wp, dt)
@@ -111,9 +120,68 @@ module Integrator_leapfrog
 
 end
 
+module Integrator_multistep
+
+  def clear_force
+    @acc = [@pos*0]
+  end
+
+  def force(wl, era)
+    @acc = era.acc(wl, @pos, @time)
+  end
+
+  def predict(dt)
+    pos = @pos + taylor_increment(@acc_deriv, dt)
+
+
+    pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2
+    vel = @vel + @acc*dt
+    [pos, vel]
+  end
+
+  def ms4_full_extrapolate(t)
+    if t > @next_time
+      raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
+    end
+    wp = Worldpoint.new
+    wp.minstep = @minstep
+    wp.maxstep = @maxstep
+    wp.nsteps = @nsteps
+    wp.mass = @mass
+    wp.time = t
+    dt = t - @time
+    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
+             (1/24.0)*@snap*dt**4 + (1/120.0)*@crackle*dt**5
+    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*@snap*dt**3 +
+             (1/24.0)*@crackle*dt**4
+    wp
+  end
+
+  def correct(old, dt)
+    @pos = old.pos + old.vel*dt + (1/2.0)*old.acc*dt**2
+    @vel = old.vel + (1/2.0)*(old.acc + @acc)*dt
+  end
+
+  def interpolate_pos_vel(wp, dt)
+    jerk = (wp.acc - @acc) / (wp.time - @time)
+    pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2
+    vel = @vel + @acc*dt + (1/2.0)*jerk*dt**2
+    [pos, vel]
+  end
+
+  def taylor_increment(a, dt, number = 1)
+    result = a[number-1]
+    if number < a.size
+      result += (1/(number+1))*taylor_increment(a, dt, number+1)
+    end
+    result*dt
+  end
+
+end
+
 module Integrator_hermite
 
-  attr_reader :jerk
+  attr_reader :acc, :jerk
 
   def clear_force
     @acc = @pos*0
@@ -156,7 +224,7 @@ class Worldpoint
 
   attr_accessor :pos, :vel
 
-  attr_reader :mass, :acc, :time, :next_time,
+  attr_reader :mass, :time, :next_time,
               :nsteps, :minstep, :maxstep
 
   def setup(dt_param, time)
