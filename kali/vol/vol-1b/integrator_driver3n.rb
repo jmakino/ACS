@@ -1,4 +1,4 @@
-require "yo8body.rb"
+require "yo8body_wrong.rb"
 
 include Math
 

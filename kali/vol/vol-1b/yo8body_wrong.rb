@@ -10,9 +10,9 @@ class Body
 
   def evolve(integration_method, dt, dt_dia, dt_out, dt_end)
     time = 0
-    @nsteps = 0
+    nsteps = 0
     e_init
-    write_diagnostics(time)
+    write_diagnostics(nsteps, time)
 
     t_dia = dt_dia - 0.5*dt
     t_out = dt_out - 0.5*dt
@@ -21,9 +21,9 @@ class Body
     while time < t_end
       send(integration_method,dt)
       time += dt
-      @nsteps += 1
+      nsteps += 1
       if time >= t_dia
-        write_diagnostics(time)
+        write_diagnostics(nsteps, time)
         t_dia += dt_dia
       end
       if time >= t_out
@@ -66,12 +66,13 @@ class Body
     a1 = acc
     @pos = old_pos + vel*dt + a1*0.5*dt*dt
     a2 = acc
-    @pos = old_pos + vel*dt + (a0+a1*2)*(1/6.0)*dt*dt                       #1
-    @vel = vel + (a0+a1*4+a2)*(1/6.0)*dt                                    #1
+    @pos = old_pos + vel*dt + (a0+a1*2)*(1/6.0)*dt*dt
+    @vel = vel + (a0+a1*4+a2)*(1/6.0)*dt
   end
 
   def yo4(dt)
-    d = [1.351207191959657, -1.702414383919315]
+#    d = [1.351207191959657, -1.702414383919315]
+    d = [1.5, -2]           # WRONG values, just for testing!
     leapfrog(dt*d[0])
     leapfrog(dt*d[1])
     leapfrog(dt*d[0])
@@ -94,75 +95,6 @@ class Body
     for i in 0..6 do leapfrog(dt*d[6-i]) end
   end
 
-  def ms2(dt)
-    if @nsteps == 0
-      @prev_acc = acc
-      rk2(dt)
-    else
-      old_acc = acc
-      jdt = old_acc - @prev_acc
-      @pos += vel*dt + old_acc*0.5*dt*dt
-      @vel += old_acc*dt + jdt*0.5*dt
-      @prev_acc = old_acc
-    end
-  end
-
-  def ms4(dt)
-    if @nsteps == 0
-      @ap3 = acc
-      rk4(dt)
-    elsif @nsteps == 1
-      @ap2 = acc
-      rk4(dt)
-    elsif @nsteps == 2
-      @ap1 = acc
-      rk4(dt)
-    else
-      ap0 = acc
-      jdt = ap0*(11.0/6.0) - @ap1*3 + @ap2*1.5 - @ap3/3.0
-      sdt2 = ap0*2 - @ap1*5 + @ap2*4 - @ap3
-      cdt3 = ap0 - @ap1*3 + @ap2*3 - @ap3
-      @pos += (vel+(ap0+ (jdt+sdt2/4)/3)*dt/2)*dt
-      @vel += (ap0+(jdt+(sdt2+cdt3/4)/3)/2)*dt
-      @ap3 = @ap2
-      @ap2 = @ap1
-      @ap1 = ap0
-    end
-  end
-
-  def ms6(dt)
-    if @nsteps == 0
-      @ap5 = acc
-      yo6(dt)
-    elsif @nsteps == 1
-      @ap4 = acc
-      yo6(dt)
-    elsif @nsteps == 2
-      @ap3 = acc
-      yo6(dt)
-    elsif @nsteps == 3
-      @ap2 = acc
-      yo6(dt)
-    elsif @nsteps == 4
-      @ap1 = acc
-      yo6(dt)
-    else
-      ap0 = acc
-      jdt = (ap0*137 - @ap1*300 + @ap2*300 - @ap3*200 + @ap4*75 - @ap5*12)/60
-      sdt2 = (ap0*45 - @ap1*154 + @ap2*214 - @ap3*156 + @ap4*61 - @ap5*10)/12
-      cdt3 = (ap0*17 - @ap1*71 + @ap2*118 - @ap3*98 + @ap4*41 - @ap5*7)/4
-      pdt4 = ap0*3 - @ap1*14 + @ap2*26 - @ap3*24 + @ap4*11 - @ap5*2
-      xdt5 = ap0 - @ap1*5 + @ap2*10 - @ap3*10 + @ap4*5 - @ap5
-      @pos += (vel+(ap0+ (jdt+(sdt2+(cdt3+pdt4/6)/5)/4)/3)*dt/2)*dt
-      @vel += (ap0+(jdt+(sdt2+(cdt3+(pdt4+xdt5/6)/5)/4)/3)/2)*dt
-      @ap5 = @ap4
-      @ap4 = @ap3
-      @ap3 = @ap2
-      @ap2 = @ap1
-      @ap1 = ap0
-    end
-  end
-
   def ekin                        # kinetic energy
     0.5*(@vel*@vel)               # per unit of reduced mass
   end
@@ -175,10 +107,10 @@ class Body
     @e0 = ekin + epot             # per unit of reduced mass
   end
 
-  def write_diagnostics(time)
+  def write_diagnostics(nsteps, time)
     etot = ekin + epot
     STDERR.print <<END
-at time t = #{sprintf("%g", time)}, after #{@nsteps} steps :
+at time t = #{sprintf("%g", time)}, after #{nsteps} steps :
   E_kin = #{sprintf("%.3g", ekin)} ,\
  E_pot =  #{sprintf("%.3g", epot)} ,\
  E_tot = #{sprintf("%.3g", etot)}

@@ -1,9 +1,9 @@
-require "yo8body_wrong.rb"
+require "yo8body.rb"
 
 include Math
 
 #:segment start: barebones
-dt = 0.01            # time step
+dt = 0.1             # time step
 dt_dia = 0.1         # diagnostics printing interval
 dt_out = 0.1         # output interval
 dt_end = 0.1         # duration of the integration

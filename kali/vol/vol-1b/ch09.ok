@@ -7,53 +7,55 @@ xxx
 Taylor series:
 
 :equation:
-\ba \,=\, \ba_0 + \bj_0 dt + \hhalf \bs_0 (dt)^2 + \one{6} \bc_0 (dt)^3
+\ba \,=\, \ba_0 + \bj_0 t + \hhalf \bs_0 t^2
++ \one{6} \bc_0 t^3 + O(t^4)
 
 For the three previous times:
 
 :eqnarray:
 \label{threea}
 \ba_{-1} \,&=&\,
-\ba_0 - \bj_0 dt + \hhalf \bs_0 (dt)^2 - \one{6} \bc_0 (dt)^3       \nonumber\\
+\ba_0 - \bj_0 \Delta t + \hhalf \bs_0 (\Delta t)^2
+- \one{6} \bc_0 (\Delta t)^3                        \nonumber\\
 \ba_{-2} \,&=&\,
-\ba_0 - 2\bj_0 dt + 2 \bs_0 (dt)^2
- - {\textstyle\frac{4}{3}} \bc_0 (dt)^3       \nonumber\\
+\ba_0 - 2\bj_0 \Delta t + 2 \bs_0 (\Delta t)^2
+ - {\textstyle\frac{4}{3}} \bc_0 (\Delta t)^3       \nonumber\\
 \ba_{-3} \,&=&\,
-\ba_0 - 3\bj_0 dt + {\textstyle\frac{9}{2}} \bs_0 (dt)^2
- - {\textstyle\frac{9}{2}} \bc_0 (dt)^3
+\ba_0 - 3\bj_0 \Delta t + {\textstyle\frac{9}{2}} \bs_0 (\Delta t)^2
+ - {\textstyle\frac{9}{2}} \bc_0 (\Delta t)^3
 
 From Eq. (ref(threea)):
 
 :eqnarray:
 \label{twoa}
 2\ba_{-1} - \ba_{-2} \,&=&\,
-\ba_0 -  \bs_0 (dt)^2 + \bc_0 (dt)^3       \nonumber\\
+\ba_0 -  \bs_0 (\Delta t)^2 + \bc_0 (\Delta t)^3       \nonumber\\
 3\ba_{-1} - \ba_{-3} \,&=&\,
-2\ba_0 -  3\bs_0 (dt)^2 + 4\bc_0 (dt)^3
+2\ba_0 -  3\bs_0 (\Delta t)^2 + 4\bc_0 (\Delta t)^3
 
 Now eliminate <tex>$\bs_0$</tex> :
 
 <tex>$$
 3\left( 2\ba_{-1} - \ba_{-2} \right) - \left( 3\ba_{-1} - \ba_{-3} \right)
-\,=\, \ba_0 -  \bc_0 (dt)^3   \,\,\,\,\Rightarrow
+\,=\, \ba_0 -  \bc_0 (\Delta t)^3   \,\,\,\,\Rightarrow
 $$</tex>
 
 <tex>$$
 3\ba_{-1} - 3\ba_{-2} +  \ba_{-3}
-\,=\, \ba_0 -  \bc_0 (dt)^3   \,\,\,\,\Rightarrow
+\,=\, \ba_0 -  \bc_0 (\Delta t)^3   \,\,\,\,\Rightarrow
 $$</tex>
 
 :equation:
 \label{bc}
-\bc_0 \,=\, {1\over (dt)^3}\left\{
+\bc_0 \,=\, {1\over (\Delta t)^3}\left\{
 \ba_0 -3\ba_{-1} + 3\ba_{-2} - \ba_{-3}
 \right\}
 
 Now substitute Eq. (ref(bc)) in the top line of Eq. (ref(twoa)) :
 
 :eqnarray:
-\bs_0(dt)^2 \,&=&\, 
--2\ba_{-1} + \ba_{-2} + \ba_0 + \bc_0 (dt)^3 \nonumber\\
+\bs_0(\Delta t)^2 \,&=&\, 
+-2\ba_{-1} + \ba_{-2} + \ba_0 + \bc_0 (\Delta t)^3 \nonumber\\
 &=&\,
 -2\ba_{-1} + \ba_{-2} + \ba_0 + 
 \left\{
@@ -62,7 +64,7 @@ Now substitute Eq. (ref(bc)) in the top line of Eq. (ref(twoa)) :
 
 :equation:
 \label{bs}
-\bs_0 \,=\, {1\over (dt)^2}\left\{
+\bs_0 \,=\, {1\over (\Delta t)^2}\left\{
 2\ba_0 -5\ba_{-1} + 4\ba_{-2} - \ba_{-3}
 \right\}
 
@@ -70,8 +72,8 @@ Now substitute Eqs. (ref(bc)) and (ref(bs)) in the top line of
 Eq. (ref(threea)) :
 
 :eqnarray:
-\bj_0 dt \,\,\,=\,\,\, -\ba_1 \,\,+\,\, \ba_0 &+&
-\hhalf \bs_0(dt)^2 -\one{6} \bc_0(dt)^3          \nonumber\\
+\bj_0 \Delta t \,\,\,=\,\,\, -\ba_1 \,\,+\,\, \ba_0 &+&
+\hhalf \bs_0(\Delta t)^2 -\one{6} \bc_0(\Delta t)^3          \nonumber\\
 -\ba_1 \,\,+\,\, \ba_0 &+&
 \left\{
 \ba_0 -{\textstyle\frac{5}{2}}\ba_{-1} + 2\ba_{-2} - \hhalf\ba_{-3}
@@ -83,16 +85,17 @@ Eq. (ref(threea)) :
 
 :equation:
 \label{bj}
-\bj_0 \,=\, {1\over dt}\left\{
+\bj_0 \,=\, {1\over \Delta t}\left\{
 {\textstyle\frac{11}{6}}\ba_0 -3\ba_{-1} + \three{2}\ba_{-2} - \one{3}\ba_{-3}
 \right\}
 
 Now check whether we did not make a mistake:
 
 :eqnarray:
-&&\ba_0 - \bj_0 dt + \hhalf\bs_0 (dt)^2 - \one{6} \bc_0 (dt)^3 \,\,=\nonumber\\
+&&\ba_0 - \bj_0 \Delta t + \hhalf\bs_0 (\Delta t)^2
+- \one{6} \bc_0 (\Delta t)^3 \,\,=                                  \nonumber\\
 &&                                                                  \nonumber\\
-&&\,\,\,\,\,\,+\ba_0                                       \nonumber\\
+&&\,\,\,\,\,\,+\ba_0                                                \nonumber\\
 &&-{\textstyle\frac{11}{6}}\ba_0 +3\ba_{-1} - \three{2}\ba_{-2}
   + \one{3}\ba_{-3}                                                 \nonumber\\
 &&\,\,\,\,\,\, +\ba_0
@@ -101,8 +104,8 @@ Now check whether we did not make a mistake:
   -\hhalf\ba_{-2} +\one{6}\ba_{-3}\,\,\,=\,\,\, \ba_{-1}         \nonumber
 
 :eqnarray:
-&&\ba_0 - 2\bj_0 dt + 2 \bs_0 (dt)^2
- - {\textstyle\frac{4}{3}} \bc_0 (dt)^3\,\,=                        \nonumber\\
+&&\ba_0 - 2\bj_0 \Delta t + 2 \bs_0 (\Delta t)^2
+ - {\textstyle\frac{4}{3}} \bc_0 (\Delta t)^3\,\,=                  \nonumber\\
 &&                                                                  \nonumber\\
 &&\,\,\,\,\,\,+\ba_0                                       \nonumber\\
 &&-{\textstyle\frac{11}{3}}\ba_0 \,+\,6\ba_{-1} - 3\ba_{-2}
@@ -113,8 +116,8 @@ Now check whether we did not make a mistake:
   -4\ba_{-2} +{\textstyle\frac{4}{3}}\ba_{-3}\,\,\,=\,\,\, \ba_{-2}  \nonumber
 
 :eqnarray:
-&&\ba_0 - 3\bj_0 dt + {\textstyle\frac{9}{2}} \bs_0 (dt)^2
- - {\textstyle\frac{9}{2}} \bc_0 (dt)^3\,\,=                        \nonumber\\
+&&\ba_0 - 3\bj_0 \Delta t + {\textstyle\frac{9}{2}} \bs_0 (\Delta t)^2
+ - {\textstyle\frac{9}{2}} \bc_0 (\Delta t)^3\,\,=                  \nonumber\\
 &&                                                                  \nonumber\\
 &&\,\,\,\,\,\,\,\,\,\,\,\ba_0                                       \nonumber\\
 &&-{\textstyle\frac{11}{2}}\ba_0 \,\,+\,\,9\ba_{-1}
@@ -191,7 +194,7 @@ Great!  Close to factor 64, and now really with the multi-step integrator.
 
 == xxx
 
-Now for eigth order:
+Now for eighth order:
 
 Fortunately, we do have Yoshida's 8th-order integrator, to start our code
 up with.

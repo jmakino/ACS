@@ -66,8 +66,8 @@ class Body
     a1 = acc
     @pos = old_pos + vel*dt + a1*0.5*dt*dt
     a2 = acc
-    @pos = old_pos + vel*dt + (a0+a1*2)*(1/6.0)*dt*dt                       #1
-    @vel = vel + (a0+a1*4+a2)*(1/6.0)*dt                                    #1
+    @pos = old_pos + vel*dt + (a0+a1*2)*(1/6.0)*dt*dt
+    @vel = vel + (a0+a1*4+a2)*(1/6.0)*dt
   end
 
   def yo6(dt)

@@ -2,7 +2,94 @@
 
 == xxx
 
-Start with <tt>yo6body.rb</tt>
+*Bob*: So far we have used only one-step methods: in each case we start
+with the position and velocity at one point in time, in order to calculate
+the position and velocity at the next time step.  The higher-order
+schemes jump around a bit, to in-between times in case of the traditional
+Runge-Kutta algorithms, or slightly before or beyond the one-step interval
+in case of Yoshida's algorithms.  But even so, all of our schemes have been
+self-starting.
+
+As an alternative to jumping around, you can also remember the results from
+a few earlier steps.  Fitting a polynomial to previous interaction calculations
+will allow you to calculate higher time derivatives for the orbit . . . 
+
+*Alice*: . . . wonderful!  Applause!
+
+*Bob*: Huh?
+
+*Alice*: You said it just right, using both the term _orbit_ and _interaction_
+correctly.
+
+*Bob*: What did I say?
+
+*Alice*: You made the correct distinction between the physical interactions
+on the right-hand side of the equations of motion, which we agreed to call
+the interaction side, and the mathematical description of the orbit
+characteristics on the left-hand side of the equations of motion,
+which we decided to call the orbit side.
+
+*Bob*: I guess your lessons were starting to sink in.  In any case, let me
+put my equations where my mouth is, and let show the idea first for a
+second-order multi-step scheme, a two-step scheme in fact.  We start with
+the _orbit_ part, where we expand the acceleration in a Taylor series with
+just one extra term:
+
+:equation:
+\ba(t) \,=\, \ba_0 + \bj_0 t + O(t^2)
+
+*Alice*: Our old friend, the jerk, evaluated also at time <tex>$t=0$</tex>.
+
+*Bob*: Speak for yourself, my friends are not jerks.  We can determine
+the jerk at the beginning of our new time step if we can remember the
+value of the acceleration at the beginning of the previous time step, at
+time <tex>$t = -\Delta t$</tex>, as follows:
+
+:equation:
+\ba_{-1} \,=\, \ba_0 - \bj_0 \Delta t  \,\,\,\,\Rightarrow
+
+:equation:
+\label{firstjerk}
+\bj_0 \,=\, \ba_0 - \ba_{-1} \Delta t
+
+With this information, we can use the same approach as we did with the
+forward Euler algorithm, but we can go one order higher in the Taylor
+series expansion for the position and the velocity.  The forward Euler
+method gave us:
+
+:eqnarray:
+\br_1 &=& \br_0 + \bv_0 \Delta t                       \nonumber\\
+\bv_1 &=& \bv_0 + \ba_0 \Delta t                       \nonumber
+
+but now we can write:
+
+:eqnarray:
+\br_1 &=& \br_0 + \bv_0 \Delta t + \hhalf \ba_0 (\Delta t)^2        \nonumber\\
+\bv_1 &=& \bv_0 + \ba_0 \Delta t + \hhalf \bj_0 (\Delta t)^2
+
+and we can use the value for the jerk given in Eq. (ref(firstjerk)),
+without any need for half-steps, such as in the leapfrog or Runga-Kutta
+methods.
+
+== xxx
+
+*Alice*: That is an interesting twist, and indeed a very different approach.
+Is this the same idea as using predictor-corrector schemes?
+
+*Bob*: It is the predictor part of the predictor-corrector scheme.  In
+practice, 
+
+
+
+Some of the earliest N-body simulations acheived higher-order accuracy
+by using multi-step methods, that were not self-starting.  
+
+
+, which rely on information
+present at one step to obtain the 
+the 
+
+Start with <tt>yo8body.rb</tt>.  Call it <tt>ms2body.rb</tt>.
 
 First replace +nsteps+ by an instance variable <tt>@nsteps</tt>,
 since it will be used for starting up the multistep method.
@@ -19,6 +106,19 @@ good measure.
 looks like 2nd order  
 
  :commandoutput: ruby integrator_driver4c.rb < euler.in
+
+Even better; clearly 2nd order
+
+
+== predictor-corrector:
+
+ :commandoutput: ruby integrator_driver4apc.rb < euler.in
+
+ :commandoutput: ruby integrator_driver4bpc.rb < euler.in
+
+looks like 2nd order  
+
+ :commandoutput: ruby integrator_driver4cpc.rb < euler.in
 
 Even better; clearly 2nd order
 

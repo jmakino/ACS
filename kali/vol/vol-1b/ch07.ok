@@ -1,51 +1,235 @@
-= Yoshida's Algorithm
+= Yoshida's Algorithms
 
-== xxx
+== Recall Baker, Campbell and Hausdorff
+
+*Bob*: Well, Alice, I tried my best to learn more about Yoshida's algorithms.
+
+*Alice*: Tell me!
+
+*Bob*: The good news is: I learned a lot more, and I even managed to construct
+an eighth-order integrator, following his recipes.  I also wrote a fourth-order
+version, which is a lot simpler, and easier to understand intuitively.
+
+*Alice*: A lot of good news indeed.  What's the bad news?
+
+*Bob*: I'm afraid I couldn't really follow the theory behind his ideas,
+even though I was quite curious to see where these marvelous recipes came
+from.
+
+I went back to the original article in which he presents his ideas,
+<i>Construction of higher order symplectic integrators</i>, by Haruo
+Yoshida, 1990, Phys. Lett. A <b>150</b>, 262.  The problem for me was
+that he starts off in the first paragraph talking about symplectic
+two-forms, whatever they may be, and then launches into a discussion
+of non-commutative operators, Poisson brackets, and so on.  It all has
+to do with Lie groups, it seems, something I don't know anything about.
+
+To give you an idea, the first sentence in his section 3, basic formulas,
+starts with ``First we recall the Baker-Campbell-Hausdorff formula''.
+But since I have never heard of this formula, I couldn't even begin to
+recall it.
+
+*Alice*: I remember the BCH formula!  I came across it when I learned
+about path integrals in quantum field theory.  It was an essential
+tool for composing propagators.  And in Yoshida's case, he is adding a
+series of leapfrog mappings together, in order to get one higher-order
+mapping.  Yes, I can see the analogy.  The flow of the evolution of a
+dynamical system can be modeled as driven by a Lie group, for which
+the Lie algebra is non-cummutative.  Now with the BCH formula . . . 
+
+*Bob*: Alright, I'm glad it makes sense to you, and maybe some day we can sit
+down and teach me the theory of Lie groups.  But today, let's continue our
+work toward getting an N-body simulation going.  We haven't gotten further
+than the 2-body problem yet.  I'll listen to the stories by Mr. Lie some
+other day, later.
+
+*Alice*: I expect that these concepts will come in naturally when we start
+working on Kepler regularization, which is a problem we'll have to
+face sooner or later, when we start working with the dynamics of a thousand
+point masses, and we encounter frequent close encounters in tight
+double stars.
+
+*Bob*: There the trick seems to be to map the three-dimensional Kepler problem
+onto the four-dimensional harmonic oscillator.  I've never heard any mention
+of Lie or the BCH formula in that context.
+
+*Alice*: We'll see.  I expect that when we have build a good laboratory,
+equipped with the right tools to do a detailed exploration, we will find
+new ways to treat perturbed motion in locally interacting small-N systems.
+I would be very surprised if those explorations wouldn't get us naturally
+involved in symplectic methods and Lie group applications.
+
+== An Eighth-Order Integrator
+
+*Bob*: We'll see indeed.  At the end of Yoshida's paper, at least his
+techniques get more understandable for me: he solves rather
+complicated algebraic equations in order to get the coefficients for
+various integration schemes.  What I implemented for the six-th order
+integrator before turns out to be based on just one set of his
+coefficients, in what I called the +d+ array, but there are two other
+sets as well, which seem to be equally good.
+
+What is more, he gives no less than _seven_ different sets of coefficient
+for his eighth-order scheme!  I had no idea which of those seven to choose,
+so I just took the first one listed.  Here is my implementation:
+
+ :inccode: .yo8body.rb+yo8
+
+For comparison, let me repeat a run from our sixth-order experimentation,
+with the same set of parameters.  We saw earlier:
+
+ :commandoutput: ruby integrator_driver3h.rb < euler.in
+
+My new eigth-order methode <tt>yo8</tt> gives:
 
  :commandoutput: ruby integrator_driver3j.rb < euler.in
 
-Significantly worse for the same time step than the sixth order case.
+Significantly worse for the same time step than the sixth order case,
+but of course there no <i>a priori</i> reason for it to be better or
+worse for any particular choice of parameters.  The point is that it
+should get rapidly better when we go to smaller time steps.  And it does!
 
-However, no reason it should be better.  Let's take a smaller time
-step, while sticking with five integration steps:
+Here, let me make the time step somewhat smaller, and similarly the
+integration time, so that we still do five integration steps.  With a
+little bit of luck, that will bring us in a regime where the error scaling
+will behave the way it should.  This last error may still be too large
+to make meaningful corparisions
 
  :commandoutput: ruby integrator_driver3k.rb < euler.in
 
-Now make the time step half as long:
+== Seeing is Believing
+
+*Alice*: How about halving the time step?  That should make the error
+256 times smaller, if the integrator is indeed eighth-order accurate.
+
+*Bob*: Here you are:
 
  :commandoutput: ruby integrator_driver3l.rb < euler.in
 
-Very good, close to a factor 256, as behooves a proper eight-order
-integrator.  We can try one more factor two, before we run out of
-digits in machine accuracy:
+Not bad, I would say.  I can give you another factor two shrinkage in time
+step, before we run out of digits in machine accuracy:
 
  :commandoutput: ruby integrator_driver3m.rb < euler.in
 
-Again close to 256 times more accurate.  Good!
+*Alice*: Again close to a factor 256 better, as behooves a proper eighth-order
+integrator.  Good!  I believe the number <tt>8</tt> in <tt>yo8</tt>.
 
-== xxx
+== The Basic Idea
 
-Now fourth-order.
+*Bob*: Now, even though I did not follow the abstract details of Yoshida's
+paper, I did get the basic idea, I think.  It helped to find his recipe
+for a fourth-order integrator.  I implemented that one as well.  Here it
+is: 
 
-Explicit expression for the coefficient:
+ :inccode: .yo8body.rb+yo4
 
+*Alice*: Only three leapfrog calls this time.
+
+*Bob*: Yes, the rule seems to be that a for an <tex>$(2k)^{th}$</tex> order
+Yoshida integrator, you need to combine <tex>$2^k-1$</tex> leapfrog leaps to
+make one Yoshida leap, at least up to eighth-order, which is how far Yoshida's
+paper went.  You can check the numbers for <tex>$k=2,3,4$</tex> : three leaps
+for the 4th-order scheme, seven for the sixth-order scheme, and fifteen for the
+8th-order scheme.
+
+*Alice*: Not only that, it even works for <tex>$k=0,1$</tex> : a second-order
+integrator uses exactly one leapfrog, and a zeroth-order integrator by
+definition does not do anything, so it makes zero leaps.
+
+*Bob*: You always like to generalize, don't you!  But you're right, the
+expression works for <tex>$k=0 {\rm through} 4$</tex> alright.
+
+*Alice*: And the fourth-order is indeed the first order for which the leaps
+of the leapfrog are composed into a larger dance.
+
+*Bob*: Perhaps we should call Yoshida's algorithm the leapdance scheme.
+
+*Alice*: Or the dancefrog?  Now, I would prefer the dancecat.  you see,
+cats are more likely to dance than frogs do.  And while a cat is trying
+to catch a frog, she may look like dancing while trying to follow the
+frog.
+
+*Bob*: Do cats eat frogs?  I thought they stuck to mammals and birds.
+
+*Alice*: I've never seen a cat eating a frog, but I bet that they like
+to chase anything that moves; surely my cat does.  Anyway, let's make
+a picture of the fourth-order dance:
+
+link:yoshida.gif
+
+This is what your <tt>yo4</tt> is doing, right?  Starting at the bottom,
+at time <tex>$t_i$</tex>, you jump forwards a little further than the
+time step <tex>$h$</tex> would ask you to do for a single leapfrog.
+Then you jump backwards to such an extent that you have to jump forwards
+again, over the same distance as you jumped originally, in order to
+reach the desired time at the end of the time step: <tex>$t=t+h=t_{i+1}$</tex>.
+
+*Bob*: Yes, this is precisely what happens.  And the length of the first
+and the third time step can be calculated analytically, according to Yoshida,
+a result that he ascribes to an earlier paper by Neri, in 1988.  In
+units of what you called <tex>$h$</tex>, it is the expression in the
+first coefficient in the +d+ array in <tt>yo4</tt>:
 
 :equation:
 <tt>d[0]</tt> = {1\over 2 - 2^{1/3}}
 
+And since the three-leap dance has to land at a distance one into the future,
+in units of the time step, the middle leap backwards has to have a length of:
+
 :equation:
 <tt>d[1]</tt> = 1 - 2<tt>d[0]</tt> = -\, {2^{1/3}\over 2 - 2^{1/3}}
 
-Compare with rk4:
+Somehow, the third-order and fourth-order errors generated by each of the
+leaping frogs are canceled by this precise fine tuning of step lengths.
+
+== Testing the Wrong Scheme
+
+*Alice*: That will be easy to check.  How about choosing somewhat different
+values.  Let's take a round number, <tex>$d[0]=1.5$</tex>, which forces
+the other number to be <tex>$d[1]=-2$</tex>.  If there is a matter of
+fine tuning involved, these wrong values should give only second-order
+behavior, since a random combination of three second-order integrator
+steps should still scale as a second-order combination.
+
+*Bob*: Good idea.  Let me call the file <tt>yo8body_wrong.rb</tt> to make
+sure we later don't get confused about which is which.  I will leave the
+correct methods <tt>yo4</tt>, <tt>yo6</tt>, and <tt>yo8</tt> all in the
+file <tt>yo8body.rb</tt>.  Here is your suggestion for the wrong version:
+
+ :inccode: .yo8body_wrong.rb+yo4
+
+Let's first take a previous run with the fourth-order Runge-Kutta <tt>rk4</tt>
+method, to have a comparison run:
 
  :commandoutput: ruby integrator_driver2i.rb < euler.in
 
+Here is our faulty <tt>yo4</tt> result, for the same parameters:
+
  :commandoutput: ruby integrator_driver3n.rb < euler.in
 
-Somewhat less accurate, but the important thing is the scaling.
-
-Ten times smaller time step:
+and here for a ten times smaller time step:
 
  :commandoutput: ruby integrator_driver3o.rb < euler.in
 
+*Alice*: And it is clearly second-order.  We can safely conclude that a
+random choice of three leapfrog leaps doesn't help us much.  Now how about
+a well-orchestrated dance of three leaps, according to Neri's algorithm?
+
+== Testing the Right Scheme
+
+*Bob*: That should be better.  Let's make really sure I have the
+correct version back again:
+
+ :inccode: .yo8body.rb+yo4
+
+ :commandoutput: ruby integrator_driver3p.rb < euler.in
+
+Less accurate than the <tt>rk4</tt> method, but the important thing is
+the scaling.  Here goes, for a time step shorter by a factor of ten:
+
+ :commandoutput: ruby integrator_driver3q.rb < euler.in
+
 Perfect!  Yoshida was right, once again.
+
+*Alice*: Indeed, very nicely fourth order.  Great!
+
