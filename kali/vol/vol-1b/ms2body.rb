@@ -109,20 +109,18 @@ class Body
 
   def ms2pc(dt)
     if @nsteps == 0
-      @old_acc = acc
+      @prev_acc = acc
       rk2(dt)
-      new_acc = acc
-      @jdt = new_acc - @old_acc
-      @old_acc = new_acc
     else
       old_pos = pos
-      @pos += vel*dt + @old_acc*0.5*dt*dt + @jdt*(1/6.0)*dt*dt*dt
+      old_acc = acc
+      jdt = old_acc - @prev_acc
+      @pos += vel*dt + old_acc*0.5*dt*dt + jdt*(1/6.0)*dt*dt*dt
       new_acc = acc
-      @jdt = 
-      @pos = old_pos + vel*dt + @old_acc*0.5*dt*dt + @jdt*(1/6.0)*dt*dt*dt
-      @vel += @old_acc*dt + @jdt*0.5*dt
-      @jdt = new_acc - @old_acc
-      @old_acc = new_acc
+      jdt = (new_acc - @prev_acc)*0.5
+      @pos = old_pos + vel*dt + old_acc*0.5*dt*dt + jdt*(1/6.0)*dt*dt*dt
+      @vel += old_acc*dt + jdt*0.5*dt
+      @prev_acc = old_acc
     end
   end
 

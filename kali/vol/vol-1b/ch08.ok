@@ -1,6 +1,6 @@
 = A Two-Step Method
 
-== xxx
+== A Matter of Memory
 
 *Bob*: So far we have used only one-step methods: in each case we start
 with the position and velocity at one point in time, in order to calculate
@@ -64,6 +64,7 @@ method gave us:
 but now we can write:
 
 :eqnarray:
+\label{ms2}
 \br_1 &=& \br_0 + \bv_0 \Delta t + \hhalf \ba_0 (\Delta t)^2        \nonumber\\
 \bv_1 &=& \bv_0 + \ba_0 \Delta t + \hhalf \bj_0 (\Delta t)^2
 
@@ -71,54 +72,222 @@ and we can use the value for the jerk given in Eq. (ref(firstjerk)),
 without any need for half-steps, such as in the leapfrog or Runga-Kutta
 methods.
 
-== xxx
+== Implementation
 
 *Alice*: That is an interesting twist, and indeed a very different approach.
-Is this the same idea as using predictor-corrector schemes?
 
-*Bob*: It is the predictor part of the predictor-corrector scheme.  In
-practice, 
+*Bob*: I have implemented this, starting from the file <tt>yo8body.rb</tt>,
+and renaming it <tt>ms2body.rb</tt>.  I had to make one modification, though.
+Previously, we kept track of the number of time steps with a counter +nsteps+
+that was a local variable within the method +evolve+, but now we need that
+information within the multi-step integrator, which I called <tt>ms2</tt>.
 
+*Alice*: Why's that?
 
+*Bob*: A multi-step method is not self-starting, since at the beginning of
+the integration, there is no information about previous steps, simply because
+there are no previous steps.  I solve this by borrowing another 2nd-order
+method, <tt>rk2</tt> for the first time step.  But this means that <tt>ms2</tt>
+has to know whether we are at the beginning of the integration or not, and
+the easiest way to get that information there is to make the number of time
+steps into an instance variable within the +Body+ class.
 
-Some of the earliest N-body simulations acheived higher-order accuracy
-by using multi-step methods, that were not self-starting.  
+What I did was replace <tt>nsteps</tt> by <tt>@nsteps</tt>, in the two places
+where it was used within the method +evolve+.  I made the same change in the
+method <tt>write_diagnostics</tt>, which simplified matters, since before
+we needed to pass <tt>nsteps</tt> as an argument to that method, and
+now this is no longer necessary.
 
+Here is the code:
 
-, which rely on information
-present at one step to obtain the 
-the 
+ :inccode: .ms2body.rb+ms2
 
-Start with <tt>yo8body.rb</tt>.  Call it <tt>ms2body.rb</tt>.
+*Alice*: So the variable <tt>@prev_acc</tt> serves as your memory, to store
+the previous acceleration.  At the start, when <tt>@nsteps</tt> is still
+zero, you initialize <tt>@prev_acc</tt>, and during each next step, you
+update that variable at the end, so that it always contains the value
+of the acceleration at the _start_ of the previous step.
 
-First replace +nsteps+ by an instance variable <tt>@nsteps</tt>,
-since it will be used for starting up the multistep method.
+*Bob*: Yes.  The acceleration at the _end_ of the previous step would
+be the same as the acceleration at the start of the current step, and
+that value is stored in the local variable <tt>old_acc</tt>, as you can
+see.  This allows me to calculate the jerk.
 
-Call this <tt>ms2body.rb</tt>.
+*Alice*: Or more precisely, the product of jerk <tex>$\bj$</tex>
+and time step <tex>$\Delta t$</tex>, in the form of <tex>$\bj\Delta t$</tex>,
+since it is only that combination that appears in Eq. (ref(ms2)), which
+you write in the next two lines of code.  Okay, that is all clear!
 
-Extend <tt>vector.rb</tt> to allow "-" and why not "/" as well for
-good measure.
+*Bob*: When I first wrote this, I was wondering whether it was correct
+to use this expression for the jerk, since strictly speaking, it gives
+an approximation for the value of the jerk that is most accurate at a
+time that is half a time step in the past, before the beginning of the
+current time step:
+
+<tex>$$
+\bj_{-1/2} = \ba_0 -\ba_{-1}
+$$</tex>
+
+But then I realized that the difference does not matter, for a second
+order integration scheme.  In terms of the next time derivative of
+position, the snap <tex>$\bs = d\bj/dt$</tex>, the leading term of the
+difference would be:
+
+<tex>$$
+\bj_0 = \bj_{-1/2} + \hhalf \bc_0 \Delta t
+$$</tex>
+
+All this would do is to add a term of order <tex>$(\Delta t)^3$</tex>
+to the last line in Eq. (ref(ms2)), beyond the purview of a second-order
+scheme.
+
+*Alice*: Yes, from the point of view of a second-order integrator,
+the jerk is simply constant, and we can evaluate it at whatever
+point in time we want.
+
+*Bob*: And before I forget, there is one more change I made,
+in the file <tt>vector.rb</tt>, where I gave an extra method to our
++Vector+ class:
+
+ :inccode: .vector.rb+-
+
+*Alice*: Ah, yes, we only had addition and multiplication methods
+before, but when you compute the jerk in <tt>ms2</tt> it is most
+natural to use substraction.
+
+*Bob*: And for good measure, I added a division method as well:
+
+ :inccode: .vector.rb+_divide_
+
+*Alice*: I'm sure that will come in handy sooner or later.
+
+== Testing
+
+*Bob*: Let me show that the two-step integration method works.
+I'll start again with a fourth-order Runge-Kutta result, as a
+check:
+
+ :commandoutput: ruby integrator_driver2j.rb < euler.in
+
+Here is what the two-step method gives us:
 
  :commandoutput: ruby integrator_driver4a.rb < euler.in
 
+Less accurate, but hey, it is only a second-order scheme, or so we hope.
+Let's check:
+
  :commandoutput: ruby integrator_driver4b.rb < euler.in
 
-looks like 2nd order  
+*Alice*: It looks like 2nd order, but can you decrease the time step
+by another factor of ten?
 
  :commandoutput: ruby integrator_driver4c.rb < euler.in
 
-Even better; clearly 2nd order
+*Bob*: This makes it pretty clear: it is a second-order scheme.
 
+== Predicting and Correcting
 
-== predictor-corrector:
+*Alice*: You have been talking about multi-step algorithms.
+How does this relate to predictor-corrector methods?
+
+*Bob*: It is the predictor part of a predictor-corrector scheme.
+It is possible to squeeze a little extra accuracy out of a multi-step
+scheme, by using the information that you get at the end of a step,
+to redo the last step a bit more accurately, `correcting' the step
+you have just `predicted.'
+
+I'm not very fond of such a procedure, since you have to calculate the
+acceleration one more time per time step, and you do _not_ increase
+the order of the integration scheme.  So you only decrease the
+coefficient of the error, not its dependence on time step length.  If
+you are willing to calculate accelerations more often, it seems better
+to go to a higher-order scheme.
+
+If you would like to know how these methods have been used historically,
+you can read Sverre Aarseth's 2003 book <i>Gravitational N-Body
+Simulations</i>.  He implemented a predictor-corrector scheme in the
+early sixties, and his algorithm became the standard integration scheme
+for collisional N-body calculations, during three decades.  It was only
+with the invention of the Hermite scheme, by Jun makino, in the early
+nineties, that we an alternative was offered.
+
+*Alice*: I'd like to see a Hermite scheme implementation, too, in that
+case.  But for now, while we're on the subject, let me see whether I
+can implement a corrector extension to your predictor implementation,
+just to get some practice with these methods.
+
+*Bob*: Here is the key board, go right ahead!
+
+*Alice*: Give me some time to think.  Or better, how about getting me some
+cup of tea?  And don't do so in a hurry!  If you take your time, I may get
+a chance to implement something.
+
+Meanwhile, let me look at the predictor step again:
+
+ :inccode: .ms2body.rb+ms2
+
+The start-up phase can stay the same, since there is nothing to correct
+yet for the Runge-Kutta step.  I will have to remember the old position,
+otherwise I cannot improve my step, beyond the predicted step, since
+my corrector step will need to start from the same place.  Then I have
+to calculate the new acceleration, based upon the new position.  And
+then finally I can take the corrector step.  Let's see.
+
+== A Predictor-Corrector Scheme.
+
+*Bob*: Hi Alice, here is your tea.  Any luck with correcting my predictor
+code?
+
+*Alice*: Here is what I came up with:
+
+ :inccode: .ms2body.rb+ms2pc
+
+*Bob*: That seems about right.  I see that you threw in a jerk contribution
+both in the predictor and in the corrector step.  You went all out, didn't
+you!
+
+*Alice*: Yes, and I even calculated the jerk right in the middle between
+the previous time and the new time, even though we have just argued that
+it was not necessary.  I did find it difficult to know where to stop.
+
+*Bob*: That is indeed a difficult question.  Once you start to `improve'
+an integration scheme without changing the order, there is no obvious
+halting criterion.  Well let's see how your method behaves:
 
  :commandoutput: ruby integrator_driver4apc.rb < euler.in
 
+*Alice*: That's rather disappointing, for all that extra work!
+But first let's see whether it is still a second-order scheme.
+
  :commandoutput: ruby integrator_driver4bpc.rb < euler.in
 
-looks like 2nd order  
+Well, yes, it sure looks like a 2nd order scheme.  Let's throw in another
+factor of ten in shrinking the time step:
 
  :commandoutput: ruby integrator_driver4cpc.rb < euler.in
 
-Even better; clearly 2nd order
+*Bob*: Yes, second order alright, and ever so slightly more accurate
+now that the uncorrected scheme.
 
+*Alice*: But nothing to write home about, I'm afraid.
+
+*Bob*: I'm a bit disappointed too, even though I didn't have high hopes.
+I guess the actual profit of a corrector step depends on the application.
+There do seem to be situations where it is at least somewhat helpful.
+
+*Alice*: I guess so, otherwise people wouldn't be talking about such an
+approach.  Perhaps it will work out better for a fourth-order scheme.
+
+*Bob*: It would be interesting to extend our multi-step scheme to the
+fourth-order case.  Shall we try?
+
+*Alice*: Sure!  It would be nice to add that to our arsenal of integration
+methods.  But this time I suggest that we just stick with a predictor step.
+It is much simpler, and it already will have the right fourth-order
+scaling.  In any case, we haven't really tried to be optimally efficient,
+so far.  If we later pick a real work horse for serious N-body applications,
+we can always come back and implement a corrector step, if really needed.
+
+*Bob*: Fair enough.  But before we can implement a fourth-order scheme,
+even just a predictor step, we'll have to do some serious combinatorics,
+in order to get all the coefficients correct.

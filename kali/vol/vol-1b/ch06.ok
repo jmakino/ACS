@@ -33,7 +33,7 @@ in five lines?
 *Alice*: Huh?  You're not going to tell me that your sixth-order Runge-Kutta
 is as long as the second-order Runge-Kutta?
 
-*Bob*: Seeing is believing.  Here it is:
+*Bob*: Seeing is believing.  Here it is, in the file <tt>yo6body.rb</tt>
 
  :inccode: .yo6body.rb+yo6
 

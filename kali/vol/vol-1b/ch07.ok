@@ -71,7 +71,8 @@ sets as well, which seem to be equally good.
 
 What is more, he gives no less than _seven_ different sets of coefficient
 for his eighth-order scheme!  I had no idea which of those seven to choose,
-so I just took the first one listed.  Here is my implementation:
+so I just took the first one listed.  Here is my implementation, in the
+file <tt>yo8body.rb</tt>
 
  :inccode: .yo8body.rb+yo8
 
