@@ -1,0 +1,107 @@
+Date: Sun Jul 11 00:25:06 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Jun,
+
+ > Frankly I do not believe you'll be happy with hard-wired name. Some
+ > form of indirect addressing is of absolute necessity. The only
+ > solution is, I think, some form of indirect addressing, and the way to
+ > do so is to add logical name to each volume somehow. The only question
+ > is how.
+
+You are probably right: there are always more changes than we expect.
+
+ > I think there are two problems, which I'm not sure you are aware of or
+ > not.
+ > 
+ > One is how to give name to the place to be referred to, and the other
+ > is how to use that label.
+ > 
+ > For example, when you wrote:
+ > 
+ > > "vol-acs11-5-binney-tremaine-appendix-chapter-section-bob-unhappy".
+ > 
+ > Do you mean one would write that to the place to be refered, or to the
+ > place which refers, or both?
+
+I guess I was mainly thinking abou the place to refer to,
+but you are right, we need both.
+
+ > > Another option would be to give a logical name (label) to each volume,
+ > > and to each chapter, and to each section.  But perhaps that would be
+ > > more work.  It would be a very Ruby-like approach though, using such
+ > > indirect addressing.  Again, I do not have a strong preference.
+ > > What do you think?
+ > 
+ > Here again, I'm not sure whether or not you see the difference of the
+ > above two problem. *WHO* give a logical name? The human author (I
+ > think that's unpractical)?  Or acsdoc.rb (if you can specify a unique
+ > naming algorithm which does not depend on the file name and location,
+ > that's easy)?
+
+I thought about the human author doing this, but you are right,
+that would not be too practical.  On the other hand, I don't see how
+we can let acsdoc.rb do the work, if we sometimes change chapter
+numbers.
+
+ > > > c) How the link should appear in the text? I mean, what should we
+ > > >    specify for "X"  below? 
+ > > > 
+ > > >       <a href=....#Name-here-must-be-unique-over-entire-ACS-or-Kali>X</a>
+ > > >    
+ > > >    In latex, sections are numbered, so the solution was easy. In
+ > > >    acsdoc, sections are not numbered, nor the volumes (well, at least
+ > > >    not in a stable way). So it is not clear what to write at "X". We
+ > > >    could write:
+ > > > 
+ > > >       "Volume 1a, Chapter 01, Section  Setting the Stage"
+ > > >   
+ > > >   But I'm not sure if that is the best way or not.
+ > > 
+ > > See above, my example of very-long-label.
+ > 
+ > Sorry, I do not see the relation between long label and link text. In
+ > my above example, "#Name-here-must-be-unique-over-entire-ACS-or-Kali"
+ > is the long name, but my question is how "X" part should be specified.
+
+Ah, now I understand your question better, about the "X" part.
+I was just thinking about wo write something like:
+
+   As we have seen earlier in our
+   <a href=....#Name-here-must-be-unique-over-entire-ACS-or-Kali>
+   discussion of initial conditions</a>, we can use . . . 
+
+if the topic of where we point to happens to be initial conditions;
+perhaps we do not have to give the specific title chapter?  I'm not
+sure, this is a difficult question.
+
+ > > > d) In PS or TeX version there is no way to cross referensing to other
+ > > >    books. So what should we do there? 
+ > > 
+ > > Perhaps this would be an argument for giving all books a logical
+ > > name, and also each chapter and each section.  We could then 
+ > > `compile', I mean Latex, all .ok files of acs in one big pass,
+ > > but that might be too huge a job.  However, I see no other way to
+ > > get all the references consistent.  This is a very difficult point.
+ > 
+ > 
+ > Hmm, well, I can see a very nice solution, which probably you do not
+ > like, but let me explain:
+ > 
+ > The easiest solution is to stop using the directory names like vol-1,
+ > vol-2, but use the "logical" name as the name for the directory for
+ > each volume. That is, to use "plummer" as the name of the directory,
+ > and then add reasonably simple label to the places you want to refer.
+ > 
+ > I mean, if a volume should have a logical name, there is no reason not
+ > to use it as the directory name. If you still want to have numbered
+ > names for directories, you can make soft links or hard links.
+ > 
+ > How do you think?
+
+That is a VERY interesting solution.  I do like that (so I have to
+correct your prediction ;>).
+
+Piet
+
