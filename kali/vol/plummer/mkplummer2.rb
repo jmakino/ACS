@@ -1,5 +1,4 @@
-require "vector.rb"
-require "clop.rb"
+require "acs"
 
 class Body
 
@@ -9,30 +8,17 @@ class Body
     @mass, @pos, @vel = mass, pos, vel
   end
 
-  def simple_print
-    printf("%24.16e\n", @mass)
-    @pos.each{|x| printf("%24.16e", x)}; print "\n"
-    @vel.each{|x| printf("%24.16e", x)}; print "\n"
-  end
-
 end
 
-class Nbody
+class NBody
 
   attr_accessor :time, :body
 
-  def initialize(n = 0, time = 0)
-    @time = time
+  def initialize(n = 0)
     @body = []
     for i in 0...n
       @body[i] = Body.new
     end
-  end
-
-  def simple_print
-    print @body.size, "\n"
-    printf("%24.16e\n", @time)
-    @body.each{|b| b.simple_print}
   end
 
 end
@@ -59,7 +45,7 @@ def mkplummer(n, seed)
   else
     srand seed
   end
-  nb = Nbody.new(n)
+  nb = NBody.new(n)
   nb.body.each do |b|                                                        #1
     b.mass = 1.0/n                                                           #1
     radius = 1.0 / sqrt( rand ** (-2.0/3.0) - 1.0)                           #1
@@ -74,7 +60,7 @@ def mkplummer(n, seed)
     b.vel = spherical(velocity)                                              #1
   end                                                                        #1
   STDERR.print "             actual seed used\t: ", srand, "\n"
-  nb.simple_print
+  nb.acs_write
 end
 
 options_text= <<-END
@@ -92,7 +78,7 @@ options_text= <<-END
   Long name:            --n_particles
   Value type:           int
   Default value:        1
-  Variable name:      n_particles
+  Variable name:        n
   Print name:           N
   Description:          Number of particles
   Long description:
@@ -136,6 +122,6 @@ options_text= <<-END
 
   END
 
-parse_command_line(options_text, true)
+c = parse_command_line(options_text, true)
 
-mkplummer($n_particles, $seed)
+mkplummer(c.n, c.seed)

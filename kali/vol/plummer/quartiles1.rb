@@ -1,4 +1,4 @@
-require "vector.rb"
+require "acs"
 
 class Body
 
@@ -8,15 +8,9 @@ class Body
     @mass, @pos, @vel = mass, pos, vel
   end
 
-  def simple_read
-    @mass = gets.to_f
-    @pos = gets.split.map{|x| x.to_f}.to_v
-    @vel = gets.split.map{|x| x.to_f}.to_v
-  end
-
 end
 
-class Nbody
+class NBody
 
   attr_accessor :time, :body
 
@@ -45,19 +39,9 @@ class Nbody
     printf("%.4g\n", r_3)
   end
 
-  def simple_read
-    n = gets.to_i
-    @time = gets.to_f
-    for i in 0...n
-      @body[i] = Body.new
-      @body[i].simple_read
-    end
-  end
-
 end
 
 include Math
 
-nb = Nbody.new
-nb.simple_read
+nb = ACS_IO.acs_read(NBody)
 nb.quartiles

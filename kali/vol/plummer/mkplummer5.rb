@@ -1,5 +1,4 @@
-require "vector.rb"
-require "clop.rb"
+require "acs"
 
 class Body
 
@@ -9,30 +8,29 @@ class Body
     @mass, @pos, @vel = mass, pos, vel
   end
 
-  def simple_print
-    printf("%24.16e\n", @mass)
-    @pos.each{|x| printf("%24.16e", x)}; print "\n"
-    @vel.each{|x| printf("%24.16e", x)}; print "\n"
-  end
-
 end
 
-class Nbody
+class NBody
 
   attr_accessor :time, :body
 
-  def initialize(n = 0, time = 0)
-    @time = time
+  def initialize(n = 0)
     @body = []
     for i in 0...n
       @body[i] = Body.new
     end
   end
 
-  def simple_print
-    print @body.size, "\n"
-    printf("%24.16e\n", @time)
-    @body.each{|b| b.simple_print}
+  def adjust_center_of_mass
+    vel_com = pos_com = @body[0].pos*0     # null vectors of the correct length
+    @body.each do |b|
+      pos_com += b.pos*b.mass
+      vel_com += b.vel*b.mass
+    end
+    @body.each do |b|
+      b.pos -= pos_com
+      b.vel -= vel_com
+    end
   end
 
 end
@@ -60,7 +58,7 @@ def mkplummer(n, seed)
     srand seed
   end
   scalefactor = 16.0 / (3.0 * PI)
-  nb = Nbody.new(n)
+  nb = NBody.new(n)
   cumulative_mass_min = 0
   cumulative_mass_max = 1.0/n
   nb.body.each do |b|
@@ -79,21 +77,9 @@ def mkplummer(n, seed)
     velocity = x * sqrt(2.0) * ( 1.0 + radius*radius)**(-0.25)
     b.vel = spherical(velocity) * sqrt(scalefactor)
   end
-  adjust_center_of_mass(nb)                                                  #1
+  nb.adjust_center_of_mass                                                   #1
   STDERR.print "             actual seed used\t: ", srand, "\n"
-  nb.simple_print
-end
-
-def adjust_center_of_mass(nb)
-  vel_com = pos_com = nb.body[0].pos*0     # null vectors of the correct length
-  nb.body.each do |b|
-    pos_com += b.pos*b.mass
-    vel_com += b.vel*b.mass
-  end
-  nb.body.each do |b|
-    b.pos -= pos_com
-    b.vel -= vel_com
-  end
+  nb.acs_write
 end
 
 options_text= <<-END
@@ -111,7 +97,7 @@ options_text= <<-END
   Long name:            --n_particles
   Value type:           int
   Default value:        1
-  Variable name:      n_particles
+  Variable name:        n
   Print name:           N
   Description:          Number of particles
   Long description:
@@ -158,6 +144,6 @@ options_text= <<-END
 
   END
 
-parse_command_line(options_text, true)
+c = parse_command_line(options_text, true)
 
-mkplummer($n_particles, $seed)
+mkplummer(c.n, c.seed)

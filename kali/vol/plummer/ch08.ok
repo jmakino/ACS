@@ -190,18 +190,12 @@ r(1/2) \, = \, \left(2^{2/3}-1\right)^{-1/2} \approx 1.305
 r(3/4) \, = \, \left(2^{4/3}3^{-2/3}-1\right)^{-1/2} \approx 2.175
 
 *Alice*: Those numbers look _completely_ different from what we got before!
-Let's do a single run with 100,000 particles.  More like a real globular
-cluster, in fact.  That should give us a statistical noise of less
-then one percent:
-
- :commandoutput: ruby mkplummer2.rb -n 100000 | ruby quartiles1.rb
-
-*Bob*: The strange thing is, the first number comes out too small, while
+And the strange thing is, the first number comes out too small, while
 the next ones are too large, especially the last one.  So it is not a
 matter of having overlooked a scale factor, or something like that.
 
-What a pity!  I was more or less convinced that my Plummer code was
-correct.  Obviously there is something seriously wrong with the way
+*Bob*: What a pity!  I was more or less convinced that my Plummer code
+was correct.  Obviously there is something seriously wrong with the way
 particles are sprinkled into space.
 
 *Alice*: What is really strange is the fact that we got the energy correct.
