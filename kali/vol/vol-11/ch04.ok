@@ -73,15 +73,19 @@ particles:
 
 :equation:
 \label{distributionfunction}
-f(\br,\bv)d\br\bv \, = \, f(E(r,v)4\pi r^2 dr4\pi v^dv \, = \,
-       {192\sqrt(2)\over7\pi}(-E)^{7/2}r^2v^2drdv
+f(\br,\bv)d\br\bv \, = \, f(E(r,v)\,4\pi r^2 dr\,4\pi v^2dv \, = \,
+       {384\sqrt(2)\over7\pi m}(-E)^{7/2}r^2v^2dr\,dv
 
 *Alice*: Where did you get this expression from?
 
 *Bob*: It's just what it is, for Plummer's model.  I found it in a useful
 table in <i>The Gravitational Million-Body Problem</i>, by Douglas Heggie
-and Piet Hut (Cambridge University Press, 2003).  It is table xxx on p. xxx,
-a whole page full of useful properties of Plummer's model.
+and Piet Hut [Cambridge University Press, 2003].  It is table xxx on p. xxx,
+a whole page full of useful properties of Plummer's model.  By the
+way, <tex>$m$</tex> here is the mass of a single star, assuming that all
+stars have equal mass.  If you multiply both sides of the equation with
+<tex>$m$</tex>, you get <tex>$fm$</tex>, the mass density of stars in phase
+space.
 
 *Alice*: It is a power law in energy, and it looks like a polytrope.
 Ah, yes, now I remember: Plummer's model is nothing else but a polytrope
@@ -134,8 +138,9 @@ equation for the magnitude for the velocity.  What makes life simpler, is
 the fact that we are comparing particles with different velocity choices at
 a given point, so we know that their potential energies are all the same.
 
-This means that the probability to have an absolute value for the velocity
-<tex>$v = |\bv|$</tex> at radial position <tex>$r = |\br|$</tex> is given by
+This means that the probability <tex>$g(v)$</tex> to have an absolute
+value for the velocity <tex>$v = |\bv|$</tex> at radial position
+<tex>$r = |\br|$</tex> is given by
 
 :equation:
 g(v)dv \, \propto \, \left(-E(r,v)\right)^{7/2}v^2dv
@@ -225,19 +230,62 @@ v_e(r)  \, = \, \sqrt{2}\left(r^2 + 1\right)^{-1/4}
 
 Okay, I understand the procedure now, and it looks correct.
 
-== xxx
+== Distribution Function
 
-== xxx
+*Bob*: The only thing left to do now is to derive the form of the
+distribution function.
 
-== xxx
+*Alice*: Yes.  Let us see how far we can get.  Clearly we need a little help
+from our friends: here is the classic reference <i>Galactic Dynamics</i>,
+by James Binney and Scott Tremaine [Princeton University Press, 1987].
+I have found it to be a very useful book, whenever I had to look up some
+properties of particular models in stellar dynamics.  It also has helped
+me a number of times to refresh my memory about Jeans equations, the
+tensor virial theorem and those sort of things.
 
-:equation:
+*Bob*: I see that your browsing was rather uneven: there is a piece, about
+one third along the way, which has a grey strip.  Let me open it up there.
+Aha, chapter 4: Equilibria of Collisionless Systems.  How come those pages
+are so well-used?  I thought you were mainly interested in collisionial
+systems?
+
+*Alice*: I didn't realize my copy of Binney and Tremaine betrayed my past
+browsing so well.  You're right, that's the chapter I tend to consult most.
+And precisely because we are interested in _collisional_ systems, we have
+to find a way to start our simulations with a _collisionless_ system.
+
+In other words, we run a numerical simulation of a collisional N-body
+system in order to see the effects of two-body relaxation and all that.
+But we need to have a well-defined starting point.  A formal way to define
+this is to say that we ignore collisions from time <tex>$t=-\infty$</tex>
+all the way to <tex>$t=0$</tex>.  Then, at <tex>$t=0$</tex>, we switch on
+the effects of close encounters, and through our simulations we can see
+in what way our star clusters then begin to deviate from the dynamical
+equilibrium we started with.
+
+I'm sure you don't like such a formal way of speaking about it.  But
+you can't complain: you started asking philosophical questions about
+well-read chapters in someone else's book!  So there.
+
+*Bob*: Okay, let's go get our distribution function.  Does this book
+tell us how to do that?
+
+*Alice*: Yes, but let us first see how far we can get under our own steam.
+Let us go back all the way to how we got started, namely with the
+Plummer potential:
+
+<tex>$$
 \Phi(r) \, = \, -\,GM {1\over \,\left(r^2 + a^2\right)^{1/2}}
+$$</tex>
 
-Let <tex>$\tilde f(\br, \bv)$</tex> be the density in phase space.
-
-In a six-dimensional volume element <tex>$d\br d\bv$</tex>, you will find an
-amount of mass equal to <tex>$\tilde f(\br, \bv)d\br d\bv$</tex>.
+Let us define <tex>$\tilde f(\br, \bv)$</tex> as the density of stars
+in phase space.  This means that in a six-dimensional volume element
+<tex>$d\br d\bv$</tex>, you will find a number of particles equal to
+<tex>$\tilde f(\br, \bv)d\br d\bv$</tex>.  We will restrict
+ourselves to equal-mass systems, where each star has a mass
+<tex>$m$</tex>.  This means that the volume element <tex>$d\br d\bv$</tex>
+contains on average an amount of mass equal to
+<tex>$m\tilde f(\br, \bv)d\br d\bv$</tex>.
 
 In general, <tex>$\tilde f$</tex> will be time dependent, <i>i.e.</i>
 of the form <tex>$\tilde f(\br, \bv)$</tex>, but here we will restrict
@@ -245,7 +293,11 @@ ourselves to dynamical equilibrium situations, where <tex>$\tilde f$</tex>
 is constant, at least on a dynamical time scale, of order the crossing
 time, the time it will take for a typical particle to cross the system.
 
-The energy per unit mass <tex>$E$</tex> is given as:
+Each star moving with velocity <tex>$v$</tex> at radial position
+<tex>$r$</tex> has a kinetic energy <tex>$\half m v^2$</tex> and a
+potential energy <tex>$m\Phi(r)$</tex>.  It is most convenient to talk
+about specific energies, namely the energy per unit mass, <tex>$E$</tex>,
+which is given as:
 
 :equation:
 E = \Phi(r) + \half v^2
@@ -256,69 +308,94 @@ In the case of spherical symmetry and isotropy, we have
 per unit mass of the particles that reside in the volume element
 <tex>$d\br d\bv$</tex>.
 
-Note that we dropped the tilde, since the functional form of
-<tex>$\tilde f$</tex> and <tex>$f$</tex> are different.  For one
-thing, <tex>$\tilde f$</tex> has as argument two three-dimensional
-vectors <tex>$\br,\bv$</tex> or equivalently one six-dimensional
-vector in phase space, while <tex>$f$</tex> has as argument one scalar
-value <tex>$E$</tex>, the energy per unit mass.
+Now you see why I started with that funny tilde over the distribution
+function: since we will be dealing primarily with <tex>$f(E)$</tex>,
+I prefered to use the <tex>$f$</tex> notation for a distribution
+function with an <tex>$E$</tex> dependence, leaving the <tex>$\tilde f$</tex>
+notation for the dependence of Cartesian phase space coordinates.
 
-Note that within this volume element you will still find an amount of
-mass <tex>$f(E)d\br d\bv$</tex>.  It may be tempting to write
-<tex>$f(E)dE$</tex> instead, but that would be wrong: the element
-<tex>$dE$</tex> would include all particles with energy between
-<tex>$E$</tex> and <tex>$E+dE$</tex>, globally in the system, which
-will amount to far more mass than is present in the local volume 
-element <tex>$\br,\bv$</tex>.
+*Bob*: I still would be happy to not use tildes at all, but we'll each
+follow our own way.
 
-If we pick a specific point in the star cluster, we can determine the
-mass density in stars at that point as follows.  Let the distance from
-that point to the center be <tex>$r$</tex>, then:
+*Alice*: There is one more thing we definitely have to stress here.
+Even though we have switched to <tex>$E$</tex> dependence, we still
+have to write <tex>$f(E)d\br d\bv$</tex>, in order to find the number
+of stars in the volume element <tex>$d\br d\bv$</tex>.
+
+This is something students always get confused about.  It is tempting
+to write <tex>$f(E)dE$</tex> instead, but that would be wrong: the
+element <tex>$dE$</tex> would include all particles with specific
+energy between <tex>$E$</tex> and <tex>$E+dE$</tex>, globally in the
+system, which will amount to far more mass than is present in the
+local volume element <tex>$\br,\bv$</tex>.
+
+*Bob*: Noted!
+
+== The Density as a Projection
+
+*Alice*: The most fundamental stage for a star system in stellar dynamics is
+phase space.  Because our physical eyes see what happens in
+configuration space, we think about the density as a rather basic function.
+But really, what we call density is already a type of shadow: it is a
+projection down to 3D from the distribution function in 6D.  
+
+In a star cluster with spherical symmetry in configuration space, we
+can show this projection effect as follows.  The mass density in stars
+at a distance <tex>$r$</tex> from the center is
 
 :equation:
+\label{densitygeneral}
 \rho(r) = \int_0^\infty f(E) \, d\bv
 
-where the integral is over all of velocity space.
-Isotropy tell us that there is no direction dependence in <tex>$\bv$</tex>,
-and therefore  only the magnitude <tex>$v=|\bv|$</tex> can come into play.
+where the integral is over all of velocity space.  If in addition to
+spherical symmetry, the distribution function is isotropic, we know
+that there is no direction dependence in <tex>$\bv$</tex>.  In that
+case only the magnitude <tex>$v=|\bv|$</tex> can come into play.
 We can thus substitute:
 
-:equation:
+<tex>$$
 d\bv \, = \, 4\pi \, v^2 dv
+$$</tex>
 
 Also, we know that the distribution function has to be zero for positive
-energies, since unbound particles can escape; in a time-independent solution
-the presence of such escapers within the cluster would imply the
-presence of such escapers everywhere outside the cluster as well, leading
-to an infinite total mass.  We thus impose the condition:
+energies, since unbound particles will escape, and their density in an
+(almost) infinite universe will become (almost) zero:
 
-:equation:
+<tex>$$
 f(E) \, = \, 0  \,\,\,\,\, (E \ge 0)
+$$</tex>
 
 For a given radial distance <tex>$r$</tex>, the escape velocity is given
 by definition as the velocity for which a particle can just reach infinity,
 which means that the total energy is zero for that particle, and therefore
-also the energy per unit mass:
+also the energy per unit mass.  As you already showed right at the beginning
+of our discussion, this implies:
 
-:equation:
+<tex>$$
 E = \Phi(r) + \half v_{esc}^2 = 0 \, \Rightarrow \, v_{esc}(r) = 
 \left(-2\Phi(r)\right)^{1/2}
+$$</tex>
 
-Therefore
+This means that we can rewrite eq. (ref(densitygeneral)) as:
 
-:equation:
+<tex>$$
 \rho(r) = 4\pi \int_0^{v_{esc}} f(E)\, v^2dv
+$$</tex>
 
 Now
 
-:equation:
-E = \Phi + \half v^2 \Rightarrow v^2 = 2(E-\Phi) \Rightarrow 
+<tex>$$
+E \,=\, \Phi + \half v^2 \,\,\,\Rightarrow\,\,\, v^2 = 2(E-\Phi)
+\,\,\, \Rightarrow
+$$</tex>
 
-:equation:
-v = 2^{1/2}(E-\Phi)^{1/2} \Rightarrow
+<tex>$$
+v \,=\, 2^{1/2}(E-\Phi)^{1/2} \,\,\,\Rightarrow
+$$</tex>
 
-:equation:
-dv = 2^{-1/2}(E-\Phi)^{-1/2}\,dE
+<tex>$$
+dv \,=\, 2^{-1/2}(E-\Phi)^{-1/2}\,dE
+$$</tex>
 
 So we get for the density:
 
@@ -329,24 +406,192 @@ So we get for the density:
 &=& 2^{5/2}\pi\int_\Phi^0(E-\Phi)^{1/2}f(E)dE
 
 Here both <tex>$\Phi$</tex> and <tex>$E$</tex> are negative.
-Easier to introduce quantities that are positive:
+It is easier to introduce quantities that are positive.  Following the
+notation used by Binney and Tremaine, we can define:
 
 :equation:
-\Psi \, = \, - \, \Phi
+\left\{ \begin{array}{lcl}
+\Psi\,&=&\,- \, \Phi\\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\E\,&=&\,- \, E
+\end{array} \right.
+
+We can write again explicitly how the density in configuration space
+is a projection down from phase space, through an integration over
+<tex>$\E$</tex>:
 
 :equation:
-\E \, = \, - \, E
+\label{rhofromcurlyE}
+\rho(r) \,=\, 2^{5/2}\pi\int_0^\Psi (\Psi-\E)^{1/2}f(\E)d\E
 
-Then:
+Strictly speaking I should have changed the symbol for <tex>$f$</tex>
+again since the functional form is different: <tex>$\hat f(\E)=f(E)$</tex>.
+
+*Bob*: I'm glad you didn't!
+
+*Alice*: I decided to take my hat off for you, or at least _f_'s hat.
+Even for me, too much formality gets bothersome.
+
+== A Change of Variables
+
+*Bob*: Looking over your shoulder, I see that your eq. (ref(rhofromcurlyE))
+is exactly eq. (4-137) in Binney and Tremaine, if you pull out their
+<tex>$\sqrt2$</tex> in front of the integral.
+
+*Alice*: Yes.  Let us follow their next few steps, for our particular
+Plummer case.  They remark that <tex>$\Psi$</tex> is a monotonic function
+of <tex>$r$</tex>, and therefore it is possible to use <tex>$\Psi$</tex>
+as the independent variable in the expression for <tex>$\rho$</tex>.
+
+*Bob*: That makes sense.  If <tex>$\Psi(r)$</tex> would not be monotonic,
+there would be some values <tex>$r_1$</tex> and <tex>$r_2$</tex> with
+<tex>$r_1 \ne r_2$</tex> for which <tex>$\Psi(r_1)=\Psi(r_2)$</tex>.
+In that case, if you would write <tex>$\rho(\Psi)$</tex>, you would not
+know whether you would be refering to <tex>$\rho(r_1)$</tex> or
+<tex>$\rho(r_2)$</tex>.
+
+*Alice*: Right.  But here everything is monotonic: the density keeps dropping
+off when you move away from the center, the radius keeps increasing,
+and the potential keeps increasing as well, or equivalently,
+<tex>$\Psi=-\Phi$</tex> keeps decreasing.
+
+*Bob*: So how do we get from <tex>$\rho(r)$</tex> to <tex>$\rho(\Psi)$</tex>?
+That can't be difficult.  We have 
+
+<tex>$$
+\rho(r)dr\,=\,\rho(\Psi)d\Psi \,\,\, \Rightarrow \,\,\,
+\rho(\Psi) \,=\, {dr \over d\Psi}\rho(r)
+$$</tex>
+
+And the conversion factor is nothing less than the inverse of the
+gravitational acceleration, which I derived early on, with the
+prophetic remark that it would come in handy later on.
+
+*Alice*: No.
+
+*Bob*: No?
+
+*Alice*: No, there is no conversion factor.  Think about what density
+means, in this context.  The mass density <tex>$\rho(r)d\br$</tex> is the
+amount of mass in stars within the volume <tex>$d\br$</tex>, and _not_
+within the whole shell of the cluster between <tex>$r$</tex> and
+<tex>$r+dr$</tex>.  The latter amount of mass would be
+<tex>$4\pi r^2\rho dr$</tex>.
+
+This is the same thing as what we had seen with the phase space
+distribution function <tex>$f$</tex>: the physical meaning does not change,
+where we write it as <tex>$f(\br,\bv)$</tex> or as <tex>$f(E)$</tex>.
+In both cases we multiply <tex>$f$</tex> with the volume element
+<tex>$d\br d\bv$</tex>.
+
+*Bob*: You're right!  How tricky.  Or how stupid of me.
+
+*Alice*: Let's call it tricky.  Believe me, I've made these mistakes
+often enough myself.
+
+== Deprojecting the Density
+
+*Bob*: So eq. (ref(rhofromcurlyE)) becomes simply:
+
+<tex>$$
+\rho(\Psi) \,=\, 2^{5/2} \pi\int_0^\Psi (\Psi-\E)^{1/2}f(\E)d\E
+$$</tex>
+
+*Alice*: Indeed.  If we divide both sides of the equation by
+<tex>$\sqrt8\pi$</tex>, we get Binney and Tremaine's eq. (4-138):
 
 :equation:
-\rho(r) = 2^{5/2}\pi\int_0^\Psi (\Psi-\E)^{1/2}f(\E)d\E
+\label{rhofrompsi}
+{1\over\sqrt8\pi}\,\rho(\Psi) \,=\, 2 \int_0^\Psi (\Psi-\E)^{1/2}f(\E)d\E
 
-Strictly speaking we would have to change the symbol for <tex>$f$</tex>
-again since the functional form is different: <tex>$\hat f(\E)=f(E)$</tex>
-but we will leave off the hat.
+*Bob*: Why would they divide by that funny factor?
+
+*Alice*: In order to get a simple looking right-hand side in their next
+equation (4-139), which they obtain by differentiating eq. (ref(rhofrompsi))
+with respect to <tex>$\Psi$</tex>:
+
+:equation:
+\label{drhodpsifrompsi}
+{1\over\sqrt8\pi}\,{d\rho\over d\Psi} \,=\,
+\int_0^\Psi f(\E)\,{d\E\over\sqrt{\Psi-\E}}
+
+*Bob*: Ah, and here they do their deprojecting: they claim that this equation
+can be inverted.  Eq. (ref(drhodpsifrompsi)) gives you <tex>$d\rho/d\Psi$</tex>,
+when you give it <tex>$f(\E)$</tex>.  What we want is to obtain
+<tex>$f(\E)$</tex>, and we can certainly figure out how to compute
+<tex>$d\rho/d\Psi$</tex>.  I see the logic now.
+
+*Alice*: Yes, and they give the solution of inverting Eq.
+(ref(drhodpsifrompsi)), as their eq. (4-140a):
+
+:equation:
+\label{fcurlyEa}
+f(\E)\,=\,{1\over\sqrt8\pi^2}\,{d\over d\E}
+\int_0^\E {d\rho\over d\Psi} {d\Psi\over\sqrt{\E-\Psi}}
+
+and in alternative form as their (4-140b):
+
+:equation:
+\label{fcurlyEb}
+f(\E)\,=\,{1\over\sqrt8\pi^2}\,\left[
+\int_0^\E {d^2\rho\over d\Psi^2} {d\Psi\over\sqrt{\E-\Psi}}
++{1\over\sqrt\E}\left({d\rho\over d\Psi}\right)_{\Psi=0}\right]
+
+*Bob*: Great!  That will make it finally possible for us to determine the
+distribution function: with a little luck we can solve that integral.
+
+*Alice*: Not so quick: how do we know that they inverted eq.
+(ref(drhodpsifrompsi)) correctly?
+
+*Bob*: There you go again!  You don't take anything on authority, won't you?
+
+*Alice*: Well, no, preferably not.  The whole reason to get embarked on this
+exercise is to proof things for ourselves, from scratch.  I won't call
+it starting from scratch if we simply accept their inversion.  We
+might as well have accepted their expression for the distribution function
+in the first place.
+
+*Bob*: Which would have been fine with me, to be honest.  But okay, we got
+started, we may as well finish.  Though I really begin to doubt that our
+students will have the stomach to go through al this.
+
+*Alice*: The best ones will.  And those are the ones we'd like to stay in
+touch with.  So this may a good way to find good students, to see who are
+interesting in figuring all this out to the bottom.
+
+*Bob*: I'm not so sure.  You might just get formalistic and pedantic students.
+I prefer to work with students who get codes to run and who get
+results with codes, rather than students who can solve this inversion equation
+-- what do they call it? -- an Abel integral equation.
+
+*Alice*: The _very_ best students will be able to do both.
+
+*Bob*: As able as Abel.
+
+*Alice*: Such a silly pun would work better if you had an accent.  Come,
+let's take our usual approach: first let's assume that
+eqs. (ref(fcurlyEa,fcurlyEb)) are indeed correct, and let us check whether
+we can then derive the correct distribution function for Plummer's model.
+Having done that, we will come back, and check for ourselves whether we
+can prove this Abel integral equation inversion.
+
+*Bob*: Something tells me it will be a long day.
+
+==
+
+
+
+
+
+
+
 
 == xxx
+
+
+*Alice*: By insisting that we have the same amount of mass in a thin shell,
+whether we label the shell through its <tex>$r$</tex> or its <tex>$\Psi$</tex>
+coordinate:
 
 == xxx
 

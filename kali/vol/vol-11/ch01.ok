@@ -191,8 +191,12 @@ that an equilibrium solution exists.
 
 *Alice*: We definitely have to prove that, but let's leave that for later.
 
-*Bob*: Good!  There is only so much I can do from scratch.  So here is the
-softened potential:
+*Bob*: Good!  There is only so much I can do from scratch.
+
+*Alice*: But you have to define what you mean with a distribution function.
+For a star cluster, it is the density of stars in phase space.
+
+*Bob*: Yes.  Okay, here is the softened potential:
 
 :equation:
 \label{potential}
