@@ -1077,15 +1077,29 @@ module Acsdoc
     }
   end
 
+
+  @@hashtypes={
+    ".rb", /\#(\d+)(.*)/,
+    ".h", /\/\/(\d+)(.*)/,
+    ".c", /\/\/(\d+)(.*)/,
+    ".C", /\/\/(\d+)(.*)/,
+    ".cc", /\/\/(\d+)(.*)/,
+  }
   def prep_rb_hashes(infile)
     begin
       ifile = open(infile, "r")
     rescue
       raise "#{infile} does not exist"
     end
+
+    if infile =~ /\.(\S+)$/
+      extension = "."+$1
+    else
+      raise "File name #{infile} has no extention part"
+    end
     hashnames=[]
     while s = ifile.gets
-      if s  =~ /\#(\d+)(.*)/
+      if s  =~ @@hashtypes[extension]
 	segment_name = $1
 	s = s.gsub(/\#(\d+)(.*)/,'')
 	print segment_name if $DEBUG
@@ -1147,6 +1161,41 @@ module Acsdoc
       end
       for i in 0...method_level do
 	ofile[i].each{|x| x.print s}
+      end
+    end
+    ifile.close
+  end
+
+  def prep_c_defs(infile)
+    ifile = open(infile, "r")
+    outfilenamebase = File.dirname(infile)+"/."+File.basename(infile) +
+	  "+" 
+    while s = ifile.gets
+      s.gsub!(/([^\t]{8})|([^\t]*)\t/n){[$+].pack("A8")}
+      if s =~ /\s*typedef\s+(struct|union)\s+(\w\S*)\{$/
+	name=$2
+	typedefstring = s
+	while (s = ifile.gets) !~ /^\s*\}.*;\s*$/
+	  typedefstring += s
+	end
+	typedefstring += s
+	open(outfilenamebase+name,"w"){|f|f.print typedefstring}
+      elsif s =~ /^\w\S*\s+(\S+)\(/
+	name = $1
+	print "#{infile}: #{s.chomp} : #{name}\n"
+	functionstring = s
+	while s !~ /(^\{)|(\);)/
+	  s = ifile.gets
+	  functionstring += s
+	end
+	if $1
+	  while s !~ /^}/
+	    s = ifile.gets
+	    functionstring += s
+	  end
+	  open(outfilenamebase+name,"w"){|f|f.print functionstring}
+	end
+	print functionstring
       end
     end
     ifile.close
@@ -1335,6 +1384,17 @@ ARGV.collect! do |a|
       a = ""
     end
     a
+  elsif a =~ /\.(h|C|c|cc)$/
+    if File.exist?(a)
+      prep_rb(a)
+      prep_c_defs(a)
+      prep_rb_hashes(a)
+#      prep_rb_special_comments(a)
+#      prep_rb_special_comments_for_partfiles(a)
+    else
+      a = ""
+    end
+    a
   elsif a == "--keep-dot-files"
     del_flag = false
     a = ""
@@ -1355,11 +1415,12 @@ if  (ENV["LANG"] == "ja_JP.eucJP") or ($KCODE == "EUC")
 else
   coptions = " "
 end
-system("rdoc #{coptions} #{ARGV.join(" ")}") unless tolatex_flag
 
-add_toc
-process_css
-
+unless tolatex_flag
+  system("rdoc #{coptions} #{ARGV.join(" ")}") 
+  add_toc
+  process_css
+end
 
 create_navigations_for_cp_files(ARGV)
 if del_flag
