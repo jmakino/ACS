@@ -6,6 +6,7 @@ volume0.tex: doc $(SRC) .acsdocinitrc
 	ruby ../../../src/coherent_programming/acsdoc.rb --tolatex volume0.cp
 doc : $(SRC) .acsdocinitrc 
 	ruby ../../../src/coherent_programming/acsdoc.rb  $(SRC) 
+	touch doc
 
 clean :
 	-rm -r doc .imgs
