@@ -1,0 +1,50 @@
+Date: Wed Feb 09 09:38:08 JST 2005
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > > Okay, well, so we should have, for each volume directory
+ > > 
+ > >  * some way to specify which files are commnds
+ > >  * some way to specify which files are libraries
+ > > 
+ > > And, we need a way to specify
+ > > 
+ > >  * directory to install commands
+ > >  * directory to install libraries
+ > >  * (checking stuff I wrote above)
+ > > 
+ > > Hmm, well, this means that we need some startup or initialization
+ > > script (sourced in .cshrc), which add things like environmental
+ > > variables and command search path.
+ > > 
+ > > Shall I implement some prototype?
+ > 
+ > Yes, please!  And in our volumes, we can describe this either
+ > in volume 3b (user interface) or in volume 4 (ACS data format).
+ > That way, I can then start writing volumes 3b,4,5,etc, using this
+ > new convention.  We could also write a new volume about it.
+ > 
+ > What do you think is best: put it in volume 3b (user interface) or
+ > in volume 4 (ACS data format), or in a new volume (libraries and
+ > code management)?
+
+I think a new volume is better. How should we name it? (Number or some
+name like code_management?)
+
+Also, could you remind me what else I'm supposed to do:
+
+ --- cross-volume links
+ --- history mechanism
+
+What else? Amoung the above three, I guess the priority is:
+
+1. code management
+2. cross-volume links
+3. history
+
+Do you agree? I'll try to find time over weekend...
+
+Jun
+

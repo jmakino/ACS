@@ -1,0 +1,146 @@
+Date: Wed Feb 09 20:06:58 JST 2005
+
+From: Piet Hut <piet@ias.edu>
+
+Jun,
+
+ > > > Okay, well, so we should have, for each volume directory
+ > > > 
+ > > >  * some way to specify which files are commnds
+ > > >  * some way to specify which files are libraries
+ > > > 
+ > > > And, we need a way to specify
+ > > > 
+ > > >  * directory to install commands
+ > > >  * directory to install libraries
+ > > >  * (checking stuff I wrote above)
+ > > > 
+ > > > Hmm, well, this means that we need some startup or initialization
+ > > > script (sourced in .cshrc), which add things like environmental
+ > > > variables and command search path.
+ > > > 
+ > > > Shall I implement some prototype?
+ > > 
+ > > Yes, please!  And in our volumes, we can describe this either
+ > > in volume 3b (user interface) or in volume 4 (ACS data format).
+ > > That way, I can then start writing volumes 3b,4,5,etc, using this
+ > > new convention.  We could also write a new volume about it.
+ > > 
+ > > What do you think is best: put it in volume 3b (user interface) or
+ > > in volume 4 (ACS data format), or in a new volume (libraries and
+ > > code management)?
+ > 
+ > I think a new volume is better. How should we name it? (Number or some
+ > name like code_management?)
+
+Okay.  Logically speaking, I think we should make it a new volume.
+I'm not sure whether it will grow to more than 40 or 50 pages, but
+we can see what happens once I start writing it up.
+
+Now there are various ways we can embed this volume into our series.
+
+One option would be to put it after volume 4, as volume 5, and
+so to rename all further volumes (current 5, 6, . . . will then
+become 6, 7, . . . .  yare yare ).  It's quite a bit of work to
+rename things, but if that really seems to be the right thing 
+to do, I will do it.
+
+I'm wondering, though, whether we are on the right track, with the
+way we are grouping our writing in volumes.  I have now rearranged
+our volumes so many times, since we got started (less than a year
+ago, hard to believe).  This fact in itself could be a sign that
+there is something wrong with our approach to number and grouping.
+
+For example, is volume 0b now really in the right place?  Is it
+really part of our `vision', the way volume 0 is?  Is it not more
+part of the `tool' series, like data format, user interface, etc.?
+The answer, of course is: yes, you can look at acsdoc as a tool,
+like the other tools, but also it is a type of metatool, on a
+different level than the other tools.  So there are equally good
+arguments to group it with tools as to give it a separate place.
+Even so, I begin to think that 0b is _not_ the right place;
+something like `other 0' (00? i? -0?) would be more appropriate
+than just 0b.
+
+Another question is: perhaps we are getting to the point of needing
+a layer of grouping in between Kali and volumes.  A volume contains
+10 chapters, typically, and a chapter contains 5 or so sections.
+In general grouping things into 5 to 10 subthings seems to work
+best for the human mind, to keep track.  So a good grouping would
+now be:
+
+I. Exploratory Phase: 6 volumes 0a, 0b, 1a, 1b, 1c, 2
+II. Technical Foundations: 5 volumes 3a, 3b, 4, 5, new-5 (code_management)
+III. A Minimal Lab: 7 volumes 6a, 6b, 7a, 7b, 8, 9, 10
+IV. Local Treatments: volumes 12a, 12b, . . .
+
+Perhaps the first step would be to add this level of grouping, and
+then to number volumes relative to that level: volume 3a could
+become volume II.1 or II.1a, for example.
+
+As for an implementation, all this would suggest that the _real_
+implementation is in terms of a logical name, such as "plummer"
+or "code_management".  Each volume probably should live under svn
+using that name, and that name should _never_ change, once we have
+chosen it.  There is no need for it to change, since it will also
+_never_ be visible to a user.  All very Ruby-like, this type of
+redirection.  You have suggested something like that earlier, aso
+you reminded me, and I should have listened to you earlier!  Oh,
+well, I am learning (by getting very tired of renumbering volumes ;>).
+
+Now, once we have each volume under svn with logical names, our hands
+will be free to rearrange the presentation in many ways, and we can
+even have parallel presentations, as we discussed a long time ago: we
+can have one or more linear and/or hierarchical series, and we can
+have one or more `zoos' with `guided tours', with the basic plan
+there perhaps in the same way that a Japanese city is ordered,
+in ku and chou, etc.
+
+The more I think about it, this seems to be the _only_ solution.
+
+I could start doing this type of (final??) renaming of volumes
+under svn, giving every current volume a new logical name.
+
+ONE QUESTION: should the current vol.1a and vol.1b, etc., each
+get a different logical name, or should we name them together
+with the same name?
+
+AHA!!  This makes clear the following fact.  There IS ALREADY
+an extra level between Kali and Volumes, namely the a,b,...
+refinement.
+
+So the fourth section of the second chapter of the first volume
+on command-line arguments currently lives within Kali in the
+following hierarchy, using "II" for "Technical Foundations":
+Kali > II > 3 > a > 2 > 4.
+
+We have decided a while ago to let every volume have the option
+to grow into a,b,... and probably most volumes will: the current
+13 volumes 0 through 12 already have 20 volumes in total through
+the a,b,... extensions.
+
+Coming back to the ONE QUESTION above: if we don't worry about
+length, with the 100 to 120 page cutoff of the current volume
+size, perhaps the a,b,... distinction would disappear, and that
+would argue for using the same logical name.
+On the other hand, something like volume 1c is quite different
+from 1a and 1b.  In 1a we start with Ruby; in 1b with various
+integrators; and 1c will become what I started to write with
+Douglas, background and overview of Runge-Kutta.
+Hmmmmm.  Perhaps there is not much reason to call those three
+all 1, since they are all_quite_ different.  Perhaps each one
+SHOULD have a different logical name.
+But . . . volume 3b is more a straight extension of volume 3a:
+both are on command line arguments . . . although . . . in 3b
+I report feedback from applications while 3a is just the first
+implementation, so they are logically different in that sense.
+
+Perhaps each volume (of 100-120 pages maximum, though it could
+be less) should just get its own logical name.  The more I think
+about it, that might be the _only_ good solution . . . 
+
+What do you think?
+
+Piet
+
+
