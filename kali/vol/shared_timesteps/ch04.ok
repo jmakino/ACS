@@ -71,15 +71,15 @@ full new list:
 
 *Bob*: Let's go back to our original Yoshida tests.  Here you are:
 
- :commandoutput: ruby nbody_sh1.rb -g yo6 -t 1 --exact_time < test.in > yo6sh.out
- :commandoutput: cat yo6sh.out
+ :commandoutput: ruby nbody_sh1.rb -g yo4 -t 1 --exact_time < test.in > yo4sh.out
+ :commandoutput: cat yo4sh.out
 
 *Alice*: Good!  Indeed at time 1.  Let's repeat our
 comparison with the constant time step run.
 
 *Bob*: That should come out a whole lot better now!  Here we go:
 
- :commandoutput: cat yo6sh.out yo6cst_tenth.out | ruby nbody_diff.rb
+ :commandoutput: cat yo4sh.out yo4cst_tenth.out | ruby nbody_diff.rb
 
 *Alice*: And right you are.  That's more like it.  Wonderful!
 
