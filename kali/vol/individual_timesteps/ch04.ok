@@ -122,21 +122,66 @@ our classes +World+, +WorldSnapshot+, +WorldEra+, +WorldLine+, and
 
 *Alice*: MyPleasure.
 
-== xxxx
+== Intermezzo
+
+From this point on, Alice and Bob spent quite a bit of time coding up
+an individual time step algorithm, using their five new classes.  As
+one can imagine, they ran into all kinds of problems, and went through
+many a debug session.  Finally, after several days, it all worked.  We
+will join them now, while they look at their first finished product,
+in file <tt>world1.rb</tt>.  This will be the first of a series of such
+implementations, and the detailed layout will change quite a bit.
+However, the current code contains all the basic ingredients for a
+worldline-based N-body code.
+
+*Bob*: That was quite a lot of work.  The new file <tt>world1.rb</tt>
+is a complete overhaul of what we had in <tt>nbody_ind1.rb</tt>.
+It is twice a long, too.
+
+*Alice*: But it is a lot more structured, and I'm sure it will be much
+easier to extend to more complicated situations.  Besides, it has
+significantly more functionality.
+
+*Bob*: Before we congratulate ourselves too much, we should make sure
+that we get the same answers as before.  Let us apply our standard test
+again, using the by now familiar initial conditions for our 5-particle
+system:
 
  :commandoutput: mkplummer.rb -n 5 -s 1 | acsnumber.rb > test.in
 
+Here is our comparison run for the older code:
+
  :commandoutput: nbody_ind1.rb -t 1 -d 0.001 < test.in > tmpi.out
+
+And here is what our new code gives:
 
  :commandoutput: world1.rb -t 1 -c 0.001 < test.in > tmpw.out
 
+Aha, at least the number of time steps is very similar, and so is the
+total energy error.  Here is the distance in phase space
+
  :commandoutput: cat tmpi.out tmpw.out | newacsdiff.rb
 
-Too good to be true?
+*Alice*: Almost too good to be true!  really close to round-off.
+You know, I'd feel more comfortable if we would redo the run with
+somewhat lower accuracy, just to check whether the phase space
+distance will become larger.
+
+*Bob*: Why not.  When we take time steps that are ten times longer, we get:
 
  :commandoutput: nbody_ind1.rb -t 1 -d 0.01 < test.in > tmpi.out
 
+An increase in error of a factor 10,000, roughly; so we were just far
+enough away from the round-off barrier, and we still have a nicely
+fourth-order behavior for our Hermite scheme.  I bet the new code will
+show a similar error:
+
  :commandoutput: world1.rb -t 1 -c 0.01 < test.in > tmpw.out
 
+*Alice*: And so it does.  So this suggests that the phase space difference
+should also be about 10,000 times larger.
+
  :commandoutput: cat tmpi.out tmpw.out | newacsdiff.rb
+
+*Bob*: Which is indeed the case.  Okay, we seem to have done something right.
 
