@@ -1,0 +1,67 @@
+Date: Tue Feb 08 12:07:10 JST 2005
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > > I guess the things we want are
+ > > 
+ > >  a) using command script defined in some other volume
+ > >  b) using library defined in some other volume
+ > > 
+ > > Anything else?
+ > > 
+ > > If a and b are the only things we want, we can simply define the
+ > > directories for command script and libraries, and have "make install"
+ > > to copy them from the source (vol) directory to there.
+ > > 
+ > > We probably want to have some check script which test if more than one
+ > > vol directories are exporting the same file or not.
+ > 
+ > Yes, that is a GREAT idea ! ! !
+ > 
+ > I can appreciate how GREAT that idea is, because I have spent much
+ > time this weekend chasing subtle differences between runs with
+ > slightly different definitions of slightly different things, which
+ > has been very ennoying.  Such automatization should at least make
+ > trouble shooting MUCH easier!
+ > 
+ > This would be WONDERFUL!
+
+Okay, well, so we should have, for each volume directory
+
+ * some way to specify which files are commnds
+ * some way to specify which files are libraries
+
+And, we need a way to specify
+
+ * directory to install commands
+ * directory to install libraries
+ * (checking stuff I wrote above)
+
+Hmm, well, this means that we need some startup or initialization
+script (sourced in .cshrc), which add things like environmental
+variables and command search path.
+
+Shall I implement some prototype?
+
+These layers still do not really solve your problem:
+
+ > I can appreciate how GREAT that idea is, because I have spent much
+ > time this weekend chasing subtle differences between runs with
+ > slightly different definitions of slightly different things, which
+ > has been very ennoying.  Such automatization should at least make
+ > trouble shooting MUCH easier!
+
+If you have, for example,
+
+  kira/vol/clop/clop.rb -> exported to standard library location
+  kira/vol/individual/clop.rb -> local one
+
+when you run a program at   kira/vol/individual, it probably should
+look at kira/vol/individual/clop.rb. When it is installed to the
+command directory, it would look at the starndard one. So we can
+easily confuse ourselves...
+
+Jun
+
