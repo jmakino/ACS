@@ -4,3 +4,8 @@ SRC =  title.ok pref.ok  ch01.ok  ch02.ok  ch03.ok  ch04.ok \
 TARGET = volume10
 
 include ../etc/Makefile.inc
+
+# Walter Dehnen's spiffed up version (faster, and more accurate potential):
+
+nbody_sh1 : nbody_sh1WD.C
+	g++ -O -o nbody_sh1 nbody_sh1WD.C
