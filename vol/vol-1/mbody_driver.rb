@@ -1,5 +1,5 @@
 # mbody_driver.rb: driver for mbody.rb, which is a
-#                  message passing toy model extension of rkbody.rb
+# message passing toy model extension of rkbody.rb
 # Douglas and Piet, 2004/4/8-9.
 
 require "mbody.rb"

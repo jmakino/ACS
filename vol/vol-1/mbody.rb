@@ -31,7 +31,8 @@ class Body
       send(integration_method,dt)
       @history.last[1] = [pos, vel, acc]
       @history[@history.size] = Array.new
-      @history[@history.size-1][0] = @history[@history.size-2][0] + time_step(eta)
+      @history[@history.size-1][0] = @history[@history.size-2][0] +
+                                     time_step(eta)
       @history[@history.size-1][1] = Array.new
       nsteps += 1
     end

@@ -1,24 +1,15 @@
 = TODO for acs
 
-Time-stamp: <2004-01-20 12:21:17 piet>
+Time-stamp: <2004-04-09 12:15:37 piet>
 
-* in ch2.cp, in:
+* in our labnotes and elsewhere, how/when shall we implement reference
+  pointers?
 
-  <tt>:inccode: .leap.rb+write</tt>
-
-  acsdoc picks up <tt>nbody.write</tt> instead of <tt>body.write</tt>
-
-  Perhaps we can implement <tt>.leap.rb+body.write</tt> ?
-
-  That way, having +def+ and +end+ in the same column may no longer be
-  necessary (though still a good idea!)
-
-  Of course, we can make this arbitrarily complicated, but perhaps it
-  would be worth while to allow something like <tt>.leap.rb+body</tt>
-  for including the whole class definition of <tt>body</tt>, although
-  we then probably would have to add some form of numbering, given that
-  there are various additions, all called <tt>body</tt> class in the
-  file <tt>leap.rb</tt>; perhaps <tt>.leap.rb+body+3</tt> ?  Hmmmm....
+* specifically, we need references (and a mechanics to keep them up-to-date
+  in both directions!) for the following notion: we may want to give
+  guided tours and explanations of short-cuts as a separate track of
+  text in the book, apart from the dialogues.  This could be as
+  preface, appendices, and comments at the end of each chapter
 
 * how about replacing
 
@@ -30,39 +21,14 @@ Time-stamp: <2004-01-20 12:21:17 piet>
 
   ?
 
-* in my current <tt>leap_attr_explanation.rb</tt>, I am using the
-  +segment+ mechanism on an almost line by line basis.  Would it be
-  better to just type those lines in the text of the book, or should
-  we keep it here in this separate file?
-
-* what about <tt>sample_init.rb</tt> ?  Leave out opening specific files?
-
-* what about empty lines at the very end of our current <tt>ch3.rb</tt>,
-  as the outcome of +diff+ and the previous few lines?  Are we happy
-  with that?  It may be a bit confusing for the reader, to see three
-  commands listed without any output.
-
-* how to run acsdoc; for only one chapter at a time?
-
 * a cleanup mechanism for all the <tt>.something</tt> files?
 
-* we haven't yet succeeded in including figures in our old lab notes;
-  the following, at the end of section 3.3 in <tt>labnotes031112</tt>
-  did not work (I'm using LINK instead of link, to get the output here):
-
-  <tt>LINK:../P/2003/11/images/labnote-031112.gif</tt>
-
-* in this same file, in <tt>5. Generation of Lab Notes</tt>
-  mysteriously the number 5 becomes 1 !?!
+* there is something wrong with the numbering in <tt>labnotes031112</tt>:
+  the top level sections are always 1.
 
 * in our book, we may want to say a few more words about the notion of
   the `order' of a differential equation?  This was the main point of
   criticism that Bob Vanderbei mentioned.
-
-* in our labnotes and elsewhere, how/when shall we implement reference
-  pointers?
-
-* what shall we do with a table of contents, for our book in rdoc?
 
 * are <tt>!name!</tt> and <something> useful, as mentioned
   in <tt>rdoc-0.9.0acs1/README.local</tt> ?
