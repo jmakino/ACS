@@ -89,31 +89,32 @@ class NBody
     time_scale
   end
 
-  def evolve(c)
+  def evolve(integration_method, dt_param, dt_dia, dt_out, dt_end, init_out,
+             exact_time_flag)
     @nsteps = 0
     e_init
     write_diagnostics
-    t_dia = @time + c.dt_dia                                                 #1
-    t_out = @time + c.dt_out                                                 #1
-    t_end = @time + c.dt_end                                                 #1
+    t_dia = @time + dt_dia                                                   #1
+    t_out = @time + dt_out                                                   #1
+    t_end = @time + dt_end                                                   #1
 
-    acs_write if c.init_out_flag
+    acs_write if init_out
 
     while @time < t_end
-      @dt = c.dt_param * collision_time_scale
-      if c.exact_time_flag and @time + @dt > t_out
+      @dt = dt_param * collision_time_scale
+      if exact_time_flag and @time + @dt > t_out
         @dt = t_out - @time
       end
-      send(c.method)
+      send(integration_method)
       @time += @dt
       @nsteps += 1
       if @time >= t_dia
         write_diagnostics
-        t_dia += c.dt_dia
+        t_dia += dt_dia
       end
       if @time >= t_out - 1.0/VERY_LARGE_NUMBER
         acs_write
-        t_out += c.dt_out
+        t_out += dt_out
       end
     end
   end
@@ -343,7 +344,7 @@ options_text= <<-END
   Short name:		-i
   Long name:  		--init_out
   Value type:  		bool
-  Variable name:	init_out_flag
+  Variable name:	init_out
   Description:		Output the initial snapshot
   Long description:
     If this flag is set to true, the initial snapshot will be output
@@ -352,7 +353,8 @@ options_text= <<-END
 
   END
 
-clop = parse_command_line(options_text, true)
+parse_command_line(options_text, true)
 
 nb = ACS_IO.acs_read(NBody)
-nb.evolve(clop)
+nb.evolve($method, $dt_param, $dt_dia, $dt_out, $dt_end, $init_out,
+          $exact_time_flag)
