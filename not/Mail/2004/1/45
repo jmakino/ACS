@@ -1,0 +1,26 @@
+Date: Mon Jan 12 23:26:58 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Hi Piet,
+
+ > I just saw that you svn committed a method inclusion method.
+ > Great!  Thanks a lot.
+ > 
+ > Greetings from MODEST-4,
+
+Ya. I added that. Currently, acsdoc.rb will automatically create files
+for all methods, with name .foo.rb+bar, where foo.rb is the original
+filename and bar is the name of the method. So you can include it by
+ : inccode: .foo.rb+bar
+I changed "-", which I used for segment stuff, to "+", so that we can
+use the same name for segments and methods.
+
+The code I wrote assumes that the source is correctly indented. So if
+"def" and matching "end" are not in the same column, it would show
+error or strange output...
+
+Jun
+
+ 
+
