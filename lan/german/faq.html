@@ -1,0 +1,287 @@
+<html>
+
+<HEAD>
+<TITLE>The Art of Computational Science FAQ Page</TITLE>
+<meta NAME="Keywords"
+CONTENT="N-Koerper Programme, N-Koerper Problem, N-Koerper Simulationen,
+Amateur Astronomie, Open Source, Wissenschaft, Sternhaufen,
+Ruby, Ruby code">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#EEFFEE" BACKGROUND=""
+      LINK="#0000CC" ALINK="#CCCCCC" VLINK="#000099">
+
+<table CELLSPACING=2 CELLPADDING=5 WIDTH="100%" NOSAVE >
+<tr VALIGN=TOP NOSAVE>
+
+
+<td ALIGN=CENTER  NOSAVE>
+      <IMG src=../img/acstitle-s2.gif>
+</font>
+</td>
+
+<td NOSAVE>
+
+<center><h1>
+Die Kunst des Wissenschaftlichen Rechnens
+</h1></center>
+
+<hr>
+<center><h3>
+H&auml;ufig gestellte Fragen
+</h3></center>
+<hr>
+<br>
+
+</td>
+<td ALIGN=CENTER  NOSAVE>
+      <IMG src=../img/acstitle-s2rot.gif>
+</td>
+</tr>
+
+</table>
+
+<table cellpadding=5 width="100%">
+<tr>
+<td align=left>
+&#169; 2003-2004 <a href=http://www.ids.ias.edu/~piet/> Piet Hut</a> und 
+<a href=http://jun.artcompsci.org>Jun Makino</a>
+</td>
+<td>
+</td>
+<td align=right>
+Zur&uuml;ck zur <a href="../index.html">ACS Homepage</A>.
+</td>
+</tr>
+</table>
+
+<hr>
+
+Einige h&auml;ufig gestellte Fragen:
+
+<ul>
+<li>
+<a href=#goal>Was sind die Ziele des ACS Projektes ?</a>
+<li>
+<a href=#play>Wie benutzt man den N-body Code ?</a>
+<li>
+<a href=#use>Warum Ruby ?</a>
+<li>
+<a href=#fast>Ist Ruby schnell genug ?</a>
+<li>
+<a href=#many>Warum gibt es so viele Teile ?</a>
+<li>
+<a href=#name>Woher kommt der Name Kali ?</a>
+<li>
+<a href=#student>Ich studiere Astronomie. Ist dieses Projekt n&uuml;tzlich f&uuml;r mich ?</a>
+<li>
+<a href=#astro>Ich bin professioneller Astronom. Ist dieses Projekt n&uuml;tzlich f&uuml;r mich ?</a>
+<li>
+<a href=#amateur>Ich bin ein Amateurastronom. Ist dieses Projekt n&uuml;tzlich f&uuml;r mich ?</a>
+<li>
+<a href=#help>Wie kann ich helfen ?</a>
+</ul>
+
+<hr>
+<a name="goal"></a>
+<b> Was sind die Ziele des ACS Projektes ?</b>
+<p>
+
+Auf lange Sicht ist es unser Ziel eine Gemeinschaft von professionellen und Amateurastronomen
+zusammen zu bringen die interessiert sind Wissenschaft f&uuml;r die Allgemeinheit
+zug&auml;nglich zu machen, etwa in der Art der verschiedenen Open Source Gruppen,
+von denen das Linux Projekt vielleicht das bekannteste ist.
+<p>
+In einem gewissen Sinn ist die Wissenschaft das vielleicht &auml;lteste und
+bekannteste Open Source Projekt &uuml;berhaupt. Seit den Tagen von Galilei haben
+mehr als ein Dutzend Generationen von Wissenschaftlern daran gearbeitet eine
+der &Ouml;ffentlichkeit frei zug&auml;ngliche Menge an Wissen &uuml;ber die uns umgebende
+Welt zusammenzutragen. Dieses Wissen ist un&uuml;bertroffen in seiner Genauigkeit
+und in der Tatsache dass es traditionelle Grenzen zwischen den Kulturen und
+den Glaubenssytemen &uuml;berspannt.
+<p>
+Das ACS Projekt hat das Ziel den Geist des 18. Jahrhunderts wiederzubeleben in
+dem interessierte Laien professionelle Wissenschatler in ihren Forschungen
+unterst&uuml;tzt haben. Der Hauptunterschied ist dass diese Zusammenarbeit heutzutage
+im World Wide Web stattfindet und nicht mehr in traditionellen Salons und
+dass man anstelle von Experimenten den Laptop benutzt.
+
+<hr>
+<a name="play"></a>
+<b> Wie benutzt man den N-body Code ?</b>
+<p>
+Eine leicht zu benutzende Einf&uuml;hrung bietet unser Online-Buch <a
+href="../msa/web/index.html">Moving Stars Around</a>.  Dort finden sie
+auf 250 Seiten eine komplette Einf&uuml;hrung, einschliesslich Beispielen
+in C++.  Von sehr einfachen Integratoren bis zum Hermite Schema
+hat der Leser die Gelegenheit Simulationen zum kalten Kollaps und zur
+Entstehung von Doppelsternen durchzuf&uuml;hren und er kann die Codes
+seinen eigenen Zwecken anpassen.
+<p>
+Eine detailliertere Methode mit N-K&ouml;rper codes zu arbeiten bietet
+unsere mehrb&auml;ndige Online-B&uuml;cherserie der <a href="../kali/index.html">Kali code</a>,
+in der wir eine moderne Softwareumgebung f&uuml;r die Simulation von Sternsystemen
+entwickeln. In dieser Serie fangen wir ebenfalls bei einfachen
+Integratoren f&uuml;r das Zwei-K&ouml;rper Problem an, um dann zu
+Integratoren h&ouml;herer Ordnung f&uuml;r das generelle N-body Problem &uuml;berzugehen.
+<p>
+Da unsere bevorugte Programmiersprache  
+<a href="http://www.ruby-lang.org/en/">Ruby</a> den meisten Lesern unbekannt
+sein d&uuml;rfte, enth&auml;lt die Kali Serie 
+zus&auml;tzlich zur Mathematik, Physik und den Computerkenntnissen die notwendig sind
+das N-K&ouml;rper Problem zu studieren auch eine Einf&uuml;hrung in diese Sprache.
+
+<hr>
+<a name="use"></a>
+<b> Warum Ruby?</b>
+<p>
+Ruby vereinigt die Flexibilit&auml;t einer Skriptsprache mit den sprachlichen
+M&ouml;glichkeiten  einer objekt-orientierten Sprache. F&uuml;r ein grosses
+Software-Projekt wie die Entwicklung des 
+<a href="../kali/index.htm"l>Kali codes</a> ist es unumg&auml;nglich     
+Datenkapselung zu benutzen, wie es z.B. unter C++ m&ouml;glich ist.
+Allerdings ist es nahezu um&ouml;glich bereits am Anfang zu wissen wie die
+endg&uuml;ltige Datenstruktur aussehen wird. Schnelle Codeentwicklung,
+nahezu unm&ouml;glich unter C++, ist ebenfalls notwending um Code zu schreiben
+der gut durchdacht und lesbar ist und nicht belastet wird von anf&auml;nglichen 
+Fehlentscheidungen &uuml;ber die Datenstrukturierung.
+
+<hr>
+<a name="fast"></a>
+<b> Ist Ruby schnell genug?</b>
+<p>
+Ruby selbst ist zu langsam f&uuml;r ernsthafte wissenschaftliche Anwendungen.
+Es ist allerdings einfach eine handvoll zeitkritische Zeilen Ruby-Code
+durch C-Code zu ersetzen und dadurch den Ruby Code so zu bechleunigen dass
+er fast die Geschwindigkeit von reinem C-Code erreicht. Wie das funktioniert
+wird unter
+<a href="../kali/vol/vol-6/doc/files/_/_title_ok.html">Vol. 6: Speedup</a>
+genauer erl&auml;utert.
+
+<hr>
+<a name="many"></a>
+<b> Warum gibt es so viele Teile ?</b>
+<p>
+Die meisten wissenschaftlichen Lehrb&uuml;cher fassen aktuelles Wissen
+&uuml;ber ein Fachgebiet erst zusammen nachdem die Forschung auf diesem
+Gebiet zu einem gewissen Grad abgeschlossen ist. Dem Leser wird dann
+ein klarer Leitfaden pr&auml;sentiert der nur wenig mit dem historischen
+Prozess gemeinsam hat in dem das Wissen erworben wurde und der auch nicht &uuml;ber 
+fehlgeschlagene Versuche berichtet. Verglichen damit gibt
+es nur wenig Informationen aus denen Studenten lernen k&ouml;nnten wie
+man Fehler macht und aus ihnen lernen kann. Es ist deswegen das 
+Ziel unseres Projektes auch solches, ansonsten &uuml;bergangenes,
+Wissen zu vermittlen da es notwendig ist um ein rechenbasiertes 
+Forschungsprojekt durchzuf&uuml;hren.
+<p>
+Anf&auml;nglich erwarteten wir dass unser Projekt etwa 10 Teile  
+umfassen w&uuml;rde. Nachdem wir allerdings unseren ersten Band 
+<i>Moving Stars Around</i>, beendet und im Web ver&ouml;ffentlicht hatten,
+lernten wir zwei wichtige Lektionen: 1) erst wenn man implizites Wissen
+darzustellen versucht weiss man was man wirklich verstanden hat; 2) sobald
+man erst einmal mit dem Schreiben angefangen hat, lernt man st&auml;ndig neue 
+Dinge hinzu, mit
+etwa derselben Geschwindigkeit mit der man schreibt. Wir erwarten daher dass
+selbst f&uuml;r die <i>Kali</i> Serie allein, mehrere Dutzend Teile eine 
+realistische Zahl sind.
+<hr>
+<a name="name"></a>
+<b> Woher kommt der Name Kali ?</b>
+<p>
+Der Name <i>Kali</i> stammt aus dem Sanskrit und bedeutet 
+<i>dunkel</i>, so bezeichnet z.B. das <i>kali yuga</i> das dunkle Zeitalter
+in dem wir laut Hindu Mythologie zur Zeit leben. Dasselbe Wort taucht
+ebenso im Namen der Hindu G&ouml;ttin <i>Kali</i> auf die in Abbildungen als
+schwarz dargestellt
+wird. Der Begriff <i>dunkel</i> schien uns angemessen f&uuml;r unser Projekt
+da wir uns auf Wissen konzentrieren wollen das sich 
+nicht durch eine klare, logische Folge von Aussagen ausdr&uuml;cken l&auml;sst.
+Anstelle dessen erwarten wir dass unsere Dialoge die eher weniger 
+formalen und weniger klaren Nuancen hervorheben werden. 
+<hr>
+<a name="student"></a>
+<b> Ich studiere Astronomie. Ist dieses Projekt n&uuml;tzlich f&uuml;r mich ?</b>
+<p>
+Ja, Studenten der Astronomie sind unsere Hauptzielgruppe. 
+Wir hoffen dass die Online-B&uuml;cher und die Programme die hier vorgestellt
+werden f&uuml;r eure Forschungen von Nutzen sind. Wir hoffen ausserdem
+dass ihr eigene Sachen zu diesem Projekt beitragen k&ouml;nnt. Ihr k&ouml;nnt uns
+<a href="mailto:comments@artcompsci.org">emails</a> zuschicken
+und wir werden, im Rahmen wie es unsere Zeit uns zul&auml;sst, versuchen allen zu 
+antworten.
+Ihr k&ouml;nnt ausserdem Ank&uuml;ndigungen f&uuml;r Summer Schools und andere 
+Aktiviteaten die mit ACS in Zusammenhang stehen auf unserer
+<a href="whatsnew.html">Neuigkeiten</a> Seite finden.
+<p>
+Wir m&ouml;chten euch auch ermuntern Diskussionsgruppen zu bilden in der ihr
+eure Erfahrungen mit dem ACS Material mit anderen teilen k&ouml;nnt.
+Ihr werdet viel mehr Zeit untereinder haben Fragen zu diskutieren als wir
+Zeit haben werden eure Fragen zu beantworten. Und je ernsthafter
+eure Zusammenarbeit wird, umso mehr werden wir motiviert sein die vielen
+guten Vorschl&auml;ge die ihr sicher haben werdet aufzunehmen und umzusetzen.
+
+<hr>
+<a name="astro"></a>
+<b> Ich bin professioneller Astronom. Ist dieses Projekt n&uuml;tzlich f&uuml;r mich ?</b>
+<p>
+Falls sie Interesse an konzentrierten Sternsystemen haben, ja. Egal ob sie
+Beobachter oder Theoretiker sind, von 2005 an wird das <i>Kali</i>
+Projekt ihnen alle Werkzeuge geben die notwendig sind Rechnungen in einer
+kompletten Arbeitsumgebung durchzuf&uuml;hren. Unsere Pr&auml;sentation ist so angelegt
+dass sie ohne Hintergrundwissen in Astrophysik benutzt werden kann. Falls
+sie etwas finden was noch fehlt bitte <a href="mailto:comments@artcompsci.org">
+sagen sie es uns</a>.
+
+<hr>
+<a name="amateur"></a>
+<b> Ich bin ein Amateurastronom. Ist dieses Projekt n&uuml;tzlich f&uuml;r mich ?</b>
+<p>
+Absolut!  Wir hoffen sehr dass sie unsere Software herunterladen werden
+um den virtuellen Himmel auf ihrem Computer zu entdecken, genauso wie sie
+den aktuellen Himmel mit ihrem Teleskop studieren. Wir haben versucht
+unsere Pr&auml;sentation selbsterkl&auml;rend zu machen. Zus&auml;tzlich werden wir
+versuchen weiterf&uuml;hrende Erkl&auml;rungen hinzuzuf&uuml;gen falls sie ben&ouml;tigt
+werden.
+<p>
+Falls sie den Eindruck haben dass wichtige Punkte noch nicht klar verst&auml;ndlich
+erkl&auml;rt werden, oder sogar ganz fehlen, bitte 
+<a href="mailto:comments@artcompsci.org">lassen sie es uns wissen</a>.  Wir
+haben vielleicht nicht die Zeit jedem einzelnen zu Antworten aber wir k&ouml;nnen
+ihnen versichern dass wir f&uuml;r ihre Kommentare dankbar sein werden.
+
+<hr>
+<a name="help"></a>
+<b> Wie kann ich helfen ?</b>
+<p>
+Da das ACS Projekt noch immer in seiner Anfangsphase steckt, ist der
+gr&ouml;sste Teil unserer Anstrengungen zur Zeit darauf ausgerichtet eine
+ausreichende Anzahl von Online-B&uuml;chern zu schreiben um eine komplette Arbeitsumgebung
+f&uuml;r N-K&ouml;rper Simulationen pr&auml;sentieren zu k&ouml;nnen. Wir erwarten dass
+wir diese Anfangsphase irgendwann in 2005 beenden werden. Danach wird
+es zunehmend M&ouml;glichkeiten geben uns zu unterst&uuml;tzen um ein
+virtuelles astronomisches Laboratorium zu erstellen. 
+<p>
+M&ouml;glichkeiten f&uuml;r Softwareentwicklung reichen von Spezialgebieten
+wie numerische Methoden und Computersimulationen in der Astrophysik
+zu mehr generellen Fragen &uuml;ber Grafik, Benutzerinterface und paralleles
+Rechnen. Zus&auml;tzlich werden wir Hilfe brauchen um unsere Umgebung auf
+einer Reihe von Computern und Betriebssystemen laufen zu lassen.
+<p>
+In dem Masse in dem unser Projekt gr&ouml;sser wird, wird auch die Zahl seiner Benutzer 
+zunehmen, so dass wir Freiwillige ben&ouml;tigen werden die Fragen
+von Benutzern beantworten und Anf&auml;ngern helfen. Es w&auml;re 
+wunderbar, falls unser Material &uuml;bersetzt werden k&ouml;nnte um es einer
+gr&ouml;sseren Leserschaft zug&auml;nglich zu machen. 
+<p>
+Falls sie auf einem dieser Gebiete beitragen m&ouml;chten, treten sie bitte
+mit uns in <a href="mailto:comments@artcompsci.org">Kontakt</a>.
+
+<hr>
+
+Zur&uuml;ck zur <a href="../index.html">ACS Homepage</A>.
+
+<hr>
+<hr>
+
+</BODY>
+
+</html>
