@@ -8,76 +8,76 @@ to Norm Walsh:
 
 \begincode
 
-Date: Tue, 11 Nov 2003 20:20:03 -0500
-From: Piet Hut <piet@ias.edu>
-To: eray@ravelgrane.com
-CC: makino@astron.s.u-tokyo.ac.jp
-Subject: Re: XML and moving stars around
-
-Hi Erik:
-
-Greetings from Japan, where I just arrived, for a two-months stay in Kyoto.
-Part of this time I'll be working with my collaborator, Jun Makino, so now
-we're in a position to take up where we left off, at the end of September.
-
-> I converted chapter one into DocBook-XML as a test before tackling 
-> chapter 3. Here's the result so far:
-> 
->    http://www.ravelgrane.com/ER/doc/ex/
-
-Thank you again!  Jun and I decided to go for the docbook approach
-that you showed us in this example.
-
-> I am running an XSLT transform on the XML file "book.xml" which is in 
-> that directory. This file sources in ch01.xml using an external entity 
-> (an XML mechanism for importing files). I wrote the XSLT stylesheet and 
-> it is easy to modify the appearance in HTML.
-> 
-> I have another XSLT stylesheet somewhere for creating PDF. Later I will 
-> dig it up and show you how you can generate PDF from the same XML files 
-> using a tool called "fop".
-
-Did you get a chance to dig this up?  Sounds like a nice tool!
-
-> No equations in this chapter, so it was pretty easy. The next step is 
-> to integrate MathML. I don't have support for it in my stylesheets yet. 
-> If they are very complex, we may need to think about turning them into 
-> graphics, because there is not very good support for MathML in 
-> browsers. For PDF, it will be easier, because there are MathML 
-> stylesheets available and XSL is a much richer formatting language than 
-> HTML.
-
-For now, indeed it strikes us as the best approach to go for graphics.
-This probably means doing a LaTeX pass and then produce little ps files
-for each equation, right?  As long as MathML remains in its currently
-unsupported state, we might just as well write the equations directly
-into LaTeX, with which we are already familiar.
-
-By the way, Jun and I have also been thinking more about the so-called
-"literate programming" approach, writing book text and computer code
-together in one file, which makes it much less likely that the two get
-out of sinc during revisions.  This then needs some automatic process
-to get the book and the code extracted from the common source.  As I
-mentioned a while ago, we were fascinated by the description given by
-Norm Walsh, on his web site:
-
-   "http://nwalsh.com/docs/articles/xml2002/lp/paper.html"
-
-You responded to my previous mentioning of this:
-
-> THis is funny, because I have worked with Norm before and he is the 
-> worst at documenting his code. Love him dearly though.
-
-We would like to send him an email to see whether he may be interested
-in giving some advice (and on the off chance that he, too, might be
-curious about the gravitational N-body problem).  Would you mind sending
-him a short email with CC to us, to introduce us to him, so that he
-knows we are serious (and basically good folks ;>) ?
-
-Thanks a lot!
-
-Piet
-
+ Date: Tue, 11 Nov 2003 20:20:03 -0500
+ From: Piet Hut <piet@ias.edu>
+ To: eray@ravelgrane.com
+ CC: makino@astron.s.u-tokyo.ac.jp
+ Subject: Re: XML and moving stars around
+ 
+ Hi Erik:
+ 
+ Greetings from Japan, where I just arrived, for a two-months stay in Kyoto.
+ Part of this time I'll be working with my collaborator, Jun Makino, so now
+ we're in a position to take up where we left off, at the end of September.
+ 
+ > I converted chapter one into DocBook-XML as a test before tackling 
+ > chapter 3. Here's the result so far:
+ > 
+ >    http://www.ravelgrane.com/ER/doc/ex/
+ 
+ Thank you again!  Jun and I decided to go for the docbook approach
+ that you showed us in this example.
+ 
+ > I am running an XSLT transform on the XML file "book.xml" which is in 
+ > that directory. This file sources in ch01.xml using an external entity 
+ > (an XML mechanism for importing files). I wrote the XSLT stylesheet and 
+ > it is easy to modify the appearance in HTML.
+ > 
+ > I have another XSLT stylesheet somewhere for creating PDF. Later I will 
+ > dig it up and show you how you can generate PDF from the same XML files 
+ > using a tool called "fop".
+ 
+ Did you get a chance to dig this up?  Sounds like a nice tool!
+ 
+ > No equations in this chapter, so it was pretty easy. The next step is 
+ > to integrate MathML. I don't have support for it in my stylesheets yet. 
+ > If they are very complex, we may need to think about turning them into 
+ > graphics, because there is not very good support for MathML in 
+ > browsers. For PDF, it will be easier, because there are MathML 
+ > stylesheets available and XSL is a much richer formatting language than 
+ > HTML.
+ 
+ For now, indeed it strikes us as the best approach to go for graphics.
+ This probably means doing a LaTeX pass and then produce little ps files
+ for each equation, right?  As long as MathML remains in its currently
+ unsupported state, we might just as well write the equations directly
+ into LaTeX, with which we are already familiar.
+ 
+ By the way, Jun and I have also been thinking more about the so-called
+ "literate programming" approach, writing book text and computer code
+ together in one file, which makes it much less likely that the two get
+ out of sinc during revisions.  This then needs some automatic process
+ to get the book and the code extracted from the common source.  As I
+ mentioned a while ago, we were fascinated by the description given by
+ Norm Walsh, on his web site:
+ 
+    "http://nwalsh.com/docs/articles/xml2002/lp/paper.html"
+ 
+ You responded to my previous mentioning of this:
+ 
+ > THis is funny, because I have worked with Norm before and he is the 
+ > worst at documenting his code. Love him dearly though.
+ 
+ We would like to send him an email to see whether he may be interested
+ in giving some advice (and on the off chance that he, too, might be
+ curious about the gravitational N-body problem).  Would you mind sending
+ him a short email with CC to us, to introduce us to him, so that he
+ knows we are serious (and basically good folks ;>) ?
+ 
+ Thanks a lot!
+ 
+ Piet
+ 
 \endcode
 
 2. Version Control
@@ -133,8 +133,8 @@ starting with a one line header containing time, place, and persons,
 followed by a ([sub]*)section tree.  A blank line indicates a new
 paragraph, as in LaTeX.
 
-Here is a possible syntax.  Two blank lines will be translated into
-paragraph breaks, and a single line starting with a number will be
+Here is a possible syntax.  Two new line commands will be translated
+into paragraph breaks, and a single line starting with a number will be
 interpreted as a header for a section or subsection.  If you really
 want to write a paragraph containing only one short sentence starting
 with a number, you will have to add a backslash: "\8" at the start of

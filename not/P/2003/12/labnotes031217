@@ -14,10 +14,10 @@ Here is the timing, the ratio of the execution time for N particles in
 cold collapse, between this handcoded C-calling version and the original
 nbody_sh1.C version:
 
-N = 2  :  72
-N = 3  :  69
-N = 10 :  40
-N = 20 :  28
-N = 50 :  21
-N = 100:  19
-N = 200:  19
+ N = 2  :  72
+ N = 3  :  69
+ N = 10 :  40
+ N = 20 :  28
+ N = 50 :  21
+ N = 100:  19
+ N = 200:  19

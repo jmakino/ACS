@@ -10,30 +10,30 @@ document pages, starting with the C file <tt>example.c</tt>
 
 \begincode
 
-/* File : example.c */
-
-double  My_variable  = 3.0;
-
-/* Compute factorial of n */
-int  fact(int n) {
-  My_variable++;
-  if (n <= 1) return 1;
-  else return n*fact(n-1);
-}
-
-/* Compute n mod m */
-int my_mod(int n, int m) {
-	return(n % m);
-}
-
-/*
-main(){
-  int i, f10;
-  for (i=0 ; i<10000000 ; i++)
-    f10 = fact(10);
-  printf("%d %d\n", My_variable, fact(10));
-}
-*/
+ /* File : example.c */
+ 
+ double  My_variable  = 3.0;
+ 
+ /* Compute factorial of n */
+ int  fact(int n) {
+   My_variable++;
+   if (n <= 1) return 1;
+   else return n*fact(n-1);
+ }
+ 
+ /* Compute n mod m */
+ int my_mod(int n, int m) {
+ 	return(n % m);
+ }
+ 
+ /*
+ main(){
+   int i, f10;
+   for (i=0 ; i<10000000 ; i++)
+     f10 = fact(10);
+   printf("%d %d\n", My_variable, fact(10));
+ }
+ */
 
 \endcode
 
@@ -41,15 +41,15 @@ We then created a corresponding interface file <tt>example.i</tt>
 
 \begincode
 
-/* File : example.i */
-%module example
-%{
-/* Put headers and other declarations here */
-%}
-
-extern double My_variable;
-extern int    fact(int);
-extern int    my_mod(int n, int m);
+ /* File : example.i */
+ %module example
+ %{
+ /* Put headers and other declarations here */
+ %}
+ 
+ extern double My_variable;
+ extern int    fact(int);
+ extern int    my_mod(int n, int m);
 
 \endcode
 
@@ -57,60 +57,71 @@ We followed the steps listed on <tt>Doc/Manual/Ruby.html#n2</tt>, and ran
 <tt>swig</tt>:
 
 \begincode
-swig -ruby example.i
+
+ swig -ruby example.i
+
 \endcode
 
 We then created the file <tt>extconf.rb</tt>:
 
 \begincode
-require 'mkmf'
-create_makefile('example')
+
+ require 'mkmf'
+ create_makefile('example')
+
 \endcode
 
 and typed:
 
 \begincode
-ruby extconf.rb
-make
+
+ ruby extconf.rb
+ make
+
 \endcode
 
 We wrote a ruby driver, in file <tt>example.rb</tt>
 
 \begincode
-#!/usr/bin/ruby
-#
-# example.rb
-#
-#==============================================================================
 
-require 'example'
-
-include Example
-
-n = 10000000
-
-n.times do 
-  fact(5)
-end
-
-print "n = ", n, "My_variable = ", Example.My_variable,
-  " ; fact(10) = ", fact(5), "\n"
+ #!/usr/bin/ruby
+ #
+ # example.rb
+ #
+ #==============================================================================
+ 
+ require 'example'
+ 
+ include Example
+ 
+ n = 10000000
+ 
+ n.times do 
+   fact(5)
+ end
+ 
+ print "n = ", n, "My_variable = ", Example.My_variable,
+   " ; fact(10) = ", fact(5), "\n"
 
 \endcode
 
 When we tried to run this ruby script, we got the following error message:
 
 \begincode
-<pctmp63|/home/piet/acs/ruby/swig/example> ruby example.rb
-./example.rb:9: uninitialized constant Example (NameError)
+
+ <pctmp63|/home/piet/acs/ruby/swig/example> ruby example.rb
+ ./example.rb:9: uninitialized constant Example (NameError)
 	from example.rb:7:in `require'
 	from example.rb:7
+
 \endcode
 
 We then tried to use the additional method listed (after becoming superuser): 
 
 \begincode
-make install
+
+ make install
+
 \endcode
 
 That did work.  After a while we figured out the problem: ruby got confused
@@ -118,8 +129,10 @@ by the fact that our ruby driver was called <tt>example.rb</tt>.  We changed
 the name of the file to <tt>test_example.rb</tt>.  That worked:
 
 \begincode
-<pctmp63|/home/piet/acs/ruby/swig> ruby test_example.rb
-n = 10000000My_variable = 50000003.0 ; fact(10) = 120
+
+ <pctmp63|/home/piet/acs/ruby/swig> ruby test_example.rb
+ n = 10000000My_variable = 50000003.0 ; fact(10) = 120
+
 \endcode
 
 1.2. A pairwise N-body interaction
@@ -130,35 +143,41 @@ and translated it from C++ into a stand-alone C function, called
 an interface code <tt>pairwise.i</tt>:
 
 \begincode
-/* File : pairwise.i */
 
-%module pairwise
-%{
-/* Put headers and other declarations here */
-typedef double real;
-%}
-typedef double real;
-
-extern void pairwise_acc_jerk_pot_coll(real massi, real massj,
-				       real posi[], real posj[],
-				       real veli[], real velj[],
-				       real acci[], real accj[],
-				       real jerki[], real jerkj[],
+ /* File : pairwise.i */
+ 
+ %module pairwise
+ %{
+ /* Put headers and other declarations here */
+ typedef double real;
+ %}
+ typedef double real;
+ 
+ extern void pairwise_acc_jerk_pot_coll(real massi, real massj,
+ 				       real posi[], real posj[],
+ 				       real veli[], real velj[],
+ 				       real acci[], real accj[],
+ 				       real jerki[], real jerkj[],
 				       real * epot, real * coll_time_q);
+
 \endcode
 
 We again created the file <tt>extconf.rb</tt>:
 
 \begincode
-require 'mkmf'
-create_makefile('pairwise')
+
+ require 'mkmf'
+ create_makefile('pairwise')
+
 \endcode
 
 and typed:
 
 \begincode
-ruby extconf.rb
-make
+
+ ruby extconf.rb
+ make
+
 \endcode
 
 We got an error message, and upon inspection we found that the
@@ -169,9 +188,11 @@ the example related files there.  That solved that problem.
 However, we then got the following error message:
 
 \begincode
-<pctmp63|swig> ruby test_pairwise.rb
-test_pairwise.rb:24:in `pairwise_acc_jerk_pot_coll': wrong argument type Float (expected Data) (TypeError)
-	from test_pairwise.rb:24
+
+ <pctmp63|swig> ruby test_pairwise.rb
+ test_pairwise.rb:24:in `pairwise_acc_jerk_pot_coll': wrong argument type Float (expected Data) (TypeError)
+ 	from test_pairwise.rb:24
+
 \endcode
 
 After some experimentation, the problem turned out to be caused by pointers.
@@ -179,32 +200,34 @@ The following simpler version of <tt>test_pairwise.rb</tt> already gave an
 error message:
 
 \begincode
-#!/usr/bin/ruby
-#
-# test_pairwise.rb
-#
-#==============================================================================
 
-require 'pairwise'
+ #!/usr/bin/ruby
+ #
+ # test_pairwise.rb
+ #
+ #==============================================================================
+ 
+ require 'pairwise'
+ 
+ include Pairwise
+ 
+ massi = 1.0
+ massj = 2.0
+ epot = 0
+ 
+ test_pairwise_acc_jerk_pot_coll(massi, massj,
+ 			   epot)
+ 
+ p epot
+ \endcode
+ 
+ as follows:
+ 
+ \begincode
+ <pctmp63|swig> ruby test_pairwise.rb
+ test_pairwise.rb:24:in `test_pairwise_acc_jerk_pot_coll': wrong argument type Fixnum (expected Data) (TypeError)
+ 	from test_pairwise.rb:24
 
-include Pairwise
-
-massi = 1.0
-massj = 2.0
-epot = 0
-
-test_pairwise_acc_jerk_pot_coll(massi, massj,
-			   epot)
-
-p epot
-\endcode
-
-as follows:
-
-\begincode
-<pctmp63|swig> ruby test_pairwise.rb
-test_pairwise.rb:24:in `test_pairwise_acc_jerk_pot_coll': wrong argument type Fixnum (expected Data) (TypeError)
-	from test_pairwise.rb:24
 \endcode
 
 At this point, we decided to call it a day.

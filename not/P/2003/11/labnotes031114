@@ -25,15 +25,15 @@ In order to use this mode, add the following lines to your .emacs file:
 
 \begincode
 
-;; to let the outline mode work with the standard * symbols as well as
-;; with a digit followed by a point ([0-9].) :
-(setq outline-regexp "\\*\\**\\|[0-9]\\.\\([0-9]\\.\\)*")
+ ;; to let the outline mode work with the standard * symbols as well as
+ ;; with a digit followed by a point ([0-9].) :
+ (setq outline-regexp "\\*\\**\\|[0-9]\\.\\([0-9]\\.\\)*")
 
-;; automatically go into outline mode for .not files:
+ ;; automatically go into outline mode for .not files:
 
-(setq auto-mode-alist
-  (append '(("\\.not$"  . outline-mode)
-           ) auto-mode-alist))
+ (setq auto-mode-alist
+   (append '(("\\.not$"  . outline-mode)
+            ) auto-mode-alist))
 
 \endcode
 
@@ -43,28 +43,28 @@ Here is the text of the Ruby conversion script:
 
 \begincode
 
-#!/usr/local/bin/ruby -w
-#
-#  not2outline.rb
-#
-#  this script converts the "all.not" file to usage in emacs outline mode
-#
-#  usage:  not2outline.rb < all.not > allout.not
-#          emacs allout.not
-#
-
-while s = gets
-  if s == "\n"
-    print " \n"
-  else
-    print s
-  end
-  if s =~ /^\\header/
-    s = gets until s != "\n"
-    print "\n"
-    print "* ", s
-  end
-end
+ #!/usr/local/bin/ruby -w
+ #
+ #  not2outline.rb
+ #
+ #  this script converts the "all.not" file to usage in emacs outline mode
+ #
+ #  usage:  not2outline.rb < all.not > allout.not
+ #          emacs allout.not
+ #
+ 
+ while s = gets
+   if s == "\n"
+     print " \n"
+   else
+     print s
+   end
+   if s =~ /^\\header/
+     s = gets until s != "\n"
+     print "\n"
+     print "* ", s
+   end
+ end
 
 \endcode
 
