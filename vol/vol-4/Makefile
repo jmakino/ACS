@@ -9,5 +9,6 @@ doc : $(SRC) .acsdocinitrc
 	ruby ../../src/coherent_programming/acsdoc.rb $(SRC) *.rb
 
 clean : 
+	rm -r doc .imgs
 	rm volume4.tex volume4.aux volume4.cp volume4.dvi volume4.log \
 	volume4.ps volume4.toc
