@@ -154,3 +154,167 @@ two accelarations and jerks we have at hand.  Got it!
 
 *Alice*: I don't remember exactly how we derived the equations here.
 I'd feel more comfortable just to check them again.
+
+*Bob*: I do remember that it was quite a bit of pen and paper work.
+I'm not eager to do this again, given that we know it works.
+
+*Alice*: I agree, everything does seem to work, in the sense that we get
+good fourth-order scaling of errors, and that for small enough time
+steps we get an accuracy that is close what you can expect, using
+double precision.  That is a pragmatic check, but I would like to
+check also on a more theoretical level.
+
+This does not mean that we have to rederive everything here.
+All we have to do is to check that the equations given here
+for the position and velocity in between the two worldpoints
+actually reduce to the exact position and velocity of each
+worldpoint, in the limit of minimal and maximal interpolation
+during this interval.
+
+*Bob*: Is that really enough?  A straight line between the positions
+at the two worldpoints would not be a good interpolation, yet it would
+agree with the positions at either end.
+
+*Alice*: You are right, I was a little to glib.  I should have added
+that we need to check whether the appropriate derivates at either end
+have the correct values as well.
+
+*Bob*: How many derivatives does it take to be `appropriate'?
+
+*Alice*: Good question.  Hmm.  Let us derive the answer, from scratch.
+To start with, we are dealing with a fourth-order integration scheme,
+so we would like to see a fourth-order polynomial, an expression in
+powers of +dt+ with <tt>dt**4</tt> as the highest power.  Now what are
+the precise conditions for the coefficients . . .
+
+Ah, there is a simpler way.  You see, the expressions for the
+corrected position and velocities, given by the methods +correct+,
+three methods above +interpolate+, provide fourth-order expressions
+for the position and velocities, in terms of powers of +dt+.  We may
+as well reinterpret those equations as providing us the intermediate
+values for position and velocity as well!
+
+*Bob*: They look mightily second-order in +dt+.  But yes, that's
+because they have been cleverly written that way.  If you express
+everything in terms of a Taylor series at the beginning point, the
+true fourth-order nature becomes clear.  This is a trick similar to
+the one that is employed for the leapfrog: that scheme looks
+first-order, but is actually second-order.  This one looks
+second-order, but is actually fourth-order.
+
+That much is fine.  But how do you want to recycle these equations
+to use them for interpolation?
+
+*Alice*: The corrector makes one big step from one world point to
+the next.  What we need is a method to make a smaller step, starting
+at the same world point, but moving a smaller distance in time.  We
+can use these equations, just by shrinking the time +dt+.
+
+*Bob*: But how?  These expressions rely on the fact that you know
+the values of the acceleration and jerk both at the beginning point
+and end point.  If you know keep the beginning point the same, but
+you place the end point somewhere in the middle of the interval, you
+have no information any more about the acceleration and jerk at that
+point.  These two quantities had been computed, directly from Newton's
+equations of motion and its derivative, only at the two given world
+points.
+
+*Alice*: True, we have to reconstruct the values for acceleration and
+jerk that we would have measured there, had we decided to do so.  And
+we only have to do that to fourth order in accuracy in +dt+.  What I
+did when I wrote the interpolator, was to evaluate the snap and crackle
+at the beginning of the interval, from the measured acceleration
+and jerk values . . . 
+
+*Bob*: . . . and then to use that snap and crackle in turn in a
+Taylor series to reconstruct the needed acceleration and jerk at the
+end of the interval.
+
+*Alice*: I could have done that, but that would not be necessary:
+once you have the Taylor series at the beginning of the interval,
+to sufficiently high order, you already have the interpolation formula
+you were looking for!
+
+*Bob*: So you've put those expressions in there, when we were creating
+this code.  I wonder why I couldn't remember them at all!
+
+*Alice*: You were rebooting the server, and I had a copy on my laptop,
+so I thought I might as well make myself useful too.
+
+*Bob*: Useful indeed.
+But wait a minute, I see a fifth order term at the end of the right
+hand side expression for the interpolated position!  It is
+<tt>(1/144.0)*crackle*dt**5</tt>.  What is that doing there?
+
+*Alice*: I remember we had a good reason to add that one, but I agree,
+strictly speaking, it is not needed.  Well, let's just accept the fact
+that we put it there, and see what happens when we check the equations.
+
+*Bob*: But not only it is not needed, it is inconsistent!  If you
+differentiate the expression for <tt>wp.pos</tt>, you get the one for
+<tt>wp.vel</tt>, term by term, except for the last term.
+The coefficient for the fifth-order term in <tt>wp.pos</tt> should have
+been <tt>(1/120.0)</tt>, shouldn't it, in order to lead to the proper
+last term in the velocity.
+
+*Alice*: Yes, it should have been, if we had insisted to make the
+velocity to be the exact derivative of the position.  But given that
+we only need the position to fourth order, this discrepancy does not
+necessarily spell trouble.  But your objection is well taken; let's
+put in a note to remind ourselves to get back to it.
+
+*Bob*: Fair enough.
+
+== Derivation
+
+*Alice*: Let us start now by checking whether I 
+did my home work correctly.  If so, the method <tt>interpolate</tt>
+should reproduce the correct position and velocity values for the
+world point +other+, if we take +dt+ to be exactly the difference in
+time <tt>dt = other.time - @time</tt> between the two world points.
+
+*Bob*: But that is already the value we have chosen, in line 7!
+Where do we use the value +t+?  Ah, I see, further down, in line 10,
+we change the value of +dt+ to be <tt>t - time</tt>.
+
+*Alice*: That's quite confusing.  We'd better introduce a different
+notation for the first +dt+, perhaps call it <tex>$\tau$</tex>, and
+use +dt+ only for the last two lines.
+
+*Bob*: That might be better, but as we said before, we're now analyzing
+the code, and let us postpone changes for later.
+
+*Alice*: Anyway, to check whether the interpolator lands correctly
+on the end point, we actually equate these two forms of using +dt+.
+So let's get started.  The values associated with the world point
++self+, and given by instance variable names starting with a <tt>@</tt>,
+are the values at the beginning of the step.  Let us indicate those
+with a subscript 0.  The values at the end of the step, associated
+with the world point +other+, I will give a subscript 1.  We then
+get the following notation, if we translate the four lines for
++snap+, +crackle+, <tt>wp.pos</tt>, and <tt>wp.vel</tt>, and use
+<tex>$\tau$</tex> for the interval +dt+:
+
+:eqnarray:
+\label{interpol1}
+\bs_0 \,&=&\, 
+(-6\ba_0+6\ba_1)/\tau^2 \ + \  (-4\bj_0-2\bj_1)/\tau           \nonumber\\
+\bc_0 \,&=&\, 
+(12\ba_0-12\ba_1)/\tau^3 \ + \  (6\bj_0+6\bj_1)/\tau^2
+
+and
+
+:eqnarray:
+\label{interpol2}
+\br_1 \,&=&\, \br_0 + \bv_0\tau + (1/2.0)*\ba_0\tau^2 
++ (1/6.0)*\bj_0\tau^3 + (1/24.0)*\bs_0\tau^4 
++ (1/144.0)*\bc_0\tau^5                                        \nonumber\\
+\bv_1 \,&=&\, \bv_0 + \ba_0\tau + (1/2.0)*\bj_0\tau^2 
++ (1/6.0)*\bs_0\tau^3 + (1/24.0)*\bc_0\tau^4
+
+xx
+
+:eqnarray:
+\label{interpol3}
+\bv_1 \,&=&\, \bv_0 + \ba_0\tau + (1/2.0)*\bj_0\tau^2 
++ (1/6.0)*\bs_0\tau^3 + (1/24.0)*\bc_0\tau^4                   \nonumber\\

@@ -77,7 +77,7 @@ class WorldPoint < Body
     crackle = (12*(@acc - other.acc) + 6*(@jerk + other.jerk)*dt)/dt**3
     dt = t - @time
     wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
-             (1/24.0)*snap*dt**4 + (1/120.0)*crackle*dt**5
+             (1/24.0)*snap*dt**4 + (1/144.0)*crackle*dt**5
     wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*snap*dt**3 + 
              (1/24.0)*crackle*dt**4
     wp
