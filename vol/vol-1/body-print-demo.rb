@@ -5,7 +5,7 @@ require "body.rb"
 # we have to switch off the +to_s+ method, for this demo to work:
 
 class Body
-  def to_s
+  def to_s                                # :nodoc:
   end
 end
 
