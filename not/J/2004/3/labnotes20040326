@@ -1,0 +1,37 @@
+== Still more on acsdoc
+
+* I added the more elaborate partial file file generation scheme to
+  process_rb_file (I believe). Discussed in elsewhere
+
+* I'll put some more thought on direct conversion from .cp to latex.
+
+  Currently, font markups, namele boldface, typewriter, and italic are
+  done. The second thing to implement is section/chapter structure.
+  They are actually rather simple. =, ==, ===, ====  etc at the
+  beginning of a line are converted to the appropriate sections.
+  In latex, one would use title, part, chapter, section, subsection,
+  and subsubsection. Question is which thing we want to associate to
+  what.
+
+  The simplest is to make it changeable, which is in any case possible
+  with ruby anyway. To have an array.
+
+  So I did it that way.
+
+  The next thing to implement is lists. For the current
+  implementation, I would assume that a list item starts with a blank
+  line followed by an item entry, which has the format of either "*",
+  "-", or /[1-9]+./ To be in the same list item, your indentation must
+  be larger or the same. If the indentation is larger, you are in
+  verbatim mode.
+
+  List also seems to work, though clearly not perfectly.
+
+  other things to process are:
+
+  * include, title, link
+
+  Another problem: What to do with multiple files?
+
+  
+  
