@@ -15,7 +15,7 @@ the +WorldEra+ class looks like.
 
  :inccode:.world1.rb-WorldEra
 
-== xxx
+== Choosing a Particle
 
 *Alice*: Let's start with +evolve+.  As we've done before, it's often
 easier to start in the middle than at the beginning.
@@ -30,10 +30,214 @@ worldline to extend itself.  After that, we do bookkeeping, by adding
 one to the variable that counts the time steps.
 
 *Alice*: That line indeed reads like English.  Let's reconstruct the
-meaning.  
+meaning.  We need to find the first particle that needs to be pushed
+along its orbit, from its current world point to the next worldpoint.
+This means that we needt to find the particle with the earliest sales
+date, which is the smallest time <tt>@next_time</tt>, an instance
+variable of class +WorldPoint+.  However, at this level we are still
+two levels removed from that class, and we certainly don't want to
+rely on the particular way that this latest sales date is implemented.
 
+*Bob*: At this point, we'd better remind our students what this latest
+sales date means.
 
+*Alice*: It is the latest time for which our extrapolation from the last
+worldpoint is still valid.  What can be extrapolated till this time are
+the positions and velocities, using an extrapolation method which is
+again hidden on this level, and implemented on the next level down, in
+class +WorldLine+.  All we can do on this higher level is to ask a
+particle . . . 
 
-There are three parameters, <tt>dt_max</tt>
+*Bob*: . . . I thought particles were two levels down!
 
+*Alice*: You're right!  Thanks.  I have to learn to be more precise.  All
+we can do on this higher level is to ask a <i>worldline</i> to extend itself.
+The way it extends itself is by asking the particle as defined at the
+last worldpoint to take a step to the next worldpoint.  So indirectly we
+will give a command to the worldpoint.
 
+Now to be precise, yes, you are right, the _worldpoint_ is two levels down.
+But you can also say that a particle, with a particular identity, is
+represented in our code by a worldline.  A single worldline
+corresponds to the _history_ of a single particle.  So in that sense,
+a _worldline_ in 4-D stands for a particles, just like a _body_ stood
+for a particle in our 3-D way of coding.
+
+*Bob*: I'm still wondering whether we've not introduced too many legalities
+and abstractions here, but I'll reserve judgment.  So to sum up, we look for
+the particle with the earliest latest sales date.  Hmm, listening to myself,
+I have to admit that that does sound a bit contradictory.
+
+*Alice*: But it is correct.  Each particle has a latest sales date.  And from
+among the ensemble of all particles, we choose the particle that has the
+earliest such date.  But I agree, `earliest latest' is confusing.  So we
+could say instead that we are looking for a particle that has the earliest
+cutoff time for its extrapolation.
+
+*Bob*: And if you look toward the future, the worldline that has the earliest
+cutoff is shortest.  Hence we ask for the shortest extrapolatable worldline.
+I see.  But why did we call it extrapolated?
+
+*Alice*: I guess extrapolatable just sounds a bit funny, not altogether
+palatable.  We can later change the wording, if we want.  Anyway, _that_
+particle, once we've found it, is asked to extend itself, and we'll see
+on the +WorldLine+ level just how it wants to do that.
+
+*Bob*: Quite a long discussion, to explain a single line of code!  And
+especially a line of code that already looks like plain English.  It goes
+to show that, once you understand how a code works, it is easier to read
+the source itself than the explanation.
+
+*Alice*: Isn't that true for anything?
+
+== The Case of Shared Time Steps
+
+*Bob*: I guess.  Let's move on to the +else+ clause.  We will enter the
+next part when the <tt>shared_flag</tt> is true, that is, when we want
+to use shared time steps.  In that case, let's see, aha, we again find
+our `earliest latest salesdate' particle, but this time we ask it a more
+complicated question.  We ask it for the <tt>next_time</tt> of the last
+worldpoint on its worldline.  Funny how you have to read Ruby backwards
+in order to translate it into an English sentence.
+
+*Alice*: Looking at it now, I must say, I don't like the fact that we are
+specifically addressing the array <tt>worlpoint[]</tt> in the class
++Worldline+.  While this gives us access to the last point in the array,
+we wind up with a object of class +WorldPoint+ and then we ask this object
+for its <tt>next_time</tt>.  This is precisely the sort of level crossing
+that we wanted to avoid.
+
+*Bob*: Well, the most important thing is: the code works, as we have already
+tested.  Let's not touch it for now.  I'm already happy if I can get
+an overview of all that we've done so far.
+
+*Alice*: Fair enough, but I do want to get back to this blemish, at some point.
+This is not modular programming!
+
+*Bob*: For now, all I want to do is to understand what we wrote here.
+In the case of shared time steps, shouldn't we ask all particles for
+their prefered time step, and then take the shortest time step, so as
+to make nobody unhappy?
+
+*Alice*: Well, _if_ all particles would be synchronized, what you just
+said would be correct, but in general, they will not be synced.  Each
+particle will have been updated to their own time <tt>@time</tt>, and
+each particle is thinking about taking a next step, in the future, to
+a time <tt>@time_next</tt>.
+
+So in order to make nobody unhappy, we should avoid making a shared
+system step that would go beyond anybody's <tt>@time_next</tt>.  This
+implies that our shared step should exactly land on the earliest value
+<tt>@time_next</tt> within the ensemble of all particles.  And this is
+precisely what we are doing here: the particle with the shortest
+extrapolated worldline has by definition the smallest <tt>@time_next</tt>
+value.
+
+*Bob*: I see, yes, that must be right.  So the only difference with the
+statement three lines higher is that now we obtain the actual time
+<tt>@time_next</tt>, and then we ask all particles to make a step toward
+this time.
+
+*Alice*: What we really _should_ do is to ask all worldlines to extend
+themselves to this time.  What we _actually_ are doing here is to cross
+two levels and use the <tt>next_time</tt> method to set the variable
+<tt>@time_next</tt> within each particle by hand.  To be cleaned up!
+
+*Bob*: Okay, okay, later, as we already said.  Here at the end of the
+shared time step case, we update the step counter by one.  Shouldn't
+that be updating by N, for N particles?  Ah, no, the update happens
+within the loop, and we pass through the loop N times.  Fine.
+
+== Back to the Beginning
+
+*Alice*: let's get back to the beginning of our +while+ loop.  We have
+not yet looked at the conditional statement there.  The code tells us
+that we keep looping only while the last worldpoint for the shortest
+interpolated worldline has a time that is earlier than the time
+<tt>@end_time</tt> at which the era ends.
+
+*Bob*: And now you're going to tell us that we're crossing levels again.
+
+*Alice*: Don't worry, I'll shut up.
+
+*Bob*: For now.
+
+*Alice*: For now, yes.  Shortest interpolated, what again did that mean?
+Ah, it must mean the time up till the last computed world point.  Up to
+that point, positions and velocities can be interpolated between two
+world points; beyond that point, we have to use extrapolation.
+
+*Bob*: So shortest interpolated means earliest interpolatable, yes?
+
+*Alice*: I guess we decided to avoid that word, but if you want to use
+interpolatable, then we are asking for the earliest time at which a
+particle runs out of being interpolatable.  Now _that_ sounds like a
+truly awful sentence.  What we are really doing is asking for the
+earliest time at which a particle runs out of interpolation.
+Or simply, we ask for the earliest actually computed worldpoint
+among those points that are at the end of a worldline.
+
+*Bob*: Aha, the earliest latest computed point!
+
+*Alice*: Yes, I you like.  Now when the time corresponding to this
+worldpoint is at least as large as the end time <tt>@end_time</tt>
+of our era, we can stop.  In this case we know for sure that all
+particles have passed the finish line.  What we really need is a
+guarantee that every worldine is fully interpolatable from start to
+finish of an era, during the whole time span from <tt>@begin_time</tt>
+till <tt>@end_time</tt>.
+
+*Bob*: I remember that we had a discussion about that.  We first thought
+that it might be enough to let every particle make just one step to or
+beyond the finish.  But then we realized that some particles would have
+to step quite a bit _beyond_ the finish.
+
+*Alice*: Yes.  As long as there is even one particle left that has not
+yet stepped out of the duration of our era, we cannot stop.  But it is
+possible that this last particle has a rather long time step, and hence
+a very late latest sales date.  Given our algorithm, this particle will
+only step forward when the system time reached its latest sales date.
+If this date is way beyond the end of our era, all other particles may
+be forced to take many steps each, before this straggler particle is
+finally asked to step out of the era.
+
+*Bob*: In itself, this is not such a bad situation, since all the work
+we do now, in the current era, is something we don't have to do in the
+next era.  It is only at the end of a calculation, that we do a bit too
+much work.  And in addition, each era will need more storage than
+strictly necessary.  So for both reasons we decided to put an upper
+limit to the length of a time step for any particle.  Ah yes, this is
+the parameter <tt>dt_max</tt> that is passed as a parameter to +evolve+.
+
+*Alice*: And in the methods <tt>World#setup_from_world</tt> and
+<tt>World#setup_from_snapshot</tt>, the value of <tt>dt_max</tt>
+is set as being equal to the duration of the era, multiplied by a
+factor <tt>dt_max_param</tt>.  By default, this last number is equal
+to one, but we can set it with the command line argument <tt>-m</tt>
+or <tt>--max_timestep_param</tt>.
+
+*Bob*: So we can limit the growth of an era in two ways, by setting
+the length <tt>dt_era</tt> itself, which is the duration during which
+all worldlines are interpolatable.  In other words, this is a slice
+of spacetime between two fixed-time hypersurfaces.  Each worldline
+will stick out at both sides, back into the past and forward into the
+future.  And we are guaranteed that each world line has at least one
+world point on its world line sticking out into the past, before the
+slice, and one world point sticking out into the future, beyond the
+slice.
+
+In general, many world lines will have several points sticking out at
+one or two sides of the slice.  All we can say is that the longest
+line sticking out at either side of the slice has a length that is at
+most a factor <tt>dt_max_param</tt> longer than the thickness of the
+slice.
+
+*Alice*: Yes, that's the picture.  Individual time step algorithms
+sure complicate matters!
+
+*Bob*: And so does spacetime visualization.  But I must admit, all
+this has given me a fresh way of looking at what I have been doing
+in the past, when I coded up individual time step methods.  And I
+do think I have a more complete overview of the whole picture now.
+Whether or not it will turn out to be useful, has to be seen, but
+it is fun to see an old idea in a new light.
