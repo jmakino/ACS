@@ -84,4 +84,12 @@ END
   :command: rm aho
   
 
- 
+#
+# Here I try usual ruby comment
+#
+
+--
+
+What this do?
+
+++

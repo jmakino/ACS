@@ -141,7 +141,7 @@ module Acsdoc
 	command_with_input(s,":commandinputoutput:", ifile,ofile,dirname,true)
       elsif loc = check_tag(s,":commandinput:")
 	command_with_input(s,":commandinput:", ifile, ofile, dirname,false)
-      else
+      elsif s.index("#") != 0
 	ofile.print s
       end
     end
