@@ -70,6 +70,8 @@ def check_and_install(sourcename, dirname)
     store_file_with_date(sourcename,dirname,fullsourcename)
     STDERR.print " ... finished\n" 
   end
+  system("chmod +x  #{dirname}/#{sourcename}") if dirname.index("bin")
+
   Dir.mkdir(checkdirname) unless File.exist?(checkdirname)
   unless File.exist?(checkfilename)
     open(checkfilename,"w"){|f| f.print fullsourcename} 
