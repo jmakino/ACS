@@ -1,0 +1,26 @@
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V4.1//EN">
+<book><title>The Art of Computational Science</title>
+
+<part><title>The beginning</title>
+<chapter><title>The way the things should be</title>
+<para>
+
+This is sample text.
+
+</para>
+</chapter>
+<chapter><title>second chapter in part I</title>
+<para>para</para>
+</chapter>
+</part>
+
+
+<part><title>test part II</title>
+<chapter><title>first chapter in part II</title>
+<para>para</para>
+</chapter>
+<chapter><title>second chapter in part II</title>
+<para>para</para>
+</chapter>
+</part>
+</book>
