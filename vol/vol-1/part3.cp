@@ -1,9 +1,9 @@
-= Part 4.  MOVING PARTICLES
+= Part 3.  MOVING DATA
 
-Chapter 14: The Two-Body Problem
+Chapter 10: Setting the Stage
 
-Chapter 15: Forward Euler
+Chapter 11: Introducing the Players
 
-Chapter 16: Energy Conservation
+Chapter 12: Pretty Printing
 
-Chapter 17: Graphics
+Chapter 13: Choosing an I/O Format
