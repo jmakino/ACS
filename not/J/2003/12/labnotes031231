@@ -92,4 +92,13 @@ So we need a script which does the following:
   * for existing (but new) file, process it to create its new copy
   * if there is any new file, run update-lab.
 
+Okay, the program is there:
+
+src/cohelent_programming/acsmaildoc.rb
+
+One need to run this, update-lab, and svn commit (--message  "some
+message) regularly. Perhaps better to run update-lab and svn update
+from within acsmaildoc.rb.
+
+
   

@@ -82,13 +82,20 @@ module Acsmaildoc
       retry
     end
     print "current seq = ", seqnum, "\n";
+    updated = 0
     while  File.exist?(seqname = $maildir + "/" + seqnum.to_s) do
       process_mailfile(seqnum)
       seqnum += 1
+      updated = 1
     end
     ofile = open($seqfile, "w+")
     ofile.print seqnum, "\n"
     ofile.close
+
+    if updated == 1 then
+      system("update-lab")
+      system("cd #{$docroot} ; svn commit --message Mails-added")
+
   end
 end
 
