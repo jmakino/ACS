@@ -331,8 +331,6 @@ class Worldpoint
 
   ACS_OUTPUT_NAME = "Body"
 
-#  INIT_TIMESCALE_FACTOR = 1.0e-06
-  INIT_TIMESCALE_FACTOR = 1.0e-02
   MAX_TIMESTEP_INCREMENT_FACTOR = 2
 
   attr_accessor :pos, :vel
@@ -353,10 +351,10 @@ class Worldpoint
     @maxstep = 0
   end
 
-  def startup(wl, era, dt_max)
+  def startup(wl, era, dt_max, init_timescale_factor)
     startup_force(wl, era)
     timescale = era.timescale(wl, self)
-    startup_admin(timescale * INIT_TIMESCALE_FACTOR, dt_max)
+    startup_admin(timescale * init_timescale_factor, dt_max)
     true
   end
 
@@ -443,8 +441,8 @@ class Worldline
     @worldpoint[0].setup(dt_param, time)
   end
 
-  def startup(era, dt_max)
-    @worldpoint[0].startup(self, era, dt_max)
+  def startup(era, dt_max, init_timescale_factor)
+    @worldpoint[0].startup(self, era, dt_max, init_timescale_factor)
   end
 
   def grow(era, dt_max)
@@ -559,12 +557,12 @@ class Worldera
     end
   end
 
-  def startup(dt_max)
+  def startup(dt_max, init_timescale_factor)
     list = @worldline
     while list.size > 0
       new_list = []
       list.each do |wl|
-        new_list.push(wl) unless wl.startup(self, dt_max)
+        new_list.push(wl) unless wl.startup(self,dt_max, init_timescale_factor)
       end
       list = new_list
     end
@@ -711,7 +709,7 @@ class World
   end
 
   def startup(c)
-    @era.startup(@dt_max)
+    @era.startup(@dt_max, c.init_timescale_factor)
     @initial_energy = @era.report_energy
     init_output(c)
   end
@@ -877,6 +875,20 @@ options_text= <<-END
     changes are expected to happen, such as close encounters or significant
     changes in velocity.  The new time step is then given as the product
     t_scale * dt_param << t_scale.
+
+
+  Short name: 		-f
+  Long name:		--init_timescale_factor
+  Value type:		float
+  Default value:	1.0e-02
+  Variable name:	init_timescale_factor
+  Description:		Initial timescale shrinking factor
+  Long description:
+    This option allows the user to determine how extra small the initial
+    timesteps are, for all particles.  In order to allow a safe startup
+    for high-order multistep methods, all particles are forced to start
+    their integration with a time scale that is significantly smaller
+    than what they normally would be, by a factor "init_timescale_factor".
 
 
   Short name: 		-e
