@@ -150,7 +150,7 @@ suffix ".not", short for "notes" as in "lab notes".
 3.3. Including Figures
 
 We decided to copy the figure that we had drawn on the blackboard, and
-Jun redrew it, using the program {\tt tgif}.  In order to include that
+Jun redrew it, using the program <tt> tgif</tt>.  In order to include that
 figure in our lab notes for yesterday's session, we had to define a
 syntax for figure inclusion.  We decided that it would be of the type
 "\\fig{filename, size}", written on a separate line, with blank lines

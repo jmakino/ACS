@@ -11,11 +11,11 @@ floating point numbers.  He managed to convince ruby to do the right
 thing by inserting various ".to_f" method calls, but that solution is
 far from ideal.
 
-Another problem was that an expression such as {\tt @old_pos = @pos}
-did not copy the contents of the array {\tt @pos} to {\tt @oldpos},
-but rather caused the reference {\tt @oldpos} to point to the same
-memory location as {\tt @pos}.  As a result, anything added to
-{\tt @pos} was added to {\tt @oldpos} as well.  It took a while to
+Another problem was that an expression such as <tt>@old_pos = @pos</tt>
+did not copy the contents of the array <tt>@pos</tt> to <tt>@oldpos</tt>,
+but rather caused the reference <tt>@oldpos</tt> to point to the same
+memory location as <tt>@pos</tt>.  As a result, anything added to
+<tt>@pos</tt> was added to <tt>@oldpos</tt> as well.  It took a while to
 trace this bug, but once found, it was easy to circumvent.  We'll have
 to experiment to see what are the best ways of copying arrays.
 

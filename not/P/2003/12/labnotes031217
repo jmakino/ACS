@@ -9,7 +9,7 @@ and there we got error messages.
 
 2. Handcoded interface Ruby - C
 
-Jun managed to write a handcoded interface, in {\tt pairwize.c}.
+Jun managed to write a handcoded interface, in <tt>pairwize.c</tt>.
 Here is the timing, the ratio of the execution time for N particles in
 cold collapse, between this handcoded C-calling version and the original
 nbody_sh1.C version:

@@ -69,6 +69,9 @@ For now at least, we will use this system to write all our text: book
 chapters, labnotes, and code.  We will have to make some modifications
 to fit all our needs.  Some of this can be done by writing a preprocessor
 for rdoc, other modifications will have to be added to the rdoc source
-itself.  As a simple exercise, we wrote a script {\tt acsdoc.rb} that
+itself.  As a simple exercise, we wrote a script <tt>acsdoc.rb</tt> that
 translates commands like ":include code:" to "include:" with two extra
 lines printed, above and below the code fragment.
+
+An example way of invoking rdoc in our test case:
+<tt>rdoc sample_nbody.rb sample_body.rb sample.cp</tt>

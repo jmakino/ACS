@@ -1,0 +1,40 @@
+2003, December 26, Friday, Kyoto: Jun, Piet
+
+1. Book Volumes
+
+We decided to write a new book volume for ACS 0.1, in which we will
+describe what we have learned and are going to add since finishing our
+previous book.  This new book can be read independently of the previous
+book, although it logically follows the previous one.
+
+2. Various Types Of Text
+
+Our ACS 0.1 system, and presumably further versions as well, will
+contain three places where we right text, all of it in rdoc form:
+
+2.1. Narrative
+
+These will form the book chapters, written in dialogue form.
+We will create new fictional characters, with two astronomers as the
+main characters for now.
+
+2.2. Code
+
+At the end of each piece of code, we will include a manual page, with
+examples and background information.  This page will be formatted as
+a single long string, assigned to a ruby variable, so we can print it
+out, pass it around, etc.
+
+2.3. Lab Notes
+
+We provide a mechanism to add the lab notes of all sessions for a
+given month into a single file.
+
+3. Lab Notes
+
+We wrote various scripts to combine lab notes in historical order,
+creating for each particular file "labnote-filename" another file
+".labnote-filename" that contains a time stamp.  These time stamps are
+generated automatically.  If we are late in posting our lab notes, we
+can change these times back by hand to the time to which the lab notes
+apply.

@@ -6,7 +6,7 @@
 
 We started to experiment with a simple example, to make an interface
 between ruby and C, using SWIG.  We used the one given on the SWIG
-document pages, starting with the C file {\tt example.c}
+document pages, starting with the C file <tt>example.c</tt>
 
 \begincode
 
@@ -37,7 +37,7 @@ main(){
 
 \endcode
 
-We then created a corresponding interface file {\tt example.i}
+We then created a corresponding interface file <tt>example.i</tt>
 
 \begincode
 
@@ -53,14 +53,14 @@ extern int    my_mod(int n, int m);
 
 \endcode
 
-We followed the steps listed on {\tt Doc/Manual/Ruby.html#n2}, and ran
-{\tt swig}:
+We followed the steps listed on <tt>Doc/Manual/Ruby.html#n2</tt>, and ran
+<tt>swig</tt>:
 
 \begincode
 swig -ruby example.i
 \endcode
 
-We then created the file {\tt extconf.rb}:
+We then created the file <tt>extconf.rb</tt>:
 
 \begincode
 require 'mkmf'
@@ -74,7 +74,7 @@ ruby extconf.rb
 make
 \endcode
 
-We wrote a ruby driver, in file {\tt example.rb}
+We wrote a ruby driver, in file <tt>example.rb</tt>
 
 \begincode
 #!/usr/bin/ruby
@@ -114,8 +114,8 @@ make install
 \endcode
 
 That did work.  After a while we figured out the problem: ruby got confused
-by the fact that our ruby driver was called {\tt example.rb}.  We changed
-the name of the file to {\tt test_example.rb}.  That worked:
+by the fact that our ruby driver was called <tt>example.rb</tt>.  We changed
+the name of the file to <tt>test_example.rb</tt>.  That worked:
 
 \begincode
 <pctmp63|/home/piet/acs/ruby/swig> ruby test_example.rb
@@ -124,10 +124,10 @@ n = 10000000My_variable = 50000003.0 ; fact(10) = 120
 
 1.2. A pairwise N-body interaction
 
-As a more realistic example, we took the inner loop from {\tt nbody_sh1.C},
+As a more realistic example, we took the inner loop from <tt>nbody_sh1.C</tt>,
 and translated it from C++ into a stand-alone C function, called
-{\tt pairwise.c}.  We repeated the same steps, starting with creating
-an interface code {\tt pairwise.i}:
+<tt>pairwise.c</tt>.  We repeated the same steps, starting with creating
+an interface code <tt>pairwise.i</tt>:
 
 \begincode
 /* File : pairwise.i */
@@ -147,7 +147,7 @@ extern void pairwise_acc_jerk_pot_coll(real massi, real massj,
 				       real * epot, real * coll_time_q);
 \endcode
 
-We again created the file {\tt extconf.rb}:
+We again created the file <tt>extconf.rb</tt>:
 
 \begincode
 require 'mkmf'
@@ -162,8 +162,8 @@ make
 \endcode
 
 We got an error message, and upon inspection we found that the
-Makefile automatically includes all {\tt *.c} files in the current
-directory.  We then created a subdirectory {\tt example} and moved all
+Makefile automatically includes all <tt>*.c</tt> files in the current
+directory.  We then created a subdirectory <tt>example</tt> and moved all
 the example related files there.  That solved that problem.
 
 However, we then got the following error message:
@@ -175,7 +175,7 @@ test_pairwise.rb:24:in `pairwise_acc_jerk_pot_coll': wrong argument type Float (
 \endcode
 
 After some experimentation, the problem turned out to be caused by pointers.
-The following simpler version of {\tt test_pairwise.rb} already gave an
+The following simpler version of <tt>test_pairwise.rb</tt> already gave an
 error message:
 
 \begincode

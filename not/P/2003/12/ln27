@@ -1,0 +1,24 @@
+2003, December 27, Saturday, Kyoto: Piet
+
+1. SVN local listing
+
+I wrote a short script "$ACSROOT/bin/svn_local_list.rb".  When you run
+this in any directory, it lists all files that are currently under svn
+control, even files that have been added but not yet committed.  Most	
+importantly, this script can be run without internet connection, unlike
+the command "svn list" wchich checks the repository over the net.  To
+make life even easier, I added the following alias in my .cshrc file:
+
+    alias sl 'ruby $ACSROOT/bin/svn_local_list.rb'
+
+2. Book Chapters
+
+I made a new directory $ACSROOT/dia, for dialogues, and set up files
+there for chapters of our ACS 0.1 book: pref.cp, ch1.cp, etc.  I
+brought everything under rdoc, lab notes, code, and book text, through
+the following line to my .cshrc file:
+
+    alias acsdoc 'cd $ACSROOT/dia ; \
+      ruby $ACSROOT/src/coherent_programming/acsdoc.rb \
+      --inline-source $ACSROOT/not/combined/* *.cp *.rb'
+
