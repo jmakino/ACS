@@ -100,9 +100,7 @@ Good, so we have reproducibility, at least for the constant time step scheme.
 <tt>exact_time</tt> option.
 
  :commandoutput: nbody_sh1.rb -t 1 --exact_time < test.in > test01e.out
-
  :commandoutput: nbody_sh1.rb -t 1 --exact_time < test01e.out > test12e.out
-
  :commandoutput: nbody_sh1.rb -t 2 -o 2 --exact_time < test.in > test02e.out
 
 == The Toll it Takes
@@ -128,9 +126,7 @@ difference between the orbits.  This is the toll that synchronisation takes!
 *Alice*: Time to check whether asynchronicity leaves things undisturbed.
 
  :commandoutput: nbody_sh1.rb -t 1 < test.in > test01n.out
-
  :commandoutput: nbody_sh1.rb -t 1 < test01n.out > test12n.out
-
  :commandoutput: nbody_sh1.rb -t 2 -o 2 < test.in > test02n.out
 
 *Bob*: So you think we'll get a smaller distance now?

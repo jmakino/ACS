@@ -87,7 +87,6 @@ with.  Let's go back to basics, and do the same thing with the leapfrog
 integrator instead:
 
  :commandoutput: nbody_sh1.rb -m leapfrog -t 1 < test.in > leap_sh.out
-
  :commandoutput: nbody_sh1.rb -m leapfrog -t 1 -d 0.001 < test.in > leap_sh_tenth.out
 
 *Bob*: The energy scales like it should for a second-order integrator:
@@ -97,7 +96,6 @@ a hundred times better accuracy for a ten times smaller time step.
 hundred times better.  I hope it does:
 
  :commandoutput: cat leap_sh.out yo6cst_tenth.out | acsdiff.rb
-
  :commandoutput: cat leap_sh_tenth.out yo6cst_tenth.out | acsdiff.rb
 
 == Even more Basic
@@ -109,9 +107,7 @@ stick to the basics completely.  If we do a third leapfrog integration,
 we can use the result of that run as our yard stick:
 
  :commandoutput: nbody_sh1.rb -m leapfrog -t 1 -d 0.0001 < test.in > leap_sh_hundredth.out
-
  :commandoutput: cat leap_sh.out leap_sh_hundredth.out | acsdiff.rb
-
  :commandoutput: cat leap_sh_tenth.out leap_sh_hundredth.out | acsdiff.rb
 
 *Bob*: That doesn't make much difference.  Still no quadratic behavior.

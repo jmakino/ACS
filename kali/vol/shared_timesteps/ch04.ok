@@ -16,7 +16,6 @@ files?
 two leapfrog files:
 
  :commandoutput: cat leap_sh.out 
-
  :commandoutput: cat leap_sh_tenth.out
 
 == Of Course!
@@ -73,7 +72,6 @@ full new list:
 *Bob*: Let's go back to our original Yoshida tests.  Here you are:
 
  :commandoutput: nbody_sh1.rb -m yo6 -t 1 --exact_time < test.in > yo6sh.out
-
  :commandoutput: cat yo6sh.out
 
 *Alice*: Good!  Indeed at time 1.  Let's repeat our
@@ -96,9 +94,7 @@ integrator, since before you know it you are up to the round-off barrier.
 *Bob*: Here are the three output files, now finished at the exact time:
 
  :commandoutput: nbody_sh1.rb -m leapfrog -t 1 --exact_time < test.in > leap_sh.out
-
  :commandoutput: nbody_sh1.rb -m leapfrog -t 1 --exact_time -d 0.001 < test.in > leap_sh_tenth.out
-
  :commandoutput: nbody_sh1.rb -m leapfrog -t 1 --exact_time -d 0.0001 < test.in > leap_sh_hundredth.out
 
 == Testing the Leapfrog
@@ -108,7 +104,6 @@ integrator, since before you know it you are up to the round-off barrier.
 *Bob*: I think so to, but seeing is believing:
 
  :commandoutput: cat leap_sh.out leap_sh_hundredth.out | acsdiff.rb
-
  :commandoutput: cat leap_sh_tenth.out leap_sh_hundredth.out | acsdiff.rb
 
 *Alice*: We see, we believe, we are delighted!

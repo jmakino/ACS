@@ -2,7 +2,7 @@
 
 require "nbody.rb"
 
-#:segment start: Body
+#:segment start: WorldPoint
 class WorldPoint < Body
 
   attr_accessor :acc, :jerk,
