@@ -125,30 +125,25 @@ and three other variables.
 == Details
 
 *Alice*: Even though the changes may speak for themselves, I have some
-questions.  For example, I understand that each integration method now
-needs to receive a parameter, +eps+ for the softening length, since this
-value needs to be passed down to the individual particles, to do the
-correct acceleration and potential energy calculations.  However, an
-integration method is invoked by the +send+ command.  How does the +send+
-command arrange for +eps+ to arrive at the right place?
+questions.  First of all, the value of +eps+ has to be passed on
+from the driver, where it is defined, through +evolve+ into +Nbody+
+and then down to the methods within +Body+ that do all the hard work.
 
-*Bob*: In our unsoftened version, +evolve+ was invoking +send+ as follows:
+*Bob*: First of all, I gave the +Nbody+ class an extra instance variable,
+<tt>@eps</tt>, which stores the value of the softening.  As soon as +evolve+
+is executed, within the +Nbody+ class, the first thing it does is assign
+the proper value to <tt>@eps</tt>, as well as to <tt>@dt</tt>, as was done
+already in our previous version:
 
- :include: .rknbody8.rb-2
+ :inccode: .rknbody9.rb-1
 
-What I have written in the softened version is instead:
-
- :include: .rknbody9.rb-1
-
-The way Ruby has define send is that it invokes a method with a name
-given by the first argument, and with parameters specified in the
-remaining arguments: <tt>send(x, y, z)</tt> results in <tt>x(y,z)</tt>
-to be executed.  In our case, this means that the first argument must
-be the name of the integration method, and the second argument the
-softening parameter.
-
-*Alice*: Simplicity itself!  Very nice.  And in a way, another example
-of the principle of least surprise.
+*Alice*: I see.  In that way, you don't have to give an extra argument
+to the integration methods, for example: they can just pick up the value
+of the softening length from <tt>@eps</tt>, to which they have automatic
+access, as +Nbody+ class methods.  But of course they _do_ have to
+pass that value down to the particles, which are realized as instances
+of the +Body+ class, since otherwise the particles would not know what
+softening to use.
 
 *Bob*: The one thing I didn't like very much is that the lines in the
 integration methods have become somewhat longer.  Forward Euler, 
@@ -160,19 +155,14 @@ to:
 
  :inccode: .rknbody9.rb+forward
 
-While I don't mind so much the new first argument +eps+ for +calc+,
-I'm not too happy with the fact that +acc+ also has to get a second
+I'm not too happy with the fact that +acc+ now has to get a second
 argument.  But that's the way it is.
 
-*Alice*: I presume we could make it shorter, if we really wanted to,
-for example by making +eps+ an instance variable <tt>@eps</tt> for the
-+Nbody+ class, and to let +calc+ on the +Nbody+ level hand down the
-value of <tt>@eps</tt> to +calc+ on the +Body+ level.
+If I _really_ would want to make the lines shorter, I could
+use shorter variables than +ba+ and +eps+, for example +a+ and +e+.
+But let us not spend more time on such niceties, which give us
+diminishing return in clarity at the cost of making the code more
+complex and hence less clear.
 
-*Bob*: And we could use shorter variables than +ba+ and +eps+, for
-example +a+ and +e+.  But let us not spend more time on such niceties,
-which give us diminishing return in clarity at the cost of making the
-code more complex and hence less clear.
-
-*Alice*: I agree.  Instead, let's see how your new code performance
+*Alice*: I fully agree.  Instead, let's see how your new code performance
 in our cold collapse experiment.

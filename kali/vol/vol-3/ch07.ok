@@ -197,6 +197,15 @@ method thus becomes:
 
  :inccode: .rknbody8.rb+evolve
 
+*Alice*: An alternative would have been to make both flags into instance
+variables for the +Nbody+ class.
+
+*Bob*: Yes, that would perhaps look more tidy, giving us fewer arguments
+to pass around.  Either way, I don't care very much: most class definitions
+involve a trade off between the number of instance variables and the number of
+arguments being passed around.  I'm happy just to keep them as
+arguments for now.
+
 == A New Driver
 
 *Alice*: Let's make the necessary changes in the driver file as well:

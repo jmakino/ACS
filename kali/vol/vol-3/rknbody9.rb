@@ -81,10 +81,11 @@ class Nbody
 
   def evolve(integration_method, eps, dt, dt_dia, dt_out, dt_end,
              init_out, x_flag)
+    @dt = dt                                                                 #1
+    @eps = eps                                                               #1
     nsteps = 0
-    e_init(eps)
-    write_diagnostics(eps, nsteps, x_flag)
-    @dt = dt
+    e_init
+    write_diagnostics(nsteps, x_flag)
     t_dia = dt_dia - 0.5*dt
     t_out = dt_out - 0.5*dt
     t_end = dt_end - 0.5*dt
@@ -92,11 +93,11 @@ class Nbody
     simple_print if init_out
 
     while @time < t_end
-      send(integration_method, eps)                                          #1
+      send(integration_method)
       @time += dt
       nsteps += 1
       if @time >= t_dia
-        write_diagnostics(eps, nsteps, x_flag)
+        write_diagnostics(nsteps, x_flag)
         t_dia += dt_dia
       end
       if @time >= t_out
@@ -106,39 +107,39 @@ class Nbody
     end
   end
 
-  def calc(eps, s)
-    @body.each{|b| b.calc(eps, @body, @dt, s)}
+  def calc(s)
+    @body.each{|b| b.calc(@eps, @body, @dt, s)}
   end
 
-  def forward(eps)
-    calc(eps, " @old_acc = acc(ba,eps) ")
-    calc(eps, " @pos += @vel*dt ")
-    calc(eps, " @vel += @old_acc*dt ")
+  def forward
+    calc(" @old_acc = acc(ba,eps) ")
+    calc(" @pos += @vel*dt ")
+    calc(" @vel += @old_acc*dt ")
   end
 
-  def leapfrog(eps)
-    calc(eps, " @vel += acc(ba,eps)*0.5*dt ")
-    calc(eps, " @pos += @vel*dt ")
-    calc(eps, " @vel += acc(ba,eps)*0.5*dt ")
+  def leapfrog
+    calc(" @vel += acc(ba,eps)*0.5*dt ")
+    calc(" @pos += @vel*dt ")
+    calc(" @vel += acc(ba,eps)*0.5*dt ")
   end
 
-  def rk2(eps)
-    calc(eps, " @old_pos = @pos ")
-    calc(eps, " @half_vel = @vel + acc(ba,eps)*0.5*dt ")
-    calc(eps, " @pos += @vel*0.5*dt ")
-    calc(eps, " @vel += acc(ba,eps)*dt ")
-    calc(eps, " @pos = @old_pos + @half_vel*dt ")
+  def rk2
+    calc(" @old_pos = @pos ")
+    calc(" @half_vel = @vel + acc(ba,eps)*0.5*dt ")
+    calc(" @pos += @vel*0.5*dt ")
+    calc(" @vel += acc(ba,eps)*dt ")
+    calc(" @pos = @old_pos + @half_vel*dt ")
   end
 
-  def rk4(eps)
-    calc(eps, " @old_pos = @pos ")
-    calc(eps, " @a0 = acc(ba,eps) ")
-    calc(eps, " @pos = @old_pos + @vel*0.5*dt + @a0*0.125*dt*dt ")
-    calc(eps, " @a1 = acc(ba,eps) ")
-    calc(eps, " @pos = @old_pos + @vel*dt + @a1*0.5*dt*dt ")
-    calc(eps, " @a2 = acc(ba,eps) ")
-    calc(eps, " @pos = @old_pos + @vel*dt + (@a0+@a1*2)*(1/6.0)*dt*dt ")
-    calc(eps, " @vel += (@a0+@a1*4+@a2)*(1/6.0)*dt ")
+  def rk4
+    calc(" @old_pos = @pos ")
+    calc(" @a0 = acc(ba,eps) ")
+    calc(" @pos = @old_pos + @vel*0.5*dt + @a0*0.125*dt*dt ")
+    calc(" @a1 = acc(ba,eps) ")
+    calc(" @pos = @old_pos + @vel*dt + @a1*0.5*dt*dt ")
+    calc(" @a2 = acc(ba,eps) ")
+    calc(" @pos = @old_pos + @vel*dt + (@a0+@a1*2)*(1/6.0)*dt*dt ")
+    calc(" @vel += (@a0+@a1*4+@a2)*(1/6.0)*dt ")
   end
 
   def ekin                        # kinetic energy
@@ -147,22 +148,22 @@ class Nbody
     e
   end
 
-  def epot(eps)                   # potential energy
+  def epot                        # potential energy
     e = 0
-    @body.each{|b| e += b.epot(@body, eps)}
+    @body.each{|b| e += b.epot(@body, @eps)}
     e/2                           # pairwise potentials were counted twice
   end
 
-  def e_init(eps)                 # initial total energy
-    @e0 = ekin + epot(eps)
+  def e_init                      # initial total energy
+    @e0 = ekin + epot
   end
 
-  def write_diagnostics(eps, nsteps, x_flag)
-    etot = ekin + epot(eps)
+  def write_diagnostics(nsteps, x_flag)
+    etot = ekin + epot
     STDERR.print <<END
 at time t = #{sprintf("%g", time)}, after #{nsteps} steps :
   E_kin = #{sprintf("%.3g", ekin)} ,\
- E_pot =  #{sprintf("%.3g", epot(eps))},\
+ E_pot =  #{sprintf("%.3g", epot)},\
  E_tot = #{sprintf("%.3g", etot)}
              E_tot - E_init = #{sprintf("%.3g", etot - @e0)}
   (E_tot - E_init) / E_init = #{sprintf("%.3g", (etot - @e0)/@e0 )}
@@ -170,7 +171,7 @@ END
     if x_flag
       STDERR.print "  for debugging purposes, here is the internal data ",
                    "representation:\n"
-      ppx(eps)
+      ppx
     end
   end
 
@@ -180,10 +181,10 @@ END
     @body.each{|b| b.pp}
   end
 
-  def ppx(eps)                     # pretty print, with extra information (acc)
+  def ppx                          # pretty print, with extra information (acc)
     print "     N = ", @body.size, "\n"
     print "  time = ", @time, "\n"
-    @body.each{|b| b.ppx(@body, eps)}
+    @body.each{|b| b.ppx(@body, @eps)}
   end
 
   def simple_print
