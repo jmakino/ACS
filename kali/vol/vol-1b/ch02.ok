@@ -34,10 +34,10 @@ Switching to the leapfrog, I wrote:
 wrote before:
 
 <tex>\begin{eqnarray}
-{\bf r}_{i+1} & = & {\bf r}_i + {\bf v}_{i} dt + 
-{\bf a}_{i} (dt)^2/2                                  \nonumber \\
+{\bf r}_{i+1} & = & {\bf r}_i + {\bf v}_{i} \Delta t + 
+{\bf a}_{i} (\Delta t)^2/2                                  \nonumber \\
 {\bf v}_{i+1} & = & {\bf v}_i + ({\bf a}_i +
-{\bf a}_{i+1})dt / 2                                  \nonumber
+{\bf a}_{i+1})\Delta t / 2                                  \nonumber
 \end{eqnarray}</tex>
 
 *Bob*: Yes, they are much more convenient; the first set defined the
@@ -76,12 +76,12 @@ So the `leap' part of the frog shows itself in this half step
 business for the velocity.
 
 *Alice*: Ah, I see now.  You really had to add 
-<tex>${\bf v}_{i} dt + {\bf a}_{i} (dt)^2/2$</tex> to the position
+<tex>${\bf v}_{i} \Delta t + {\bf a}_{i} (\Delta t)^2/2$</tex> to the position
 in the third of your five steps.  But since you had already updated
 the velocity from <tex>${\bf v}_i$</tex> to effectively 
-<tex>${\bf v}_{i+1/2} = {\bf v}_i + {\bf a}_i dt/2$</tex>, you could
+<tex>${\bf v}_{i+1/2} = {\bf v}_i + {\bf a}_i \Delta t/2$</tex>, you could
 abbreviate the position update.  You just added
-<tex>${\bf v}_{i+1/2} dt$</tex> to the position instead.  Clever!
+<tex>${\bf v}_{i+1/2} \Delta t$</tex> to the position instead.  Clever!
 
 The only drawback of writing it in such a compact and smart way is
 that the correspondence between the equations is not immediately

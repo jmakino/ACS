@@ -11,7 +11,7 @@
 \bigskip
 {\sl The Kali Code}\\
 \bigskip
-{\sl vol. 2-a}\\
+{\sl vol. 2}\\
 \bigskip
 \bigskip
 \bigskip
@@ -20,7 +20,7 @@
 \bf The N-Body Problem:\\
 \medskip
 \medskip
-Forward Euler, Leapfrog, Runge-Kutta
+From Leapfrog to Runge-Kutta
 \bigskip
 }
 \author{\bf Piet Hut and Jun Makino}

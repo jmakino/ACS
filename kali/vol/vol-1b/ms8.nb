@@ -1,0 +1,590 @@
+(************** Content-type: application/mathematica **************
+                     CreatedBy='Mathematica 5.0'
+
+                    Mathematica-Compatible Notebook
+
+This notebook can be used with any Mathematica-compatible
+application, such as Mathematica, MathReader or Publicon. The data
+for the notebook starts with the line containing stars above.
+
+To get the notebook into a Mathematica-compatible application, do
+one of the following:
+
+* Save the data starting with the line of stars above into a file
+  with a name ending in .nb, then open the file inside the
+  application;
+
+* Copy the data starting with the line of stars above to the
+  clipboard, then use the Paste menu command inside the application.
+
+Data for notebooks contains only printable 7-bit ASCII and can be
+sent directly in email or through ftp in text mode.  Newlines can be
+CR, LF or CRLF (Unix, Macintosh or MS-DOS style).
+
+NOTE: If you modify the data for this notebook not in a Mathematica-
+compatible application, you must delete the line below containing
+the word CacheID, otherwise Mathematica-compatible applications may
+try to use invalid cache data.
+
+For more information on notebooks and Mathematica-compatible 
+applications, contact Wolfram Research:
+  web: http://www.wolfram.com
+  email: info@wolfram.com
+  phone: +1-217-398-0700 (U.S.)
+
+Notebook reader applications are available free of charge from 
+Wolfram Research.
+*******************************************************************)
+
+(*CacheID: 232*)
+
+
+(*NotebookFileLineBreakTest
+NotebookFileLineBreakTest*)
+(*NotebookOptionsPosition[     12793,        428]*)
+(*NotebookOutlinePosition[     13422,        450]*)
+(*  CellTagsIndexPosition[     13378,        446]*)
+(*WindowFrame->Normal*)
+
+
+
+Notebook[{
+Cell[BoxData[
+    \(a[t_] := a0 + \(\(j\)\(\ \)\(t\)\(\ \)\)\)], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a1 \[Equal] a[\(-1\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a1 \[Equal] a0 - j\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Solve[%, j]\)], "Input"],
+
+Cell[BoxData[
+    \({{j \[Rule] a0 - a1}}\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \(a[t_] := a0 + j\ t\  + \ \((s\ t^2)\)/2\  + \ \((c\ t^3)\)/6\)], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a1 \[Equal] a[\(-1\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a1 \[Equal] a0 - c\/6 - j + s\/2\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a2 \[Equal] a[\(-2\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a2 \[Equal] a0 - \(4\ c\)\/3 - 2\ j + 2\ s\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a3 \[Equal] a[\(-3\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a3 \[Equal] a0 - \(9\ c\)\/2 - 3\ j + \(9\ s\)\/2\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Solve[{%6, %7, %8}, {j, s, c}]\)], "Input"],
+
+Cell[BoxData[
+    \({{j \[Rule] \(-\(1\/6\)\)\ \((\(-11\)\ a0 + 18\ a1 - 9\ a2 + 2\ a3)\), 
+        s \[Rule] 2\ a0 - 5\ a1 + 4\ a2 - a3, 
+        c \[Rule] a0 - 3\ a1 + 3\ a2 - a3}}\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \(a[t_] := 
+      a0 + j\ t\  + \ \((s\ t^2)\)/2\  + \ \((c\ t^3)\)/6\  + \ \((p\ t^4)\)/
+          24\  + \ \((q\ t^5)\)/120\)], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a1 \[Equal] a[\(-1\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a1 \[Equal] a0 - c\/6 - j + p\/24 - q\/120 + s\/2\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a2 \[Equal] a[\(-2\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a2 \[Equal] 
+      a0 - \(4\ c\)\/3 - 2\ j + \(2\ p\)\/3 - \(4\ q\)\/15 + 2\ s\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a3 \[Equal] a[\(-3\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a3 \[Equal] 
+      a0 - \(9\ c\)\/2 - 
+        3\ j + \(27\ p\)\/8 - \(81\ q\)\/40 + \(9\ s\)\/2\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a4 == a[\(-4\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a4 \[Equal] 
+      a0 - \(32\ c\)\/3 - 4\ j + \(32\ p\)\/3 - \(128\ q\)\/15 + 
+        8\ s\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a5 == a[\(-5\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a5 \[Equal] 
+      a0 - \(125\ c\)\/6 - 
+        5\ j + \(625\ p\)\/24 - \(625\ q\)\/24 + \(25\ s\)\/2\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Solve[{%11, %12, %13, \ %14, \ %15}, {j, s, c, \ p, \ q}]\)], "Input"],
+
+Cell[BoxData[
+    \({{j \[Rule] \(-\(1\/60\)\)\ \((\(-137\)\ a0 + 300\ a1 - 300\ a2 + 
+                200\ a3 - 75\ a4 + 12\ a5)\), 
+        s \[Rule] \(-\(1\/12\)\)\ \((\(-45\)\ a0 + 154\ a1 - 214\ a2 + 
+                156\ a3 - 61\ a4 + 10\ a5)\), 
+        c \[Rule] \(-\(1\/4\)\)\ \((\(-17\)\ a0 + 71\ a1 - 118\ a2 + 98\ a3 - 
+                41\ a4 + 7\ a5)\), 
+        p \[Rule] 3\ a0 - 14\ a1 + 26\ a2 - 24\ a3 + 11\ a4 - 2\ a5, 
+        q \[Rule] a0 - 5\ a1 + 10\ a2 - 10\ a3 + 5\ a4 - a5}}\)], "Output"]
+}, Open  ]],
+
+Cell[BoxData[
+    \(a[t_] := 
+      a0 + j\ t\  + \ \((s\ t^2)\)/2\  + \ \((c\ t^3)\)/6\  + \ \((p\ t^4)\)/
+          24\  + \ \((q\ t^5)\)/120\  + \ \((y\ t^6)\)/720\  + \ \((z\ t^7)\)/
+          5040\)], "Input"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a1 \[Equal] a[\(-1\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a1 \[Equal] 
+      a0 - c\/6 - j + p\/24 - q\/120 + s\/2 + y\/720 - z\/5040\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a2 \[Equal] a[\(-2\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a2 \[Equal] 
+      a0 - \(4\ c\)\/3 - 2\ j + \(2\ p\)\/3 - \(4\ q\)\/15 + 
+        2\ s + \(4\ y\)\/45 - \(8\ z\)\/315\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a3 \[Equal] a[\(-3\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a3 \[Equal] 
+      a0 - \(9\ c\)\/2 - 
+        3\ j + \(27\ p\)\/8 - \(81\ q\)\/40 + \(9\ s\)\/2 + \(81\ y\)\/80 - \
+\(243\ z\)\/560\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a4 == a[\(-4\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a4 \[Equal] 
+      a0 - \(32\ c\)\/3 - 4\ j + \(32\ p\)\/3 - \(128\ q\)\/15 + 
+        8\ s + \(256\ y\)\/45 - \(1024\ z\)\/315\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a5 == a[\(-5\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a5 \[Equal] 
+      a0 - \(125\ c\)\/6 - 
+        5\ j + \(625\ p\)\/24 - \(625\ q\)\/24 + \(25\ s\)\/2 + \(3125\ \
+y\)\/144 - \(15625\ z\)\/1008\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a6 == a[\(-6\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a6 \[Equal] 
+      a0 - 36\ c - 6\ j + 54\ p - \(324\ q\)\/5 + 
+        18\ s + \(324\ y\)\/5 - \(1944\ z\)\/35\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(a7 == a[\(-7\)]\)], "Input"],
+
+Cell[BoxData[
+    \(a7 \[Equal] 
+      a0 - \(343\ c\)\/6 - 
+        7\ j + \(2401\ p\)\/24 - \(16807\ q\)\/120 + \(49\ s\)\/2 + \(117649\ \
+y\)\/720 - \(117649\ z\)\/720\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(Solve[{%18, \ %19, \ %20, %21, %22, \ %23, \ %24}, {j, s, c, \ p, \ 
+        q, \ y, \ z}]\)], "Input"],
+
+Cell[BoxData[
+    \({{j \[Rule] \(-\(1\/420\)\)\ \((\(-1089\)\ a0 + 2940\ a1 - 4410\ a2 + 
+                4900\ a3 - 3675\ a4 + 1764\ a5 - 490\ a6 + 60\ a7)\), 
+        s \[Rule] \(-\(1\/180\)\)\ \((\(-938\)\ a0 + 4014\ a1 - 7911\ a2 + 
+                9490\ a3 - 7380\ a4 + 3618\ a5 - 1019\ a6 + 126\ a7)\), 
+        c \[Rule] \(-\(1\/120\)\)\ \((\(-967\)\ a0 + 5104\ a1 - 11787\ a2 + 
+                15560\ a3 - 12725\ a4 + 6432\ a5 - 1849\ a6 + 232\ a7)\), 
+        p \[Rule] \(-\(1\/6\)\)\ \((\(-56\)\ a0 + 333\ a1 - 852\ a2 + 
+                1219\ a3 - 1056\ a4 + 555\ a5 - 164\ a6 + 21\ a7)\), 
+        q \[Rule] \(-\(1\/6\)\)\ \((\(-46\)\ a0 + 295\ a1 - 810\ a2 + 
+                1235\ a3 - 1130\ a4 + 621\ a5 - 190\ a6 + 25\ a7)\), 
+        y \[Rule] 
+          4\ a0 - 27\ a1 + 78\ a2 - 125\ a3 + 120\ a4 - 69\ a5 + 22\ a6 - 
+            3\ a7, z \[Rule] 
+          a0 - 7\ a1 + 21\ a2 - 35\ a3 + 35\ a4 - 21\ a5 + 7\ a6 - 
+            a7}}\)], "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(CForm[%16]\)], "Input"],
+
+Cell["\<\
+List(List(Rule(j,-(-137*a0 + 300*a1 - 300*a2 + 200*a3 - 75*a4 + \
+12*a5)/60.),
+    Rule(s,-(-45*a0 + 154*a1 - 214*a2 + 156*a3 - 61*a4 + 10*a5)/12.),
+    Rule(c,-(-17*a0 + 71*a1 - 118*a2 + 98*a3 - 41*a4 + 7*a5)/4.),
+    Rule(p,3*a0 - 14*a1 + 26*a2 - 24*a3 + 11*a4 - 2*a5),
+    Rule(q,a0 - 5*a1 + 10*a2 - 10*a3 + 5*a4 - a5)))\
+\>", "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(CForm[%25]\)], "Input"],
+
+Cell["\<\
+List(List(Rule(j,-(-1089*a0 + 2940*a1 - 4410*a2 + 4900*a3 - 3675*a4 \
++ 1764*a5 - 
+         490*a6 + 60*a7)/420.),Rule(s,
+     -(-938*a0 + 4014*a1 - 7911*a2 + 9490*a3 - 7380*a4 + 3618*a5 - 1019*a6 + 
+         126*a7)/180.),Rule(c,-(-967*a0 + 5104*a1 - 11787*a2 + 15560*a3 - 
+         12725*a4 + 6432*a5 - 1849*a6 + 232*a7)/120.),
+    Rule(p,-(-56*a0 + 333*a1 - 852*a2 + 1219*a3 - 1056*a4 + 555*a5 - 164*a6 + \
+
+         21*a7)/6.),Rule(q,-(-46*a0 + 295*a1 - 810*a2 + 1235*a3 - 1130*a4 + 
+         621*a5 - 190*a6 + 25*a7)/6.),
+    Rule(y,4*a0 - 27*a1 + 78*a2 - 125*a3 + 120*a4 - 69*a5 + 22*a6 - 3*a7),
+    Rule(z,a0 - 7*a1 + 21*a2 - 35*a3 + 35*a4 - 21*a5 + 7*a6 - a7)))\
+\>", \
+"Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(TeXForm[%9]\)], "Input"],
+
+Cell["\<\
+\\{ \\{ {j\\rightarrow 
+     {\\frac{-\\left( -11\\,\\Mvariable{a0} + 18\\,\\Mvariable{a1} - 
+           9\\,\\Mvariable{a2} + 2\\,\\Mvariable{a3} \\right) }{6}}},
+   {s\\rightarrow 
+     {2\\,\\Mvariable{a0} - 5\\,\\Mvariable{a1} + 4\\,\\Mvariable{a2} - 
+       \\Mvariable{a3}}},{c\\rightarrow 
+     {\\Mvariable{a0} - 3\\,\\Mvariable{a1} + 3\\,\\Mvariable{a2} - \
+\\Mvariable{a3}}}\\
+    } \\}\
+\>", "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(TeXForm[%16]\)], "Input"],
+
+Cell["\<\
+\\{ \\{ {j\\rightarrow 
+     {\\frac{-\\left( -137\\,\\Mvariable{a0} + 300\\,\\Mvariable{a1} - 
+           300\\,\\Mvariable{a2} + 200\\,\\Mvariable{a3} - \
+75\\,\\Mvariable{a4} + 
+           12\\,\\Mvariable{a5} \\right) }{60}}},
+   {s\\rightarrow 
+     {\\frac{-\\left( -45\\,\\Mvariable{a0} + 154\\,\\Mvariable{a1} - 
+           214\\,\\Mvariable{a2} + 156\\,\\Mvariable{a3} - \
+61\\,\\Mvariable{a4} + 
+           10\\,\\Mvariable{a5} \\right) }{12}}},
+   {c\\rightarrow 
+     {\\frac{-\\left( -17\\,\\Mvariable{a0} + 71\\,\\Mvariable{a1} - 
+           118\\,\\Mvariable{a2} + 98\\,\\Mvariable{a3} - \
+41\\,\\Mvariable{a4} + 
+           7\\,\\Mvariable{a5} \\right) }{4}}},
+   {p\\rightarrow 
+     {3\\,\\Mvariable{a0} - 14\\,\\Mvariable{a1} + 26\\,\\Mvariable{a2} - 
+       24\\,\\Mvariable{a3} + 11\\,\\Mvariable{a4} - 2\\,\\Mvariable{a5}}},
+   {q\\rightarrow 
+     {\\Mvariable{a0} - 5\\,\\Mvariable{a1} + 10\\,\\Mvariable{a2} - 
+       10\\,\\Mvariable{a3} + 5\\,\\Mvariable{a4} - \\Mvariable{a5}}}\\} \
+\\}\
+\>", "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+    \(TeXForm[%25]\)], "Input"],
+
+Cell["\<\
+\\{ \\{ {j\\rightarrow 
+     {\\frac{-\\left( -1089\\,\\Mvariable{a0} + 2940\\,\\Mvariable{a1} - 
+           4410\\,\\Mvariable{a2} + 4900\\,\\Mvariable{a3} - \
+3675\\,\\Mvariable{a4} + 
+           1764\\,\\Mvariable{a5} - 490\\,\\Mvariable{a6} + \
+60\\,\\Mvariable{a7}
+           \\right) }{420}}},{s\\rightarrow 
+     {\\frac{-\\left( -938\\,\\Mvariable{a0} + 4014\\,\\Mvariable{a1} - 
+           7911\\,\\Mvariable{a2} + 9490\\,\\Mvariable{a3} - \
+7380\\,\\Mvariable{a4} + 
+           3618\\,\\Mvariable{a5} - 1019\\,\\Mvariable{a6} + \
+126\\,\\Mvariable{a7}
+           \\right) }{180}}},{c\\rightarrow 
+     {\\frac{-\\left( -967\\,\\Mvariable{a0} + 5104\\,\\Mvariable{a1} - 
+           11787\\,\\Mvariable{a2} + 15560\\,\\Mvariable{a3} - 
+           12725\\,\\Mvariable{a4} + 6432\\,\\Mvariable{a5} - 
+           1849\\,\\Mvariable{a6} + 232\\,\\Mvariable{a7} \\right) }{120}}},
+   {p\\rightarrow 
+     {\\frac{-\\left( -56\\,\\Mvariable{a0} + 333\\,\\Mvariable{a1} - 
+           852\\,\\Mvariable{a2} + 1219\\,\\Mvariable{a3} - \
+1056\\,\\Mvariable{a4} + 
+           555\\,\\Mvariable{a5} - 164\\,\\Mvariable{a6} + \
+21\\,\\Mvariable{a7}
+           \\right) }{6}}},{q\\rightarrow 
+     {\\frac{-\\left( -46\\,\\Mvariable{a0} + 295\\,\\Mvariable{a1} - 
+           810\\,\\Mvariable{a2} + 1235\\,\\Mvariable{a3} - \
+1130\\,\\Mvariable{a4} + 
+           621\\,\\Mvariable{a5} - 190\\,\\Mvariable{a6} + \
+25\\,\\Mvariable{a7}
+           \\right) }{6}}},{y\\rightarrow 
+     {4\\,\\Mvariable{a0} - 27\\,\\Mvariable{a1} + 78\\,\\Mvariable{a2} - 
+       125\\,\\Mvariable{a3} + 120\\,\\Mvariable{a4} - 69\\,\\Mvariable{a5} + \
+
+       22\\,\\Mvariable{a6} - 3\\,\\Mvariable{a7}}},
+   {z\\rightarrow 
+     {\\Mvariable{a0} - 7\\,\\Mvariable{a1} + 21\\,\\Mvariable{a2} - 
+       35\\,\\Mvariable{a3} + 35\\,\\Mvariable{a4} - 21\\,\\Mvariable{a5} + 
+       7\\,\\Mvariable{a6} - \\Mvariable{a7}}}\\} \\}\
+\>", "Output"]
+}, Open  ]]
+},
+FrontEndVersion->"5.0 for X",
+ScreenRectangle->{{0, 1400}, {0, 1050}},
+WindowSize->{680, 1028},
+WindowMargins->{{2, Automatic}, {Automatic, 0}}
+]
+
+(*******************************************************************
+Cached data follows.  If you edit this Notebook file directly, not
+using Mathematica, you must remove the line containing CacheID at
+the top of  the file.  The cache data will then be recreated when
+you save this file from within Mathematica.
+*******************************************************************)
+
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+
+(*NotebookFileOutline
+Notebook[{
+Cell[1754, 51, 73, 1, 27, "Input"],
+
+Cell[CellGroupData[{
+Cell[1852, 56, 54, 1, 27, "Input"],
+Cell[1909, 59, 52, 1, 27, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[1998, 65, 44, 1, 27, "Input"],
+Cell[2045, 68, 55, 1, 27, "Output"]
+}, Open  ]],
+Cell[2115, 72, 93, 1, 27, "Input"],
+
+Cell[CellGroupData[{
+Cell[2233, 77, 54, 1, 27, "Input"],
+Cell[2290, 80, 66, 1, 40, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[2393, 86, 54, 1, 27, "Input"],
+Cell[2450, 89, 76, 1, 43, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[2563, 95, 54, 1, 27, "Input"],
+Cell[2620, 98, 83, 1, 43, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[2740, 104, 63, 1, 27, "Input"],
+Cell[2806, 107, 196, 3, 43, "Output"]
+}, Open  ]],
+Cell[3017, 113, 156, 3, 27, "Input"],
+
+Cell[CellGroupData[{
+Cell[3198, 120, 54, 1, 27, "Input"],
+Cell[3255, 123, 83, 1, 40, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[3375, 129, 54, 1, 27, "Input"],
+Cell[3432, 132, 112, 2, 43, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[3581, 139, 54, 1, 27, "Input"],
+Cell[3638, 142, 130, 3, 43, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[3805, 150, 48, 1, 27, "Input"],
+Cell[3856, 153, 125, 3, 43, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[4018, 161, 48, 1, 27, "Input"],
+Cell[4069, 164, 136, 3, 43, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[4242, 172, 90, 1, 27, "Input"],
+Cell[4335, 175, 513, 8, 139, "Output"]
+}, Open  ]],
+Cell[4863, 186, 214, 4, 43, "Input"],
+
+Cell[CellGroupData[{
+Cell[5102, 194, 54, 1, 27, "Input"],
+Cell[5159, 197, 109, 2, 40, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[5305, 204, 54, 1, 27, "Input"],
+Cell[5362, 207, 152, 3, 43, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[5551, 215, 54, 1, 27, "Input"],
+Cell[5608, 218, 166, 4, 43, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[5811, 227, 48, 1, 27, "Input"],
+Cell[5862, 230, 161, 3, 43, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[6060, 238, 48, 1, 27, "Input"],
+Cell[6111, 241, 178, 4, 43, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[6326, 250, 48, 1, 27, "Input"],
+Cell[6377, 253, 145, 3, 43, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[6559, 261, 48, 1, 27, "Input"],
+Cell[6610, 264, 184, 4, 43, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[6831, 273, 123, 2, 27, "Input"],
+Cell[6957, 277, 967, 15, 225, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[7961, 297, 43, 1, 27, "Input"],
+Cell[8007, 300, 349, 7, 100, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[8393, 312, 43, 1, 27, "Input"],
+Cell[8439, 315, 697, 14, 175, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[9173, 334, 44, 1, 27, "Input"],
+Cell[9220, 337, 422, 10, 145, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[9679, 352, 45, 1, 27, "Input"],
+Cell[9727, 355, 1040, 23, 295, "Output"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+Cell[10804, 383, 45, 1, 27, "Input"],
+Cell[10852, 386, 1925, 39, 460, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+
+
+(*******************************************************************
+End of Mathematica Notebook file.
+*******************************************************************)
+

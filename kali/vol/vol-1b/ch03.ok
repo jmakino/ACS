@@ -58,10 +58,10 @@ Here are the equations that incorporate the idea of making a half-step
 first as a feeler:
 
 <tex>\begin{eqnarray}
-{\bf r}_{i+1/2} & = & {\bf r}_i + {\bf v}_{i} dt/2     \nonumber \\
-{\bf v}_{i+1/2} & = & {\bf v}_i + {\bf a}_{i} dt/2     \nonumber \\
-{\bf r}_{i} & = & {\bf r}_i + {\bf v}_{i+1/2} dt       \nonumber \\
-{\bf v}_{i} & = & {\bf v}_i + {\bf a}_{i+1/2} dt       \nonumber
+{\bf r}_{i+1/2} & = & {\bf r}_i + {\bf v}_{i} \Delta t/2     \nonumber \\
+{\bf v}_{i+1/2} & = & {\bf v}_i + {\bf a}_{i} \Delta t/2     \nonumber \\
+{\bf r}_{i} & = & {\bf r}_i + {\bf v}_{i+1/2} \Delta t       \nonumber \\
+{\bf v}_{i} & = & {\bf v}_i + {\bf a}_{i+1/2} \Delta t       \nonumber
 \end{eqnarray}</tex>
 
 *Alice*: Ah yes, now it is very clear how you use the information from the
@@ -79,16 +79,16 @@ effect of the equations above, by writing the half-step values in
 terms of the original values.  First, let's do it for the position:
 
 <tex>\begin{eqnarray}
-{\bf r}_{i+1} & = & {\bf r}_i + {\bf v}_{i+1/2} dt       \nonumber \\
-& = & {\bf r}_i + ({\bf v}_{i} + {\bf a}_{i} dt/2)dt       \nonumber \\
-& = & {\bf r}_i + {\bf v}_{i} dt + {\bf a}_{i} (dt)^2/2   \nonumber
+{\bf r}_{i+1} & = & {\bf r}_i + {\bf v}_{i+1/2} \Delta t       \nonumber \\
+& = & {\bf r}_i + ({\bf v}_{i} + {\bf a}_{i} \Delta t/2)\Delta t       \nonumber \\
+& = & {\bf r}_i + {\bf v}_{i} \Delta t + {\bf a}_{i} (\Delta t)^2/2   \nonumber
 \end{eqnarray}</tex>
 
 *Bob*: Hey, that is the exact same equation as we had for the leapfrog.
 Now I'm curious what the velocity equation will tell us.
 
 <tex>\begin{eqnarray}
-{\bf v}_{i} & = & {\bf v}_i + {\bf a}_{i+1/2} dt       \nonumber \\
+{\bf v}_{i} & = & {\bf v}_i + {\bf a}_{i+1/2} \Delta t       \nonumber \\
 & = & {\bf v}_i + . . . .       \nonumber
 \end{eqnarray}</tex>
 
@@ -101,7 +101,7 @@ Good to know.  Still, let us see _how_ different they are.  The
 corresponding equation for the leapfrog is:
 
 <tex>$$
-{\bf v}_{i+1}  =  {\bf v}_i + ({\bf a}_i + {\bf a}_{i+1})dt / 2
+{\bf v}_{i+1}  =  {\bf v}_i + ({\bf a}_i + {\bf a}_{i+1})\Delta t / 2
 $$</tex>
 
 *Bob*: Ah, that is neat.  The Leapfrog velocity jump uses the average
@@ -130,10 +130,10 @@ And in the Runge-Kutta method you cannot do that.
 second-order Runge-Kutta code:
 
 <tex>\begin{eqnarray}
-{\bf r}_{i+1/2} & = & {\bf r}_i + {\bf v}_{i} dt/2     \nonumber \\
-{\bf v}_{i+1/2} & = & {\bf v}_i + {\bf a}_{i} dt/2     \nonumber \\
-{\bf r}_{i} & = & {\bf r}_i + {\bf v}_{i+1/2} dt       \nonumber \\
-{\bf v}_{i} & = & {\bf v}_i + {\bf a}_{i+1/2} dt       \nonumber
+{\bf r}_{i+1/2} & = & {\bf r}_i + {\bf v}_{i} \Delta t/2     \nonumber \\
+{\bf v}_{i+1/2} & = & {\bf v}_i + {\bf a}_{i} \Delta t/2     \nonumber \\
+{\bf r}_{i} & = & {\bf r}_i + {\bf v}_{i+1/2} \Delta t       \nonumber \\
+{\bf v}_{i} & = & {\bf v}_i + {\bf a}_{i+1/2} \Delta t       \nonumber
 \end{eqnarray}</tex>
 
 I must admit that your way of coding them up is not immediately transparent

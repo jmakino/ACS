@@ -248,8 +248,8 @@ written as
 This proves the desired result:
 
 :equation:
-\br_{i+1} = \br_i + \hhalf(\bv_i + \bv_{i+1}) dt +
-                \one{12}(\ba_i - \ba_{i+1})(dt)^2
+\br_{i+1} = \br_i + \hhalf(\bv_i + \bv_{i+1}) \Delta t +
+                \one{12}(\ba_i - \ba_{i+1})(\Delta t)^2
 
 == Implementation
 
@@ -297,9 +297,10 @@ method.  If I express those trial values with a subscript _p_, I start
 with:
 
 :eqnarray:
+\label{hermiterules}
 \br_{p,i+1} & = & \br_i + \bv_i \Delta t + \hhalf\ba_{i}(\Delta t)^2
  + \one{6}\bj_{i}(\Delta t)^3                                       \nonumber\\
-\bv_{p,i+1} & = & \bv_i + \ba_i \Delta t + \hhalf\bj_{i}(\Delta t)^2 \nonumber
+\bv_{p,i+1} & = & \bv_i + \ba_i \Delta t + \hhalf\bj_{i}(\Delta t)^2
 
 Then, with those trial values, I determine the trial values for the
 acceleration and jerk.  Using all those trial values as proxies for
@@ -309,38 +310,95 @@ for the position and velocity at time <tex>$t_{i+1}$</tex> with a
 subscript _s_ :
 
 :eqnarray:
+\label{wrongimplementation}
+\br_{c,i+1} & = & \br_i + \hhalf(\bv_i + \bv_{p, i+1}) \Delta t +
+                \one{12}(\ba_i - \ba_{p, i+1})(\Delta t)^2   \nonumber\\
 \bv_{c,i+1} & = & \bv_i + \hhalf(\ba_i + \ba_{p, i+1}) \Delta t +
-                \one{12}(\bj_i - \bj_{p, i+1})(\Delta t)^2   \nonumber\\
-\br_{c,i+1} & = & \br_i + \hhalf(\bv_i + \bv_{c, i+1}) \Delta t +
-                \one{12}(\ba_i - \ba_{p, i+1})(\Delta t)^2   \nonumber
+                \one{12}(\bj_i - \bj_{p, i+1})(\Delta t)^2
 
-Note that xxxx (corrector form for velocity)
+*Alice*: Does that really work?  Let's see whether your procedure is
+actally fourth-order accurate.  In Eq. (ref(hermiterules)), you leave
+out terms of order <tex>$(\Delta t)^3$</tex>, but those predictor values
+for position and velocity are only used to compute acceleration and jerk,
+terms that are always multiplied with factors of <tex>$(\Delta t)^2$</tex>,
+so the resulting errors are of order <tex>$(\Delta t)^5$</tex>.  Good!
 
-Here is explicitly how I do it, on the code level:
+However, I am worried about that velocity term in the first line on
+the right-hand side of Eq. (ref(wrongimplementation)).  According to
+Eq. (ref(hermiterules)), your predicted velocity has an error of order
+<tex>$(\Delta t)^3$</tex>, so by multiplying that with a single factor
+<tex>$\Delta t$</tex>, you wind up with an error of order
+<tex>$(\Delta t)^4$</tex>, which is certainly not acceptable.
+
+*Bob*: Huh, you're right.  How can that be?  Is that really what I
+implemented?  That cannot be correct.  I'd better check my code.
+
+Here it is, the +hermite+ method that is supposed to do the job:
 
  :inccode: .hbody.rb+hermite
 
-Note that the order of the last two lines is crucial: if you swap them,
-you will get the wrong answer, as I found out the hard way.  The last line
-uses the new value for the velocity, so the position can be updated
-only after you update the velocity.
+Ah, I see what I did!  Of course, and now I remember also why I did it that
+way.  I was wrong in what I wrote above.  I should have written
+Eq. (ref(wrongimplementation)) as follows:
 
-*Alice*: Let's see whether your procedure is acceptable.  The errors 
+:eqnarray:
+\label{rightimplementation}
+\bv_{c,i+1} & = & \bv_i + \hhalf(\ba_i + \ba_{p, i+1}) \Delta t +
+                \one{12}(\bj_i - \bj_{p, i+1})(\Delta t)^2   \nonumber\\
+\br_{c,i+1} & = & \br_i + \hhalf(\bv_i + \bv_{c, i+1}) \Delta t +
+                \one{12}(\ba_i - \ba_{p, i+1})(\Delta t)^2
 
-xxx
+*Alice*: I see.  By switching the order of computation for the corrected
+form of the position and velocity, you are able to use the _corrected_
+version of the velocity, rather than the predicted version, in determining
+the corrected version of the position.  So all is well!
+
+*Bob*: Yes, indeed.  And it is all coming back now: at first I computed
+<tex>$\br_{c,i+1}$</tex> and <tex>$\bv_{c,i+1}$</tex> in the normal order,
+and I got a pretty bad energy behavior, until I realized that I should switch
+the order of computations.  How easy to make a quick mistake and a
+quick fix, and then to forget all about it!
+
+*Alice*: It shows once again the need for detailed documentation, not only for
+the mythical user, but at least as much for the actual producer of the code!
 
 == Testing
 
-For comparison, first the old <tt>rk</tt> method:
+*Bob*: To test +hermite+, let us start with a comparison run, taking our
+old <tt>rk</tt> method:
 
  :commandoutput: ruby integrator_driver2j.rb < euler.in
 
-Now the Hermite:
+I'll give the Hermite scheme the same task:
 
  :commandoutput: ruby integrator_driver5a.rb < euler.in
 
-And for a two times larger time step:
+*Alice*: Not bad!  Can you give it a somewhat larger time step, to check
+whether you really have a fourth-order scheme?
+
+*Bob*: I'll increase the time step by a factor two:
 
  :commandoutput: ruby integrator_driver5b.rb < euler.in
 
-A factor 15, where you would expect a factor 16.  Good enough.
+*Alice*: Close to a factor of 16 degradation, as expected.  So we have
+a working fourth-order Hermite implementation.
+
+*Bob*: And all that by just adding two short methods to an existing code,
+without _any_ need for _any_ other modifications!  Ruby really invites you
+to a game of playful prototyping and exploring new algorithms.  I guess
+I've become converted to using Ruby, by now.
+
+*Alice*: I'm glad to hear that, but perhaps it is time to come back to our
+original project, to provide some toy models for your students, to do some
+actual N-body integrations.
+
+*Bob*: Yes, I'm afraid I got a bit too much carried away with
+all these integrators.  But it was so much fun!  I've never in my life
+written an eighth-order integrator.  Somehow, working in Fortran or C++
+made such a thing seem like a tremendous project.  But somehow, while I
+was playing around, one thing led to another, and before I knew it, I had
+no less than _two_ very different eighth-order integrators.
+
+You're right, though, let's get back to our original plan.  While we have
+reached considerable sophistication on the level of algorithms, we are still
+stuck with <tex>$N=2$</tex>.  High time to go to large <tex>$N$</tex> values.

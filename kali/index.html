@@ -54,8 +54,8 @@ The <i>Kali</i> project is directed toward the construction of a
 laboratory for dense stellar systems, such as star clusters, star
 forming regions, and galactic nuclei containing one or more massive
 black holes.  The presentation is centered around dialogues between two
-researchers who are in the process of constructing the Kali code from
-scratch.
+astrophysicists, Alice and Bob, who are in the process of constructing the
+Kali code from scratch.
 
 <ul>
 
@@ -70,7 +70,17 @@ Dealing with Dense Stellar Systems
 <!--
 &nbsp; (also in <a href=vol/vol-0/doc/index.html>rdoc format</a>)
 -->
-</li>
+<ul>
+<li>
+in which Alice and Bob discuss the growing need for simulations
+of dense stellar systems.
+<li>
+They wonder how to give students hands-on access to this exciting area
+of astrophysics.
+<li>
+Alice is ready to build some toy models; Bob remains skeptical whether
+that's really useful.
+</ul>
 
 <li>
 <a href=vol/vol-1a/doc/files/_/_title_ok.html>1a.
@@ -80,7 +90,15 @@ Forward Euler, in Ruby
 &nbsp;&nbsp;
 (<a href=vol/vol-1a/volume1a.ps.gz>PS</a>
 &nbsp;/&nbsp;&nbsp;<a href=vol/vol-1a/volume1a.pdf>PDF</a>)
-</li>
+<ul>
+<li>
+in which Alice and Bob explore the scripting language Ruby, as an
+alternative to Fortran or C++.
+<li> they use Ruby to define a vector class and build a very simple
+2-body integrator.
+<li>
+Bob is still skeptical, but he is also getting more curious.
+</ul>
 
 <li>
 <a href=vol/vol-1b/doc/files/_/_title_ok.html>1b.
@@ -90,60 +108,76 @@ Higher-Order Integrators
 &nbsp;&nbsp;
 (<a href=vol/vol-1b/volume1b.ps.gz>PS</a>
 &nbsp;/&nbsp;&nbsp;<a href=vol/vol-1b/volume1b.pdf>PDF</a>)
-&nbsp; &nbsp; [incomplete]
-</li>
+<ul>
+<li>
+in which Alice and Bob play with higher-order integrators.
+<li>
+Bob gets carried away, implementing one integrator after another, up to
+eighth order.
+<li>
+They wind up with a Hermite scheme, multi-step methods, and
+symplectic integrators.
+</ul>
 
 <li>
-<a href=vol/vol-2a/doc/files/_/_title_ok.html>2a.
+<a href=vol/vol-2/doc/files/_/_title_ok.html>2.
 The N-Body Problem:
-Forward Euler, Leapfrog, Runge-Kutta
+From Leapfrog to Runge-Kutta
 </a>
 &nbsp;&nbsp;
-(<a href=vol/vol-2a/volume2a.ps.gz>PS</a>
-&nbsp;/&nbsp;&nbsp;<a href=vol/vol-2a/volume2a.pdf>PDF</a>)
-</li>
-
+(<a href=vol/vol-2/volume2.ps.gz>PS</a>
+&nbsp;/&nbsp;&nbsp;<a href=vol/vol-2/volume2.pdf>PDF</a>)
+<ul>
 <li>
-<a href=vol/vol-2b/doc/files/_/_title_ok.html>2b.
-The N-Body Problem:
-Softening, Yoshida, Hermite, Aarseth
-</a>
-&nbsp;&nbsp;
-(<a href=vol/vol-2b/volume2b.ps.gz>PS</a>
-&nbsp;/&nbsp;&nbsp;<a href=vol/vol-2b/volume2b.pdf>PDF</a>)
-&nbsp; &nbsp; [incomplete]
-</li>
+in which Alice and Bob construct various N-body codes, up to fourth order,
+with fixed time steps.
+<li>
+Alice reminds Bob of their plan to build toy models, rather than a
+plethora of cool integrators.
+<li>
+They get a few basic N-body integrators to work, and strongly feel the need
+for graphics.
+</ul>
 
 <li>
 <a href=vol/vol-3/doc/files/_/_title_ok.html>3.
-User Interface:
-Command Line Arguments
+An N-Body Lab:
+Softening, Cold Collapse, Graphics
 </a>
 &nbsp;&nbsp;
 (<a href=vol/vol-3/volume3.ps.gz>PS</a>
 &nbsp;/&nbsp;&nbsp;<a href=vol/vol-3/volume3.pdf>PDF</a>)
+&nbsp; &nbsp; <i>[incomplete]</i>
+<ul>
+<li>
+in which Alice and Bob have fun doing astrophysics experiments with
+their new tools.
+<li>
+They introduce some simple graphics, but realize the need for far more
+infrastructure.
+<li>
+After some debate, they decide to provide a robust foundation
+for their virtual lab.
+</ul>
 
 <li>
-<a href=vol/vol-4a/doc/files/_/_title_ok.html>4a.
-Open Knowledge:
-A New Form of Literate Programming
+<a href=vol/vol-4/doc/files/_/_title_ok.html>4.
+User Interface:
+Command Line Arguments
 </a>
 &nbsp;&nbsp;
-(<a href=vol/vol-4a/volume4a.ps.gz>PS</a>
-&nbsp;/&nbsp;&nbsp;<a href=vol/vol-4a/volume4a.pdf>PDF</a>)
-&nbsp; &nbsp; [in preparation]
-</li>
-
+(<a href=vol/vol-4/volume4.ps.gz>PS</a>
+&nbsp;/&nbsp;&nbsp;<a href=vol/vol-4/volume4.pdf>PDF</a>)
+<ul>
 <li>
-<a href=vol/vol-4b/doc/files/_/_title_ok.html>4a.
-Open Knowledge:
-Libraries, Code Index, Documentation
-</a>
-&nbsp;&nbsp;
-(<a href=vol/vol-4b/volume4b.ps.gz>PS</a>
-&nbsp;/&nbsp;&nbsp;<a href=vol/vol-4b/volume4b.pdf>PDF</a>)
-&nbsp; &nbsp; [in preparation]
-</li>
+in which Alice and Bob design a flexible interface, including command line
+options.
+<li>
+In the process, they add a detailed help facility and general documentation
+option.
+<li>
+This is the first step, in laying their lab foundation.
+</ul>
 
 <li>
 <a href=vol/vol-5/doc/files/_/_title_ok.html>5.
@@ -153,7 +187,16 @@ Plummer's Model
 &nbsp;&nbsp;
 (<a href=vol/vol-5/volume5.ps.gz>PS</a>
 &nbsp;/&nbsp;&nbsp;<a href=vol/vol-5/volume5.pdf>PDF</a>)
-</li>
+<ul>
+<li>
+in which Alice and Bob create a standard star cluster model
+for starting N-body simulations.
+<li>
+In the process, they learn a lot about potential-density pairs, phase
+space, dimensional analysis.
+<li>
+This is the second step, in laying their lab foundation.
+</ul>
 
 <li>
 <a href=vol/vol-6/doc/files/_/_title_ok.html>6.
@@ -163,61 +206,167 @@ C Modules for Ruby
 &nbsp;&nbsp;
 (<a href=vol/vol-6/volume6.ps.gz>PS</a>
 &nbsp;/&nbsp;&nbsp;<a href=vol/vol-6/volume6.pdf>PDF</a>)
-&nbsp; &nbsp; [incomplete]
-</li>
+&nbsp; &nbsp; <i>[incomplete]</i>
+<ul>
+<li>
+in which Alice and Bob tackle the slow speed of Ruby, as a scripting language.
+<li>
+They achieve good speedup, in several different ways that are easy to
+implement.
+<li>
+This is the third step, in laying their lab foundation.
+</ul>
 
 <li>
-<a href=vol/vol-10/doc/files/_/_title_ok.html>7.
+<a href=vol/vol-7/doc/files/_/_title_ok.html>7.
 ACS Data Format:
 Self-Describing Data Files
 </a>
 &nbsp;&nbsp;
-(<a href=vol/vol-10/volume10.ps.gz>PS</a>
-&nbsp;/&nbsp;&nbsp;<a href=vol/vol-10/volume10.pdf>PDF</a>)
-&nbsp; &nbsp; [incomplete]
-</li>
+(<a href=vol/vol-7/volume7.ps.gz>PS</a>
+&nbsp;/&nbsp;&nbsp;<a href=vol/vol-7/volume7.pdf>PDF</a>)
+&nbsp; &nbsp; <i>[incomplete]</i>
+<ul>
+<li>
+in which Alice and Bob tackle the problem of unstructured piles of data.
+<li>
+They design a structured ACS data format, including a story mechanism for
+self-describing data.
+<li>
+This is the fourth step, in laying their lab foundation.
+</ul>
 
 <li>
-8.
-Graphics:
-Graphs and Movies
-&nbsp; &nbsp; [in preparation]
-</li>
+<a href=vol/vol-8/doc/files/_/_title_ok.html>8.
+N-body Codes:
+A Plethora of Algorithms
+</a>
+&nbsp;&nbsp;
+(<a href=vol/vol-8/volume8.ps.gz>PS</a>
+&nbsp;/&nbsp;&nbsp;<a href=vol/vol-8/volume8.pdf>PDF</a>)
+&nbsp; &nbsp; <i>[incomplete]</i>
+<ul>
+<li>
+in which Alice and Bob implement the collection of algorithms that
+they derived in volume 1b.
+<li>
+With good speed, a flexible interface and structured data, it is now fun
+to run experiments.
+<li>
+This is the fifth step, in laying their lab foundation.
+</ul>
 
 <li>
 9.
-Gravothermodynamics:
-The Low-N Limit, with Softening
-&nbsp; &nbsp; [in preparation]
-</li>
+Graphics:
+Graphs and Movies
+&nbsp; &nbsp; <i>[in preparation]</i>
+<ul>
+<li>
+in which Alice and Bob start building a collection of graphics tools.
+<li>
+Besides producing graphs, they use Ruby and OpenGL to make interactive
+N-body movies.
+<li>
+This is the sixth step, in laying their lab foundation.
+</ul>
 
 <li>
 10.
-Dynamic Control:
-Variable Time Steps
-&nbsp; &nbsp; [in preparation]
-</li>
+Open Knowledge:
+A New Form of Literate Programming
+&nbsp; &nbsp; <i>[in preparation]</i>
+<ul>
+<li>
+in which Alice and Bob settle on a standard way to document their
+lab building process.
+<li>
+They hit upon the `open knowledge' concept
+as an extension of the notion of `open source.'
+<li>
+This is the seventh and final step, in laying their lab foundation.
+</ul>
 
 <li>
 11.
-Dense Stellar Systems:
-Individual Time Steps
-&nbsp; &nbsp; [in preparation]
-</li>
+Gravothermodynamics:
+The Low-N Limit, with Softening
+&nbsp; &nbsp; <i>[in preparation]</i>
+<ul>
+<li>
+in which Alice and Bob start their first research project, using their
+newly completed virtual lab.
+<li>
+They play with systems
+of softened self-gravitating particles, enclosed in a reflecting sphere.
+<li>
+They are surprised how much physics can be learned from such simple systems.
+</ul>
 
 <li>
 12.
-Core Collapse:
-The Low-N Limit
-&nbsp; &nbsp; [in preparation]
-</li>
+Dynamic Control:
+Variable Time Steps
+&nbsp; &nbsp; <i>[in preparation]</i>
+<ul>
+<li>
+in which Alice and Bob start experimenting with point particles.
+<li>
+They witness the formation of binaries, and how these slow down the
+simulations to a crawl.
+<li>
+They conclude that the binary bottleneck can only be overcome with
+individual time steps.
+</ul>
 
 <li>
 13.
+Dense Stellar Systems:
+Individual Time Steps
+&nbsp; &nbsp; <i>[in preparation]</i>
+<ul>
+<li>
+in which Alice and Bob give each particle its own integration time
+step size.
+<li>
+They experiment with block time step schemes, and different ways to
+speed things up.
+<li>
+To their delight, they can now easily handle collisional systems with
+hundreds of particles.
+</ul>
+
+<li>
+14.
+Core Collapse:
+The Low-N Limit
+&nbsp; &nbsp; <i>[in preparation]</i>
+<ul>
+<li>
+in which Alice and Bob explore the thermodynamics of core collapse with
+point particles.
+<li>
+They analyze N-dependence and scaling with space and time, and compare that
+with theory.
+<li>
+They realize that binary formation leads to unacceptable energy errors.
+</ul>
+
+<li>
+15.
 Binary Formation:
 Detection, Evolution, and Feedback
-&nbsp; &nbsp; [in preparation]
-</li>
+&nbsp; &nbsp; <i>[in preparation]</i>
+<ul>
+<li>
+in which Alice and Bob confront the problem of binary formation head-on.
+<li>
+They implement an analytic Kepler treatment, as a quick fix to speed
+up hard binary evolution.
+<li>
+They manage to go beyond core collapse, but
+realize the need for much better binary treatment.
+</ul>
 
 </ul>
 

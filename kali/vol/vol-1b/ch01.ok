@@ -19,14 +19,14 @@ that quickly?
 of the ways to write this algorithm, where positions and velocities
 `leap over' each other.  Positions are defined at times
 <tex>$t_i, t_{i+1}, t_{i+2}, \dots $</tex>, spaced at constant intervals
-<tex>$dt$</tex>, while the velocities are defined at times halfway in
+<tex>$\Delta t$</tex>, while the velocities are defined at times halfway in
 between, indicated by <tex>$t_{i-1/2}, t_{i+1/2}, t_{i+3/2}, \dots $</tex>,
-where <tex>$t_{i+1} - t_{i + 1/2} = t_{i + 1/2} - t_i = dt / 2$</tex>.
+where <tex>$t_{i+1} - t_{i + 1/2} = t_{i + 1/2} - t_i = \Delta t / 2$</tex>.
 The leapfrog integration scheme then reads:
 
 <tex>\begin{eqnarray}
-\br_{i} & = & {\bf r}_{i-1} + {\bf v}_{i-1/2} dt \nonumber \\
-{\bf v}_{i+1/2} & = & {\bf v}_{i-1/2} + {\bf a}_i dt \nonumber
+\br_{i} & = & {\bf r}_{i-1} + {\bf v}_{i-1/2} \Delta t \nonumber \\
+{\bf v}_{i+1/2} & = & {\bf v}_{i-1/2} + {\bf a}_i \Delta t \nonumber
 \end{eqnarray}</tex>
 
 Note that the accelerations <tex>${\bf a}$</tex> are defined only on integer
@@ -42,7 +42,7 @@ we take the first term in the Taylor series expansion to compute the
 first leap value for <tex>${\bf v}$</tex>:
 
 <tex>$$
-{\bf v}_{i+1/2} = {\bf v}_i + {\bf a}_i dt / 2.
+{\bf v}_{i+1/2} = {\bf v}_i + {\bf a}_i \Delta t / 2.
 $$</tex>
 
 We are then ready to apply the first equation above to compute
@@ -56,16 +56,17 @@ A second way to write the leapfrog looks quite different at first sight.
 Defining all quantities only at integer times, we can write:
 
 <tex>\begin{eqnarray}
-{\bf r}_{i+1} & = & {\bf r}_i + {\bf v}_{i} dt + 
-{\bf a}_{i} (dt)^2/2                                  \nonumber \\
+\label{oldfriend}
+{\bf r}_{i+1} & = & {\bf r}_i + {\bf v}_{i} \Delta t + 
+{\bf a}_{i} (\Delta t)^2/2                                  \nonumber \\
 {\bf v}_{i+1} & = & {\bf v}_i + ({\bf a}_i +
-{\bf a}_{i+1})dt / 2                                  \nonumber
+{\bf a}_{i+1})\Delta t / 2
 \end{eqnarray}</tex>
 
 This is still the same leapfrog scheme, although represented in a
 different way.  Notice that the increment in <tex>${\bf r}$</tex> is
 given by the time step multiplied by
-<tex>${\bf v}_{i} + {\bf a}_{i} dt / 2$</tex>, effectively
+<tex>${\bf v}_{i} + {\bf a}_{i} \Delta t / 2$</tex>, effectively
 equal to <tex>${\bf v}_{i+ 1/2}$</tex>.  Similarly, the increment in
 <tex>${\bf v}$</tex> is given by the time step multiplied by
 <tex>$({\bf a}_i + {\bf a}_{i+1}) / 2$</tex>, effectively equal to the
@@ -93,26 +94,27 @@ they'd better share this property.  Let us inspect.
 
 Starting with the first set of equations,
 even though it may be obvious, let us write out the time reversibility.
-We will take one step forward, taking a time step <tex>$+dt$</tex>,
+We will take one step forward, taking a time step <tex>$+\Delta t$</tex>,
 to evolve <tex>$\{{\bf r}_i, {\bf v}_{i-1/2}\}$</tex> to
 <tex>$\{{\bf r}_{i+1}, {\bf v}_{i+1/2}\}$</tex>, and then we
 will take one step backward, using the same scheme, taking a time
-step <tex>$-dt$</tex>.  Clearly, the time will return to the same value since
-<tex>$+dt-dt=0$</tex>, but we have to inspect where the final positions and
+step <tex>$-\Delta t$</tex>.  Clearly, the time will return to the
+same value since <tex>$+\Delta t-\Delta t=0$</tex>, but we have to
+inspect where the final positions and
 velocities <tex>$\{{\bf r}_f(t=i), {\bf v}_f(t=i-1/2)\}$</tex> are
 indeed equal to their initial values
 <tex>$\{{\bf r}_i, {\bf v}_{i-1/2}\}$</tex>.  Here is the
 calculation, resulting from applying the first set of equation twice:
 
 <tex>\begin{eqnarray}
-{\bf r}_f & = & {\bf r}_{i+1} - {\bf v}_{i+1/2} dt \nonumber \\
-      & = & \left[ {\bf r}_i + {\bf v}_{i+1/2} dt \right]
-            - {\bf v}_{i+1/2} dt \nonumber \\
+{\bf r}_f & = & {\bf r}_{i+1} - {\bf v}_{i+1/2} \Delta t \nonumber \\
+      & = & \left[ {\bf r}_i + {\bf v}_{i+1/2} \Delta t \right]
+            - {\bf v}_{i+1/2} \Delta t \nonumber \\
       & = & {\bf r}_i \nonumber \\
                   \nonumber \\
-{\bf v}_f & = & {\bf v}_{i+1/2} - {\bf a}_i dt \nonumber \\
-      & = & \left[ {\bf v}_{i-1/2} + {\bf a}_i dt \right]
-            - {\bf a}_i dt \nonumber \\
+{\bf v}_f & = & {\bf v}_{i+1/2} - {\bf a}_i \Delta t \nonumber \\
+      & = & \left[ {\bf v}_{i-1/2} + {\bf a}_i \Delta t \right]
+            - {\bf a}_i \Delta t \nonumber \\
       & = & {\bf v}_{i-1/2} \nonumber
 \end{eqnarray}</tex>
 
@@ -129,16 +131,18 @@ Now the real fun comes in, when we inspect the equal-time version, the
 second set of equations you presented:
 
 <tex>\begin{eqnarray}
-{\bf r}_f & = & {\bf r}_{i+1} - {\bf v}_{i+1} dt + 
-{\bf a}_{i+1} (dt)^2/2 \nonumber \\
-      & = & \left[ {\bf r}_i + {\bf v}_i dt + {\bf a}_i (dt)^2/2 \right]
-            - \left[ {\bf v}_i + ({\bf a}_i + {\bf a}_{i+1})dt / 2 \right] dt
-            + {\bf a}_{i+1} (dt)^2/2 \nonumber \\
+{\bf r}_f & = & {\bf r}_{i+1} - {\bf v}_{i+1} \Delta t + 
+{\bf a}_{i+1} (\Delta t)^2/2 \nonumber \\
+      & = & \left[ {\bf r}_i
+ + {\bf v}_i \Delta t + {\bf a}_i (\Delta t)^2/2 \right]
+ - \left[ {\bf v}_i + ({\bf a}_i + {\bf a}_{i+1})\Delta t / 2 \right] \Delta t
+            + {\bf a}_{i+1} (\Delta t)^2/2 \nonumber \\
       & = & {\bf r}_i \nonumber \\
                   \nonumber \\
-{\bf v}_f & = & {\bf v}_{i+1} - ({\bf a}_{i+1} + {\bf a}_i)dt / 2  \nonumber \\
-      & = & \left[ {\bf v}_i + ({\bf a}_i + {\bf a}_{i+1})dt / 2 \right]
-            - ({\bf a}_{i+1} + {\bf a}_i)dt / 2  \nonumber \\
+{\bf v}_f & = & {\bf v}_{i+1}
+- ({\bf a}_{i+1} + {\bf a}_i)\Delta t / 2  \nonumber \\
+      & = & \left[ {\bf v}_i + ({\bf a}_i + {\bf a}_{i+1})\Delta t / 2 \right]
+            - ({\bf a}_{i+1} + {\bf a}_i)\Delta t / 2  \nonumber \\
       & = & {\bf v}_i  \nonumber
 \end{eqnarray}</tex>
 

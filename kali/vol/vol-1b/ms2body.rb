@@ -111,16 +111,17 @@ class Body
     if @nsteps == 0
       @prev_acc = acc
       rk2(dt)
+      @old_acc = acc
     else
       old_pos = pos
-      old_acc = acc
-      jdt = old_acc - @prev_acc
-      @pos += vel*dt + old_acc*0.5*dt*dt + jdt*(1/6.0)*dt*dt*dt
+      jdt = @old_acc - @prev_acc
+      @pos += vel*dt + @old_acc*0.5*dt*dt
       new_acc = acc
-      jdt = (new_acc - @prev_acc)*0.5
-      @pos = old_pos + vel*dt + old_acc*0.5*dt*dt + jdt*(1/6.0)*dt*dt*dt
-      @vel += old_acc*dt + jdt*0.5*dt
-      @prev_acc = old_acc
+      jdt = new_acc - @old_acc
+      @pos = old_pos + vel*dt + @old_acc*0.5*dt*dt
+      @vel += @old_acc*dt + jdt*0.5*dt
+      @prev_acc = @old_acc
+      @old_acc = new_acc
     end
   end
 

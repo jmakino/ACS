@@ -74,6 +74,18 @@ and we can use the value for the jerk given in Eq. (ref(firstjerk)),
 without any need for half-steps, such as in the leapfrog or Runga-Kutta
 methods.
 
+A more direct, but less easily understandable way of writing these
+equations is to substitute Eq. (ref(firstjerk)) into Eq. (ref(ms2)),
+in order to get an equation written purely in terms of the accelerations
+at different times:
+
+:eqnarray:
+\br_1 &=& \br_0 + \bv_0 \Delta t + \hhalf \ba_0 (\Delta t)^2        \nonumber\\
+\bv_1 &=& \bv_0 + \hhalf\left(3\ba_0-\ba_1\right)\Delta t
+
+I have seen this expression before, but I did not realize then that it
+had such a simple explanation in terms of the jerk.
+
 == Implementation
 
 *Alice*: That is an interesting twist, and indeed a very different approach.
@@ -193,17 +205,16 @@ by another factor of ten?
 How does this relate to predictor-corrector methods?
 
 *Bob*: It is the predictor part of a predictor-corrector scheme.
-It is possible to squeeze a little extra accuracy out of a multi-step
+It is possible to squeeze some extra accuracy out of a multi-step
 scheme, by using the information that you get at the end of a step,
 to redo the last step a bit more accurately, `correcting' the step
 you have just `predicted.'
 
-I'm not very fond of such a procedure, since you have to calculate the
-acceleration one more time per time step, and you do _not_ increase
-the order of the integration scheme.  So you only decrease the
-coefficient of the error, not its dependence on time step length.  If
-you are willing to calculate accelerations more often, it seems better
-to go to a higher-order scheme.
+In this procedure, you do _not_ increase the order of the integration
+scheme.  So you only decrease the coefficient of the error, not its
+dependence on time step length.  Still, if the coefficient is
+sufficiently smaller, it may well be worthwhile to add a correction
+step, in order to get this extra accuracy.
 
 If you would like to know how these methods have been used historically,
 you can read Sverre Aarseth's 2003 book <i>Gravitational N-Body
@@ -214,84 +225,183 @@ with the invention of the Hermite scheme, by Jun makino, in the early
 nineties, that we an alternative was offered.
 
 *Alice*: I'd like to see a Hermite scheme implementation, too, in that
-case.  But for now, while we're on the subject, let me see whether I
-can implement a corrector extension to your predictor implementation,
-just to get some practice with these methods.
+case.  As for the older scheme, is there an intuitive reason that the
+corrector step would add more accuracy?
 
-*Bob*: Here is the key board, go right ahead!
+*Bob*: The key idea is that the predictor step involves an _extrapolation_,
+while the corrector step involves an _interpolation_.  For the predictor
+step, we are moving forwards, starting from the information at times
+<tex>$t=-\Delta t$</tex> and <tex>$t=0$</tex>, to estimate the situation
+at time <tex>$t=\Delta t$</tex>.  For the corrector step, effectively
+what we do is to go back in time, from <tex>$t=\Delta t$</tex> back to
+<tex>$t=0$</tex>.  Of course, we don't get precisely back to the same
+position and velocity that we had before, so the difference between
+the old and the new values is used to correct instead the position and
+velocity at time <tex>$t=\Delta t$</tex>.
 
-*Alice*: Give me some time to think.  Or better, how about getting me some
-cup of tea?  And don't do so in a hurry!  If you take your time, I may get
-a chance to implement something.
+*Alice*: I see.  So the main point is that extrapolation
+is inherently less accurate, for the same distance, as interpolation.
 
-Meanwhile, let me look at the predictor step again:
+*Bob*: Exactly.  
 
- :inccode: .ms2body.rb+ms2
+*Alice*: Let me see whether I really got the idea, by writing it out
+in equations.  The predicted position <tex>$\br_{p,1}$</tex> and
+velocity <tex>$\bv_{p,1}$</tex> are determined as follows:
 
-The start-up phase can stay the same, since there is nothing to correct
-yet for the Runge-Kutta step.  I will have to remember the old position,
-otherwise I cannot improve my step, beyond the predicted step, since
-my corrector step will need to start from the same place.  Then I have
-to calculate the new acceleration, based upon the new position.  And
-then finally I can take the corrector step.  Let's see.
+:eqnarray:
+\br_{p,1} &=& \br_0 + \bv_0 \Delta t + \hhalf \ba_0 (\Delta t)^2    \nonumber\\
+\bv_{p,1} &=& \bv_0 + \ba_0 \Delta t + \hhalf \bj_0 (\Delta t)^2
 
-== A Predictor-Corrector Scheme.
+This is the extrapolation part.  If we now go back one time step,
+we get the backward interpolation part, for which we compute our
+reconstructed values <tex>$\tilde\br_0$</tex> and <tex>$\tilde\bv_0$</tex>
+for the position and velocity at time <tex>$t=0$</tex> as:
 
-*Bob*: Hi Alice, here is your tea.  Any luck with correcting my predictor
-code?
+:eqnarray:
+\label{ms2back}
+\tilde\br_0 &=& \br_{p,1} + \bv_{p,1}(-\Delta t) +
+\hhalf \ba_{p,1}(-\Delta t)^2                                     \nonumber\\
+\tilde\bv_0 &=& \bv_{p,1} + \ba_{p,1}(-\Delta t)
++ \hhalf \bj_{p,1}(-\Delta t)^2
 
-*Alice*: Here is what I came up with:
+where <tex>$\ba_{p,1}=\ba(\br_{p,1})$</tex> and where <tex>$\bj_{p,1}$</tex>
+is the jerk obtained now from the last two values of the acceleration:
 
- :inccode: .ms2body.rb+ms2pc
+:equation:
+\label{jerkp}
+\bj_{p,1} \,=\, {1\over\Delta t}\, \left\{\ba_{p,1} - \ba_0\right\}
 
-*Bob*: That seems about right.  I see that you threw in a jerk contribution
-both in the predictor and in the corrector step.  You went all out, didn't
-you!
+which is the same procedure that we used to obtain
 
-*Alice*: Yes, and I even calculated the jerk right in the middle between
-the previous time and the new time, even though we have just argued that
-it was not necessary.  I did find it difficult to know where to stop.
+<tex>$$
+\bj_0 \,=\, {1\over\Delta t}\, \left\{\ba_0 - \ba_{-1}\right\}
+$$</tex>
 
-*Bob*: That is indeed a difficult question.  Once you start to `improve'
-an integration scheme without changing the order, there is no obvious
-halting criterion.  Well let's see how your method behaves:
+but just shifted by one unit in time.
 
- :commandoutput: ruby integrator_driver4apc.rb < euler.in
+If we now reinterpret Eq. (ref(ms2back)) as giving us _corrected_
+values for the position and velocity at time <tex>$t=\Delta t$</tex>,
+we have to shift <tex>$\tilde\br_0$</tex> and <tex>$\tilde\bv_0$</tex>
+to <tex>$\br_0$</tex> and <tex>$\bv_0$</tex>, and apply that same
+shift to the predicted quantities at time <tex>$t=\Delta t$</tex>.
 
-*Alice*: That's rather disappointing, for all that extra work!
-But first let's see whether it is still a second-order scheme.
+As always, this sounds more complicated than it reads.  Let me write
+it as equations.  First I express Eq. (ref(ms2back)) as an expression
+for the predicted values in terms of the tilde values:
 
- :commandoutput: ruby integrator_driver4bpc.rb < euler.in
+:eqnarray:
+\br_{p,1} &=& \tilde\br_0 + \bv_{p,1}\Delta t
+-\hhalf \ba_{p,1}(\Delta t)^2                                     \nonumber\\
+\bv_{p,1} &=& \tilde\bv_0 + \ba_{p,1}\Delta t
+- \hhalf \bj_{p,1}(\Delta t)^2
 
-Well, yes, it sure looks like a 2nd order scheme.  Let's throw in another
-factor of ten in shrinking the time step:
+Then I shift the tilde values back to the original values at time
+<tex>$t=0$</tex>, and in the process I should get the corrected
+values for the position
+<tex>$\br_{c,1}$</tex> and velocity <tex>$\bv_{c,1}$</tex> :
 
- :commandoutput: ruby integrator_driver4cpc.rb < euler.in
+:eqnarray:
+\label{ms2cwrong}
+\br_{c,1} &=& \br_0 + \bv_{p,1} \Delta t - \hhalf \ba_{p,1} (\Delta t)^2
+                                                                    \nonumber\\
+\bv_{c,1} &=& \bv_0 + \ba_{p,1} \Delta t - \hhalf \bj_{p,1} (\Delta t)^2
 
-*Bob*: Yes, second order alright, and ever so slightly more accurate
-now that the uncorrected scheme.
+In other words, starting with the corrected values for the differences
+in position and velocity in the last time step, I shift everything in
+such as way that we have:
 
-*Alice*: But nothing to write home about, I'm afraid.
+:eqnarray:
+\br_{c,1} - \br_{p,1} &=& \br_0 - \tilde\br_0    \nonumber\\
+\bv_{c,1} - \bv_{p,1} &=& \bv_0 - \tilde\bv_0    \nonumber
 
-*Bob*: I'm a bit disappointed too, even though I didn't have high hopes.
-I guess the actual profit of a corrector step depends on the application.
-There do seem to be situations where it is at least somewhat helpful.
+But wait a minute, something is not quite optimal in Eq. (ref(ms2cwrong)).
+The second line is expressed in terms of the best values we have for
+all the quantities that occur there, but in the first line we can do better.
+There is no reason to use the _predicted_ velocity at time <tex>$t=1$</tex>.
+If we simply reverse the order in which we calculate those two lines, we can
+instead use the _corrected_ version for the velocity at time <tex>$t=1$</tex>.
+I mean:
 
-*Alice*: I guess so, otherwise people wouldn't be talking about such an
-approach.  Perhaps it will work out better for a fourth-order scheme.
+:eqnarray:
+\label{ms2c}
+\bv_{c,1} &=& \bv_0 + \ba_{p,1} \Delta t - \hhalf \bj_{p,1} (\Delta t)^2
+                                                                    \nonumber\\
+\br_{c,1} &=& \br_0 + \bv_{c,1} \Delta t - \hhalf \ba_{p,1} (\Delta t)^2
 
-*Bob*: It would be interesting to extend our multi-step scheme to the
-fourth-order case.  Shall we try?
+*Bob*: Yes, this is exactly the procedure, with a clever twist at the end.
 
-*Alice*: Sure!  It would be nice to add that to our arsenal of integration
-methods.  But this time I suggest that we just stick with a predictor step.
-It is much simpler, and it already will have the right fourth-order
-scaling.  In any case, we haven't really tried to be optimally efficient,
-so far.  If we later pick a real work horse for serious N-body applications,
-we can always come back and implement a corrector step, if really needed.
+== An Old Friend
 
-*Bob*: Fair enough.  But before we can implement a fourth-order scheme,
-even just a predictor step, we'll have to do some serious combinatorics,
-in order to get all the coefficients correct.
+*Alice*: Well, shouldn't we implement this, too?
 
-*Alice*: Let's!
+*Bob*: We may as well.  It shouldn't be hard.
+
+*Alice*: So?  You look puzzled, still staring at the last set of equations.
+Something wrong?
+
+*Bob*: I'm bothered by something.  They just look too familiar.
+
+*Alice*: What do you mean?
+
+*Bob*: I've seen these before.  You know what?  I bet these are just
+one way to express the leapfrog algorithm!
+
+*Alice*: The leapfrog?  Do you think we have reinvented the leapfrog
+algorithm in such a circuitous way?
+
+*Bob*: I bet we just did.
+
+*Alice*: It's not that implausible, actually: there are only so many
+ways in which to write second-order algorithms.  As soon as you go
+to fourth order and higher, there are many more possibilities, but
+for second order you can expect some degeneracies to occur.
+
+*Bob*: But before philosophizing further, let me see whether my hunch
+is actually correct.  First I'll get rid of the predicted value for
+the jerk, using Eq. (ref(jerkp)) in order to turn Eq. (ref(msc) into
+expressions only in terms of the acceleration:
+
+:eqnarray:
+\label{almost}
+\bv_{c,1} &=& \bv_0 + \hhalf \left( \ba_0 + \ba_{p,1} \right) \Delta t
+                                                                    \nonumber\\
+\br_{c,1} &=& \br_0 + \bv_{c,1} \Delta t - \hhalf \ba_{p,1} (\Delta t)^2
+
+And hey, there we have our old friend the leapfrog already!
+
+*Alice*: I guess your friendship with the frog is stronger than mine.
+Can you show it to me more explicitly?
+
+*Bob*: So that you can kiss to frog?
+
+*Alice*: I'd rather not take my chances; I prefer to let it leap.
+
+*Bob*: If you plug the expression for <tex>$\bv_{c,1}$</tex> in the
+first line of Eq. (ref(almost)) back into the right-hand side of the
+second line, you get:
+
+:eqnarray:
+\bv_{c,1} &=& \bv_0 + \hhalf \left( \ba_0 + \ba_{p,1} \right) \Delta t
+                                                                    \nonumber\\
+\br_{c,1} &=& \br_0 + \bv_0 \Delta t + \hhalf \ba_0 (\Delta t)^2
+
+And this is _exactly_ how we started to implement the leapfrog, way
+back when, with Eq. (ref(oldfriend)), which we wrote as:
+
+:eqnarray:
+{\bf r}_{i+1} & = & {\bf r}_i + {\bf v}_{i} \Delta t + 
+{\bf a}_{i} (\Delta t)^2/2                                  \nonumber \\
+{\bf v}_{i+1} & = & {\bf v}_i + ({\bf a}_i +
+{\bf a}_{i+1})\Delta t / 2                                  \nonumber
+
+*Alice*: I see, yes, no arguing with that.  Good!  This will save
+us a bit of work, since now we don't have to implement a corrected
+version of your method <tt>ms2</tt>, given that we already have it
+in the code, in the form of the +leapfrog+ method.
+
+*Bob*: Yes, apart from one very small detail: if we were to write a
+corrected version of <tt>ms2</tt>, then the very first step would
+still have to be a Runge-Kutta step, using <tt>rk2</tt>.  From there
+on, we would _exactly_ follow the same scheme as the +leapfrog+ method.
+
+But I agree, no need to implement that.
