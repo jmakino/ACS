@@ -146,9 +146,9 @@ masses of the original particle.
 
  :inccode: euler1.rb
 
-*Bob*: We have to provide an input file, let's call it <tt>euler1.in</tt>:
+*Bob*: We have to provide an input file, let's call it <tt>euler.in</tt>:
 
- :inccode: euler1.in
+ :inccode: euler.in
 
 *Bob*: Here is a minimal version, let's call it <tt>euler2.rb</tt>
 
@@ -157,7 +157,7 @@ masses of the original particle.
 *Bob*: Let's test it:
 
  :command: cp -f euler1.rb test.rb
- :commandoutput: ruby test.rb < euler1.in
+ :commandoutput: ruby test.rb < euler.in
  :command: rm -f test.rb
 
 *Bob*: ten times smaller step size:
@@ -167,7 +167,7 @@ masses of the original particle.
 and run it:
 
  :command: cp -f euler3.rb test.rb
- :commandoutput: ruby test.rb < euler1.in
+ :commandoutput: ruby test.rb < euler.in
  :command: rm -f test.rb
 
 *Bob*: ten times smaller step size:
@@ -177,7 +177,7 @@ and run it:
 and run it:
 
  :command: cp -f euler4.rb test.rb
- :commandoutput: ruby test.rb < euler1.in
+ :commandoutput: ruby test.rb < euler.in
  :command: rm -f test.rb
 
 *Bob*: ten times smaller step size:
@@ -187,7 +187,7 @@ and run it:
 and run it:
 
  :command: cp -f euler5.rb test.rb
- :commandoutput: ruby test.rb < euler1.in
+ :commandoutput: ruby test.rb < euler.in
  :command: rm -f test.rb
 
 #*Bob*: ten times smaller step size:
@@ -197,7 +197,7 @@ and run it:
 #and run it:
 #
 # :command: cp -f euler6.rb test.rb
-# :commandoutput: ruby test.rb < euler1.in
+# :commandoutput: ruby test.rb < euler.in
 # :command: rm -f test.rb
 #
 #*Bob*: ten times smaller step size:
@@ -207,7 +207,7 @@ and run it:
 #and run it:
 #
 # :command: cp -f euler7.rb test.rb
-# :commandoutput: ruby test.rb < euler1.in
+# :commandoutput: ruby test.rb < euler.in
 # :command: rm -f test.rb
 
 *Alice*: Now let's look at a picture of the

@@ -15,10 +15,11 @@ include Math
 
 class Body
 
-  attr_accessor :mass, :pos, :vel
+  attr_accessor :mass, :pos, :vel, :ek, :ep, :e0
 
   def initialize(mass = 0, pos = [0,0,0], vel = [0,0,0])
     @mass, @pos, @vel = mass, pos, vel
+    @ek = @ep = @e0 = 0
   end
 
   def evolve_step(dt)
@@ -31,31 +32,42 @@ class Body
   end
 
   def ekin
-    ek = 0
-    vel.each {|v| ek += v*v}
-    ek *= 0.5
+    @ek = 0
+    vel.each {|v| @ek += v*v}
+    @ek *= 0.5
   end
 
   def epot
     r2 = 0
     pos.each {|p| r2 += p*p}
     r = sqrt(r2)
-    ep = -1/r
+    @ep = -1/r
   end
 
   def e_init
-    e0 = ekin() + epot()
+    @e0 = ekin() + epot()
   end
 
   def write_diagnostics(nsteps, time)
-    STDERR.print "after time t = ", time, " , after ", nsteps, " steps :\n"
+    STDERR.print "\nat time t = "
+    STDERR.printf("%g", time)
+    STDERR.print " , after ", nsteps, " steps :\n"
     etot = ekin() + epot()
-    STDERR.print "  E_kin = ", ekin(), " , E_pot = ", epot(),
-      " , E_tot = ", etot, "\n                ",
-      "absolute energy error: E_tot - E_init = ", etot-e0,
-      "\n                ",
-      "relative energy error: (E_tot - E_init) / E_init = ",
-               (etot - e0) / e0, "\n"
+    STDERR.print "  E_kin = "
+    STDERR.printf("%.3g", ekin())
+    STDERR.print " , E_pot = "
+    STDERR.printf("%.3g", epot())
+    STDERR.print " , E_tot = "
+    STDERR.printf("%.3g", etot)
+    STDERR.print "\n             ",
+#      "absolute energy error: E_tot - E_init = "
+      "E_tot - E_init = "
+    STDERR.printf("%.3g", etot-@e0)
+    STDERR.print "\n  ",
+#      "relative energy error: (E_tot - E_init) / E_init = "
+      "(E_tot - E_init) / E_init = "
+    STDERR.printf("%.3g", (etot - @e0) / @e0 )
+    STDERR.print "\n"
   end
 
   def to_s
@@ -104,7 +116,7 @@ def read_options(parser)
   dt = 0.01
   dt_dia = 1
   dt_out = 1
-  dt_tot = 10
+  dt_tot = 1
 
   loop do
     begin
@@ -137,17 +149,17 @@ end
 
 def evolve(b, dt, dt_dia, dt_out, dt_tot)
 
-  STDERR.print "Starting a forward Euler integration for a ",
-               "2-body system,\n",
-               " with time step dt = ", dt,
-               "  for a duration of ", dt_tot,
-               " ,\n  with diagnostics output interval dt_dia = ", dt_dia,
-               ",\n  and snapshot output interval dt_out = ", dt_out, ".\n"
+#  STDERR.print "Starting a forward Euler integration for a ",
+#               "2-body system,\n",
+#               "  for a duration of ", dt_tot,
+#               "  with time step dt = ", dt,
+#               " ,\n  with diagnostics output interval dt_dia = ", dt_dia,
+#               ",\n  and snapshot output interval dt_out = ", dt_out, ".\n"
 
   time = 0
   nsteps = 0
   b.e_init()
-  write_diagnostics(nsteps, time)
+  b.write_diagnostics(nsteps, time)
 
   t_dia = dt_dia
   t_out = dt_out
@@ -155,16 +167,16 @@ def evolve(b, dt, dt_dia, dt_out, dt_tot)
 
   loop do
     while time < t_dia and time < t_out and time < t_end
-	evolve_step(dt)
+	b.evolve_step(dt)
         time += dt
 	nsteps += 1
     end
     if time >= t_dia
-	write_diagnostics(nsteps, time)
+	b.write_diagnostics(nsteps, time)
 	t_dia += dt_dia
     end
     if time >= t_out
-	write
+	b.simple_print
 	t_out += dt_out
     end
     if time >= t_end
