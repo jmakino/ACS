@@ -95,16 +95,9 @@ module Acsmaildoc
     if updated == 1 then
       system("update-lab")
       system("cd #{$docroot} ; svn commit --message Mails-added")
-
+    end
   end
 end
 
 include Acsmaildoc
 acsmaildoc
-
-
-
-
-
-
-
