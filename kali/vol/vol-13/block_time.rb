@@ -2,7 +2,7 @@ class Block_time
 
   include Comparable
 
-  TIME_ARRAY_MAX_LENGTH = 45     # 2**-45 = 2.8e-14 , okay for double precision
+  TIME_ARRAY_MAX_LENGTH = 50     # 2**-50 = 9e-16 , okay for double precision
 
   attr_accessor :time_int, :time_array
 
