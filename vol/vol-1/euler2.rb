@@ -1,5 +1,4 @@
-require "body.rb"
-require "vector.rb"
+require "vbody.rb"
 
 include Math
 
@@ -10,12 +9,11 @@ b = Body.new
 b.simple_read
 
 ns.times do
-  r2 = 0
-  b.pos.each {|p| r2 += p*p}
+  r2 = b.pos * b.pos
   r3 = r2 * sqrt(r2)
-  acc = b.pos.map { |x| -b.mass * x/r3 }
-  b.pos.each_index { |k| b.pos[k] += b.vel[k] * dt }
-  b.vel.each_index { |k| b.vel[k] += acc[k] * dt }
+  acc = b.pos * (-b.mass / r3)
+  b.pos += b.vel * dt
+  b.vel += acc * dt
 end
 
 b.pp
