@@ -389,34 +389,38 @@ class World
       @initial_energy = @era.startup_and_report_energy(c.dt_param, dt_max)
     end
     time = @era.start_time
+    if c.world_input_flag
+      @t_end += c.dt_end
+    else
+      @t_out = time + c.dt_out
+      @t_dia = time + c.dt_dia
+      @t_end = time + c.dt_end
+    end
     @era.write_diagnostics(time, @nsteps, @initial_energy, c.x_flag, true)
-    t_dia = time + c.dt_dia
-    t_out = time + c.dt_out
-    t_end = time + c.dt_end
     if c.init_out
       if c.world_output_flag
         acs_write($stdout, false, c.precision, c.add_indent)
       else
-        @era.take_snapshot(t_out).acs_write($stdout, true,
+        @era.take_snapshot(@t_out).acs_write($stdout, true,
                                             c.precision, c.add_indent)
       end
     end
-    while @era.start_time < t_end
+    while @era.start_time < @t_end
       @new_era, dn = @era.evolve(c.dt_era, c.dt_param, dt_max,
                                  c.shared_flag)
       @nsteps += dn
-      while t_dia <= @era.end_time and t_dia <= t_end
-        @era.write_diagnostics(t_dia, @nsteps, @initial_energy, c.x_flag)
-        t_dia += c.dt_dia
+      while @t_dia <= @era.end_time and @t_dia <= @t_end
+        @era.write_diagnostics(@t_dia, @nsteps, @initial_energy, c.x_flag)
+        @t_dia += c.dt_dia
       end
-      while t_out <= @era.end_time and t_out <= t_end
+      while @t_out <= @era.end_time and @t_out <= @t_end
         if c.world_output_flag
           acs_write($stdout, false, c.precision, c.add_indent)
         else
-          @era.take_snapshot(t_out).acs_write($stdout, true,
-                                              c.precision, c.add_indent)
+          @era.take_snapshot(@t_out).acs_write($stdout, true,
+                                               c.precision, c.add_indent)
         end
-        t_out += c.dt_out
+        @t_out += c.dt_out
       end
       @old_era = @era
       @era = @new_era
