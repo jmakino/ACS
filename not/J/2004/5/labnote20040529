@@ -1,0 +1,53 @@
+== Integration of the old bool (Moving Stars Around)
+
+I created $ACSROOT/msa directory, where the first book (MSA) will be
+kept. It has two subdirectories, web and originals, the former has
+PDF, PS and HTML versions (not under svn) and the latter tex, C++ and
+other source files (under svn)
+
+To add all files which were under CVS to SVN, I wrote a simple scipt:
+
+cvs_list_files.rb:
+
+  def cvs_files(dirname)
+    p dirname
+    files=[]
+    entry = dirname + "/CVS/Entries"
+    unless File.exist?(entry) 
+      return []
+    end
+    s = open(entry,"r"){|f| f.gets("")}.split("\n")
+    s.each{|x|
+      a=x.split("/")
+      if a[0] =~ /^D$/ 
+        if a[1]
+  	print "descending to ", a[1], "\n"
+  	files.push(dirname+ "/"+a[1])
+  	files += cvs_files(dirname+"/"+a[1])
+        end
+      else
+        files.push(dirname+ "/"+a[1])
+  #      p dirname+ "/"+a[1]
+      end
+    }
+    files
+  end
+  
+  x= cvs_files(ARGV[0])
+  p "end of cvs_files"
+  x.each{|y| 
+    print "svn add -N "+y+"\n"
+    system("svn add -N "+y+"\n")
+  }
+
+I do not plan to use this many times, and therefore it is currntly not
+under svn (location in my local machine is $ACSROOT/src/utilities)
+
+The MSA book is at the directory msa/original/books/vol_1. The
+Makefile there looks okay, but I need to change Makefile.local so that
+the PDF files etc will appear at "web" directory when make install is
+tried.
+
+I also added Makefile to each of msa/ original/ books/ directories, so
+that I can just say make at msa to re-create the PDF files etc.
+

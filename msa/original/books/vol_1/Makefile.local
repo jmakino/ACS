@@ -1,4 +1,6 @@
 #Makefile.local
 #defines site-dependent stuff
-TARGETDIR = /usr2/makino/papers/artcompsci/vol_1
-INSTALLDIR = /usr2/makino/WWW/artcompsci/vol_1
+#TARGETDIR = /usr2/makino/papers/artcompsci/vol_1
+#INSTALLDIR = /usr2/makino/WWW/artcompsci/vol_1
+TARGETDIR = localweb
+INSTALLDIR = ../../../web/vol_1
