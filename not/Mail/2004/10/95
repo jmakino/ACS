@@ -1,0 +1,154 @@
+Date: Thu Oct 21 22:01:20 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Jun,
+
+ > > I think we should provide _three_ options, for each of these purposes:
+ > > 
+ > > i) a `dump' at time t1 provides fully accurate restart capability, by giving
+ > >    the latest worldpoint at each worldline with t(wp) < t1.
+ > > 
+ > > ii) an `extended snapshot' at time t1 provides fully accurate information
+ > >     about all quantities of interest at time t1, by giving for each
+ > >     worldline the two worldpoints around it: tb(wp) < t1 < te(wp).
+ > > 
+ > > iii) an `extended timeslice' between times t1 and t2 provides fully accurate
+ > >      information for any time t1 < t < t2; it effectively provides an
+ > >      extended snapshot for each of the times t in [t1, t2]
+ > > 
+ > > So there is a strict ordering: iii) contains ii) contains i.
+ > > Currently we use iii) for pruning and restart.
+ > > We should use i) for restart.
+ > > 
+ > > Now our snapshot falls in between i) and ii).  It is more than i), by
+ > > giving an interpolated view of time t1, like ii), not an extrapolated
+ > > one.  But it gives less than ii), since it does not provide earlier
+ > > and later info and time step size for each particle.  So the
+ > > information for a snapshot ss and i) to iii) is ordered like:
+ > > 
+ > >   i)  
+ > >        <  ii)  <   iii)
+ > >   ss
+ > > 
+ > > I mean here that iii) include ii) as a subset, and ii) includes  both
+ > > i) and ss as subsets, but it is not the case that i) < ss or ss < i).
+ > > We have a _partial_ordering_.   Ah, this makes it much clearer, I think,
+ > > what the relation is between our current choices of snapshot output and
+ > > era output.  We probably need four options for output:
+ > > 
+ > > i) a dump, or corrugated snapshot, or snapshot predictor, or pre-snapshot
+ > > ss) a snapshot
+ > > ii) an extended snapshot
+ > > iii) an extended snapslice, or snapshot-sandwiched history, or era
+ > 
+ > It is important to make these conceptual clarification. But whether or
+ > not we need all these options or not is another question. If (iii)
+ > includes (ii), (i) and snapshot, we could argue that (iii) should be
+ > fine for every need.
+
+The main question is size of data storage.  i) and ss use only one
+worldpoint per particle; ii) uses two wp per particle; while iii) can
+use arbitrarily many.  At least we should have the option to output
+ii) instead of iii), which can probably compress data by a factor of
+ten or more.  And I think also the ss option should be kept, as we have
+it now: for many analysis programs, that is the right format, and it
+would be nice to present the data in the right format, for example if
+you pipe them into another program.  So at least, I think, we need
+ss, ii), and iii).
+
+ > > 3) Snapshot
+ > > 
+ > > Next, in your email, you discuss the three ways that snapshots are used:
+ > > 
+ > > > a) calculate the force on a particle
+ > > > b) to make diagnostics
+ > > > c) to test for binaries..
+ > > > 
+ > > > For (a), it may be more natural to not to create a snapshot but let
+ > > > era (or world) calculates the force directly. For (b), snapshot is
+ > > > okay, but what we mean by snapshot for subclumps need to be clarified.
+ > > > For (c), I *think* we need something else...  
+ > > 
+ > > Perhaps we can extend the partial ordering I gave above by giving
+ > > snapshots several options, or arguments: they can range over all
+ > > worldlines, or only over a specific set (a clump, perhaps, or a clump
+ > > plus a perturbed neighbor region, if we want to implement that as a
+ > > prototyping exercise); also they can treat a clump through its c.o.m.
+ > > information, including multipoles, or they can provide all the information
+ > > within a clump.  So taking a snapshot could be expressed as:
+ > > 
+ > >   take_snapshot( worldbundle, level )
+ > > 
+ > > Here `worldbundle' is just a shorthand notation for a collection of
+ > > worldlines.  The default would be worldbundle = all worldlines.
+ > > It could also be all worldlines in a clump. or clump+neighbors.
+ > > And `level' means the number of levels to which you open a clump:
+ > > level 0 means you see only the c.o.m. (clump as a single but perhaps
+ > > rather complex worldline); at level 1 you see the worldlines in a
+ > > clump but not the inside of a clump within a clump; etc.
+ > 
+ > Sorry, for what purpose do we take snapshot? I'm not sure if we are in
+ > the right level... 
+
+We haven't decided yet, but there are various possibilities.
+Currently we use it for force calculations, and if we continue to do
+so, we probably want to be able to make both local and global snapshots.
+Also, if we want to make a movie of the dynamics of a clump of stars,
+it would be nice to be able to output closely spaced frames for the
+dynamics of a clump -- although you could argue that you could produce
+such a movie by a special program, from a long stream of closely spaced
+era outputs.  That would be cleaner, but a stream of global eras might
+require orders of magnitude more storage (and I/O time) than a stream
+of local snapshots, so it will be a question of what is most practical.
+
+ > > 4) Worldsegments
+ > > 
+ > > > > Before I go on, does this sound like a good meta-level language?
+ > > > 
+ > > > I suppose so. A very important advantage of this approach is that you
+ > > > can keep the segments which correspond to vanished stars (either
+ > > > physically through SNe or virtually by binary treatment or whatever)
+ > > > in the data structure (at least to the next era boundary). I think
+ > > > this will make bookkeeping much simpler, since all necessary
+ > > > management information is just there.
+ > > > 
+ > > > In other words, we can effectively see the whole world as a "static"
+ > > > structure, which doe not change in time (since the time is just one
+ > > > dimention to which the worldline extends), and the time integration is
+ > > > just to extend the not-yet-calculated worldlines.
+ > > 
+ > > Yes, definitely.  So the question is what to do with expired worldlines.
+ > > I'm not sure whether eras should take care of that.  It seems more the
+ > > job of World to keep track of the beginning and end of each worldsegment.
+ > 
+ > Well, if we use era as the intermediate data structure, I think it is
+ > quite natural that era takes care of the expired worldlines. If one
+ > worldline does not have any intersection with an era, it is strange to
+ > keep that worldline in that era.
+ > 
+ > > Perhaps a world calculation should always keep a record of the beginning
+ > > and end of each worldsegment, even if it discards the information: at a
+ > > minimum the times of begin and end and the identities of the particles
+ > > and nodes involved.
+ > 
+ > Well, clearly such information will always be in the output file, if
+ > you would make any output at all. So I'm not sure if it makes sence to
+ > keep them in memory.
+
+Perhaps I misunderstand what you wrote, but I do think you need to
+keep that information in memory, at least for a period >> era duration.
+If a worldsegment starts and stops within just one era, it will never
+be visible if you do not output all eras.  But in most cases that would
+be FAR too much output, for every run, even for a small-N system.  I do
+think that it would be nice to be able to keep track of the topology and
+structure of the 4-D tree, with all the switches that were made.  It
+seems overkill to store every era, only to make sure that an occasional
+vertex (tree switching) information of a few bytes (node 33 splits into
+particles 13 and 56) appears in the output.  Either that information
+should be output as soon as it happens, in just one diagnostics line,
+or it should be kept in memory, and listed at the time of the next
+diagnostics output.  Perhaps you meant the latter?
+
+Piet
+
