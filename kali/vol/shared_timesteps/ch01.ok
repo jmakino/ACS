@@ -45,48 +45,11 @@ Well, let's follow the advice:
 
  :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby nbody_cst1.rb -d 0.001 -t 1 > /dev/null
 
-== Brevity
-
 *Alice*: That all seems quite reasonable.
-
-*Bob*: Before we continue, let's make life a little easier still.  I've been
-getting tired of typing +ruby+ every single time we are running a script.
-In one of the Ruby books I looked it, I came across the suggestion to put
-the following line at the top of a ruby file:
-
-  #!/usr/local/bin/ruby -w
-
-If we add this to <tt>nbody_cst1.rb</tt> and then make the file executable,
-by typing
-
-  chmod a+x nbody_cst1.rb
-
-we can just type the file name, leaving out the +ruby+ command.
-
-*Alice*: I see: the file itself has become executable, and the shell in which
-we are executing the file is being told what to run, namely to run
-+ruby+, which is stored in <tt>/usr/local/bin/</tt>.  But what does the
-<tt>-w</tt> mean?
-
-*Bob*: It generates warnings.  It is equivalent to running a code with
-the command <tt>ruby -w</tt>.
-
-*Alice*: That doesn't sound like your cup of tea, to get extra warning
-messages.
-
-*Bob*: Indeed, I don't like getting too many warning messages, but in the
-case of running Ruby I've found it quite useful.  Unlike some programs
-I know, the Ruby interpreter doesn't overdo its warning job.
-
-*Alice*: Let's add your lines to the various ruby codes we have lying around
-here, and check whether it works.  And we may as well make sure we are still
-getting ACS formatted data out:
-
- :commandoutput: mkplummer.rb -n 5 -s 1 | nbody_cst1.rb -d 0.001 -t 1 | head -10
 
 == No Retrofitting
 
-*Bob*: As advertised!  Ready to move on.
+*Bob*: Ready to move on.
 Oh, by the way, I decided to make a slight change in notation.  So
 far, we have called our N-body class <tt>Nbody</tt>.  However, it
 seems that in the Ruby community people have developed a clear

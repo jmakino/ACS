@@ -1,7 +1,39 @@
 = The <tt>WorldEra</tt> Class
 
-== xxx
+== The Next Level Down
+
+*Bob*: So far we have seen only the outer wrapping level, in the +World+
+class, where IO was scheduled and the command was given to the +WorldEra+
+class to do a bunch of work.  The +World+ class really behaves like a top
+executive.
+
+*Alice*: Or like a secretary, letting people in and out.
+
+*Bob*: Or a concierge or doorman then.  We've got a rather socialistic
+code, if all these functions are combined in one!  Well, let's see what
+the +WorldEra+ class looks like.
 
  :inccode:.world1.rb-WorldEra
 
 == xxx
+
+*Alice*: Let's start with +evolve+.  As we've done before, it's often
+easier to start in the middle than at the beginning.
+
+*Bob*: In the generic case, <tt>shared_flag</tt> will be false.
+We have added the option <tt>-a</tt> to ask the code to run with
+shared time steps, to make it easier to compare the results with our
+previous code <tt>nbody_sh1.rb</tt>.  But the default value of this
+flag is +false+, in which case the +unless+ statement evaluates to
+being +true+.  The next line then tells the shortest extrapolated
+worldline to extend itself.  After that, we do bookkeeping, by adding
+one to the variable that counts the time steps.
+
+*Alice*: That line indeed reads like English.  Let's reconstruct the
+meaning.  
+
+
+
+There are three parameters, <tt>dt_max</tt>
+
+

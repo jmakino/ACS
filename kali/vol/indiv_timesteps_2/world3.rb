@@ -1027,9 +1027,9 @@ options_text= <<-END
   Long description:
     If this flag is set to true, each output will take the form of a
     full world dump, instead of a snapshot (the default).  Reading in
-    such an world again will allow an fully accurate restart of the
+    such an world again will allow a fully accurate restart of the
     integration,  since no information is lost in the process of writing
-    out and reading in in terms of world format.
+    out and reading in, in terms of world format.
 
 
   Short name:		-z

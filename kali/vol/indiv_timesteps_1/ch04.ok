@@ -147,20 +147,22 @@ that we get the same answers as before.  Let us apply our standard test
 again, using the by now familiar initial conditions for our 5-particle
 system:
 
- :commandoutput: mkplummer.rb -n 5 -s 1 | acsnumber.rb > test.in
+ :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby acsnumber.rb > test.in
 
 Here is our comparison run for the older code:
 
- :commandoutput: nbody_ind1.rb -t 1 -d 0.001 < test.in > tmpi.out
+ :commandoutput: ruby nbody_ind1.rb -t 1 -d 0.001 < test.in > tmpi.out
 
 And here is what our new code gives:
 
- :commandoutput: world1.rb -t 1 -c 0.001 < test.in > tmpw.out
+ :commandoutput: ruby world1.rb -t 1 -c 0.001 < test.in > tmpw.out
 
 Aha, at least the number of time steps is very similar, and so is the
 total energy error.  Here is the distance in phase space
 
- :commandoutput: cat tmpi.out tmpw.out | newacsdiff.rb
+ :commandoutput: cat tmpi.out tmpw.out | ruby newacsdiff.rb
+
+== Almost Perfect Scaling
 
 *Alice*: Almost too good to be true!  really close to round-off.
 You know, I'd feel more comfortable if we would redo the run with
@@ -169,19 +171,20 @@ distance will become larger.
 
 *Bob*: Why not.  When we take time steps that are ten times longer, we get:
 
- :commandoutput: nbody_ind1.rb -t 1 -d 0.01 < test.in > tmpi.out
+ :commandoutput: ruby nbody_ind1.rb -t 1 -d 0.01 < test.in > tmpi.out
 
 An increase in error of a factor 10,000, roughly; so we were just far
 enough away from the round-off barrier, and we still have a nicely
 fourth-order behavior for our Hermite scheme.  I bet the new code will
 show a similar error:
 
- :commandoutput: world1.rb -t 1 -c 0.01 < test.in > tmpw.out
+ :commandoutput: ruby world1.rb -t 1 -c 0.01 < test.in > tmpw.out
 
 *Alice*: And so it does.  So this suggests that the phase space difference
 should also be about 10,000 times larger.
 
- :commandoutput: cat tmpi.out tmpw.out | newacsdiff.rb
+ :commandoutput: cat tmpi.out tmpw.out | ruby newacsdiff.rb
 
-*Bob*: Which is indeed the case.  Okay, we seem to have done something right.
+*Bob*: Which is indeed the case.  Almost Perfect Scaling!
+Okay, we seem to have done something right.
 

@@ -91,7 +91,46 @@ in the middle of <tt>setup_from_snapshot</tt>.  In contrast, if we start
 from a +World+ object, we can safely assume that the initial energy value
 has already been stored there.
 
-== xxx
+== Output Choice
 
-*Alice*: I get the picture now.  
+*Alice*: I get the picture now; it all comes back.  And corresponding to
+the two ways of reading input, there are also two ways of writing output.
+In the case of input, we did not need any command line option, since
+we would recognize from the input offered what type of file we were
+dealing with.  But for doing output, a decision has to be made.  This
+we do with the option, well, . . . I've forgotten which option.  Let's
+ask Ruby to list, first, all the options, and then to explain what the
+output switch really does:
 
+ :commandoutput: ruby world1.rb -h
+ :commandoutput: ruby world1.rb --help -r
+
+Ah, yes, the <tt>-r</tt> option, or more descriptively, the
+<tt>--world_output</tt>.
+
+*Bob*: The longer option is easier to recognize, while the shorter option
+is easier to remember to write.
+
+*Alice*: I'm not sure about that last part.  Anyway, we can use either one,
+and the help facility can always remind us of both.  And in the code,
+the <tt>world_output_flag</tt> determines the behavior of the methods
+<tt>output</tt> and <tt>init_output</tt> in the +World+ class.
+
+*Bob*: With the <tt>-r</tt> flag switched on, the output is really simple:
+<tt>output</tt> does nothing else but invoke our standard output method
+<tt>acs_write</tt>, writing out +self+, the current state of the
++World+ object itself.
+
+Without that flag, that is, in the default case, we first have to take
+a snapshot, using <tt>@era.take_snapshot</tt>, and then we can write out
+that snapshot in a similar way, with a call to <tt>acs_write</tt>.
+
+It's time that we have a look at +WorldEra+, to see all that happens
+there, behind the scenes.  The only part that we can see here is we
+create a new era in the first line of <tt>setup_from_snapshot</tt>,
+and then ask <tt>World#evolve</tt> to invoke <tt>WorldEra#evolve</tt>,
+through the call to <tt>@era.evolve</tt> in the second line of the
++evolve+ method here.
+
+*Alice*: Perhaps we should first look at +WorldSnapshot+, before we descend
+through the lineage of +WorldEra+, +WorldLine+, and +WorldPoint+.

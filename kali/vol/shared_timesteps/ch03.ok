@@ -16,24 +16,24 @@ scheme?
 is still sixth order, in constant as well as shared time step form.  First
 I'll prepare initial conditions with the particles all properly numbered:
 
- :commandoutput: mkplummer.rb -n 5 -s 1 | acsnumber.rb > test.in
+ :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby acsnumber.rb > test.in
 
 Starting with the constant time step version, let's choose the
 <tt>yo6</tt> integrator, but what options did we use for algorithm
 choice?  I always forget what names we gave our options.  Let's ask
 our clop function to provide them:
 
- :commandoutput: nbody_cst1.rb -h
+ :commandoutput: ruby nbody_cst1.rb -h
 
 == Energy Scaling
 
 Aha, now I remember.  Okay, how about this?
 
- :commandoutput: nbody_cst1.rb -m yo6 -t 1 < test.in > yo6cst.out
+ :commandoutput: ruby nbody_cst1.rb -m yo6 -t 1 < test.in > yo6cst.out
 
 Now let's make the time step twice as small:
 
- :commandoutput: nbody_cst1.rb -m yo6 -t 1 -d 0.005 < test.in > yo6cst_half.out
+ :commandoutput: ruby nbody_cst1.rb -m yo6 -t 1 -d 0.005 < test.in > yo6cst_half.out
 
 == Phase Space Distance Scaling
 
@@ -49,15 +49,15 @@ we compare the two outputs we just got, we need to compare them to an even
 more accurate soluation.  Well, we can run our code with a much smaller
 time step, and declare that the result should be close to `true':
 
- :commandoutput: nbody_cst1.rb -m yo6 -t 1 -d 0.001 < test.in > yo6cst_tenth.out
+ :commandoutput: ruby nbody_cst1.rb -m yo6 -t 1 -d 0.001 < test.in > yo6cst_tenth.out
 
 First we'll compare the first run with the `true' run:
 
- :commandoutput: cat yo6cst.out yo6cst_tenth.out | acsdiff.rb
+ :commandoutput: cat yo6cst.out yo6cst_tenth.out | ruby acsdiff.rb
 
 And second we'll take the second run, to compare it with the `true' one:
 
- :commandoutput: cat yo6cst_half.out yo6cst_tenth.out | acsdiff.rb
+ :commandoutput: cat yo6cst_half.out yo6cst_tenth.out | ruby acsdiff.rb
 
 *Alice*: Wow, very nice indeed!  Almost exactly a factor 64 smaller.
 
@@ -66,14 +66,14 @@ And second we'll take the second run, to compare it with the `true' one:
 *Bob*: After all these preliminaries, we can finally test our shared time
 step code:
 
- :commandoutput: nbody_sh1.rb -m yo6 -t 1 < test.in > yo6sh.out
+ :commandoutput: ruby nbody_sh1.rb -m yo6 -t 1 < test.in > yo6sh.out
 
 That's quite accurate!  This means that, if all is well, the distance between
 this output and that of the previous `true' output should be a lot smaller
 than the distance between the more accurate run with constant time
 steps and the `true' output.  Let's check:
 
- :commandoutput: cat yo6sh.out yo6cst_tenth.out | acsdiff.rb
+ :commandoutput: cat yo6sh.out yo6cst_tenth.out | ruby acsdiff.rb
 
 *Alice*: What is that?!?
 
@@ -86,8 +86,8 @@ purpose?  Perhaps that was not such a good choice to start our testing
 with.  Let's go back to basics, and do the same thing with the leapfrog
 integrator instead:
 
- :commandoutput: nbody_sh1.rb -m leapfrog -t 1 < test.in > leap_sh.out
- :commandoutput: nbody_sh1.rb -m leapfrog -t 1 -d 0.001 < test.in > leap_sh_tenth.out
+ :commandoutput: ruby nbody_sh1.rb -m leapfrog -t 1 < test.in > leap_sh.out
+ :commandoutput: ruby nbody_sh1.rb -m leapfrog -t 1 -d 0.001 < test.in > leap_sh_tenth.out
 
 *Bob*: The energy scales like it should for a second-order integrator:
 a hundred times better accuracy for a ten times smaller time step.
@@ -95,8 +95,8 @@ a hundred times better accuracy for a ten times smaller time step.
 *Alice*: And, really, the phase space distance should also become a
 hundred times better.  I hope it does:
 
- :commandoutput: cat leap_sh.out yo6cst_tenth.out | acsdiff.rb
- :commandoutput: cat leap_sh_tenth.out yo6cst_tenth.out | acsdiff.rb
+ :commandoutput: cat leap_sh.out yo6cst_tenth.out | ruby acsdiff.rb
+ :commandoutput: cat leap_sh_tenth.out yo6cst_tenth.out | ruby acsdiff.rb
 
 == Even more Basic
 
@@ -106,9 +106,9 @@ hundred times better.  I hope it does:
 stick to the basics completely.  If we do a third leapfrog integration,
 we can use the result of that run as our yard stick:
 
- :commandoutput: nbody_sh1.rb -m leapfrog -t 1 -d 0.0001 < test.in > leap_sh_hundredth.out
- :commandoutput: cat leap_sh.out leap_sh_hundredth.out | acsdiff.rb
- :commandoutput: cat leap_sh_tenth.out leap_sh_hundredth.out | acsdiff.rb
+ :commandoutput: ruby nbody_sh1.rb -m leapfrog -t 1 -d 0.0001 < test.in > leap_sh_hundredth.out
+ :commandoutput: cat leap_sh.out leap_sh_hundredth.out | ruby acsdiff.rb
+ :commandoutput: cat leap_sh_tenth.out leap_sh_hundredth.out | ruby acsdiff.rb
 
 *Bob*: That doesn't make much difference.  Still no quadratic behavior.
 
