@@ -1,8 +1,327 @@
-= Leapfrog and Runge-Kutta
+= Analytical Checks
 
-== Something
+== Celestical Mechanics
 
-M. Abramowitz and I. A. Stegun, eds.: Handbook of Mathematical Functions,
-[Dover, 1965]
+*Alice*: You know, we really should be able to derive the orbital period
+analytically.  Let me try to remember my celestial mechanics.  I remember
+that there was one equation that had no factors of <tex>$\pi$</tex> or
+whatever in it.  Ah yes,
 
-link:rk4.gif
+<tex>$$G(M_1+M_2)=a^2\omega^3$$</tex>.
+
+Here <tex>$a$</tex> is the semi-major axis, <tex>$\omega$</tex> is the
+angular frequency of the motion, in other words the period of the
+orbit is given in terms of <tex>$\omega$</tex> as <tex>$T = 2\pi /
+\omega$</tex>.
+
+*Bob*: That's a handy formula to remember.  What does that give in our
+case? We started with <tex>$G = 1$</tex> and took <tex>$M_1+M_2 = 1$</tex>
+but what was our initial value for <tex>$a$</tex> ?
+
+*Alice*: We'll have to reconstruct that.  It must be larger than 0.5, but
+not much larger.  At the time of pericenter the particles were much closer
+than at apocenter, which means that the eccentricity was fairly large,
+and the apocenter distance not much smaller than <tex>$2a$</tex>.
+
+I remember another handy formula: the total energy is a two-body system
+is equal to
+
+<tex>$$E = -G \frac{M_1M_2}{2a}$$</tex>.
+
+That is easy to
+remember, since the virial theorem tells you that the potential energy
+is twice as large as the kinetic energy, on average, and therefore the
+total energy is half the potential energy, also on average.  Now in a
+Kepler orbit, it turns out that the average of <tex>$1/r$</tex>
+happens to be <tex>$1/a$</tex>.
+
+*Bob*: I can see that it is useful to remember those qualitative facts.
+That is easier than trying to remember factors of 3 or 4 in formulas that
+you learn by heart and than later half forget.
+
+*Alice*: Yes, the only numbers I like are 1 and 0 and infinity.  So let
+us determine the total energy, and then we now our semi-major axis
+<tex>$a$</tex>.
+
+*Bob*: But we have that already: according to the output of my program
+it is <tt>E_tot = -0.875</tt>, initially.  In other words,
+<tex>$E = 7/8$</tex>.
+
+*Alice*: Inverting my previous equation, we get
+
+<tex>$$a = -G \frac{M_1M_2}{2E}$$</tex>.
+
+With <tex>$G = M_1+M_2 = 1$</tex>, we get
+
+<tex>$$a = - \frac{1}{8E}$$</tex>.
+
+So with your value <tex>$E = 7/8$</tex>,
+that gives us <tex>$a = 1/7$</tex>.  But hey, that can't be right.  It
+should be larger than 0.5, since the maximum distance between two particles
+in _any_ Kepler orbit is <tex>$2a$</tex>, and we started at a distance of
+unity!
+
+*Bob*: That is puzzling.  But you just stepped through my code.  You
+were so happy with the clarity of the statements like
+<tt>etot = ekin + epot</tt>.
+
+*Alice*: Let's do an independent check.  This is like debugging, but
+now on the level of the physics, rather than the numerics.  Let me just
+pen and paper to determine the initial total energy.  Here are the
+equations:
+
+<tex>$$
+E = E_{kin} + E_{pot} = {\textstyle\frac{1}{2}} M_1v_1^2 +
+{\textstyle\frac{1}{2}} M_1v_1^2 - G\frac{M_1M_2}{r}
+$$</tex>
+
+with <tex>$G = 1$</tex> and <tex>$M_1 = M_2 = 0.5$</tex>, right?
+
+*Bob*: Right.  And these are velocities in the center of mass frame
+of the two particles.  These are equal in magnitude but opposite in
+direction, so each one is one half of the relative velocity.  The
+original relative velocity was 1/2, so each of the two is 1/4, and
+<tex>$v_1^2 = v_1^2 = 1/16$</tex>.  Let's do it very carefully, to
+make sure we don't drop some factor somewhere.  We have now for the
+initial total energy:
+
+<tex>$$
+E = {\textstyle\frac{1}{2}}{\textstyle\frac{1}{2}}{\textstyle\frac{1}{16}}
++ {\textstyle\frac{1}{2}}{\textstyle\frac{1}{2}}{\textstyle\frac{1}{16}}
+- \frac{{\textstyle\frac{1}{2}}{\textstyle\frac{1}{2}}}{1} =
+{\textstyle\frac{7}{32}}
+$$</tex>
+
+*Alice*: That is exactly four times smaller than the value that your
+program gave us.  And it would imply a semi-major axis of
+
+<tex>$$
+a = - \frac{1}{8E} = \frac{4}{7}
+$$</tex>
+
+Now that is a much more reasonable number!  Just as I had predicted:
+larger than 0.5, but not much larger.  Look:
+
+    |gravity> bc -lq
+    4/7
+    .57142857142857142857
+
+This has to be correct.  We did it from first principles, little step
+for little step, and the result is just what was expected.
+
+== The Role of the Masses
+
+*Bob*: If this is right, then the question is what went wrong with my
+program?  I agree that a value of <tex>$a = 1/7$</tex> is unphysical.
+But like I said, you just checked with me every statement in the code!
+
+*Alice*: Well, your calculation can't be all wrong.  You had the factor
+7 in the denominator, that's unlikely to come out correctly by chance.
+You were off by a factor 4.  I think there must be something wrong with
+your units.
+
+*Bob*: My units???  You saw as well as I did that I used <tex>$G = 1$</tex>,
+and there were no other scaling units involved.  We gave each particle
+a mass of 0.5, with a total mass of 1.0, which went into the +Body+
+description for the relative motion of the two particles.
+
+Hey, wait a minute.  We use a mass of 1 for our _relative_ particle
+and a mass of 0.5 for each _individual_ particle.  There is a factor
+two between them, and two times two makes four.
+
+*Alice*: Indeed, the factor four that your program was off with.
+And I think you found the solution, or at least the direction of the
+solution.  Look, in your code you use the correct scaling for kinetic
+and potential energy, but you don't have any mass factors in there.
+
+*Bob*: Perhaps I was thinking about the fact that we started with a
+total mass of one, or perhaps I just forgot.  Can we correct that?
+The potential energy is
+
+<tex>$$
+E_{pot} = - G\frac{M_1M_2}{r}
+$$</tex>
+
+For our case, <tex>$M_1 = M_2 = 1/2$</tex>, so neglecting the mass
+factors, I have overestimated the potential energy by a factor of four.
+The kinetic energy is
+
+<tex>$$
+E_{kin} = {\textstyle\frac{1}{2}} M_1v_1^2 +
+{\textstyle\frac{1}{2}} M_1v_1^2
+$$</tex>
+
+In our equal mass case, the two velocities in the center of mass are each
+exactly half of the relative velocity, so their squares are four times
+smaller.  The masses sum up to unity, so yes, I have overestimated
+the kinetic energy by the exact same value of four.
+
+*Alice*: Problem solved.
+
+*Bob*: Still, I wonder, I thought I had done something similar in another
+code, quite a while ago, and I think I did give that one considerable
+thought.  The question is, should I do my energy diagnostics in the
+center of mass frame, or is there a way to save my current code?
+
+What I mean is that the whole two-body problem is specified in terms
+of relative positions and relative velocities and the sum of the masses.
+In the equations of motions, nowhere do the individual velocities in
+the center of mass frame come in, nor do the individual masses appear.
+That makes me think that my mistake might not have been that bad after
+all.  Could it be that I am _always_ off by a constant factor, or at
+least by the same factor in potential and kinetic energy, so that it
+still makes sense to add the two and thus check for energy conservation?
+
+*Alice*: What we have to do is to check how the reduced mass comes in.
+
+*Bob*: Ah yes, that rings a bell, from my celestial mechanics class.
+The relative motion of two bodies under the influence of gravity, or
+of electrostic forces for that matter, can be described by the
+equivalent motion of a pseudo-particle with a different mass, the
+reduced mass.  But how did that go?  We can look in any old celestical
+mechanics book, but it would be more fun to try to reconstruct it
+ourselves.
+
+== Reduced Mass
+
+*Alice*: It can't be that hard.  The potential energy is already given
+in terms of relative coordinates, also in the center-of-mass frame.
+It is
+
+<tex>$$
+E_{pot} = - G\frac{M_1M_2}{r}
+$$</tex>
+
+What we have to do now is to rewrite the kinetic energy in relative
+coordinates.
+We know that in the center-of-mass frame the following lever-like relations
+hold:
+
+<tex>$$
+v_1 = \frac{M_2}{M_1+M_2}v  \qquad {\rm and} \qquad v_2 = \frac{M_1}{M_1+M_2}v
+$$</tex>
+
+where <tex>$v$</tex> is still the relative velocity between the two particles.
+
+This gives us for the total kinetic energy, in the center of mass frame:
+
+<tex>
+\begin{eqnarray}
+E_{kin} & = & {\textstyle\frac{1}{2}} M_1v_1^2
+ + {\textstyle\frac{1}{2}} M_2v_2^2              \nonumber \\
+ & = & {\textstyle\frac{1}{2}}
+\left[\frac{M_1M_2^2}{(M_1+M_2)^2}+\frac{M_2M_1^2}{(M_1+M_2)^2}
+\right]v^2                                                 \nonumber \\
+ & = & {\textstyle\frac{1}{2}} \frac{M_1M_2}{M_1+M_2}v^2   \nonumber
+\end{eqnarray}
+</tex>
+
+The total energy can thus be written as
+
+<tex>$$
+E = E_{kin} + E_{pot} = \frac{M_1M_2}{M_1+M_2}\left[
+{\textstyle\frac{1}{2}} v^2 - \frac{M_1+M_2}{r}\right]
+$$</tex>
+
+You were right about the reduced mass: this is defined for two
+particles as:
+
+<tex>$$
+\mu = \frac{M_1M_2}{M_1+M_2}
+$$</tex>
+
+It has the physical dimensions of mass, and for a light particle in
+orbit around a heavy particle, it reduces to the mass of the light
+particle.  If <tex>$M_2 = 0.1M_1$</tex>, for example, <tex>$\mu = 0.09$</tex>,
+to within about ten percent the same as the mass of the light particle.
+Most of the relative motion also occurs in the motion of the light particle,
+so in the limit that the mass ratio grows even much larger, the relative
+motion becomes effectively that of the light particle around a fixed center
+of attraction.
+
+*Bob*: And I can see now what I have done in my code: I have given the
+kinetic and potential energy per unit reduced mass.  And I remember now
+why I have done that before, several years ago: there had chosen units
+in which the total mass of the two-body system was unity.  In that case
+it would have been correct what I did.  But now I should go back and
+include the <tex>${M_1+M_2}$</tex> factor to my potential energy.
+If in the future we or someone else will use our code for a case where
+the sum of the masses is not unity, the code as it is will give a wrong
+answer.
+
+I will rewrite the relevant code right away as follows:
+
+  def ekin                        # kinetic energy
+    @ek = 0.5*(@vel*@vel)         # per unit of reduced mass
+  end
+
+  def epot                        # potential energy
+    @ep = -@mass/sqrt(@pos*@pos)  # per unit of reduced mass
+  end
+
+  def e_init                      # initial total energy
+    @e0 = ekin + epot             # per unit of reduced mass
+  end
+
+*Alice*: I'm glad we checked not only that the code ran correctly, but
+that we had the right conversions between physical formula and expressions
+in the code.
+
+*Bob*: Yes, this is something students always get entangled with when they
+start coding something themselves, and I can't really blame them,
+since I'm still making similar mistakes myself.
+
+*Alice*: The nice thing about getting more experience is not so much that
+you stop making errors, it is more that you get better at spotting them,
+and then figuring out where they come from, what the wrong assumptions
+were that led you to the error in the first place.  Once you are that far,
+correcting the error is generally quite simple.
+
+== Wrapping It Up
+
+*Bob*: I think we have now collected enough material to get my students
+going for quite a while.
+
+*Alice*: Shall we wrap it up, and write up what we have learned?
+
+*Bob*: Yes, we can do that, but I have one worry.  We are both quite
+happy with what we have learned now about Ruby, but there remains the
+fact that we cannot yet complete a simple Kepler orbit at reasonable
+precision without sitting here in front of our terminals, twiddling
+our thumbs waiting for the computer to return an answer.  This will
+give people a bad impression about Ruby as being too slow for numerical
+applications.
+
+*Alice*: You said that you can probably speed up the Ruby programs by two
+orders of magnitude.
+
+*Bob*: I will try to do that soon, but I think I have a better idea.
+Our last program has become so structured now, that I think it will be
+easy to generalize it to higher order integrators, such as the
+second-order leapfrog, or even fourth order integrators.  That should
+speed up our Kepler orbits quite a bit, and also help us to get beyond
+the single-precision level we are currently stuck with.
+
+*Alice*: If you think you can do that with only minor modifications,
+that would be great, but I don't think you should start a whole new
+project.  We should round off our current part, and present that to
+the students.  We can learn from their reactions what is and is not
+clear, and then we can see better what to do next.
+
+*Bob*: Yeah, I know, I have a tendency to just keep going on and on
+when I have fun tinkering with things.  Okay, I promise you: I'll try
+to see whether I can splice a higher order integrator into our current
+code without changing more than a few dozen lines.
+
+*Alice*: A few dozen?  That still sounds like a lot, depending how large
+"a few" is in your dictionary.  You're so good at compressing things
+into a few lines.  What if I challenge you: can you introduce a
+second-order integrator, while adding or chaning no more than only a
+dozen lines?
+
+*Bob*: You are either joking or you have an unreasonably high opinion
+of my programming skills.  I don't want to promise anything, since I
+think one dozen lines is plainly unrealistic.  But perhaps I can stay
+under two dozen.
+
+*Alice*: We'll see tomorrow!
