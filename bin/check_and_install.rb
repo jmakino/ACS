@@ -9,6 +9,28 @@
 #
 # Example: check_and_install.rb ACSSCRIPTS check_and_install.rb
 
+def addzeros(n,s="")
+  ("0" * (n - s.length))+s
+end
+
+
+
+
+def name_with_date(name)
+
+  addzeros(4,Time.now.year.to_s)+ addzeros(2,Time.now.month.to_s)+
+    addzeros(2,Time.now.day.to_s)+"_"+name
+end
+def store_file_with_date(sourcename, dirname)
+  subdirname = (sourcename.gsub(/\./,"_"))
+  subdirpath = dirname+"/"+subdirname
+  Dir.mkdir(subdirpath) unless File.exist?(subdirpath)
+  targetname=name_with_date(sourcename)
+  system "/bin/cp -p #{sourcename} #{subdirpath}/#{targetname}"
+  system "svn add -N #{subdirpath}"
+  system "svn add -N #{subdirpath}/#{targetname}"
+end  
+
 def check_and_install(sourcename, dirname)
   checkdirname= dirname+"/./.sourcenames"
   checkfilename= checkdirname+"/"+sourcename
@@ -23,6 +45,7 @@ def check_and_install(sourcename, dirname)
   if $? != 0
     STDERR.print "Installing file #{sourcename} to  #{dirname}" 
     system "/bin/cp -p #{sourcename} #{dirname}" 
+    store_file_with_date(sourcename,dirname)
     STDERR.print " ... finished\n" 
   end
   Dir.mkdir(checkdirname) unless File.exist?(checkdirname)

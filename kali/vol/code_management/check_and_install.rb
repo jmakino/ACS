@@ -10,8 +10,7 @@
 # Example: check_and_install.rb ACSSCRIPTS check_and_install.rb
 
 def addzeros(n,s="")
-zeros="0" * (n - s.length);
-zeros  + s;
+  ("0" * (n - s.length))+s
 end
 
 

@@ -10,6 +10,6 @@ if ( $?ACSROOT) then
    endif
    setenv ACSDOCOPTIONS --reuseoutput
    setenv ACSLIBS $ACSROOT/lib
-   setenv RUBYPATH $ACSSCRIPTS
-   setenv RUBYLIB $ACSLIBS
+   setenv RUBYPATH .:$ACSSCRIPTS
+   setenv RUBYLIB .:$ACSLIBS
 endif
