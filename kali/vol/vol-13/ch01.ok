@@ -1,3 +1,20 @@
 = Orbit Extrapolation
 
 == xxx
+
+A few notes about what Murat and Michele and Piet did, during the few days
+on and before September 16 (see also murat4.summary):
+
+ Start with the old rknbody8.rb code, for fixed time steps
+
+ discuss how to extend it to variable time steps, then implement
+
+ clean-up: introduce the notion of a collision time scale
+
+ discuss how to extend to individual time steps, then implement
+
+ clean-up:
+   rename the body instance variable names
+   introduce on N-body level two methods: autonomous vs. forced steps
+   try to split evaluate, then decide it is better not to (see murat4a.rb)
+
