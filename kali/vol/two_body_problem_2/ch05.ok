@@ -1,133 +1,46 @@
-= Orbit vs. Interaction
-
-== Space and Time Dependent Interactions
-
-*Bob*: So you claim that our somewhat tedious proof isn't ironclad yet?
-You said something about having checked time variations but not space
-variations.  Could you explain that in a bit more detail?  I'm afraid
-I didn't quite get it.
-
-*Alice*: I'm still grappling with it myself.  This stuff is not easy.
-No wonder people can spend a life time on designing numerical methods.
-Linear and quadratic methods are not too hard, since you can still
-sketch on a piece of paper what is going on.  But by the time you're
-dealing with a fourth-order or higher method, you can no longer use
-your intuition.  And when you switch to formal proofs, it is easy to
-overlook things.  I'm sure we've done just that, but let me see whether
-I can really put my finger on it.
-
-What I meant was that any differential equation in a dynamical system
-has a left-hand side that tells us how the orbit of a particle changes
-in time as a result of interactions with the rest of the world.  The
-dynamics is specified on the right-hand side, while the left-hand side
-shows only the kinematics.  In other words, the physical forces can be
-found on the right-hand side, while the mathematical description of the
-deflection of the orbit, as a result of those forces, is given on the
-left-hand side.
-
-*Bob*: I find it always easier to look at a specific example.  Here
-we have our Newtonian equations of motion, for the gravitational two-body
-problem.
-
- :equation:
-\frac{d^2}{dt^2}{\bf r} \, = \,
- - \,G\, \frac{M_1 + M_2}{r^3}{\bf r}
-
-Indeed, the physical coupling constant _G_ appears only on the right-hand
-side, where the gravitational interaction is specified, while the
-left-hand side tells us how the orbit is bent: non-zero acceleration
-describes the deviation of uniform rectilinear motion.  Okay, I'm
-still with you.
-
-*Alice*: Now the trick is to make explicit what we normal vaguely understand,
-but rarely write down precisely, namely the space and time dependence of
-the interaction.  In any N-body system, whether we have two particles
-or a million, each particle feels a time-varying force field.
-
-*Bob*: And that is what makes it non-trivial to do an N-body simulation.
-If we only had to integrate the orbit of a particle rolling through a
-fixed potential landscape, life would be a lot easier.  The problem is
-that everything changes all the time: one moment a particle is coasting
-along happily, and before you know it, suddenly it crosses the orbit
-of another particle, resulting is a sharp deflection.
-
-*Alice*: So let's write that down in a general way, not worrying about any
-details of the actual interaction, but just making clear that the
-interaction is both space and time dependent:
-
-<tex>$$
-\frac{d^2}{dt^2}{\bf r} \, = \, {\bf f}(\br, t)
-$$</tex>
-
-*Bob*: Meaning that on the left you have the acceleration and on the right
-you have the force.
-
-*Alice*: Not quite: if we denote the actual force by <tex>${\bf F}$</tex>,
-we should write:
-
-<tex>$$
-m\frac{d^2}{dt^2}{\bf r} \, = \, {\bf F}(\br, t)
-$$</tex>
-
-which for the acceleration would give
-
-<tex>$$
-\frac{d^2}{dt^2}{\bf r} \, = \, {1\over m}{\bf F}(\br, t)
-$$</tex>
-
-where <tex>$m$</tex> is the mass of the particle; or in the case of
-two-body motion, the reduced mass associated with the motion of the
-equivalent one-body system, for a pseudo-particle in a time varying
-force field.
-
-Anyway, those details are irrelevant here.  My point is that I prefer
-to talk about orbit vs. interaction, not orbit vs. force calculation.
-
-*Bob*: In stellar dynamics, at least, people talk about force calculation
-all the time.
-
-*Alice*: I know, and then they write down the acceleration.  We've seen
-already how easy it is to get into trouble when forgetting to take the
-mass into account properly.
-
-*Bob*: Well, yes, I can't argue with that, I'm afraid, seeing how I
-blundered there, a while ago.
-
-*Alice*: So let us call <tex>${\bf f}(\br, t)$</tex> the general interaction
-term that causes an acceleration to occur.  That is in line with the notation
-in books about general differential equations.  Abramowitz and Stegun used
-the same notation too.
+= A Complete Derivation
 
 == The One-Dimensional Case
 
-*Bob*: Now that we have settled nomenclature, can we look at what you claimed
-went wrong with our derivation?
+*Bob*: You have a very determined look in your eyes.
 
-*Alice*: My point is that we have to be really explicit about the 
-space and time dependence of the interaction terms, as follows:
+*Alice*: Yes, I feel determined.  I want to know for sure that the
+integrator listed in Abramowitz and Stegun is fourth-order, and I
+want to prove it.
+
+In the form given in their book, they are dealing with a force that
+has the most general form: it depends on position, velocity, and time.
+In our notation, their differential equation would read
+
+<tex>$$
+\frac{d^2}{dt^2}{\bf r} \, = \, {\bf f}(\br, \bv, t)\, =
+ \, {\bf f}(\br(t), \bv(t), t)
+$$</tex>
+
+*Bob*: Fortunately, in our case, we only have to deal with a dependence
+on position, not on velocity or time.
+
+*Alice*: That is true, but I would like to prove their original formula.
+
+*Bob*: I don't think that is necessary.  We don't have any magnetic force,
+or anything else that shows forces that depend on velocity.
+
+*Alice*: Yes, but now that we've spotted what seems like a mistake, I don't
+want to be too facile.  Okay, let's make a compromise.  I'll drop the
+velocity dependence; hopefully our derivation, if successful, should
+point the way to how you could include that extra dependence.  But I would
+like to keep the time dependence, just to see for myself how that mixes
+with the space dependence.
+
+And if you want a motivation: imagine that our star cluster is suspended
+within the background tidal field of the galaxy.  Such a field can be treated
+as a slowly varying, time-dependent perturbation, exactly of this form:
 
 <tex>$$
 \frac{d^2}{dt^2}{\bf r} \, = \, {\bf f}(\br, t)\, = \, {\bf f}(\br(t), t)
 $$</tex>
 
-*Bob*: This is what we did.  We considered the time dependence of the orbit,
-and how that fed back into the time dependence of the interaction term.
-
-*Alice*: Yes, and we looked at the error term in terms of time dependence.
-But we did not check the other contribution to the error in the
-position, stemming from the fact that our orbit makes errors in space
-as well as in time.
-
-Eq. (ref(a2)) for <tex>$\ba_2$</tex>, for example, is written in terms
-of _orbit_ variables, using only concepts from the left-hand side of
-the differential equations that we are trying to solve.  But if you
-look at your code, just above that equation, you see that the term
-<tt>a2</tt> in your code is a call to the method +acc+, which does an
-_interaction_ calculation: it invokes the right-hand side of the
-differential equation.
-
-*Bob*: I guess that that was not quite consistent.  How do you propose to
-remedy our analysis?
+*Bob*: Fair enough.  How shall we start?
 
 *Alice*: If we _really_ wanted to be formally correct, we could track
 the four-dimensional variations in space and time, taking into account
@@ -142,21 +55,13 @@ would be necessary.  If we can prove things in one dimension, I'm convinced
 that we could rewrite our prove to three dimensions without too many problems,
 albeit with a lot more manipulations.
 
-*Bob*: You won't hear me arguing against simplification!  But I must admit,
-you have made me curious.  Go on!
-
-*Alice*: What I propose is that we go back to the way Abramowitz and Stegun
-formulated their Runge-Kutta version.  After all, the whole discussion was
-about whether their claim of having a fourth-order error was a misprint or not.
-If we can prove that their method, as they stated it, is fourth-order accurate,
-with an error that scales like the fifth power of the time step, I'm satisfied.
-
 == A Change in Notation
 
-*Bob*: Same for me.  But I propose that we use a somewhat more intuitive
-notation than what they gave us.  To use _x_ to indicate time and _y_
-to indicate position is confusing, to say the least.  Let us look at
-the text again:
+*Bob*: You won't hear me arguing against simplification!
+But I propose that we use a somewhat more intuitive notation than what
+Abramowitz and Stegun gave us.  To use _x_ to indicate time and _y_ to
+indicate position is confusing, to say the least.  Let us look at the
+text again:
 
 link:rk4.gif
 
@@ -205,7 +110,7 @@ _f_ that has as an argument the mathematical orbit <tex>$r(t)$</tex>.
 Since you have introduced <tex>$\tau$</tex> as the increment in time,
 starting from time zero, let me introduce the variable <tex>$\rho_1$</tex>
 to indicate the increment in space, the increment in position at the time
-that we evaluate <tex>$k_1$</tex>
+that we evaluate <tex>$k_2$</tex>
 
 :equation:
 \label{rho1}
@@ -216,7 +121,7 @@ For consistency, let me also use
 :equation:
 \tau_1 \,=\, \hhalf \tau
 
-for the increment in time, when we evaluate <tex>$k_1$</tex>.
+for the increment in time, when we evaluate <tex>$k_2$</tex>.
 Let me also abbreviate <tex>$f_0 = f(r_0,0)$</tex>.
 
 What I propose to do now is to expand <tex>$k_1$</tex> in a double Taylor
@@ -243,7 +148,7 @@ I introduced above, with partial differentiation indicated with subscripts:
 k_2 \,=\, f_0 &+&\, f_r\rho_1 + f_t\tau_1                           \nonumber\\
 &+&\,\hhalf f_{rr}\rho_1^2+f_{rt}\rho_1\tau_1+\hhalf f_{tt}\tau_1^2 \nonumber\\
 &+&\,\one{6}f_{rrr}\rho_1^3+\hhalf f_{rrt}\rho_1^2\tau_1
-     +\hhalf f_{rtt}\rho_1\tau_1^2 + \one{6}f_{ttt}\tau_1^3
+     +\hhalf f_{rtt}\rho_1\tau_1^2 + \one{6}f_{ttt}\tau_1^3 + O(\tau_1^4)
 
 where I have grouped the different orders of expansion in terms of small
 variables on different lines.  Using the fact that
@@ -255,7 +160,7 @@ k_2 \,=\, f_0 &+&\, f_r\rho_1 + \hhalf f_t\tau                    \nonumber\\
 &+&\,\hhalf f_{rr}\rho_1^2+
 \hhalf f_{rt}\rho_1\tau+\one{8}f_{tt}\tau^2                       \nonumber\\
 &+&\,\one{6}f_{rrr}\rho_1^3+\one{4}f_{rrt}\rho_1^2\tau
-     +\one{8}f_{rtt}\rho_1\tau^2 + \one{48}f_{ttt}\tau^3
+     +\one{8}f_{rtt}\rho_1\tau^2 + \one{48}f_{ttt}\tau^3 + O(\tau_1^4)
 
 Similarly, we can introduce
 
@@ -271,7 +176,7 @@ calculation of <tex>$k_3$</tex>, for which we get:
 k_3 \,=\, f_0 &+&\, f_r\rho_2 + f_t\tau                           \nonumber\\
 &+&\,\hhalf f_{rr}\rho_2^2+f_{rt}\rho_2\tau+\hhalf f_{tt}\tau^2   \nonumber\\
 &+&\,\one{6}f_{rrr}\rho_2^3+\hhalf f_{rrt}\rho_2^2\tau
-     +\hhalf f_{rtt}\rho_2\tau^2 + \one{6}f_{ttt}\tau^3
+     +\hhalf f_{rtt}\rho_2\tau^2 + \one{6}f_{ttt}\tau^3 + O(\tau_1^4)
 
 Now the next step is to substitute the definitions of the
 <tex>$\rho_i$</tex> variables in the <tex>$k_{i+1}$</tex> equations,
@@ -305,7 +210,7 @@ k_2 \,=\, f_0 &+&\, \left\{
 \one{16}v_0f_0f_{rr} + \one{16}f_0f_{rt} + \right.                \nonumber\\
 && \ \ \left. \one{48}v_0^3f_{rrr}
 + \one{16}v_0^2f_{rrt}+ \one{16}v_0f_{rtt}+ \one{48}f_{ttt}
-\right\} \tau^3
+\right\} \tau^3 + O(\tau_1^4)
 
 Similarly, we have to take Eq. (ref(k3)), where we have to use the
 substitution indicated in Eq. (ref(rho2)), which we can rewrite, using
@@ -315,7 +220,7 @@ order in <tex>$\tau$</tex>, as;
 :equation:
 \label{rho2s}
 \rho_2 \,=\, v_0\tau + \hhalf f_0\tau^2 + \left\{
-\hhalf v_0 f_r + \hhalf f_t \right\} \tau^3
+\one{4} v_0 f_r + \one{4} f_t \right\} \tau^3 + O(\tau_1^4)
 
 *Bob*: And now I see concretely what you meant, when you said that our
 previous attempt at proving the fourth-order nature of the Runge-Kutta
@@ -343,7 +248,7 @@ v_0 f_r + f_t
 \hhalf v_0f_0f_{rr} + \hhalf f_0f_{rt} +                \nonumber\\
 && \ \ \one{6}v_0^3f_{rrr}
 + \hhalf v_0^2f_{rrt}+ \hhalf v_0f_{rtt}+ \one{6}f_{ttt}
-\Big\} \tau^3
+\Big\} \tau^3 + O(\tau_1^4)
 
 We are now in a position to evaluate the solution that our Runge-Kutta
 scheme gives us for the value of the position and velocity in the next
@@ -359,7 +264,7 @@ r_1 \,=\, r_0 &+&\, v_0\tau + \hhalf f_0\tau^2 + \one{6}\left\{
 v_0 f_r + f_t \right\} \tau^3                                      \nonumber\\
 &+&\, \one{24}\left\{
 f_0f_r + v_0^2f_{rr} +2v_0f_{rt}+ f_{tt}
-\right\} \tau^4
+\right\} \tau^4 + O(\tau_1^5)
 
 == The Next Velocity
 
@@ -386,7 +291,7 @@ f_0f_r + v_0^2f_{rr}
 +   \nonumber\\
 && \ \ \,\one{4}v_0^3f_{rrr}
 + {\textstyle\frac{3}{4}} v_0^2f_{rrt}+ {\textstyle\frac{3}{4}} v_0f_{rtt}
-+ \one{4}f_{ttt} \Big\} \tau^3                                     \nonumber
++ \one{4}f_{ttt} \Big\} \tau^3 + O(\tau_1^4)                        \nonumber
 
 Plugging this back into the expression for <tex>$v_1$</tex> in Eq. (ref(base)),
 we get:
@@ -403,7 +308,7 @@ v_0\left(f_r\right)^2 + f_rf_t +
 3v_0f_0f_{rr} + 3f_0f_{rt} \nonumber\\
 && \ \ \ \ \ \ v_0^3f_{rrr}
 + 3v_0^2f_{rrt}+ 3v_0f_{rtt}
-+ f_{ttt} \Big\} \tau^4
++ f_{ttt} \Big\} \tau^4 + O(\tau_1^5)
 
 *Bob*: Quite an expression.  Well done!
 
@@ -412,10 +317,45 @@ velocity, Eq. (ref(v1)),
 is the time derivative of the position, Eq. (ref(r1)), up to the order given
 there.  So everything is consistent.
 
-== Everything Falls into Place
+*Bob*: But this is really astonishing.  Why would this last expression
+be also fourth-order accurate?  Even if the fourth-order term had been
+totally wrong, the velocity in Eq. (ref(v1)) would still have been the
+time derivative of Eq. (ref(r1)), up to the accuracy to which that
+expression holds.  We had no right to expect more!
 
-*Bob*: So where do we stand now?  This was all nice and fine, but I must
-admit, I'm beginning to lose the forest for the trees.
+*Alice*: It is quite remarkable.  But I presume that whoever derived this
+equation know what he or she was doing, in choosing the right coefficients!
+Well, most likely a he, I'm afraid.  I think this equation goes back
+to a time in which there were even fewer women in mathematics than
+there are now.
+
+*Bob*: Now that you mention it, I do wonder who derived this marvel.  It
+still surprises me, that you really can get fourth-order accurate, while
+using only three function evaluations.
+
+*Alice*: Yes, that is neat.  It must have something to do with the fact
+that we are dealing with a second-order equation.  Even though the force
+term for the acceleration, as the derivative of the velocity, can be
+arbitrarily complex, the derivative of the position couldn't be simpler:
+it is always just the velocity.
+
+*Bob*: I bet you're right.  After all, Abramowitz and Stegun list this
+algorithm specifically under the heading of second-order differential
+equations.  They must have had a reason.
+
+*Alice*: I'd like to trace the history, now that we've come this far.
+But first, let's fiish our derivation.
+
+*Bob*: I thought we had just done that?  We've shown that both position
+and velocity are fourth-order accurate.
+
+*Alice*: Well, yes, but by now I've grown rather suspicious.  We have
+already seen instances where a derivation looked perfect on paper, but
+then it turned out to be only formally valid, and not in practice.
+
+*Bob*: Hard to argue with that!
+
+== Everything Falls into Place
 
 *Alice*: What we have done now is to compute the predicted positions and
 velocities after one time step, and we have checked that if we vary the
@@ -565,3 +505,6 @@ see whether this happy process will continue when we would go to a
 <tt>rk6</tt> method, for a sixth-order Runge-Kutta method.  The
 problem is that Abramowitz and Stegun don't go beyond fourth order
 methods.  Hmm.  I'll look around, and see what I can find.
+
+*Alice*: Meanwhile, I will try and track down the history of our
+mysterious formulae.

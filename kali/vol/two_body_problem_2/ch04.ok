@@ -159,10 +159,18 @@ exercise for the students.  Let's first test it numerically.
 to see whether we really can understand the behavior of the numerical
 results from first principles.
 
+And hey, I just noticed that the expression for the velocity in
+equation 22.5.22 does not have _any_ error estimate.  For the scheme
+to be really fourth-order, not only should the error per step in the
+first line be of order <tex>$h^5$</tex>, but the second line should
+_also_ have an error of order <tex>$h^5$</tex>.  I want to see whether
+we can derive both facts, if true.
+
 == Comparing the Four Integrators
 
-*Bob*: Let us start again with a time step of 0.001, for a duration
-of ten time units.
+*Bob*: Whether those facts are true or not, that will be easy to figure
+out numerically.  Let us start again with a time step of 0.001, for a
+duration of ten time units.
 
 *Alice*: Just to compare, why don't you run them for all four schemes.
 
@@ -338,6 +346,7 @@ changes high derivatives of positions in a substantial way!
 Which turns my earlier equation into:
 
 :equation:
+\label{aha1}
 \ba_2 = \ba_0 + \bj_0 \Delta t
               + {\textstyle {1 \over 2}}\bs_0 (\Delta t)^2
               + {\textstyle {1 \over 6}}\bc_0 (\Delta t)^3
@@ -349,6 +358,7 @@ Which turns my earlier equation into:
 after only half a time step, now becomes:
 
 :equation:
+\label{aha2}
 \ba_1 = \ba_0 + {\textstyle {1 \over 2}}\bj_0 \Delta t
               + {\textstyle {1 \over 8}}\bs_0 (\Delta t)^2
               + {\textstyle {1 \over 48}}\bc_0 (\Delta t)^3
@@ -434,9 +444,89 @@ such a stupid mistake!?!
 
 *Bob*: I beg your pardon?
 
-*Alice*: We _assumed_ that we were sliding along the perfect orbit, and
-then we _proved_ that we were sliding at the right pace, but we never
-considered that our numerical orbit is only approximate, and that it
-will have errors in _space_ as well as in time.  So we proved only half
-of what we should have proved.  In other words, we haven't yet proven
-anything at all, really!
+*Alice*: There is something quite wrong with the Taylor series I wrote
+down in Eq. (ref(a2)).
+
+*Bob*: I looks like a perfectly fine Taylor series to me.  All the
+coefficients are correct, and each next term is a higher derivative
+of the acceleration.  What could possibly be wrong with it?
+
+*Alice*: Formally it looks right, yes, that is exactly what is so misleading
+about it.  But it is dead wrong.
+
+*Bob*: Give me a hint.
+
+*Alice*: Here is the hint.  This Taylor series is formally correct, alright,
+for the case where you really know the function on the left hand side, and
+you really know all the derivatives on the right hand side.  In that case,
+what you leave out is really fifth-order in <tex>$\Delta t$</tex>.
+
+*Bob*: So?
+
+*Alice*: The problem is, we <i>don't</i> have such idealized information.
+Look at Eq. (ref(aha1)), or no, even better, look at Eq. (ref(aha2)).
+
+*Bob*: I must be missing something.  Here is Eq. (ref(aha2)) again:
+
+:equation:
+\ba_1 = \ba_0 + {\textstyle {1 \over 2}}\bj_0 \Delta t
+              + {\textstyle {1 \over 8}}\bs_0 (\Delta t)^2
+              + {\textstyle {1 \over 48}}\bc_0 (\Delta t)^3
+              + {\textstyle {1 \over 384}}\bp_0 (\Delta t)^4
+
+It still looks perfectly right to me.
+
+*Alice*: Yes, formally, true.  But where do we apply it to?  That's
+the problem.  Let us recall how we actually _compute_ <tex>$\ba_1$</tex>.
+Here is your implementation of <tt>rk4</tt> again:
+
+ :inccode:.rkbody.rb+rk4
+
+Now tell me, how accurate _is_ this expression for <tex>$\ba_1$</tex>,
+or in the terms of the code, for <tt>a1</tt>
+
+*Bob*: It is based on the position calculated in the third line of the body
+of the code, which is second order accurate in <tt>dt</tt>.  So this means
+that <tt>a1</tt> must be second-order accurate at this point.  But that's
+okay, since <tt>a2</tt> is already higher-order accurate, since it
+uses the information of <tt>a1</tt> which was used to construct a better
+approximation for the position, in the fifth line of the code.  And then
+the next line presumably gives an even better approximation.  My guess
+would be that, while <tt>a1</tt> is second-order accurate in <tt>dt</tt>,
+<tt>a2</tt> is third-order accurate, and the next acceleration evaluation,
+at the beginning of the next step, will then be fourth-order accurate;
+that will be <tt>a0</tt> in the following round.  This is the whole point
+of a Runge-Kutta approach: you bootstrap your way up to the required
+accuracy.
+
+*Alice*: Yes, I agree with all that, but that is far more than we need right
+now.  Let's just stick with <tt>a1</tt>, and only <tt>a1</tt>.  It was
+second-order accurate in <tt>dt</tt>, you just said.  Now how in the world
+can a second-order accurate formula give any information in a comparison
+with four subsequent derivatives in Eq. (ref(aha2)) ???
+
+*Bob*: Aaaaah, _now_ I see what you are driving at.  Well, I suppose it can't.
+
+*Alice*: And similarly, your guess was that <tt>a2</tt> was only third-order
+accurate, right?  So it does not make sense to require it to fit
+snugly up to fourth-order in Eq. (ref(aha1)), which is the expression
+we started with, Eq. (ref(a2)).
+
+*Bob*: Well, if you put it that way, I must admit, no, that would not make
+sense.  How tricky!
+
+*Alice*: How tricky indeed!  I was fully convinced that we were doing the
+right thing.
+
+*Bob*: So was I.  How dangerous, to rely on formal expressions!
+
+*Alice*: And now that we have spotted the fallacy in our reasoning, we can
+see what we <i>should</i> have done: in Eq. (ref(a2)), we should have
+expanded not only the right-hand side, but also the left-hand side, given
+that there are approximations involved there as well.  Only after
+doing that, can we equate both sides in all honesty!
+
+*Bob*: Yes, that is the only way, that much is clear now.  Okay, you've
+convinced me.  We really should keep track of all the approximations involved.
+
+*Alice*: Now let's do it!

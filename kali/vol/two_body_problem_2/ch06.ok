@@ -5,7 +5,43 @@
 *Alice*: Hi, Bob!  To judge from the look at your face, I would bet you found
 a good recipe for a sixth-order Runge Kutta method.
 
-*Bob*: As a matter of fact, yes, I did.
+*Bob*: As a matter of fact, yes, I did.  But before I show it to you,
+let me know, did you find out the history behind the mysterious formula
+in Abramowitz and Stegun, that we have been sweating over so much?
+
+*Alice*: Yes, indeed.  It was presented in 1925 by a Finnish mathematician,
+in a Finnish publication.  Here is the full reference: Nystrom, E.J.,
+1925, Acta Soc. Sci. Fenn., 50, No.13, 1-55.  I dug it up in the library.
+
+*Bob*: I'm impressed!  I hope it was not written in Finnish?
+
+*Alice*: No, it was written in German.
+
+*Bob*: That wouldn't have helped me.
+
+*Alice*: Fortunately, I had some German in high school, and I remembered
+just enough to figure out the gist of the story.
+
+*Bob*: But how did you find this article?
+
+*Alice*: I first went to some text books on numerical methods.  After some
+searching, I learned that our mystery formula is an example of what
+are called Runge-Kutta-Nystrom algorithms.  It was Nystrom who made
+the extension from normal Runge-Kutta methods to special treatments
+for second-order differential equations.  And there is a whole lot
+more to the history.  In recent years, quite a number of interesting
+books have appeared that have a bearing on the general topic.  I found
+it hard to put them down.
+
+*Bob*: Now that you got bitten by the bug, perhaps you'll be deriving new
+methods for us, from scratch?
+
+*Alice*: It's tempting to do so, just to see how it's done.  Like having a
+peak into the kitchen, rather than ordering from a menu.  But not now.
+
+*Bob*: No, let me show you first what I found on my menu, a Japanese menu
+it turned out, which featured a sixth-order Runge-Kutta method prepared by
+an astronomer working at the National Observatory in Tokyo, Haruo Yoshida.
 
 *Alice*: Let me guess how long the code will be.  The <tt>rk2</tt> method was
 five lines long, and the <tt>rk4</tt> method was eight lines long.  I seem to
