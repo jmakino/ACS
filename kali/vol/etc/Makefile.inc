@@ -27,7 +27,7 @@ $(TARGET).tex: doc $(SRC) .acsdocinitrc
 	cat $(SRC) > $(TARGET).cp
 	$(ACSDOC) --tolatex $(TARGET).cp
 doc : $(SRC) .acsdocinitrc 
-	$(ACSDOC)  $(SRC) *.rb
+	$(ACSDOC)  $(SRC) [a-z,A-Z]*.rb
 	touch doc
 
 scripts : $(SCRIPTSRCS)

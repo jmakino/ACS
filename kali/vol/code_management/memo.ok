@@ -147,6 +147,7 @@ Anyway, we need,
   not, and if it is older, install the current version in the volume
   directory to the library directory.
 
+So far, these are implemented.
   
 
   
