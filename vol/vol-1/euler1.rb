@@ -38,8 +38,6 @@ ns = 100             # number of time steps
 b = Body.new
 b.simple_read
 
-b.pp
-
 ns.times do
   r2 = 0
   b.pos.each {|p| r2 += p*p}
