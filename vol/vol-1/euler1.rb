@@ -28,10 +28,6 @@ class Body
     @vel = gets.split.map { |x| x.to_f }
   end
 
-  def plot_print
-    @pos.each { |x| printf("%24.16e", x) } ; print "\n"
-  end
-
 end
 
 include Math
