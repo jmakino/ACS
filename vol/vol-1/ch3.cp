@@ -138,7 +138,7 @@ This should work:
 Well, that's simple and straightforward.  You can even use array
 notation, and everything works just like you would hope it would.
 
-*B*: I saw you hesitating when you typed line 6.  I would have
+*B*: I saw you hesitating when you typed that third line.  I would have
 thought you would type something like:
 
  :inccode: .body-init-demo5.rb-demo

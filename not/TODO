@@ -1,6 +1,6 @@
 = TODO for acs
 
-Time-stamp: <2004-01-19 17:23:02 piet>
+Time-stamp: <2004-01-20 11:32:01 piet>
 
 * in ch2.cp, in:
 
@@ -30,9 +30,17 @@ Time-stamp: <2004-01-19 17:23:02 piet>
 
   ?
 
+* in my current <tt>leap_attr_explanation.rb</tt>, I am using the
+  +segment+ mechanism on an almost line by line basis.  Would it be
+  better to just type those lines in the text of the book, or should
+  we keep it here in this separate file?
+
 * what about <tt>sample_init.rb</tt> ?  Leave out opening specific files?
 
-* what about empty lines at the very end of our current <tt>ch2.rb</tt>
+* what about empty lines at the very end of our current <tt>ch3.rb</tt>,
+  as the outcome of +diff+ and the previous few lines?  Are we happy
+  with that?  It may be a bit confusing for the reader, to see three
+  commands listed without any output.
 
 * how to run acsdoc; for only one chapter at a time?
 
