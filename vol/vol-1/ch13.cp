@@ -140,7 +140,7 @@ contains each chunk as an element.  If you want, you can specify the
 way a string is being split into such subarrays, by giving a parameter
 to +split+, but the default delimiter is white space.
 
-Now +collect+ is an array method that takes each element of the array
+Now +map+ is an array method that takes each element of the array
 in turn, and executes a block of code for that element.  The notion is
 the same as what we saw for +each+ above.  The block is delimited by
 parentheses, and the free variable that loops over the array elements
@@ -149,19 +149,40 @@ commands that are executed for each element.  In our case each component
 of the position is converted into a floating point number, and the same
 happens for the velocity on the next line.
 
-Note that, unlike in Fortran or C or C++, nowhere did I have to
-specify that we live in three dimensions.  This code will work for a
-two-dimensional simulations, where a body has position and velocity
-vectors with only two components, as well as for a three-dimensional
-simulation.  In C you would specify something like <tt>for (k = 0,
-k < NDIM, k++)</tt> followed by the block of code you would loop over
-containing expressions like <tt>pos[k]</tt> for the kth element of the
-position vector, after you had defined <tt>#define NDIM 3</tt>.
+By the way, +map+ is actually an alias for +collect+, and you can use
+both words interchangeably for the same method.  Because this method
+effectively `maps' and action onto each element and then `collects'
+the results into a new array, each word describes part of the process.
+I prefer +map+ both because it is shorter and because it describes the
+step where the actual work is done.  In Ruby, there are many examples
+of such aliases.  To find the length of an array +a+, for example, you
+can equally well use <tt>a.length</tt> as <tt>a.size</tt>.  Sometimes
+you even have freedom in spelling: <tt>a.indexes</tt> and
+<tt>a.indices</tt> do the exact same thing.  I consider all this
+freedom another friendly aspect of Ruby.
+
+*Alice*: The only drawback is that when you look at someone else's
+program, you might be suprised to see someone using unfamiliar
+aliases.  However, I presume that you get used to that pretty quickly.
+
+What I am curious about is that you haven't specified anywhere that we
+live in three dimensions.  In Fortran or C or C++, nowhere did I have
+to specify.  That is remarkable.  This must mean that the code will
+work equally well for a two-dimensional simulations, where a body has
+position and velocity vectors with only two components, as for a
+three-dimensional simulation.
+
+*Bob*: Right you are, and that gives you indeed a wonderful flexibility.
+In C you would first define <tt>#define NDIM 3</tt>, and then specify
+something like <tt>for (k = 0, k < NDIM, k++)</tt> followed by the
+block of code you would loop over, containing expressions like
+<tt>pos[k]</tt> for the kth element of the position vector.  What a
+breeze this is, in comparison!
 
 == Tryting It Out
 
 *Alice*: Remarkable.  Once you gain familiarity with those notions such
-as +gets+ and +split+ and +collect+, it must become second nature to
+as +gets+ and +split+ and +map+, it must become second nature to
 string a few together.  The result is a notation that is compact yet
 still imformative.  Can you show me that all this really works?
 
@@ -227,22 +248,22 @@ longer.  Here, I still have it:
       @mass = s.to_f
       s = gets
       a = s.split
-      a.collect! { |x| x.to_f }
+      a.map! { |x| x.to_f }
       @pos = a
       s = gets
       a = s.split
-      a.collect! { |x| x.to_f }
+      a.map! { |x| x.to_f }
       @vel = a
     end
 
 *Alice*: Quite an amount of data reduction.  But why the exclamation
-marks after +collect+?
+marks after +map+?
 
 *Bob*: In Ruby there is a general convention that a command followed
 by an exclamation mark in its name does the same thing as the command
 without that exclamation mark, but it does it to the object it is
-associated with.  Here <tt>collect!</tt>operates on the array +a+ that
-is calling the method.  Previously, I used <tt>collect</tt> which
+associated with.  Here <tt>map!</tt>operates on the array +a+ that
+is calling the method.  Previously, I used <tt>map</tt> which
 returns a new array that contains the values resulting from the
 operations.  Be careful here: the bang sign "!" is _not_ an operator
 in itself, it is only an allowed character for the last part of the

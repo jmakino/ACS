@@ -136,23 +136,93 @@ stands in for the relative motion between two particles.  The index
 step has been taken: <tex>$dt = t_{i+1} - t_i$</tex>.  So, all we have
 to do now is to code it up.
 
-*Alice*: That was an even shorter lecture.  Shall we type the code in
-the same file <tt>test.rb</tt> where we put the +Body+ class?  We can
-still use the +Body+ format for our `relative' particle, as long as we
-remember that the mass of that partice corresponds to the sum of the
-masses of the original particle.
+*Alice*: That was an even shorter lecture.  Yes, let's do it.
 
-*Bob*: What about this?
+== Modularity
+
+*Bob*: Shall we type the code in the same file <tt>test.rb</tt> where
+we put the +Body+ class?  We can still use the +Body+ format for our
+`relative' particle, as long as we remember that the mass of that
+partice corresponds to the sum of the masses of the original particle.
+
+*Alice*: We can certainly use the +Body+ class, but I suggest that we
+put the definition of the +Body+ class in a file <tt>body.rb</tt>, and
+only the actual integrator in our file <tt>test.rb</tt>.
+
+*Bob*: A modular approach, I take it?
+
+*Alice*: Sure, whenever I can get away with it!
+
+*Bob*: It may not be a bad idea, in this case.  Yes, you can do something
+similar as you do in C and C++ with an include file -- only more
+easily so.  Remember those constructs in C where you had to write things
+like <tt>#ifndef</tt> _this_ and <tt>#ifndef</tt> _that_ before you could
+be sure that it was safe to include a file without including it more than
+once?  Well, in Ruby you can use a construct called <tt>require</tt>
+<i>"filename"</i>: it only includes the file if it hasn't been
+included yet, directly or indirectly.
+
+Okay, so here is the file <tt>body.rb</tt>
+
+ :inccode: body.rb
+
+It is just as we left it, but without my one-liner I/O hacks.  Now
+give me some time to figure out how to implement the forward Euler
+idea . . . .
+
+== The First Integrator
+
+. . .  Here it is, the new version of <tt>test.rb</tt>.  As you can
+see, it starts with requiring that <tt>body.rb</tt> gets included at
+the top.
 
  :inccode: euler1.rb
+
+*Alice*: xxx
+
+*Bob*: xxx
+
+== Input
 
 *Bob*: We have to provide an input file, let's call it <tt>euler.in</tt>:
 
  :inccode: euler.in
 
-*Bob*: Here is a minimal version, let's call it <tt>euler2.rb</tt>
+*Alice*: A nice example already for our dimensional freedom: a
+two-body problem is intrinsically two-dimensional.  Even in three
+dimensions you can always find a plane in which the relative motion
+takes place.
 
- :inccode: euler2.rb
+*Bob*: That may not be immediately obvious for a student.  When I heard
+this for the first time, I thought about two particles passing each
+other at right angles at a distance, like the two arms of a cross but
+then offset in the third dimension.
+
+*Alice*: You are right.  The best way to convince a student is probably
+to let her or him do the exercise of translating the motion to the
+center of mass system of the two particles.  In that system, the
+motion of the one particle is the same but opposite as the motion of
+the other particle, apart from a scaling factor involving the ratios
+of the two masses.  The position vector of one particle as defined
+from the center of mass, together with the velocity vector of that
+particle, spans a unique plane.  The fact that the other particle
+moves in the (scaled) opposite way then implies that the other
+particle moves in the same plane as well.
+
+*Bob*: Yes, even if you know the answer, it always requires some thinking
+to reconstruct the reason for the answer.  So because a two-body
+problem is inherently two-dimensional, we might as well start with
+specifying only two components for the position and velocity of the
+relative motion of the two particles, which made me choose the above
+numbers.  Total mass of unity, initial position on the x-axis, also
+unity, and initial velocity perpendicular to that, and one half, for a
+change.
+
+#*Bob*: Here is a minimal version, let's call it <tt>euler2.rb</tt>
+#
+# :inccode: euler2.rb
+
+== Forward
 
 *Bob*: Let's test it:
 
@@ -210,40 +280,20 @@ and run it:
 # :commandoutput: ruby test.rb < euler.in
 # :command: rm -f test.rb
 
-*Alice*: Now let's look at a picture of the
-orbit.  I suggest using gnuplot, present on any Linux running
-system, and something that can be easily installed on many other Unix
-systems as well.  To use it is quite simple, with only one command
-needed to plot a graph.  In our case, however, I'll start with the
-command <tt>set size ratio -1</tt>.  A positive value for the size ratio
-scales the aspect ratio of the vertical and horizontal edge of the box
-in which a figure appears.  However, in our case we want to set the
-scales so that the unit has the same length on both the x and y axes.
-Gnuplot can be instructed to do so by specifying the ratio to be {\st -1}.
-In fact, let me write the line <tt>set size ratio -1</tt> in a file called
-<tt>.gnuplot</tt> in my home directory.  That way we don't have to type it
-each time we use gnuplot.  Okay, done.  Now let's have our picture:
+*Bob*: Here is a fancy version, with command line arguments
+and energy error diagnostics:
 
- \begin{small}
- \begin{verbatim}
- |gravity> gnuplot
- gnuplot> set size ratio -1
- gnuplot> plot "forward.out"
- gnuplot> quit
- |gravity> 
- \end{verbatim}
- \end{small}
+ :inccode: euler.rb
 
- \begin{figure}[ht]
- \begin{center}
- \epsfxsize = 4.5in
- \epsffile{chap3/forward1.ps}
- \caption[Two-body orbit with a forward-Euler integrator, time step $dt = 0.01$]
- {Relative orbit for the first attempt to integrate a two-body system with a
- forward-Euler integrator, with time step $dt = 0.01$}
- \label{fig:forward1}
- \end{center}
- \end{figure}
+*Bob*: And here is how you run it
+
+ :commandoutput: ruby euler.rb < euler.in > /dev/null
+
+ :commandoutput: ruby euler.rb -o 10 -d 0.0001< euler.in
+
+ :commandoutput: ruby euler.rb -o 10 -d 0.00001 < euler.in
+
+
 
 
 
