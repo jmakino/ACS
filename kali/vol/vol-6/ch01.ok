@@ -236,7 +236,10 @@ xxxx
 
  :inccode: test1.c
 
- :commandoutput: gcc test1.c -lm -O -o test1
+Let's not optimize, since that may confuse the testing, if the compiler
+realizes that we're doing something that can be sped up.
+
+ :commandoutput: gcc test1.c -lm -o test1
 
  :commandoutput: time test1
 
@@ -249,3 +252,22 @@ Let's give Ruby a 100 times easier task:
  :commandoutput: time ruby test1.rb
 
 
+xxxx
+
+ :inccode: test2.c
+
+ :commandoutput: gcc test2.c -lm -o test2
+
+ :commandoutput: time test2
+
+xxxxx
+
+ :inccode: test2.rb
+
+ :commandoutput: time ruby test2.rb
+
+xxxxx
+
+A factor of 25 between ruby and c speed.
+
+Probably worse when taking arrays and such.
