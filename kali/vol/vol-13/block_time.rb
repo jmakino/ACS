@@ -81,37 +81,47 @@ class Block_time
 
   def -(a)
     if a.class == Block_time
-      ext = Block_time.new
-      expand
-      a.expand
-      i = TIME_ARRAY_MAX_LENGTH - 1
-      carry = 0
-      while i >= 0
-        total = @time_array[i] - a.time_array[i] - carry
-        case total
-          when 0
-            ext.time_array[i] = 0
-            carry = 0
-          when 1
-            ext.time_array[i] = 1
-            carry = 0
-          when 2
-            ext.time_array[i] = 0
-            carry = 1
-          when 3
-            ext.time_array[i] = 1
-            carry = 1
-        end
-        i -= 1
-      end
-      ext.time_int = @time_int - a.time_int + carry
-      ext.contract
-      return ext
+      return self + (-a)
     end
     if a.class == Float or a.class == Fixnum
       a_block = Block_time.new(a)
       return self + a_block
     end
+  end
+
+#
+# well, why does this not work ???
+#
+#  def =(a)
+#    new_a = Block_time.new
+#    new_a.time_int = a.time_int
+#    a.time_array.each_index do |i|
+#      new_a.time_array[i] = a.time_array[i]
+#    end
+#  end    
+
+  def -@
+    minus_self = Block_time.new
+    minus_self.time_int = @time_int
+    @time_array.each_index do |i|
+      minus_self.time_array[i] = @time_array[i]
+    end
+    minus_self.contract
+    arr = minus_self.time_array
+    for i in 0..(arr.size-2)
+      if arr[i] == 1
+        arr[i] = 0
+      else
+        arr[i] = 1
+      end
+    end
+    minus_self.time_int = -minus_self.time_int - 1
+    minus_self.expand
+    minus_self
+  end
+
+  def +@
+    self
   end
 
   def contract
@@ -136,3 +146,13 @@ class Block_time
   end
 
 end
+
+a = Block_time.new
+b = Block_time.new
+a.set_time(3.14)
+b.set_time(2.04)
+p (a+b).get_time
+p (-a).get_time
+p (-b).get_time
+p (a-b).get_time
+p -(a-b).get_time
