@@ -256,8 +256,19 @@ further shrinking the time step would not give us more accuracy.
 *Bob*: I would expect so much.  But these calculations are taking a
 long time again, so I'll let the computer start the calculation, and
 we can check later.  At least now we are pushing machine accuracy for
-64-bit floating point with our second-order integrator; before 
+64-bit floating point with our second-order integrator; a while ago
+it took forever to get the errors in position down to one percent.
+I can't wait to show you my fourth-order integrator.  That will go a
+lot faster.
 
+. . . . .
+
+==
+
+*Alice*: It has been a few hours now.  Surely the code must have run
+now.
+
+*Bob*: Indeed, here are the results.
 
     |gravity> ruby test.rb < euler.in
     dt = 1.0e-07
@@ -277,25 +288,13 @@ we can check later.  At least now we are pushing machine accuracy for
       5.9961755488235224e-01 -3.6063458345517674e-01
       1.0308069102692998e+00  2.1389530417820268e-01
 
+As we expected, the energy error could not shrink further.  Instead,
+it grew larger, because the random accumulation of errors in ten times
+more time steps gave an increase of error by roughly the square root
+of ten, or about a factor three -- just what we observe here.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-M. Abramowitz and I. A. Stegun, eds.: Handbook of Mathematical Functions,
-[Dover, 1965]
-
-link:rk4.gif
+*Alice*: Note that the positions now agree to within a factor of
+<tex>$10^{9}$</tex>.  Once more a factor a hundred more accurate than
+the difference between the previous two integrations.  Clearly the
+positional accuracy of the second order Runge-Kutta is second-order
+accurate, like that of the leapfrog.
