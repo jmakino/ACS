@@ -201,4 +201,4 @@ options_text= <<-END
 
   END
 
-mkplummer(parse_command_line(options_text, true))
+mkplummer(parse_command_line(options_text))

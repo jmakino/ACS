@@ -13,3 +13,7 @@ that is temporarily parked in the next chapter
 Then start improving the <tt>clop.rb</tt> function.
 
 Finally move from <tt>rkn4.rb</tt> to <tt>nbody_cst0.rb</tt>.
+
+Note that <tt>nbody_cst0.rb</tt> still uses global variables;
+and so does <tt>nbody_cst1.rb</tt> in later volumes.  This is
+finally changed when <tt>nbody_sh1.rb</tt> appears.

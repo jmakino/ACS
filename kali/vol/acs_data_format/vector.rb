@@ -35,14 +35,16 @@ class Vector < Array
     quotient
   end
   def cross(other)                   # outer product
-    if other.size == 2
-      return self[0]*other[1] - self[1]*other[0]
-    elsif other.size == 3
+    if other.size == 3
       result = Vector.new
       result[0] = self[1]*other[2] - self[2]*other[1]
       result[1] = self[2]*other[0] - self[0]*other[2]
       result[2] = self[0]*other[1] - self[1]*other[0]
-      return result
+      result
+    elsif other.size == 2
+      self[0]*other[1] - self[1]*other[0]
+    elsif other.size == 1
+      0
     else
       raise "dimension = #{other.size} not supported"
     end

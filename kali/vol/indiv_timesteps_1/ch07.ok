@@ -213,7 +213,7 @@ the parameter <tt>dt_max</tt> that is passed as a parameter to +evolve+.
 <tt>World#setup_from_snapshot</tt>, the value of <tt>dt_max</tt>
 is set as being equal to the duration of the era, multiplied by a
 factor <tt>dt_max_param</tt>.  By default, this last number is equal
-to one, but we can set it with the command line argument <tt>-g</tt>
+to one, but we can set it with the command line argument <tt>-m</tt>
 or <tt>--max_timestep_param</tt>.
 
 *Bob*: So we can limit the growth of an era in two ways, by setting
@@ -241,6 +241,52 @@ in the past, when I coded up individual time step methods.  And I
 do think I have a more complete overview of the whole picture now.
 Whether or not it will turn out to be useful, has to be seen, but
 it is fun to see an old idea in a new light.
+
+== Some Concern
+
+*Alice*: For the time being, I think the use of <tt>dt_max</tt>
+is okay, but I must say, I'm a bit concerned about the way we let the
+user specify it.  It may seem natural to couple the value of
+<tt>dt_max</tt> directly to the value of the era length <tt>dt_era</tt>,
+making them equal by default, but there is a danger.
+
+*Bob*: What type of danger?
+
+*Alice*: Ideally, when you change the length of an era, by using the
+command line option <tt>-e</tt> or <tt>--era_length</tt>, you don't
+expect the orbits of the stars to change.  But in fact, they will
+change, initially by a small amount, but because of the exponential
+instability of stellar dynamics, after a while the orbits will be
+completely different.  That is a bad thing.
+
+*Bob*: I see.  Doubling the length of an era, without changing the option
+<tt>-m</tt> or <tt>--max_timestep_param</tt> would lead to an effective
+doubling of <tt>dt_max</tt>, which could lead to larger timesteps for
+some particles, and hence different orbits.  The way to counter this
+would be to make that last option smaller, also by the same factor of two.
+Let me try it:
+
+ :commandoutput: ruby mkplummer.rb -n 4 -s 1 | ruby nbody_set_id.rb > tmp.in
+ :commandoutput: ruby world1.rb -t 1 < tmp.in > tmp1.out
+ :commandoutput: ruby world1.rb -t 1 -e 0.02 < tmp.in > tmp2.out
+ :commandoutput: ruby world1.rb -t 1 -e 0.02 -m 0.5 < tmp.in > tmp3.out
+ :commandoutput: cat tmp1.out tmp2.out | ruby nbody_diff.rb
+ :commandoutput: cat tmp1.out tmp3.out | ruby nbody_diff.rb
+
+*Alice*: Yes, that works, but a typical user is not likely to think about
+this, and anyway, modularity requires us to decouple the notions of
+era length and maximum step size length, if the first one is supposed
+not to change the physics, while the second one does.
+
+*Bob*: Perhaps.  But it does work!
+
+*Alice*: It works for a factor of two alright, but if you introduce a
+factor of three increase for the era length, and you want to compensate
+by shrinking the maximum timestep parameter by a factor three, you may
+not be able to cancel the two factors precisely without round-off error.
+
+*Bob*: I agree that we could come up with a better version.  However, as
+you said, for now the current choice of command line arguments will do.
 
 == Back to the Beginning
 

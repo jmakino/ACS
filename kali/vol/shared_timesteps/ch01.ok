@@ -27,8 +27,8 @@ run.  Okay, where were we?
 
 *Alice*: In volume ???acsio??? we had collected the various integrators in a
 single file <tt>nbody_cst1.rb</tt>, while we were getting the ACS data format
-straightened out.  Let us start from the same file, in the new directory,
-corresponding to this volume ???world1???.
+straightened out.  Let us start from the same file, in this new directory,
+corresponding to the current volume.
 
 *Bob*: Do you remember how to run it?
 

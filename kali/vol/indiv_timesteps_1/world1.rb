@@ -634,6 +634,6 @@ options_text = <<-END
 
   END
 
-clop = parse_command_line(options_text, true)                                #1
+clop = parse_command_line(options_text)                                      #1
 
 World.admit($stdin, clop).evolve(clop)                                       #1

@@ -2,6 +2,13 @@
 	
 = Preface
 
+In this volume, Alice and Bob will search for ways to organize their
+ever growing body of codes.  They hit upon a library structure, and a
+way to let codes of different ages include different versions of
+library files with the same name.
+
+We hope to write this volume some time during 2005.
+
 == xxx
 
 We thank xxx, xxx, and xxx for their comments on the

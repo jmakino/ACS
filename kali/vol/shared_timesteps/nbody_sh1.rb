@@ -350,7 +350,7 @@ options_text = <<-END
 
   END
 
-clop = parse_command_line(options_text, true)
+clop = parse_command_line(options_text)
 
 nb = ACS_IO.acs_read(NBody)
 nb.evolve(clop)

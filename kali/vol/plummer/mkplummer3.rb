@@ -123,6 +123,6 @@ options_text= <<-END
 
   END
 
-c = parse_command_line(options_text, true)
+c = parse_command_line(options_text)
 
 mkplummer(c.n, c.seed)
