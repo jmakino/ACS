@@ -6,4 +6,4 @@ vol2.tex: $(SRC) .acsdocinitrc
 	cat $(SRC) > vol2.cp
 	ruby ../../src/coherent_programming/acsdoc.rb --tolatex vol2.cp
 doc : $(SRC) .acsdocinitrc 
-	ruby ../../src/coherent_programming/acsdoc.rb --main .title.cp $(SRC) 
+	ruby ../../src/coherent_programming/acsdoc.rb  $(SRC) 

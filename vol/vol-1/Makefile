@@ -6,6 +6,9 @@ vol1.tex: $(SRC) .acsdocinitrc
 	cat $(SRC) > vol1.cp
 	ruby ../../src/coherent_programming/acsdoc.rb --tolatex vol1.cp
 
+doc : $(SRC) .acsdocinitrc 
+	ruby ../../src/coherent_programming/acsdoc.rb $(SRC) *.rb
+
 all: twopfig.gif  twopfig2.gif
 	ls -al $<
 twopfig.gif: twopfig.eps
