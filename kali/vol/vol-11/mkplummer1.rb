@@ -66,7 +66,7 @@ def mkplummer(n, seed)
       x = frand(0,1)
       y = frand(0,0.1)
     end
-    velocity = x * sqrt(2.0) * ( 1.0 + radius*radius)**(1.0/4.0)
+    velocity = x * sqrt(2.0) * ( 1.0 + radius*radius)**(-1.0/4.0)
     theta = acos(frand(-1, 1))
     phi = frand(0, 2*PI)
     b.vel[0] = velocity * sin( theta ) * cos( phi )
