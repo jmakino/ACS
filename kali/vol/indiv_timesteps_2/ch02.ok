@@ -1,0 +1,153 @@
+= The <tt>Body</tt> Class
+
+== Code Listing
+
+*Alice*: It would be good to print out that whole +Body+ class, 
+to get an idea of what is happening on the ground level.
+
+*Bob*: My pleasure!  Here it all is.
+
+ :inccode:.nbody_ind1.rb-Body
+
+== A Familiar Part
+
+*Bob*: The second half of the +Body+ class is familiar,
+but with some subtle differences.  Take the <tt>collision_time_scale</tt>
+for example.  There are only two lines that are not exactly the same as
+we had before, line four and five of the body of the definition.
+In the shared time step case, we had:
+
+ :inccode:.nbody_sh1.rb-2
+
+where in the individual time step case, we have instead:
+
+ :inccode:.nbody_ind1.rb-2
+
+This is exactly what is needed here: in order to push a particle forward,
+we predict the position at it latest sales date time <tt>@next_time</tt>,
+and we ask all other particles to predict where they will be at that very
+same time.  We can then compute the differences in position and velocity
+at that time, and estimate the new time step.
+
+Similarly, the computation of acceleration and jerk are also almost the
+same as they were before.  Since we are here working only with the Hermite
+scheme, I thought it would be simpler to combine the previous methods
++acc+ and +jerk+ into one combined method <tt>acc_and_jerk</tt>.  And here,
+too, I have switched to predicted positions for both position and velocity.
+
+Finally, the methods +ekin+ and +epot+ are completely unchanged.
+
+*Alice*: Shouldn't they be based on predicted positions and velocity too?
+
+*Bob*: No, since I invoke these diagnostics methods only after synchronizing
+the whole system, in which case we can use the old form of the methods
+verbatim.  We'll come to that.  First let's look at the top of the +Body+
+class, where the most important differences reside.
+
+== Predicting and Correcting
+
+*Alice*: Ah, there at the very top is our friend <tt>autonomous_step</tt>,
+which invited us to come here in the first place.
+
+*Bob*: Yes.  This method takes
+as a first argument the reference to the array of all bodies in the N-body
+system.  It needs that as a handle to reach all other particles.  The second
+parameter is the factor with which we multiply the time scale to
+obtain the new time step.  That part is the same as before, the only
+difference being that each particle now computes its own time scale; the
+parameter <tt>dt_param</tt> is a constant, an overall scaling factor that
+the user can set at the beginning of the run.
+
+*Alice*: And all that <tt>autonomous_step</tt> does, is take a step
+from the present time <tt>time</tt> to the <tt>@next_time</tt>.
+
+*Bob*: Exactly.  And you see in the next definition why I have added
+that extra time argument in the middle: when we need to synchronice all
+particles, we can no longer give them the luxury to step autonomously.
+Instead of letting them choose their own next time, we need to force them
+to all converge at a fixed target time +t+, the middle argument of the
+method <tt>forced_time_step</tt>.  The only difference is that in the
+autonomous case, a particle can determine itself where it wants to force
+itself to go to, so to speak.
+
+*Alice*: So to speak.  Trying to explain code in words is always a tricky
+business, but with the code in hand, I see what you mean.  Okay, let's
+move to where the real work is being done, in the method
+<tt>take_one_step</tt>.  For starters, you ask all other particles to
+predict their position to time +t+.
+
+*Bob*: All other particles, yes, and also the particle itself that is doing
+the asking.  Note that I have written <tt>ba.each</tt>, without taking
+exception to <tt>self</tt>.  So in one stroke I push all particles virtually
+to the target time +t+, self as well as others.
+
+*Alice*: And then you correct something, I presume, in <tt>correct_step</tt>.
+What is it that you correct?
+
+*Bob*: It is in <tt>correct_step</tt> that we finally encounter the full
+Hermite algorithm.  Let's compare this with the shared time step
+case.  There we sent the Hermite algorithm to individual particles
+using the following method on the +NBody+ level:
+
+ :inccode:.nbody_sh1.rb+hermite
+
+Lines five and six of the body of this method do exactly what is now done
+in <tt>predict_step</tt>, which I will show here again:
+
+ :inccode:.nbody_ind1.rb+predict_step
+
+And the next two lines in the old code do exactly what is now done in
+<tt>correct_step</tt> in the new code:
+
+ :inccode:.nbody_ind1.rb+correct_step
+
+*Alice*: I see.  It is beginning to make sense for me now.  And I am also
+starting to remember how we derived the Hermite algorithm in the first place.
+In the old code, two steps were involved.  Starting from a given position,
+we made a tentative move to a new position, in order to calculate the new
+acceleration and jerk.  Then we combined that result with the
+knowledge of the old acceleration and jerk, and together we were able to
+reconstruct the higher derivatives snap and crackle at the start of
+the step.  Finally, we built a Taylor series using the acceleration,
+jerk, snap and crackle at the starting time, to make a more accurate
+determination of the ending position.
+
+*Bob*: Yes, that is exactly what happens.  And what you called here a
+tentative step is what I call <tt>predict_step</tt>, while what you called
+a more accurate determination I call <tt>correct_step</tt>.
+
+== Shifting Perspective
+
+*Alice*: That all makes a lot of sense.  And the next four lines, following
+the actual correction part of <tt>correct_step</tt> are the same as the
+first four lines in our old <tt>hermite</tt> method.  The only difference
+is one of notation: in the <tt>nbody_sh1.rb</tt> we compared the old values
+with the current values, while here in <tt>nbody_ind1.rb</tt> we
+compare the current values with the new values.
+
+*Bob*: Yes, I hadn't quite realized that I had implicitly shifted my
+perspective by one time step.  Why did I do that?  Ah, of course.
+Interesting!  In the past we were dealing with shared time steps.
+So as soon as we were ready to move, we could put ourselves one step
+ahead, so to speak, in our imagination, while looking back on the
+previous values as the _old_ values.
+
+However, in the individual time step case, most of the time we are
+moving forward in time only in a virtual way: when particles predict
+their position, in order to help another particle find its way, they
+don't really move themselves.  Since they stay at their old place, it
+makes more sense to called the old place the current place, current
+for each particle that is, and to call the predicted time the _new_
+time.
+
+*Alice*: So your shift in perspective makes sense.  To predict, you have
+to look ahead.  But if you're walking in lock step, you move with the
+whole group, and all you can do is look back.
+
+*Bob*: You may be stretching the analogy here, but if it helps you remember
+the notation, fine!  Now the remaining two lines of <tt>correct_step</tt>
+update the two time variables that belong to our particle: the new current
+time <tt>@time</tt>, for which <tt>@pos</tt> and <tt>@vel</tt> are
+actually calculated, is +t+, and the new <tt>@next_time</tt> is found by
+calculating the next time step, as we have already seen.
+

@@ -1,0 +1,136 @@
+= The <tt>World</tt> Class
+
+== Of Forests and Trees
+
+*Alice*: You know, I'd like to go over the whole code once again,
+now that we make sure it works.  I feel I can't see the forest for
+the trees.  I'd like to gain a good overview.
+
+*Bob*: That's a good idea.  How shall we do this, from the beginning
+to the end, or from the end to the beginning?
+
+*Alice*: I prefer to go top-down.  Given the way we have written the code,
+this means starting at the end, or at least close to the end, with the
++World+ class.
+
+*Bob*: Okay, let's print it out.
+
+ :inccode:.world1.rb-World
+
+== Admittance
+
+*Alice*: We'd better start at the gate: at the very bottom of our code,
+we can see how we make our entrance:
+
+ :inccode:.world1.rb-1
+
+The method <tt>World.admit</tt> can be found at the end of our +World+
+class definition.  Unlike most methods we have written so far, this
+particular function is _not_ an instance method, but a class method,
+as indicated by the fact that the Class name is added here in front of it.
+
+*Bob*: And we need this feature, otherwise we couldn't read in the data
+for a +World+ object.  Just like the general class method +new+, the class
+method +admit+ can operate by itself, without having to be invoked from
+an existing +World+ object.
+
+*Alice*: The first thing this method does is to invoke our acs_read function,
+which returns an object called +object+, that can either be a +World+ object
+or a +Worldsnapshot+ object.
+
+In the first case, we are dealing with a complete output dump from a
+previous run.  Any invocation of <tt>world1.rb</tt> gives us the choice
+to produce a snapshot or a complete +World+ dump, as we will see in a
+moment.  In the case of a dump, the class of the object is +World+,
+and since we're looking at a class method of class +World+, +self+
+here is the same as +World+.  In that case, the +if+ statement evaluates
+to +true+, and we invoke the method <tt>object.setup_from_world</tt>,
+in other words, an instance method of class +World+, with the name
+<tt>setup_from_world</tt>.
+
+Now I'm puzzled.  That last function sets up all kind of things, it seems,
+performing a variety of initializations.  But after that, <tt>World.admit</tt>
+just returns +object+.  What happens with that object, of type +World+?
+
+*Bob*: Ah, the compactness of Ruby notation!  On the same line where we
+invoke <tt>World.admit</tt>, at the very end of the code, we then invoke
+the member function +evolve+ of the object that is returned.
+
+*Alice*: Oh, yes, of course.  Okay, what happens if we start with a snapshot
+output?  For example, we could start with a Plummer model input file.  Or
+we could take the output from a previous run, if we had decided to do
+an output of a <tt>WorldSnapshot</tt> object.  Back to <tt>World.admit</tt>.
+
+*Bob*: Wait a minute.  If we start with a Plummer model, the class of the
+object that has been read in will be +NBody+, not +WorldSnapshot+.  Wouldn't
+the +elsif+ statement in <tt>World.admit</tt> fail?
+
+*Alice*: No, it won't.  That's the magic that we've built into
+<tt>acsio.rb</tt>, remember?  In the first line, <tt>acs_read</tt>
+tries to recognize either a +World+ object or a +WorldSnapshot+ object.
+Now an +NBody+ object certainly has nothing to do with the +World+ class.
+But We have defined the +WorldSnapshot+ class as a subclass of +NBody+.
+When <tt>acs_read</tt> sees this, it opens the gate for the +Nbody+ object,
+and it then reads it in _as_ a +WorldSnapshot+ object.
+
+*Bob*: Ah yes, how clever we were, when we wrote that!  Almost too clever,
+I'm afraid.  But it does all seem to work.  Okay, so even in the case
+of a completely fresh Plummer model input file, the +elsif+ statement
+will evaluate as +true+.  Good.  In that case we create a new +World+
+object +w+, which we return so that it can be evolved.
+
+*Alice*: Yes, but before doing so, there is quite a bit of work done in
+the method <tt>setup_from_snapshot</tt>, more than in the +World+ case.
+
+*Bob*: The reason is that a +World+ object is already all set to go, since
+it came from a previous integration with the same code <tt>world1.rb</tt>.
+If we start from a general +NBody+ object, we'll have to do more book keeping.
+For example, we have to compute the initial energy.  You can see the call
+to <tt>startup_and_report_energy</tt>, a method of the +WorldEra+ class,
+in the middle of <tt>setup_from_snapshot</tt>.  In contrast, if we start
+from a +World+ object, we can safely assume that the initial energy value
+has already been stored there.
+
+== Output Choice
+
+*Alice*: I get the picture now; it all comes back.  And corresponding to
+the two ways of reading input, there are also two ways of writing output.
+In the case of input, we did not need any command line option, since
+we would recognize from the input offered what type of file we were
+dealing with.  But for doing output, a decision has to be made.  This
+we do with the option, well, . . . I've forgotten which option.  Let's
+ask Ruby to list, first, all the options, and then to explain what the
+output switch really does:
+
+ :commandoutput: ruby world1.rb -h
+ :commandoutput: ruby world1.rb --help -r
+
+Ah, yes, the <tt>-r</tt> option, or more descriptively, the
+<tt>--world_output</tt>.
+
+*Bob*: The longer option is easier to recognize, while the shorter option
+is easier to remember to write.
+
+*Alice*: I'm not sure about that last part.  Anyway, we can use either one,
+and the help facility can always remind us of both.  And in the code,
+the <tt>world_output_flag</tt> determines the behavior of the methods
+<tt>output</tt> and <tt>init_output</tt> in the +World+ class.
+
+*Bob*: With the <tt>-r</tt> flag switched on, the output is really simple:
+<tt>output</tt> does nothing else but invoke our standard output method
+<tt>acs_write</tt>, writing out +self+, the current state of the
++World+ object itself.
+
+Without that flag, that is, in the default case, we first have to take
+a snapshot, using <tt>@era.take_snapshot</tt>, and then we can write out
+that snapshot in a similar way, with a call to <tt>acs_write</tt>.
+
+It's time that we have a look at +WorldEra+, to see all that happens
+there, behind the scenes.  The only part that we can see here is we
+create a new era in the first line of <tt>setup_from_snapshot</tt>,
+and then ask <tt>World#evolve</tt> to invoke <tt>WorldEra#evolve</tt>,
+through the call to <tt>@era.evolve</tt> in the second line of the
++evolve+ method here.
+
+*Alice*: Perhaps we should first look at +WorldSnapshot+, before we descend
+through the lineage of +WorldEra+, +WorldLine+, and +WorldPoint+.

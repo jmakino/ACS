@@ -1,0 +1,374 @@
+= The <tt>WorldEra</tt> Class
+
+== The Next Level Down
+
+*Bob*: So far we have seen only the outer wrapping level, in the +World+
+class, where IO was scheduled and the command was given to the +WorldEra+
+class to do a bunch of work.  The +World+ class really behaves like a top
+executive.
+
+*Alice*: Or like a secretary, letting people in and out.
+
+*Bob*: Or a concierge or doorman then.  We've got a rather socialistic
+code, if all these functions are combined in one!  Well, let's see what
+the +WorldEra+ class looks like.
+
+ :inccode:.world1.rb-WorldEra
+
+== Choosing a Particle
+
+*Alice*: Let's start with +evolve+.  As we've done before, it's often
+easier to start in the middle than at the beginning.
+
+*Bob*: In the generic case, <tt>shared_flag</tt> will be false.
+We have added the option <tt>-a</tt> to ask the code to run with
+shared time steps, to make it easier to compare the results with our
+previous code <tt>nbody_sh1.rb</tt>.  But the default value of this
+flag is +false+, in which case the +unless+ statement evaluates to
+being +true+.  The next line then tells the shortest extrapolated
+world line to extend itself.  After that, we do bookkeeping, by adding
+one to the variable that counts the time steps.
+
+*Alice*: That line indeed reads like English.  Let's reconstruct the
+meaning.  We need to find the first particle that needs to be pushed
+along its orbit, from its current world point to the next world point.
+This means that we needt to find the particle with the earliest sales
+date, which is the smallest time <tt>@next_time</tt>, an instance
+variable of class +WorldPoint+.  However, at this level we are still
+two levels removed from that class, and we certainly don't want to
+rely on the particular way that this latest sales date is implemented.
+
+*Bob*: At this point, we'd better remind our students what this latest
+sales date means.
+
+*Alice*: It is the latest time for which our extrapolation from the last
+world point is still valid.  What can be extrapolated till this time are
+the positions and velocities, using an extrapolation method which is
+again hidden on this level, and implemented on the next level down, in
+class +WorldLine+.  All we can do on this higher level is to ask a
+particle . . . 
+
+*Bob*: . . . I thought particles were two levels down!
+
+*Alice*: You're right!  Thanks.  I have to learn to be more precise.  All
+we can do on this higher level is to ask a <i>worldline</i> to extend itself.
+The way it extends itself is by asking the particle as defined at the
+last world point to take a step to the next world point.  So indirectly we
+will give a command to the world point.
+
+Now to be precise, yes, you are right, the <i>world point</i> is two
+levels down.  But you can also say that a particle, with a particular
+identity, is represented in our code by a world line.  A single world
+line corresponds to the _history_ of a single particle.  So in that
+sense, a <i>world line</i> in 4-D stands for a particles, just like a
+_body_ stood for a particle in our 3-D way of coding.
+
+*Bob*: I'm still wondering whether we've not introduced too many legalities
+and abstractions here, but I'll reserve judgment.  So to sum up, we look for
+the particle with the earliest latest sales date.  Hmm, listening to myself,
+I have to admit that that does sound a bit contradictory.
+
+*Alice*: But it is correct.  Each particle has a latest sales date.  And from
+among the ensemble of all particles, we choose the particle that has the
+earliest such date.  But I agree, `earliest latest' is confusing.  So we
+could say instead that we are looking for a particle that has the earliest
+cutoff time for its extrapolation.
+
+*Bob*: And if you look toward the future, the world line that has the earliest
+cutoff is shortest.  Hence we ask for the shortest extrapolatable world line.
+I see.  But why did we call it extrapolated?
+
+*Alice*: I guess extrapolatable just sounds a bit funny, not altogether
+palatable.  We can later change the wording, if we want.  Anyway, _that_
+particle, once we've found it, is asked to extend itself, and we'll see
+on the +WorldLine+ level just how it wants to do that.
+
+*Bob*: Quite a long discussion, to explain a single line of code!  And
+especially a line of code that already looks like plain English.  It goes
+to show that, once you understand how a code works, it is easier to read
+the source itself than the explanation.
+
+*Alice*: Isn't that true for anything?
+
+== The Case of Shared Time Steps
+
+*Bob*: I guess.  Let's move on to the +else+ clause.  We will enter the
+next part when the <tt>shared_flag</tt> is true, that is, when we want
+to use shared time steps.  In that case, let's see, aha, we again find
+our `earliest latest salesdate' particle, but this time we ask it a more
+complicated question.  We ask it for the <tt>next_time</tt> of the last
+world point on its world line.  Funny how you have to read Ruby backwards
+in order to translate it into an English sentence.
+
+*Alice*: Looking at it now, I must say, I don't like the fact that we are
+specifically addressing the array <tt>worlpoint[]</tt> in the class
++WorldLine+.  While this gives us access to the last point in the array,
+we wind up with a object of class +WorldPoint+ and then we ask this object
+for its <tt>next_time</tt>.  This is precisely the sort of level crossing
+that we wanted to avoid.
+
+*Bob*: Well, the most important thing is: the code works, as we have already
+tested.  Let's not touch it for now.  I'm already happy if I can get
+an overview of all that we've done so far.
+
+*Alice*: Fair enough, but I do want to get back to this blemish, at some point.
+This is not modular programming!
+
+*Bob*: For now, all I want to do is to understand what we wrote here.
+In the case of shared time steps, shouldn't we ask all particles for
+their prefered time step, and then take the shortest time step, so as
+to make nobody unhappy?
+
+*Alice*: Well, _if_ all particles would be synchronized, what you just
+said would be correct, but in general, they will not be synced.  Each
+particle will have been updated to their own time <tt>@time</tt>, and
+each particle is thinking about taking a next step, in the future, to
+a time <tt>@time_next</tt>.
+
+So in order to make nobody unhappy, we should avoid making a shared
+system step that would go beyond anybody's <tt>@time_next</tt>.  This
+implies that our shared step should exactly land on the earliest value
+<tt>@time_next</tt> within the ensemble of all particles.  And this is
+precisely what we are doing here: the particle with the shortest
+extrapolated world line has by definition the smallest <tt>@time_next</tt>
+value.
+
+*Bob*: I see, yes, that must be right.  So the only difference with the
+statement three lines higher is that now we obtain the actual time
+<tt>@time_next</tt>, and then we ask all particles to make a step toward
+this time.
+
+*Alice*: What we really _should_ do is to ask all world lines to extend
+themselves to this time.  What we _actually_ are doing here is to cross
+two levels and use the <tt>next_time</tt> method to set the variable
+<tt>@time_next</tt> within each particle by hand.  To be cleaned up!
+
+*Bob*: Okay, okay, later, as we already said.  Here at the end of the
+shared time step case, we update the step counter by one.  Shouldn't
+that be updating by N, for N particles?  Ah, no, the update happens
+within the loop, and we pass through the loop N times.  Fine.
+
+== Finishing the Loop
+
+*Alice*: let's get back to the beginning of our +while+ loop.  We have
+not yet looked at the conditional statement there.  The code tells us
+that we keep looping only while the last world point for the shortest
+interpolated world line has a time that is earlier than the time
+<tt>@end_time</tt> at which the era ends.
+
+*Bob*: And now you're going to tell us that we're crossing levels again.
+
+*Alice*: Don't worry, I'll shut up.
+
+*Bob*: For now.
+
+*Alice*: For now, yes.  Shortest interpolated, what again did that mean?
+Ah, it must mean the time up till the last computed world point.  Up to
+that point, positions and velocities can be interpolated between two
+world points; beyond that point, we have to use extrapolation.
+
+*Bob*: So shortest interpolated means earliest interpolatable, yes?
+
+*Alice*: I guess we decided to avoid that word, but if you want to use
+interpolatable, then we are asking for the earliest time at which a
+particle runs out of being interpolatable.  Now _that_ sounds like a
+truly awful sentence.  What we are really doing is asking for the
+earliest time at which a particle runs out of interpolation.
+Or simply, we ask for the earliest actually computed world point
+among those points that are at the end of a world line.
+
+*Bob*: Aha, the earliest latest computed point!
+
+*Alice*: Yes, I you like.  Now when the time corresponding to this
+world point is at least as large as the end time <tt>@end_time</tt>
+of our era, we can stop.  In this case we know for sure that all
+particles have passed the finish line.  What we really need is a
+guarantee that every worldine is fully interpolatable from start to
+finish of an era, during the whole time span from <tt>@begin_time</tt>
+till <tt>@end_time</tt>.
+
+*Bob*: I remember that we had a discussion about that.  We first thought
+that it might be enough to let every particle make just one step to or
+beyond the finish.  But then we realized that some particles would have
+to step quite a bit _beyond_ the finish.
+
+*Alice*: Yes.  As long as there is even one particle left that has not
+yet stepped out of the duration of our era, we cannot stop.  But it is
+possible that this last particle has a rather long time step, and hence
+a very late latest sales date.  Given our algorithm, this particle will
+only step forward when the system time reached its latest sales date.
+If this date is way beyond the end of our era, all other particles may
+be forced to take many steps each, before this straggler particle is
+finally asked to step out of the era.
+
+*Bob*: In itself, this is not such a bad situation, since all the work
+we do now, in the current era, is something we don't have to do in the
+next era.  It is only at the end of a calculation, that we do a bit too
+much work.  And in addition, each era will need more storage than
+strictly necessary.  So for both reasons we decided to put an upper
+limit to the length of a time step for any particle.  Ah yes, this is
+the parameter <tt>dt_max</tt> that is passed as a parameter to +evolve+.
+
+*Alice*: In methods <tt>World#setup_from_world</tt> and
+<tt>World#setup_from_snapshot</tt>, the value of <tt>dt_max</tt>
+is set as being equal to the duration of the era, multiplied by a
+factor <tt>dt_max_param</tt>.  By default, this last number is equal
+to one, but we can set it with the command line argument <tt>-m</tt>
+or <tt>--max_timestep_param</tt>.
+
+*Bob*: So we can limit the growth of an era in two ways, by setting
+the length <tt>dt_era</tt> itself, which is the duration during which
+all world lines are interpolatable.  In other words, this is a slice
+of spacetime between two fixed-time hypersurfaces.  Each world line
+will stick out at both sides, back into the past and forward into the
+future.  And we are guaranteed that each world line has at least one
+world point on its world line sticking out into the past, before the
+slice, and one world point sticking out into the future, beyond the
+slice.
+
+In general, many world lines will have several points sticking out at
+one or two sides of the slice.  All we can say is that the longest
+line sticking out at either side of the slice has a length that is at
+most a factor <tt>dt_max_param</tt> longer than the thickness of the
+slice.
+
+*Alice*: Yes, that's the picture.  Individual time step algorithms
+sure complicate matters!
+
+*Bob*: And so does spacetime visualization.  But I must admit, all
+this has given me a fresh way of looking at what I have been doing
+in the past, when I coded up individual time step methods.  And I
+do think I have a more complete overview of the whole picture now.
+Whether or not it will turn out to be useful, has to be seen, but
+it is fun to see an old idea in a new light.
+
+== Back to the Beginning
+
+*Alice*: Let's move to the beginning of the +WorldEra+ class, to
+see what other methods we have here.  The method +initialize+,
+which is called when we order a <tt>WorldEra.new</tt> sets up an
+empty array <tt>@worldline</tt>, ready to accept a bunch of world
+lines.
+
+The methods <tt>acc_and_jerk</tt> and <tt>timescale</tt> appear
+here only as a way to pass them on to a snapshot.  When the request
+comes, from a lower level, to provide acceleration and jerk, or a time
+scale value, then first a snapshot is taken, and then the snapshot is
+asked to care care of the requests.
+
+The method <tt>startup_and_report_energy</tt> is almost a tautology:
+it hands on the request to start things up down to the +WorldLine+
+level, and it takes a snapshot in order to ask that snapshot to
+provide the total energy value.  This value is then returned to the
+calling function in +World+, one level higher.  I must say, I still
+have to remind myself that in Ruby you don't have to write something
+like <tt>return energy</tt>: you can leave out the +return+ part,
+and the value that is automatically returned is the value that the
+last method evaluated provides, in this case the method <tt>total_energy</tt>.
+
+*Bob*: But once you get used to it, Ruby does provide a nicely compact
+notation.  It allows you to pack a lot of information on one page, and
+still in such a way that it is pretty clear what is being done.
+
+We now come to the next two methods,
+<tt>shortest_extrapolated_worldline</tt> and 
+<tt>shortest_interpolated_worldline</tt>.  They speak for themselves: they
+do just what you think they should do.
+
+*Alice*: At least when you understand the concepts they are pointing too;
+but we've just gone over that.  +evolve+ we've analyzed already.  The
+method <tt>next_era</tt> creates a new instance of the class +WorldEra+.
+This method is invoked, whenever we have evolved a complete era, and
+we are ready for another one.  Now where does this method gets called
+again?
+
+*Bob*: At the end of +evolve+.  It is part of what is handed back to the
++World+ level, together with the value of the counter of the number of steps
+that have been taken.
+
+*Alice*: But <tt>next_era</tt> seems to contruct, as the name implies,
+a next era, the next slice in time, after the current era.  And it
+populates that era with those parts of the world lines that fit into
+the next era, using <tt>WorldLine#next_worldline</tt>.  Now I'm puzzled.
+If +evolve+ returns an almost empty new time slice, with only the
+beginning parts of each world line populated, haven't we lost most of
+what we just computed?
+
+*Bob*: We have to go back to the +World+ level, to decide that.  Let me
+print out <tt>World#evolve</tt>:
+
+ :inccode:.world1.rb+evolve+World
+
+The object that is returned by <tt>WorldEra#evolve</tt> is assigned to
+<tt>@new_era</tt>, as it should be.  But the era that has just been
+completely evolved is not lost: it is still referenced by the variable
+<tt>@era</tt>.  You see, <tt>WorldEra#evolve</tt> is an instance method,
+and we invoke it within <tt>World#evolve</tt> as the method that belongs
+to <tt>@era</tt>, in the first line of the +while+ loop.  So <tt>@era</tt>
+is still available to us.
+
+*Alice*: Ah, yes.  I guess I'm thinking too much in a data flow style of
+programming.  Ruby is object oriented, and even though it supports a
+data flow style too, here we are definitely dealing with objects, where
+we ask the objects to evolve themselves, but without changing their identity.
+
+*Bob*: Or, in Ruby terms, without changing their <tt>object_id</tt>; their
+name can change.  At the end of <tt>World#evolve</tt> above, you can see
+how we change the name of the object, pointed at by <tt>@era</tt>, to
+<tt>@old_era</tt>, while we call <tt>@new_era</tt> now <tt>@era</tt>, as
+it should be, before entering the next round.
+
+*Alice*: So not only is the fully history of the time slice that we just
+computed preserved, also the history of the previous time slice
+remains available, through <tt>@old_era</tt>.  Why did we do that?
+
+*Bob*: I seem to remember that we thought it might come in handy to have
+some extra information at hand.  It probably not essential, and if we ever
+run into problems with not having enough memory, this will be the
+first thing to drop.
+
+*Alice*: And then, during the round after that, our object loses its last
+reference, when the pointer <tt>@old_era</tt> gets reassigned to the era
+after the one we have been following.  As a result, soon after that, the
+Ruby garbage collector will do its job, and the memory places are recycled.
+Okay, I now see the whole picture.
+
+== Snapshots
+
+*Bob*: The last few methods in <tt>WorldEra</tt> are all related to IO through
+the use of snapshots.  At the bottom we see how we do input, starting from
+a snapshot, in <tt>setup_from_snapshot</tt>.  The real work is done on the
++WorldLine+ level, in <tt>setup_from_single_worldpoint</tt>, where we add
+each next body to a brand new world line, created in the line above.  The
+line below shows how this new world line is than added at the end of our
+array of world lines, <tt>@worldline</tt>.
+
+*Alice*: I keep wondering whether we shouldn't have choosen the plural version
+of the name, to make it <tt>@worldlines</tt> instead.  After all the
+array <tt>@worldline[]</tt> contains many world lines.
+
+*Bob*: But when we talk about the 3rd world line, it is nice to be able to
+write <tt>@worldline[2]</tt>.  It would make less sense to write
+<tt>@worldlines[2]</tt>.  This is the same logic we used way back when
+when we gave the +NBody+ class an array +body+ for its bodies.
+
+*Alice*: Yeah, I can see the logic, either way.  Oh well, we started off
+this way, so we may as well continue.
+
+*Bob*: Let us now turn to output, and the way it is mediated by snapshots.
+We have the function <tt>take_snapshot(time)</tt> that constructs a
+full snapshot at a given time.  It translates into using the generic
+method <tt>take_snapshot_except</tt>, except that nothing is excepted,
+because we give the +nil+ argument for the exception, if you see what
+I mean.
+
+*Alice*: Hard to hear what you mean, exceptionally so, but yes, I see
+what you may have meant.  And the reason for this overly complex
+redirection is that the function <tt>take_snapshot_except</tt> is the
+real workhorse that is used in preparation for a force calculation: it
+presents a single particle with the positions of all other particles,
+after which that single particle can compute the distances to all
+other particles, and based on that, accelerations and jerks.
+
+*Bob*: And this ends our tour through +WorldEra+.  Time to descend one more
+level, to +WorldLine+.

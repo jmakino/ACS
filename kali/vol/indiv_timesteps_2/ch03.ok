@@ -1,0 +1,258 @@
+= The <tt>NBody</tt> Class
+
+== Code Listing
+
+*Alice*: I think I understand now how the +Body+ class works.  Could you
+also print out the whole +NBody+ class?
+
+*Bob*: Sure.  It's not very long, about the same size as the +Body+ class.
+I keep being surprised at how compact Ruby code is.
+
+ :inccode:.nbody_ind1.rb-NBody
+
+== Starting Up
+
+*Alice*: We already talked about the generic case, with a call to
+<tt>autonomous_step</tt>.  Now I would like to see how the whole
+thing starts up.
+
+*Bob*: At the very bottom of the file, the +evolve+ method is evoked
+as follows:
+
+ : inccode:.nbody_ind1.rb-3
+
+An N-body system is read in, and all that happens is a single call to
++evolve+, while the command line arguments are being passed along, just
+as we already saw in the previous code.
+
+The startup function makes sure that the acceleration and jerk are being
+computed properly at the beginning of the integration.  But in order to
+do so, it first has to set the predicted positions and velocities
+<tt>pred_pos</tt> and <tt>pred_vel</tt> to the right values, namely the
+values of the initial positions and velocities.
+
+In the +Body+ class we saw the following generic order: 1) we predict
+the positions of all particles, using <tt>predict_step</tt>; 2) we
+compute the acceleration and jerk on one particle and set the next
+time step value; 3) we step that particle forwards using <tt>correct_step</tt>.
+
+We use the same order here, at startup, which occurs at the time
+<tt>@time</tt>, the instance variable for the +NBody+ class.  This is
+the time that has been read in from the initial snapshot; and if there
+is no time listed in that input file, the default time <tt>@time = 0</tt>
+is used default, since this is the time that has been assinged by the
+<tt>NBody#initialize</tt> method in file <tt>nbody.rb</tt>.
+
+For startup, step 1), prediction, is trivial: starting at time <tt>@time</tt>
+we predict where all particles will be at time <tt>@time</tt>, in other words
+we don't have to do anything; we just copy the position and velocity values
+that were just read in.
+
+Step 2), the calculation of acceleration and jerk and the next time step
+value, can only be done after step 1) has been completed for all particles.
+This is the reason that we need to different +each+ loops in +startup+.
+
+Step 3), correcting the positions and velocities, is not necessary at
+startup: no particle has been moved, so there is nothing to correct.
+
+== Finding the Next Particle
+
+*Alice*: Thanks, that's very clear.  Then, after startup, we enter the
++while+ loop in evolve, evoking <tt>autonomous_step</tt> for each next
+particle that needs to be propagated.  Let's have a look at how
+<tt>find_next_particle</tt> is implemented.
+
+ :inccode:.nbody_ind1.rb+find_next_particle
+
+*Bob*: Here we loop over all particles, to find the particle with the
+earliest next sales date <tt>next_time</tt>.  The method
+<tt>find_next_particle</tt> then returns the body that has the smallest
+<tt>next_time</tt> value.
+
+*Alice*: So time is marching forward.  When we enter
+<tt>find_next_particle</tt>, the +NBODY+ time <tt>@time</tt> has a certain
+value.  We then are given a body +b+ which has a value <tt>b.next_time</tt>
+for which we know that <tt>b.next_time > @time</tt> and we also know that
+for all other bodies +ob+ we have <tt>ob.next_time >= b.next_time</tt>.
+
+*Bob*: Correct.
+
+*Alice*: This means that in the interval between <tt>@time</tt> and
+<tt>b.next_time</tt> there is nothing that needs to be done.  Then we
+set the +NBody+ time <tt>@time</tt> equal to <tt>b.next_time</tt>, and
+we push particle +b+ forwards by one step.
+
+Having done that, we again look for the next particle, through a new
+call within +evolve+ to <tt>find_next_particle</tt>.  Perhaps the time
+for the newly found particle is the same as that for the previous
+particle, in which case <tt>@time</tt> doesn't change; perhaps it is
+later, in which case <tt>@time</tt> is updated to the latest sales
+date of the new particle.
+
+Okay, I think I got it!  I just had to reconstruct the steps for myself.
+This is not a trivial algorithm!
+
+*Bob*: As always, it is all pretty clear once you understand it clearly,
+but I must admit, it took me quite a while to figure it out, the first
+time I came across an individual time step code.
+
+== Output
+
+*Alice*: We're almost there.  I just have to figure out now how the
+particles are synchronized before you do an output, either a full
+particle output in terms of a snapshot, at time <tt>t_out</tt>, or a
+diagnostics output at time <tt>t_dia</tt>.
+
+Let me put the need for synchronization in perspective.  In the case
+of our constant time step code <tt>nbody_cst1.rb</tt>, synchronization
+was trivial: in typical usage, you specify output times that are multiples
+of the prescribed time step.  And if you were to set a time step to, say,
+0.01 and an output time to an incommensurable time 1/3, then the code would
+slightly overshoot, and give the output at time 0.34, instead of time
+0.333333.  We could have added an option to allow us to shrink the
+last time step in such a case, to reach the value 1/3 exactly, at
+least within double precision.  However, there was no pressing reason
+to do so.
+
+In the case of our shared time step code <tt>nbody_sh1.rb</tt>, we did
+build in such an option.  Invoking it by default would let the code
+overshoot, since in general the chance is virtually zero to get
+commensurability between a prescribed output time and dynamically
+adjusted time step values.  However, by invoking the code with the
+option <tt>nbody_sh1.rb --exact_time</tt>, we could force the code to
+halt at the exact time desired.  This was essential for us in order to
+measure the phase space distances between different N-body systems
+generated in the output of different runs.
+
+Now in the case of our individual time step code <tt>nbody_ind1.rb</tt>,
+we have no choice.  We cannot afford the luxury of skipping synchronization,
+since in that case we would get an output of a bunch of particles, all at
+different times.  We couldn't even compute the energy of sych a system!
+And this is the reason that you synchronize, for every type of output.
+
+*Bob*: Yes, that is the big picture.  Note, however, that my insistence
+on synchronization is not the only solution.  I wanted to get
+something coded up quickly, and I knew it was essential for measuring
+energy conservation, so I implemented syncing by default.  However, if
+you just want to make a dump of the system, to allow future restarts,
+there is no reason to insist on all the particles having their state
+set at the same time.
+
+*Alice*: Ah, yes, of course, I had forgotten that.  Indeed, if you
+_do_ synchronize, you are guaranteed _not_ to follow the same trajectory
+when you restart from an earlier output.  We showed this in the previous
+volume, in the case of a shared time step code.
+
+Well, what do you think, shouldn't we implement such a `ragged' output,
+with the orbits of different particles extending in time to different
+distances?
+
+*Bob*: Ragged?
+
+*Alice*: I'm trying to visualize what is going on.  I can see a picture
+in front of me, in spacetime, with each particle following a worldline,
+where some worldlines are extended further than others, like a ragged
+carpet where the different strands have different lengths.
+
+== Wordlines and Worldpoints
+
+*Bob*: You always manage to complicate things!  As soon as you understand
+how something works in three dimensions, you add another dimension for
+good measure!
+
+*Alice*: I'm serious, though.  I do think it may be an interesting way
+of looking at the evolution of an N-body system.  Normally we
+associate a spacetime view with special relativity, where particles
+follow worldlines in space and time, but there is no reason not to use
+such a picture in classical mechanics as well.
+
+*Bob*: So instead of talking about the N-body problem, from now on you
+want to talk about the N-worldline problem?
+
+*Alice*: Well, why not?
+
+*Bob*: I know why not.  Nobody will understand what you're talking about.
+
+*Alice*: We'll worry about that later.  Why not pursue this idea for a
+moment.  Rather than thinking in terms of a bunch of separate bodies,
+as isolated point masses in 3-D, it may be more natural to think of
+them as strings in 4-D.  Such a picture could actually be helpful in
+visualizing the basic idea of an individual time step code.
+
+*Bob*: A string theory for classical gravity?
+
+*Alice*: If you like!  But without Calabi-Yau manifolds, don't worry!
+We'll try to keep it simple.
+
+*Bob*: What are Calabi-Yau manifolds?
+
+*Alice*: Something quite a bit more difficult to visualize than
+individual time step algorithms.  Forgot about that.
+
+*Bob*: With pleasure; life is already complicated enough.
+So instead of having N particles in space, you want us to look at N
+worldlines in spacetime.  And each worldline has a number of knots,
+one at each point where we compute the positions and velocities.
+Do you want to call those knots worldpoints?
+
+*Alice*: That would be a natural term, although I haven't heard it before.
+But why not?  In special relativity textbooks, these points in 4-D are
+called events, since they are associated with a particular time and place.
+However, the word worldpoint is more descriptive, in that they convey the
+notion that they belong to a particular worldline.  Different worldpoints
+on the same worldline then share the same <tt>body_id</tt> identity, but
+are different in having different values for the time <tt>@time</tt>
+
+*Bob*: Taking a time step is then a temporal operation, while syncing
+for output is a spatial operation?
+
+*Alice*: You're getting it!  See how natural it is to view the N-body
+problem in four dimensions?
+
+*Bob*: The N-worldline problem.
+
+*Alice*: I'm happy to keep calling it the N-body problem, not to worry.
+And I do think this way of looking at things has mileage.  Synchronization
+means constructing a cross section of the full bundle of worldline with a
+hypersurface at a constant time.
+
+*Bob*: And what is the mileage in being abstract to that degree?
+
+*Alice*: Let me think about it a bit more, and continue tomorrow.
+
+*Bob*: Good idea: with all this talking about spacetime, we forgot the
+time.  It's getting late.
+
+*Alice*: Ah, but before we forget, did you test your individual time step
+scheme, to make sure it worked?
+
+*Bob*: I did, but just to check, and to show you it's in good shape, let's
+do a quick run.
+
+== Verification
+
+*Alice*: Let's take all three codes we have now, for constant, shared,
+and individual time steps.  And let's give them a really good workout,
+pushing toward machine accuracy.
+
+*Bob*: We may as well.  Let's start with the same initial conditions:
+
+ :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby acsnumber.rb > test.in
+
+I will repeat the two previous runs, with a ten times shorter time step,
+and then treat the new code in the same way:
+
+ :commandoutput: ruby nbody_cst1.rb -d 0.0001 -t 1 < test.in > tmpc.out
+ :commandoutput: ruby nbody_sh1.rb -t 1 -d 0.001 --exact_time < test.in > tmps.out
+ :commandoutput: ruby nbody_ind1.rb -t 1 -d 0.001 < test.in > tmpi.out
+
+*Alice*: And now let's check whether the results are really similar:
+
+ :commandoutput: cat tmpc.out tmps.out | ruby acsdiff.rb
+ :commandoutput: cat tmps.out tmpi.out | ruby acsdiff.rb
+
+*Bob*: I'd say so!  Hard to get better within double precision accuracy.
+
+*Alice*: Yes: I think we can declare success.
+
+

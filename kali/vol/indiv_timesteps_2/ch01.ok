@@ -1,0 +1,286 @@
+= The Basic Idea
+
+== The Need for a Predictor
+
+*Alice*: We now have a code for constant time steps, and one for variable
+but shared time steps.  It's time to bite the bullet, and start
+working on a code where each particle will have its own individual
+time step.
+
+This will be quite complicated, but it is certainly necessary.  When two
+particles approach each other closely, we don't want to force all
+other particles that are far away to take the same small time steps as
+the closely approaching particles will take.
+
+I've never coded up such a scheme, and I've never seen it in text
+books on numerical integration either.  It seems to be a special trick
+that is used in astrophysics, in the stellar dynamics community.
+I presume that you have some experience with . . . why are you smiling?
+
+*Bob*: Yesterday, after we made such strides with our shared time step
+code, I just couldn't stop.  I've been hacking away the whole evening,
+and I must admit, a good deal of the night.  But I now have a working
+individual time step version!  It's right here under our fingertips,
+in file <tt>nbody_ind1.rb</tt>.
+
+*Alice*: So that's why you are smiling, you have every right to do so!
+
+*Bob*: And I must admit, yes, I do have some experience.  In no way could
+I have come up with all the tricks of the trade in just one night.  The
+most tricky thing is to visualize the scheduling requirements.  But why
+talk about it abstractely if I can show you concretely what I did?
+
+*Alice*: Please do!
+
+*Bob*: First of all, I limited myself to the Hermite scheme.
+
+*Alice*: Why?  After you had derived all those nice integrators, why
+not carry them over?
+
+*Bob*: I can see that you don't have experience with individual time step
+schemes.  And in that light, it certainly is a fair question.  The answer
+is that not every algorithm comes with a predictor.
+
+== Crossing the Road
+
+*Alice*: A predictor?
+
+*Bob*: Yes.  A predictor.  Okay, lets start at the basics.  If particles
+have individual time steps, how do you think a single particle will
+make its next step?
+
+*Alice*: That will depend on the algorithm.
+
+*Bob*: Let's say that you have a Runge-Kutta scheme.  For definiteness,
+let us take the second-order Runge-Kutta scheme <tt>rk2</tt> that we have
+been using.
+
+*Alice*: Well, in that case it will first make a half-step, with a length
+of <tex>$0.5 dt$</tex>.
+
+*Bob*: How will our particle take that step?
+
+*Alice*: Is this a riddle?
+
+*Bob*: No, I'm serious.  How does the particle step forward?
+
+*Alice*: How does the chicken cross the road.  Well, of course, you take
+the velocity and acceleration . . .
+
+*Bob*: . . . How do you obtain the acceleration?
+
+*Alice*: In the usual way, as the inverse square of the distance between
+. . . 
+
+*Bob*: . . . How do you determine the distance?
+
+*Alice*: You take the position of the other particle and . . .
+
+*Bob*: . . . How do you know the position of the other particle?
+
+*Alice*: You look it up!  Will you never let me finish a sentence?
+
+*Bob*: I just did.  Now, how do you look it up?
+
+*Alice*: You look at . . . ahaha!  Now I get it.  The other particle has
+a different time step size, so it will have a position all right, but
+a position that is valid for a different time than the time for which
+the position of our particle is valid.
+
+*Bob*: So we have to extrapolate the position of the other particle, to
+predict where it will be by the time we need its position.
+
+*Alice*: Hence the need for a predictor.
+
+*Bob*: Exactly.
+
+*Alice*: That is tricky indeed.  How do you use a Runge-Kutta scheme to
+provide a predictor?
+
+*Bob*: The answer is: you don't.  Or at least astrophysicists don't.
+They tend to stick to a very small set of algorithms with known predictors.
+
+*Alice*: But wait a minute.  For a second order Runge-Kutta, it should not
+be too hard to construct a predictor!
+
+*Bob*: That may be, but I'm sure it's non-trivial already for a fourth-order
+Runge-Kutta.  And this is why you've never heard of a code for collisional
+stellar dynamics that uses a Runge-Kutta.
+
+*Alice*: Ah, is that the reason that people only use Hermite and multi-step
+methods?
+
+*Bob*: It's not the only reason, I think, but certainly one of the reasons.
+
+*Alice*: Not a very good reason, for sure.  Just the fact that something is
+not so easy to do doesn't mean you shouldn't try!  I'm happy to start with
+your Hermite implementation, but I sure would like to try other ones as well.
+Let's set ourselves a goal, to make a fourth-order Runge-Kutta integrator!
+
+*Bob*: That's quite a challenge.  In the almost half century that astronomers
+have worked with individual time steps, I've never seen or heard about
+a Runge-Kutta implementation.  But why not?  If we succeed, it would
+mean that in at least one respect we would be ahead of the pack.
+
+*Alice*: I'd love to see that!  But okay, for now let's be content with
+Hermite.  Can you show me what you did?
+
+== A Latest Sales Date
+
+*Bob*: Let me skip the start-up phase for now.  Often in life, it is not
+so easy to start at the beginning.  Let's start in the middle instead.
+Imagine that all of our particles have already taken at least one step.
+Let me show you how which particle takes the next step.
+
+*Alice*: How which what?
+
+*Bob*: There are two questions here: at any given time we first have to
+determine _which_ particle needs to take a step, and then we have to
+figure out _how_ that step can be taken.
+
+*Alice*: I'm all ears.
+
+*Bob*: First a bit more background.  In the past, the state of each
+particle was characterized by a mass <tt>@mass</tt>, position
+<tt>@pos</tt>, and velocity <tt>@vel</tt>, all given at a shared
+system time <tt>@time</tt>, an instance variable of the class +NBody+.
+In the case of individual time steps, each particle has its own time
+<tt>@time</tt>, which is now an instance variable of the class +Body+.
+
+In addition, since each body has its own time step, it has a predicted
+time <tt>@next_time</tt>, again different for each body, which is the
+time of completion of the next time step: <tt>@next_time - time</tt> is
+by definition the indivdual time step of the particle.
+
+The concept of a <tt>@next_time</tt> is an important one: it plays the
+role of a latest sales date.  If you go to the store to buy some cookies,
+you can look at the box, and read the latest sales date.  If that date is
+in the past, you probably don't want to buy the cookies, since you can't
+trust them to be fresh enough.
+
+*Alice*: Though they won't go bad overnight, as soon as the latest sales
+date has passed.
+
+*Bob*: Neither will our particles lose predictability completely, after
+<tt>@next_time</tt>, but still, it is a good measure of the time until
+which we can predict the position of a particle.  If another particle
+needs to know the position of our particle at time +t+,, there is no
+problem as long as <tt>t <= @next_time</tt>.
+
+To sum up: each particle carries with it a predictor that allows it to
+predict its own position during the interval <tt>[ @time, @next_time ]</tt>.
+
+*Alice*: If another particle asks for the position of our particle at time
++t+, within that interval, how does our particle communicate its predicted
+position?
+
+*Bob*: Through its instance variable <tt>@pred_pos</tt>.  Here is the hand
+shaking mechanism.  First the other particle sends the time for which
+it wants to get the information.  If the time is outside the proper interval,
+our particle will complain.  If the time is within the interval, our
+particle will oblige, and predict its position and velocity, and store
+those values in the variables <tt>@pred_pos</tt> and <tt>@pred_vel</tt>.
+The other particle can then read off the values, and determine the
+acceleration and jerk exercised on itself by our particle.
+
+*Alice*: Ah yes, jerk, we are dealing with a Hermite scheme, and therefore
+you have to predict the velocity as well.
+
+*Bob*: Indeed.  For any other scheme that we have implemented so far,
+it would suffice just to predict the position, since we would only
+need the acceleration.
+
+*Alice*: So our +Body+ class now has four extra instance variables,
+over and above what we had in the shared time stap class: <tt>time</tt>,
+<tt>@next_time</tt>, <tt>@pred_pos</tt>, and <tt>@pred_vel</tt>.
+
+*Bob*: Indeed.
+
+== Scheduling
+
+*Alice*: You mentioned that you wanted to explain how to find the particle
+that needs to be moved, before explaining how to move it.
+
+*Bob*: Yes, but we need still more background first.  Let us again call +t+
+the time at which we decide to look at the system.  We know for sure that
+for all particles, <tt>@time <= t</tt> and <tt>@next_time >= t</tt>.
+
+*Alice*: Why?
+
+*Bob*: Whenever a particle runs out of predictive power, it has to be
+updated immediately.  In other words, as soon as the latest sales date,
+<tt>@next_time</tt>, is passed, the particle position needs to be updated.
+This means that the particle takes a step at this time, and in doing so,
+it acquires a new latest sales date.  So if all marches well, the latest
+sales date for each particle will remain in the future, or at worst will
+be in the present, never in the past.  This means <tt>@next_time >= t</tt>.
+
+*Alice*: Fair enough.
+
+*Bob*: And since you cannot predict particles past their
+latest sales date, and since latest sales dates can be arbitrarily
+close to the present time +t+, no particle can take a step in the future.
+Only when the time +t+ has caught up with the latest sales date 
+<tt>@next_time</tt> of a particular particle, will that particle make a
+step.  When it does so, its new time <tt>time</tt> will take on the same
+value that <tt>@next_time</tt> had, which at the time of the step taking
+is exactly +t+.  From that time on, +t+ will march forward, while
+<tt>@time</tt> is frozen until the next step.  Hence <tt>@time <= t</tt>.
+QED.
+
+*Alice*: Hmmm.  I sort-of get it, but I must admit, I don't see it very
+clearly yet.  I bet looking at the code will makes things clearer.
+
+*Bob*: It always does.  Here is how it works.  Let's jump right into the
+heart of the matter, the method +evolve+.  For comparison, here is
+what +evolve+ looked like in the case of shared time steps:
+
+ :inccode:.nbody_sh1.rb+evolve
+
+And here is how I rewrote it for the individual time step case:
+
+ :inccode:.nbody_ind1.rb+evolve
+
+== Back to How and Which
+
+*Alice*: What does +startup+ do?
+
+*Bob*: Let's look at that later.  It records the initial total energy
+<tt>@e0@</tt>, as in the shared time step case, and it does a lot more.
+Other than that, the parts up to the +while+ loop are the same in both
+case.  So let us jump to the +while+ loop, for now.
+
+In the case of shared time steps, we first determined the size of the
+next (shared) time step, and then we pushed all particles forward, through
+the command <tt>send(c.method)</tt>.  Following that, there are only some
+administrative issues, related to reporting diagnostics and orchestrating
+output.  These issues are quite similar in both cases.  Note that in the
+case of individual time steps, I've made sure to synchronize the particles
+will a call to +sync+; but again, let's leave that for later.
+
+*Alice*: Are you leaving anything for now?
+
+*Bob*: Yes.  Do you remember the <i>how which</i> question?
+
+*Alice*: You were going to tell me how to push which particle forward.
+That was quite a while ago.
+
+*Bob*: Well, we needed to lay some foundations.  Now I can show you.
+The _which_ part is decided right at the start of the +while+ loop,
+by a call to <tt>find_next_particle</tt>.  The _how_ part is decided
+three lines further on: the particle +np+ that is found is being asked
+to take a time step, through its instance method <tt>autonomous_step</tt>.
+
+*Alice*: Why autonomous?
+
+*Bob*: This is the generic situation, well after the start and well before
+the finish of a calculation.  As you can see from the +if+ condition
+one line earlier, an autonomous step is only allowed if the end of the step
+<tt>np.next_time</tt> is still earlier than the finishing time <tt>t_end</tt>.
+If that is not the case, we have to wrap it, and start synchronizing
+everything.
+
+*Alice*: Can you show me what happens in the generic case, with an autonomous
+step?
+
+*Bob*: For that, we have to go to the +Body+ class.
