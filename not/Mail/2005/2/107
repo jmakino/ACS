@@ -1,0 +1,61 @@
+Date: Mon Feb 07 09:08:35 JST 2005
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > How about the following idea?  Any heading "ACS" is immediately
+ > followed by some form of History information.  So instead of your
+ > two examples:
+ > 
+ > I suggest the following "something else":
+ > 
+ > ACS
+ >   History
+ >     ...
+ >   Nbody
+ >      ...
+ > SCA
+ > ACS
+ >   History
+ >     ...
+ >   Nbody
+ >      ...
+ > SCA
+ > 
+ > Then, whenever another program takes a piece of data from a previous
+ > program, that piece of data inherits the original history, immediately
+ > after ACS.
+
+Okay, I think I also thought of that option, but omitted it since it
+looked too redundant. But I think you are right. It makes more sence
+to have each ACS block its history, at least compared to my option 2.
+
+ > Here is the idea.  When we evolve a Plummer model, the output would be:
+ > 
+ > ACS
+ >   History
+ >     Command
+ >       Command Line
+ >         ruby mkplummer.rb -n 5 -s 1
+ >       Acs version
+ >         1.1.2.alpha
+ >       Situation
+ >         piet@kamuy  Sun Feb  6 10:26:01 EST 2005
+ >     Command
+ >       Command Line
+ >         ruby world3.rb -t 1
+ >       Acs version
+ >         1.1.2.alpha
+ >       Situation
+ >         piet@kamuy  Sun Feb  6 10:26:02 EST 2005
+ >   Nbody 
+ > 
+ > And I think we should then follow your last suggestion for input:
+
+ > Does this make sense?
+
+Ya. I'll try something (well, when I can find time...)
+
+Jun
+

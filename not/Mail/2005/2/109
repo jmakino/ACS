@@ -1,0 +1,43 @@
+Date: Mon Feb 07 10:13:10 JST 2005
+
+From: Piet Hut <piet@ias.edu>
+
+Jun, 
+
+ > > Yes, I thought about that too.  Perhaps we should just wait a few more
+ > > months, and by the time we get a binary tree version of the kali code
+ > > ready, we can think of making one default library structure for at least
+ > > that code, and auxiliary programs.
+ > 
+ > Well, actually, I do not think we'll have any better idea in
+ > future. We basically need to define the library structure which can
+ > survive the changes we make in future.
+ > 
+ > So I think we need to clarify *what we want to do*.
+ > 
+ > I guess the things we want are
+ > 
+ >  a) using command script defined in some other volume
+ >  b) using library defined in some other volume
+ > 
+ > Anything else?
+ > 
+ > If a and b are the only things we want, we can simply define the
+ > directories for command script and libraries, and have "make install"
+ > to copy them from the source (vol) directory to there.
+ > 
+ > We probably want to have some check script which test if more than one
+ > vol directories are exporting the same file or not.
+
+Yes, that is a GREAT idea ! ! !
+
+I can appreciate how GREAT that idea is, because I have spent much
+time this weekend chasing subtle differences between runs with
+slightly different definitions of slightly different things, which
+has been very ennoying.  Such automatization should at least make
+trouble shooting MUCH easier!
+
+This would be WONDERFUL!
+
+Piet
+

@@ -1,0 +1,25 @@
+Date: Mon Feb 07 10:17:06 JST 2005
+
+From: Piet Hut <piet@ias.edu>
+
+Jun,
+
+By the way:
+
+The old "vol-13/kali1.rb" code, which I renamed "vol-7b/world4.rb"
+code now has the following modifications:
+
+1) I absorbed your nice Runge-Kutta scheme, and svn del the two
+   parallel versions we had
+
+2) I changed the INIT_TIMESCALE_FACTOR constant that we introduced
+   for the multistep startup from a CONSTANT to a command line option:
+   -f allows you to change it, and the default is 0.01 .
+   The reason I did this, is that I had two versions of the code,
+   one with 10^-6 and one with 10^-2, and I was very puzzled why
+   I got slightly different results after a few time step . . . .
+
+3) I added a dump option -z that outputs all world points
+
+Piet
+
