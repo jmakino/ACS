@@ -1,0 +1,203 @@
+<!--
+  This is the DTD for the XML produced by the RDoc package.
+
+  Some conventions:
+
+  Cross references:
+     - targets are labeled using id="..." attributes
+     - references use conventional <a href="...">...</a> notation
+
+  
+ -->
+
+
+<!-- ==================== common entities ======================== -->
+
+<!ENTITY % idattr
+ "id    CDATA  #IMPLIED"
+>
+
+<!ENTITY % name-id
+ "id    CDATA  #IMPLIED
+  name  CDATA  #REQUIRED"
+>
+
+<!-- a name or a reference to a name -->
+
+<!ENTITY % aref "(#PCDATA | a)*">
+
+<!-- the contents of a markup section -->
+
+<!ENTITY % markup.attrs    "b | tt | em">
+
+<!ENTITY % markup.lists    "ul | ol | dl | table ">
+
+<!ENTITY % markup.heading  "h1 | h2 | h3 | h4 | h5 | h6 ">
+
+<!ENTITY % markup.internal "#PCDATA | p | a | pre | hr | %markup.attrs; | %markup.lists;">
+
+<!ENTITY % flow            "(#PCDATA | %markup.attrs;)*">
+
+<!ENTITY % markup          "(%markup.internal;)*">
+
+<!ENTITY % toplevel        "(%markup.internal; | %markup.heading;)*">
+
+<!-- ================== document structure ======================= -->
+
+<!ELEMENT rdoc (file-list?, class-module-list?)>
+
+<!-- ================== file-list ================================
+
+  A file list contains a <file> entry for every source file
+  processed.
+
+ -->
+
+<!ELEMENT file-list (file*)>
+
+<!ELEMENT file (file-info, description?, contents)>
+<!ATTLIST file %name-id;>
+
+
+<!ELEMENT file-info (path, dtm-modified)>
+
+<!-- the full path to the file -->
+
+<!ELEMENT path (#PCDATA)>
+
+<!-- last modified dtms of file -->
+
+<!ELEMENT dtm-modified (#PCDATA)>
+
+
+<!-- =================== class list ======================== -->
+
+<!ELEMENT class-module-list (Class|Module)*>
+
+<!ELEMENT Class (classmod-info, description?, contents)>
+<!ATTLIST Class %name-id;>
+
+<!ELEMENT Module (classmod-info, description?, contents)>
+<!ATTLIST Module %name-id;>
+
+<!ELEMENT classmod-info (infiles?, superclass?)>
+
+<!ELEMENT infiles (infile*)>
+
+<!ELEMENT infile %aref;>
+
+<!ELEMENT superclass %aref;>
+
+
+<!-- ==================== description =========================== -->
+
+<!ELEMENT description %toplevel;>
+
+<!-- ==================== contents ==============================
+
+  These are the contents, shared between files and classes
+
+ -->
+
+<!ELEMENT contents (required-file-list?,
+                    attribute-list?,
+                    included-module-list?,
+                    method-list?)>
+
+<!ELEMENT required-file-list (required-file*)>
+
+<!ELEMENT required-file EMPTY>
+<!ATTLIST required-file
+  name     CDATA  #REQUIRED
+  href     CDATA  #IMPLIED
+>
+
+<!ELEMENT attribute-list (attribute*)>
+
+<!ELEMENT attribute (attribute-rw, description)>
+<!ATTLIST attribute
+  name     CDATA  #REQUIRED
+>
+
+<!ELEMENT attribute-name (#PCDATA)>
+<!ELEMENT attribute-rw   (#PCDATA)>
+
+<!ELEMENT included-module-list (included-module*)>
+
+<!ELEMENT included-module EMPTY>
+<!ATTLIST included-module
+  name    CDATA    #REQUIRED
+  href    CDATA    #IMPLIED
+>
+
+<!ELEMENT method-list (method*)>
+
+<!ELEMENT method (parameters, description?, source-code-listing?)>
+<!ATTLIST method
+  name     CDATA  #REQUIRED
+  id       CDATA  #REQUIRED
+  type     (Public | Private | Protected)  #REQUIRED
+  category (Instance | Class)              #REQUIRED
+>
+
+<!ELEMENT parameters (#PCDATA)>
+
+<!ELEMENT source-code-listing (#PCDATA | span)*>
+
+<!-- for marking up code
+     kw  - keyword
+     cmt - comment
+     str - string
+     re  - regexp
+-->
+
+<!ELEMENT span (#PCDATA)>
+<!ATTLIST span
+  class   (kw | cmt | str | re)   #REQUIRED
+>
+
+<!-- ================== cross references ================== -->
+
+<!ELEMENT a (#PCDATA)>
+<!ATTLIST a
+  href  CDATA  #REQUIRED
+>
+
+<!-- ================== markup ============================ -->
+
+<!ELEMENT p %markup;>
+
+<!ELEMENT h1 %flow;>
+<!ELEMENT h2 %flow;>
+<!ELEMENT h3 %flow;>
+<!ELEMENT h4 %flow;>
+<!ELEMENT h5 %flow;>
+<!ELEMENT h6 %flow;>
+
+<!ELEMENT b  %markup;>
+<!ELEMENT tt %markup;>
+<!ELEMENT em %markup;>
+
+<!ELEMENT pre (#PCDATA)>
+
+<!ELEMENT hr EMPTY>
+<!ATTLIST hr
+  size    CDATA  #IMPLIED
+>
+
+
+<!ELEMENT ul (li*)>
+<!ELEMENT ol (li*)>
+<!ELEMENT li %markup;>
+<!ELEMENT dl (dt|dd)+>
+<!ELEMENT dt %markup;>
+<!ELEMENT dd %markup;>
+
+<!ELEMENT table (tr)+>
+
+<!ELEMENT tr (td)+>
+
+<!ELEMENT td %markup;>
+<!ATTLIST td
+  valign CDATA #FIXED "top"
+>

@@ -1,0 +1,99 @@
+#!/usr/local/bin/ruby -w
+#
+# rdocfo
+
+require 'getoptlong'
+require 'tempfile'
+require 'rdoc/rdoc'
+
+def help
+  $stderr.print <<EOM
+
+rdocfo -- utility to semi-automate XSL-FO output from RDoc processor
+          (using Saxon)
+
+Options:
+
+  -d, -dir <directory>
+           specify directory to run RDoc on
+  -f, --xmlfile <filename>
+           use specified RDoc XML file instead of running rdoc
+  -h, --help
+           print this message
+  -i, --interfile <filename>
+           use this intermediate XML file
+  -o, --fofile <filename>
+           specify XSL-FO output file (default: rdoc.fo)
+  -x, --xsldir <directory>
+           specify location of XSL stylesheets
+
+- Defaults are set up to run from rdoc/contrib/xslfo/demo and operate
+on the rdoc installation. 
+
+- Directories and files are assumed to be relative to current directory,
+unless they start with "#{File::Separator}".
+
+EOM
+end
+
+opts = GetoptLong.new(
+		      [ "--dir", "-d", GetoptLong::REQUIRED_ARGUMENT ],
+		      [ "--xsldir", "-x", GetoptLong::REQUIRED_ARGUMENT ],
+		      [ "--xmlfile", "-f", GetoptLong::REQUIRED_ARGUMENT ],
+		      [ "--interfile", "-i", GetoptLong::REQUIRED_ARGUMENT ],
+		      [ "--fofile", "-o", GetoptLong::REQUIRED_ARGUMENT ],
+		      [ "--help", "-h", GetoptLong::NO_ARGUMENT ]
+		      )
+
+opthash = {}
+opts.each {|opt,arg| opthash[opt] = arg}
+
+if opthash["--help"]
+  help
+  exit
+end
+
+# The defaults are as per running this from rdoc/contrib/xslfo/demo.
+rdocdir = opthash["--dir"] || "../../.."
+fofile = opthash["--fofile"] || "rdoc.fo"
+xmlfile = opthash["--xmlfile"]
+interfile = opthash["--interfile"]
+xsldir = opthash["--xsldir"] || "../../../contrib/xslfo"
+
+(fofile,xmlfile,interfile,xsldir) = [fofile, xmlfile, interfile,xsldir].map do |file|
+  if file &&! /^#{File::Separator}/.match(file)
+    Dir.pwd + "/" + file 
+  else
+    file
+  end
+end
+
+Dir.chdir(rdocdir)
+
+out1 = if xmlfile then File.new(xmlfile) else Tempfile.new("out1") end
+out2 = if interfile then File.new(interfile) else Tempfile.new("out2") end
+
+unless xmlfile
+  $stdout = out1
+
+  # Inline version of the rdoc script.
+  begin
+    r = RDoc::RDoc.new
+    r.document(%w{--fmt xml})
+  rescue RDoc::RDocError => e
+    $stderr.puts e.message
+    exit(1)
+  end
+  
+  out1.close(false)
+  out1.open
+end
+
+system "saxon #{out1.path} #{xsldir}/convert.xsl > #{out2.path}"
+
+unless interfile
+  out2.close(false)
+  out2.open
+end
+
+system "saxon #{out2.path} #{xsldir}/rdoc.xsl > #{fofile}"

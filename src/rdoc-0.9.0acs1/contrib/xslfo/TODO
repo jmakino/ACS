@@ -1,0 +1,10 @@
+XSL-FO stylesheets for RDoc
+David Alan Black
+
+$Id: TODO,v 1.1 2002/03/20 23:41:02 wobblini Exp $
+$Author: wobblini $
+
+
+* Method descriptions aren't being handled (oversight).
+* Source code annoying doesn't do line breaks on consecutive keywords
+

@@ -1,0 +1,21 @@
+The "rdocfo" script will create XSL-FO output -- by default (i.e.,
+with no command-line arguments) for the RDoc installation itself.
+You need Saxon (the command "saxon" in your path), or you can hack
+the script to use a different XSLT processor.
+
+Assuming "saxon" works, just run:
+
+  rdocfo
+
+and you should end up with a file called "rdoc.fo".
+
+You can also do "rdocfo --help" to see the options available; you can
+use those options to use rdocfo more generally.
+
+
+David Alan Black
+dblack@candle.superlink.net
+
+---------------------------------------------
+$Id: README,v 1.1 2002/03/18 02:24:01 wobblini Exp $
+$Author: wobblini $

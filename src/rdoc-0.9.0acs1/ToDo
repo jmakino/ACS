@@ -1,0 +1,6 @@
+- the current HTML output is not particularly portable. I need someone 
+  who knows browsers to come up with some HTML that works everywhere.
+
+- add XML export (to drive UML generation tools among other things)
+
+- tidy parse.rb

@@ -1,0 +1,6 @@
+Contributions to RDoc:
+
+xslfo/    Support for Formatting Objects, allowing RDoc to generate
+          output in PDF, PostScript, etc
+
+

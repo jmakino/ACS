@@ -1,0 +1,106 @@
+= XSL-FO (Formatting Object) stylesheets for RDoc
+
+
+== WHAT
+
+This package provides XSL-FO transformation stylesheets to transform
+RDoc XML output into XSL formatting object (XSL-FO) files.  These
+files, in turn, can be processed to produce PDF, DVI, PostScript, and
+other types of output suitable for printing or viewing.
+
+The output you'll get (the XSL-FO file) is organized like this:
+
+     Title page
+     Files:
+       - list of files
+       - entry for each file with info and description
+     Classes:
+       - list of classes
+       - entry for each class
+     Modules:
+       - list of modules
+       - entry for each module
+     Source code for classes (sorted by class/method)
+     Source code for modules (sorted by module/method)
+
+
+== WHY
+
+XSL-FO is mainly for producing nicely formatted printed output.  The
+goal of these stylesheets is to enable people to do exactly that, with
+RDoc output.  You can also create a PDF version of RDoc output.  The
+PDF version includes internal links among files, classes, methods, and
+source code.
+
+
+== HOW
+
+To use these stylesheets, you need an XSLT processor, such as Michael
+Kay's Saxon (http://saxon.sourceforge.net).  You also need a
+post-processor for the XSL-FO files.  I've developed the stylesheets
+using PassiveTeX by Sebastian Rahtz.  PassiveTeX produces DVI files
+from XSL files; it also works in tandem with pdflatex to produce PDF
+output from XSL-FO input.
+
+Once you have the necessary tools in place, here's (an example of)
+what to do.
+
+1. Create an RDoc XML file:
+
+      rdoc --fmt xml > myfile.xml
+
+2. Run Saxon twice: first, on the existing XML file (which produces a
+   new XML file, which is needed by the XSL-FO stylesheets); second,
+   on the new XML file:
+
+      java com.icl.saxon.StyleSheet myfile.xml /path/to/convert.xsl > second.xml
+      java com.icl.saxon.StyleSheet second.xml /path/to/rdoc.xsl > myfile.fo
+
+    (Replace "/path/to/" with whatever's appropriate, of course.)
+
+    Now you have a file full of XSL-FO objects, in "myfile.fo".
+
+4. Run your postprocessing software on your .fo file.  For example, to
+   use PassiveTeX you would put this in a file (myfile.tex, say):
+
+      \def\xmlfile{myfile.fo}
+      \input xmltex.tex
+      \end{document}
+
+   and run LaTeX on it.  That will produce a DVI file (myfile.dvi).
+
+5. To get PDF output:
+
+      pdflatex "&pdfxmltex" myfile.fo
+
+   which will produce myfile.pdf.  You can also use the above myfile.tex
+   file and run:
+
+      pdflatex myfile
+
+6. You can also run your .fo file through FOP, Apache's XSL-FO
+   processor (http://xml.apache.org/fop) or any other XSL-FO
+   processor.  Note that FOP and PassiveTeX produce somewhat
+   different results.
+
+7. In the demo subdirectory, there's also a script called rdocfo,
+   which semi-automates the processing.  Run "rdocfo -h" to see
+   some options.
+
+
+== WHO
+
+ The RDoc XSL stylesheets are written and maintained by David Alan Black
+ (dblack@candle.superlink.net).  Feedback is welcome.
+
+
+== STILL TO COME
+
+See TODO.
+
+
+==== CVS info
+
+ $Id: README,v 1.9 2002/03/23 13:06:30 wobblini Exp $
+ $Author: wobblini $
+

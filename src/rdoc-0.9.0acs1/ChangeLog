@@ -1,0 +1,794 @@
+2003-03-09  Dave Thomas  <pragdave@wireless_5.local.thomases.com>
+
+	* install.rb: Fix problem where install script thought Darwin
+		was a Windows box.
+
+2003-03-08  Dave Thomas  <pragdave@wireless_5.local.thomases.com>
+
+	* markup/simple_markup/inline.rb: Undo experiment of 1/24 -
+		  allowing additional characters breaks escaping of inline
+		  sequences.
+
+2003-02-27  Dave Thomas  <pragdave@wireless_5.local.thomases.com>
+
+	* markup/sample/sample.rb: Forgot to change the sample when I
+		  changed the interface. Thanks to Barrie Stott for
+		  pointing this out.
+
+2003-02-20  Dave Thomas  <Dave@Thomases.com>
+
+	* markup/simple_markup/to_html.rb: Add smart quotes, but then
+	comment it out because many browsers seem not to support the
+	characters. Gie it a couple of months...
+
+2003-02-19  Dave Thomas  <pragdave@wireless_6.local.thomases.com>
+
+	* rdoc/parsers/parse_rb.rb: support :nodoc: for alias 
+
+2003-02-16  Dave Thomas  <pragdave@thomases.com>
+
+	* rdoc/parsers/parse_rb.rb: support :nodoc" for attr and attr_xxx
+
+2003-02-10  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/tgenerators/template/html.rb Fixup spacing if headlines
+
+2003-02-05  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parse_rb.rb: Generate better error for "class
+	fred".
+
+	Add Nathaniel Talbott's patch to preserve comments across
+	'private', 'protected', and 'public'.
+
+2003-01-27  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parse_rb.rb: Be cleverer about class << Constant,
+	correctly appending to an existing class if it can find one.
+
+2003-01-27  Nobu Nokada  <nobu.nokada@softhome.net>
+
+	* rdoc/parsers/parse_rb.rb:
+	  - here document without terminator hangs rdoc up.
+	  - should not truncate input content at __END__, it can appear\
+	    in literals.
+	  - anything after =end should be ignored.
+
+
+2003-01-24  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parse_rb.rb: Change handling of symbols. This now
+	strips off the leading ':', so that attributes now display as just
+	their names. This also fixes #673996 (private :name not working).
+
+	* markup/simple_markup/inline.rb: As an experiment, allow any
+	non-whitespace between *'s, +'s, and _'s, so that *thx1138* will
+	embolden the word, and _&^%&^%$_ will swear in italic.
+
+2003-01-20  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parse_c.rb: As a temporary move towards handling
+	commented out methods, we now ignore those whose rb_defines follow
+	a '//'. Also, be more liberal in the names of methods we recognize
+
+	* rdoc/parsers/parse_rb.rb: Now ignores class << <something>
+	unless <something> is 'self' _or_ the exact name of the enclosing class.
+
+	* rdoc/options.rb: Ensure help text goes to stdout.
+
+2003-01-13  Dave Thomas  <Dave@Thomases.com>
+
+	* (Changelog,README,NEW_FEATURE): Update spelling of show_hash and
+	inline_source to be show-hash and inline-source respectively
+	(thanks to Hugh Sasse for pointing these out)
+
+2002-12-25  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/html_generator.rb: Add support for aliases.
+
+2002-12-23  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parse_rb.rb: Add :args: method modifier
+
+2002-12-17  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/html_generator.rb: Add --include-line-numbers
+	command line option
+
+2002-11-30  Matt Armstrong  <matt@lickey.com>
+
+	* rdoc/parsers/parse_rb.rb
+	(RDoc::RubyParser::read_documentation_modifiers): don't
+	call sub! on nil.
+
+2002-10-28  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/template/html/html.rb (HEADER): Remove spurious
+	<html> tag
+
+2002-10-21  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parse_rb.rb: Expand tabs, and add the --tab-width
+	command line option.
+
+2002-10-16  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/template/html/html.rb (STYLE): Fix line-heigth
+	spelling. 
+
+2002-10-15  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc.rb: No longer check output directory when outputing to
+	stdout.
+	
+2002-10-14  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parse_rb.rb: Add :title: and :main: top-level
+	modifiers
+
+	* rdoc/code_objects.rb: Add #:doc: modifier to force documentation
+	of otherwise undocumented methods.
+
+	* rdoc/generators/html_generator.rb: Add new special for labeled
+	hyperlinks.
+
+	* rdoc/options.rb: Help output now goe to stdout.
+
+	* markup/simple_markup.rb: If you have lists whose only content is
+	headings, the fragment decoder was getting confused. Removed all
+	non-list list entries for now.
+
+2002-09-26  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parse_c.rb: Fix to parsing of RB_METHOD_FUNC
+	suggested by Patrick Bennet.
+
+2002-09-22  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/template/html/html.rb: Fially start implementing
+	-1 option for html.
+
+2002-09-18  Werner Neubauer <werner_n@gmx.de>
+	* rdoc/parsers/parse_rb.rb: parameter &proc is removed if directive
+	:yield: or :yields: was given for a method.
+	
+2002-09-18  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/template/html/html.rb et al: Add missing </html>
+	tags.
+
+2002-07-28  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parserfactory.rb etc...: Add various resets to
+	allow the api version to be called multiple times.
+
+	* rdoc/rdoc.rb (document): Use 'require' rather than load to load
+	in the generator.
+
+2002-07-22  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/options.rb: Ease up the test for 'dot' version, as the
+	1.8.6 required is only available in CVS right now.
+
+	* beta-2
+
+2002-07-16  Bil Kleb  <TheKlebs@Yahoo.Com>
+
+	* rdoc/rdoc.rb: Add require for Fortran 95 parser.
+	* rdoc/parsers/parse_f95.rb: Tracer bullet Fortran 95 parser.
+	* rdoc/generators/template/html/hefss.rb: Fortran 95-specific
+	template similar to kilmer.rb.
+
+2002-07-15  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parse_rb.rb: Handle "class << 'string'" and other
+	cases where the token following the '<<' doesn't respond to .name.
+
+2002-07-09  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parse_rb.rb: Fix problem with symbols being added
+	twice to listeners, which messed up source code listings
+
+2002-07-03  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/diagram.rb: Add a patch from Werner.
+
+	* rdoc/options.rb: Remove dot version test under Windows, and
+	require dot version 1.8.
+	
+
+2002-07-02  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/diagram.rb: Werner Neubauer 
+	<Werner.Ex.Neubauer@mchp.siemens.de> added a whole lot of new
+	diagramming support, so it now draws module relationships. He also
+	fixed a number of bugs in my code
+
+2002-06-30  Dave Thomas  <Dave@Thomases.com>
+
+	* code_objects/parse_c/parse_rb: (Bil Kleb) Remove causes of some
+	warnings, and fix Dave's notoriously bad grammar/spelling.
+
+2002-06-27  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parse_rb.rb: Ignore stuff after __END__. Remove
+	warning if argument to 'include' isn't a constant.
+	
+
+	* rdoc/code_objects.rb: Don't overwrite existing comments with a
+	blank one.
+
+	* dot/dot.rb: s/heigth/height/ (Bil Kleb)
+
+2002-06-20  Dave Thomas  <Dave@Thomases.com>
+
+	* install.rb (files): Glob out some common files.
+
+	* rdoc/parsers/parserfactory.rb: Eliminate the need for rdoc.rb to
+	know the actual extensions of files.
+
+	* rdoc/parsers/parse_c.rb: Fix problem with lexical state not
+	being correct if a function definition containing an operator
+	immediately followed an alias ending in an operator.
+
+	* rdoc/rdoc.rb: Fixed problem where RDoc didn't expand ~'s in $:
+	when looking for generators (Massimiliano Mirra) 
+
+2002-06-11  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parse_c.rb: Patches from Mike Witrant to support
+	.cc files, and to fix some bugs in C parsing. Added experimental
+	code for extracting C method bodies.
+	
+
+2002-06-05  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parse_rb.rb: Allow parentheses around the name of
+	an included module
+
+	* rdoc/code_objects.rb: I checked in a partial change which broke
+	class hierarchies. Fortunately some anonymous person came up with
+	a fix for me :)
+
+2002-05-20  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parserfactory.rb: Now prepend new parsers to the
+	list, so the last ones added are the first ones found. This
+	enables user-written parsers to override built-in ones.
+
+2002-05-13  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parsers/parserfactory.rb: Wasn't thinking straight when I
+	coded the default handling for returning a SimpleParser for
+	unknown file types.
+
+2002-05-09  Dave Thomas  <Dave@Thomases.com>
+
+	* all: Reorganize parsers to make it easier to add new ones 
+
+2002-05-01  Dave Thomas  <Dave@Thomases.com>
+
+	* install.rb (template): Use the correct installed name for the
+	Ruby interpreter (previously assumed it was always 'ruby'). Patch
+	from Kazuhiro NISHIYAMA (znz).
+
+2002-04-11  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/html_generator.rb: We were generating files for
+	:nodoc: classes, even though they weren't referenced from anywhere.
+
+2002-03-31  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/c_parse.rb: c_parse wasn't handling
+	define_class|module_under correctly.
+
+2002-03-30  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/template.rb: If you have >2 sub directories, the
+	template system was getting confused by the substitution
+	of %2f's for /'s. Also fix bug where template lines containing
+	HREFs were getting overwritten.
+	
+
+	* beta-1
+
+2002-03-29  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/xxx_generator.rb: Oops - fell into the old trap
+	of assuming ctime was time of creation. Removed all ctime
+	references.
+
+	* rdoc/parse.rb: We weren't picking up the documentation modified
+	for classes if the superclass was an expression.
+
+	* rdoc/options.rb: Fix stupid bug with 'generators' being
+	undefined if 'fot' is missing.
+
+2002-03-20    <dave@thomases.com>
+
+	* rdoc\generators\html_generator.rb: Fix the href for methods when
+	we generate a single file. It used to contain the class name, but
+	this isn't needed in one file.
+
+2002-03-12  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/chm_generator.rb: Include NaHi's patch to allow
+	cygwin to run hhc if there are spaces in the path.
+
+	* rdoc/rdoc.rb: Make the error about writing to an existing output
+	directory more explicit.
+
+	* rdoc/template.rb: Rewrite totally. Templates now resolve
+	symbol names using scopes, so we no longer have the problem
+	with resolving inner names in nested constructs. Fix up the
+	various templates accordingly. While we're in there, reduce the
+	space after a method name in the standard HTML template.
+
+2002-03-11  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: The character following a '\' in strings was
+	being swallowed if it wasn't a recognized escape character.
+
+2002-03-07    <dave@pragprog.com>
+
+	* rdoc\generators\chm_generator.rb: Add support for .chm file
+	generation
+
+2002-03-05  Dave Thomas  <Dave@Thomases.com>
+
+	* alpha-c released
+
+2002-03-04  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/rdf_generator.rb: Add initial RDF support.
+
+	* rdoc/options.rb: Add --opname option.
+
+	* rdoc/generators/xml_generator.rb: Now write xml to stdout.
+
+2002-03-03  Dave Thomas  <Dave@Thomases.com>
+
+	* dot/dot.rb: Fix warnings
+
+	* rdoc/generators/html_generator.rb: Fixed problem with failing to
+	escape method names containing < and & (reported by DAB).
+
+2002-03-03  Sean Russell <ser@germane-software.com>
+
+	* rdoc/options.rb (options): Add --exclude option 
+
+2002-03-02  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/html_generator.rb: Add support for link: hyperlinks.
+
+	* etc/rdoc.dtd: Make 'name' an attribute of <attribute>
+
+	* rdoc.rb: Added support for SimpleMarkup-only files (any file
+	not .rb or .c) which contain just a block comment.
+
+2002-02-28  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/code_objects.rb: Comments were being lost on attributes
+
+	* rdoc/rdoc.rb: Add xml support. Reorganize the template
+	directories. Add the -one-file option.
+
+2002-02-21  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Add :notnew: modifier to methods. This stops
+	#initialize being mapped automatically to ::new.
+
+	* rdoc/options.rb: Add --inline-source to allow source code to be
+	included in the body of the document, and not in popups.
+
+2002-02-19  Dave Thomas  <Dave@Thomases.com>
+
+	* markup/simple_markup.rb: Limit == header depth to 6
+
+	* rdoc/generators/html_template/standard.rb (BODY): Thanks to
+	MoonWolf for the --charset patch.
+
+2002-02-17  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Force auto-generated ::new method to be public.
+
+2002-02-15  Sergey Yanovitsky <Sergey.Yanovitsky@itgrp.net>
+
+	* rdoc/options.rb (options): Add ability to choose output image
+	format. 
+
+2002-02-15  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Fixed yet another bug with optional 'do' after
+	'while'. 
+
+2002-02-12  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/rdoc.rb: Fix silly bug with leading ./ on file names.
+
+	* rdoc/generators/html_template/standard.rb (STYLE): Drop the font
+	size of <pre> down to 1.1em.
+
+	* rdoc/generators/html_generator.rb: Sort list of classes and
+	modules in the summary page.
+
+	* rdoc/c_parse.rb: Add support for parsing C extensions.
+
+2002-02-11  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Handle case of "a = 2*(1+yield)", where
+	previously the ')' was being picked up as part of the yield
+	parameter. I don't think I can do much more without going for a
+	full parse.
+
+2002-02-10  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/diagram.rb: Make diagrams honor --quiet.
+
+	* MANIFEST: Separated out the main driver program from rdoc.rb,
+	so that it's now easier to embed.
+
+2002-02-08  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Christoph Rippel sent in a patch to remove the
+	messy eval and use Class.new instead. This also fixes a
+	compatibility problem with the latest 1.7 Ruby.
+
+2002-02-07  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: We need to build symbols as a single token,
+	otherwise :module and :class will confuse the parse.		
+
+	* rdoc/diagram.rb: Integrate change to diagrams from Sergey - it
+	can now optionally draw boxes on diagrams to show what files
+	classes are in.
+
+2002-02-06  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Try to fix a bug in the parsing of
+	while/until. The optional 'do' parameter was being taken as a
+	block start, and increasing the nesting. Skipping it is a bit
+	difficult, so we'll see if this works in all cases the old
+	fashioned way--by releasing it and seeing if anyone screams :)
+
+2002-02-05  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/html_generator.rb: Remove characters from
+	filenames that might not be supported under DOS
+
+2002-02-01  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/html_generator.rb: Add the --show-hash option.
+
+	* rdoc/parse.rb: Ignore \r characters in 'gets', so that chomp
+	works under Windows with \r\n line endings.
+
+	* rdoc/options.rb: Change from using backticks to using IO.popen
+	to avoid cygwin bug.
+
+2002-01-31  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/html_generator.rb: Thanks to Niklas Frykolm,
+	Gunnar Andersson, and Thomas Hurst, we're now closer to generating
+	conformant HTML.
+
+2002-01-30  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/html_template/kilmer.rb: Add diagram support
+
+2002-01-29  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/diagram.rb: Add support for client-side imagemaps, based on
+	a method from Tony Smith.
+
+	* rdoc/generators/html_generator.rb: Add method and class name as
+	title to source popup. Also there was a bug if you tried to run
+	RDoc from the installation directory, rather than installing
+	it. Output templates weren't being found, as the search path was
+	relative to the starting dir, but the directory got changed during
+	processing.
+
+
+2002-01-28  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Bil Kleb sent in patches for some typos.
+
+2002-01-26  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Change handling of initial comment. Now a blank
+	line will terminate the initial comment. This means that if you
+	have
+
+	   # Comment a
+
+	   # Comment b
+	   class Fred ...
+
+	"Comment a" will be the file comment and "Comment b" the class
+	comment. Previously the two comments were concatenated, and the
+	result was both the file and the class comment.
+
+	* MANIFEST: Added EXAMPLE.rb, and include it in the rdoc.rb
+	header. 
+
+2002-01-25  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Fix bug that failed to interpret '<<' as a method
+	name.
+
+	* rdoc/generators/html_template/standard.rb: Add support for
+	generation of arbitrary files to output templates.
+	
+
+	* rdoc/options.rb (options): Add check for the existence of files
+	on the command line.
+
+	* rdoc/generators/html_template/kilmer.rb (STYLE): Remove padding
+	on srclink to make it work with NS4.7
+
+2002-01-24  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/rdoc.rb: Fix Java-style 'new RDocError'
+	
+	* alpha-9: released
+	
+	* rdoc/options.rb: added --help option.
+
+	* rdoc/diagram.rb: Jah of Enticla added wonderful support for
+	diagramming classes and modules. Added new -d option to turn it
+	on, and renamed the debug option -D.
+
+	* rdoc/generators/html_template/kilmer.rb (INDEX): Add support for
+	generating the blank page needed as the initial src= in the source
+	frame.
+
+2002-01-21  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Incorporate patch from Leslie A Hensley: we
+	weren't correctly parsing superclasses that contained '::'s
+
+	* rdoc/parse.rb: Fix bug that incorrectly complained about "yield
+	outside block" in nodoc'd classes.
+	
+
+2002-01-19  Dave Thomas  <Dave@Thomases.com>
+
+	* markup/simple_markup.rb: Allow the body of labeled lists
+	to start on the line following the label, thus avoiding those
+	hideously indented blocks.
+
+	* rdoc/parse.rb: Make $+ and other backref's into Id's, so they
+	can be used in aliases. Allow argument to 'require' to have
+	parentheses. Record name of singleton classes as '<<xx' (not
+	ideal--anyone think of a better way?).
+	
+
+2002-01-18  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/html_template/kilmer.rb (BODY): Add dummy 'src='
+	to source frame.
+
+2002-01-17  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/html_template/standard.rb: Fix up cross
+	reference link colors. Make titles of index windows hyperlinks to
+	the main page.
+
+	* markup/simple_markup/to_html.rb: The #wrap method was fairly
+	expensive, and had a bug if a chunk of non-space text was >
+	linelen, so let's rewrite it.
+
+	* rdoc/generators/html_generator.rb: Add --template option and the
+	ability to switch html output templates.
+
+2002-01-16  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc-alpha-8 released
+
+2002-01-15  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Method parameters lists are going to be the death
+	of me. Continue to try to work on determining exactly when a
+	parameter list ends by testing for the lexical state, rather than
+	just the continue flag.
+
+	* rdoc/parse.rb: Fix lexing bug: '<<' wasn't setting the state to
+	EXPR_BEG. 
+
+	* rdoc/generators/html_generator.rb: No support :nodoc: at the
+	file level too.
+
+2002-01-14  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Add #++ flag to allow commenting to be
+	switched back on after a #--.
+
+	* rdoc/rdoc.rb: Michael Granger (perlmage) provided a patch to let
+	RDoc detect third-party output generators.
+
+	* rdoc/options.rb: Add --title option, and ensure that class pages
+	now have the correct title.
+
+	* rdoc-alpha-7 released
+
+2002-01-13  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/rdoc.rb: Support :include: directive and the --include
+	command line option.
+
+2002-01-12    <Dave@Thomases.com>
+
+	* rdoc\rdoc.rb: Add and document the :nodoc: modifier.
+
+2002-01-12  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Start implementing documentation modifiers.
+
+2002-01-11  Dave Thomas  <Dave@Thomases.com>
+
+	* markup/simple_markup.rb: Support horizontal rules (indicated
+	using three or more hyphens).
+
+	* rdoc/code_objects.rb: Patch from Alan Chen to fix a warning
+	about an uninitialized instance variable.
+
+2002-01-10  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/generators/html_generator.rb: Hyperlinks to the web (http,
+	mailto, and ftp) are recognized. Links to images become inline
+	<img> tags.
+
+2002-01-09  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/html_pages.rb: Work on browser compatibility. This ended up
+	being pretty much a complete rewrite of the output. It ended up
+	being a lot simpler.
+
+	* rdoc/README.rb: added.
+	
+
+2002-01-08  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Fix problem with lexing of numbers starting with
+	a '0' which caused an extra character to be eaten. If this happens
+	at the end of a line, the NL gets swallowed, and the lexer is left
+	in the wrong state.
+
+	* rdoc\html_pages.rb (CLASS_PAGE): The Parent class is now shown
+	as a hyperlink if possible.
+
+	* rdoc\parse.rb: Allow "def Fred::barney" (previously only
+	supported "def Fred.barney"
+
+	* rdoc\rdoc.rb: RDoc can now be invoked conveniently from a program
+
+	* rdoc\options.rb (options): Add --quiet option
+
+2002-01-07  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Fix bug where we sometimes swallowed the first
+	token of the method body. If this was an 'if', 'while', or 'case',
+	we got out of sync with the nesting level.
+
+	* rdoc/parse.rb: Add line numbers to warnings and errors.
+
+	* markup/simple_markup/inline.rb: Fix bug which caused last
+	character in markup to be missed if it followed a Special sequence.
+
+	* rdoc/generators/html_generator.rb: When generating cross
+	references in comments for class and module names, we first check
+	for classes and modules local to the current module before looking
+	for global names.
+	
+
+	* rdoc/rdoc.rb: RDoc now stops processing comments when it sees a
+	line containing '#--'. This allows you to have internal comments
+	and external comments in one block.
+
+	* rdoc/parse.rb: Fix problem reading yield parameters. Also fix
+	problem where the 'yields: a,b' comment following a method
+	definition wasn't being picked up correctly if the definition had
+	'()' 
+
+	* rdoc/generators/html_generator.rb: Add titles to the index frames.
+
+	* rdoc: alpha-6 released.
+	
+	* rdoc: Numerous changes to support the accumulation of
+	multiple definitions for the same class and module into one place.
+
+	* rdoc/parse.rb: Report source file and line number in code
+	samples, and indent first line correctly.
+
+2002-01-06  Dave Thomas  <Dave@Thomases.com>
+
+	* markup/simple_markup/inline.rb: Rewrite the attribute
+	parsing/handling code to get rid of the ugly inline
+	substitutions. It's still pretty ugly, but now it's easier to
+	combine attributes.
+
+2002-01-05  Dave Thomas  <Dave@Thomases.com>
+
+	* markup/simple_markup/inline.rb: Allow special sequences to be
+	marked up as well. For example, previously, +String+ was not
+	converted because 'String' was recognized as a potential hyperlink
+	and this stopped the +..+ recognition thinking it was a
+	word. Fixes bug 499564.
+
+	* rdoc/rdoc.rb: Add support for pluggable output formatters (still
+	only supply HTML)
+
+2002-01-03  Dave Thomas  <Dave@Thomases.com>
+
+	* markup/simple_markup/inline.rb: Following change to allow
+	internal underscores in word-based markup, we can now support
+	things like *cat_and_dog*.
+
+	* rdoc/html_pages.rb (BODY): Make popups resizable and scrollable.
+
+2002-01-02  Dave Thomas  <Dave@Thomases.com>
+
+	* markup/simple_markup/inline.rb: Change interpretation of
+	word-based inline markup so that "cat_and_dog" is now literally
+	"cat_and_dog" and not "cat<em>and</em>dog".
+
+	* rdoc/html_generator.rb: Fix problem where squeeze was removing
+	_all_ duplicate characters, not just spaces.
+
+	* rdoc/rdoc.rb (files): Add a simple progress meter
+
+	* rdoc/parse.rb: Detect and skip require when the argument is a
+	dynamic string.
+	
+	* rdoc/parse.rb: Fix parsing of method parameters so that
+	     def fred() @a end
+	no longer returns @a and 'end' as part of the parameter string.
+	
+
+2001-12-20  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/html_generator.rb: Fix up problem with bad cross references
+	if outputting to a non-standard directory
+
+	* install.rb,markup/install.rb (sitedir): Tidy up - we were
+	creating bindirs and the like that we didn't need.
+
+2001-12-19  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Fix problem if file doesn't end with a
+	newline. (The input code in the lexer needs refactoring)
+
+2001-12-18  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Add support for documenting the block associated
+	with a method by detecting the parameters to yield and allowing
+	an explicit '# yields: x,y' comment
+
+	* rdoc/rdoc.rb: Allow '-' to introduce bulleted lists
+
+	* parse.rb: Fix problem with -@ and +@ in method names
+
+2001-12-17  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Terminate search for method parameters on a
+	semicolon
+
+	* rdoc/html_generator.rb: Fix problem with cross-references of the
+	form '#abc_def' (i.e., with an internal underscore). They were
+	getting matched by two rules, and hence getting substituted twice.
+
+2001-12-16  Dave Thomas  <Dave@Thomases.com>
+
+	* rdoc/parse.rb: Parse :<op> as a function name in alias and
+	visibility constraints.
+	
+
+	* rdoc/parse.rb: Fix token type for %= to TkOPASGN
+
+	* rdoc/parse.rb: Allow expressions after class <<
+
+	* rdoc/parse.rb: parse_alias. Set lex state to EXPR_FNAME so that
+   	         alias :a :b
+	recognizes :b correctly. Allow arbitrary IDs (including names
+	such as 'next' and global variables) as parameters for 'alias'
+

@@ -1,0 +1,5 @@
+This is a modified version of rdoc 0.9.0, which support
+!word! and <name>word</name> to generate HTML name tag <a name=name>
+
+Jun Makino 2003/12/30
+ 

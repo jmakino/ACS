@@ -1,0 +1,226 @@
+2003-03-09  V0.9
+	* Prepare for V1.0
+
+	* Fix problem where install script thought Darwin was a
+	  Windows box.
+
+	* Add smart quotes, but then comment it out because many
+  	  browsers seem not to support the characters.  Give it a
+	  couple of months...
+
+	* Support :nodoc: for alias and attrs
+
+	* Comments are now preserved across 'private', 'protected',
+ 	  and 'public'
+
+	* "class << Constant" now appends to an existing class if it
+	  can find one.
+
+	* Alises are now supported
+
+	* The new :args: method modifier allows you to override the
+	  argument list
+
+	* new --include-line-numbers command line option
+
+	* Support tabs. Add --tab-width command line option.
+
+	* The :title: and :main: top-level modifiers allow you to set
+	  options from inside source files
+
+	* The :doc: modifier forces documentation of otherwise
+	  undocumented methods.
+
+	* Various bug fixes
+
+
+2002-07-22      beta-2
+
+        * Bil Kleb has started work on a Fortran 95 parser.
+
+	* Patches from Mike Witrant to support .cc files, and to fix
+	  some bugs in C parsing. Added experimental code for
+	  extracting C method bodies.
+
+        * Werner Neubauer added a whole lot of new diagramming
+          support, so it now draws module relationships. He also fixed
+          a number of bugs in my code
+
+	* Reorganized parsers to make it easier to add new ones 
+
+        * Bug fixes:
+
+        - see Changelog...
+
+
+
+2002-03-30      beta-1
+
+	* Templates now resolve symbol names using scopes, so we no
+	  longer have the problem with resolving inner names in nested
+	  constructs. Fix up the various templates accordingly. While
+	  we're in there, reduce the space after a method name in the
+	  standard HTML template.
+
+	* Add support for .chm file generation
+
+
+2002-03-03      alpha-c  (alpha-b was a faulty release)
+
+	* Add xml support (--fmt xml). Reorganize the template
+  	  directories.  Add the -one-file option (currently only
+  	  useful for XML).
+
+        * Add RDF generation.
+
+	* Add support for parsing C extensions.
+
+	* Add support for SimpleMarkup-only files (any file not .rb
+	  or .c) which contain just a block comment.
+
+        * Add contrib/ directory. Currently contains David Alan
+          Black's alpha release of Formatting Object support, allowing
+          RDoc to generate PDF, Postscript etc.
+
+        * New options:
+
+	  o Add --exclude option, which prevents file and directories
+	    matching a pattern from being included in the
+	    documentation.
+
+	  o Add --inline-source option to allow source code to be
+	    included in the body of the document, and not in popups.
+
+	  o Added --charset option.
+
+	  o Diagram image format now selectable using the
+	    --image_format option.
+
+          o --opname sets the name of the output (for formatters that
+            need it)
+
+	* Add support for link: hyperlinks. These are hyperlinks to
+	  local files, assumed tobe relative to the --op directory.
+
+	* Force auto-generated ::new method to be public, and added
+	  :notnew: directive to prevent automatic conversion of
+	  #initialize into ::new.
+
+	* Drop the font size of <pre> down to 1.1em.
+
+	* Sort list of classes and modules in the summary page.
+
+	* Fixed various parsing issues (see ChangeLog).
+
+
+2002-02-10      alpha-a
+
+	* Fixed compatibility problem with latest 1.7
+
+        * Diagram feature now draws fileboxes (optionally, see --filebox
+        parameter). Thanks to Sergey
+
+        * If a comment contains a '#fred' cross reference, we now
+         remove the '#' unless the new --show-hash option is given
+
+	* Thanks to Niklas Frykolm, Gunnar Andersson, and Thomas
+          Hurst, we're now closer to generating conformant HTML.
+
+        * added diagram support to kilmer template
+
+        * Add support for client-side imagemaps in class diagrams, based on
+	a method from Tony Smith.
+
+        * Method and classe name title added to source popup window.
+
+	* Change handling of initial comment. Now a blank line will
+        terminate the initial comment.
+
+        * Arbitrary files can not be generated from templates. This
+          means that is a template needs to write (say) a .css file,
+          or a bitmap, the process can be encapsulated within the
+          template itself.
+
+        * Numerous bug fixes:
+          - parsing of symbols whose names are reserved words
+          - parsing of while/until with a 'do'
+          - made all filesnames valid under DOS
+          - fix end of line handling under DOS
+          - use IO.popen to validate 'dot', avoiding a cygwin bug
+          - fix finding templates when RDoc is run without being
+            installed
+          - fixed bug that failed to interpret '<<' as a method name
+          - Bil Kleb fixed _many_ typos
+          - fixed some formatting problems with NS4.7
+
+
+2002-01-24      alpha-9
+
+        * added --help option.
+
+	* Jah of Enticla added wonderful support for diagramming
+	  classes and modules. Added new -d option to turn it on, and
+	  renamed the debug option -D.
+
+	* Added support for generating the blank page needed as the
+          initial src= in the source frame.
+
+	* The body of labeled lists can now start on the line
+	  following the label, thus avoiding those hideously indented
+	  blocks. This means you can write:
+
+             This is my very long label::
+                And this is the body of the list entry. See it
+                glisten in the noon-day sun.
+
+	* Added --template option and the ability to switch html
+	  output templates. Included the 'kilmer' template from
+          Rich Kilmer.
+
+
+2002-01-16      alpha-8
+
+
+        * :nodoc: in the file-level comment turns off documentation
+          for the file (but classes and modules in the file are still
+          documented).
+
+        * The sequence '#++' turns documentation back on after a '#--'
+          turns it off.
+
+        * Added --title option.
+
+
+2002-01-13      alpha-7
+
+	* :include: directive and the --include command line option
+          allows text from other files to be inserted incomment blocks:
+
+              # and the it outputs the result.
+              # :include: copyright
+
+	* The :nodoc: modifier can appear after class, module, and
+	  method declarations. It stops information from that
+	  syntactic unit appearing in the output. With the 'all'
+	  option, it also prevents the output of included sub modules
+	  and classes.
+
+	* Horizontal rules (denoted by three or more hyphens) are
+	  supported. The more hyphens, the thicker the rule.
+
+	* Hyperlinks to the web (http,mailto, and ftp) are
+	  recognized. Links to images become inline <img> tags.
+
+	* The generated HTML is now simpler and more compact. The
+	  output is cleaner.
+
+	* The Parent class is now shown as a hyperlink if possible.
+
+	* RDoc can now be invoked conveniently from a program
+
+	* Add --quiet option
+
+	* RDoc now stops processing comments when it sees a line
+	  containing '#--'. This allows you to have internal comments
+	  and external comments in one block.
+

@@ -1,0 +1,181 @@
+2002-03-20 18:42  wobblini
+
+	* convert.xsl, fcm.xsl, files.xsl, labeled-lists.xsl, modules.xsl,
+	rdoc.xsl, source.xsl: 
+	More tweaking of two-layered XSLT processing.
+
+2002-03-20 18:41  wobblini
+
+	* TODO: 
+	TODO file started
+
+2002-03-18 19:57  wobblini
+
+	* convert.xsl, fcm.xsl, files.xsl, modules.xsl, rdoc.xsl,
+	source.xsl, styles.xsl: 
+	Further changes in connection with doing two XSL transformations
+
+2002-03-17 21:38  wobblini
+
+	* lists.xsl: 
+	added CVS header
+
+2002-03-17 21:36  wobblini
+
+	* lists.xsl: 
+	should have been added before
+
+2002-03-17 21:28  wobblini
+
+	* ChangeLog: 
+	minor changes
+
+2002-03-17 21:28  wobblini
+
+	* demo/rdocfo: 
+	typo
+
+2002-03-17 21:26  wobblini
+
+	* demo/rdocfo: 
+	typo correction
+
+2002-03-17 21:24  wobblini
+
+	* demo/: README, rdocfo: 
+	rdocfo -- script to (semi-)automate XSL-FO production with Saxon.
+
+2002-03-17 17:01  wobblini
+
+	* README: 
+	minor changes
+
+2002-03-17 16:33  wobblini
+
+	* README, fcm.xsl, files.xsl, labeled-lists.xsl, modules.xsl,
+	rdoc.xsl, source.xsl, styles.xsl: 
+	Now using two transformations (see convert.xsl).  Handling of IDs
+	and cross-refs more nicely parameterized.
+
+2002-03-17 16:32  wobblini
+
+	* convert.xsl: 
+	Converts from default XML output to intermediate XML for input to
+	stylesheets.
+
+2002-03-12 11:57  wobblini
+
+	* files.xsl, labeled-lists.xsl, modules.xsl, rdoc.xsl, source.xsl: 
+	some further fine-tuning to get links working (most are)
+
+2002-03-11 17:12  wobblini
+
+	* ChangeLog, fcm.xsl, files.xsl, labeled-lists.xsl, modules.xsl,
+	rdoc.xsl, source.xsl, styles.xsl, tables.xsl: 
+	more minor changes.  normalized font sizes to "pt" values.
+
+2002-03-10 17:45  wobblini
+
+	* labeled-lists.xsl: 
+	New file with some old templates (refactoring file-wise).
+
+2002-03-10 16:58  wobblini
+
+	* fcm.xsl, files.xsl, modules.xsl, rdoc.xsl, source.xsl,
+	styles.xsl, tables.xsl: 
+	Continued work on start-indent and margin-left problems, especially
+	with tables and lists.	Beginnings of PDF links (working for master
+	file list, not for anything else).
+
+2002-03-06 16:11  wobblini
+
+	* README: 
+	Additional info on what you get in your XSL-FO file
+
+2002-03-06 16:06  wobblini
+
+	* ChangeLog: 
+	update
+
+2002-03-06 16:05  wobblini
+
+	* source.xsl: 
+	Handle source-code-listing elements in Class and Module elements
+
+2002-03-06 16:04  wobblini
+
+	* files.xsl, modules.xsl, rdoc.xsl, styles.xsl: 
+	Some refactoring, file-wise.  Also continued tinkering with
+	start-indent vs.  left-margin.
+
+2002-03-06 16:03  wobblini
+
+	* fcm.xsl: 
+	common template for file, class, module
+
+2002-03-03 19:27  wobblini
+
+	* README: 
+	Typo corrections
+
+2002-03-03 18:02  pragdave
+
+	* README: Convert to Simple Markup
+
+2002-03-03 08:40  wobblini
+
+	* ChangeLog: 
+	Now producing automated ChangeLog with cvs2cl.pl.
+
+2002-03-03 08:36  wobblini
+
+	* ChangeLog: [no log message]
+
+2002-03-03 08:31  wobblini
+
+	* tables.xsl: 
+	Added missing <fo:table-body> elements.
+
+2002-03-03 08:30  wobblini
+
+	* README: [no log message]
+
+2002-03-03 08:20  wobblini
+
+	* modules.xsl: 
+	Changed attribute-name to @name, as per change in the DTD.
+
+2002-03-02 23:33  wobblini
+
+	* ChangeLog: [no log message]
+
+2002-03-02 23:30  wobblini
+
+	* ChangeLog, files.xsl, modules.xsl, rdoc.xsl, tables.xsl: 
+	Added XSL tables to handle <table> and <dl> elements.
+
+2002-03-02 22:20  wobblini
+
+	* modules.xsl, styles.xsl: 
+	Getting the initial CVS commit right
+
+2002-03-02 22:19  wobblini
+
+	* files.xsl: 
+	Minor changes
+
+2002-03-02 17:20  wobblini
+
+	* rdoc.xsl, styles.xsl, modules.xsl: 
+	part of XSL-FO stylesheet suite
+
+2002-03-02 17:20  wobblini
+
+	* files.xsl: 
+	part of XSL-FO suite
+
+2002-03-02 17:18  wobblini
+
+	* README: 
+	Adding XSL-FO files to contrib/xslfo subdirectory.
+
