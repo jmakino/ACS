@@ -20,8 +20,8 @@ class Body
 
   def simple_print
     printf("%24.16e\n", @mass)
-    @pos.each { |x| printf("%24.16e", x) } ; print "\n"
-    @vel.each { |x| printf("%24.16e", x) } ; print "\n"
+    @pos.each{|x| printf("%24.16e", x)}; print "\n"
+    @vel.each{|x| printf("%24.16e", x)}; print "\n"
   end
 
   def simple_read
