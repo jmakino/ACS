@@ -1,0 +1,61 @@
+Date: Fri Jan 09 19:14:33 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Hi Jun:
+
+I'm glad we got a chance to talk about things in detail today!
+
+I'm going through some older messages.  This is from two days ago.
+Did you get a chance to look at it?  This is something we will have
+to solve, for the book writing; I can think of a few different ways to
+do it.  Do you have a preference?
+
+Piet
+------- Start of forwarded message -------
+Date: Wed, 7 Jan 2004 22:22:35 -0500
+From: Piet Hut <piet@ias.edu>
+To: makino@astron.s.u-tokyo.ac.jp
+Subject: chapter 2
+
+Hi Jun:
+
+I'm very glad that we made so much progress, Tuesday.  gokurousama!
+
+I added a little text at the end of chapter 2.  Could you have a look
+at it?  I did not write much dialogue; I can do that soon after we
+agree upon the direction.  As you can see, I now introduced an Nbody
+class, and did some more tests.
+
+There are a few questions in the codes that are listed.  For example,
+shall we simple_print "write" and simple_read "read"?  We will use
+those methods a lot, and those seem more natural.
+
+Also, I introduced similar methods for using files rather than stdio
+(maybe not really necessary at this point, but if not now, then soon);
+how do you suggest to implement that?
+
+Also, shall we "include Math" in the "body.rb" definition, so that we
+don't always have to repeat it, or perhaps better in some "stdinc.rb"
+include file, that can also have "NDIM = 3" in it, etc.?
+
+Finally, at the end you will see an interesting use of your :command:
+power, where I use two different files, test.rb and test-io.rb .
+Note that I ran into the following problem: I had to put parentheses
+"()" around the expression with redirection ">" in it, otherwise acsdoc
+complained about "Ambiguous output redirect"; I'm sure it collides with
+something you have written.  Would it be easy to add those "()" in
+your acsdoc code as an extra protection level, so that I can leave
+them out of the book text?
+
+Another aspect: it would be most natural in the last example, and in a way
+in all examples, to have an extra prompt "|gravity>" appear, to show that
+you get *no* output in the last three lines, especially in the last line,
+with the result of the "diff".
+
+This last question is probably related to the question of how we can
+use command line input (the one issue that remained unresolved Tuesday).
+
+Piet
+------- End of forwarded message -------
+
