@@ -24,9 +24,9 @@
 module Rdoctotex
 
   @@wordreplace=[
-    [/\+(\w|(\\_))+\+/,"{\\tt", "}"],
-    [/\*\w+\*/,"{\\bf", "}"],
-    [/\\_\w+\\_/,"{\\it", "}"]
+    [/(^|\W)\+([a-zA-Z_]+)\+($|\W)/,"{\\tt", "}"],
+    [/(^|\W)\*(\w+)\*($|\W)/,"{\\bf", "}"],
+    [/(^|\W)\\_(\w+)\\_($|\W)/,"{\\it", "}"]
   ]
   
   @@tagreplace=[
@@ -64,12 +64,7 @@ module Rdoctotex
   
   def wordmarkup(instr)
     @@wordreplace.each do |x| instr.gsub!(x[0]) do |word|
-	if /_/ =~word[1,1]
-	  start = 2 ; cut=4
-	else
-	  start = 1; cut=2
-	end
-	x[1]+ " " + word[start,word.length-cut] +x[2]
+	$1 + x[1]+ " " + $2 +x[2] + $3
       end
     end
     instr
@@ -396,7 +391,7 @@ end
 module Acsdoc
   include Rdoctotex
 
-  @@prompt = "|gravity>"
+  @@prompt = "|gravity> "
 
   @@imgcount = 0
   @@additional_preambles_for_inline_tex = ""

@@ -24,6 +24,8 @@ Here I give samples for basic  markups
 
 Fonts: *bold*, +typewriter+, and _italic_
 
+The things should noe be interpreted: a_to_f_d.
+
 More experiments on fonts: <em>italic phrase</em>, <tt>typewriter
 words</tt>, and <b>boldface text</b>. How is this transformed?
 
