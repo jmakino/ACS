@@ -2,35 +2,66 @@ README for ACS Version 1.1
 
 Piet Hut and Jun Makino
 
-Here we describe a few basic things about the tarball.
+While all the material presented here is freely available on our
+web site "http://www.ArtCompSci.org", you may want to download a
+copy on your own computer.  The easiest way to do so is to pick
+up the latest ACS release version, from "http://www.ArtCompSci.org/rel/"
+in the form of a single gzipped tar file, often refered to as a "tar ball".
+
+This tar ball contains the following files:
 
 Document volumes:
 
-acs-1.1.tgz comes with entire HTML/PS/PDF documents for the
-ACS project. To look at the documents, please start at the top level
-index.html file, which points to all volumes available in the current
-version.
+acs-1.1.tgz comes with a complete set of HTML/PS/PDF documents for the
+ACS project, containing the source text for all volumes released so far.
+To look at the documents, start at the "index.html" file at the top level
+directory, the same directory in which you have found this README file.
+Within this "index.html" file, you will find pointers to all volumes
+available in the current version, separately in HTML, in PS, and in PDF
+formats.
 
 Source codes:
 
-In the current release, the sources for the volumes and the source
-file for programs are in foo/vol/vol-x directories. For example,
-the source file rkbody.rb used in volume 1-b of the Kali series
-appears as
+In the current release, the source files for the text volumes and the
+source files for the computer programs can all be found in the
+"PROJECT/vol/vol-X" directories.
 
-kali/vol/vol-1b/rkbody.rb
+For example, to find the text for volume 1b in the Kali series,
+go to "kali/vol/vol-1b", where you will find, say, chapter 3 as
+"kali/vol/vol-1b/ch03.ok".  The extension "ok" stands for open
+knowledge, and the files are written in a variant on the rdoc system;
+we will explain more about this system in volume 10, which we plan to
+write in 2005.
 
-Running programs used in volumes:
+You can find the computer codes that are used in a particular volume
+in the same directory where the text is stored.  For example, in
+chapter 3 of volume 1b, you will find that a program "rkbody.rb" is
+invoked.  The source for this program is: "kali/vol/vol-1b/rkbody.rb".
 
-Currently, all programs with output shown in one volume are designed
-to run at the directory it resides. For example,
-integrator_driver4epc.rb in volume 1-b of the Kali series can be run,
-assuming you are in the top level directory (at which this README
-exists), by:
+How to run a computer program, used in the text:
+
+Currently, all programs that are mentioned in a given volume are designed
+to be run within the directory where they resides. For example, if you
+want to run the program "integrator_driver4epc.rb" that is mentioned
+in volume 1-b of the Kali series, you first have to descend from the
+current top level, where this README file resides, to the directory
+of volume 1b, and then you have to give the command "ruby" to run the
+program, as follows:
 
     cd kali/vol/vol-1b; ruby integrator_driver4epc.rb < euler.in
 
 which should create the same output as what appears in chapter 9 of
-this volume.
+volume 1b, where the same line is given, with the input file "euler.in"
+also present in that directory.
+
+In order to run Ruby programs, you need to have Ruby installed on your
+machine, visit the "http://www.ruby-lang.org/en/" web site.
+
+Enjoy!
+
+Piet Hut and Jun Makino
+
+Kyoto, July 2004
+
 
     
