@@ -86,7 +86,7 @@ little bit of useful work, by adding the following lines
 
  :inccode: .body-init-demo1.rb-demo
 
-*B*: Now let's run it:
+Now let's run it:
 
  :output: ruby body-init-demo1.rb
 
@@ -95,11 +95,11 @@ little bit of useful work, by adding the following lines
 identifier, the unique name of that particular object for Ruby.  Let
 me try to assign values other than the default zeroes:
 
- :inccode: .body-init-demo.rb-demo
+ :inccode: .body-init-demo2.rb-demo
 
-*B*: Now let's run it:
+Let's see a non-trivial output:
 
- :output: ruby body-init-demo.rb
+ :output: ruby body-init-demo2.rb
 
     irb(main):002:0> c = Body.new(1, 0.5, 0, 0, 0, 0.7, 0)
     ArgumentError: wrong # of arguments(7 for 3)</tt>
@@ -108,17 +108,28 @@ me try to assign values other than the default zeroes:
 	    from (irb):2
     irb(main):003:0> 
 
-*B*: How nice to get such clear instructions!  Quite a bit more helpful
-than <i>segmentation fault</i> or something cryptic like that.
+*B*: Nontrivial indeed -- but how nice to get such clear instructions!
+Quite a bit more helpful than <i>segmentation fault</i> or something
+cryptic like that.
 
-*A*: Indeed.  And yes, I should have presented the positions and velocities
+*A*: Agreed!  And yes, I should have presented the positions and velocities
 as arrays, making three arguments in total.
+
+ :inccode: .body-init-demo3.rb-demo
+
+This should work:
+
+ :output: ruby body-init-demo3.rb
 
     irb(main):003:0> c = Body.new(1, [0.5, 0, 0], [0, 0.7, 0])
     => #<Body:0x4023b31c @mass=1, @vel=[0, 0.7, 0], @pos=[0.5, 0, 0]>
     irb(main):004:0> 
 
-*B*: Let's try to getter and setter commands.
+*B*: Let's try the getter and setter commands.
+
+ :inccode: .body-init-demo4.rb-demo
+
+ :output: ruby body-init-demo4.rb
 
     irb(main):004:0> c.mass
     => 1
@@ -136,10 +147,14 @@ notation, and everything works just like you would hope it would.
 *B*: I saw you hesitating when you typed line 6.  I would have
 thought you would type something like:
 
+ :inccode: .body-init-demo5.rb-demo
+
+which would have given the same effect:
+
+ :output: ruby body-init-demo5.rb
+
     irb(main):006:0> c.vel = [0, 0.8, 0]
     => [0, 0.8, 0]
-
-which would have given the same effect.
 
 *A*: Yes, you read my mind.  I had understood that "<tt>c.vel =</tt>"
 is parsed by Ruby as an assignment operator "<tt>vel=</tt>"
@@ -152,20 +167,14 @@ they say that Ruby is based on the principle of minimum surprise.
 
 === 2.2.2. Improving the Output
 
-*A*: So far we've gotten output as a side effect, with the interpreter
-echoing the value of everything it evaluates.  Let's see whether we
-can get specific output.  Ruby seems to have a general command "+p+":
+*A*: So far we've only use the general dump command "+p+".  Certainly
+useful when we run a script, since otherwise we would get no output at
+all.  Let us try "+print+", which seems to be a general output command
+in Ruby:
 
-    irb(main):008:0> p c
-    #<Body:0x4023b31c @mass=1, @vel=[0, 0.8, 0], @pos=[0.5, 0, 0]>
-    => nil
-    irb(main):009:0>
+ :inccode: .body-print-demo.rb-demo
 
-*B*: That produces the same output we already saw: "+p+" must be a
-general type of dump command.  Certainly useful when we run a script,
-since otherwise we would get no output at all.  But when we use an
-interpreter, it doesn't add any information.  Let us type "+print+",
-which seems to be a general output command in Ruby:
+ :output: ruby body-print-demo.rb
 
     irb(main):009:0> print c
     #<Body:0x4023b31c>=> nil
@@ -187,10 +196,16 @@ associated with them.  Let's check.  How about this:
 
  :inccode: .body-to_s-wrong.rb-to_s
 
-*A*: Good idea to write a comment at the top, to remind us what this
-class is for.  We may as well get into the habit of writing comments
-as we code along, since what seems obvious today may no longer be so
-next week or next month.  Let's see what this version will do.
+*A*: <i>[leave this paragraph out now? -- Piet]</i> Good idea to write
+a comment at the top, to remind us what this class is for.  We may as
+well get into the habit of writing comments as we code along, since
+what seems obvious today may no longer be so next week or next month.
+
+Let's see what this version will do.
+
+ :inccode: .body-to_s-wrong-demo.rb-demo
+
+ :output: ruby body-to_s-wrong-demo.rb
 
     |gravity> irb -r body02.rb
     irb(main):001:0> b = Body.new(3, [0.1, 0.2, 0.3], [4, 5, 6])
@@ -214,42 +229,15 @@ that's were the word "string" comes from, after all.
 
 *B*: Good point.  So we should define our own field separator.  I saw
 something to do that.  Here it is: the method +join+ converts an array
-to a string, and you can give a separator as an arguments.  Let's try:
+to a string, and you can give a separator as an arguments.  How about:
 
  :inccode: .body.rb-to_s
 
-*A*: The rather lengthy prompt of +irb+ is beginning to bother me.  I
-read that we can customize it.  Shall we leave out the <tt>irb(main)</tt>
-part?
+*A*: Looks good, let's try:
 
-*B*: Fine.  Here is the default definition; we may as well put that in
-a comment statement, for future comparison, and then define our shot
-prompt by leaving out the first two parts:
+ :inccode: .body-to_s-demo.rb-demo
 
-    ##  .irbrc
-
-    ## This is the definition of the default prompt:
-    ## 
-    ##    IRB.conf[:PROMPT_MODE][:DEFAULT] = {
-    ##          :PROMPT_I => "%N(%m):%03n:%i> ",
-    ##          :PROMPT_S => "%N(%m):%03n:%i%l ",
-    ##          :PROMPT_C => "%N(%m):%03n:%i* ",
-    ##          :RETURN => "%s\n"
-    ##    }
-    ##
-    ## This short version leaves out the first two parts.
-    ##
-    ## usage: irb --prompt short_prompt
-
-    IRB.conf[:PROMPT][:SHORT_PROMPT] = {
-          :PROMPT_I => "%03n:%i> ",
-          :PROMPT_S => "%03n:%i%l ",
-          :PROMPT_C => "%03n:%i* ",
-          :RETURN => "%s\n"
-    }
-
-*A*: Okay, let's now see whether +join+ manages to disjoin our array
-components:
+ :output: ruby body-to_s-demo.rb
 
     |gravity> irb --prompt short_prompt -r body03.rb
     001:0> b = Body.new(3, [0.1, 0.2, 0.3], [4, 5, 6])
