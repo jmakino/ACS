@@ -1,0 +1,23 @@
+Date: Mon Jan 05 15:03:41 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+ > >   Dave Thomas: If you're talking about using XML in certain domains,
+ > >   it's fine. XSLT, for example, lets you do some really fun things with
+ > >   XML. When we had our book online, for example, we went from LaTeX, to
+ > >   XML, and then to the output format, simply because XSLT gave us some
+ > >   really powerful ways for manipulating the document's content. XML is
+ > >   useful in appropriate contexts, but it is being grossly abused in most
+ > >   of the ways it is being used today.
+ > 
+ > Hmm, can you parse the exact meaning here? I mean, did they wrote a
+ > translator from latex to XML, or did they write text in XML? It sounds
+ > they developed a translator...
+
+I see what you mean.  I had not thought about your interpretation.
+I do not know what they did or thought.  They did not really talk
+about the XML editing problem, which I agree is another major issue.
+They write "we went from LaTeX to XML" and "we went" can mean many things....
+
+Piet
+
