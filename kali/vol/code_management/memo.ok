@@ -127,10 +127,11 @@ Anyway, we need,
 * The way to refer to an include file, which will be
 
      acsdate "20050301"
-     acsreq "acs"
+     require "acs"
 
   Perhaps better not to overload standard "require" method, since that
-  would be too confusing.
+  would be too confusing. Also, for the first file (here acs.rb), we
+  cannot use our new method, since that new method is not defined yet.
 
 * The way to install a new version of a library. I think it should
   just be
@@ -148,7 +149,26 @@ Anyway, we need,
   directory to the library directory.
 
 So far, these are implemented.
-  
 
+
+== Programmer's manual
+
+=== What is there?
+
+This system offers a way to refer to library files (at least for Ruby
+library files) with the date of the file it made as *required*
+argument.
+
+In this way, one can add/remove features or change the behaviour of
+one library, without worrying about the possibility that changes made
+will break the old programs which use that library.
+
+The problem here is that there are still things that might change,
+like the Ruby interpreter itself or C compilter or Operating
+System. We will need to address these in some future, but not today.
+
+=== How it works?
+
+In any (vol) directory, you can export (ruby) 
   
   
