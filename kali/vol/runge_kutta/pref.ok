@@ -2,12 +2,25 @@
 	
 = Preface
 
-In this volume, we will present a detailed analysis of some of the
-simpler Runge-Kutta algorithms, and other related integration schemes.
+In this volume, we present a pedagogic overview of the freedom one has
+in choosing the coefficients in explicit Runge-Kutta integration
+schemes.  We limit ourselves to the simple cases in which there are at
+most two new evaluations of the right-hand side of the differential
+equation per time step.  We start with first-order differential
+equations, to explain the general procedures, but then we specially to
+a special case of the type of second-order differential equation that
+occurs in classical mechanics, where the forces are dependent only on
+positions, and independent of the velocities.  In that case we derive
+some of the classical <tex>Runge-Kutta-Nystr\"om</tex> schemes, and
+generalize this to include a first evaluation that does not take place
+at the beginning of a time step.  We show how such a generalized
+approach naturally leads us to the
+<tex>leapfrog-Verlet-St\"ormer-Delambre</tex> scheme, as a particular
+form of a generalized explicit Runge-Kutta scheme.
 
 == xxx
 
 We thank xxx, xxx, and xxx for their comments on the
 manuscript.
 
-Piet Hut and Jun Makino
+Piet Hut, Jun Makino, and Douglas Heggie

@@ -1,75 +1,152 @@
-= Introduction
+= A First-Order Differential Equation
 
-== Old Abstract
+== Starting at Square One
 
-We present a pedagogic overview of the freedom one has in choosing the
-coefficients in explicit Runge-Kutta integration schemes.  We limit
-ourselves to the simple cases in which there are at most two `force'
-evaluations of the right-hand side of the differential equation per
-time step.  We start with first-order differential equations, to
-explain the general procedures, but then we specially to a special
-case of second-order differential equations, the one that occurs in
-classical mechanics, where the forces are dependent only on positions,
-and independent of the velocities.  In that case we derive some of the
-classical <tex>Runge-Kutta-Nystr\"om</tex> schemes, and
-generalize this to include a first evaluation that does not take place
-at the beginning of a time step.  We show how such a generalized
-approach naturally leads us to the
-<tex>leapfrog-Verlet-St\"ormer-Delambre</tex>
-scheme, as a particular form of a generalized explicit Runge-Kutta
-scheme.
+*Bob*: It has been a lot of fun, to derive so many different algorithms
+and to implement them all in our two-body code.
 
-We extend our treatment to answer the question under which circumstances
-force calculations can be recycled from one step to the next, using
-the so-called FSAL (first same as last) procedure.  We also analyse a
-variant on two force evaluations per time step, in which one
-evaluation is that of the force, and the other evaluation pertains to
-the derivative of the force.  This will lead us to the Hermite scheme,
-used widely in collisional stellar dynamics.  Finally, we discuss the
-use of explicity multi-step explicit methods, in which force evaluations
-of multiple previous steps are remembered and used again to determine
-the next step to higher orders of accuracy.
+*Alice*: Yes, I enjoyed it too, and I must admit, I learned a lot in the
+process.  But I still have the feeling that I'm missing some basic pieces
+of insight.  Do you remember how we struggled, trying to prove that the
+Abramowicz and Stegun formula was correct, the fourth-order
+<tex>Runge-Kutta-Nystr\"om</tex> scheme that had a misprint in it?
 
-[we can also allow a position expression of one order higher than the
-velocity.  This won't improve the global order, but can it make the
-coefficient smaller, in position and/or total energy.  If force
-evaluations are extremely expensive, it may well pay to have this
-additional accuracy essentially for free, as long as it doesn't
-disturbe something else, such as time symmetry.  Perhaps also:
-implicit schemes?]
+*Bob*: But you figured it out, didn't you?
+
+*Alice*: Well, yes, after a false start.  And it was a bit alarming that
+at first I didn't even realize that it was a false start.  And to be
+completely honest, even now I'm not a full hundred percent sure that
+we got things right.  Let me put it this way, I feel that I haven't
+yet gotten a finger-tip feeling for what Runge-Kutta schemes are, and
+how they really tick.
+
+*Bob*: There must be several text books that you can look at.  Surely they
+will explain things in more depth than you want to know.
+
+*Alice*: I did look at some books on numerical methods, but none of them
+gave me what I really wanted to see.  Some of them were just too
+mathematical in their concern and notation, others didn't provide the
+type of real detail that I wanted to see, yet others specialized on
+particular approaches.  What I really would like to see is a pedestrian
+approach, no attempt to design special improvements.  While I'm interested
+in all the extras, from embedded higher-order schemes to using extrapolation
+methods and symplectic schemes and what have you, I really would like to
+first understand the basics better.
+
+*Bob*: You mean, just the straightforward Runge-Kutta schemes of relatively
+low order, without any extra bells and whistles?
+
+*Alice*: Exactly.  Here is an idea.  If we limit ourselves to performing
+at most two new force calculations per time step, things can't possibly
+get too complex.  Our Abramowicz and Stegun formula already had three
+force calculations per time step, and I'm not suggesting that we explore
+explicitly the whole landscape around that formula, at least not yet.
+
+*Bob*: So you want to explore a smaller landscape, just to see in front of
+your eyes how everything works.  And while the simplest schemes, like
+forward Euler and leapfrog, use only one new force calculation per
+time step, you want to explore the full landscape of two new force
+calculations per time step.  Hmm, I like that.  And I'm sure it would
+be good for our students too, to see such an explicit survey.
+
+*Alice*: I think so, but really, right now my main motivation is just for
+myself to see exactly how those classical Runge-Kutta derivations are done,
+from scratch, without taking anything on faith.
+
+*Bob*: I like the idea, and I'm game.  Where shall we start?
+
+== Keeping it Simple
+
+*Alice*: One problem for astronomers using books on numerical solutions
+to differential equations is that most books focus on first-order
+differential equations.  In contrast, we typically work with
+second-order differential equations, and often ones with special
+properties.  The gravitational equations of motion for the N-body
+problem, for example, have a force term that is independent of time
+and velocity.
+
+This suggests to me that we should divide our work into two stages.
+First we try to figure out how to solve a general first-order
+differential equation, using up to two force calculations per step.
+This will reproduce the results from the standard text books, no
+doubt, but it will give us experience and will allow us to establish
+a notation and a systematic procedure.
+
+Then, in the second stage, we can cut our teeth on the gravitational
+N-body system, to see what special methods will work there, and why,
+and how.  The Abramowicz and Stegun formula, for example, is tailored
+already to second-order differential equations, albeit a general one
+in which there is still a possible velocity dependence present in the
+force calculations.  We can go one step further, specializing to
+position dependence only, and just see what spectrum of methods we
+will find.
+
+Then, with a bit of luck, we will have gained enough experience to be
+able to look over the horizon, to get an idea what you could do with,
+say, three new force calculations per step, which is the landscape
+within which the Abramowicz and Stegun formula was grown.
+
+*Bob*: A somewhat ambitious project, but still quite doable, I think.
+You basically want to take the next step beyond forward Euler and
+leapfrog, in any possible direction, and see the dimensionality of the
+space of possible directions.
+
+*Alice*: Something like that, yes.  But let us restrict ourselves,
+at least at first, to Runge-Kutta methods.  This will mean no multi-step
+methods, such as the original Aarseth scheme.  It also means that we
+won't use higher derivatives, such as the Hermite scheme.  In addition,
+we will exclude the use of implicit methods, which require iteration.
+
+*Bob*: You could argue that, with two new force calculations per time step,
+you should allow implicit schemes that have just one new force calcuation
+per time step.
+
+*Alice*: You could, even though it is not immediately clear that one iteration
+will provide you sufficiently rapid convergence.  Also, the resulting class of
+implicit schemes is rather restricted.  Perhaps we can look at that later.
+For now, I really want to be austere and stay to the absolute basics.
+
+*Bob*: Okay: explicit Runge-Kutta methods using up to two new force
+calculations per time step, and no evaluations of jerks or anything else.
 
 == Notation
 
-For the simplest form of differential equation, we will use the
-notation:
+*Alice*: Let us start by choosing a specific notation.
+For the simplest form of differential equation, we can write:
 
 :equation:
 {dx \over dt} = f(x)
 
-where we will call the variable <tex>$x$</tex> the position and the variable <tex>$t$</tex>
-the time.  The solution of this equation is given by <tex>$x(t)$</tex>.  When we
-solve this equation numerically, we use a finite time step <tex>$\tau$</tex>.
-For now, we will analyze the properties of the first time step.  We
-choose <tex>$t=0$</tex> at the beginning of the first time step, and we denote
-the positions at the beginning and end of the first time step by <tex>$x_0$</tex>
-and <tex>$x_1$</tex>, respectively:
+where we will call the variable <tex>$x$</tex> the position and the
+variable <tex>$t$</tex> the time.  The solution of this equation is
+given by <tex>$x(t)$</tex>.  When we solve this equation numerically,
+we use a finite time step <tex>$\tau$</tex>.  For now, we will analyze
+the properties of the first time step.  We choose <tex>$t=0$</tex> at
+the beginning of the first time step, and we denote the positions at
+the beginning and end of the first time step by <tex>$x_0$</tex> and
+<tex>$x_1$</tex>, respectively:
 
 :equation:
 x_0 \equiv x(0) \ \ \ \ \ ; \ \ \ \ x_1 \equiv x(\tau)
 
-We also introduce the notation:
+We can introduce the usual notation where a dot over a variable
+indicates the time derivative and a prime indicates the space derivative:
 
 :equation:
 \dot x \equiv {dx \over dt} \equiv {d \over dt}x(t)
 
 :equation:
 f' \equiv {df \over dx} \equiv {d \over dx}f(x)
-This leads to:
+
+If we now want to determine the time derivative of the force,
+we can use the chain rule, differentiating the force first with
+respect to its argument _x_, and multiplying the result
+with the time derivative of _x_:
 
 :equation:
 \dot f \equiv {d \over dt}f(x(t)) = {dx \over dt} f' = \dot x f'
 
-For the higher derivatives of the position, we introduce the
+For the various derivatives of the position, we can introduce the
 historical notation in terms of velocity, acceleration, jerk,
 snap, crackle and pop, respectively:
 
@@ -84,8 +161,8 @@ c \equiv \dot s = {d^5 \over dt^5}x(t)   \quad ; \quad
 p \equiv \dot c = {d^6 \over dt^6}x(t)
 \end{array} \right.
 
-These expressions are especially useful for the following type of
-second-order differential equation encountered in classical mechanics:
+These expressions are especially useful for the type of second-order
+differential equation encountered in classical mechanics:
 
 :equation:
 \ddot x \equiv {d^2x \over dt^2} = f(x)
@@ -98,4 +175,337 @@ which can be written as a system of two first-order differential equations:
 \dot v &=& f(x)
 \end{array} \right.
 
-xxx
+However, for now we will stick to the first-order differential
+equation, using the general expression that we started with, but
+without any explicit time dependence.
+
+== Taylor Series
+
+*Bob*: Even though this is just a warming-up exercise, it would be nice to
+give a physical interpretation to the first-order differential equation
+that you wrote down:
+
+:equation:
+{dx \over dt} = f(x)
+
+I think it can be interpreted as describing the motion of an object
+that is being pushed through a very resistive medium, such as a spoon
+being pushed through molasses.  The velocity of the spoon is
+proportional to the force term <tex>$f(x)$</tex> on the right-hand
+side.
+
+*Alice*: That would be a good example.
+
+*Bob*: Okay, let's get to work.  You have struggled with these things
+a lot more than I have.  How do we get started?
+
+*Alice*: We want to check the quality of any given numerical approximation
+scheme to the solution of our differential equation.  In order to do
+so, we can compare such a scheme with a Taylor series developoment of
+the true solution, around the starting point of our one integration
+step.
+
+In other words, we can express the position at the end of one time step
+in the following Taylor series:
+
+:equation:
+x_1 = x_0 + v_0\tau + \half a_0\tau^2 + \one{6} j_0\tau^3 + \one{24} s_0\tau^4
++ O(\tau^5)
+
+The velocity at time zero is given directly by the differential equation.
+The higher derivatives of the position, starting with the acceleration,
+can be found by differentiating both sides of the differential equation,
+one or more times.  This leads to expressions such as:
+
+:eqnarray:
+v_0 &=& f(x(0)) \ = \ f(x_0) \ = \ f_0      \label{v0}  \\
+\phantom{1}&\phantom{1}&\phantom{1}                    \nonumber\\
+a_0 &=& \dot v_0 \ = \ {d \over dt} f_0
+\ = \ {df_0 \over dx} {dx \over dt}
+\ = \ f_0' v_0 \ = \ f_0 f_0'               \label{a0} \\
+\phantom{1}&\phantom{1}&\phantom{1}                  \nonumber \\
+j_0 &=& \dot a_0 \ = \ f_0^2 f_0'' + f_0 (f_0')^2     \label{j0} \\
+\phantom{1}&\phantom{1}&\phantom{1}                  \nonumber \\
+s_0 &=& \dot j_0 \ = \ f_0^3 f_0''' + 4f_0^2f_0'f_0'' +
+(f_0')^3 f_0           \label{s0}
+
+*Bob*: Note that we should not interpret the acceleration as something that
+happens as the result of a force being applied.  If a spoon moving
+through molasses accelerates, it is the result of an <i>increase</i>
+in the force.
+
+*Alice*: That may take a bit of getting used to, but of course, for a
+first-order differential equation, that makes sense.  Yes, it's nice to
+have this picture of movement through a viscous medium as a guide.
+
+== New Force Evaluations
+
+*Bob*: I like the systematic approach idea, of using up to two
+new force evaluations per time step.  Well, this gives us two
+choices: either one or two force evaluations.
+
+*Alice*: Actually, there are four choices.  In each case, we can try
+to recycle a previous force calculation in the next step, or we don't.
+
+*Bob*: You mean that you use the last force calculation, at the end of
+a given step, as the first force value that you use for the next step?
+
+*Alice*: Exactly.  And this will put rather strict conditions on the
+nature of that force calculation.
+
+*Bob*: It means, of course, that a force calculation needs to take place
+at the boundary of two steps, otherwise you can't recycle it.  But that
+doesn't seem to be a particularly severe restriction to me.
+
+*Alice*: Oh, but there is more.  In a general Runge-Kutta approach, you
+compute a few forces here and there, and only after doing that, you
+combine those forces in such a way as to get a combination of them,
+to give you a value of the new position accurate to high order.
+
+Now the force that you would evaluate at that new position, at the
+beginning of the next time step, will in general not be the same as
+the force that you have calculated at the end of the current time step.
+Even though it was evaluated at the same time, it will in general be
+evaluated at a slightly different place.  The reason is that at the 
+time of evaluation, you didn't yet have in hand the most accurate
+estimate for the new position.
+
+*Bob*: Hmm, that's tricky.  I hadn't thought about that.
+
+*Alice*: I hadn't either, until I started playing with some of those
+schemes in detail.  All the more reason to take a really pedestrian
+approach, and just write everything out, to make sure we're not
+overlooking something or jumping to conclusions!
+
+To start with, let us _not_ try to recycle any forces.  Within that
+category of attempts, we will first investigate what can happen when
+we allow just one force evaluation per step, and then we will move
+on to two force evaluations per step.  After that, we'll look at
+recycling.
+
+*Bob*: Fair enough!
+
+== One Force Evaluation per Step
+
+*Alice*: At the start of a time step, the only evaluation of the right-hand
+side of the differential equation that is possible is the one at
+<tex>$t=0$</tex>:
+
+:equation:
+k_1 = f(x_0)
+
+This leads to the following dimensionally correct expression:
+
+:equation:
+x_1 = x_0 + \alpha_1 k_1\tau
+
+Combining the last two equations, we have
+
+:equation:
+x_1 = x_0 + \alpha_1 f_0\tau \label{rk1}
+
+We can compare this expression with our Taylor series:
+
+:equation:
+x_1 = x_0 + v_0\tau + \half a_0\tau^2 + O(\tau^3)
+
+Using Eqs. (\ref{v0}) and (\ref{a0}),
+we can write this as
+
+:equation:
+x_1 = x_0 + f_0\tau + \half f_0 f_0'\tau^2 + O(\tau^3) \label{taylor1}
+
+How accurate is our new value <tex>$x_1$</tex> after we take one step?  Let us
+see how well we can match Eq. (\ref{rk1}) with Eq. (\ref{taylor1}),
+in successive powers of <tex>$\tau$</tex>.  The constant term <tex>$x_0$</tex> matches
+trivially, and our first condition arises from the term linear in <tex>$\tau$</tex>:
+
+:equation:
+\alpha_1 f_0 = f_0
+
+hence
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_1 = 1
+}$
+}
+
+We have no free parameter left, so this leads us to the
+only possible explicit first-order integration scheme
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + k_1\tau  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)
+\end{array} \right.                    \label{forward}
+
+which is the forward-Euler algorithm.  This scheme is only first-order
+accurate, since it cannot possibly reproduce the <tex>$O(\tau^2)$</tex> term in
+Eq. (\ref{taylor1}):
+such a match would require <tex>$\half f_0 f_0' = 0$</tex>,
+which is certainly not true for general force prescriptions.
+
+*Bob*: Of course, forward Euler is the simplest possible scheme.  It is
+what anyone would have guessed, if they had guessed any scheme at all
+
+*Alice*: That may be true, but I, for one, like to see a _derivation_ for
+any integration scheme, even the simplest and humblest of them all.  It is 
+all nice and fine to say that something is intuitively obvious, but I am
+much happier if you can _prove_ that something is not only simple, but
+actually the simplest, and under certain plausible restrictions, the _only_
+one of its kind.
+
+*Bob*: Can't argue about taste.  I can see your point, but any good point
+can be pressed to extremes.  Well, as long as you do the calculating, I'll
+sit back and relax.
+
+== Two Force Evaluations per Step
+
+*Alice*: Now we can move to more interesting venues, when we allow
+two force evaluations per step.  After a first evaluation of the
+right-hand side of the differential equation, we can perform a
+preliminary integration in time, after which we can evaluate the
+right-hand side again, at a new position:
+
+:eqnarray:
+k_1 &=& f(x_0)    \\
+k_2 &=& f(x_0 + \eta k_1 \tau)
+
+We can now use a more general expression for the new position:
+
+:equation:
+x_1 = x_0 + \left( \alpha_1 k_1 + \alpha_2 k_2 \right) \tau  \label{alg11}
+
+Combining these equations, we have
+
+:equation:
+x_1 = x_0 + \left\{ 
+\alpha_1 f_0 + \alpha_2 f(x_0 +\eta f_0 \tau) \right\} \tau \label{alg12}
+
+The right-most term in Eqs. (\ref{alg11}) and (\ref{alg12}) can be
+expanded in a power series in <tex>$\tau$</tex> when we develop <tex>$k_2$</tex> in a Taylor
+series around <tex>$\tau = 0$</tex>:
+
+:equation:
+k_2 = f(x_0 +\eta f_0 \tau) =
+f_0 + (\eta f_0) f_0' \tau + \half (\eta f_0)^2 f_0'' \tau^2
++ O(\tau^3)  \label{alg13}
+
+We thus find for the new position, at the end of our time step:
+
+:equation:
+x_1 = x_0 + (\alpha_1 + \alpha_2) f_0 \tau +
+\alpha_2 \eta f_0 f_0' \tau^2 +
+\half \alpha_2 \eta^2 f_0^2 f_0'' \tau^3 + O(\tau^4) \label{rk2}
+
+We can now compare this expression with the Taylor series expansion of
+the true orbit:
+
+:equation:
+x_1 = x_0 + v_0\tau + \half a_0\tau^2
++ \one{6} j_0\tau^3  + O(\tau^4)                \label{taylor0}
+
+Using Eqs. (\ref{v0}), (\ref{a0}), and (\ref{j0}), 
+we can write this as
+
+:equation:
+x_1 = x_0 + f_0\tau + \half f_0 f_0'\tau^2
++ \one{6} \left\{ f_0^2 f_0'' + f_0 (f_0')^2 \right\} \tau^3
++ O(\tau^4) \label{taylor2}
+
+To what order can we make Eqs. (\ref{rk2}) and (\ref{taylor2}) compatible?
+Starting with terms to first order in <tex>$\tau$</tex>, we have to insist that
+
+:equation:
+(\alpha_1 + \alpha_2) f_0 = f_0
+
+which leads to the condition
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_1 + \alpha_2 = 1
+}$
+}
+
+To second order in <tex>$\tau$</tex>, we would like to satisfy:
+
+:equation:
+\alpha_2 \eta f_0 f_0' = \half f_0 f_0'
+
+which can be done through the condition
+
+:equation:
+\fbox{
+$\displaystyle{
+\eta = {1 \over 2 \alpha_2}
+}$
+}
+
+Would it be possible to match Eqs. (\ref{rk2}) and (\ref{taylor2}) also to
+third order in <tex>$\tau$</tex>?  This would require
+
+:equation:
+\half \alpha_2 \eta^2 f_0^2 f_0'' =
+\one{6} \left\{f_0^2 f_0'' + f_0 (f_0')^2 \right\}
+
+While we can match the first term on the right-hand side, by choosing
+<tex>$\alpha_2 \eta^2 = 1/3$</tex>, this would require that <tex>$f_0 (f_0')^2 = 0$</tex>,
+which is not true for general force prescriptions.
+
+== xxx
+
+We have to conclude that our scheme is only second-order
+accurate.  We have three free parameters, <tex>$\alpha_1$</tex>, <tex>$\alpha_2$</tex>, and
+<tex>$\eta$</tex>.  Since we only have two conditions, Eqs. (xx) and (yy)
+{\bf[note: box ref problem]}, we can expect to be left with one degree
+of freedom in choosing the coefficients in our algorithm.  This is
+indeed the case.  If we write <tex>$\alpha = \alpha_2$</tex>, we obtain:
+
+:equation:
+\left\{ \begin{array}{lcl}
+\alpha_1 &=& 1 - \alpha  \\
+\alpha_2 &=& \alpha \\
+\eta &=& 1 / (2\alpha)
+\end{array} \right.
+
+we obtain the following family
+of algorithms:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + \left( (1-\alpha)k_1 + \alpha k_2 \right) \tau \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)  \\
+k_2 &=& f(x_0 + {1\over 2 \alpha} k_1 \tau)
+\end{array} \right.                         \label{rk2alpha}
+
+One classical choice for a second-order Runge-Kutta is <tex>$\alpha = \half$</tex>,
+leading to:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + \half \left( k_1 + k_2 \right) \tau \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)  \\
+k_2 &=& f(x_0 + k_1 \tau)
+\end{array} \right.                     \label{rk2alphahalf}
+
+Another classical choice is <tex>$\alpha = 1$</tex>, which gives:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + k_2 \tau \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)  \\
+k_2 &=& f(x_0 + \half k_1 \tau)
+\end{array} \right.
+
+For <tex>$\alpha = \half$</tex>, we effectively average the evaluations at the
+beginning and at the end of the trial step, while for <tex>$\alpha = 1$</tex>, we
+use only the evaluation at the end of a smaller trial step that brings
+us approximately mid-way between the beginning and the end of the step.
+

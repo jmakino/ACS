@@ -1,213 +1,11 @@
-= A First-Order Differential Equation
-
-== Notation
-
-Although we are primarily interested in classical mechanics, let us
-first investigate the simpler case of a first-order differential equation:
-
-:equation:
-{dx \over dt} = f(x)
-
-This can be interpreted as describing the motion of an object that is being
-pushed through a very resistive medium, such as a spoon being pushed through
-molasses.  The velocity of the spoon is proportional to the force term
-<tex>$f(x)$</tex> on the right-hand side.  In order to solve numerically for the
-orbit <tex>$x(t)$</tex> of the object, we can express the position at the end of
-one time step in a Taylor series:
-
-:equation:
-x_1 = x_0 + v_0\tau + \half a_0\tau^2 + \one{6} j_0\tau^3 + \one{24} s_0\tau^4
-+ O(\tau^5)
-
-The velocity at time zero is given directly by the differential equation.
-The higher derivatives of the position, starting with the acceleration,
-can be found by differentiating both sides of the differential equation,
-one or more times.  This leads to expressions such as:
-
-:eqnarray:
-v_0 &=& f(x(0)) \ = \ f(x_0) \ = \ f_0      \label{v0}  \\
-\phantom{1}&\phantom{1}&\phantom{1}                    \nonumber\\
-a_0 &=& \dot v_0 \ = \ {d \over dt} f_0
-\ = \ {df_0 \over dx} {dx \over dt}
-\ = \ f_0' v_0 \ = \ f_0 f_0'               \label{a0} \\
-\phantom{1}&\phantom{1}&\phantom{1}                  \nonumber \\
-j_0 &=& \dot a_0 \ = \ f_0^2 f_0'' + f_0 (f_0')^2     \label{j0} \\
-\phantom{1}&\phantom{1}&\phantom{1}                  \nonumber \\
-s_0 &=& \dot j_0 \ = \ f_0^3 f_0''' + 4f_0^2f_0'f_0'' +
-(f_0')^3 f_0           \label{s0}
-
-== New Force Evaluations
-
-xxx
+= Recycling Force Evaluations
 
 == One Force Evaluation per Step
 
-At the start of a time step, the only evaluation of the right-hand
-side of the differential equation that is possible is the one at <tex>$t=0$</tex>:
+%\subsubsubsection{Exact Recycling}
+{\bf 2.2.1.1. Exact Recycling}
 
-:equation:
-k_1 = f(x_0)
-
-This leads to the following dimensionally correct expression:
-
-:equation:
-x_1 = x_0 + \alpha_1 k_1\tau
-
-Combining the last two equations, we have
-
-:equation:
-x_1 = x_0 + \alpha_1 f_0\tau \label{rk1}
-
-We can compare this expression with our Taylor series:
-
-:equation:
-x_1 = x_0 + v_0\tau + \half a_0\tau^2 + O(\tau^3)
-
-Using Eqs. (\ref{v0}) and (\ref{a0}),
-we can write this as
-
-:equation:
-x_1 = x_0 + f_0\tau + \half f_0 f_0'\tau^2 + O(\tau^3) \label{taylor1}
-
-How accurate is our new value <tex>$x_1$</tex> after we take one step?  Let us
-see how well we can match Eq. (\ref{rk1}) with Eq. (\ref{taylor1}),
-in successive powers of <tex>$\tau$</tex>.  The constant term <tex>$x_0$</tex> matches
-trivially, and our first condition arises from the term linear in <tex>$\tau$</tex>:
-
-:equation:
-\alpha_1 f_0 = f_0
-
-hence
-
-:equation:
-\alpha_1 = 1
-
-We have no free parameter left, so this leads us to the
-only possible first-order integration scheme
-
-:equation:
-\left\{ \begin{array}{lcl}
-x_1 &=& x_0 + k_1\tau  \\
-\phantom{1}&\phantom{1}&\phantom{1} \\
-k_1 &=& f(x_0)
-\end{array} \right.                    \label{forward}
-
-which is the forward-Euler algorithm.  This scheme is only first-order
-accurate, since it cannot possibly reproduce the <tex>$O(\tau^2)$</tex> term in
-Eq. (\ref{taylor1}):
-such a match would require <tex>$\half f_0 f_0' = 0$</tex>,
-which is certainly not true for general force prescriptions.
-
-== Two Force Evaluations per Step
-
-After a first evaluation of the right-hand side of the differential
-equation, we can perform a preliminary integration in time, after
-which we can evaluate the right-hand side again, at a new position:
-
-:eqnarray:
-k_1 &=& f(x_0)    \\
-k_2 &=& f(x_0 + \eta k_1 \tau)
-
-We can now use a more general expression for the new position:
-
-:equation:
-x_1 = x_0 + \left( \alpha_1 k_1 + \alpha_2 k_2 \right) \tau  \label{alg11}
-
-Combining these equations, we have
-
-:equation:
-x_1 = x_0 + \left\{ 
-\alpha_1 f_0 + \alpha_2 f(x_0 +\eta f_0 \tau) \right\} \tau \label{alg12}
-
-The right-most term in Eqs. (\ref{alg11}) and (\ref{alg12}) can be
-expanded in a power series in <tex>$\tau$</tex> when we develop <tex>$k_2$</tex> in a Taylor
-series around <tex>$\tau = 0$</tex>:
-
-:equation:
-k_2 = f(x_0 +\eta f_0 \tau) =
-f_0 + (\eta f_0) f_0' \tau + \half (\eta f_0)^2 f_0'' \tau^2
-+ O(\tau^3)  \label{alg13}
-
-We thus find for the new position, at the end of our time step:
-
-:equation:
-x_1 = x_0 + (\alpha_1 + \alpha_2) f_0 \tau +
-\alpha_2 \eta f_0 f_0' \tau^2 +
-\half \alpha_2 \eta^2 f_0^2 f_0'' \tau^3 + O(\tau^4) \label{rk2}
-
-We can now compare this expression with the Taylor series expansion of
-the true orbit:
-
-:equation:
-x_1 = x_0 + v_0\tau + \half a_0\tau^2
-+ \one{6} j_0\tau^3  + O(\tau^4)                \label{taylor0}
-
-Using Eqs. (\ref{v0}), (\ref{a0}), and (\ref{j0}), 
-we can write this as
-
-:equation:
-x_1 = x_0 + f_0\tau + \half f_0 f_0'\tau^2
-+ \one{6} \left\{ f_0^2 f_0'' + f_0 (f_0')^2 \right\} \tau^3
-+ O(\tau^4) \label{taylor2}
-
-To what order can we make Eqs. (\ref{rk2}) and (\ref{taylor2}) compatible?
-Starting with terms to first order in <tex>$\tau$</tex>, we have to insist that
-
-:equation:
-(\alpha_1 + \alpha_2) f_0 = f_0
-
-which leads to the condition
-
-:equation:
-\fbox{
-$\displaystyle{
-\alpha_1 + \alpha_2 = 1
-}$
-}
-
-To second order in <tex>$\tau$</tex>, we would like to satisfy:
-
-:equation:
-\alpha_2 \eta f_0 f_0' = \half f_0 f_0'
-
-which can be done through the condition
-
-:equation:
-\fbox{
-$\displaystyle{
-\eta = {1 \over 2 \alpha_2}
-}$
-}
-
-Would it be possible to match Eqs. (\ref{rk2}) and (\ref{taylor2}) also to
-third order in <tex>$\tau$</tex>?  This would require
-
-:equation:
-\half \alpha_2 \eta^2 f_0^2 f_0'' =
-\one{6} \left\{f_0^2 f_0'' + f_0 (f_0')^2 \right\}
-
-While we can match the first term on the right-hand side, by choosing
-<tex>$\alpha_2 \eta^2 = 1/3$</tex>, this would require that <tex>$f_0 (f_0')^2 = 0$</tex>,
-which is not true for general force prescriptions.
-
-== xxx
-
-We have to conclude that our scheme is only second-order
-accurate.  We have three free parameters, <tex>$\alpha_1$</tex>, <tex>$\alpha_2$</tex>, and
-<tex>$\eta$</tex>.  Since we only have two conditions, Eqs. (xx) and (yy)
-{\bf[note: box ref problem]}, we can expect to be left with one degree
-of freedom in choosing the coefficients in our algorithm.  This is
-indeed the case.  If we write <tex>$\alpha = \alpha_2$</tex>, we obtain:
-
-:equation:
-\left\{ \begin{array}{lcl}
-\alpha_1 &=& 1 - \alpha  \\
-\alpha_2 &=& \alpha \\
-\eta &=& 1 / (2\alpha)
-\end{array} \right.
-
-we obtain the following family
-of algorithms:
+Taking the results from the previous section, Eq.(\ref{rk2alpha})
 
 :equation:
 \left\{ \begin{array}{lcl}
@@ -215,10 +13,624 @@ x_1 &=& x_0 + \left( (1-\alpha)k_1 + \alpha k_2 \right) \tau \\
 \phantom{1}&\phantom{1}&\phantom{1} \\
 k_1 &=& f(x_0)  \\
 k_2 &=& f(x_0 + {1\over 2 \alpha} k_1 \tau)
-\end{array} \right.                         \label{rk2alpha}
+\end{array} \right.                         \label{rk2alpha2}
 
-One classical choice for a second-order Runge-Kutta is <tex>$\alpha = \half$</tex>,
-leading to:
+would it be possible to use the force evaluation <tex>$k_2$</tex> of the first step,
+and to recycle its use, to let it function as the <tex>$k_1$</tex> contribution
+to the second step?  For this to work, strictly speaking, the position
+at which <tex>$k_2$</tex> is calculated during the first step should coincide
+with the position at which <tex>$k_1$</tex> needs to be calculated during the second
+step.
+
+Let us define <tex>$\tilde x_1$</tex> by <tex>$k_2 \equiv f(\tilde x_1)$</tex>, which implies
+
+:equation:
+\tilde x_1 = x_0 + {1\over 2 \alpha} k_1 \tau
+
+Recycling the last force calculation from the first step, in order to
+use it for the second step, thus requires that <tex>$\tilde x_1 = x_1$</tex>.
+This implies:
+
+:equation:
+x_0 + {1\over 2 \alpha} k_1 \tau =
+x_0 + \left( (1-\alpha)k_1 + \alpha k_2 \right) \tau 
+
+or
+
+:equation:
+k_1 = 2 \alpha\left( (1-\alpha)k_1 + \alpha k_2 \right)
+
+or
+
+:equation:
+2 \alpha^2\left(k_1 - k_2 \right) = (2 \alpha -1)k_1
+
+For arbitrary values of <tex>$k_1$</tex> and <tex>$k_2$</tex>, this condition cannot be
+fulfilled, and we have to conclude that there is no <tex>$\alpha$</tex> value
+for which the last force calculation has exactly been done where we
+needed it.  This result is not surprising, when we reflect on what
+this means: if the equality <tex>$\tilde x_1 = x_1$</tex> would hold exactly,
+there would be no reason to compute the last force evaluation.  The
+best we can hope for is that <tex>$\tilde x_1$</tex> is a reasonably accurate
+predicted value, that will turn out not to differ too much from the
+corrected value <tex>$x_1$</tex>.
+
+In our specific example, the best we can do is to let the right hand
+side disappear, through the choice <tex>$\alpha=\half$</tex>.  In that case, the
+left-hand side will not be exactly zero, but it will be small, to the
+extent that <tex>$k_1 \approx k_2$</tex>.  Specifically, for <tex>$\alpha=\half$</tex>:
+
+:eqnarray:
+k_1 - k_2 &=& f(x_0) - f(x_0 + k_1\tau)    \nonumber \\
+&=& -f_0'k_1\tau + O(\tau^2) = -f_0'f_0\tau + O(\tau^2)
+
+which means that
+
+:eqnarray:
+\tilde x_1 - x_1 &=& \left\{ x_0 + k_1 \tau \right\}
+- \left\{x_0 + \half \left( k_1 + k_2 \right) \tau \right\}    \nonumber \\
+&=& \half \left( k_1 - k_2 \right) \tau               \nonumber \\
+&=& -\half f_0'f_0\tau^2 + O(\tau^3)                   \label{nogo1}
+
+There are two other ways to look at this result.  First of all, we could
+have derived it in a more formal way, by minimizing the difference
+between <tex>$\tilde x_1 $</tex> and <tex>$ x_1$</tex> directly, starting from the most
+general form:
+
+:eqnarray:
+\tilde x_1 - x_1 &=&
+x_0 + {1\over 2 \alpha} k_1 \tau -
+\left\{
+x_0 + \left( (1-\alpha)k_1 + \alpha k_2 \right) \tau 
+\right\}                                              \nonumber \\
+&=&
+{1\over 2 \alpha} k_1 \tau
++ (\alpha-1)k_1 \tau - \alpha k_2  \tau 
+                                              \nonumber \\
+&=&
+(\alpha-1 + {1\over 2 \alpha})k_1 \tau - \alpha k_2  \tau 
+                                                  \label{formal1}
+
+As in the previous section, we can write <tex>$k_1 = f_0$</tex> and use the
+expansion
+
+:equation:
+k_2 = f(x_0 + {1\over 2 \alpha} k_1 \tau) =
+f_0 + {1\over 2 \alpha} f_0 f_0' \tau + O(\tau^2)
+
+which then gives for Eq. (\ref{formal1}):
+
+:eqnarray:
+\tilde x_1 - x_1 &=&
+(\alpha-1 + {1\over 2 \alpha})f_0 \tau
+- \alpha \left\{ f_0 + {1\over 2 \alpha} f_0 f_0' \tau \right\} \tau
+ + O(\tau^3)                                  \nonumber \\
+&=&
+({1\over 2 \alpha}-1) f_0 \tau
+- \half f_0 f_0' \tau^2
+ + O(\tau^3)                                            \label{nogo2}
+
+In order to let the first order term vanish, we regain our previous
+results: <tex>$\alpha = \half$</tex> is the best approximation, and the remaining
+term is second order in <tex>$\tau$</tex>.
+
+The second way to view this result is more intuitive.  At the
+beginning of the second step, we can only recycle a previous force if
+that force was performed at the end of the previous step.  In first
+approximation, given the force <tex>$f_0$</tex> at <tex>$x_0$</tex>, we can write
+<tex>$x_1 = x_0 + f_0 \tau + O(\tau^2)$</tex>.  Comparing this with
+Eq. (\ref{rk2alpha2}), we see immediately that <tex>$1/(2\alpha) = 1$</tex>,
+hence <tex>$\alpha) = \half$</tex>.  Even so, it was a good exercise to go
+through various derivations, with different degrees of formality, so
+that we will be prepared for the far more complicated manipulations
+that await us for larger numbers of force evaluations per time step.
+
+%\subsubsubsection{Approximate Recycling}
+
+{\bf 2.2.1.2. Approximate Recycling}
+
+Returning to our original goal of recycling the last force evaluation
+of an earlier time step, what can we conclude from our failure to do
+so in a strict sense?  This second-order offset in Eqs. (\ref{nogo1})
+and (\ref{nogo2}) may seem problematic, since we are aiming at
+developing a second order algorithm, with third-order errors.
+However, when we recycle the last force calculation in the next step
+we will always use it in multiplication with an extra power of <tex>$\tau$</tex>.
+This means that the slight offset will cause only third order errors,
+on the same level of the truncation errors we are making anyway.
+
+To show this explicitly, let us extend our notation, using <tex>$k_{i,j}$</tex>
+to denote <tex>$k_j$</tex> for the step starting at <tex>$x_i$</tex>, and let us use tildes
+to indicate the approximate solution that we obtain when we recycle
+the previous force evaluation.  Here are the expressions for the first
+step, the correct second step without recycling, and the approximate
+second step with recycling:
+
+Starting again from
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + \half \left( k_{0,1} + k_{0,2} \right) \tau \\
+k_{0,1} &=& f(x_0)  \\
+k_{0,2} &=& f(x_0 + k_{0,1} \tau)
+\end{array} \right.
+
+we have:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_2 &=& x_1 + \half \left( k_{1,1} + k_{1,2} \right) \tau \\
+k_{1,1} &=& f(x_1)  \\
+k_{1,2} &=& f(x_1 + k_{1,1} \tau)
+\end{array} \right.
+
+:equation:
+\left\{ \begin{array}{lcl}
+\tilde x_2 &=& x_1 + \half \left(\tilde k_{1,1} + \tilde k_{1,2}\right) \tau \\
+\tilde k_{1,1} &=& k_{0,2}  \\
+\tilde k_{1,2} &=& f(x_1 + \tilde k_{1,1} \tau)
+\end{array} \right.
+
+more generally:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_{i+1} &=& x_i + \half \left( k_{i,1} + k_{i,2} \right) \tau \\
+k_{i,1} &=& f(x_i)  \\
+k_{i,2} &=& f(x_i + k_{i,1} \tau)
+\end{array} \right.                        \label{second1}
+
+:equation:
+\left\{ \begin{array}{lcl}
+\tilde x_{i+1} &=&
+x_i + \half \left(\tilde k_{i-1,2} + \tilde k_{i,2}\right) \tau \\
+\tilde k_{i,2} &=& f(x_i + \tilde k_{i-1,2} \tau)
+\end{array} \right.                        \label{second2}
+
+At each step, the difference between <tex>$\tilde x_{i+1}$</tex> and <tex>$x_{i+1}$</tex>
+is of third order in <tex>$\tau$</tex>, as we can immediately illustrate at the
+time of the second step, by evaluating
+
+:equation:
+\tilde x_2 - x_2 = \half \left(
+\tilde k_{1,1} - k_{1,1} \right)\tau +
+\left( \tilde k_{1,2} - k_{1,2}) \right) \tau     \label{diff2}
+
+Using Eq. (\ref{nogo2}), we can expand the
+first term on the right hand side as follows
+
+:eqnarray:
+\tilde k_{1,1} - k_{1,1} &=& f(\tilde x_1) - f(x_1) =
+(\tilde x_1 - x_1) f'(x_1) + O(\tau^3)         \nonumber \\
+&=& -\half f_0f_0'f_1'\tau^2 + O(\tau^3)
+
+This result can in turn be used to expand 
+the second term on the right-hand side of Eq.(\ref{diff2}):
+
+:eqnarray:
+\tilde k_{1,2} - k_{1,2} &=&
+f(x_1 + \tilde k_{1,1}\tau) - f(x_1 + k_{1,1}\tau)      \nonumber \\
+&=& \left(\tilde k_{1,1} - k_{1,1}\right)
+f'(x_1 + \tilde k_{1,1}\tau) \tau + O(\tau^4)            \nonumber \\
+&=& -\half f_0f_0'f_1'f'(x_1 + \tilde k_{1,1}\tau)\tau^3 + O(\tau^4)
+
+Substituting the last two results in Eq. (\ref{diff2}), we find
+
+:equation:
+\tilde x_2 - x_2 = -\one{4}f_0f_0'f_1'\tau^3 + O(\tau^4)
+
+This is the promised result: recycling the force calculation at the
+end of one step introduces and extra error in the next step which is
+third order in <tex>$\tau$</tex>.  Since our basic algorithm is only second-order
+accurate in <tex>$\tau$</tex> per step, the only effect is to change the
+magnitude of the leading error term, without affecting the
+second-order nature of the algorithm.
+
+== Two Force Evaluations per Step
+
+%\subsubsubsection{Summary}
+{\bf 2.2.2.1. Summary}
+
+Let us summarize what we have learned so far.
+
+- If we use only one force calculation per step, without
+  recycling any force evaluation results, we have to settle for a
+  first-order scheme, the forward-Euler algorithm, Eq. (\ref{forward}).
+
+- If we use two force calculations per step, without recycling any force
+  evaluation results, we find a one-parameter family of 
+  second-order scheme, the classical second-order Runge-Kutta algorithms,
+  given in Eq. (\ref{rk2alpha}).
+
+- If we use only one new force calculation per step, but in addition we
+  recycle the last force calculation from the previous step, we have the
+  best of both worlds: we obtain a second-order scheme for the same price
+  in terms of number of force evaluations as the first-order scheme.  This
+  clever scheme is given in Eq. (\ref{second2}), as the recycled version of
+  what otherwise be Eq. (\ref{second1}), which is the same as
+  Eq. (\ref{rk2alpha}) for <tex>$\alpha = \half$</tex>, also given above as
+  Eq.(\ref{rk2alphahalf}).
+
+Encouraged by this increase in efficiency, let us check whether we can
+continue this recycling success to higher order.  Let us now use three
+force evaluations per step, of which the first one is the same as the
+last force evaluation of the previous step.  Our goal is to find a
+third-order scheme, based in this way on three force evaluations per
+step for the price of two.
+
+%\subsubsubsection{General Form}
+
+{\bf 2.2.2.2. General Form}
+
+Our first task is to write the form of a general Runge-Kutta scheme
+with three force calculations per time step.  Once we have this form,
+we can insist on the extra condition that the position of the final
+force calculation coincides with the position at the beginning of the
+next time step, at least to within second order in <tex>$\tau$</tex>.
+
+The general three-stage Runge-Kutta scheme looks like this:
+
+:eqnarray:
+k_1 &=& f(x_0)                                               \nonumber \\
+k_2 &=& f(x_0 + \eta_{21} k_1 \tau)                          \nonumber \\
+k_3 &=& f(x_0 + \eta_{31} k_1 \tau + \eta_{32} k_2 \tau)     \nonumber \\
+\phantom{1}&\phantom{1}&\phantom{1}                          \nonumber \\
+x_1 &=& x_0 + 
+\left( \alpha_1 k_1 + \alpha_2 k_2 + \alpha_2 k_3 \right) \tau  \label{alg21}
+
+Our analysis proceeds as before, but with more complex terms.  Instead
+of Eq. (\ref{alg12}), we now have
+
+:eqnarray:
+x_1 &=& x_0 \ + \ \left\{
+\alpha_1 f_0 + 
+\alpha_2 f(x_0 +\eta_{21} f_0 \tau) + \right.                     \nonumber \\
+&&  \quad\quad\quad\ \left.
+\alpha_3 f(x_0 +\eta_{31} f_0\tau + \eta_{32} f(x_0 +\eta_{21} f_0 \tau)\tau)
+\right\} \tau \label{alg22}
+
+Instead of Eq. (\ref{alg13}) we have
+
+:eqnarray:
+k_2 &=& f(x_0 +\eta_{21} f_0 \tau) \ \ =                   \nonumber \\
+&&
+f_0 + \eta_{21} f_0 f_0' \tau + \half \eta_{21}^2 f_0^2 f_0'' \tau^2
++ O(\tau^3)  \label{alg23}
+
+The expression for the next force evaluation can be derived similarly:
+
+:eqnarray:
+k_3 &=& f_0 + \left(\eta_{31}k_1+\eta_{32}k_2\right)f_0'\tau + \nonumber \\
+&&
+\half\left(\eta_{31}k_1+\eta_{32}k_2\right)^2f_0''\tau^2
++ O(\tau^3)                                               \nonumber \\
+&=& f_0 + \left(\eta_{31}+\eta_{32}\right)f_0f_0'\tau +
+\eta_{32}\eta_{21}f_0\left(f_0'\right)^2\tau^2 +          \nonumber \\
+&&
+\half\left(\eta_{31}+\eta_{32}\right)^2f_0^2f_0''\tau^2
+ + O(\tau^3)  \label{alg24}
+
+We thus find for the new position, at the end of our time step,
+as the generalization of Eq. (\ref{rk2})
+
+:eqnarray:
+x_1 &=& x_0 + (\alpha_1 + \alpha_2 + \alpha_3) f_0 \tau +   \nonumber \\
+&& \alpha_2 \eta_{21} f_0 f_0' \tau^2 +
+\half \alpha_2 \eta_{21}^2 f_0^2 f_0'' \tau^3 +        \nonumber \\
+&& 
+\alpha_3\left(\eta_{31}+\eta_{32}\right)f_0f_0'\tau^2 + 
+\alpha_3\eta_{32}\eta_{21}f_0\left(f_0'\right)^2\tau^3 +    \nonumber \\
+&&
+\half\alpha_3\left(\eta_{31}+\eta_{32}\right)^2f_0^2f_0''\tau^3
++ \ O(\tau^4)                                                \nonumber \\
+&=& x_0 + (\alpha_1 + \alpha_2 + \alpha_3) f_0 \tau +   \nonumber \\
+&&
+\left(\alpha_2 \eta_{21}+\alpha_3\left(\eta_{31}+\eta_{32}\right)\right)
+f_0 f_0' \tau^2 +                                              \nonumber \\
+&&
+\half\left( \alpha_2 \eta_{21}^2+\alpha_3\left(\eta_{31}+\eta_{32}\right)^2
+\right)f_0^2 f_0'' \tau^3 +                                    \nonumber \\
+&&
+\alpha_3\eta_{32}\eta_{21}f_0\left(f_0'\right)^2\tau^3 +
+\ O(\tau^4) \label{alg25}
+
+As we did in Eqs. (\ref{taylor0}) and (\ref{taylor2}), we have to
+equate this expression term for term with the corresponding
+expressions in the Taylor series expansion
+
+:equation:
+x_1 = x_0 + v_0\tau + \half a_0\tau^2
++ \one{6} j_0\tau^3  + O(\tau^4)
+
+which reads
+
+:equation:
+x_1 = x_0 + f_0\tau + \half f_0 f_0'\tau^2
++ \one{6} \left\{ f_0^2 f_0'' + f_0 (f_0')^2 \right\} \tau^3
++ O(\tau^4) \label{taylor3}
+
+Equating the coefficients for the various terms in
+Eqs. (\ref{alg25}) and (\ref{taylor3}), we find for the first order in
+<tex>$\tau$</tex> the relation
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_1 + \alpha_2 + \alpha_3 = 1
+}$
+}
+
+For the second order terms in <tex>$\tau$</tex> we find
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_2\eta_{21} + \alpha_3\left(\eta_{31}+\eta_{32}\right) = \half
+}$
+}
+
+For the third order terms in <tex>$\tau$</tex> involving the second derivative of
+the force, we find
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_2\eta_{21}^2 + \alpha_3\left(\eta_{31}+\eta_{32}\right)^2 = \one{3}
+}$
+}
+
+while for the third order terms in <tex>$\tau$</tex> involving the square of the
+first derivative of the force, we find
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_3\eta_{32}\eta_{21} = \one{6}
+}$
+}
+
+Since we have four equations for six unknown variables, we expect to
+have a two-parameter freedom of choice.  To give an example, let
+us require that the second force evaluation takes place in the middle
+of the time step (<tex>$\eta_{21} = \half$</tex>), while the third force
+evaluation takes place at the end of the step (<tex>$\eta_{31}+\eta_{32} = 1$</tex>).
+With these two extra conditions, barring unforeseen complications, we
+can expect to find a unique solution.  This is indeed the case, as we
+can easily check by substituting our two conditions into the four
+boxed equations we found above:
+
+:equation:
+\left\{ \begin{array}{lcl}
+\alpha_1 + \alpha_2 + \alpha_3 &=& 1            \nonumber \\
+\phantom{1}&\phantom{1}&\phantom{1}           \nonumber \\
+\half\alpha_2 + \alpha_3 &=& \half            \nonumber \\
+\phantom{1}&\phantom{1}&\phantom{1}           \nonumber \\
+\one{4}\alpha_2 + \alpha_3 &=& \one{3}        \nonumber \\
+\phantom{1}&\phantom{1}&\phantom{1}           \nonumber \\
+\alpha_3\eta_{32} = \one{3}
+\end{array} \right.
+
+The second and third equations above can be solved readily to find
+<tex>$\alpha_2 = 2/3$</tex> and <tex>$\alpha_3 = 1/6$</tex>, after which the first equation
+yields <tex>$\alpha_1 = 1/6$</tex>.  The last equation then gives <tex>$\eta_{32}=2$</tex>
+which implies <tex>$\eta_{31}=-1$</tex>.  We thus arrive at the following
+third-order scheme:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + \one{6}\left(k_1 + 4k_2 + k_3\right) \tau    \nonumber \\
+\phantom{1}&\phantom{1}&\phantom{1}                        \nonumber \\
+k_1 &=& f(x_0)                                          \nonumber \\
+k_2 &=& f(x_0 + \half k_1 \tau)                    \nonumber \\
+k_3 &=& f(x_0 - k_1 \tau + 2k_2\tau)
+\end{array} \right.
+
+This is indeed one of the classical third-order Runge-Kutta algorithms.
+
+Another natural choice is to spread the force calculations evenly over
+the interval, at times <tex>$0$</tex>, <tex>$\tau/3$</tex>, and <tex>$2\tau/3$</tex>, before starting
+the calculations for the new step at time <tex>$\tau$</tex>.  Such a scheme
+obviously cannot be used for recycling purposes, but since it leads to
+a well-known scheme, let us derive it here on the side.  We now
+require that <tex>$\eta_{21} = \one{3}$</tex> and <tex>$\eta_{31}+\eta_{32} = \two{3}$</tex>.
+Plugging this into the four conditions we have found before leads to:
+
+:equation:
+\left\{ \begin{array}{lcl}
+\alpha_1 + \alpha_2 + \alpha_3 &=& 1            \nonumber \\
+\phantom{1}&\phantom{1}&\phantom{1}           \nonumber \\
+\one{3}\alpha_2 + \two{3}\alpha_3 &=& \half            \nonumber \\
+\phantom{1}&\phantom{1}&\phantom{1}           \nonumber \\
+\one{4}\alpha_2 + {\textstyle\frac{4}{9}}\alpha_3 &=& \one{3}        \nonumber \\
+\phantom{1}&\phantom{1}&\phantom{1}           \nonumber \\
+\alpha_3\eta_{32} = \half
+\end{array} \right.
+
+The second and third equations imply
+<tex>$\alpha_2 = 0$</tex> and <tex>$\alpha_3 = 3/4$</tex>, and whith the first equation
+we find <tex>$\alpha_1 = 1/4$</tex>.  The last equation yields <tex>$\eta_{32}=2/3$</tex>
+which then determines <tex>$\eta_{31}=0$</tex>.  We thus arrive at an alternative
+classical third-order Runge-Kutta scheme:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + \one{4}\left(k_1 + 3k_3\right) \tau    \nonumber \\
+\phantom{1}&\phantom{1}&\phantom{1}                        \nonumber \\
+k_1 &=& f(x_0)                                          \nonumber \\
+k_2 &=& f(x_0 + \one{3} k_1 \tau)                    \nonumber \\
+k_3 &=& f(x_0 + \two{3} k_2\tau)
+\end{array} \right.
+
+Like trapezium rule for integration!
+
+%\subsubsubsection{Recycle Conditions}
+
+{\bf 2.2.2.3. Recycle Conditions}
+
+It is time to return to our original objective, to find a third-order
+scheme that uses three force calculations per time step, two of which
+are computed anew, while the third one is being recycled from its use
+in the previous step.  With two free parameters, we seem to have a
+good chance to find such a scheme.
+
+As in Eqs. (\ref{formal1}) and (\ref{nogo2}), we have to calculate the
+difference between the position <tex>$\tilde x_1$</tex> at which the last force
+calculation of the previous step took place and the actual position
+<tex>$x_1$</tex> at the end of that step.  In Eq. (\ref{nogo2}) we only needed to
+let the term linear in <tex>$\tau$</tex> vanish, in order to obtain a consistent
+second-order scheme.  In the present case, for a third-order scheme,
+we need to let both the linear and quadratic terms in <tex>$\tau$</tex> vanish.
+Using Eq. (\ref{alg23}), we have:
+
+:eqnarray:
+\tilde x_1 &=&
+x_0 + \eta_{31} k_1 \tau + \eta_{32} k_2 \tau         \nonumber \\
+&=& x_0 + \left(\eta_{31} + \eta_{32}\right) f_0 \tau +      \nonumber \\
+&&\eta_{32}\eta_{21}f_0f_0'\tau^2 + O(\tau^3)
+
+Comparing this with Eq. (\ref{alg25}), we have to the same order in <tex>$\tau$</tex>:
+
+:eqnarray:
+x_1 &=& x_0 + (\alpha_1 + \alpha_2 + \alpha_3) f_0 \tau +    \nonumber \\
+&&\left(\alpha_2 \eta_{21}+\alpha_3\left(\eta_{31}+\eta_{32}\right)\right)
+f_0 f_0' \tau^2 + O(\tau^3)
+
+Requiring the coefficients of <tex>$\tau$</tex> and <tex>$\tau^2$</tex> to match in the last
+two equations gives us two extra conditions:
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_1 + \alpha_2 + \alpha_3 = \eta_{31} + \eta_{32}
+}$
+}
+
+and
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_2 \eta_{21}+\alpha_3\left(\eta_{31}+\eta_{32}\right) = 
+\eta_{32}\eta_{21}
+}$
+}
+
+It seems that everything will work out: we now have six equations for
+the six variables <tex>$\{\alpha_1, \alpha_2, \alpha_3, \eta_{21},
+\eta_{31}, \eta_{32}\}$</tex>.  Gathering all six equations, we get:
+
+:equation:
+\left\{ \begin{array}{lcl}
+\alpha_1 + \alpha_2 + \alpha_3 &=& 1     \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\alpha_2\eta_{21} + \alpha_3 &=& \half     \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\alpha_2\eta_{21}^2 + \alpha_3 &=& \one{3}     \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\alpha_3 &=& \one{3}                       \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\eta_{31} + \eta_{32} &=& 1            \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\eta_{32}\eta_{21} &=& \half
+\end{array} \right.                         \label{allsix}
+
+where we have already simplified the expressions somewhat by substituting,
+for example, one earlier relation <tex>$\alpha_1 + \alpha_2 + \alpha_3 = 1$</tex> and
+another one in simplified form as <tex>$\alpha_2\eta_{21} + \alpha_3 = \half$</tex>
+into the last two boxed equations.
+
+So far, so good; or so it seems.  However, when we now substitute the
+fourth relation into the second and third one, we obtain:
+
+:eqnarray:
+\alpha_2\eta_{21} &=& \one{6}           \nonumber \\
+\alpha_2\eta_{21}^2 &=& 0
+
+There is no way that we can satisfy these two equations simultaneously.
+The last line implies that either <tex>$\alpha_2 = 0$</tex> or <tex>$\eta_{21} = 0$</tex>.
+Either case would imply <tex>$\alpha_2\eta_{21} = 0$</tex>, in contradiction with
+the requirement that <tex>$\alpha_2\eta_{21} = 1/6$</tex>.
+
+We have to conclude, somewhat surprisingly, that there just is no
+third-order recycling scheme.  Whether we use two new force
+calculations per time step, or whether we recycle an additional force
+calculation from the previous time step, in both cases we wind up with
+a second-order algorithm.
+
+%\subsubsubsection{Remaining Freedom}
+
+{\bf 2.2.2.4. Remaining Freedom}
+
+However, not all is lost: our scheme is still second-order, and has
+more freedom than our non-recycling scheme.  Specifically, let us
+gather the set of conditions necessary to guarantee at least
+second-order behavior for our recycling method.  These are:
+
+:equation:
+\left\{ \begin{array}{lcl}
+\alpha_1 + \alpha_2 + \alpha_3 = 1   \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\alpha_2\eta_{21} + \alpha_3\left(\eta_{31}+\eta_{32}\right) = \half   \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\alpha_1 + \alpha_2 + \alpha_3 = \eta_{31} + \eta_{32}
+\end{array} \right.
+
+which simplifies to
+
+:equation:
+\left\{ \begin{array}{lcl}
+\alpha_1 + \alpha_2 + \alpha_3 = \eta_{31} + \eta_{32} = 1   \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\alpha_2\eta_{21} + \alpha_3 = \half
+\end{array} \right.
+
+These are three equations for six unknown variables.  If we introduce
+<tex>$\alpha \equiv \alpha_2$</tex>, <tex>$\eta \equiv \eta_{21}$</tex>, and
+<tex>$\zeta \equiv \eta_{32}$</tex>, we get the following parametrized solutions:
+
+:equation:
+\left\{ \begin{array}{lcl}
+\alpha_1 &=& \half -\alpha +\alpha\eta   \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\alpha_2 &=& \alpha                      \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\alpha_3 &=& \half - \alpha\eta        \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\eta_{21} &=& \eta                     \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\eta_{31} &=& 1 - \zeta            \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\eta_{32} &=& \zeta                    \\
+\end{array} \right.
+
+This gives:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + 
+\half\Big( (1-2\alpha +2\alpha\eta)k_1 + 2\alpha k_2 
++ (1-2\alpha\eta) k_3 \Big) \tau        \nonumber \\
+\phantom{1}&\phantom{1}&\phantom{1}                        \nonumber \\
+k_1 &=& f(x_0)                                          \nonumber \\
+k_2 &=& f(x_0 + \eta k_1 \tau)                    \nonumber \\
+k_3 &=& f(x_0 +(1-\zeta) k_1 \tau + \zeta k_2\tau)
+\end{array} \right.                         \label{sum1}
+
+We can compare this for a non-recycling scheme, where we
+also perform two force calculations per step, in which case we also
+obtain a second-order scheme.  We found there, as Eq.(\ref{rk2alpha}):
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + \left( (1-\alpha)k_1 + \alpha k_2 \right) \tau \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)  \\
+k_2 &=& f(x_0 + {1\over 2 \alpha} k_1 \tau)
+\end{array} \right.                         \label{sum2}
+
+It is also instructive to compare this scheme with the
+second-order scheme we found based on one new force
+calculation and one recycled force calculation:
 
 :equation:
 \left\{ \begin{array}{lcl}
@@ -226,20 +638,19 @@ x_1 &=& x_0 + \half \left( k_1 + k_2 \right) \tau \\
 \phantom{1}&\phantom{1}&\phantom{1} \\
 k_1 &=& f(x_0)  \\
 k_2 &=& f(x_0 + k_1 \tau)
-\end{array} \right.                     \label{rk2alphahalf}
+\end{array} \right.                         \label{sum3}
 
-Another classical choice is <tex>$\alpha = 1$</tex>, which gives:
+This in fact is the previous set for <tex>$\alpha = \half$</tex>.
 
-:equation:
-\left\{ \begin{array}{lcl}
-x_1 &=& x_0 + k_2 \tau \\
-\phantom{1}&\phantom{1}&\phantom{1} \\
-k_1 &=& f(x_0)  \\
-k_2 &=& f(x_0 + \half k_1 \tau)
-\end{array} \right.
+We conclude that we have found three different ways of constructing a
+second-order Runge-Kutta method:
 
-For <tex>$\alpha = \half$</tex>, we effectively average the evaluations at the
-beginning and at the end of the trial step, while for <tex>$\alpha = 1$</tex>, we
-use only the evaluation at the end of a smaller trial step that brings
-us approximately mid-way between the beginning and the end of the step.
+1. <i>Without</i> recycling, we have Eq.(\ref{sum2}), with {\it two} new force
+   calculations per time step, and {\it one} free parameter;
+
+2. <i>With</i> recycling, we have Eq.(\ref{sum3}), with {\it one} new force
+   calculation per time step, and {\it no} free parameters;
+
+3. <i>With</i> recycling, we have Eq.(\ref{sum1}), with {\it two} new force
+   calculations per time step, and {\it three} free parameters.
 
