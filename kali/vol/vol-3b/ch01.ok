@@ -47,21 +47,14 @@ messages:
 == Checking
 
 *Alice*: Let's make a final check to see whether we get we still get
-our expected output for the figure three orbit:
+our expected output for the figure three orbit.  The first implementation
+you made gave:
 
  :commandoutput: ruby rkn1.rb -o 2.1088 -e 2.1088 -t 2.1088 < figure8.in
 
-Good, all is well.  What is the next step, now that we can run our N-body
-integrator in a more convenient way, directly from the command line?
+Let us now check the newer version, with our implementation using the
+<tt>clop.rb</tt> code:
 
-*Bob*: It is high time to run our code with more particles.  So far we
-have only used a maximum of eight particles.
+ :commandoutput: ruby rkn2.rb -o 2.1088 -e 2.1088 -t 2.1088 < figure8.in
 
-*Alice*: Ah, yes, you put eight particles on a cube.
-
-*Bob*: It was a quick and dirty way to throw some particles in space,
-but it would be nicer to have a somewhat more meaningful way to generate
-initial conditions.
-
-*Alice*: I agree.  Let's see whether we can come up with a more
-astrophysically motivated initial state for a star cluster.
+Good, all is well.

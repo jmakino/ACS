@@ -2,7 +2,15 @@
 	
 = Preface
 
-== xxx
+In the previous volume, a general framework has been sketched for a
+command line options parser, and a specific Ruby implementation has
+been provided.  In the current volume, that implementation is used
+to provide a user interface for N-body experiments.  Driven by user
+demand, a number of extensions are added to the basic program, to make
+it even more useful as a practical interface between the user and an
+N-body code.
+
+== Acknowledgments
 
 We thank xxx, xxx, and xxx for their comments on the
 manuscript.

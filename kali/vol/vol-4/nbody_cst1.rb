@@ -97,11 +97,11 @@ class Nbody
 
   def evolve(integration_method, eps, dt, dt_dia, dt_out, dt_end,
              init_out, x_flag)
-    @dt = dt                                                                 #1
-    @eps = eps                                                               #1
-    nsteps = 0
+    @dt = dt
+    @eps = eps
+    @nsteps = 0
     e_init
-    write_diagnostics(nsteps, x_flag)
+    write_diagnostics(x_flag)
     t_dia = dt_dia - 0.5*dt
     t_out = dt_out - 0.5*dt
     t_end = dt_end - 0.5*dt
@@ -111,9 +111,9 @@ class Nbody
     while @time < t_end
       send(integration_method)
       @time += dt
-      nsteps += 1
+      @nsteps += 1
       if @time >= t_dia
-        write_diagnostics(nsteps, x_flag)
+        write_diagnostics(x_flag)
         t_dia += dt_dia
       end
       if @time >= t_out
@@ -158,6 +158,22 @@ class Nbody
     calc(" @vel += (@a0+@a1*4+@a2)*(1/6.0)*dt ")
   end
 
+  def yo2
+    leapfrog
+  end
+
+  def yo4
+    d = [1.351207191959657, -1.702414383919315]
+    old_dt = @dt
+    @dt = old_dt * d[0]
+    leapfrog
+    @dt = old_dt * d[1]
+    leapfrog
+    @dt = old_dt * d[0]
+    leapfrog
+    @dt = old_dt
+  end
+
   def yo6
     d = [0.784513610477560e0, 0.235573213359357e0, -1.17767998417887e0,
          1.31518632068391e0]
@@ -173,6 +189,145 @@ class Nbody
       leapfrog
     end
     @dt = old_dt
+  end
+
+  def yo8
+    d = [0.104242620869991e1, 0.182020630970714e1, 0.157739928123617e0, 
+         0.244002732616735e1, -0.716989419708120e-2, -0.244699182370524e1, 
+         -0.161582374150097e1, -0.17808286265894516e1]
+    old_dt = @dt
+    for i in 0..6
+      @dt = old_dt * d[i]
+      leapfrog
+    end
+    @dt = old_dt * d[7]
+    leapfrog
+    for i in 0..6
+      @dt = old_dt * d[6-i]
+      leapfrog
+    end
+    @dt = old_dt
+  end
+
+  def ms2
+    if @nsteps == 0
+      calc(" @prev_acc = acc(ba,eps) ")
+      rk2
+    else
+      calc(" @old_acc = acc(ba,eps) ")
+      calc(" @jdt = @old_acc - @prev_acc ")
+      calc(" @pos += @vel*dt + @old_acc*0.5*dt*dt ")
+      calc(" @vel += @old_acc*dt + @jdt*0.5*dt")
+      calc(" @prev_acc = @old_acc ")
+    end
+  end
+
+  def ms4
+    if @nsteps == 0
+      calc(" @ap3 = acc(ba,eps) ")
+      rk4
+    elsif @nsteps == 1
+      calc(" @ap2 = acc(ba,eps) ")
+      rk4
+    elsif @nsteps == 2
+      calc(" @ap1 = acc(ba,eps) ")
+      rk4
+    else
+      calc(" @ap0 = acc(ba,eps) ")
+      calc(" @jdt = @ap0*(11.0/6.0) - @ap1*3 + @ap2*1.5 - @ap3/3.0 ")
+      calc(" @sdt2 = @ap0*2 - @ap1*5 + @ap2*4 - @ap3 ")
+      calc(" @cdt3 = @ap0 - @ap1*3 + @ap2*3 - @ap3 ")
+      calc(" @pos += (@vel+(@ap0+ (@jdt+@sdt2/4)/3)*dt/2)*dt ")
+      calc(" @vel += (@ap0+(@jdt+(@sdt2+@cdt3/4)/3)/2)*dt ")
+      calc(" @ap3 = @ap2 ")
+      calc(" @ap2 = @ap1 ")
+      calc(" @ap1 = @ap0 ")
+    end
+  end
+
+  def ms6
+    if @nsteps == 0
+      calc(" @a5 = acc(ba,eps) ")
+      yo6
+    elsif @nsteps == 1
+      calc(" @a4 = acc(ba,eps) ")
+      yo6
+    elsif @nsteps == 2
+      calc(" @a3 = acc(ba,eps) ")
+      yo6
+    elsif @nsteps == 3
+      calc(" @a2 = acc(ba,eps) ")
+      yo6
+    elsif @nsteps == 4
+      calc(" @a1 = acc(ba,eps) ")
+      yo6
+    else
+      calc(" @a0 = acc(ba,eps) ")
+      calc(" @j=(@a0*137 - @a1*300 + @a2*300 - @a3*200 + @a4*75 - @a5*12)/60 ")
+      calc(" @s =(@a0*45 - @a1*154 + @a2*214 - @a3*156 + @a4*61 - @a5*10)/12 ")
+      calc(" @c = (@a0*17 - @a1*71 + @a2*118 - @a3*98 + @a4*41 - @a5*7)/4 ")
+      calc(" @p = @a0*3 - @a1*14 + @a2*26 - @a3*24 + @a4*11 - @a5*2 ")
+      calc(" @x = @a0 - @a1*5 + @a2*10 - @a3*10 + @a4*5 - @a5 ")
+      calc(" @pos += (@vel+(@a0+(@j+(@s+(@c+@p/6)/5)/4)/3)*dt/2)*dt ")
+      calc(" @vel += (@a0 +(@j +(@s+(@c+(@p+@x/6)/5)/4)/3)/2)*dt ")
+      calc(" @a5 = @a4 ")
+      calc(" @a4 = @a3 ")
+      calc(" @a3 = @a2 ")
+      calc(" @a2 = @a1 ")
+      calc(" @a1 = @a0 ")
+    end
+  end
+
+  def ms8
+    if @nsteps == 0
+      calc(" @a7 = acc(ba,eps) ")
+      yo8
+    elsif @nsteps == 1
+      calc(" @a6 = acc(ba,eps) ")
+      yo8
+    elsif @nsteps == 2
+      calc(" @a5 = acc(ba,eps) ")
+      yo8
+    elsif @nsteps == 3
+      calc(" @a4 = acc(ba,eps) ")
+      yo8
+    elsif @nsteps == 4
+      calc(" @a3 = acc(ba,eps) ")
+      yo8
+    elsif @nsteps == 5
+      calc(" @a2 = acc(ba,eps) ")
+      yo8
+    elsif @nsteps == 6
+      calc(" @a1 = acc(ba,eps) ")
+      yo8
+    else
+      calc(" @a0 = acc(ba,eps) ")
+      calc(" @j = (@a0*1089 - @a1*2940 + @a2*4410 - @a3*4900 +
+                   @a4*3675 - @a5*1764 + @a6*490 - @a7*60)/420 ")
+      calc(" @s = (@a0*938 - @a1*4014 + @a2*7911 - @a3*9490 +
+                   @a4*7380 - @a5*3618 + @a6*1019 - @a7*126)/180 ")
+      calc(" @c = (@a0*967 - @a1*5104 + @a2*11787 - @a3*15560 + 
+                   @a4*12725 - @a5*6432 + @a6*1849 - @a7*232)/120 ")
+      calc(" @p = (@a0*56 - @a1*333 + @a2*852 - @a3*1219 +
+                   @a4*1056 - @a5*555 + @a6*164 - @a7*21)/6 ")
+      calc(" @x = (@a0*46 - @a1*295 + @a2*810 - @a3*1235 +
+                   @a4*1130 - @a5*621 + @a6*190 - @a7*25)/6 ")
+      calc(" @y = @a0*4 - @a1*27 + @a2*78 - @a3*125 + @a4*120 - @a5*69 +
+                  @a6*22 - @a7*3 ")
+      calc(" @z = @a0 - @a1*7 + @a2*21 - @a3*35 + @a4*35 - @a5*21 +
+                  @a6*7 - @a7 ")
+      calc(" @pos +=
+               (@vel+(@a0+(@j+(@s+(@c+(@p+(@x+@y/8)/7)/6)/5)/4)/3)*dt/2)*dt ")
+      calc(" @vel +=
+               (@a0 +(@j +(@s+(@c+(@p+(@x+(@y+@z/8)/7)/6)/5)/4)/3)/2)*dt ")
+      calc(" @a7 = @a6 ")
+      calc(" @a6 = @a5 ")
+      calc(" @a5 = @a4 ")
+      calc(" @a4 = @a3 ")
+      calc(" @a3 = @a2 ")
+      calc(" @a2 = @a1 ")
+      calc(" @a1 = @a0 ")
+    end
   end
 
   def hermite
@@ -204,10 +359,10 @@ class Nbody
     @e0 = ekin + epot
   end
 
-  def write_diagnostics(nsteps, x_flag)
+  def write_diagnostics(x_flag)
     etot = ekin + epot
     STDERR.print <<END
-at time t = #{sprintf("%g", time)}, after #{nsteps} steps :
+at time t = #{sprintf("%g", time)}, after #{@nsteps} steps :
   E_kin = #{sprintf("%.3g", ekin)} ,\
  E_pot =  #{sprintf("%.3g", epot)} ,\
  E_tot = #{sprintf("%.3g", etot)}
