@@ -186,7 +186,8 @@ class WorldLine
   end
 
   def setup_from_single_worldpoint(b, dt_param, time)
-    @worldpoint[0], @body_id = b.to_worldpoint
+    @worldpoint[0] = b.to_worldpoint
+    @body_id = @worldpoint[0].@body_id
     @dt_param = dt_param
     setup(time)
   end
@@ -463,14 +464,15 @@ class WorldSnapshot < NBody
 end
 #:segment end:
 
+#:segment start: Bodyextension
 class Body
 
   def to_worldpoint
     wp = WorldPoint.new
-    [wp.restore_contents(self), @body_id]
   end
 
 end
+#:segment end:
 
 options_text= <<-END
 

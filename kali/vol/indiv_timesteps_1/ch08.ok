@@ -1,7 +1,297 @@
 = The <tt>WorldLine</tt> Class
 
-== xxx
+== A Matter of Identity
+
+*Alice*: We started on the top level, with the +World+ class, which you
+could view as the generalization of our old +NBody+ class.  Now, in the
++WorldLine+ class, we finally encounter the generalization of our old
++Body+ class.
+
+*Bob*: I thought that +WorldPoint+ generalized, or better took over, our
++Body+ notion.
+
+*Alice*: Yes and no.  It is all a question of identity.  What is
+important about a particular body, say a particular star, perhaps with
+particular planets revolving around it . . . 
+
+*Bob*: . . . and programmers living on those planets . . . 
+
+*Alice*: . . . which would make it a very particular planet indeed.
+Anyway, such a star is instantiated at different times through different
+world points, but it is the particular world line that belongs to that
+particular star.  So in terms of identity, it is really the +WorldLine+
+class that takes over here from the +Body+ class.
+
+*Bob*: While the positions and velocities and all that important type of
+detail can only be found by digging one level deeper, to +WorldPoint+.
+And if you project everything down the time direction, on a space like
+hypersurface, both a given world line, as well as the world points on it,
+all project onto a single particle.
+
+*Alice*: Yes, that's it!  Well, here is the listing for the +WorldLine+
+class:
 
  :inccode:.world1.rb-WorldLine
 
-== xxx
+== Evolving on a Third Level
+
+*Bob*: I see no particular prefered entry point here.  Why don't we just
+go down the list of methods.
+
+*Alice*: Well, +extend+ plays the role that +evolve+ has played on the
+two higher levels; we could have called this method +evolve+ as well:
+a world line evolves by extending itself.  But it doesn't make any
+difference: +extend+ happens to be the first method, following the
+initializer that assigns an empty array of world points.
+
+*Bob*: All +extend+ does is to take one step, and to add the resulting
+new world point to the growing array of world points.  We should have
+written this as a oneliner method:
+
+  def extend(era, dt_max)
+    @worldpoint.push(take_step(era, dt_max))
+  end
+
+*Alice*: That would probably have been just a bit too terse for me;
+on the face of it, it's not clear that <tt>take_step</tt> returns a
+world point.  But perhaps, when we get more familiar with this notation,
+and if we really stick to this notation, such a way of writing may well
+begin to look natural.  For now, let's stick to two lines.
+
+*Bob*: The next method, +startup+, does the first force calculation,
+and the determination of the time scale needed for finding the next
+time step size.  All of this is done here for one particular particle,
+the one associated with our world line.
+
+Then, in the method following that one, <tt>take_step</tt> does the
+real thing: like +startup+, it does a force calculation, but it does
+that calculation at a predicted position and velocity, and after that
+it uses the information given by the forces to do a corrector step,
+finishing off all the work.  Presumably this means that everything is
+done as before, in <tt>nbody_ind1.rb</tt>, but now hidden in the
+internal workings of the +WorldPoint+ class.
+
+*Alice*: It must be, otherwise our code wouldn't have given the same results.
+Now +predict+ does an extrapolation.  But wait, we have to be
+careful.  We have been talking about two different types of prediction.
+
+== Two Types of Prediction
+
+*Bob*: Two types?
+
+*Alice*: In order for one particle to step forwards, it has to predict its
+own position and velocity for its own desired time <tt>@next_time</tt>.
+Then, in order to calculate the forces that it will receive at this
+time from all other particles, it has to asked all other particles to
+predict their positions and velocities too.  So there is the active
+prediction of one particle, for its own purposes, and the passive
+prediction of all other particles, obeying the wishes of the one
+particle that is, temporarily, in charge here.
+
+*Bob*: Clearly, +predict+ here is the active prediction, since it asks our
+particle to step forwards to its own <tt>@next_time</tt>.
+
+*Alice*: But where does the passive prediction take place?  Ah, that must
+be what is done in <tt>take_snapshot_of_worldline</tt>.  That is the next
+method, after the two trivial, but important, checking methods
+<tt>valid_extrapolation?</tt> and <tt>valid_interpolation?</tt>.  At least
+that seems like the most logical place.  But I'd like to trace the actual
+flow of the logic.  Let's take a step back, to <tt>take_step</tt>, so that
+we can follow exactly where the active and passive prediction takes place.
+
+The active prediction happens directly in the first line.  Now in the
+second line, we are already doing a force calculation, which implies
+that both and active and passive prediction has taken place already.
+So the passive prediction mechanism must be invoked as a side effect
+of the call <tt>era.acc_and_jerk(self, new_point)</tt>.  Let's go back
+to +WorldEra+, to inspect that that call is doing:
+
+ :inccode:.world1.rb+acc_and_jerk+WorldEra
+
+Aha: first a snapshot is taken of all particles, except of the particle
+associated with the worldline that calls this function.
+
+*Bob*: And a snapshot is constructed by asking all particles to predict
+their positions and velocities at the time of that snapshot.  That
+must be the passive prediction part: it happens for all particles,
+except the calling particle, that has already predicted its position
+and velocity in the active prediction call.
+
+*Alice*: That must be right, but still, I'd like to see specifically how
+that is done.  Let's go once more to <tt>take_snapshot_except</tt>:
+
+ :inccode:.world1.rb+take_snapshot_except
+
+Aha, each world line is asked to execute <tt>take_snapshot_of_worldline</tt>,
+which we already suspected to be the executioner of the passive predict step.
+And here we have the proof!  Okay, I'm happy, we now have all the pieces on
+the table, and we can see the flow of the logic.
+
+== Extrapolation and Interpolation
+
+*Bob*: While we have identified the role that
+<tt>take_snapshot_of_worldline</tt> plays, we haven't yet looked at
+how it does what it does.  The first part, after the +if+ statement,
+makes sense to me.  If we ask a particle to predict itself, passively
+as you said, to a time that is past the time at which it computed its
+last world point, we have to do an extrapolation.  If not, we can
+interpolate between two completed worldpoints, one before and one
+after the time at which we order our particle to be predicted.
+
+The extrapolation part is clear: first find the lst world point, and
+then extrapolate beyond.  As an English sentence: extrapolate beyond
+the last world point, which means in Rubyese:
+<tt>worldpoint.last.extrapolate</tt>.  And the particle that is handed
+back has to be branded with the right <tt>body_id</tt> number.
+
+*Alice*: I don't like that image.
+
+*Bob*: What image?
+
+*Alice*: Branded.  I can see a poor calf in front of me, being branded
+with a hot iron.
+
+*Bob*: Aren't you a bit too sensitive?
+
+*Alice*: It may be the <tt>body</tt> part of the terminology that triggered
+my additional imagination.  It's hard to brand a world point.
+
+*Bob*: Well, let's say that the <tt>body_id</tt> is a _sticker_ that is
+stuck on the particle.  In any case, thus equipped the world point is
+returned.  Now what I am puzzled about is the question of what happens
+in the +else+ part of the method.  There is a +each+ loop that is traversed.
+Why?
+
+*Alice*: If the time at which we want to take a snapshot is not in the
+extrapolated part of the world line, it must be in the interpolated part,
+and to be more precise, it must be in between two world points, as you just
+said.  The question is: in between which two.  This loop loops over
+all points, to find the right two.
+
+*Bob*: Ah, of course.  And that is why we use <tt>each_index</tt> and not
+just +each+.  The point is to traverse the world line in an ordered way.
+So we start at the beginning of the array, at the oldest point,
+<tt>@worldpoint[0]</tt>, and then move forward to <tt>@worldpoint[1]</tt>,
+<tt>@worldpoint[2]</tt>, and so on, until we find a point with a time
+that is larger than the desired time.  At that point, no pun intended,
+our previous point is still before the desired time.  So the last two
+points in hand must straddle the desired time.
+
+*Alice*: I think that pun was intended.  But you've made your point,
+or points really: that's how it works.  The point just before the
+desired time is <tt>@worldpoint[i-1]</tt>, and it is given the point
+after the desired time, <tt>@worldpoint[i]</tt> as the argument for
+its interpolation method.
+
+*Bob*: And the rest happens as before, in the +if+ part: the body receives
+a sticker with its name on it.
+
+*Alice*: Thank you!
+
+== Wrapping Up
+
+*Bob*: The method <tt>next_worldline</tt> is called when we want to create
+a new era, using the method <tt>WorldEra#next_era</tt>, as we've seen before.
+Here we see how it is done, by cloning the existing world line, and
+returning a new one, with only a subset of the previous string of
+world points.
+
+*Alice*: +Array+ of world points.
+
+*Bob*: Strung together, yes.  And this +clone+ method produces only a shallow
+clone.
+
+*Alice*: I remember that this took me a while to get used to.  +clone+ only
+copies the instance variables of an object, but it does not copy the objects
+that the instance variables may be pointing to.  So already in the
+case of an array, +clone+ provides a new reference to the same old array.
+
+*Bob*: Indeed: the world points themselves are unaffected.  The variable
+<tt>@worldpoint</tt> that belongs to +self+, the objects that is calling
+this method, and the variable <tt>wl.worldpoint</tt> are different.
+However, immediately after the cloning, <tt>@worldpoint[0]</tt> of +self+
+and <tt>@worldpoint[0]</tt> of +wl+, that can be accessed through a call
+to <tt>wl.worldpoint</tt>, are identical.
+
+Then, after the cloning operation, pruning takes place in the next line.
+That much I remember, but how exactly did we do that?
+
+Ah, we should go  back to the loop at the top.
+
+*Alice*: Let's go to the top of <tt>next_worldline</tt> altogether.
+We first insist that the time at which we want to create a next worldline
+is a time at which interpolation can take place.  Aha, yes, this method
+gets invoked exactly at the end of an era.
+
+*Bob*: Ah, the end of an era . . .
+
+*Alice*: Sounds nostalgic, doesn't it?  So at that time we are guaranteed
+that all worldline have at least one worldpoint, and often more, sticking
+out in time beyond this end of our era.  Hence we should be able to
+interpolate at that time.  If not, something is seriously wrong, and
+it is good to check this.
+
+Next we determine what seems like the size of a world point . . .
+
+*Bob*: . . . which should be zero if it is a point.
+
+*Alice*: You see, there really is something to say for giving this array
+the plural name <tt>worldpoints</tt> instead.  So +i+ starts of being
+the length of the whole array of worldpoints, that is, the number of
+world points in our world line.  And in the loop, +i+ is used to reference
+the array, while decreasing one unit at the time.  In other words, we are
+stepping through the array, starting at the end, and walking toward
+the beginning of the array.
+
+*Bob*: Which means that the time associated with each world point decreases.
+And we keep going back in time, until we find a world point that has a time
+that is smaller or equal to the time +time+ at which we call our method.
+
+*Alice*: The end of an era.
+
+*Bob*: At it is at _that_ point that we clone our world line, and give it
+a new array of world points, with the array starting at index +i+.
+
+*Alice*: You mean, the new array is populated with the objects that were
+at locations +i+ and higher in the old array.  Of course, the new array
+starts at <tt>0</tt>, and ends at an index that is +i+ smaller in value
+that the previous ending index.
+
+*Bob*: Yes, that is what I meant.  And now I see the meaning: this new array
+is guaranteed to start with a world point that is at or before the
+time +time+, which is the end of the previous era . . .
+
+*Alice*: . . . but at the same time the beginning of the new era.
+So the new era is guaranteed to have wordlines sticking out into the past,
+with at least one worldpoint either sticking out or sitting right on the
+boundary.
+
+*Bob*: Yes.  Amazing, isn't it, how complex something becomes when you have
+to put it into words.  But yes, this is how it works.
+
+*Alice*: And the final method <tt>setup_from_single_worldpoint</tt> does
+what it is supposed to do: it imports what might be a particle of
+class +Body+ and converts it into a real +Worldpoint+.  This is what we
+added at the end of the code, in an extension of the +Body+ class, as
+follows:
+
+ :inccode:.world1.rb-Bodyextension
+
+*Bob*: Ah yes, the method <tt>restore_contents</tt> is something we
+constructed within the file <tt>acsio.rb</tt>.  It does a virtual
+output and input, to make it looks as if we were actually reading
+in a +Worldpoint+ object, instead of a +Body+.
+
+*Alice*: And after this class conversion, the world line assumes the
+same identity as the body we read in, by taking over the same value
+of its <tt>@body_id</tt>.  And at the end, we call +setup+, which as
+we have seen passed the work on to the world point method with the
+same name.  Done!
+
+
+
+
+
+*Bob*: What happens if we read in +WorldPoint+ objects right from the start?
+
+

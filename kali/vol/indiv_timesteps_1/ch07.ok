@@ -209,7 +209,7 @@ strictly necessary.  So for both reasons we decided to put an upper
 limit to the length of a time step for any particle.  Ah yes, this is
 the parameter <tt>dt_max</tt> that is passed as a parameter to +evolve+.
 
-*Alice*: And in the methods <tt>World#setup_from_world</tt> and
+*Alice*: In methods <tt>World#setup_from_world</tt> and
 <tt>World#setup_from_snapshot</tt>, the value of <tt>dt_max</tt>
 is set as being equal to the duration of the era, multiplied by a
 factor <tt>dt_max_param</tt>.  By default, this last number is equal
@@ -270,8 +270,9 @@ last method evaluated provides, in this case the method <tt>total_energy</tt>.
 notation.  It allows you to pack a lot of information on one page, and
 still in such a way that it is pretty clear what is being done.
 
-The next two methods, <tt>shortest_extrapolated_worldline</tt> and
-<tt>shortest_interpolated_worldline</tt> speak for themselves: they
+We now come to the next two methods,
+<tt>shortest_extrapolated_worldline</tt> and 
+<tt>shortest_interpolated_worldline</tt>.  They speak for themselves: they
 do just what you think they should do.
 
 *Alice*: At least when you understand the concepts they are pointing too;
@@ -284,3 +285,90 @@ again?
 *Bob*: At the end of +evolve+.  It is part of what is handed back to the
 +World+ level, together with the value of the counter of the number of steps
 that have been taken.
+
+*Alice*: But <tt>next_era</tt> seems to contruct, as the name implies,
+a next era, the next slice in time, after the current era.  And it
+populates that era with those parts of the world lines that fit into
+the next era, using <tt>WorldLine#next_worldline</tt>.  Now I'm puzzled.
+If +evolve+ returns an almost empty new time slice, with only the
+beginning parts of each world line populated, haven't we lost most of
+what we just computed?
+
+*Bob*: We have to go back to the +World+ level, to decide that.  Let me
+print out <tt>World#evolve</tt>:
+
+ :inccode:.world1.rb+evolve+World
+
+The object that is returned by <tt>WorldEra#evolve</tt> is assigned to
+<tt>@new_era</tt>, as it should be.  But the era that has just been
+completely evolved is not lost: it is still referenced by the variable
+<tt>@era</tt>.  You see, <tt>WorldEra#evolve</tt> is an instance method,
+and we invoke it within <tt>World#evolve</tt> as the method that belongs
+to <tt>@era</tt>, in the first line of the +while+ loop.  So <tt>@era</tt>
+is still available to us.
+
+*Alice*: Ah, yes.  I guess I'm thinking too much in a data flow style of
+programming.  Ruby is object oriented, and even though it supports a
+data flow style too, here we are definitely dealing with objects, where
+we ask the objects to evolve themselves, but without changing their identity.
+
+*Bob*: Or, in Ruby terms, without changing their <tt>object_id</tt>; their
+name can change.  At the end of <tt>World#evolve</tt> above, you can see
+how we change the name of the object, pointed at by <tt>@era</tt>, to
+<tt>@old_era</tt>, while we call <tt>@new_era</tt> now <tt>@era</tt>, as
+it should be, before entering the next round.
+
+*Alice*: So not only is the fully history of the time slice that we just
+computed preserved, also the history of the previous time slice
+remains available, through <tt>@old_era</tt>.  Why did we do that?
+
+*Bob*: I seem to remember that we thought it might come in handy to have
+some extra information at hand.  It probably not essential, and if we ever
+run into problems with not having enough memory, this will be the
+first thing to drop.
+
+*Alice*: And then, during the round after that, our object loses its last
+reference, when the pointer <tt>@old_era</tt> gets reassigned to the era
+after the one we have been following.  As a result, soon after that, the
+Ruby garbage collector will do its job, and the memory places are recycled.
+Okay, I now see the whole picture.
+
+== Snapshots
+
+*Bob*: The last few methods in <tt>WorldEra</tt> are all related to IO through
+the use of snapshots.  At the bottom we see how we do input, starting from
+a snapshot, in <tt>setup_from_snapshot</tt>.  The real work is done on the
++WorldLine+ level, in <tt>setup_from_single_worldpoint</tt>, where we add
+each next body to a brand new world line, created in the line above.  The
+line below shows how this new world line is than added at the end of our
+array of world lines, <tt>@worldline</tt>.
+
+*Alice*: I keep wondering whether we shouldn't have choosen the plural version
+of the name, to make it <tt>@worldlines</tt> instead.  After all the
+array <tt>@worldline[]</tt> contains many world lines.
+
+*Bob*: But when we talk about the 3rd world line, it is nice to be able to
+write <tt>@worldline[2]</tt>.  It would make less sense to write
+<tt>@worldlines[2]</tt>.  This is the same logic we used way back when
+when we gave the +NBody+ class an array +body+ for its bodies.
+
+*Alice*: Yeah, I can see the logic, either way.  Oh well, we started off
+this way, so we may as well continue.
+
+*Bob*: Let us now turn to output, and the way it is mediated by snapshots.
+We have the function <tt>take_snapshot(time)</tt> that constructs a
+full snapshot at a given time.  It translates into using the generic
+method <tt>take_snapshot_except</tt>, except that nothing is excepted,
+because we give the +nil+ argument for the exception, if you see what
+I mean.
+
+*Alice*: Hard to hear what you mean, exceptionally so, but yes, I see
+what you may have meant.  And the reason for this overly complex
+redirection is that the function <tt>take_snapshot_except</tt> is the
+real workhorse that is used in preparation for a force calculation: it
+presents a single particle with the positions of all other particles,
+after which that single particle can compute the distances to all
+other particles, and based on that, accelerations and jerks.
+
+*Bob*: And this ends our tour through +WorldEra+.  Time to descend one more
+level, to +WorldLine+.
