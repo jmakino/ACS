@@ -1,0 +1,7 @@
+@@additional_commands_for_tex = <<END
+\\parindent  0 pt
+\\parskip 5 pt
+
+END
+@@toppagefilename= "../../kali/index.html"
+print "Common initialization file loaded from etc/acsdocinitrc\n"
