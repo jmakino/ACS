@@ -14,9 +14,9 @@ class Body
     e_init
     write_diagnostics(nsteps, time)
 
-    t_dia = dt_dia
-    t_out = dt_out
-    t_end = dt_end
+    t_dia = dt_dia - 0.5*dt
+    t_out = dt_out - 0.5*dt
+    t_end = dt_end - 0.5*dt
 
     while time < t_end
       evolve_step(dt)

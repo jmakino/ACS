@@ -124,18 +124,41 @@ moment.  So first we have a trivial looking <tt>t_dia = dt_dia</tt>, but
 after the first output <tt>t_dia</tt> will be changed to <tt>2dt_dia</tt>,
 then to <tt>3dt_dia</tt>, and so on, until the integration finishes.
 
-In a similar way, the variable +t_out+ stores the time at which the next
-particle output will be done, <i>i.e.</i> the time at which we print the
-mass, position, and velocity of the relative motion.  The mass will
-not change, of course, although we could introduce mass losing stars
-or even exploding stars at some point later on.  But the position and
-velocity will change, as we have seen.  Sometimes we may be interested
-in getting frequent output of these numbers, for example when we will
-make a movie of a particle motion, as we will do soon.  At other occasions
-we may be more interested in studying the energy drift with a fine comb.
-So by having +dt_out+ and +dt_dia+ as free dials to determing the output
-frequency of of positions and velocities on the one hand, and the energy
-on the other hand, gives us a lot of flexibility.
+*Alice*: Except that there is this extra term <tt>- 0.5*dt</tt>.
+
+*Bob*: Ah, I have added that because the time variables are all floating
+point numbers.  So when we make a comparison between the actual time
++time+ and the time +t_dia+ at which you want to have an output done,
+it is possible that the actual time is still ever so slightly smaller
+than the time for the next scheduled output.  In that case, the
+integrator will happily take another step.  But when you then change
+the time step, the second run will stop at a different place.  This
+will make it difficult to compare the results between two different
+runs: are the final particle positions different because the
+integrations have different accuracy or because one of the two
+calculations happened to overshoot?  Subtracting half a time step
+guarantees that the system is ready to trigger an output call, already
+half a time step before the predicted time.  Whether the system lands
+exactly on the predicted time or slightly before or after, in all cases
+it will halt at the right time.  The reason is that floating point round
+off occurs typically in the fifteenth decimal or so, so the error is
+far smaller than any conceivable time step.
+
+*Alice*: I'm glad you thought about that.
+
+*Bob*: In a similar way, the variable +t_out+ stores the time at which
+the next particle output will be done, <i>i.e.</i> the time at which
+we print the mass, position, and velocity of the relative motion.  The
+mass will not change, of course, although we could introduce mass
+losing stars or even exploding stars at some point later on.  But the
+position and velocity will change, as we have seen.  Sometimes we may
+be interested in getting frequent output of these numbers, for example
+when we will make a movie of a particle motion, as we will do soon.
+At other occasions we may be more interested in studying the energy
+drift with a fine comb.  So by having +dt_out+ and +dt_dia+ as free
+dials to determing the output frequency of of positions and velocities
+on the one hand, and the energy on the other hand, gives us a lot of
+flexibility.
 
 The variable +t_end+ is similar to the other two I just discussed, except
 that it will not be updated during the integration: when +t_end+ is first
@@ -309,7 +332,7 @@ that is here, in between <tt><<END</tt> and <tt>END</tt> is interpreted
 as one long string, and that string is the taken as the argument for the
 <tt>STDERR.print</tt> command.
 
-*Alice*: What are the backslash symbols <tt>\</tt> doing there at the end
+*Alice*: What are the backslash symbols <tt>\\</tt> doing there at the end
 of the second and third line?
 
 *Bob*: They indicate that the next line should continue after the previous
