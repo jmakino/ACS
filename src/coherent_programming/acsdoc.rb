@@ -17,6 +17,8 @@
 
 module Acsdoc
 
+  @@prompt = "|gravity>"
+
   def add_output(s, ofile, dirname, tag)
     a = s.split
     indent = s.index(tag) 
@@ -24,7 +26,7 @@ module Acsdoc
     noout = true if tag == ":command:" 
     tmpname = ".acsdoc.command-out"
     tmpcommand = ".acsdoc.command-file"
-    prompt = " "* indent + "|gravity>"
+    prompt = " "* indent + @@prompt
     commandline = a[1..a.size].join(" ").chomp
     ofile.print "---\n"     unless noout
     outfile = open(tmpname, "w+")
@@ -44,6 +46,67 @@ module Acsdoc
     end
   end
 
+  def command_with_input(s,tag, ifile, ofile, dirname )
+    a = s.chomp.split
+    endtag = a.pop
+    indata=""
+    until (line= ifile.gets.chomp) == endtag
+      p indata
+      print "\n"
+      p line
+      print "\n"
+      indata += line+ "\n"
+    end
+    print "indata:\ ", indata, "indata end\n"
+    tmpinname =   ".acsdoc.command-in"
+    open(dirname+"/"+tmpinname, "w+"){|f| f.print indata}
+        indent = s.index(tag) 
+    tmpname = ".acsdoc.command-out"
+    tmpcommand = ".acsdoc.command-file"
+    prompt = " "* indent + @@prompt
+    commandline = a[1..a.size].join(" ").chomp
+    ofile.print "---\n"
+    outfile = open(tmpname, "w+")
+    fullcommand = "cd #{dirname}; "+commandline
+    fullcommand  += "<" + tmpinname +  " >& " + tmpname 
+    print "Generating output of \"#{commandline}\"...\n"
+    print "command to run = ", fullcommand, "\n" if $DEBUG
+    open(tmpcommand,"w+"){ |f|  f.print fullcommand + "\n"}
+    system("cat  #{tmpcommand}") if $DEBUG
+    system("csh -f #{tmpcommand}");
+    outfile.close
+    ofile.print prompt + commandline, "\n"
+    output = indata + `cat #{dirname}/#{tmpname}`
+    output.each{|x| ofile.print " "*indent + x}
+    ofile.print "---\n"
+  end
+
+  def set_prompt(s)
+    a = s.split
+    @@prompt = a[1]
+    print "New prompit is #{@@prompt}\n"
+  end
+
+  def check_tag(s, tagname)
+    loc = s.index(tagname)
+    loc = nil if loc and s.index('"'+tagname+'"')
+    loc
+  end
+
+# prep_cp handles the following tags (in the form of, for example,
+# ":output:" in the case of "output" below: 
+
+# * "inccode (or  /inc.*code/) filename" includes the file specified by 
+#   the filename, between horizontal lines
+# * "output command and args" includes the output of the command (with args) 
+#   Both stderr and stdout are included
+# * "commandoutput command and args" includes the command line itself and
+#   its output (prompt default is "|gravity>"
+# * "prompt new_prompt" sets new prompt
+# * "command command and args" just run the command, but discard the output
+# * "commandinputoutput args endtag" runs the command, taking the lines 
+#   as input, untill endtag is reached.
+# 
   def prep_cp(infile, outfile)
     begin
       ifile = open(infile, "r")
@@ -62,12 +125,17 @@ module Acsdoc
 	ofile.print "---\n"
 	ofile.print s
 	ofile.print "---\n"
-      elsif loc = s.index(":output:")  and s.index("\":output:\"")==nil
+#      elsif loc = s.index(":output:")  and s.index("\":output:\"")==nil
+      elsif loc = check_tag(s,":output:")
 	add_output(s, ofile, dirname, ":output:")
       elsif loc = s.index(":commandoutput:")  and s.index("\":commandoutput:\"")==nil
 	add_output(s, ofile, dirname, ":commandoutput:")
       elsif loc = s.index(":command:")  and s.index("\":command:\"")==nil
 	add_output(s, ofile, dirname, ":command:")
+      elsif loc = s.index(":prompt:")  and s.index("\":prompt:\"")==nil
+	set_prompt(s)
+      elsif loc = check_tag(s,":commandinputoutput:")
+	command_with_input(s,":commandinputoutput:", ifile, ofile, dirname )
       else
 	ofile.print s
       end

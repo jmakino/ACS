@@ -43,10 +43,31 @@ The changes we made are
 
 :inccode: .acsdoc.rb-acsdoc
 
+
+Here is an example of ":output:" with "echo foo" as arguments
+
  :output: echo foo
 
- :commandoutput: date
+I changed the prompt to "yebisu>" using ":prompt:" directive here.
+
+:prompt: yebisu>
+ 
+
+Here is an example of ":commandoutput:" with "setenv LANG C ; date"
+as arguments
+
+ 
+ :commandoutput: setenv LANG C ; date
 
  :command: echo test
+
+Here is an example of   ":commandinputoutput:" with "cat END".
+In this example, all lines before "END" will be sent to the cat
+command. 
+  :commandinputoutput: cat END
+aaa
+bbb
+ccc
+END
 
  
