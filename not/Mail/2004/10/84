@@ -1,0 +1,69 @@
+Date: Sun Oct 10 13:33:12 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Jun and Murat:
+
+We can now find binaries in our new ACS approach,
+just as we could in the old book Moving Stars Around!
+
+If you do an svn update, you can try something like this,
+below.  --  Piet
+
+<kamuy|vol-13> ruby mkplummer.rb -n 8 | ruby world1.rb -t 100 -d 100 | ruby report_binaries.rb -a 0.2
+Number of particles	   : N = 8
+pseudorandom number seed given : 0
+Floating point precision : precision = 16
+Incremental indentation	   : add_indent = 2
+             actual seed used		: 1097855178
+Parameter to determine time step size: dt_param = 0.01
+Duration of an era	    : dt_era = 0.01
+Maximum time step in units of dt_era: dt_max_param = 1.0
+Interval between diagnostics output: dt_dia = 100.0
+Time interval between snapshot output: dt_out = 1.0
+Duration of the integration    : t = 100.0
+Floating point precision       : precision = 16
+Incremental indentation		 : add_indent = 2
+at time t = 0 (from interpolation after 0 steps to time 0):
+    E_kin = 0.39 ,     E_pot =  -0.672 ,      E_tot = -0.282
+       E_tot - E_init = 0
+        (E_tot - E_init) / E_init = -0
+Maximum value of semi major axis: max_semi_major_axis = 0.2
+Floating point precision    : precision = 4
+  time =    1.0 :  [0,7] :  a = 0.1241 ; e = 0.7600
+  time =    5.0 :  [0,2] :  a = 0.1211 ; e = 0.4421
+                   [2,4] :  a = 0.1255 ; e = 0.4402
+  time =    6.0 :  [0,4] :  a = 0.0755 ; e = 0.6578
+  time =    7.0 :  [4,5] :  a = 0.0586 ; e = 0.5580
+  time =    9.0 :  [2,3] :  a = 0.1608 ; e = 0.7068
+                   [3,5] :  a = 0.1440 ; e = 0.4351
+                   [5,7] :  a = 0.1340 ; e = 0.6416
+  time =   10.0 :  [2,4] :  a = 0.1584 ; e = 0.2034
+                   [3,5] :  a = 0.0547 ; e = 0.7082
+  time =   11.0 :  [2,5] :  a = 0.0541 ; e = 0.9158
+                   [4,5] :  a = 0.1473 ; e = 0.3809
+  time =   12.0 :  [2,5] :  a = 0.0548 ; e = 0.5457
+                   [4,5] :  a = 0.1630 ; e = 0.4752
+  time =   13.0 :  [1,4] :  a = 0.0522 ; e = 0.7748
+  time =   14.0 :  [2,4] :  a = 0.0595 ; e = 0.5446
+  time =   15.0 :  [1,2] :  a = 0.0708 ; e = 0.6060
+                   [2,4] :  a = 0.1635 ; e = 0.9309
+  time =   16.0 :  [2,3] :  a = 0.0635 ; e = 0.6562
+                   [3,4] :  a = 0.1684 ; e = 0.9846
+  time =   17.0 :  [1,7] :  a = 0.1748 ; e = 0.7142
+                   [3,4] :  a = 0.0454 ; e = 0.5655
+  time =   18.0 :  [3,4] :  a = 0.0448 ; e = 0.5182
+  time =   19.0 :  [2,3] :  a = 0.1727 ; e = 0.5911
+                   [2,4] :  a = 0.0937 ; e = 0.9287
+                   [3,4] :  a = 0.1192 ; e = 0.9512
+  time =   20.0 :  [2,3] :  a = 0.1790 ; e = 0.5630
+  time =   21.0 :  [1,2] :  a = 0.1401 ; e = 0.3852
+                   [3,7] :  a = 0.0846 ; e = 0.4720
+  time =   22.0 :  [1,2] :  a = 0.1897 ; e = 0.8415
+                   [2,3] :  a = 0.1429 ; e = 0.9012
+                   [2,7] :  a = 0.1272 ; e = 0.0620
+  time =   23.0 :  [2,7] :  a = 0.0543 ; e = 0.9880
+  time =   24.0 :  [2,4] :  a = 0.0554 ; e = 0.8812
+  time =   25.0 :  [2,7] :  a = 0.0816 ; e = 0.9758
+. . . .
+

@@ -1,0 +1,43 @@
+Date: Sun Oct 10 14:02:11 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Hi Jun:
+
+It may be that our current acsio system is not working for all (older?)
+versions of Ruby.  I just tried to following command on the server Ares:
+
+  <ares|vol-13> ruby mkplummer.rb -n 8 | ruby world1.rb -t 100 -d 100 | ruby report_binaries.rb -a 0.2
+  Number of particles		: N = 8
+  pseudorandom number seed given	: 0
+  Floating point precision	: precision = 16
+  Incremental indentation		: add_indent = 2
+  Parameter to determine time step size: dt_param = 0.01
+  Duration of an era		: dt_era = 0.01
+  Maximum time step in units of dt_era: dt_max_param = 1.0
+  Interval between diagnostics output: dt_dia = 100.0
+  Time interval between snapshot output: dt_out = 1.0
+  Duration of the integration	: t = 100.0
+  Floating point precision	: precision = 16
+  Incremental indentation		: add_indent = 2
+               actual seed used	: 1097567575
+  Maximum value of semi major axis: max_semi_major_axis = 0.2
+  Floating point precision	: precision = 4
+  at time t = 0 (from interpolation after 0 steps to time 0):
+      E_kin = 0.294 ,     E_pot =  -0.391 ,      E_tot = -0.0976
+         E_tot - E_init = 0
+          (E_tot - E_init) / E_init = -0
+  report_binaries.rb:134: class Worldsnapshot is not Nbody (RuntimeError)
+  ./acsio.rb:123:in `write': Broken pipe (Errno::EPIPE)
+  	from ./acsio.rb:123:in `print'
+  	from ./acsio.rb:123:in `acs_write'
+  	from world1.rb:414:in `evolve'
+  	from world1.rb:702
+  <ares|vol-13> 
+
+This works fine on my laptop.
+Well, it's getting late, and we can look at it later.
+I'm just emailing this, so we won't forget to look at it.
+
+Piet
+
