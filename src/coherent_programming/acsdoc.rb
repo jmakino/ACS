@@ -863,8 +863,8 @@ module Acsdoc
   end
   
   def navigation_string(prev,nex)
-    prevtext = ""
-    nexttext = ""
+    prevtext = "Previous"
+    nexttext = "Next"
     prevtext = "<a href=#{File.basename(prev)}>Previous</a>" if prev    
     nexttext = "<a href=#{File.basename(nex)}>Next</a>" if nex
 
@@ -918,7 +918,6 @@ END
     cpfiles.collect!{|x|convert_cpfilename_to_rdoc_htmlfilename(x)}
     add_navigation_links(cpfiles)
   end
-
 end  
 
 # :segment start: acsdoc
