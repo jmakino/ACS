@@ -1,6 +1,13 @@
 #!/usr/bin/ruby
 # register-note.rb
 #
+# this script registers a single session note file to mother file
+# with name all.not
+# usage: ruby register-note.rb [-YYYY-MM-DD] labnote_file_name
+# note that -YYYY-MM-DD is optional argument which takes the date
+# at which the lab note is written. The default is today
+#
+# example: ruby register-note.rb -2003-11-15 labnotes
 # 
 def addpreceedingzeros(n,s="")
 zeros="0" * (n - s.length);
