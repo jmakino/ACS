@@ -179,7 +179,7 @@ arrays such as <tt>pos[]</tt> and <tt>vel[]</tt> as well as single
 variables such as +m+ will probably have already a +to_s+ method
 associated with them.  Let's check.  How about this:
 
-:inccode: .body.rb-to_s-wrong
+:inccode: .body-to_s-wrong.rb-to_s
 
 *A*: Good idea to write a comment at the top, to remind us what this
 class is for.  We may as well get into the habit of writing comments
@@ -265,7 +265,9 @@ from the command line, rather than using the interpreter.  We may as
 well use the <tt>to_s</tt> method to define a pretty printing method
 +pp+ that we can then invoke directly, as follows:
 
-:inccode: body04.rb
+:inccode: .body.rb-pp
+
+ :inccode: .body-pp-demo.rb-demo
 
 *B*: Let's run it:
 
@@ -327,7 +329,9 @@ orbit, or a planetary system in a planar approximation, later on.
 *B*: Since I don't like global variables, let's encapsulate +NDIM+ as
 a class constant, with the +Body+ class:
 
-:inccode: body05.rb
+:inccode: .body.rb-simple-IO-demo
+
+ :inccode: .body-simple-io-demo.rb-demo
 
 *A*: Let's see.  To run this, we now have to put in the values by hand:
 

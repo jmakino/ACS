@@ -13,14 +13,6 @@ class Body
 #end
 #:segment end:
 
-#:segment start: to_s-wrong
-  def to_s
-    "  mass = " + @mass.to_s + "\n" +
-    "   pos = " + @pos.to_s + "\n" +
-    "   vel = " + @vel.to_s + "\n"
-  end
-#:segment end:
-
 #:segment start: to_s
   def to_s
     "  mass = " + @mass.to_s + "\n" +
@@ -29,10 +21,13 @@ class Body
   end
 #:segment end:
 
+#:segment start: pp
   def pp            # pretty print
     print to_s
   end
+#:segment end:
 
+#:segment start: simple-IO
   def simple_print
     printf("%22.15e", @mass)
     @pos.each do |x| printf("%23.15e", x) end
@@ -47,11 +42,6 @@ class Body
     @pos = a[1..NDIM]
     @vel = a[(NDIM+1)..(NDIM*2)]
   end
+#:segment end:
 
 end
-
-b = Body.new()
-
-b.simple_read
-
-b.simple_print
