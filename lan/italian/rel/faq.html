@@ -1,0 +1,304 @@
+<html>
+
+<HEAD>
+<TITLE>L'Arte della Programmazione Scientifica: FAQ </TITLE>
+<meta NAME="Keywords"
+CONTENT="N-body code, N-body problem, N-body simulations,
+amateur astronomy, open source, science, star clusters,
+Ruby, Ruby code">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#EEFFEE" BACKGROUND=""
+      LINK="#0000CC" ALINK="#CCCCCC" VLINK="#000099">
+
+
+<table CELLSPACING=2 CELLPADDING=5 WIDTH="100%" NOSAVE >
+<tr VALIGN=TOP NOSAVE>
+
+
+<td ALIGN=CENTER  NOSAVE>
+      <IMG src=../../../img/acstitle-s2.gif> 
+
+</font>
+</td>
+
+<td NOSAVE>
+
+<center><h1>
+L'Arte della Programmazione Scientifica
+</h1></center>
+
+<hr>
+<center><h3>
+Domande Frequenti
+</h3></center>
+<hr>
+<br>
+
+</td>
+
+<td ALIGN=CENTER  NOSAVE>
+      <IMG src=../../../img/acstitle-s2rot.gif> 
+</td>
+</tr>
+
+</table>
+
+<table cellpadding=5 width="100%">
+<tr>
+<td align=left> 
+&#169;  2003-2004 <a href=http://www.ids.ias.edu/~piet/>Piet Hut</a> and
+<a href=http://jun.artcompsci.org>Jun Makino</a>
+
+</td>
+<td>
+</td>
+<td align=right>
+Back to <a href="../index.html">ACS home page</A>.
+</td>
+</tr>
+</table>
+
+<hr>
+
+Alcune domande frequenti:
+
+<ul>
+<li>
+<a href=#goal>Qual &egrave l'obiettivo del progetto?</a>
+
+<li>
+<a href=#play>Come posso usare un codice N-corpi?</a>
+<li>
+<a href=#use>Perch&egrave Ruby?</a>
+<li>
+<a href=#fast>Ma Ruby &egrave abbastanza veloce?</a>
+<li>
+<a href=#many>Perch&egrave cos&igrave tanti volumi?</a>
+<li>
+<a href=#name>Qual &egrave l'origine del nome Kali?</a>
+<li>
+<a href=#student>Sono uno studente di astronomia. Questo &egrave il sito giusto per me?</a>
+<li>
+<a href=#astro>Sono un astronomo e ho gi&agrave preso il Ph.D. Questo &egrave il sito giusto per me?</a>
+<li>
+<a href=#amateur>Sono un astrofilo. Questo &egrave il sito giusto per me?</a>
+<li>
+<a href=#help>Come posso contribuire?</a>
+</ul>
+
+<hr>
+<a name="goal"></a>
+<b> Qual &egrave l'obiettivo del progetto?</b>
+
+<p>
+Il nostro obiettivo a lungo termine &egrave quello di creare una comunit&agrave
+di astronomi e astrofili interessati nel rendere la scienza pi&ugrave
+accessibile. L'idea trae ispirazione dalle varie comunit&agrave
+open-source, tra le queli il progetto del sistema operativo Linux &egrave
+probabilmente il pi&ugrave conosciuto.
+
+<p>
+In un certo senso, la scienza pu&ograve essere considerata come il pi&ugrave
+antico e pi&ugrave grande progetto open-source di tutti i tempi. Dai giorni
+di Galileo pi&ugrave di una dozzina di generazioni di scienziati hanno
+lavorato insieme per creare un corpo pubblico di conoscenza sul mondo
+naturale unico per la sua accuratezza. 
+
+
+<p>
+Il progetto ACS &egrave ispirato alla rinascita dello spirito del movimento
+illuminista del diciottesimo secolo, in cui persone intellettualmente
+curiose erano invitate a unirsi a scienziati professionisti nelle loro
+esplorazioni. Le differenze principali stanno nello spostamento da
+aule per conferenze e riunioni al web e dagli esperimenti da tavolo
+all'uso di computer portatili.
+
+<hr>
+<a name="play"></a>
+<b> Come posso usare un codice N-corpi?</b>
+
+<p>
+Un modo veloce per iniziare &egrave quello di leggere il nostro vecchio
+libro on-line <a href="../../../msa/web/index.html">Moving Stars
+Around</a>. L&igrave troverai un'introduzione completa in 250 pagine,
+illustrata con programmi scritti in C++. Partendo da integratori
+semplicissimi, ma arrivando fino alle schema di Hermite, i lettori
+saranno invitati a fare esperimenti di collasso freddo, a studiare la
+formazione di binarie e a modificare i programmi per i loro scopi.
+
+<p>
+Un approccio pi&ugrave dettagliato per lavorare sui codici N-corpi pu&ograve
+essere trovato nella nostra serie multivolume, il <a
+href="../../../kali/index.html">codice Kali</a>, dove stiamo sviluppando
+un ambiente software all'avanguardia per la simulazione di sistemi
+stellari densi. Anche qui partiamo da zero con integratori semplici
+per il problema a due corpi, prima di presentare un'ampia scelta di
+integratori pi&ugrave precisi per il problema generale ad N-corpi.
+
+<p>
+Poich&egrave il nostro linguaggio preferito,<a
+href="http://www.ruby-lang.org/en/">Ruby</a>, pu&ograve non essere
+familiare ai nostri lettori, la serie Kali introduce il linguaggio
+insieme con le nozioni di matematica, fisica e informatica necessarie
+per studiare il problema N-corpi.
+
+<hr>
+<a name="use"></a>
+<b> Perch&egrave Ruby?</b>
+
+<p>
+Ruby combina la flessibilit&agrave di un linguaggio di script con il potere
+di della gestione degli oggetti. Per la gestione di progetti software
+di larga scala, come lo sviluppo del <a
+href="../../../kali/index.html">codice Kali</a>, &egrave essenziale usare
+l'incapsulazione di dati come offerto dal C++. Per&ograve, durante la fase
+di sviluppo &egrave impossibile sapere in anticipo la forma della miglior
+struttura di dati. Costruire rapidamente prototipi, impossibile in
+C++, &egrave ugualmente essenziale per sviluppare un sorgente ben pensato e
+facile da leggere, non limitato da decisioni prese in passato sulla
+forma dei dati.
+
+<hr>
+<a name="fast"></a>
+<b> Ma Ruby &egrave abbastanza veloce?</b>
+
+<p>
+No, Ruby di per s&egrave &egrave troppo lento per simulazioni
+scientifiche. Per&ograve &egrave facile rimpiazzare un numero limitato di linee
+di codice critiche con sorgente C, ottenendo quindi un netto guadagno
+di velocit&agrave che porta quasi ad uguagliare la performance di un codice
+scritto completamente in C.Ad esempio puoi vedere <a
+href="../../../kali/vol/speedup/doc/files/_/_title_ok.html">Vol. 11:
+Speedup</a>.
+
+<hr>
+<a name="many"></a>
+<b> Perch&egrave cos&igrave tanti volumi?</b>
+<p>
+La maggior parte dei testi scientifici presenta lo stato dell'arte di
+un campo dopo che la polvere si &egrave sedimentata. Gli studenti possono
+quindi leggere un sentiero logico che presenta poche analogie con il
+processo storico di tentativi ed errori che portano ad una scoperta
+scientifica. In confronto non c'&egrave molta informazione disponibile che
+insegni come imparare dai propri errori. In contrasto, il nostro fine
+&egrave quello di presentare questa conoscenza tacita che &egrave essenziale per
+iniziare un progetto di ricerca. 
+
+<p>
+Inizialmente ci aspettavamo di completare la nostra serie in dieci
+volumi. Per&ograve, dopo aver completato il nostro primo volume, <i>Moving
+Stars Around</i>, pubblicato sul web nell'ottobre 2003, abbiamo
+imparato due importanti lezioni: 1) finch&egrave non inizi a rendere le
+conoscenze implicite esplicite non ti rendi conto di quanto conosci
+realmente; 2) iniziando questo processo impari tantissime nuove cose,
+aumentando la tua conoscenza circa allo stesso tasso con cui
+scrivi. Attualmente consideriamo quindi che qualche decina di volumi
+sia una stima pi&ugrave realistica per la serie <i>Kali</i>.
+
+<hr>
+<a name="name"></a>
+<b> Qual &egrave l'origine del nome Kali?</b>
+<p>
+Abbiamo preso in prestito il nome dal sanscrito <i>kali</i>, che significa
+<i>oscuro</i>, come in <i>kali yuga</i>, le et&agrave oscure in cui siamo
+attualmente secondo la mitologia Hindu. Lo stesso nome <i>Kali</i> si
+riferisce anche alla Dea Hindu che &egrave raffigurata nera. Il termine
+<i>oscuro</i> ci sembra appropriato per un progetto focalizzato
+nell'esplicitare quelle conoscenze che non sono ancora state portate
+alla luce, e che forse non possono ancora essere presentate in un
+chiaro ordine logico. Al contrario, ci aspettiamo che i nostri
+dialoghi trasmettano forme di pensiero meno formali, come sono
+presenti in ogni forma di conoscenza trasmessa con l'esperienza.
+
+<hr>
+<a name="student"></a>
+<b> Sono uno studente di astronomia. Questo &egrave il sito giusto per me?</b>
+<p>
+Certamente, sei il nostro lettore ideale. Infatti abbiamo scritto
+questi libri on-line con personaggi che sono versioni pi&ugrave giovani di
+noi stessi. Speriamo che questi libri e programmi possano essere utili
+per le tue ricerche. Inoltre speriamo che tu possa contribuire con
+materiale personale al progetto: saremo felici se ci <a
+href="mailto:comments@artcompsci.org">contatterai</a> e, per quanto il
+tempo ci permetter&agrave, cercheremo di rispondere a ciascuno. In pi&ugrave
+potrai trovare annunci di scuole estive e altre iniziative sulla
+nostra pagina <a href="../../../rel/whatsnew.html">"What's New?"</a>.
+<p>
+Ti incoraggiamo inoltre a formare un proprio gruppo di supporto, in
+cui condividere la tua esperienza con il materiale ACS. Potrai
+discutere con altri studenti semplici domande e suggerimenti con molto
+pi&ugrave tempo rispetto a quanto possiamo dedicare noi a ciascuno
+individualmente. E pi&ugrave la collaborazione diventer&agrave seria, pi&ugrave noi
+saremo motivati a implementare tutte le grandi idee che ci
+suggerirete.
+
+<hr>
+<a name="astro"></a>
+<b> Sono un astronomo e ho gi&agrave preso il Ph.D. Questo &egrave il sito giusto per me?</b>
+
+<p>
+Certamente, se sei interessato ai sistemi stellari densi, dal punto di
+vista teorico o osservativo. Dal 2005 in poi il progetto
+<i>Kali</i> ti fornir&agrave uno strumento di simulazione in un ambiente
+intuitivo e amichevole. La nostra presentazione sar&agrave autocontenuta
+senza assumere conoscenze di background eccetto nozioni di astrofisica
+di base. Se ritieni che ci siano delle lacune in questo senso per
+favore <a href="mailto:comments@artcompsci.org">contattaci</a>.
+
+<hr>
+<a name="amateur"></a>
+<b> Sono un astrofilo. Questo &egrave il sito giusto per me?</b>
+<p>
+Assolutamente s&igrave! Noi speriamo che tu possa scaricare il nostro
+software e esplorare il cielo virtuale sul tuo computer. Abbiamo
+cercato di rendere la presentazione autocontenuta. In pi&ugrave
+continueremo ad aggiungere spiegazioni e a fornire link a informazioni
+di background.
+<p>
+Se trovi punti chiave che non sono spiegati chiaramente ti invitiamo a
+<a href="mailto:comments@artcompsci.org">scriverci</a>. Magari non
+riusciremo a rispondere a tutti, ma terremo sempre in considerazione
+ogni suggerimento!
+
+
+<hr>
+<a name="help"></a>
+<b> Come posso contribuire?</b>
+<p>
+Poich&egrave siamo ancora nelle fasi iniziali di sviluppo, la nostra
+attenzione &egrave concentrata nello scrivere abbastanza volumi per
+costruire un ambiente funzionante per le simulazioni N-corpi. Ci
+apsettiamo di completare questa fase entro il 2005. Da quel punto in
+poi ci saranno sempre pi&ugrave opportunit&agrave di collaborazione per il
+nostro tentativo di creare un laboratorio virtuale di astronomia.
+
+<p>
+Le opportunit&agrave per lo sviluppo software spazieranno dalle aree
+specialistiche in astrofisica computazionale e metodi numerici fino a
+aree generali come interfaccia utente, grafica e parallelizzazione. In
+aggiunta avremo bisogno di aiuto per lo sviluppo del nostro ambiente
+su un range di piattaforme e sistemi operativi.
+
+<p>
+Quando il nostro progetto sar&agrave diventato pi&ugrave grande e la base di
+utenti cresciuta, avremo bisogno di volontari per rispondere a
+richieste standard di supporto tecnico e per aiutare i principianti a
+iniziare a navigare nell'ambiente. In aggiunta sarebbe fantastico
+avere aiuto per tradurre il materiale in altre lingue in modo da
+raggiungere una base pi&ugrave ampia di utenti.
+
+<p>
+Se sei interessato ad aiutarci seriamente in uno dei punti sopra
+descritti ti preghiamo di <a
+href="mailto:comments@artcompsci.org">contattarci</a>.
+
+<hr>
+
+Ritorna alla <a href="../index.html">ACS home page</A>.
+
+<hr>
+<hr>
+
+</BODY>
+
+</html>

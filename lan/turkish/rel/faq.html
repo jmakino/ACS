@@ -1,0 +1,272 @@
+<html><head><title>The Art of Computational Science FAQ Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-9">
+<meta name="Keywords" content="N-body code, N-body problem, N-body simulations,
+amateur astronomy, open source, science, star clusters,
+Ruby, Ruby code"></head>
+
+<body text="#000000" bgcolor="#eeffee" background="" link="#0000cc" alink="#cccccc" vlink="#000099">
+
+
+<table cellspacing="2" cellpadding="5" width="100%" nosave="">
+<tbody><tr valign="top" nosave="">
+
+
+<td align="center" nosave="">
+      <img src="../../../img/acstitle-s2.gif"> 
+
+</td>
+
+<td nosave="">
+
+<center><h1>
+		Hesaplamalı Bilim Sanat
+</h1></center>
+
+<hr>
+<center><h3>
+Sık Sorulan Sorular
+</h3></center>
+<hr>
+<br>
+
+</td>
+<td align="center" nosave="">
+      <img src="../../../img/acstitle-s2rot.gif"> 
+</td>
+</tr>
+
+</tbody></table>
+
+<table cellpadding="5" width="100%">
+<tbody><tr>
+<td align="left"> 
+  2003-2004 <a href="http://www.ids.ias.edu/%7Epiet/">Piet Hut</a> ve
+<a href="http://jun.artcompsci.org/">Jun Makino</a>
+</td>
+<td>
+</td>
+<td align="right">
+	<a href="../index.html">ACS ana sayfası</a> 'na
+dönmek için.
+</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+Sık sorulan bazı sorular:
+
+<ul>
+<li>
+<a href="#goal">ACS projesinin amacı nedir?</a>
+</li><li>
+<a href="#play">Bir çok-cisim koduyla nasıl oynarım?</a>
+</li><li>
+<a href="#use">Neden Ruby?</a>
+</li><li>
+<a href="#fast">Ruby Yeterince Hızlı mı?</a>
+</li><li>
+<a href="#many">Neden Birçok Bölüm?</a>
+</li><li>
+<a href="#name">Neden Kali?</a>
+</li><li>
+<a href="#student">Ben bir astronomi öğrencisiyim. Bu bana göre mi?</a>
+</li><li>
+<a href="#astro">Ben doktoramı yeni bitirmiş bir astronomum. Bu bana göre mi?</a>
+</li><li>
+<a href="#amateur">Ben bir amatör astronomum. Bu bana göre mi?</a>
+</li><li>
+<a href="#help">Nasıl yardım edebilirim?</a>
+</li></ul>
+
+<hr>
+<a name="goal"></a>
+<b> ACS projesinin amacı nedir?</b>
+<p>
+Uzun vadeli amacımız bilimi elden ele kolay ulaşılabilir hale getirmekle 
+ilgilenen profesyoneller ve amatörlerden oluşan, büyük olasılıkla en gözle 
+görünür örneği Linux projesi olan, açık-kaynak toplulukları üzerinde 
+biçimlendirilmiş bir grup kurmak.
+</p><p>
+Bilim belki de tüm zamanların en eski ve geniş açık kaynak projesidir.
+Galileo'dan günümüze, bir düzineden fazla kuşaktan bilim adamı 
+dünyanın doğası hakkında doğrulukta ve kültürlerin ve inanç sistemlerinin 
+geleneksel sınırlarını aşmada eşsiz bir kamusal bilgi bütünü üretmek için 
+birlikte çalışıyorlar.
+</p><p>
+ACS projesi eğitimli insanların profesyonel bilim adamlarının 
+araştırmalarına katılmaya çağrıldığı on sekizinci yüzyıl'daki aydınlanma 
+hareketinin ruhunu yeniden alevlendirmeyi amaç edinir. Temel değişiklikler 
+geleneksel mekanlardan sanal ortama ve masabaşı deneylerinden dizüstü
+bilgisayarlarına geçmektir.
+</p><hr>
+<a name="play"></a>
+<b> Bir çok-cisim koduyla nasıl oynarım?</b>
+<p>
+Başlamak için hızlı bir yol bizim sanal ortamdaki eski 
+<a href="../../../msa/web/index.html">Etrafta Yıldızlar 
+	Dönüyor</a> kitabımızı okumaktır. Orada C++ kodlarıyla 250 
+sayfada anlatılan bütün bir başlangıç bulacaksınız. Oldukça
+basit integratörlerle başlayıp, Hermite şemasıyla devam ederek okuyucu
+"soğuk çökme" denemelerine, çift evrimi çalışmalarına, ve kodları
+kendi amaçlarına göre düzenlemelere davet edilir.
+
+</p><p>
+Çok-cisim kodlarıyla çalışmak için daha ayrıntılı bir yaklaşım, 
+bir "state-of-the-art" yazılım ortamı geliştirdiğimiz çok bölümlü 
+<a href="../../../kali/index.html">Kali kodu</a>
+kısmında bulunabilir. Burada yine en genel çok-cisim problemi için
+çok sayıdaki yüksek dereceden integrasyon seçeneklerine girmeden önce, 
+iki cisim problemi için basit integrasyonlarla en temelden başladık.
+</p><p>
+Bilgisayar dili olarak tercih ettiğimiz 
+<a href="http://www.ruby-lang.org/en/">Ruby</a>'ye okuyucularımızın 
+alışkanlığı olmayabileceğinden, Kali serisi, çok-cisim problemi üzerine 
+çalışmak için gereken matematik, fizik ve bilgisayar bilimleriyle 
+birlikte bu dil için de ön bilgiyi içerir.
+
+</p><hr>
+<a name="use"></a>
+<b>Neden Ruby?</b>
+<p>
+Ruby bir betik dilinin esnekliğiyle tamamen nesneye yönelik bir programlama
+dilinin gücünü birleştirir. 
+<a href="../../../kali/index.html">Kali kodu</a>'nun 
+geliştirilmesinde olduğu gibi geniş ölçekli bir yazılım projesinde, C++ 
+tarafından sunulduğu gibi bir veri 'encapsulation' 'ı kullanmak temeldir.
+Ancak yeni bir kod geliştirilirken en iyi veri yapısının neye benzeyeceğini 
+önceden bilmek olanaksızdır. C++ ile imkansız olan hızlıca bir taslak 
+hazırlamak, kod geliştirmek için eski data düzenlemelerine ait miraslara
+kapılmamak, kolay okunabilirlik ve  kolay anlaşılırlık eş derecede temeldir.
+
+</p><hr>
+<a name="fast"></a>
+<b> Ruby Yeterince Hızlı mı?</b>
+<p>
+Hayır, sadece Ruby, ciddi bilimsel benzetimler için fazlasıyla yavaştır.
+Bununla birlikte, zamansal açıdan kritik birkaç satırlık Ruby kodunun
+C kodu ile değiştirilerek orjinal Ruby kodunu C kodunun hızına yaklaşacak 
+kadar hızlandırmak, fazla zorluğu olmayan bir işlemdir. Ayrıntılı bir örnek 
+için 
+<a href="../../../kali/vol/speedup/doc/files/_/_title_ok.html">Böl. 11: Hız</a> 
+bölümüne bakınız. 
+
+</p><hr>
+<a name="many"></a>
+<b> Neden Birçok Cilt?</b>
+<p>
+Bir çok bilimsel kaynak kitap, bir alandaki temel bilgiyi 'üzerine tozlar 
+konduktan sonra' özetler. Öğrencilere mantığın temiz bir yoluyla birlikte,
+az yada çok herhangi bir bilimsel buluşun temelini oluşturan tarihi deneme 
+ve hata süreçlerinin izleri aktarılır. Bir karşılaştırma olarak, öğrencilere
+nasıl hata yapılıp bu hatalardan nasıl öğrenileceğini öğreten fazla bilgi
+yoktur. Bizim amacımız bunun tersine, hesaplamalı bilimde bir araştırma 
+projesine başlarken temel olan ve açıkça belirtilmeyen bu bilgiyi sunmaktr.
+</p><p>
+Başlangıç olarak serimizi on bölümde sunabilmeyi bekliyorduk. Ancak 
+ilk bölüm  <i>Etrafta Yıldızlar Dönüyor</i>'u bitirip Ekim 2003'te 
+sanal ortamda yayınladığımızda iki önemli ders aldık: 1) siz kapalı (implicit)
+yapmaya başlayana kadar bilgi açıktır (explicit), ne kadar bildiğiniz hakkında
+bir fikriniz yoktur; 2) bu işleme başladığınızda korkunç kaderi öğrenirsiniz,
+yazarken kabaca aynı adımda bilgi deponuza da eklenir. Şimdi daha gerçekçi
+bir tahmin olarak, en azından sadece  <i>Kali</i> dizisi için birkaç 
+on bölüm düşünüyoruz.
+</p><hr>
+<a name="name"></a>
+<b> Neden ismi Kali?</b>
+<p>
+İsmi karanlık anlamındaki Sanskrit <i>kali</i>'den, <i>kali yuga</i>'dan, 
+Hindu mitolojisine göre içinde yaşadığımız karanlık çağlardan ödünç aldık. 
+Aynı kelime siyah ile tanımlanan Hindu tanrısı Kali'nin adında da görülür. 
+Karanlık kelimesi henüz ışık düşmemiş tasfiri bilgi şeklindeki tasarımıza 
+uygun görünmektedir. Ve belki de mantıklı cümle sıralamasıyla bir süre 
+aydınlık şekilde sunulamayabilir.
+
+Bunun yerine, diyaloglarımızın çok daha az formal olmasını ve herhangi bir 
+sanatsal hüneri kaplayan, anlamları gölgeleyen parlaklıkları az taşımasını 
+bekliyoruz.
+
+</p><hr>
+<a name="student"></a>
+<b> Ben bir astronomi öğrencisiyim. Bu bana göre mi?</b>
+<p>
+Evet, kesinlikle: sen bizim asıl hedefimizsin. Aslında bu kitapları biz 
+daha genç sürümleriyle birlikte kendimiz için zihnimizde yazmıştık.
+Umarız buradaki kitaplar ve kodlar kendi araştırmalarınızda yararlı olur.
+Bunun da ötesinde, umarız siz de kendi eklemelerinizle ve değişikliklerinizle 
+buradaki malzemenin ötesine katkıda bulunursunuz: 
+<a href="mailto:comments@artcompsci.org">iletişime</a> geçmekten 
+çekinmeyin, zamanın izin verdiği ölçüde hepinizi yanıtlamaya çalışacağız. 
+Ek olarak, bizim <a href="../../../rel/whatsnew.html">"Yenilikler"</a> 
+sayfamızda yaz okulları ve ACS bağlantılı diğer etkinliklerin duyurularını 
+bulabilirsiniz.
+</p><p>
+Ayrıca ACS materyalleriyle çalışarak edindiğiniz deneyimlerinizi 
+paylaşacağınız kendi destek grubunuzu oluşturmanızı da teşfik ederiz.
+Genel soruları ve önerileri aranızda tartışmak için bizim tek tek
+ayırabileceğimizden daha fazla zamanınız olacaktır. Ve sizler arasındaki
+daha ciddi yardımlaşmalar bizi yardımcı olmak konusunda daha fazla 
+motive edecek ve şüphesiz bir çok önemli öneri ile geleceksiniz. 
+</p><hr>
+<a name="astro"></a>'
+<b> Ben doktoramı yeni bitirmiş bir astronomum.  Bu bana göre mi?</b>
+<p>
+Eğer yoğun göksel sistemler ile ilgileniyorsanız, evet. Hatta gözlemci 
+yada teorisyenseniz, 2005 sonrasında Kali tasarısı size uygun bir 
+ortamda simülasyonlar yapabileceğiniz araçlar verecektir. Bu ortam 
+temel astrofizik bilgisinin ötesinde bilgi gerektirmeksizin kendi 
+kendisine yeterli şekilde tasarlanmıştır. Eğer bu beklenti için 
+eksiklik olan herhangi bir şey görürseniz lütfen bize 
+<a href="mailto:comments@artcompsci.org">iletin</a>.
+
+</p><hr>
+<a name="amateur"></a>
+<b> Ben bir amatör astronomum.  Bu bana göre mi?</b>
+<p>
+Kesinlikle! Yazılımlarımızı kendi bilgisayarınıza indirip teleskopunuzla
+araştırdığınız gerçek gökyüzü gibi bilgisayarınızda sanal gökyüzünü 
+araştırmanızı çok istiyoruz. Sunumumuzun kendi içinde yeterli olması için 
+çalıştık. Ek olarak, gerektiği şekilde açıklamalar eklemeye ve arka plan 
+bilgileri için daha fazla yönlendirme sağlamaya devam edeceğiz.
+</p><p>
+Henüz yeterince açıklanmadığını düşündüğünüz önemli noktalar varsa,
+yada tamamen eksikse, lütfen bize 
+<a href="mailto:comments@artcompsci.org">iletmekte</a> çekinmeyin. Her 
+birinize tek tek cevap vermeye yada teşekkür etmeye zaman bulamayabiliriz, 
+ancak yorumlarınız kesinlikle değerlendirilecektir.
+
+</p><hr>
+<a name="help"></a>
+<b> Nasıl yardım edebilirim?</b>
+<p>
+
+Henüz ACS projesinin başlangıç safhalarındayız ve dikkatimizin çoğu
+çok-cisim simülasyonu için çalışan bütün bir ortam sunabilmek amacıyla 
+yeterince bölüm yazmaya odaklanmış durumda. Bu başlangıç safhasını
+2005 yılı içinde bitirmeyi umuyoruz. Ondan sonra görsel bir astronomi
+laboratuvarı üretmekte bize katılmak için artan bir çok fırsat olacak.
+</p><p>
+Yazılım geliştirme olanakları hesaplamalı astrofizikteki ve sayısal 
+yöntemlerdeki özel alanlardan grafikler, arayüzler ve kod paralelleştirmeye
+kadar yayılır. Ek olarak, kendi ortamımızı farklı işletim sistemi ve 
+platformlara uyumlu hale getirmek için daha fazla yardıma ihtiyacımız
+olacak.
+</p><p>
+
+Tasarımız büyürken ve kullanıcılarımız artarken rutin araştırmalara 
+cevap vermek ve yeni başlayanlara yardımcı olmak için gönüllülere 
+ihtiyacımız olacak. Dahası, materyallerimizin İngilizce dışındaki 
+dillere çevrilerek daha geniş bir izleyiciye ulaşması harika olur.
+</p><p>
+Bu alanlardan herhangi birinde ciddi bir katlı yapmak isterseniz,
+lütfen bizimle <a href="mailto:comments@artcompsci.org">iletişime geçin</a>.
+
+</p><hr>
+
+<a href="../index.html">ACS ana sayfası</a>'na 
+dönmek için.
+
+<hr>
+<hr>
+
+</body></html>
