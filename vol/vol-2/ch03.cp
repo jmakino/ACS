@@ -1,4 +1,4 @@
-= Runge-Kutta
+= Runge Kutta
 
 == Two New Integrators
 

@@ -1,4 +1,4 @@
-= Running the N-body Code
+= Testing the N-body Code
 
 == A 2-Body System
 
@@ -44,11 +44,15 @@ of <tex>$10^{-4}$</tex>, using our previous two-body code:
 
  :commandoutput: ruby integrator_driver2h.rb < euler.in
 
+== A Bug
+
 Now let's see what my new N-body code will do:
 
  :inccode: .rknbody1a_driver.rb
 
  :commandoutput: ruby rknbody1a_driver.rb < test1.in
+
+== The Simplest Case
 
 *Alice*: Huh?  An energy conservation error of order unity?  And our old
 code was conserving energy almost on machine accuracy!  Are you sure you
@@ -76,6 +80,8 @@ I'll use the same parameters for the fourth-order Runge-Kutta integrator,
 in my N-body code:
 
  :commandoutput: ruby rknbody1a_driver.rb < test2.in
+
+== A Variation
 
 *Alice*: Congratulations!  You _do_ have a working integrator, at least
 for a circular equal-mass binary.  But of course the question remains:
@@ -105,6 +111,8 @@ in my N-body code:
 
  :commandoutput: ruby rknbody1a_driver.rb < test3.in
 
+== Another Variation
+
 *Alice*: Nothing wrong here.  So changing the masses did not help, at least
 not for our circular orbit.  Shall we try to increase the eccentricity,
 while leaving the masses both unity?  We can just make the velocities a bit
@@ -114,5 +122,19 @@ smaller.  How about:
 
  :commandoutput: ruby rknbody1a_driver.rb < test4.in
 
+== Two Variations
+
 *Bob*: Still no cigar.  Nothing wrong here either.  How about changing
-both the masses and the eccentricity?
+both the masses and the eccentricity?  I'll just make the masses ten
+percent smaller, while leaving everything else the same.
+
+ :inccode: test5.in
+
+ :commandoutput: ruby rknbody1a_driver.rb < test5.in
+
+*Alice*: Here we clearly have a problem, and a big one: terrible energy
+conservation.  So now we know that the problem does not depend on
+having unequal masses, but it does seem to require both
+non-circularity and masses that differ from unity.  We're getting a
+little closer, but we still have a ways to go!
+

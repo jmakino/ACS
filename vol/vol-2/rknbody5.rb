@@ -2,15 +2,21 @@ require "rknvector.rb"
 
 class Body
 
-  attr_accessor :mass, :pos, :vel, :nb                                       #1
+  attr_accessor :mass, :pos, :vel
 
   def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
     @mass, @pos, @vel = mass, pos, vel
   end
 
-  def acc
-    a = @pos*0                    # null vector of the correct length
-    @nb.body.each do |b|
+  def calc(body_array, time_step, s)
+    ba  = body_array
+    dt = time_step
+    eval(s)
+  end
+
+  def acc(body_array)
+    a = @pos*0                              # null vector of the correct length
+    body_array.each do |b|
       unless b == self
         r = b.pos - @pos
         r2 = r*r
@@ -25,9 +31,9 @@ class Body
     0.5*@mass*(@vel*@vel)
   end
 
-  def epot                        # potential energy
+  def epot(body_array)                  # potential energy
     p = 0
-    @nb.body.each do |b|
+    body_array.each do |b|
       unless b == self
         r = b.pos - @pos
         p += -@mass*b.mass/sqrt(r*r)
@@ -69,7 +75,6 @@ class Nbody
     @body = []
     for i in 0...n
       @body[i] = Body.new
-      @boby[i].nb = self
     end
   end
 
@@ -98,45 +103,37 @@ class Nbody
   end
 
   def forward(dt)
-    old_acc = []
-    @body.each_index{|i| old_acc[i] = @body[i].acc}
-    @body.each{|b| b.pos += b.vel*dt}
-    @body.each_index{|i| @body[i].vel += old_acc[i]*dt}
+    @body.each{|b| b.calc(@body,dt," @old_acc = acc(ba) ")}               #1
+    @body.each{|b| b.calc(@body,dt," @pos += @vel*dt ")}
+    @body.each{|b| b.calc(@body,dt," @vel += @old_acc*dt ")}
   end
 
   def leapfrog(dt)
-    @body.each{|b| b.vel += b.acc*0.5*dt}
-    @body.each{|b| b.pos += b.vel*dt}
-    @body.each{|b| b.vel += b.acc*0.5*dt}
+    @body.each{|b| b.calc(@body,dt," @vel += acc(ba)*0.5*dt ")}
+    @body.each{|b| b.calc(@body,dt," @pos += @vel*dt ")}
+    @body.each{|b| b.calc(@body,dt," @vel += acc(ba)*0.5*dt ")}
   end
 
   def rk2(dt)
-    old_pos = []
-    @body.each_index{|i| old_pos[i] = @body[i].pos}
-    half_vel = []
-    @body.each_index{|i| half_vel[i] = @body[i].vel + @body[i].acc*0.5*dt}
-    @body.each{|b| b.pos += b.vel*0.5*dt}
-    @body.each{|b| b.vel += b.acc*dt}
-    @body.each_index{|i| @body[i].pos = old_pos[i] + half_vel[i]*dt}
+    @body.each{|b| b.calc(@body,dt," @old_pos = @pos ")}
+    @body.each{|b| b.calc(@body,dt," @half_vel = @vel + acc(ba)*0.5*dt ")}
+    @body.each{|b| b.calc(@body,dt," @pos += @vel*0.5*dt ")}
+    @body.each{|b| b.calc(@body,dt," @vel += acc(ba)*dt ")}
+    @body.each{|b| b.calc(@body,dt," @pos = @old_pos + @half_vel*dt ")}
   end
 
   def rk4(dt)
-    old_pos = []
-    @body.each_index{|i| old_pos[i] = @body[i].pos}
-    a0 = []
-    @body.each_index{|i| a0[i] = @body[i].acc}
-    @body.each_index{|i|
-      @body[i].pos = old_pos[i] + @body[i].vel*0.5*dt + a0[i]*0.125*dt*dt}
-    a1 = []
-    @body.each_index{|i| a1[i] = @body[i].acc}
-    @body.each_index{|i|
-      @body[i].pos = old_pos[i] + @body[i].vel*dt + a1[i]*0.5*dt*dt}
-    a2 = []
-    @body.each_index{|i| a2[i] = @body[i].acc}
-    @body.each_index{|i|
-      @body[i].pos = old_pos[i] + @body[i].vel*dt +
-                     (a0[i]+a1[i]*2)*(1/6.0)*dt*dt}
-    @body.each_index{|i| @body[i].vel += (a0[i]+a1[i]*4+a2[i])*(1/6.0)*dt}
+    @body.each{|b| b.calc(@body,dt," @old_pos = @pos ")}
+    @body.each{|b| b.calc(@body,dt," @a0 = acc(ba) ")}
+    @body.each{|b| b.calc(@body,dt," @pos = @old_pos + 
+                                            @vel*0.5*dt + @a0*0.125*dt*dt ")}
+    @body.each{|b| b.calc(@body,dt," @a1 = acc(ba) ")}
+    @body.each{|b| b.calc(@body,dt," @pos = @old_pos + 
+                                            @vel*dt + @a1*0.5*dt*dt ")}
+    @body.each{|b| b.calc(@body,dt," @a2 = acc(ba) ")}
+    @body.each{|b| b.calc(@body,dt," @pos = @old_pos +
+                                        @vel*dt + (@a0+@a1*2)*(1/6.0)*dt*dt ")}
+    @body.each{|b| b.calc(@body,dt," @vel += (@a0+@a1*4+@a2)*(1/6.0)*dt ")}
   end
 
   def ekin                        # kinetic energy
@@ -147,7 +144,7 @@ class Nbody
 
   def epot                        # potential energy
     e = 0
-    @body.each{|b| e += b.epot}
+    @body.each{|b| e += b.epot(@body)}
     e/2                           # pairwise potentials were counted twice
   end
 
@@ -184,7 +181,6 @@ END
     @time = gets.to_f
     for i in 0...n
       @body[i] = Body.new
-      @body[i].nb = self
       @body[i].simple_read
     end
   end

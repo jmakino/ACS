@@ -1,4 +1,4 @@
-= N-Body Integration
+= N-Body Integrators
 
 == Inspecting the Leapfrog
 

@@ -2,20 +2,10 @@ require "rknvector.rb"
 
 class Body
 
-  attr_accessor :mass, :pos, :vel
+  attr_accessor :mass, :pos, :vel, :old_pos, :half_vel, :a0, :a1, :a2        #1
 
   def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
     @mass, @pos, @vel = mass, pos, vel
-  end
-
-  def calc(body_array, time_step, s)
-    x  = body_array
-    dt = time_step
-    eval(s)
-  end
-  def calc(s, *a)
-    x =a
-    eval(s)
   end
 
   def acc(body_array)
@@ -32,7 +22,7 @@ class Body
   end    
 
   def ekin                        # kinetic energy
-    0.5*(@vel*@vel)
+    0.5*@mass*(@vel*@vel)
   end
 
   def epot(body_array)                  # potential energy
@@ -107,8 +97,9 @@ class Nbody
   end
 
   def forward(dt)
-    @body.each{|b| b.vel += b.acc(@body)*dt}
-    @body.each{|b| b.pos += b.vel*dt}
+    @body.each{|b| b.old_acc = b.acc(@body)}
+    @body.each{|b| b.pos += b.vel*dt}                                        #2
+    @body.each{|b| b.vel += b.old_acc*dt}
   end
 
   def leapfrog(dt)
@@ -118,25 +109,22 @@ class Nbody
   end
 
   def rk2(dt)
-    @body.each{|b| b.calc(@body,dt," @old_pos = @pos ")}
-    @body.each{|b| b.calc(@body,dt," @half_vel = @vel + acc(x)*0.5*dt ")}
-    @body.each{|b| b.calc(@body,dt," @pos += @vel*0.5*dt}
-    @body.each{|b| b.calc(@body,dt," @vel += acc(@body)*dt}
-    @body.each{|b| b.calc(@body,dt," @pos = @old_pos + @half_vel*dt}
+    @body.each{|b| b.old_pos = b.pos}
+    @body.each{|b| b.half_vel = b.vel + b.acc(@body)*0.5*dt}
+    @body.each{|b| b.pos += b.vel*0.5*dt}
+    @body.each{|b| b.vel += b.acc(@body)*dt}
+    @body.each{|b| b.pos = b.old_pos + b.half_vel*dt}
   end
 
   def rk4(dt)
-    @body.each{|b| b.calc(@body,dt," @old_pos = @pos ")}
-    @body.each{|b| b.calc(@body,dt," @a0 = acc(@body) ")}
-    @body.each{|b| b.calc(@body,dt," @pos = @old_pos + 
-                                            @vel*0.5*dt + @a0*0.125*dt*dt ")}
-    @body.each{|b| b.calc(@body,dt," @a1 = acc(@body) ")}
-    @body.each{|b| b.calc(@body,dt," @pos = @old_pos + 
-                                            @vel*dt + @a1*0.5*dt*dt ")}
-    @body.each{|b| b.calc(@body,dt," @a2 = acc(@body) ")}
-    @body.each{|b| b.calc(@body,dt," @pos = @old_pos +
-                                        @vel*dt + (@a0+@a1*2)*(1/6.0)*dt*dt ")}
-    @body.each{|b| b.calc(@body,dt," @vel += (@a0+@a1*4+@a2)*(1/6.0)*dt ")}
+    @body.each{|b| b.old_pos = b.pos}
+    @body.each{|b| b.a0 = b.acc(@body)}
+    @body.each{|b| b.pos = b.old_pos + b.vel*0.5*dt + b.a0*0.125*dt*dt}
+    @body.each{|b| b.a1 = b.acc(@body)}
+    @body.each{|b| b.pos = b.old_pos + b.vel*dt + b.a1*0.5*dt*dt}
+    @body.each{|b| b.a2 = b.acc(@body)}
+    @body.each{|b| b.pos = b.old_pos + b.vel*dt + (b.a0+b.a1*2)*(1/6.0)*dt*dt}
+    @body.each{|b| b.vel += (b.a0+b.a1*4+b.a2)*(1/6.0)*dt}
   end
 
   def ekin                        # kinetic energy
@@ -158,7 +146,7 @@ class Nbody
   def write_diagnostics(nsteps)
     etot = ekin + epot
     STDERR.print <<END
-at time t = #{sprintf("%g", time)}:
+at time t = #{sprintf("%g", time)}, after #{nsteps} steps :
   E_kin = #{sprintf("%.3g", ekin)} ,\
  E_pot =  #{sprintf("%.3g", epot)},\
  E_tot = #{sprintf("%.3g", etot)}
