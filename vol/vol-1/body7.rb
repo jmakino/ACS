@@ -18,22 +18,14 @@ class Body
 
   def simple_print
     printf("%24.16e\n", @mass)
-    @pos.each do |x| printf("%24.16e", x) end
-    print "\n"
-    @vel.each do |x| printf("%24.16e", x) end
-    print "\n"
+    @pos.each { |x| printf("%24.16e", x) } ; print "\n"
+    @vel.each { |x| printf("%24.16e", x) } ; print "\n"
   end
 
   def simple_read
     @mass = gets.to_f
-    s = gets
-    a = s.split
-    a.collect! { |x| x.to_f }
-    @pos = a[0...NDIM]
-    s = gets
-    a = s.split
-    a.collect! { |x| x.to_f }
-    @vel = a[0...NDIM]
+    @pos = gets.split.collect { |x| x.to_f }
+    @vel = gets.split.collect { |x| x.to_f }
   end
 
 end
