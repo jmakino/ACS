@@ -1,0 +1,223 @@
+<html>
+
+<HEAD>
+<TITLE>The Art of Computational Science FAQ Page</TITLE>
+<meta NAME="Keywords"
+CONTENT="N-body code, N-body problem, N-body simulations,
+amateur astronomy, open source, science, star clusters,
+Ruby, Ruby code">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#EEFFEE" BACKGROUND=""
+      LINK="#0000CC" ALINK="#CCCCCC" VLINK="#000099">
+
+
+<table CELLSPACING=2 CELLPADDING=5 WIDTH="100%" NOSAVE >
+<tr VALIGN=TOP NOSAVE>
+
+
+<td ALIGN=CENTER  NOSAVE>
+      <IMG src=../img/acstitle-s2.gif> 
+</font>
+</td>
+
+<td NOSAVE>
+
+<center><h1>
+The Art of Computational Science
+</h1></center>
+
+<hr>
+<center><h3>
+Frequently Asked Questions
+</h3></center>
+<hr>
+<br>
+
+</td>
+<td ALIGN=CENTER  NOSAVE>
+      <IMG src=../img/acstitle-s2rot.gif> 
+</td>
+</tr>
+
+</table>
+
+<table cellpadding=5 width="100%">
+<tr>
+<td align=left> 
+&#169;  2003-2004 <a href=http://www.ids.ias.edu/~piet/>Piet Hut</a> and
+<a href=http://jun.artcompsci.org>Jun Makino</a>
+</td>
+<td>
+</td>
+<td align=right>
+Back to <a href="../index.html">ACS home page</A>.
+</td>
+</tr>
+</table>
+
+<hr>
+
+<b> What is the Goal of the ACS project?</b>
+<p>
+Our long-term goal is to establish a community of professionals and
+amateurs, interested in making science available in a hands-on way,
+loosely modeled on the various open-source communities, of which the
+Linux project is probably the most visible one.
+<p>
+Science may well be the oldest and largest open source project of all
+times.  Since the days of Galileo, more than a dozen generations of
+scientists have worked together to produce a public body of knowledge
+about the natural world that is unique both in its accuracy, and in
+the fact that it transcends traditional boundaries of cultures and
+belief systems.
+<p>
+The ACS project aims at rekindling the spirit of the
+eighteenth-century enlightenment movement, where educated lay people
+were invited to join professional scientists in their explorations.
+The main shifts are from traditional salons to the world wide web,
+and from tabletop experiments to laptop computers.
+
+<hr>
+
+<b>How can I Play with an N-body Code?</b>
+<p>
+A quick way to get started is to read our older on-line book <a
+href="../msa/web/index.html">Moving Stars Around</a>.  There you will
+find a complete introduction, in 250 pages, illustrated with C++
+codes.  Starting with very simple integrators, but moving on to the
+Hermite scheme, the readers will be invited to perform cold collapse
+experiments, to study binary formation, and to adapt the codes for
+their own purposes.
+<p>
+A more detailed approach to working with N-body codes can be found in
+our multi-volume series, the <a href="../kali/index.html">Kali code</a>,
+where we are developing a state-of-the-art software environment for
+simulating dense stellar systems.  Here, too, we start from scratch,
+with simple integrators for the 2-body problem, before moving on to a
+large choice of higher-order integrators for the general N-body problem.
+<p>
+Since our preferred computer language,
+<a href="http://www.ruby-lang.org/en/">Ruby</a>, may not be familiar to
+our readers, the Kali series introduces the language together
+with the math, physics, and computer science needed for studying the
+N-body problem.
+
+<hr>
+
+<b>Why Use Ruby?</b>
+<p>
+Ruby combines the flexibility of a scripting language with the power
+of a fully object-oriented programming language.  For a large-scale
+software project, such as the development of the
+<a href="../kali/index.htm"l>Kali code</a>, it is essential to use data
+encapsulation, such as offered by C++.  However, when developing new
+code, it is impossible to know beforehand what the best data structures
+will look like.  Rapid prototyping, all but impossible in C++, is equally
+essential for developing code that is well-thought-out and easy to read,
+not stuck in a legacy of historical data design decisions.
+
+<hr>
+
+<b> Is Ruby Fast Enough?</b>
+<p>
+No, Ruby by itself is too slow for serious scientific simulations.
+However, it is straightforward to replace a few time-critical lines of
+Ruby code with C code, thereby speeding up the original Ruby code to a
+speed that can approximate that of C code without much trouble.  See
+<a href="../kali/vol/vol-6/doc/files/_/_title_ok.html">Vol. 6: Speedup</a> for
+detailed examples.
+
+<hr>
+
+<b> Why So Many Volumes?</b>
+<p>
+Most scientific text books summarize the state of the art of a field
+`after the dust has settled.'  Students are presented with a clean
+path of logic that bears little resemblance to the historical process
+of trial and error that underlies any scientific discovery, large or
+small.  In comparison, there is not much information available that
+teaches students how to make mistakes and learn from them.  In
+contrast, our aim is to present much of the tacit knowledge that is
+essential for starting a research project in computational science.
+<p>
+Initially, we expected to be able to present our series in ten volumes.
+However, when we completed our first volume, <i>Moving Stars Around</i>, and
+published it on the web in October 2003, we learned two important lessons:
+1) until you start making implicit knowledge explicit, you have no idea
+how much you know; 2) when you start this process, you learn an awful lot,
+adding to the store of your knowledge at roughly the same pace as you are
+writing it up.
+<p>
+We now consider hundred volumes to be a more realistic estimate.  We
+expect to complete the first ten volumes, typically 100 to 150 pages
+each, by the end of 2004.  If all goes well, our series will reach
+some stage of completion somewhere between 2015 and 2020.
+
+<hr>
+
+<b> Why the Name Kali?</b>
+<p>
+We borrowed the name from the Sanskrit <i>kali</i>, meaning
+<i>dark</i>, as in the <i>kali yuga</i>, the dark ages we are currently in
+according to Hindu mythology.  The same word also occurs in the name
+<i>Kali</i>, for the Hindu Goddess who is depicted as black.  The term
+<i>dark</i> seemed appropriate for our project of focusing on forms of
+tacit knowledge that have not been brought to light, so far, and
+perhaps cannot be presented in a bright, logical series of statements.
+Instead, we expect our dialogues to carry the many less formal and
+less bright shades of meaning, that pervade any craft.
+
+<hr>
+
+<b> I am an amateur astronomer.  Is this for me?</b>
+<p>
+Absolutely!  We very much hope that you will download our software,
+and explore the virtual heavens on your computer, just as you explore
+the actual heavens with your telescope.  We have tried to make our
+presentation self-contained.  In addition, we will continue to add
+explanations and provide more pointers to background information, as
+needed.
+<p>
+If you find that there are key points that are not yet clearly explained,
+or missing altogether, please feel free to
+<a href="mailto:comments@artcompsci.org">let us know</a>.  We may not
+find the time to respond and thank each of you individually, but rest
+assured that your comments will be greatly appreciated.
+
+<hr>
+
+<b> How can I help?</b>
+<p>
+Since we are still in the initial phase of setting up the ACS project,
+most of our attention is currently focused on writing enough volumes
+to present a full working environment for N-body simulations.  We
+expect to finish this initial phase some time in 2005.  From then on,
+there will be increasingly many opportunities to join us in our attempt
+to produce a virtual astronomy laboratory.
+<p>
+Opportunities for software development will range from specialized
+areas in computational astrophysics and numerical methods to more
+general areas in graphics and user interfaces, and parallelizing codes.
+In addition, we will need much help in getting our environment ported
+to a range of different platforms and operating systems.
+<p>
+As our project will grow larger, and our user base will increase, we
+will need volunteers to answer routine inquiries, and to help
+beginners to get started.  In addition, it would be wonderful to make
+translations of our material available to a wide audience fluent in
+other languages than English.
+<p>
+If you would like to make a serious contribution in any of these
+areas, please <a href="mailto:comments@artcompsci.org">contact us</a>.
+
+<hr>
+
+Back to the <a href="../index.html">ACS home page</A>.
+
+<hr>
+<hr>
+
+</BODY>
+
+</html>
+
