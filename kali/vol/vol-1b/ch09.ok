@@ -351,7 +351,12 @@ to distinguish it from your previous implementation <tt>ms4</tt>.
 == Implementation
 
 *Alice*: Indeed.  Well, the rest is just a matter of coding up the
-equations we just wrote out.  What do you think of this:
+equations we just wrote out.  Of course, in the predictor step,
+there is no need to compute the predicted velocity.  It is only the
+predicted position that we need in order to obtain the acceleration
+at the new time, and through that, the jerk.
+
+What do you think of this:
 
  :inccode: .ms4body.rb+ms4pc
 

@@ -80,7 +80,7 @@ f(\br,\bv)d\br d\bv \, = \, f(E(r,v)\,4\pi r^2 dr\,4\pi v^2dv \, = \,
 
 *Bob*: It's just what it is, for Plummer's model.  I found it in a useful
 table in <i>The Gravitational Million-Body Problem</i>, by Douglas Heggie
-and Piet Hut [Cambridge University Press, 2003].  It is table xxx on p. xxx,
+and Piet Hut [Cambridge University Press, 2003].  It is table 8.1 on p. 73,
 a whole page full of useful properties of Plummer's model.  By the
 way, <tex>$m$</tex> here is the mass of a single star, assuming that all
 stars have equal mass.  If you multiply both sides of the equation with
