@@ -16,7 +16,6 @@ scheme?
 is still sixth order, in constant as well as shared time step form.  First
 I'll prepare initial conditions with the particles all properly numbered:
 
- : command: rm -f test.in
  :commandoutput: mkplummer.rb -n 5 -s 1 | acsnumber.rb > test.in
 
 Starting with the constant time step version, let's choose the
@@ -80,33 +79,28 @@ steps and the `true' output.  Let's check:
 
 *Bob*: That sure doesn't look good.  How can the distance be so large?
 
+== 
 
+ :commandoutput: nbody_sh1.rb -m leapfrog -t 1 < test.in > leap_sh.out
 
+ :commandoutput: nbody_sh1.rb -m leapfrog -t 1 -d 0.001 < test.in > leap_sh_tenth.out
 
+ :commandoutput: cat leap_sh.out yo6cst_tenth.out | acsdiff.rb
 
+ :commandoutput: cat leap_sh_tenth.out yo6cst_tenth.out | acsdiff.rb
 
-xxxx
+ :commandoutput: nbody_sh1.rb -m leapfrog -t 1 -d 0.0001 < test.in > leap_sh_hundredth.out
 
-xxxx
+ :commandoutput: cat leap_sh.out leap_sh_hundredth.out | acsdiff.rb
 
-xxxx
+ :commandoutput: cat leap_sh_tenth.out leap_sh_hundredth.out | acsdiff.rb
 
-why not more accurate for variable time step?
-		    write nbodydiff
+== 
 
-discuss how to extend it to variable time steps, then implement:
-nbody_cst1.rb
+ :commandoutput: cat leap_sh.out 
 
-nbody_sh1.rb
+ :commandoutput: cat leap_sh_tenth.out
 
-nbody_ind1.rb
+Aha, the output times are different!
 
-nbody_ind2.rb
-
-nbody_ind3.rb
-
-world1.rb
-
-world2.rb
-
-world3.rb
+Let's build in an option to allow synchronized output.

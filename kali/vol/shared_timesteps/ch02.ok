@@ -145,7 +145,6 @@ for a circular binary, I believe.  Ah yes, here it is, in
 To start with, let's see whether two identical systems are assigned a
 distance of zero correctly:
 
- :command: rm -f tmp0.in tmp1.in
  :commandoutput: acsnumber.rb < circular_binary.in > tmp0.in
  :commandoutput: cat tmp0.in tmp0.in | acsdiff.rb
 

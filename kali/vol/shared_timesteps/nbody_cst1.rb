@@ -336,7 +336,7 @@ end
 
 options_text= <<-END
 
-  Description: Constant Time Step Hermite Code
+  Description: Constant Time Step Code
   Long description:
     This program evolves an N-body code with a fourth-order Hermite Scheme,
     or various other schemes such as forward Euler, leapfrog, or Runge-Kutta,
