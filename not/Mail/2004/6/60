@@ -1,0 +1,61 @@
+Date: Thu Jun 03 09:56:10 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Hi Jun:
+
+How nice to get such a detailed reaction from Walter Dehnen,
+and what interesting timing, just around the time that you
+were setting up the new web site!
+
+I'll answer him later today.  Is there anything you would like
+me to add, or that you want to write to him directly?
+
+By the way, I'm sending this email to the "not" part of acs,
+since we decided to keep this for ourselves.  We probably still
+want to be a bit cautious of what to write here, since it may
+well become visible some day, somehow.
+
+One issue which we haven't decided upon yet is: what do we do
+when people spend some serious time improving our codes?  Some
+options:
+
+-- Do we ask them for their codes and put it up on our web site?
+
+   The draw back is that it is mendokusai to exert quality control.
+   Also, I don't particularly like to put up extra versions for our
+   MSA volume, since then people are tempted to continue working on
+   that, while we want to migrate them to Ruby.
+
+-- Or do we ask them to put it up on their web site, with a
+   pointer to that from our web site?
+
+   This is easier for us, but also much more dangerous.  They can
+   add all kind of `explanations', some of which go against our
+   philosophy (Walter's email has already some aspects there).
+   And by pointing to those pages, the reader may get the mistaken
+   notion that we endorse all those ideas (people nowadays are very
+   quick and lazy in reading and drawing conclusions).
+
+-- Or do we just thank them, and stop there?
+
+   This is even easier, but they may feel unhappy if we don't do
+   anything with it.  Walter's email is a nice example for us, to
+   think about right now: if I were him, I might be unhappy that we
+   thank him politely but don't use his software, and don't even link
+   to it; that would go against the whole feeling of open source
+   collaborations.  And we certainly want to have him as a potential
+   collaborator.
+
+Hmmm.  Three options, each of them with serious drawbacks.
+
+Perhaps for now the best thing is to politely answer him, and
+say that we don't plan to extend the old version, that we want
+to focus on the new one, and that we look forward to hear his
+comments there?  And then of course I will react to the detailed
+points he brought up.
+
+What do you think?
+
+Piet
+
