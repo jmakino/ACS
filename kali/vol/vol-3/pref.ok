@@ -2,9 +2,27 @@
 	
 = Preface
 
-== xxx
+We continue the dialogue in the previous two volumes, where Alice and
+Bob developed a gravitational 2-body code, containing a wide choice of
+integrators.  In the current volume, they modify their code, to grow
+it into a true N-body version.  They try out various choices of
+implementation, and test each version using the recently discovered
+solution for the 3-body problem, where all three particles follow each
+other in a figure eight.  Toward the end of the book, they simulate a
+cold collapse of eight particles, first without softening, then with
+softening.
 
-We thank xxx, xxx, and xxx for their comments on the
-manuscript.
+== Acknowledgments
+
+Besides thanking our home institutes, the Institute for Advanced Study
+in Princeton and the University of Tokyo, we want to convey our
+special gratitude to the Yukawa Institute of Theoretical Physics in
+Kyoto, where this volume was written, during a visit in May 2004, made
+possible by the kind invitations to both of us by Professor Masao
+Ninomiya.
 
 Piet Hut and Jun Makino
+
+Kyoto, June 2004
+
+(written for the occasion of the ACS 1.0 release)

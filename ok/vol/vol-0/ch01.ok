@@ -59,7 +59,7 @@ package that we have ever used, we came to the conclusion that _the_
 major lack in almost all of those packages was the lack of complete
 documentation.
 
-== Full Disclosure
+== Open Knowledge
 
 What we mean with complete documentation goes beyond the requirement
 of `open source', access to the source code.  This is an important
@@ -80,7 +80,8 @@ as well as on a code level.  Software should run accurately on a computer.
 And software should be deeply understandable in all its ramification
 by human beings as well.  The latter is the more challenging task, and
 that is what should consume the major amount of resources, in terms of
-time and energy of software builders.
+time and energy of software builders.  The result will be a move from
+`open source' to `open knowledge.
 
 How to write software as a tightly interwoven and complete set of
 explanations for computers and humans?  The answer to the computer

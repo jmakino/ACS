@@ -7,7 +7,7 @@ And now that understand how the data get read in, let's see what will happen
 with them.
 
 In <tt>rknbody1.rb</tt>, I see that you have shifted all the integration
-methods from the +Body+ to the +Nbody class, as well as the +evolve+ function
+methods from the +Body+ to the +Nbody+ class, as well as the +evolve+ function
 that calls them.
 
 *Bob*: The +evolve+ function orchestrates the whole integration process, and
@@ -33,7 +33,7 @@ perhaps more specialized integrators, but not today.
 we used for the two-body problem.  The only difference is that now the
 time is an instance variable for the +Nbody+ class, which means that we
 don't have to pass the time as an argument to the <tt>write_diagnostics</tt>
-class.
+method.
 
 *Bob*: Yes.  If I would have left the time as a normal variable that would
 be passed around, the +evolve+ method would have been _exactly_ the same.
@@ -78,15 +78,51 @@ bodies becomes visible for our particular body as <tt>@nb.body</tt>, and
 it is this array over which we iterate using the familiar +each+ construct.
 
 *Alice*: And you are excluding the body itself from the loop, to avoid
-getting an infinitely large self interaction, through the line
+getting an infinitely large self interaction, through the line:
 
  :include: .rknbody1.rb-2
 
-*Bob*: Indeed.  For all other bodies, we compute the in a similar way
-as before.  The main difference is that the vector connecting the two
-bodies is not given, as was the case for the two-body problem, where
-there was only one relative vector.  Here we compute the vector pointing
-from the calling particle to the called particle first, as follows:
+But what exactly are you comparing?  I am used to the C notation where
+<tt>==</tt> compares two numbers.  In Ruby too, when both numbers are
+equal, the statement returns +true+, and if not, it returns +false+.
+But what are the two numbers being compared here?
+
+*Bob*: In Ruby, each object, that is each instance of any class, has a
+unique id number, a machine-defined number that is guaranteed to be
+different for two different objects.  We don't have to know anything
+about what that number is, or how it is represented.  All we need to
+know is that we can rely on it being different for two different
+particles.
+
+*Alice*: But this unique identification number has a different status
+from that of normal numbers, such as integers or floating point numbers,
+I presume.  If I write <tt>a == b</tt> for two variables, Ruby compares
+the values of these two variables, not their id numbers.  If Ruby would
+always use the <tt>==</tt> operator to compare object id numbers, then
+<tt>a == b</tt> would always result in +false+, whenever the two
+variables would be different, whether they have the same values or not.
+
+*Bob*: Yes, you are right.  I had not thought about that.  In the case
+of numbers, or strings for that matter, the <tt>==</tt> operator must
+be overloaded so as to override the default behavior, which is
+comparing id numbers.  Interesting!  I had just used this expression,
+since it seemed reasonable, and does the right thing.  But now that
+you ask me, yes, there must be different types of overloading going on
+for different classes.  In other words, many different classes must
+define their own <tt>==</tt> method.
+
+*Alice*: The good thing about Ruby is that everything happens so
+naturally, in such a transparent way.  But a consequence is that you
+often don't appreciate all that is going on behind the scenes.  Coming
+back to the statement above, this line is filtering out particle pair
+combinations where both particles have the same identity.
+
+*Bob*: Indeed.  particles are not allowed to interact with themselves.
+For all other bodies, we compute the in a similar way as before.  The
+main difference is that the vector connecting the two bodies is not
+given, as was the case for the two-body problem, where there was only
+one relative vector.  Here we compute the vector pointing from the
+calling particle to the called particle first, as follows:
 
  :include: .rknbody1.rb-3
 

@@ -43,7 +43,7 @@ computer code for dense stellar system, with sufficient flexibility to
 allow us to set up a framework for connecting codes old and new, from
 ancient legacy codes to new products written in a variety of languages.
 Among the many attractive features of Ruby, it was especially its
-practical ease of allowing rapid prototyping to appealed to us most.
+practical ease of allowing rapid prototyping that appealed to us most.
 
 == Speed
 
@@ -62,12 +62,12 @@ written in more traditional, lower-level languages.
 Indeed, after only a few days of experimentation, we convinced
 ourselves that we could find several ways in which to regain the speed
 of a C or Fortran code within Ruby, by replacing only a very small
-fraction of the code by a C kernel, while leaving the vast majority of
-the code complexity within Ruby's domain.  We will describe this
-process of speeding up Ruby in great detail only in Volume 6, after we
-have presented Ruby in sufficient detail in practical applications, to
-set the stage for an informed discussion about what does and does not
-need such hand-coded speed-up.
+fraction of the code by functions written in C, while leaving the vast
+majority of the code complexity within Ruby's domain.  We will
+describe this process of speeding up Ruby in great detail only in
+Volume 6, after we have presented Ruby in sufficient detail in
+practical applications, to set the stage for an informed discussion
+about what does and does not need such hand-coded speed-up.
 
 == Programming Issues
 
@@ -84,7 +84,7 @@ both on introductory and on advanced levels.
 In addition, we present reports of bug-tracing sessions, with a degree
 of realistic detail seldom encountered in the literature.  It is our
 belief that the essential art of debugging code can only be learned
-through practice.  And to the extend that books can help one to get
+through practice.  And to the extent that books can help one to get
 exposed to this type of practice, examples have come directly from
 applications, or else they will be, at best, only of theoretical value.
 Chapter 7, _Debugging_, is devoted in its entirety to this topic.

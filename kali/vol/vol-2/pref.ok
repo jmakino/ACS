@@ -2,7 +2,13 @@
 	
 = Preface
 
-== xxx
+In the current volume, we continue the dialogue that we started in the
+previous volume, where Alice and Bob developed a gravitational 2-body
+code, based on the simplest of all integration algorithms, the forward
+Euler method.  They are now ready to implement a variety of other
+algorithms, such as the leapfrog and Runge-Kutta schemes, up to fourth
+order.  In a future release, we plan to extend the discussion to
+higher-order schemes, as well as to multi-step methods.
 
 == Acknowledgments
 

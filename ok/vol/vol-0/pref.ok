@@ -2,6 +2,68 @@
 	
 = Preface
 
+== Tacit Knowledge
+
+In many areas of science, computer simulations of complex physical
+systems cannot be performed with off-the-shelf software packages.
+Instead, computational scientists have to design and build their own
+software environment, just as experimental scientists have to design
+and build their own laboratories, before being able to use them.  For
+a long time, however, the know-how needed to construct computational
+laboratories has remained only a form of tacit knowledge.
+
+Unlike explicit knowledge that can be found in manuals, this type of
+implicit knowledge has been alive in conversations among experts, and
+has been passed down in that way only as a form of oral tradition.
+This kind of knowledge has not been written down anywhere in
+sufficient detail to allow it to be passed down without direct
+personal instructions, or indirect osmosis through personal
+participation in a joint project.
+
+We have started the <i>The Art of Computational Science (ACS)</i>
+series with the aim of making explicit the implicit knowledge of
+experts of scientific simulations.  Besides offering detailed
+explanations of the structure of the computer codes used, in an `open
+source' style, we provide a deeper layer of knowledge.  Besides the
+<i>what</i> and <i>how</i> for any computer code, we also provide the
+<i>why</i>: the motivation for writing it the way it was written,
+within the context in which it was conceived.  This will give the user
+more appreciation for the background of the structure chosen, and most
+importantly, this will give the user the ability to easily modify and
+extend the codes presented, without finding oneself at odds with the
+original style and aim.
+
+== Projects
+
+So far, we have started two projects within the ACS series.  The
+umbrella project is called <i>Open Knowledge</i>.  Volumes in this
+series will address issues that are common for all branches of
+computational science.  Other projects will be more specific,
+addressing issues for a particle set of scientific problems.  The
+<i>Kali</i> project is an example of a project in astrophysics, aimed
+at developing a computational laboratory for the study of dense
+stellar systems.
+
+It is our sincere hope that our example will inspire the start of
+various other projects, following the general philosophy of the ACS
+initiative.  We welcome contributions from others along these lines,
+in any field of science.
+
+The current volume forms the start of the <i>Open Knowledge</i>
+series.  It will contain information about the background for the ACS
+approach, and general issues that come up with respects to its
+implementation.  For now, we have written only the first chapter.  In
+future releases we plan add more material, based in a large part on
+reactions from colleagues and students, using our material.
+
+The next volume will contain a detailed discussion of the
+infrastructure of ACS documentation.  We have drawn our inspiration
+from various sources, including Donald Knuth's notion of <i>literate
+programming</i>.  Our current implementation is based on extensions of
+the Rdoc system (see "http://rdoc.sourceforge.net/"), which we found
+to have a type of balance between generality and ease of implementation
+which was just right for our purpose.
+
 == Acknowledgments
 
 Besides thanking our home institutes, the Institute for Advanced Study
@@ -12,7 +74,8 @@ including its basic infrastructure, during extended visits made
 possible by the kind invitations to both of us by Professor Masao
 Ninomiya.
 
-We thank xxx, xxx, and xxx for their comments on the
-manuscript.
-
 Piet Hut and Jun Makino
+
+Kyoto, June 2004
+
+(written for the occasion of the ACS 1.0 release)

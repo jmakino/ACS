@@ -78,7 +78,7 @@ remember now: in Ruby <tt>0...n</tt> means that you exclude +n+, while
 <tt>0..n</tt> does indeed exclude +n+.
 
 *Bob*: A handy short notation, but like every short notation, potentially
-confusion if you're not yet used to it.
+confusing if you're not yet used to it.
 
 == Input
 
@@ -98,11 +98,9 @@ variable.  Remember that the expression +self+ gives the address of the
 *Alice*: Hmm.  In general, I am quite wary of doubly linked list.  It is
 all too easy to change the link in one direction and to forget to change
 the link in the other direction, or to change it in the wrong way.
-And even if you change the other direction correction, it is still possible
-to be one off in your counting, overlooking the first or last particle.
 
 *Bob*: Typical one-off errors that often happen in C and C++ are less
-likely to occur in Ruby, because so much of the book keeping is handling
+likely to occur in Ruby, because so much of the bookkeeping is handling
 behind the scenes, as long as you don't confuse <tt>0...n</tt> and
 <tt>0..n</tt>.  But I see your point, and perhaps we should change that,
 later on.  For now, let's just go through the code, and then we can decide
