@@ -17,10 +17,10 @@
 
 module Acsdoc
 
-  def add_output(s, ofile, dirname)
+  def add_output(s, ofile, dirname, tag)
     ofile.print "---\n"
     a = s.split
-    indent = s.index(":output:") 
+    indent = s.index(tag) 
     tmpname = ".acsdoc.command-out"
     tmpcommand = ".acsdoc.command-file"
     prompt = " "* indent + "|gravity>"
@@ -33,7 +33,7 @@ module Acsdoc
     system("cat  #{tmpcommand}") if $DEBUG
     system("csh -f #{tmpcommand}");
     outfile.close
-    ofile.print prompt + commandline, "\n"
+    ofile.print prompt + commandline, "\n" if tag == ":commandoutput:"
     output = `cat #{dirname}/#{tmpname}`
     output.each{|x| ofile.print " "*indent + x}
     ofile.print "---\n"
@@ -58,7 +58,9 @@ module Acsdoc
 	ofile.print s
 	ofile.print "---\n"
       elsif loc = s.index(":output:")  and s.index("\":output:\"")==nil
-	add_output(s, ofile, dirname)
+	add_output(s, ofile, dirname, ":output:")
+      elsif loc = s.index(":commandoutput:")  and s.index("\":commandoutput:\"")==nil
+	add_output(s, ofile, dirname, ":commandoutput:")
       else
 	ofile.print s
       end

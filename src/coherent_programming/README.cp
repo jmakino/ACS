@@ -45,4 +45,4 @@ The changes we made are
 
  :output: echo foo
 
- :output: date
+ :commandoutput: date
