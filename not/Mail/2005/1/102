@@ -1,0 +1,54 @@
+Date: Tue Jan 18 16:25:22 JST 2005
+
+From: Piet Hut <piet@ias.edu>
+
+Hi Jun:
+
+Here is a summary of our definition of "pragmatic speed"
+of N-body calculations.
+
+For the year 2005, a compute-intensive astronomer may
+have 100 fast CPUs available, each with 1 Gflop.
+Productivity would be damaged severely if there would
+be more than one crash per week.  This translates
+into one crash per 10^17 floating point operations.
+
+We therefore define the pragmatic speed of a code as
+follows:
+
+  Pragmatic speed = f * Measured speed
+
+with
+
+  f = 10^17 epsilon
+
+where
+
+  epsilon = number of crashes per floating point operation.
+
+In 2010 (2015) the conversion factor from epsilon to f
+will be 10^18 (10^19).
+
+Example:
+
+  If a current code crashes once a week on a single CPU,
+  f = 0.01 which means that the pragmatic speed will be
+  one hundred times smaller than the measured speed.
+  
+  In that case, a Ruby code with a measured speed that is
+  ten times slower, but which crashes only once every year
+  on a single CPU, will have a pragmatic speed that is
+  five times higher than a current code.
+  
+  Note that even such a code will be annoying for our
+  compute-intensive astronomer, since on a 100-node
+  beowulf, it will still crash twice a week on some
+  calculation.
+  
+  Our goal (in 2005) really should be to build a code
+  that crashes mcuh less than once per 10^17 floating
+  point operations, i.e. with 1-f << 1.  Even if such
+  a code would be ten times slower than current codes,
+  it would be ten times faster in pragmatic terms!
+  
+
