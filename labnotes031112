@@ -133,6 +133,15 @@ starting with a one line header containing time, place, and persons,
 followed by a ([sub]*)section tree.  A blank line indicates a new
 paragraph, as in LaTeX.
 
+Here is a possible syntax.  Two blank lines will be translated into
+paragraph breaks, and a single line starting with a number will be
+interpreted as a header for a section or subsection.  If you really
+want to write a paragraph containing only one short sentence starting
+with a number, you will have to add a backslash: "\8" at the start of
+a one-line paragraph will be interpreted as "8", while "\\8" will be
+interpreted as "\8", for those rare one-line paragraphs that really
+want to start with a backslash followed by a character 8.
+
 3.2. Suffix
 
 We gave this format a name: a file in this format will end with the
@@ -149,6 +158,15 @@ before and after.  For example, yesterday's figure was included using
 the following line:
 
 \\fig{labnote.eps, 15 cm}
+
+3.4. Italic, Boldface, Colors, and all that
+
+We will define a limited number of text formatting, to indicate for
+example the use of italic or boldface text, the use of different
+colors, and so on.  We will allow a few different ways to define those
+formatting options.  For example, an equal space typewriter font could
+be defined as \begintt \\begintt tgif \\endtt \endtt in LaTeX style,
+or as <tt> \<tt\> tgif \</tt\> </tt>.
 
 4. Lab Notes File Types
 
@@ -200,85 +218,27 @@ appear at the very end of the personal copy of the lab notes, an error
 will be issued, since in that case it is not possible to decide what
 went wrong and how it could possible be corrected automatically.
 
+5. Generation of Lab Notes
 
+We extended our ideas about generation of labnotes (yesterday's 2.4.3),
+to include not only the automatic generation of HTML files, but also
+the generation of pdf files.  In addition, we will keep a mother file
+that contains all submissions of .not files in chronological order.
+Other options would be to translate the .not files into LaTeX files,
+and to translate them into XML files as well (which in turn can then
+be translated into LaTeX or HTML or pdf files).
 
-\begintt tgif \endtt
-<tt> tgif </tt>
+We will allow errata and general comments to point back to a previous
+session, which will then automatically add a pointer to the previous
+session, pointing to the erratum text.  However, that last pointer
+will not appear inside the text of that previous session, which can no
+longer be changed, but rather at the top or bottom of that session, as
+a form of metadata.
 
-
-
-
-5. Stepping Back
-
-
-
-
-You start with the source code.  There are inline comments to explain
-some statements in a microscopic ways.  There are blocks of comments
-included in the code to give more macroscopic descriptions of how the
-code hangs together.  All three, code statements, shorter and longer
-comments can be found in the code source files.
-
-The fourth level of documentation is the book text.  The fifth level
-is given by the lab notes that in turn document the process of writing
-the book text, as a history of what happened.  The sixth level is
-given by a description of the ideas that drove the history of the
-writing, when they popped up and where they were eventually used.
-
-No, sixth level is different
-
-
-
-
-
-2.4.3. Generation of Lab Notes
-
-In order for us to make it easy to write the lab notes for a new
-session and add them to the existing HTML files, we will automatize
-the process of lab note generation.  Rather than writing a separate
-HTML file, which is rather cumbersome, we will introduce a special
-file format, indicated by a file name ending with ".not" (for notes),
-with a set of rules for how to indicate breaks between paragraphs,
-sections and subsections, etc.
-
-For example, two blank lines will be translated into paragraph breaks,
-and a single line starting with a number will be interpreted as a
-header for a section or subsection.  If you really want to write a
-paragraph containing only one short sentence starting with a number,
-you will have to add a backslash: "\8" at the start of a one-line
-paragraph will be interpreted as "8", while "\\8" will be interpreted
-as "\8", for those rare one-line paragraphs that really want to start
-with a backslash followed by a character 8.
-
-Each time one of us submits a session, our new software will
-automatically add that session to the growing list of sessions,
-updating the various levels of HTML files as described above.
-
-Before submitting your session, you may want to view it in HTML mode,
-to check whether things really come out as you intended.  For that
-purpose, the software will have a "local" mode, to create a single
-stand-alone HTML file for your session.  The "global" mode, in
-contrast, will add your session once and for all to the growing
-repository of sessions.  If you later want to make changes, you have
-to describes those in a later session, and point to the older session.
-
-Note that we will allow errata to point back to a previous session,
-which will then automatically add a pointer to the previous session,
-pointing to the erratum text.  However, that last pointer will not
-appear inside the text of that previous session, which can no longer
-be changed, but rather at the top or bottom of that session, as a form
-of metadata.
-
-Finally, we will allow the inclusion of figures and LaTeX equations.
-The images for the figures will be automatically copied to the proper
-place so that they can be accessed by the HTML files that will include
-them.  For the specific case of LaTeX equations that will be turned
-into figures, we will create a special file "notdefs.tex".
-
-The syntax for including a figure will be of the type "\\fig{filename, size}",
-written on a separate line, with blank lines before and after.  For example,
-the figure above was included by adding the following line to the
-text:
-
-\\fig{labnote-031111.eps, 15 cm}
+Finally, as we decided yesterday, we will allow the inclusion of
+figures and LaTeX equations.  The images for the figures will be
+automatically copied to the proper place so that they can be accessed
+by the HTML files that will include them.  For the specific case of
+LaTeX equations that will be turned into figures, we will create a
+special file "notdefs.tex".
 
