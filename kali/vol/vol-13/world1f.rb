@@ -407,7 +407,7 @@ class World
 #        @snap_time = @era.snap_time = t_out               # KLUDGE !!!
 #        write($stdout, c.precision, c.add_indent)
 ##        @era.acs_write("era", $stdout, c.precision, 0, c.add_indent)
-        @era.take_snapshot(t_out).acs_write("")
+        @era.take_snapshot(t_out).acs_write("", $stdout, c.precision, 0, c.add_indent)
         t_out += c.dt_out
       end
       @old_era = @era
@@ -434,6 +434,7 @@ class Worldsnapshot
 
   def initialize
     @body = []
+    @greeting = "hi\nJun!\n"
   end
 
   def kinetic_energy

@@ -10,27 +10,6 @@ class Vector
   end
 end
 
-class ACS_Wrapper
-
-  def initialize(tag, content)
-    @tag = tag
-    @content = content
-  end
-
-  def to_acs_s(precision = 16, base_indent = 0, add_indent = 2)
-    indent = base_indent + add_indent
-    return " " * base_indent + "begin " + @tag + "\n" +
-      @content.to_acs_s(precision, indent, add_indent) + "\n"+
-      " " * base_indent + "end"
-  end
-
-  def write(file = $stdout, precision = 16,
-            base_indent = 0, add_indent = 2)
-    file.print to_acs_s(precision, base_indent, add_indent)+"\n"
-  end
-
-end
-
 module ACS_IO
 
   PRECISION = 16
@@ -40,27 +19,35 @@ module ACS_IO
   def to_acs_s(name, precision = PRECISION, base_indent = BASE_INDENT,
                add_indent = ADD_INDENT)
     indent = base_indent + add_indent
-    s = " " * base_indent + "begin " + self.class.to_s + " " + name + "\n"
+    s = " " * base_indent + self.class.to_s + " " + name
+    if self.class == String
+      s += " " + add_indent.to_s + "\n"
+      s += self.gsub(/^/, " " * indent)
+      if s =~ /\n$/
+        s += " " * indent
+      end
+      return s + "\n"
+    end
+    s += "\n"
     vv = self.instance_variables
     if vv.size > 0
       vv.each do |v|
-        s += instance_variable_to_acs_s(v, precision, base_indent + add_indent,
-                                        add_indent)
-        end
-    elsif self.class == Array
+        s += instance_variable_to_acs_s(v, precision, indent, add_indent)
+      end
+      return s
+    end
+    if self.class == Array
       self.each_index do |i|
         s += self[i].to_acs_s(name+"["+i.to_s+"]", precision,
-                              base_indent + add_indent, add_indent)
+                              indent, add_indent)
       end
-    else
-      s += " " * (base_indent + add_indent)
-      if self.class == Float or self.class == Vector
-        s += self.to_acs_special_s(precision) + "\n"
-      else
-        s += self.to_s + "\n"
-      end
+      return s
     end
-    s + " " * base_indent + "end" + "\n"
+    if self.class == Float or self.class == Vector
+      s += " " * indent + self.to_acs_special_s(precision) + "\n"
+      return s
+    end
+    s += " " * indent + self.to_s + "\n"
   end
 
   def instance_variable_to_acs_s(var, precision, base_indent, add_indent)
@@ -79,3 +66,4 @@ class Object
   include ACS_IO
 
 end
+
