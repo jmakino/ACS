@@ -2,4 +2,27 @@ This is a modified version of rdoc 0.9.0, which support
 !word! and <name>word</name> to generate HTML name tag <a name=name>
 
 Jun Makino 2003/12/30
+
+> The changes are minimal:
+> 
+>  diff -C0 to_html.rb.original to_html.rb
+>  |*** to_html.rb.original 2003-02-21 00:50:43.000000000 +0900
+>  |--- to_html.rb  2003-12-28 22:29:49.000000000 +0900
+>  |***************
+>  |*** 29 ****
+>  |--- 30 ----
+>  |+         InlineTag.new(SM::Attribute.bitmap_for(:XNAME),   "<a name=", ">"),
+> 
+>  diff -C0  inline.rb.original  inline.rb
+>  |*** inline.rb.original  2003-03-09 14:20:12.000000000 +0900
+>  |--- inline.rb   2003-12-28 22:19:29.000000000 +0900
+>  |***************
+>  |*** 225 ****
+>  |--- 226 ----
+>  |+       add_word_pair("!", "!", :XNAME)
+>  |***************
+>  |*** 230 ****
+>  |--- 232 ----
+>  |+       add_html("name", :XNAME)
+
  
