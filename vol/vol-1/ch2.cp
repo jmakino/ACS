@@ -619,33 +619,39 @@ would share the same time step size, the whole system would get down
 on its knees when somewhere two stars would come close together, or
 worse, would form a tight binary.
 
-However, if we just stick to one method, and use that for all
-particles, we will quickly run into trouble.  It can easily happen
-that two stars form a hard binary, with a semimajor axis that is a
-thousand times smaller than the size of the system.  The eccentricity
-_e_ will fluctuate, due to the perturbing forces from encounters with
-other stars, and occasionally, _e_ can get close to unity.  If, say,
-_e_ = 0.999, then at the distance of closest approach the stars will
-be a million times closer than the size of the system.  In order to
-calculate the force between the stars, we have to first subtract the
-position vectors of both stars, and this will lead to a loss of
-precision of at least six digits, reducing an original 64-bit double
-precision calculation almost to 32-bit single precision.  We simply
-cannot afford that, if we want to integrate the system in an accurate
-way.
+However, even with individual time steps, almost all of the computer
+time for a few hundred body system could go into just one tight binary.
+And what is worse, the integration of such a binary could lead to an
+unacceptable build-up of roundoff errors.
+
+Here is an example.  It can easily happen that two stars form a hard
+binary, with a semimajor axis that is a thousand times smaller than
+the size of the system.  The eccentricity _e_ will fluctuate, due to
+the perturbing forces from encounters with other stars, and
+occasionally, _e_ can get close to unity.  If, say, _e_ = 0.999, then
+at the distance of closest approach the stars will be a million times
+closer than the size of the system.  In order to calculate the force
+between the stars, we have to first subtract the position vectors of
+both stars, and this will lead to a loss of precision of at least six
+digits, reducing an original 64-bit double precision calculation
+almost to 32-bit single precision.  We simply cannot afford that, if
+we want to integrate the system in an accurate way.
 
 One way to overcome this problem is to introduce a special coordinate
 system.  Expressed in relative coordinates, with respect to the center
 of mass of the two stars, there is no longer any problem of round-off.
-Another way to solve it is to replace the orbit of a very tight binary
-star by the analytic solution of the Kepler problem: an elliptical
-orbit, for which we only have to solve Kepler's equation to know where
-the two particles are with respect to each other, at any given time.
-Of course, when a third particle approaches close to two particles on
-an eccentric tight orbit, that still will not be enough.  In general,
+An even better way is to go one step further: to replace the orbit of
+a very tight binary star by the analytic solution of the Kepler
+problem, an elliptical orbit for which we only have to solve Kepler's
+equation to know where the two particles are with respect to each
+other, at any given time.
+
+Now sooner or later, a third particle may happen to be close to a
+hard binary on an eccentric orbit.  In that case we can simply replace
+the numerical binary treatment by an analytic Kepler orbit.  We could
+introduce a celestial mechanics perturbation treatment.  But in general,
 the best solution is to use what is called a Kustaanheimo-Stiefel
 transformation, or other variants that have been introduced later.
-
 These of course are only the first steps.  There are many other very
 nice tricks of the trade.  If you use chain regularization and Stumpf
 . . . 
@@ -693,13 +699,118 @@ the more it seems like a fun project.
 
 === Local versus Global
 
-=== The Kali code
+*Alice*: If we really cannot avoid introducing some local treatment
+in the stellar dynamics part of the code, it would be best to split
+the stellar dynamics itself into two modules, and a clear interface.
 
-*Alice*: As long as we put all this wonderful stuff soon-to-come on
-the internet, it would be good to give it a name.  I wouldn't want
-to refer to it as `our kitchen sink toy model' all the time.  Let's
-pick a name.  How about using a Greek term?  The word astrophysics
-comes from the Greek after all.
+*Bob*: I told you, that you would want to introduce more modules,
+before long!  How many do we have now?  A scheduler (SC), a stellar
+evolution (SE) and a hydro (SH) module, and now a global stellar
+dynamics (GD) and a local stellar dynamics (LD) module, five in total!
+
+*Alice*: Nothing wrong with having five modules in a code.  This means
+that you have a lot of freedom!  You can replace each module, rewrite
+it, experiment with it, all without affecting anything in any of the
+other modules.  But lets not repeat our arguments.  After we finish
+our first toy code, we can take up this discussion again, and by that
+time we'll have a lot of actual code to work with, to strenghten our
+arguments.
+
+*Bob*: Fair enough.  But now I'm puzzled.  Passing information between
+the SD and SE module was natural enough, since we were dealing with two
+rather different types of physics.  But the GD and LD modules both are
+dealing with the same physics, plain old Newtonian gravitational
+attraction.  Putting an interface between them would seem like trying
+to draw a line on the water!
+
+*Alice*: I want to draw a line in the sand, frankly, and insist that
+we divide the stellar dynamics into these two different modules.  Look
+at it this way.  From the point of view of the global dynamics, the
+local dynamics is a way to protect ourselves from the Kepler
+singularities, right?  I presume that is the meaning of the word
+regularization, removing the singularities.
+
+*Bob*: Yes, I think that is were the term comes from.
+
+*Alice*: In that case, the SH module is also a form of regularization.
+When two point particles come close, the SH module will replace them
+by, for example, a blob of SPH particles.  We could call this a form
+of hydro regularization.  It looks a bit like softening, where every
+point particle is replaced by a small Plummer model.  Softening could
+also be called regularization.
+
+Strictly speaking, the mathematical term regularization implies that
+you do not change the underlying equations of motion, so in that sense
+hydro treatment and softening should not be called regularization.
+But we are not mathematicians.  In astrophysics, we start with
+extended objects.  The idealization of replacing a start by a point
+mass is only a matter of convenience.  And when this replacement turns
+out to be inconvenient, in close approaches between stars, we are free
+to use other idealizations.  We are only `regularizing' what had been
+`singularized' as a too extreme idealization.
+
+*Bob*: But you can't simulate a star cluster with a code that is only
+using softening.  The code will run, but it will not give you a
+sufficient amount of two-body relaxation.  And it will not admit hard
+binaries.
+
+*Alice*: That is true if you use a large softening length, like
+people do when they collide two galaxies, and they want to suppress
+two-body relaxation, which would be unphysical anyway in that case,
+since each single particle represents thousands of stars, if not more.
+But in the case of a star cluster, you could give each star a softening
+radius that is equal to the physical radius of a star.  In that case,
+binaries could form and two-body relaxation will be just fine.  You
+would have to do more, since you would have to prevent stars from
+passing through each other, as softened particles would.  When you
+thus add a hard core and a friction term to let the particles stick
+together upon close approach, you have gone well above the simple
+softening recipe.  But if you add those other prescriptions, using a
+small softening in itself is not necessarily wrong.
+
+*Bob*: So you view hydro treatment and regularization as somewhat
+similar, from the point of view of the GD module, which only deals
+with point particles?
+
+*Alice*: Yes.  And the interface between GD and LD can be similar as
+what we saw before.  We can specify a function to create a local clump
+of particles, and similarly we can specify a clump destructor function.
+We can have functions providing the mass and effective radius of a clump,
+as a function providing the current time.  It all follows rather closely
+to what we just discussed for stellar evolution.
+
+*Bob*: Hmmm.  I still think it is like drawing a line in the water.
+But early on I agree to do the experiment, to write a modular toy model,
+and if this is what you want, this is what we'll try to do.  But allow
+me to laugh loudly if your approach will result in an unwieldy code,
+with many extra lines to circumvent your interface restrictions, and
+a very slooooow overall execution speed.  And I won't hesitate to tell
+my student's whose brilliant idea it was to do all this ;>).
+
+*Alice*: If that is what will happen, you can use it as a case study
+in how not to follow the advice of computer scientists who tell you to
+use modular programming.  I'm convinced that this will not happen, but
+there is only one way to find out: we will continue, and see who is
+right.
+
+*Bob*: I can't wait!
+
+=== The Name of the Game
+
+*Alice*: I can't wait either, and whatever the outcome will be, it
+will be a useful experiment.  Before we get started, though, there is
+one more thing we have to decided.  As long as we put all this
+wonderful stuff soon-to-come on the internet, it would be good to give
+it a name.  I wouldn't want to refer to it as `our kitchen sink toy
+model' all the time.
+
+*Bob*: A name.  Hmm.  Many options.  We could use an acronym.
+Fortran comes from formula translator.  How about Dentran, to
+translate your modular ideas for modeling dense stellar systems?
+
+*Alice*: That sounds like something to do with dentists, perhaps a
+new type of tooth paste.  How about using a Greek term?  The word
+astrophysics comes from the Greek after all.
 
 *Bob*: I'm not very strong on languages.  Do you have a specific
 suggestion?
@@ -721,12 +832,6 @@ But how do you turn that into a name?
 *Bob*: Too long, too difficult to pronounce, and besides, the logic
 doesn't work.  You wouldn't want to call a code the Astrophysics Code,
 would you -- as if there would be only one such thing.
-
-*Alice*: Good point, I hadn't thought about that.  That would be like
-calling your specific window programs Windows, or your word processing
-program Word.
-
-*Bob*: No way!
 
 *Alice*: And no comment.  Okay, well, what else.  You want a short
 name, I take it?
@@ -760,7 +865,7 @@ galaxies.
 
 *Bob*: Okay, the Kali code it will be.
 
-=== Starting Simple
+=== An Integration Scheme
 
 *Alice*: So we have a name for our toy model, and we have decided
 how we will model the stellar dynamics, the stellar evolution and the
@@ -770,11 +875,15 @@ Shall we get started?
 *Bob*: Just a moment, we haven't yet decided what to do with the stellar
 dynamics.
 
-*Alice*: Shared timesteps, didn't we say?
+*Alice*: You suggested an individual timestep scheme, and I think that
+is fine.  Actually, we may want to start with shared timesteps, but
+that is a matter of presentation.
 
-*Bob*: Yes, but we haven't specified the integration scheme.  You can
-do shared timesteps using a leapfrog integrator, or more reasonably a
-fourth-order integrator of one type or another.
+*Bob*: Yes, but the choice of time step is only one choice we have to
+make.  We haven't choosen an integration scheme yet.  If you want to
+start with shared timesteps, you can do that using a leapfrog
+integrator, or more reasonably a fourth-order integrator of one type
+or another.
 
 *Alice*: Ah, of course.  And yes, plenty of choices.  Well, to make it
 really accessible for students, with no prior background in numerical
@@ -792,7 +901,7 @@ encounters can occur.
 N-body code.  My recollection was that a rather complicated
 predictor-corrector method was used, where the force calculation from
 various previous time steps was remembered.  The book keeping was
-complicated.
+very complicated.
 
 *Bob*: That must have been a long time ago indeed!  For the first thirty
 years or so, this was indeed the method of choice, until in the late
@@ -848,18 +957,53 @@ or computer language?
 
 *Alice*: All of these questions need to be addressed, and they are
 general concerns for any software projects.  However, in our particular
-case there is also the question of how to make our codes work together.
+case there is also the question of how to get data in and out of our
+integrator, and how to analyse the results.
 
-*Bob*: But we already discussed that: we specify interfaces, then
-compile each part of the code, link it into one executable, and we are
-ready to run.  Of course, you have to produce some initial conditions,
+*Bob*: Of course, you have to produce some initial conditions,
 and you want to look at the results, but basically we are dealing with
-one big program, no matter how modular you would like to make it.
+one big program, and a bunch of small ad hoc programs, which could be
+some shell scripts or whatever you can put together quickly.  The main
+point is to provide the students with a robust integrator.  The rest
+they can take care of themselves.
 
-*Alice*: That has been the traditional approach for a long time, but
-it is far from optimal.  What I would prefer, certainly for a student
-demonstration project, is to provide something that is more like a
-toolbox.
+*Alice*: But what about standard questions, such as deriving the
+potential energy for each particle, and the local density around
+each particle.  You almost always want to know those quantities.
+Wouldn't it be better to build separate programs to compute those?
+
+*Bob*: It would be much better to make that part of the integrator.
+The potential will already be calculated at regular intervals anyway,
+to provide accuracy diagnostics.  And it wouldn't be too difficult to
+built in a density estimator as well.
+
+*Alice*: Combining everything into one big program has been the
+traditional approach for a long time, but it is far from optimal.
+What I would prefer, certainly for a student demonstration project, is
+to provide something that is more like a toolbox.  I'm happy to let
+the calculation of quantities such as potential energy be done in the
+integrator, as part of the necessary on-the-fly analysis.  But in
+addition, I would want to have a separate stand-alone program that can
+compute the potential as well.
+
+*Bob*: Why?
+
+*Alice*: Imagine that you want to calculate the total mass of a bound
+subsystem within a larger N-body system.  You take the whole system,
+and remove the particles that our not bound to the subsystem.  Perhaps
+you want to iterate a few times, removing more particles until you
+really have a self-gravitating subsystem.  At that point you may want
+to check virial equilibrium, so you have to calculate the kinetic and
+potential energy of all particles.
+
+*Bob*: That makes sense.  And come to think of it, when you then want
+to calculate Lagrangian radii, it may be nice for the students to have
+yet another little program to do just that.  Ah, we can follow the way
+of the Unix system: a large number of small tools, where you can pipe
+the results from one tool into the next one.
+
+*Alice*: That would be one example of what I had in mind, but it is not
+the only one.  
 
 === Operating System
 
