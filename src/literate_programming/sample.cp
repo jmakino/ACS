@@ -1,8 +1,10 @@
-Coherent Programming
+= Coherent Programming
 
 In this chapter, we introduce our idea of `coherent programming'.
 Briefly, this is a software system designed to make it easy and
 inviting to keep the text of related files up-to-date and consistent.
+
+== History
 
 When writing a series of books, it is important that the text for the
 book chapters, the corresponding computer codes and their documentation,
@@ -31,6 +33,8 @@ code files in different languages, scripts, make files, and so on.
 Since our implementation is so different from that chosen by Knuth, we
 decided not to stretch his term `literate programming' to include our
 version.
+
+== An Example
 
 We start by giving a simple example.  Here is the definition of a
 celestial body, as a class Body in Ruby:
@@ -73,6 +77,8 @@ class Body
 
 end
 
+== Sample Session
+
 And here is a sample session with the `irb' Ruby interpreter (one way
 to get the information about our new Body class to irb is to include
 the text of the Body definition above in the irb startup file `~/.irbrc').
@@ -101,6 +107,7 @@ Note that the last line is wrapped here to present the results in a
 more orderly way; in the actual irb session all seven numbers appeared
 on a single line.
 
-Labnote session.
+== Labnote Session
+
 xxxxxx
 xxxxxx
