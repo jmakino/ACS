@@ -1,0 +1,287 @@
+= Chapter 9.  Style
+
+== Documentation
+
+*Alice*: Not quite.  We have talked about writing programs and providing
+an environment, but we haven't said anything yet about documentation.
+
+*Bob*: Well, my class notes will be the documentation, I thought.  I will
+give them enough hints to get them started, and when they go through the
+code, it will become obvious what we intended.  Of course, we'll put in
+enough comments to clarify our methods.
+
+*Alice*: I would prefer a rather different approach.  Comments in a code
+are only the first level of documentation.  A good code needs to have
+manual pages, at the very least, and even better a form of introduction,
+a primer or that sort of thing.  When you want to work with a new program,
+don't you look at the manual pages?
+
+*Bob*: Not often.  I prefer to just try things out.  And if it is an
+important enough program, I am happy to go look at the source code
+directly.  And while I agree that good manual pages can be of some
+help for a commercial product, I don't see why we have to be so fancy
+for an educational project.
+
+*Alice*: There are several reasons why.  For one thing, I like to make
+it attractive and easy for others to use my code.  Once I spend a lot
+of time writing a good piece of code, I'm happy to spend a bit more time
+to polish it and make it available in a more userfriendly way.  And if
+more people will be using it, I will get more feedback which in turn
+can improve the product.  Also, others are more likely to write
+extensions or complementary programs, and there is a better chance
+that a project will take off around what I initially wrote, which can
+then serve as the nucleus for something larger.
+
+*Bob*: If you insist on more documentation than code comments, a good
+addition would be to include a help mechanism in each program.  Typing
+<tt>density --help</tt> could give you some help about the various
+command line arguments available for the program <tt>density</tt>, for
+example.
+
+*Alice*: Yes, that would be a good addition, but it does not address
+the issue of a really comprehensive explanation of not only what a code
+does, but why it was written that way: the motivation for the overall
+approach and the choice of algorithm used, as well as the particular
+organization of the program itself.
+
+You see, the most important reason to write good documentation is
+long-term efficiency.  If you force yourself to reason out loud why
+you are doing what you just did, you will quickly find that there are
+many aspects you haven't thought through deeply enough.  While writing,
+you will get new insights that will improve your program significantly.
+So writing detailed documentation is not only a good idea, it is
+especially a good idea of doing it right away, while you are writing
+your code.  If you are doing it later, you may also discover better
+alternatives, but you are unlikely to implement those, because by then
+you have already invested so much time into the older approach.
+
+*Bob*: that all sounds nice on paper, but in practice, when you deal
+with any complicated program, there always comes a time that you have
+to beat the thing into shape.  You can start in a nice clean way,
+following this paradigm or that, but then when the program gets going,
+you find that this is missing or that, and that such and such is
+slowing down the execution much to much.  You start throwing in this
+and that, and taking short cuts here and there to get significant
+speedup.  How are you going to document that?  Spend a few hours every
+day rewriting the documentation, each time you have tinkered with the
+code?  That seems hardly efficient!
+
+*Alice*: What you just described is a sledge hammer approach.  If you
+have only two weeks left before a conference where you have to present
+your latest results, I can imagine that you take that approach.  But
+unless there is a serious emergency, I cannot see how that will gain
+you in the long run.  But I don't think we can convince each other by
+arguing.  We clearly have a very different style.  Let us agree that
+we at least will be careful to write clear comments and a good help
+mechanism for each code.  For myself I will keep track of what major
+and minor decisions we make while working on our project, so that I
+can document what happened, and why, and how we learned from initially
+wrong assumptions.  We can later see what we do with that material.
+
+*Bob*: I'm glad we agree to disagree.  It's time to get our hands dirty
+doing some real programming.  Hey, I see that you have a copy of Knuth'
+book `The Art of Programming'.  He is one of my heroes.  Those books
+are great.  And without TeX and LaTeX, where would we be in writing
+articles?  That he singlehandedly invented TeX in the late seventies
+was very impressive.  I bet he didn't let himself be side tracked by
+documentation.
+
+== Literate Programming and Coherent Programming
+
+*Alice*: Wrong!  Knuth was very keen on documentation.  Have you heard
+of Literate Programming?
+
+*Bob*: Literary Programming??
+
+*Alice*: No, Literate Programming.  This is a term that Knuth invented,
+for the process in which he wrote TeX.
+
+*Bob*: Process?  I presume he just wrote TeX, just like you write any
+programs.  He just happens to be a lot better in programming than most
+of us.  What do you mean with process?
+
+*Alice*: He did not `just write programs.'  On the contrary, he put a
+lot of thought into the process of designing programs, coming up with
+a view first, then with a way to map out the various pieces needed,
+and so on.  And most importantly, he came up with the idea that
+computer code should first of all be human readable, and only machine
+readable as an afterthought.  You should read one of his bundles of
+collected essays on algorithms and programming.  Since he is one of
+your heroes, perhaps he will convince you more than I can, about the
+value of documentation.
+
+*Bob*: You haven't told me yet what he meant with Literature Programming.
+
+*Alice*: <i>Literate</i> Programming.  The idea is that code and
+documentation are interwoven in one book.  You write a piece of code,
+and at the same time you write a page of text explaining your
+motivation for writing that piece of code, what it is supposed to do,
+what were the reasons going into the decisions of writing this part in
+this way and that part in that way.  So the code parts and text parts
+are literally interwoven in one long manuscript.
+
+*Bob*: But how can you run the code if it is spread through the text
+of a manuscript?
+
+*Alice*: He wrote special programs to extract both the book part and
+the code part of what he wrote.  He called those +weave+ and +tangle+.
+The program +weave+ went through the original, and produced the book
+text.  The program +tangle+ also went through the same original,
+extracting the bits and pieces of code, putting it all together as one
+large code, the source code for TeX, that then could be compiled in
+order to produce the TeX executable.
+
+*Bob*: Why did he call the second one +tangle+?
+
+*Alice*: He literally wrote +tangle+ in such a way as to entangled the
+source code, in such a way that it was no longer human readable.
+
+*Bob*: Why would he do that??
+
+*Alice*: He wanted to force himself and others not to make quick changes
+in the source code alone, without touching the book.  For him documentation
+was so essential that he forced himself to change the code only within the
+context of the original manuscript, where code and text were living together.
+In that way, the threshold was lowered to explaining in the text part what
+you just changed in the source code part, and thus the two could grow
+together harmoniously.
+
+So this answers directly your objection that when you want to get something
+done, you reach a stage where you drop documentation and just beat things
+into shape.  It seems that Knuth more or less tied his hand on his
+back, to prevent himself for using a sledge hammer approach -- or so
+it must have seemed to many people.  But I can easily believe that in
+the long run, or even in the medium run, his approach was more efficient.
+
+*Bob*: I did not know that.  I'm really surprised.  And now that you caught
+me with a story about Knuth that I didn't know about, are you going to force
+me to use literate programming?
+
+*Alice*: No, don't worry.  I don't think that literature programming is
+still the right answer, in this day and age.  It was a good thing at the
+time, a visionary move really.  But it was developed in the early days
+of line editors, even before screen editors came into being, let alone
+window systems.  Nowadays it is easy to keep an eye on several files
+at once, but in those days the best you could hope for is to see a few
+dozen lines on a screen at the same time.  And therefore the only way
+to achieve a close coupling between text and code was to literally
+weave them together.
+
+*Bob*: What would be a more modern equivalent?
+
+*Alice*: I have been thinking about that, off and on.  I think that
+the most important aspect of Knuth' idea, an aspect that will survive
+his particular implementation, was the notion of coherence.  With his
+trick, he could keep source code and documentation text coherent.
+Everything was updated in step, and he leaned way over backward to
+guarantee that the two remained in lockstep.  That part I would like
+to preserve, the notion of coherence.  My proposal is to introduce
+what I would call <i>coherent programming</i>.
+
+The idea would be to allow different files for source code and for
+documentation.  However, the two are linked through frequent pointers,
+in a hypertext kind of way, perhaps as it is done on web pages.  I
+must say, I do not yet have very clear notions of how to implement
+this, and what to choose, but the main two points will be to, a), make
+it very natural to update code and text in unison, and b), provide
+some sort of penalty against violating that simultaneous type of update.
+I'm not sure whether I would go to the extreme that Knuth went, of
+making his source code unreadable, even to himself, but perhaps even
+that might not be a bad idea.  I'll let you know if and when I get
+more inspiration in that direction.
+
+*Bob*: I'm glad you let me off the hook so easily, without converting
+me into a coherent programmer!  We can talk about those ideas later,
+over a drink, whenever you like, and yes, I'll probably have a look at
+those essays by Knuth.  I must say that you have peeked my curiosity.
+But for now, let's get started doing some programming ourselves!
+
+== A Lab Note Mechanism
+
+*Alice*: One more thing.
+
+*Bob*: I was afraid you would say that.  What is it now?  Don't we have
+all the pieces we need to get started, and more?
+
+*Alice*: This will be the last ingredient, I promise.  I won't insist on
+documentation, literate or coherent or otherwise.  But what I do insist
+on is a systematic way of keeping lab notes.
+
+*Bob*: Lab notes?  For which lab?  What notes?
+
+*Alice*: Our toy model and its environment will form a kind of lab for
+your students.  They can perform experiments, by setting up initial
+conditions, running a simulation, and analyzing the results.  It is
+all virtual of course, but apart from that, the procedures and the
+skills needed are not that different from doing a lab experiment.
+
+*Bob*: I remember burning my fingers while learning how to blow glass
+during my freshman physics glass.  After glass stops to glow, it is
+still incredibly hot.  I sure wished that I had infrared eyesight then.
+But okay, if you want to stretch metaphors, I've burned myself with
+hasty programming as well.  And there are parallels between lab work
+and working with software.  Or in astronomical terms, between working
+with a simulation or with a telescope.  If you walk into an astronomer's
+office, and see a pretty picture on his or her screen, you have no way
+of knowing, <i>a priori</i>, whether you're looking at an observation
+or a simulation.  So I grant you that a lab is not such a bad metaphor,
+after all.  But what about your notes?
+
+*Alice*: I suggest that each time we get together to work on our toy
+model software, we keep some notes about the main decisions we make,
+and the reasons behind them.  That will not take much time, and it
+will help us writing documentation later on.  What is more, it will
+enable us to go back and trace down why we did what we did, when we
+come back to a piece of code a few weeks later, trying to debug it,
+and wondering why we ever wrote this or that.
+
+*Bob*: Now that sounds easy.  We can just scribble down some notes
+while we go along.  Probably better to write that in a file somewhere,
+rather than on scraps of paper.
+
+*Alice*: Ideally, we should do better than that.  As part of a coherent
+programming approach, it would be good to combine computer code AND
+documentation text AND lab notes, all in one environment, with many
+pointers from each of the two to the third element in the triangle.
+But again, I won't try to convince you.  All I'm asking for is that we
+both keep notes, together when we are working jointly, and individually
+when one of us extends something in our toy model environment.
+
+*Bob*: I have no trouble with that.  How shall we send each other the
+notes we write down?  In the form of emails?
+
+*Alice*: The best way would be to use a form of source code control.
+The standard package to do this would be CVS, but an even better
+alternative would be to use subversion.
+
+*Bob*: Yeah, I've heard about that approach, from people who use it
+when they work with big teams on forever-running projects.  But for
+the two of us, for a toy project?  You accused me of a sledgehammer
+approach, but I'm afraid you've just taken up quite a sledgehammer
+yourself!
+
+*Alice*: I bet you will like it, once you get used to it.  I started
+to use it a few years ago, and now I use it even for things I'm working
+on myself, like when I write a lengthy review article, and I want to
+make sure I have all the information at hand, from previous revisions
+of chapters.  But not to worry.  It's easy to set up a source code
+control system, so I'll do it for us.  I'll show you a few commands
+you can use to commit changes from your side, and to update your side,
+to get the changes I have made.  These two commands are the most
+important, in fact.  We should put everything under this source code
+control system: the codes we write, whatever documentation I will add,
+and the lab notes we will both keep writing regularly.
+
+*Bob*: Is this really your last requirement, as you have promised,
+before we can start to do some <i>real</i> programming?
+
+*Alice*: Yes, this is it!  We can get started now.
+
+*Bob*: I thought I never would see the day.  Well, as long as you take
+care of this code control business -- what did you call it?
+
+*Alice*: Source code control.
+
+*Bob*: As long as you take care of it, and it really is as simple as you
+said, I'm willing to try it.  Anything to get to the point of starting
+our programming!

@@ -1,0 +1,356 @@
+= Chapter 7.  Stellar Dynamics
+
+== Regularization
+
+*Bob*: As for the stellar dynamics, how fancy shall we make our code?
+
+*Alice*: at least we should be able to handle core collapse for a small
+number of particles, say a few hundred or so, so that we can model a
+small cluster, and see the inner parts shrink gravothermally.
+
+*Bob*: In that case, it would be nice to be able to deal with close
+binaries as well.  Otherwise we have to stop the simulation before
+core collapse is completed.  In addition, we may want to study the
+effect of primordial binaries.
+
+*Alice*: But I would prefer not to get into regularization and all that.
+Whatever I have seen from special treatment of close encounters convinced
+me that that whole topic is rather specialized, and not something we want
+to throw at the students right away.  Wouldn't it be sufficient to use
+only one integration scheme globally, for all particles, without
+making any local exceptions?
+
+*Bob*: As for the global dynamics, we are pretty much forced to
+introduce an individual time step scheme.  That will require quite a
+bit of explaining to the students, since it goes way beyond what they
+can find in the standard text books on numerically solving
+differential equations, but we have little choice.  If all particles
+would share the same time step size, the whole system would get down
+on its knees when somewhere two stars would come close together, or
+worse, would form a tight binary.
+
+However, even with individual time steps, almost all of the computer
+time for a few hundred body system could go into just one tight binary.
+And what is worse, the integration of such a binary could lead to an
+unacceptable build-up of roundoff errors.
+
+Here is an example.  It can easily happen that two stars form a hard
+binary, with a semi-major axis that is a thousand times smaller than
+the size of the system.  The eccentricity _e_ will fluctuate, due to
+the perturbing forces from encounters with other stars, and
+occasionally, _e_ can get close to unity.  If, say, _e_ = 0.999, then
+at the distance of closest approach the stars will be a million times
+closer than the size of the system.  In order to calculate the force
+between the stars, we have to first subtract the position vectors of
+both stars, and this will lead to a loss of precision of at least six
+digits, reducing an original 64-bit double precision calculation
+almost to 32-bit single precision.  We simply cannot afford that, if
+we want to integrate the system in an accurate way.
+
+One way to overcome this problem is to introduce a special coordinate
+system.  Expressed in relative coordinates, with respect to the center
+of mass of the two stars, there is no longer any problem of round-off.
+An even better way is to go one step further: to replace the orbit of
+a very tight binary star by the analytic solution of the Kepler
+problem, an elliptical orbit for which we only have to solve Kepler's
+equation to know where the two particles are with respect to each
+other, at any given time.
+
+Now sooner or later, a third particle may happen to be close to a
+hard binary on an eccentric orbit.  In that case we can simply replace
+the numerical binary treatment by an analytic Kepler orbit.  We could
+introduce a celestial mechanics perturbation treatment.  But in general,
+the best solution is to use what is called a Kustaanheimo-Stiefel
+transformation, or other variants that have been introduced later.
+These of course are only the first steps.  There are many other very
+nice tricks of the trade.  If you use chain regularization and Stumpf
+. . . 
+
+*Alice*: Yes, yes, I'm sure there are many wonderful tricks, but we
+have to offer your students something that they can understand and
+apply, all within half a year.  Whoever Stumpf is, or the other two
+gentlemen you mentioned, let's leave them out for now.
+
+*Bob*: But we should do something, on the local level, to make the
+whole calculation meaningful.  The question is what we can introduce
+that goes partway toward full regularization.  One think we cannot get
+around is to do the analytic regularization that I just mentioned.
+Perhaps that is good enough to get them started.  It will actually be
+instructive for the students to see how things fail, and then to see
+what solutions can be found to repair the situation.  The only way to
+do that, I think, would be to introduce the separate coordinate
+patches I talked about.  While that will rapidly get too complicated,
+it would be fun, and it would students give a more realistic sense
+of the complexities that a real code has to deal with.  Who knows,
+when we really get going, we might even want to give that a try.
+
+*Alice*: Aha, do I detect the possibility of a smooth evolution from a
+toy model to an actual production code?
+
+*Bob*: No no, that would be far more complex.  But it would be a step in
+the right direction, for sure.
+
+*Alice*: If the main problem would be a loss of accuracy, how about use
+multiple precision?  Instead of 64-bit word length for floating point
+numbers, using 128-bit word length?
+
+*Bob*: You mean quadruple precision?  Yes, that would be an option, but
+it will slow you down.  Depending on the machine you use, it could slow
+you down anywhere from a factor of a few to a factor of a hundred or so,
+if you can do it at all: not every compiler has a quadruple precision
+option, and you don't want to write all the routines by hand for computing
+multiplication and division and square roots and all that.
+
+In any case, yes, there are plenty of options.  Right now, I wouldn't
+be able to guess what would and would not work well, under which
+conditions.  So I'll be learning quite a bit from this exercise, I
+think, even though it's only a toy model.  The more I think about it,
+the more it seems like a fun project.
+
+== Local versus Global
+
+*Alice*: If we really cannot avoid introducing some local treatment
+in the stellar dynamics part of the code, it would be best to split
+the stellar dynamics itself into two modules, and a clear interface.
+
+*Bob*: I told you, that you would want to introduce more modules,
+before long!  How many do we have now?  A scheduler (SC), a stellar
+evolution (SE) and a hydro (SH) module, and now a global stellar
+dynamics (GD) and a local stellar dynamics (LD) module, five in total!
+
+*Alice*: Nothing wrong with having five modules in a code.  This means
+that you have a lot of freedom!  You can replace each module, rewrite
+it, experiment with it, all without affecting anything in any of the
+other modules.  But lets not repeat our arguments.  After we finish
+our first toy code, we can take up this discussion again, and by that
+time we'll have a lot of actual code to work with, to strengthen our
+arguments.
+
+*Bob*: Fair enough.  But now I'm puzzled.  Passing information between
+the SD and SE module was natural enough, since we were dealing with two
+rather different types of physics.  But the GD and LD modules both are
+dealing with the same physics, plain old Newtonian gravitational
+attraction.  Putting an interface between them would seem like trying
+to draw a line on the water!
+
+*Alice*: I want to draw a line in the sand, frankly, and insist that
+we divide the stellar dynamics into these two different modules.  Look
+at it this way.  From the point of view of the global dynamics, the
+local dynamics is a way to protect ourselves from the Kepler
+singularities, right?  I presume that is the meaning of the word
+regularization, removing the singularities.
+
+*Bob*: Yes, I think that is were the term comes from.
+
+*Alice*: In that case, the SH module is also a form of regularization.
+When two point particles come close, the SH module will replace them
+by, for example, a blob of SPH particles.  We could call this a form
+of hydro regularization.  It looks a bit like softening, where every
+point particle is replaced by a small Plummer model.  Softening could
+also be called regularization.
+
+Strictly speaking, the mathematical term regularization implies that
+you do not change the underlying equations of motion, so in that sense
+hydro treatment and softening should not be called regularization.
+But we are not mathematicians.  In astrophysics, we start with
+extended objects.  The idealization of replacing a start by a point
+mass is only a matter of convenience.  And when this replacement turns
+out to be inconvenient, in close approaches between stars, we are free
+to use other idealizations.  We are only `regularizing' what had been
+`singularized' as a too extreme idealization.
+
+*Bob*: But you can't simulate a star cluster with a code that is only
+using softening.  The code will run, but it will not give you a
+sufficient amount of two-body relaxation.  And it will not admit hard
+binaries.
+
+*Alice*: That is true if you use a large softening length, like
+people do when they collide two galaxies, and they want to suppress
+two-body relaxation, which would be unphysical anyway in that case,
+since each single particle represents thousands of stars, if not more.
+But in the case of a star cluster, you could give each star a softening
+radius that is equal to the physical radius of a star.  In that case,
+binaries could form and two-body relaxation will be just fine.  You
+would have to do more, since you would have to prevent stars from
+passing through each other, as softened particles would.  When you
+thus add a hard core and a friction term to let the particles stick
+together upon close approach, you have gone well above the simple
+softening recipe.  But if you add those other prescriptions, using a
+small softening in itself is not necessarily wrong.
+
+*Bob*: So you view hydro treatment and regularization as somewhat
+similar, from the point of view of the GD module, which only deals
+with point particles?
+
+*Alice*: Yes.  And the interface between GD and LD can be similar as
+what we saw before.  We can specify a function to create a local clump
+of particles, and similarly we can specify a clump destructor function.
+We can have functions providing the mass and effective radius of a clump,
+as a function providing the current time.  It all follows rather closely
+to what we just discussed for stellar evolution.
+
+*Bob*: Hmmm.  I still think it is like drawing a line in the water.
+But early on I agree to do the experiment, to write a modular toy model,
+and if this is what you want, this is what we'll try to do.  But allow
+me to laugh loudly if your approach will result in an unwieldy code,
+with many extra lines to circumvent your interface restrictions, and
+a very slooooow overall execution speed.  And I won't hesitate to tell
+my student's whose brilliant idea it was to do all this ;>).
+
+*Alice*: If that is what will happen, you can use it as a case study
+in how not to follow the advice of computer scientists who tell you to
+use modular programming.  I'm convinced that this will not happen, but
+there is only one way to find out: we will continue, and see who is
+right.
+
+*Bob*: I can't wait!
+
+== The Name of the Game
+
+*Alice*: I can't wait either, and whatever the outcome will be, it
+will be a useful experiment.  Before we get started, though, there is
+one more thing we have to decided.  As long as we put all this
+wonderful stuff soon-to-come on the internet, it would be good to give
+it a name.  I wouldn't want to refer to it as `our kitchen sink toy
+model' all the time.
+
+*Bob*: A name.  Hmm.  Many options.  We could use an acronym.
+Fortran comes from formula translator.  How about Dentran, to
+translate your modular ideas for modeling dense stellar systems?
+
+*Alice*: That sounds like something to do with dentists, perhaps a
+new type of tooth paste.  How about using a Greek term?  The word
+astrophysics comes from the Greek after all.
+
+*Bob*: I'm not very strong on languages.  Do you have a specific
+suggestion?
+
+*Alice*: A while ago I asked a Greek astronomer what the word for
+star cluster research would be.  You know, geology is the study of
+the Earth, astronomy is the study of the stars, so what kind of
+something-logy or something-nomy would be the study of star clusters?
+After some thought, he suggested `smenology'.  I believe that `smenos'
+means something like a swarm, like a swarm of bees.
+
+*Bob*: I am often enough stung by bugs in N-body codes, so that would
+be quite appropriate, I'm afraid, although when I hear the word bug,
+I think of small little critters, not as big or ferocious as bees.
+But how do you turn that into a name?
+
+*Alice*: We could call it the Smenology Code?
+
+*Bob*: Too long, too difficult to pronounce, and besides, the logic
+doesn't work.  You wouldn't want to call a code the Astrophysics Code,
+would you -- as if there would be only one such thing.
+
+*Alice*: And no comment.  Okay, well, what else.  You want a short
+name, I take it?
+
+*Bob*: The shorter the better.
+
+*Alice*: The A code?
+
+*Bob*: Unless you will do all the writing, it should at least be the
+AB code, for both of our initials.  But seriously, it doesn't have to
+be quite that short.  Hey, you like languages; it doesn't have to come
+from Greek -- why not pick something from Chinese or Sanskrit or
+some other side street.
+
+*Alice*: Sanskrit, now that's an idea.  How about Kali?  That means
+`dark' in Sanskrit.  As in the `kali yuga', the dark ages we are
+currently in according to Hindu mythology.  Or as in Kali, the Goddess
+who is depicted as black.
+
+*Bob*: As least the name is conveniently short.  And since the universe
+is by and large a rather dark place, the name is not inappropriate.
+We probably should include the option of modeling black holes too,
+with this name.  Do you know the Sanskrit for `hole'?
+
+*Alice*: Beats me.  But then again, we wouldn't want to only model holes.
+And yes, it would be nice if our code would be so robust, simple as it
+may otherwise be, that it could handle mass ratios of one to a billion,
+like in a brown dwarf circling around one of the most supermassive
+black holes in the nucleus of a central galaxy in a rich cluster of
+galaxies.
+
+*Bob*: Okay, the Kali code it will be.
+
+== An Integration Scheme
+
+*Alice*: So we have a name for our toy model, and we have decided
+how we will model the stellar dynamics, the stellar evolution and the
+stellar hydrodynamics: as simple as possible, but not simpler.
+Shall we get started?
+
+*Bob*: Just a moment, we haven't yet decided what to do with the stellar
+dynamics.
+
+*Alice*: You suggested an individual time step scheme, and I think that
+is fine.  Actually, we may want to start with shared time steps, but
+that is a matter of presentation.
+
+*Bob*: Yes, but the choice of time step is only one choice we have to
+make.  We haven't chosen an integration scheme yet.  If you want to
+start with shared time steps, you can do that using a leapfrog
+integrator, or more reasonably a fourth-order integrator of one type
+or another.
+
+*Alice*: Ah, of course.  And yes, plenty of choices.  Well, to make it
+really accessible for students, with no prior background in numerical
+methods, we should really start with a first-order scheme such as
+forward-Euler, shouldn't we?
+
+*Bob*: Really, not with the Hermite scheme?
+
+*Alice*: What is a Hermite scheme?
+
+*Bob*: This is the current workhorse of N-body methods in which close
+encounters can occur.
+
+*Alice*: I admit that it is a long time ago since I looked at such an
+N-body code.  My recollection was that a rather complicated
+predictor-corrector method was used, where the force calculation from
+various previous time steps was remembered.  The book keeping was
+very complicated.
+
+*Bob*: That must have been a long time ago indeed!  For the first thirty
+years or so, this was indeed the method of choice, until in the late
+eighties Makino came up with a simpler self-starting scheme, which he
+called the Hermite integrator, since it uses some ideas put forward
+first by mister Hermite, a couple centuries ago, I think.  This is what
+is now being used almost exclusively in stellar dynamics of dense
+stellar systems.  And it's not that difficult to code.  You can write
+it in such a way that it looks like an almost obvious generalization
+of a leapfrog integrator, apart from a few coefficients which would be
+hard to guess off-hand.
+
+*Alice*: In that case, it would be good to incorporate that scheme in
+Kali code.  Even so, I like to start simple.  I don't want to scare
+the students by presenting complex integration schemes until they have
+gotten a sense of what the notion of integration means.
+
+*Bob*: Wouldn't that be too much hand-holding?  Why not let them jump
+in right away?
+
+*Alice*: The drawback of giving them a fancy working tool right away
+would be that they would immediately run with it and move on to fun
+applications.  Chances are they would never bother to think about how
+and why it can work in the first place.  These days, students are all
+too much focused on learning how to use a package, rather than writing
+it and getting a feel for what is under the hood.
+
+*Bob*: I'm afraid you're right.  When I did my first programming, it
+was in basic, and soon afterward in C.  Nowadays, when students talk
+about programming, they mean tweaking the parameters of a packages,
+while using GUIs.
+
+*Alice*: Perhaps we begin to sound like old folks, shaking our heads
+about the behavior of youngsters nowadays.  But in any case, I really
+think it is best to start with the simplest possible integration
+scheme, forward Euler.  That way they can get a feel of what it means
+to follow the tangent of a curve in literally the most straightforward
+way.
+
+*Bob*: A clumsy way to start, for sure, but at least they will then
+learn to appreciate the power of higher-order integration schemes.
+Okay, let's do that.
