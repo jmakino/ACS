@@ -1,0 +1,28 @@
+Date: Thu Jan 08 22:11:27 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > I incorporated your addition to chapter 2.  It works fine, so now we
+ > have all the tools I can think of (right now at least) to write
+ > several chapters for our book!
+ > 
+ > By the way, when I first implemented your :commandinputoutput: it
+ > didn't work, because I had a few blank spaces after the endtag; I had
+ > written "END  " instead of "END".  To allow such a usage, I changed
+ > your line in acsdoc:
+ > 
+ >     until (line= ifile.gets.chomp) == endtag
+ > 
+ > to:
+ > 
+ >     until (line= ifile.gets.chomp) =~ /#{endtag}/
+ > 
+ > That did the job with and without extra spaces.
+
+Very nice! Thanks! For whatever reasons, I have some strong tendency
+to avoid the use of the regular expressions...
+
+Jun
+
