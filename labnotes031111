@@ -1,4 +1,4 @@
-2003, November 11, Kyoto: Jun and Piet
+2003, November 11, Tuesday, Kyoto: Jun and Piet
 
 1. Kali Code
 
@@ -17,7 +17,24 @@ also help us to solve the first task: while specifying the interfaces
 in precise detail, we can simultaneously document the movitation and
 considerations that went into the decisions made.
 
-1.1.1. A Toy Model
+1.1.1 Two options
+
+We thought about two options for specifying the interface between two
+modules:
+
+1) to use an object oriented model.  This implies, for example, that
+   we have to specify accessor functions to obtain and modify data and
+   methods for a given objects.  There are three ways to do so: at
+   compile time, at link time, or at execution time.
+
+2) to completely specify the data passed across the interface on the
+   byte level.
+
+The first solution is more elegant, but the main drawback is that it
+will tie you to a particular language.  Therefore, we chose the second
+option.
+
+1.1.2. A Toy Model
 
 The next question was where to start.  Rather than jumping in to
 describe the whole Kali structure, we decided to start with a toy
@@ -136,9 +153,11 @@ comments can be found in the code source files.
 
 The fourth level of documentation is the book text.  The fifth level
 is given by the lab notes that in turn document the process of writing
-the book text, as a history of what happened.  The sixth level is
-given by a description of the ideas that drove the history of the
-writing, when they popped up and where they were eventually used.
+the book text, as a history of what happened.
+
+In addition, there is yet another, quite different, level: in the lab
+we want to add new ideas, when we think about them, even if they are
+not immediately connected with the problem at hand.
 
 2.4.2. Presentation
 
@@ -146,14 +165,16 @@ In order to make our lab notes publicly available, we will create a
 top HTML page with a one-line entry for each month, which you can
 click on in order to access a lower-level HTML page that lists all
 sessions that took place during that month.  Clicking on that session
-will then direct you to the actual lab notes for that session.  The
-reader will have a choice, to view separate sessions in separate HTML
-files, or to browse through a longer HTML file containing all sessions
-for a given month.
+will then direct you to the actual lab notes for that session.  These
+lab notes will be presented in a separate file for each month.  We
+will use the "name=" mechanism in html to jump to the correct place
+inside such a file to, to go to a particular session.
 
 Within each session, we present the history of what we did in that
 session and why.  In addition, we will create separate boxes for ideas
 that popped up during that session.
+
+\fig{labnote.eps, 15 cm}
 
 2.4.3. Generation of Lab Notes
 
@@ -161,22 +182,12 @@ In order for us to make it easy to write the lab notes for a new
 session and add them to the existing HTML files, we will automatize
 the process of lab note generation.  Rather than writing a separate
 HTML file, which is rather cumbersome, we will introduce a special
-file format, indicated by a file name ending with ".not" (for notes),
-with a set of rules for how to indicate breaks between paragraphs,
-sections and subsections, etc.
-
-For example, two blank lines will be translated into paragraph breaks,
-and a single line starting with a number will be interpreted as a
-header for a section or subsection.  If you really want to write a
-paragraph containing only one short sentence starting with a number,
-you will have to add a backslash: "\8" at the start of a one-line
-paragraph will be interpreted as "8", while "\\8" will be interpreted
-as "\8", for those rare one-line paragraphs that really want to start
-with a backslash followed by a character 8.
+file format, with a set of rules for how to automatically transform
+that format to HTML.
 
 Each time one of us submits a session, our new software will
-automatically add that session to the growing list of sessions,
-updating the various levels of HTML files as described above.
+automatically add that session to the growing list of sessions, in
+HTML form.  The sessions will be added in the order received.
 
 Before submitting your session, you may want to view it in HTML mode,
 to check whether things really come out as you intended.  For that
@@ -186,16 +197,64 @@ contrast, will add your session once and for all to the growing
 repository of sessions.  If you later want to make changes, you have
 to describes those in a later session, and point to the older session.
 
-Note that we will allow errata to point back to a previous session,
-which will then automatically add a pointer to the previous session,
-pointing to the erratum text.  However, that last pointer will not
-appear inside the text of that previous session, which can no longer
-be changed, but rather at the top or bottom of that session, as a form
-of metadata.
-
 Finally, we will allow the inclusion of figures and LaTeX equations.
 The images for the figures will be automatically copied to the proper
 place so that they can be accessed by the HTML files that will include
 them.  For the specific case of LaTeX equations that will be turned
-into figures, we will create a special file "notdefs.tex"
+into figures, we will create a special file with LaTeX definitions.
 
+3. Notes about Notes for this Session
+
+3.1. Why they were written later
+
+The notes for this session, on November 11, 2003, were actually
+written the next day, on November 12, 2003.  The reason was that,
+although we finished our first outline of the lab note system on
+11/11, we had not quite decided upon a format for writing an
+individual session.  The next day, we began the process of making the
+necessary decisions, and then we could at least start writing these
+notes in a format that will soon grow into our new standard.  For
+example, we decided to start with a description of date and place and
+persons, and then gave the subsequent information in hierarchical
+blocks of sections, subsections, subsubsections, etc.
+
+3.2. How they were written
+
+3.2.1. Our First Attempt
+
+This afternoon of the next day, when we started to write these notes,
+we first tried to make a coherent story, by adding here and there some
+extra insights that we got today to the descriptions of the topics
+addressed yesterday.  However, this quickly got out of hand, and we
+realized that we were adding whole chunks of new insights, while
+projecting that incorrectly back onto what we did yesterday.
+
+3.2.2. Corrections
+
+We then decided to be more honest, and transfer the new insights to
+the lab notes of today, i.e. the next day.  After that, we again went
+through the whole session, to restore each section and subsection, etc.,
+to what we actually discussed yesterday.
+
+3.3. What we Learned
+
+All this was a wonderful exercise in showing the use of documentation.
+By forcing ourselves to spell out what we did, how we did it, and why
+we did it, we discovered a large number of places where we had not
+been consistent enough, or had not gone far enough.  All kind of new
+ideas came up, which we then began to implement right away.  If we had
+been less careful about documentation, we would not have noticed all
+these potential improvements, and our system would have been less
+rich and much less robust.
+
+3.4. Self Referencing
+
+We also saw the power of self-referential systems.  We were bootstrapping
+ourselves, using our lab note mechanism to describe our invention of our
+lab note mechanism.  It was a bit like writing a C compiler in C, and
+finding out that there is only a tiny kernel that you have to write in
+assembly language.  In our case, it was more extreme: it was like
+inventing a language in the process of writing a compiler in that
+language, and thus seeing the limitations of each construction {\it both}
+and {\it simultaneously} on the level of what the construction expressed,
+and how it was actually implemented.
