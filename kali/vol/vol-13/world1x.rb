@@ -1,30 +1,10 @@
 require "nbody.rb"
 
-class Body
-
-  def kinetic_energy
-    0.5*@mass*@vel*@vel
-  end
-
-  def potential_energy(body_array)
-    p = 0
-    body_array.each do |b|
-      unless b == self
-        r = b.pos - @pos
-        p += -@mass*b.mass/sqrt(r*r)
-      end
-    end
-    p
-  end
-
-end
-
 class Worldpoint < Body
 
   attr_accessor :mass, :pos, :vel, :acc, :jerk, :snap, :crackle,
                 :time, :next_time, :nsteps,
-                :minstep, :maxstep,
-                :nearest_neighbor, :second_nearest_neighbor
+                :minstep, :maxstep
 
   def initialize
     @nsteps = 0
@@ -56,7 +36,7 @@ class Worldpoint < Body
     @crackle = @pos*0
     @pop = @pos*0
   end
-
+
   def forward_init(acc, timescale, dt_param, dt_max)
     @acc = acc
     dt = timescale * dt_param
@@ -71,9 +51,17 @@ class Worldpoint < Body
     @next_time = @time + dt
   end    
 
-  def hermite_init(acc, jerk, timescale, dt_param, dt_max)
+  def hermite_init_first_round(acc, jerk)
     @acc = acc
     @jerk = jerk
+  end    
+
+  def hermite_init_second_round(snap, crackle)
+    @snap = snap
+    @crackle = crackle
+  end    
+
+  def hermite_init_third_round(timescale, dt_param, dt_max)
     dt = timescale * dt_param
     dt = dt_max if dt > dt_max
     @next_time = @time + dt
@@ -91,7 +79,7 @@ class Worldpoint < Body
     @snap = snap
     @crackle = crackle
   end    
-
+
   def forward_correct(old_point, acc, timescale, dt_param, dt_max)
     @acc = acc
     dt = timescale * dt_param
@@ -130,7 +118,7 @@ class Worldpoint < Body
     admin(old_point.time)
     self
   end
-
+
   def ms4_correct(wa, acc, timescale, dt_param, dt_max)
     d = [[acc]]
     t = [@time]
@@ -167,20 +155,19 @@ class Worldpoint < Body
 
   def admin(old_time)
     dt = @time - old_time
-    @maxstep = dt if @maxstep == nil or @maxstep < dt
-    @minstep = dt if @minstep == nil or @minstep > dt
-    @nsteps = 0 if @nsteps == nil
+    @maxstep = dt if @maxstep < dt
+    @minstep = dt if @minstep > dt
     @nsteps = @nsteps + 1
   end
 
-  def extrapolate(t, method)
-    eval("#{method}_extrapolate(t)")
+  def extrapolate(t, integration_method)
+    eval("#{integration_method}_extrapolate(t)")
   end
 
-  def interpolate(other, t, method)
-    eval("#{method}_interpolate(other, t)")
+  def interpolate(other, t, integration_method)
+    eval("#{integration_method}_interpolate(other, t)")
   end
-
+
   def forward_extrapolate(t)
     if t > @next_time
       raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
@@ -217,15 +204,7 @@ class Worldpoint < Body
     if t > @next_time
       raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
     end
-    wp = nil
-#    eval("wp = #{self.class}.new")
-    if self.class == Binary
-      wp = self.deep_copy
-    elsif self.class == Worldpoint
-      wp = Worldpoint.new
-    else
-      raise
-    end
+    wp = Worldpoint.new
     wp.minstep = @minstep
     wp.maxstep = @maxstep
     wp.nsteps = @nsteps
@@ -234,9 +213,11 @@ class Worldpoint < Body
     dt = t - @time
     wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3
     wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2
+    wp.acc = @acc + @jerk*dt
+    wp.jerk = @jerk
     wp
   end
-
+
   def ms4_full_extrapolate(t)
     if t > @next_time
       raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
@@ -290,7 +271,7 @@ class Worldpoint < Body
     wp.vel = @vel + @acc*dt
     wp
   end
-
+
   def leapfrog_interpolate(other, t)
     wp = Worldpoint.new
     wp.minstep = @minstep
@@ -307,13 +288,7 @@ class Worldpoint < Body
   end
 
   def hermite_interpolate(other, t)
-    if self.class == Binary and other.class == Binary
-      wp = self.deep_copy
-    elsif self.class == Worldpoint and other.class == Worldpoint
-      wp = Worldpoint.new
-    else
-      raise
-    end
+    wp = Worldpoint.new
     wp.minstep = @minstep
     wp.maxstep = @maxstep
     wp.nsteps = @nsteps
@@ -347,99 +322,41 @@ class Worldpoint < Body
     wp
   end
 
-end
-
-class Binary < Worldpoint
-
-  def initialize(body1, body2, init_time = 0)
-    @init_time = init_time
-    @m1 = body1.mass
-    @m2 = body2.mass
-    @mass = @m1 + @m2
-    @reduced_mass = ( @m1 * @m2 ) / ( @mass )
-    @pos = (@m1*body1.pos + @m2*body2.pos)/@mass
-    @vel = (@m1*body1.vel + @m2*body2.vel)/@mass
-    @rel_pos = body2.pos - body1.pos
-    @rel_vel = body2.vel - body1.vel
+  def kinetic_energy
+    0.5*@mass*@vel*@vel
   end
 
-  def rel_kinetic_energy
-    0.5 * @reduced_mass * @rel_vel * @rel_vel
-  end
-
-  def rel_potential_energy
-    -( @m1 * @m2 / sqrt( @rel_pos * @rel_pos ) )
-  end
-
-  def rel_energy
-    rel_kinetic_energy + rel_potential_energy
-  end
-
-  def angular_momentum_squared
-    r_cross_v = @rel_pos.cross(@rel_vel)
-    @reduced_mass**2 * r_cross_v * r_cross_v
-  end
-
-  def semi_major_axis
-    -( @m1 * @m2 ) / ( 2 * rel_energy )
-  end
-
-  def eccentricity
-    e_sq = 1 - angular_momentum_squared /
-                 ( @reduced_mass * @m1 * @m2 * semi_major_axis )
-    e_sq = 0.0 if e_sq < 0.0  # to avoid round-off to slightly negative numbers
-    sqrt(e_sq)
-  end
-
-  def period
-    2*PI/sqrt( @mass / semi_major_axis**3 )
-  end
-
-  def most_recent_return_time(time)
-    p = period
-    phase = (time - @init_time)/p
-    phase = phase - phase.floor
-#STDERR.print "most_recent_return_time:  time = #{time} ; phase = #{phase} ; p = #{p} ; time - phase*p = #{time - phase*p}\n"
-    time - phase*p
-  end
-
-  def dissolve
-    b1 = Body.new
-    b2 = Body.new
-    b1.mass = @m1
-    b2.mass = @m2
-    b1.pos = @pos - (@m2/@mass)*@rel_pos
-    b2.pos = @pos + (@m1/@mass)*@rel_pos
-    b1.vel = @vel - (@m2/@mass)*@rel_vel
-    b2.vel = @vel + (@m1/@mass)*@rel_vel
-    [b1, b2]
-  end
-
-  def deep_copy
-    Marshal.load(Marshal.dump(self))
+  def potential_energy(body_array)
+    p = 0
+    body_array.each do |b|
+      unless b == self
+        r = b.pos - @pos
+        p += -@mass*b.mass/sqrt(r*r)
+      end
+    end
+    p
   end
 
 end
 
 class Worldline
 
-  attr_accessor  :worldpoint, :method, :dt_param
+  attr_accessor  :worldpoint, :integration_method, :time_scale_method
 
   def initialize
     @worldpoint = []
   end
 
   def setup(time)
-    eval("#{@method}_setup(time)")
-    self
+    eval("#{@integration_method}_setup(time)")
   end
 
   def startup_done?(era, dt_max)
-    eval("#{@method}_startup_done?(era, dt_max)")
+    eval("#{@integration_method}_startup_done?(era, dt_max)")
   end
 
   def extend(era, dt_max)
-    new_point = eval("take_#{@method}_step(era, dt_max)")
+    new_point = eval("take_#{@integration_method}_step(era, dt_max)")
     @worldpoint.push(new_point)
   end
 
@@ -478,13 +395,22 @@ class Worldline
     wp.leapfrog_init(acc, timescale, @dt_param, dt_max)
     true
   end
-
+
   def hermite_startup_done?(era, dt_max)
     wp = @worldpoint[0]
-    acc, jerk = era.acc_and_jerk(self, wp)
-    timescale = era.timescale(self, wp)
-    wp.hermite_init(acc, jerk, timescale, @dt_param, dt_max)
-    true
+    if not defined? @startup_cycle
+      @startup_cycle = 1
+      acc, jerk = era.acc_and_jerk(self, wp)
+      wp.hermite_init_first_round(acc, jerk)
+      return false
+    elsif @startup_cycle == 1
+      @startup_cycle += 1
+      snap, crackle = era.snap_and_crackle(self, wp)
+      wp.hermite_init_second_round(snap, crackle)
+      timescale = era.timescale(self, wp)
+      wp.hermite_init_third_round(timescale, @dt_param, dt_max)
+      true
+    end
   end
 
   def ms4_startup_done?(era, dt_max)
@@ -529,11 +455,17 @@ class Worldline
   def take_hermite_step(era, dt_max)
     new_point = hermite_predict
     acc, jerk = era.acc_and_jerk(self, new_point)
+    old_point = @worldpoint.last
+    new_point.acc = acc
+    new_point.jerk = jerk
+    dt = new_point.time - old_point.time
+    new_point.snap = (new_point.jerk - old_point.jerk)/dt       # good enough
+    new_point.crackle = (new_point.snap - old_point.snap)/dt    # good enough
     timescale = era.timescale(self, new_point)
     new_point.hermite_correct(@worldpoint.last, acc, jerk,
                               timescale, @dt_param, dt_max)
   end
-
+
   def take_ms4_step(era, dt_max)
     new_point = ms4_predict
     acc = era.acc(self, new_point)
@@ -571,76 +503,25 @@ class Worldline
 
   def valid_interpolation?(time)
     unless @worldpoint[0].time <= time and time <= @worldpoint.last.time
-      raise "\n#{time} not in [#{@worldpoint[0].time}, #{@worldpoint.last.time}]\n"
+      raise "#{time} not in [#{@worldpoint[0].time}, #{@worldpoint.last.time}]"
     end
   end
 
   def take_snapshot_of_worldline(time)
     if time >= @worldpoint.last.time
       valid_extrapolation?(time)
-      @worldpoint.last.extrapolate(time, @method)
+      @worldpoint.last.extrapolate(time, @integration_method)
     else
       valid_interpolation?(time)
       @worldpoint.each_index do |i|
         if @worldpoint[i].time > time
-          return @worldpoint[i-1].interpolate(@worldpoint[i], time, @method)
+          return @worldpoint[i-1].interpolate(@worldpoint[i], time,
+                                              @integration_method)
         end
       end
     end
   end
-
-  def next_worldpoint_after(time)
-    @worldpoint.each do |wp|
-      if wp.time > time
-        return wp
-      end
-    end
-  end
 
-  def next_worldpoint_at_or_after(time)
-    @worldpoint.each do |wp|
-      if wp.time >= time
-        return wp
-      end
-    end
-  end
-
-  def last_worldpoint_before(time)
-    @worldpoint.reverse.each do |wp|
-      if wp.time < time
-        return wp
-      end
-    end
-  end
-
-  def last_worldpoint_at_or_before(time)
-    @worldpoint.reverse.each do |wp|
-      if wp.time <= time
-        return wp
-      end
-    end
-  end
-
-  def interpolate_between(wp1, wp2, time)
-    wp1.interpolate(wp2, time, @method)
-  end
-
-  def cap_at(time)
-    valid_interpolation?(time)
-    @worldpoint.each_index do |i|
-      wp = @worldpoint[i]
-      if wp.time == time
-        worldpoint.slice!(i+1...worldpoint.size)
-        return
-      elsif wp.time > time
-        worldpoint.slice!(i+1...worldpoint.size)
-        wp = interpolate_between(worldpoint[i-1], worldpoint[i], time)
-        worldpoint[i] = wp
-        return
-      end
-    end
-  end
-
   def next_worldline(time)
     valid_interpolation?(time)
     i = @worldpoint.size
@@ -657,20 +538,14 @@ class Worldline
     end
   end
 
-  def setup_from_single_worldpoint(b, method, dt_param, time)
-    if b.class == Binary
-      @worldpoint[0] = b
-    elsif b.class == Body
-      @worldpoint[0] = b.to_worldpoint
-    elsif b.class == Worldpoint
-      @worldpoint[0] = b
-    else
-      raise "class #{b.class} not supported"
-    end
-    @method = method
+  def setup_from_single_worldpoint(b, integration_method, time_scale_method,
+                                   dt_param, time)
+    @worldpoint[0] = b.to_worldpoint
+    @integration_method = integration_method
+    @time_scale_method = time_scale_method
     @dt_param = dt_param
-    if eval("defined? #{@method}_number_of_steps")
-      eval("@number_of_steps = #{@method}_number_of_steps")
+    if eval("defined? #{@integration_method}_number_of_steps")
+      eval("@number_of_steps = #{@integration_method}_number_of_steps")
     else
       @number_of_steps = 1
     end
@@ -701,8 +576,11 @@ class Worldera
   end
 
   def timescale(wl, wp)
-    take_snapshot_except(wl, wp.time).collision_time_scale(wp.mass,
-                                                           wp.pos, wp.vel)
+    take_snapshot_except(wl,wp.time).collision_time_scale(wl.time_scale_method,
+                                                          wp.mass, wp.pos,
+                                                          wp.vel, wp.acc,
+                                                          wp.jerk, wp.snap,
+                                                          wp.crackle)
   end
 
   def startup_and_report_energy(dt_max)
@@ -728,7 +606,7 @@ class Worldera
     end
     wl
   end
-
+
   def shortest_interpolated_worldline
     t = VERY_LARGE_NUMBER
     wl = nil
@@ -741,22 +619,20 @@ class Worldera
     wl
   end
 
-Safety_hysteris_factor = 1.5
-
-  def evolve(dt_era, dt_max, isolation_factor)
-    hide_binaries(@start_time, Safety_hysteris_factor*isolation_factor, dt_max)
+  def evolve(dt_era, dt_max, shared_flag)
     nsteps = 0
     while shortest_interpolated_worldline.worldpoint.last.time < @end_time
-      wl = shortest_extrapolated_worldline
-      if wl.worldpoint.last.class == Binary
-        ss = take_snapshot_except(wl, wl.worldpoint.last.time)
-        unless ss.isolated?(wl.worldpoint.last, isolation_factor)
-          show_binary(wl, dt_max)
-          wl = shortest_extrapolated_worldline
+      unless shared_flag
+        shortest_extrapolated_worldline.extend(self, dt_max)
+        nsteps += 1
+      else
+        t = shortest_extrapolated_worldline.worldpoint.last.next_time
+        @worldline.each do |w|
+          w.worldpoint.last.next_time = t
+          w.extend(self, dt_era)
+          nsteps += 1
         end
       end
-      wl.extend(self, dt_max)
-      nsteps += 1
     end
     [next_era(dt_era), nsteps]
   end
@@ -774,34 +650,6 @@ Safety_hysteris_factor = 1.5
   def take_snapshot(time)
     take_snapshot_except(nil, time)
   end
-
-  def take_full_snapshot(time)       # WRONG ! ! ! should be synchronized !!!!!
-# hack to get binary stuff to work, for now
-# the problem arises when a binary shows its members in the middle of an
-# era, and when output is needed, later, at the beginning of that era; in
-# that case the old binary information should still have been there . . .
-okay_flag = true
-@worldline.each{|wl| okay_flag = false if wl.worldpoint[0].time > time}
-return nil unless okay_flag 
-# end of hack
-    ss = take_snapshot_except(nil, time)
-    ss_deep_copy = ss.deep_copy
-    list = []
-    ba = ss_deep_copy.body
-    ba.each_index do |i|
-      if ba[i].class == Binary
-        list.push(ba[i].dissolve)
-        ba[i] = nil
-      end
-    end
-    ba.compact!
-    list.each do |pair|
-      ba.push(pair[0])
-      ba.push(pair[1])
-    end
-#ss_deep_copy.acs_write($stderr)
-    ss_deep_copy
-  end
 
   def take_snapshot_except(wl, time)
     ws = Worldsnapshot.new
@@ -812,83 +660,6 @@ return nil unless okay_flag
     end
     ws
   end
-
-  def show_binary(w, dt_max)
-    wp = w.worldpoint.last
-    t = wp.most_recent_return_time(wp.time)
-    return if t <= w.worldpoint[0].time
-    return if t <= @start_time
-STDERR.printf("**entering show_binary at time t = %.3g ; ", t)
-STDERR.printf("%d -> %d particles\n", @worldline.size, @worldline.size + 1)
-    w.cap_at(t)
-    b1, b2 = w.worldpoint.last.dissolve
-    w1 = Worldline.new
-    w1.setup_from_single_worldpoint(b1.to_worldpoint, w.method, w.dt_param, t)
-    w2 = Worldline.new
-    w2.setup_from_single_worldpoint(b2.to_worldpoint, w.method, w.dt_param, t)
-    loop do
-      break if w1.startup_done?(self, dt_max)
-    end
-    loop do
-      break if w2.startup_done?(self, dt_max)
-    end
-    @worldline.each_index do |i|
-      if @worldline[i] == w
-        @worldline[i] = nil
-      end
-    end
-    @worldline.compact!
-    @worldline.push(w1)
-    @worldline.push(w2)
-  end
-
-  def hide_binaries(time, factor, dt_max)
-    ss = take_snapshot(time)
-    ar = ss.find_isolated_binaries(factor)
-    list = []
-    ar.each do |a|
-      list.push([ @worldline[ a[0] ], @worldline[ a[1] ] ])
-    end
-    list.each do |pair|
-      merge_worldlines(pair[0], pair[1], dt_max)
-    end  
-  end
-
-  def merge_worldlines(w1, w2, dt_max)
-    if w1.worldpoint.last.class == Binary or w2.worldpoint.last.class == Binary
-      return   # no hierarchical merging yet
-    end
-    t1 = w1.next_worldpoint_at_or_after(@start_time).time
-    t2 = w2.next_worldpoint_at_or_after(@start_time).time
-    t = min(t1, t2)
-STDERR.printf("*entering merge_worldlines at time t = %.3g to merge ", t)
-    w1.cap_at(t)
-    w2.cap_at(t)
-    b = Binary.new(w1.worldpoint.last, w2.worldpoint.last, t)
-    method = w1.method
-    if w2.method != method
-      raise "w1.method = #{1.method} != w2.method = #{w2.method}"
-    end
-    dt_param = w1.dt_param
-    if w2.dt_param != dt_param
-      raise "w1.dt_param = #{1.dt_param} != w2.dt_param = #{w2.dt_param}"
-    end
-    @worldline.each_index do |i|
-      if @worldline[i] == w1 or @worldline[i] == w2
-STDERR.print "|#{i}"
-        @worldline[i] = nil
-      end
-    end
-   @worldline.compact!
-    w = Worldline.new
-    w.setup_from_single_worldpoint(b, method, dt_param, t)
-    loop do
-      break if w.startup_done?(self, dt_max)
-    end    
-    @worldline.push(w)
-STDERR.printf("| ; %d -> %d particles", @worldline.size + 1, @worldline.size)
-STDERR.print "\n"
-  end
 
   def write_diagnostics(t, nsteps, initial_energy, init_flag = false)
     STDERR.print "at time t = #{sprintf("%g", t)} "
@@ -898,17 +669,17 @@ STDERR.print "\n"
     else
       STDERR.print "to time #{sprintf("%g", @end_time)}):\n"
     end
-#    take_full_snapshot(t).write_diagnostics(initial_energy)
-ss = take_full_snapshot(t)
-ss.write_diagnostics(initial_energy) if ss != nil
+    take_snapshot(t).write_diagnostics(initial_energy)
   end
 
-  def setup_from_snapshot(ss, method, dt_param, dt_era)
+  def setup_from_snapshot(ss, integration_method, time_scale_method, dt_param,
+                          dt_era)
     @start_time = ss.time
     @end_time = @start_time + dt_era
     ss.body.each do |b|
       wl = Worldline.new
-      wl.setup_from_single_worldpoint(b, method, dt_param, ss.time)
+      wl.setup_from_single_worldpoint(b, integration_method,
+                                      time_scale_method, dt_param, ss.time)
       @worldline.push(wl)
     end
   end
@@ -919,7 +690,7 @@ class World
 
   def evolve(c)
     while @era.start_time < @t_end
-      @new_era, dn = @era.evolve(c.dt_era, @dt_max, c.isolation_factor)
+      @new_era, dn = @era.evolve(c.dt_era, @dt_max, c.shared_flag)
       @nsteps += dn
       @time = @era.end_time
       while @t_dia <= @era.end_time and @t_dia <= @t_end
@@ -939,8 +710,8 @@ class World
     if c.world_output_flag
       acs_write($stdout, false, c.precision, c.add_indent)
     else
-      @era.take_full_snapshot(@t_out).acs_write($stdout, true,
-                                                c.precision, c.add_indent)
+      @era.take_snapshot(@t_out).acs_write($stdout, true,
+                                           c.precision, c.add_indent)
     end
   end
 
@@ -956,7 +727,8 @@ class World
 
   def setup_from_snapshot(ss, c)
     @era = Worldera.new
-    @era.setup_from_snapshot(ss, c.integration_method, c.dt_param, c.dt_era)
+    @era.setup_from_snapshot(ss, c.integration_method,
+                             c.time_scale_method, c.dt_param, c.dt_era)
     @nsteps = 0
     @dt_max = c.dt_era * c.dt_max_param
     @initial_energy = @era.startup_and_report_energy(@dt_max)
@@ -969,7 +741,7 @@ class World
     @t_dia += c.dt_dia
     @t_end += c.dt_end
   end
-
+
   def init_output(c)
     @era.write_diagnostics(@time, @nsteps, @initial_energy, true)
     if c.init_out
@@ -1052,8 +824,45 @@ class Worldsnapshot < Nbody
     end
     [snap, crackle]
   end    
-
-  def collision_time_scale(mass, pos, vel)
+
+  def collision_time_scale(time_scale_method, mass, pos, vel, acc, jerk, snap,
+                           crackle)
+    eval("#{time_scale_method}(mass, pos, vel, acc, jerk, snap, crackle)")
+  end
+
+  def encounter(mass, pos, vel, acc, jerk, snap, crackle) # too much? CLEANUP!!
+    time_scale_sq = VERY_LARGE_NUMBER              # square of time scale value
+    @body.each do |b|
+      r = b.pos - pos
+      v = b.vel - vel
+      r2 = r*r
+      v2 = v*v + 1.0/VERY_LARGE_NUMBER          # always non-zero, for division
+      estimate_sq = r2 / v2              # [distance]^2/[velocity]^2 = [time]^2
+      if time_scale_sq > estimate_sq
+        time_scale_sq = estimate_sq
+      end
+    end
+    sqrt(time_scale_sq)                  # time scale value
+  end
+
+  def free_fall(mass, pos, vel, acc, jerk, snap, crackle) # too much? CLEANUP!!
+    time_scale_sq = VERY_LARGE_NUMBER              # square of time scale value
+    @body.each do |b|
+      r = b.pos - pos
+      v = b.vel - vel
+      r2 = r*r
+      v2 = v*v + 1.0/VERY_LARGE_NUMBER          # always non-zero, for division
+      a = (mass + b.mass)/r2
+      estimate_sq = sqrt(r2)/a           # [distance]/[acceleration] = [time]^2
+      if time_scale_sq > estimate_sq
+        time_scale_sq = estimate_sq
+      end
+    end
+    sqrt(time_scale_sq)                  # time scale value
+  end
+
+  def min_encounter_and_free_fall(mass, pos, vel, acc, jerk, snap, crackle)
+                                           # acc, etc. not needed; CLEANUP!!
     time_scale_sq = VERY_LARGE_NUMBER              # square of time scale value
     @body.each do |b|
       r = b.pos - pos
@@ -1073,84 +882,36 @@ class Worldsnapshot < Nbody
     sqrt(time_scale_sq)                  # time scale value
   end
 
-  def find_second_nearest_neighbors
-    @body.each_index do |i|
-      d2 = VERY_LARGE_NUMBER
-      @body.each_index do |j|
-        if j != i and j != @body[i].nearest_neighbor
-          r = @body[j].pos - @body[i].pos
-          r2 = r*r
-          if d2 > r2
-            d2 = r2
-            @body[i].second_nearest_neighbor = j
-          end
-        end
-      end
-    end
+  def aarseth_eq_2_12(mass, pos, vel, acc, jerk, snap, crackle)
+    a = sqrt(acc*acc)
+    s = sqrt(snap*snap)
+    sqrt(a/s)
   end
 
-  def find_nearest_neighbors
-    @body.each_index do |i|
-      d2 = VERY_LARGE_NUMBER
-      @body.each_index do |j|
-        if j != i
-          r = @body[j].pos - @body[i].pos
-          r2 = r*r
-          if d2 > r2
-            d2 = r2
-            @body[i].nearest_neighbor = j
-          end
-        end
-      end
-    end
-  end
-
-  def nearest_neighbor_distance(wp)
-    dsq = VERY_LARGE_NUMBER
-    @body.each do |b|
-      r = b.pos - wp.pos
-      r2 = r*r
-      dsq = r2 if dsq > r2
-    end
-    sqrt(dsq)
+  def aarseth_eq_2_13(mass, pos, vel, acc, jerk, snap, crackle)
+    a = sqrt(acc*acc)
+    j = sqrt(jerk*jerk)
+    s = sqrt(snap*snap)
+    c = sqrt(crackle*crackle)
+    sqrt( (a*s + j*j) / (j*c + s*s) )
   end
 
-  def isolated?(binary, factor)
-    if nearest_neighbor_distance(binary) > factor * binary.semi_major_axis
-      true
+  def min_aarseth_encounter(mass, pos, vel, acc, jerk, snap, crackle)
+    time_scale_a = 2*aarseth_eq_2_13(mass, pos, vel, acc, jerk, snap, crackle)
+    time_scale_e = encounter(mass, pos, vel, acc, jerk, snap, crackle)
+    if time_scale_a < time_scale_e
+      return time_scale_a
     else
-      false
+      return time_scale_e
     end
   end
 
-  def find_isolated_binaries(factor)
-    find_nearest_neighbors
-    find_second_nearest_neighbors
-    list = []
-    return [[0, 1]] if @body.size == 2
-    @body.each_index do |i|
-      @body.each_index do |j|
-        if j > i
-          if @body[i].nearest_neighbor == j and @body[j].nearest_neighbor == i
-            b = Binary.new(@body[i], @body[j])
-            if b.rel_energy < 0
-              r = @body[i].pos - @body[@body[i].second_nearest_neighbor].pos
-              ri2 = r*r
-              r = @body[j].pos - @body[@body[j].second_nearest_neighbor].pos
-              rj2 = r*r
-              r2 = ri2
-              r2 = rj2 if rj2 < ri2
-              if sqrt(r2) > factor * b.semi_major_axis
-                list.push([i, j])
-              end
-            end
-          end
-        end
-      end
-    end
-    list
+  def geom_aarseth_encounter(mass, pos, vel, acc, jerk, snap, crackle)
+    time_scale_a = 2*aarseth_eq_2_13(mass, pos, vel, acc, jerk, snap, crackle)
+    time_scale_e = encounter(mass, pos, vel, acc, jerk, snap, crackle)
+    sqrt(time_scale_a * time_scale_e)
   end
-
+
   def kinetic_energy
     e = 0
     @body.each{|b| e += b.kinetic_energy}
@@ -1181,10 +942,6 @@ class Worldsnapshot < Nbody
     END
   end
 
-  def deep_copy
-    Marshal.load(Marshal.dump(self))
-  end
-
 end
 
 class Body
@@ -1195,7 +952,7 @@ class Body
   end
 
 end
-
+
 options_text= <<-END
 
   Description: Individual Time Step, Individual Integration Scheme Code
@@ -1203,6 +960,8 @@ options_text= <<-END
     This program evolves an N-body code with a fourth-order Hermite Scheme,
     using individual time steps.  Note that the program can be forced to let
     all particles share the same (variable) time step with the option -a.
+    In addition to individual integration schemes, each particle also has
+    an individual time scale estimate method, to determine its time step
 
     This is a test version, for the ACS data format
 
@@ -1224,8 +983,24 @@ options_text= <<-END
     "hermite".
 
 
+  Short name: 		-s
+  Long name:		--step_size_time_scale
+  Value type:		string
+  Default value:	min_encounter_and_free_fall
+  Variable name:	time_scale_method
+  Description:		Choice of Step Size Time Scale
+  Long description:
+    This option chooses the method used to determine the time scale, with which
+    the step size is determined.  The user is expected to provide a string with
+    the name of the method, for example "min_encounter_and_free_fall" for the
+    minimum of the encounter time and the free-fall time, or "encounter" for
+    the encounter time only (the shortest time scale on which a particles will
+    encounter one of neighbors, estimated by dividing relative distance by
+    relative velocity between particle and neighbor).
+
+
   Short name: 		-c
-  Long name:		--step_size_control
+  Long name:		--step_size_coefficient
   Value type:		float
   Default value:	0.01
   Variable name:	dt_param
@@ -1252,7 +1027,6 @@ options_text= <<-END
     world line has an earliest world point before the beginning of the era,
     and a latest world point past the end of the era.  This guarantees
     accurate interpolation at each time within an era.
-
 
 
   Short name: 		-m
@@ -1267,20 +1041,6 @@ options_text= <<-END
     dt <= dt_max = dt_era * dt_max_param .
 
 
-  Short name: 		-f
-  Long name:		--isolation_factor
-  Value type:		float
-  Default value:	100
-  Variable name:	isolation_factor
-  Description:		Hiding criterion for binaries
-  Long description:
-    This option sets the isolation factor, required for a binary to hide
-    its members from its neighbors.  When the nearest neighbor of a binary
-    is separated from each of the binary members by more than this factor,
-    in units of the binary semimajor axis, the binary is considered to be
-    sufficiently isolated to replace it dynamically by a single mass point.
-
-
   Short name: 		-d
   Long name:		--diagnostics_interval
   Value type:		float
@@ -1290,7 +1050,6 @@ options_text= <<-END
   Long description:
     This option sets the time interval between diagnostics output,
     which will appear on the standard error channel.
-
 
 
   Short name: 		-o
@@ -1346,7 +1105,6 @@ options_text= <<-END
   Long description:
     If this flag is set to true, the initial snapshot will be output
     on the standard output channel, before integration is started.
-
 
 
   Short name:		-r
@@ -1360,6 +1118,16 @@ options_text= <<-END
     such an world again will allow an fully accurate restart of the
     integration,  since no information is lost in the process of writing
     out and reading in in terms of world format.
+
+
+  Short name:		-a
+  Long name:  		--shared_timesteps
+  Value type:  		bool
+  Variable name:	shared_flag
+  Description:		All particles share the same time step
+  Long description:
+    If this flag is set to true, all particles will march in lock step,
+    all sharing the same time step.
 
 
   Short name:           -p
