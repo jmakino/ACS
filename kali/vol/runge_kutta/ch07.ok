@@ -1,61 +1,98 @@
-= CHAPTER: Introduction
+= Recycling Force Evaluations
 
-For the simplest form of differential equation, we will use the
-notation:
+== One Force Evaluation per Step
 
-:equation:
-{dx \over dt} = f(x)
+%\subsubsubsection{General Form}
+{\bf 4.2.1.1. General Form}
 
-where we will call the variable <tex>$x$</tex> the position and the variable <tex>$t$</tex>
-the time.  The solution of this equation is given by <tex>$x(t)$</tex>.  When we
-solve this equation numerically, we use a finite time step <tex>$\tau$</tex>.
-For now, we will analyze the properties of the first time step.  We
-choose <tex>$t=0$</tex> at the beginning of the first time step, and we denote
-the positions at the beginning and end of the first time step by <tex>$x_0$</tex>
-and <tex>$x_1$</tex>, respectively:
+:eqnarray:
+k_1 &=& f(x_0)    \\
+k_2 &=& f(x_0 + v_0\tau + \eta k_1 \tau^2)
 
-:equation:
-x_0 \equiv x(0) \ \ \ \ \ ; \ \ \ \ x_1 \equiv x(\tau)
+:eqnarray:
+x_1 &=& x_0 + v_0 \tau + \left(\alpha_1 k_1 + \alpha_2 k_2\right) \tau^2  \\
+v_1 &=& v_0 + \left(\beta_1 k_1 + \beta_2 k_2\right) \tau
 
-We also introduce the notation:
+3rd order not possible: in Eq. (\ref{standard1}) we see that starting
+the first force calculation at time zero implies that the coefficient
+for <tex>$v_0$</tex> in <tex>$k_2$</tex> should be <tex>$2/3$</tex>, and not <tex>$1$</tex> as we insist upon above.
 
-:equation:
-\dot x \equiv {dx \over dt} \equiv {d \over dt}x(t)
+This means that we only have to expand up to powers in <tex>$\tau^2$</tex>.
 
-:equation:
-f' \equiv {df \over dx} \equiv {d \over dx}f(x)
-This leads to:
+with
 
 :equation:
-\dot f \equiv {d \over dt}f(x(t)) = {dx \over dt} f' = \dot x f'
+k_2 = f_0 + v_0f_0'\tau + O(\tau^2)
 
-For the higher derivatives of the position, we introduce the
-historical notation in terms of velocity, acceleration, jerk,
-snap, crackle and pop, respectively:
+we get
+
+:eqnarray:
+x_1 &=& x_0 + v_0 \tau + \left(\alpha_1 + \alpha_2 \right) f_0\tau^2 
++ O(\tau^3)                                    \nonumber \\
+v_1 &=& v_0 + \left(\beta_1 + \beta_2\right)f_0 \tau
++\beta_2v_0f_0'\tau^2+ O(\tau^3)
+
+This has to be equal to
+
+:eqnarray:
+x_1 &=& x_0 + v_0 \tau + \half f_0\tau^2 + O(\tau^3)           \nonumber \\
+v_1 &=& v_0 + f_0 \tau +\half v_0f_0'\tau^2+ O(\tau^3)
+
+This implies:
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_1 + \alpha_2 = \half
+}$
+}
+
+and
+
+:equation:
+\fbox{
+$\displaystyle{
+\beta_1 + \beta_2 = 1
+}$
+}
+
+and
+
+:equation:
+\fbox{
+$\displaystyle{
+\beta_2 = \half
+}$
+}
+
+From the last two, we get <tex>$\beta_1 = \half$</tex>.  Two parameter freedom,
+with <tex>$\alpha \equiv \alpha_2$</tex>:
 
 :equation:
 \left\{ \begin{array}{lcl}
-v \equiv \dot x = {d \over dt}x(t)     &;&
-a \equiv \dot v = {d^2 \over dt^2}x(t)   \quad ; \quad
-j \equiv \dot a = {d^3 \over dt^3}x(t)   \\
+x_1 &=& x_0 + v_0 \tau +
+\half\left((1-\alpha)k_1 + \alpha k_2\right) \tau^2    \\
+v_1 &=& v_0 + \half\left(k_1 + k_2\right) \tau  \\
 \phantom{1}&\phantom{1}&\phantom{1} \\
-s \equiv \dot j = {d^4 \over dt^4}x(t)   &;&
-c \equiv \dot s = {d^5 \over dt^5}x(t)   \quad ; \quad
-p \equiv \dot c = {d^6 \over dt^6}x(t)
+k_1 &=& f(x_0)    \\
+k_2 &=& f(x_0 + v_0\tau + \eta k_1 \tau^2)
 \end{array} \right.
 
-These expressions are especially useful for the following type of
-second-order differential equation encountered in classical mechanics:
+%\subsubsubsection{Second Order Recycle Conditions}
 
-:equation:
-\ddot x \equiv {d^2x \over dt^2} = f(x)
+{\bf 4.2.1.2. Second Order Recycle Conditions}
 
-which can be written as a system of two first-order differential equations:
+Now insist that <tex>$\tilde x_1 - x_1 = O(\tau^2)$</tex>:
 
-:equation:
-\left\{ \begin{array}{lcl}
-\dot x &=& v \\
-\dot v &=& f(x)
-\end{array} \right.
+:eqnarray:
+\tilde x_1 &=& x_0 + v_0 \tau + \eta k_1 \tau^2        \nonumber\\
+x_1 &=& x_0 + v_0 \tau +
+\half\left((1-\alpha)k_1 + \alpha k_2\right) \tau^2
 
-xxx
+Already okay.  So we are left with a two-parameter freedom.
+
+For <tex>$\alpha = 0$</tex> and <tex>$\eta = \half$</tex>, simplest choice: leapfrog.
+
+[check for which values time symmetry; 
+presumably only for <tex>$\alpha = 0$</tex> and <tex>$\eta = \half$</tex>]
+

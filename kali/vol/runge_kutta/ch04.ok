@@ -428,6 +428,6 @@ second-order Runge-Kutta method:
 3. <i>With</i> recycling, we have Eq.(\ref{sum1}), with {\it two} new force
    calculations per time step, and {\it three} free parameters.
 
-= Multistep Algorithms
+== Multistep Algorithms
 
 xxx
