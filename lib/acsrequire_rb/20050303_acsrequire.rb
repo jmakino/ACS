@@ -33,7 +33,7 @@ class AcsRequire
 	finalname =subdir+"/"+fname
       end
     end
-    print "Acsrequire for arg #{name}\n file=#{finalname} \n " if verbose
+    print "Acsrequire for arg #{name}\n file=#{finalname} \n" if verbose
     finalname
   end
     

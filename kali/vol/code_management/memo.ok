@@ -169,6 +169,89 @@ System. We will need to address these in some future, but not today.
 
 === How it works?
 
-In any (vol) directory, you can export (ruby) 
-  
-  
+==== Exporting library files
+
+In any (vol) directory, you can export (ruby) libraries by using
+command
+
+    check_and_install.rb
+
+The standard way to use it is just to add an entry to the makefile
+like:
+
+      LIBSRCS = acsrequire.rb acs.rb
+
+
+Then Makefile.inc in etc directory will run
+
+         ruby -S check_and_install.rb ACSLIBS $(LIBSRCS)
+
+The first argument is the name of the environment variable (not the
+value itself) for the name of the directory to store library files,
+and everything after that are regarded as the file names to install.
+
+If we have
+
+   ACSLIBS = /home/foo/acs/lib
+   LIBSRCS = aaa.rb bbb.rb
+
+check_and_install.rb does the following things for each of files in
+LIBSRC. Here, we call aaa.rb
+
+1. First, it looks if there is a file 
+
+     /home/foo/acs/lib/.sourcenames/aaa.rb
+
+   If it is there, then it contains the full path name of the file
+   aaa.rb which was copied into /home/foo/acs/lib/aaa.rb in previous
+   time check_and_install.rb was used to install aaa.rb. If that name
+   is different from the full pathname of aaa.rb, this command aborts.
+   If the names are the same, or if the file under .sourcenames does
+   not exist, goes to step 2 (it creates the file under .sourcenames
+   if it does not exist)
+
+2. It compares the original aaa.rb to /home/foo/acs/lib/aaa.rb. If
+    they are the same, there is no more thing to do. If they are
+    different, it copies the original aaa.rb to
+    /home/foo/acs/lib/aaa.rb, and then to
+    /home/foo/acs/lib/aaa_rb/YYYYMMDD_aaa.rb, where YYYY, MM, DD are
+    the current year, month and date.
+   
+==== Loading library files
+
+In order to use this versioning mechanism, you need to load the
+library file "acsrequire.rb", using usual load or require. If you load
+"asc.rb" in standard way,  "acsrequire.rb" is also loaded.
+
+Once acsrequire.rb is loaded, a top-level method acsreq is defined,
+which you can use as
+
+    acsreq "aaa"
+
+You should omit  ".rb" for acsreq.
+
+By default, acsreq behaves similarly with standard "require", loading
+the newest version. To specify the version date, you need to write
+
+   $acsdate = "20050401"
+   acsreq "aaa"
+
+Then, acsreq tries to find the most recent aaa.rb, which is older
+than 20050401.
+
+If the current directry has aaa.rb, and if current directory is in the
+environmental variable RUBYLIB, that one is used.
+
+In order to find "acs.rb" in the first place, you need to define
+RUBYLIB appropriately. This is currently done by sourcing the file
+   
+  acsstart.cshrc
+
+In the directory $ACSROOT/bin. So you need to source this file in your
+.cshrc or whatever file to use ACS as
+
+   set ACSROOT=/home/foo/acs
+   source $ACSROOT/bin/acsstart.cshrc
+
+Hope this is understandable...
+   
