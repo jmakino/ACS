@@ -1,43 +1,88 @@
 = Cold Collapse with Softening
 
-== 
+== Check
+
+*Alice*: It's probably a good idea to try our standard check with the
+figure-8 three-body system, just to make sure that with zero softening
+we get the same results as before.
+
+*Bob*: Yes, I agree.  Here we go:
 
  :commandoutput: ruby rknbody9a_driver.rb < figure8.in
 
+== Large Softening
+
+*Alice*: Good.  Now let's try the same cold collapse as before,
+but with a softening length of, say, 0.1.  At the beginning of their
+free fall, the particles will almost feel the same forces as they did
+before.  Let us compare it with the run that had a time step of 0.001.
+For that case we had a horrible lack of energy conservation.  Your
+softened code should do a lot better.
+
+*Bob*: Okay, let us see:
+
  :commandoutput: ruby rknbody9b_driver.rb < cube1.in
+
+*Alice*: Great!  Very well behaved.  And indeed most particles have
+just passed through the center, as is clear from their position
+components, and are continuing to move on, as their velocity
+components indicate.
+
+== Small Softening
+
+*Bob*: Let's see how far we can push it.  How about a softening length
+of 0.01?  And let me suppress the snapshot output for now:
 
  :commandoutput: ruby rknbody9c_driver.rb < cube1.in
 
+*Alice*: Not too suprising.  With velocities of order unity, and a
+softening length that is only ten times larger than the time step,
+a typical particle will step through the core of the potential of
+another particle in only a few steps.
+
+*Bob*: And when doing so, the particle will be sped up already to
+velocities typical well above unity, leaving even fewer integration
+steps during which the attraction between the particles changes
+dramatically.  You are right, it would have been worrisome if the
+errors would _not_ have been large.  Let me use a ten times smaller
+time step:
+
  :commandoutput: ruby rknbody9d_driver.rb < cube1.in
+
+*Alice*: That's more like it.  Actually, not so different from what we
+found earlier, without softening.
+
+*Bob*: I guess this means that our eight particles did not come much
+ closer to each other than distances of order 0.01.
+
+*Alice*: Which is reasonable.  In three dimensions there are two
+independent directions in which two approaching particles can miss
+each other, and you have to aim carefully to come really close.
+
+*Bob*: Let me make the time step half as small again, just to check
+ whether the error in the energy conservation drops by at least a
+ factor of sixteen:
 
  :commandoutput: ruby rknbody9e_driver.rb < cube1.in
 
+*Alice*: I think we can declare victory.
+
+== Central Collapse
+
+*Bob*: Ah, let's do something fun, something we never could have done
+without softening.  Let us give all particles equal masses, so that
+when they drop from the corners of the cube, they all will reach each
+other at the center.  Even so, softening should keep them from
+misbehaving.
+
+*Alice*: As you like!
+
+*Bob*: So these are the new initial conditions:
+
  :inccode: cube2.in
+
+And this is the result:
 
  :commandoutput: ruby rknbody9b_driver.rb < cube2.in
 
-== The Next Step
-
-*Alice*: That's very nice.  As we already said, almost too good to believe.
-
-*Bob*: Perhaps it is time to move on.  I'd love to tinker further with
-other variations on a theme, but it is high time to get a graphics
-implementation.
-
-*Alice*: But let me remind you: before doing so, we really need to settle
-down on a good data format, ideally a self-describing type of format.
-Already during our debugging adventure, I sometimes got confused as to
-which numbers where which.  You mentioned the FITS format.  Something like
-that would be much easier to work with, and much safer too.
-
-*Bob*: If we are to implement such a format, and I think that is a good idea,
-we should probably do it right now.  Otherwise we'll be writing a graphics
-package for our current format, and then we have to put a connection piece
-to that package for our later format.  And we will always risk
-confusion as to which of the two formats we are using, at any given
-time.
-
-Okay, as much as I would like to delve into graphics, let's first get our
-data format defined and implemented.
-
-*Alice*: Agreed!
+*Alice*: Well behaved indeed.  Glad to see it all works!
