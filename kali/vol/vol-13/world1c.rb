@@ -198,7 +198,8 @@ class Worldpoint < Body
     if t > @next_time
       raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
     end
-    wp = Worldpoint.new
+    wp = nil
+    eval("wp = #{self.class}.new")
     wp.minstep = @minstep
     wp.maxstep = @maxstep
     wp.nsteps = @nsteps
@@ -280,7 +281,13 @@ class Worldpoint < Body
   end
 
   def hermite_interpolate(other, t)
-    wp = Worldpoint.new
+    if self.class == Binary and other.class == Binary
+      wp = self.deep_copy
+    elsif self.class == Worldpoint and other.class == Worldpoint
+      wp = Worldpoint.new
+    else
+      raise
+    end
     wp.minstep = @minstep
     wp.maxstep = @maxstep
     wp.nsteps = @nsteps
@@ -568,7 +575,13 @@ class Worldline
   end
 
   def setup_from_single_worldpoint(b, method, dt_param, time)
-    @worldpoint[0] = b.to_worldpoint
+    if b.class == Binary
+      @worldpoint[0] = b.to_binary
+    elsif b.class == Body
+      @worldpoint[0] = b.to_worldpoint
+    else
+      raise
+    end
     @method = method
     @dt_param = dt_param
     if eval("defined? #{@method}_number_of_steps")
@@ -651,6 +664,7 @@ Safety_hysteris_factor = 1.5
     while shortest_interpolated_worldline.worldpoint.last.time < @end_time
       wl = shortest_extrapolated_worldline
       if wl.worldpoint.last.class == Binary
+ss.acs_write($stderr)
         ss = take_snapshot_except(wl, wl.worldpoint.last.time)
         unless ss.isolated?(wl.worldpoint.last, isolation_factor)
           show_binary(wl)
@@ -677,6 +691,26 @@ Safety_hysteris_factor = 1.5
     take_snapshot_except(nil, time)
   end
 
+  def take_full_snapshot(time)       # WRONG ! ! ! should be synchronized !!!!!
+    ss = take_snapshot_except(nil, time)
+    ss_deep_copy = ss.deep_copy
+    list = []
+    ba = ss_deep_copy.body
+    ba.each_index do |i|
+      if ba[i].class == Binary
+        list.push(ba[i].dissolve)
+        ba[i] = nil
+      end
+    end
+    ba.compact!
+    list.each do |pair|
+      ba.push(pair[0])
+      ba.push(pair[1])
+    end
+ss_deep_copy.acs_write($stderr)
+    ss_deep_copy
+  end
+
   def take_snapshot_except(wl, time)
     ws = Worldsnapshot.new
     ws.time = time
@@ -688,10 +722,9 @@ Safety_hysteris_factor = 1.5
   end
 
   def show_binary(w)
-STDERR.print "entering show_binary\n"
     wp = w.worldpoint.last
     t = wp.most_recent_return_time(wp.time)
-STDERR.print "show_binary:  t = #{t} ; wp.time = #{wp.time}\n"
+STDERR.print "entering show_binary for time t = #{t}\n"
     w.cap_at(t)
     b1, b2 = w.worldpoint.last.dissolve
     w1 = Worldline.new
@@ -717,23 +750,30 @@ STDERR.print "show_binary:  t = #{t} ; wp.time = #{wp.time}\n"
   def hide_binaries(time, factor, dt_max)
     ss = take_snapshot(time)
     ar = ss.find_isolated_binaries(factor)
+p ar if ar != []
     list = []
     ar.each do |a|
       list.push([ @worldline[ a[0] ], @worldline[ a[1] ] ])
     end
+#p list
     list.each do |pair|
       merge_worldlines(pair[0], pair[1], dt_max)
     end  
   end
 
   def merge_worldlines(w1, w2, dt_max)
-STDERR.print "entering merge_worldlines\n"
-    t1 = w1.next_worldpoint_after(@start_time).time
-    t2 = w2.next_worldpoint_after(@start_time).time
-    t = max(t1, t2)
+    t1 = w1.next_worldpoint_at_or_after(@start_time).time
+    t2 = w2.next_worldpoint_at_or_after(@start_time).time
+    t = min(t1, t2)
+STDERR.print "entering merge_worldlines for time t = #{t}\n"
     w1.cap_at(t)
     w2.cap_at(t)
+p "numbers for w1 and w2:"
+p w1.worldpoint.last.number
+p w2.worldpoint.last.number
     b = Binary.new(w1.worldpoint.last, w2.worldpoint.last, t)
+p "hihi"
+b.acs_write
     method = w1.method
     if w2.method != method
       raise "w1.method = #{1.method} != w2.method = #{w2.method}"
@@ -750,10 +790,14 @@ STDERR.print "entering merge_worldlines\n"
     @worldline.compact!
     w = Worldline.new
     w.setup_from_single_worldpoint(b, method, dt_param, t)
+p "huhu"
+w.acs_write
     loop do
       break if w.startup_done?(self, dt_max)
     end    
     @worldline.push(w)
+p "haha"
+@worldline.acs_write
   end
 
   def write_diagnostics(t, nsteps, initial_energy, init_flag = false)
@@ -764,7 +808,8 @@ STDERR.print "entering merge_worldlines\n"
     else
       STDERR.print "to time #{sprintf("%g", @end_time)}):\n"
     end
-    take_snapshot(t).write_diagnostics(initial_energy)
+STDERR.print "ho\n"
+    take_full_snapshot(t).write_diagnostics(initial_energy)
   end
 
   def setup_from_snapshot(ss, method, dt_param, dt_era)
@@ -803,8 +848,8 @@ class World
     if c.world_output_flag
       acs_write($stdout, false, c.precision, c.add_indent)
     else
-      @era.take_snapshot(@t_out).acs_write($stdout, true,
-                                           c.precision, c.add_indent)
+      @era.take_full_snapshot(@t_out).acs_write($stdout, true,
+                                                c.precision, c.add_indent)
     end
   end
 
@@ -968,6 +1013,9 @@ class Worldsnapshot < Nbody
   end
 
   def isolated?(binary, factor)
+#STDERR.print "nearest_neighbor_distance(binary) = #{nearest_neighbor_distance(binary)}\n"
+#STDERR.print "factor = #{factor}\n"
+#STDERR.print "binary.semi_major_axis = #{binary.semi_major_axis}\n"
     if nearest_neighbor_distance(binary) > factor * binary.semi_major_axis
       true
     else
@@ -978,12 +1026,17 @@ class Worldsnapshot < Nbody
   def find_isolated_binaries(factor)
     find_first_and_second_nearest_neighbors
     list = []
+    return [[0, 1]] if @body.size == 2
+#    return [] if @body.size == 2
     @body.each_index do |i|
       @body.each_index do |j|
         if j > i
           if @body[i].nearest_neighbor == j and @body[j].nearest_neighbor == i
             b = Binary.new(@body[i], @body[j])
             if b.rel_energy < 0
+#STDERR.print "i = #{i}, j = #{j}\n"
+#@body[i].acs_write($stderr)
+#@body[j].acs_write($stderr)
               r = @body[i].pos - @body[@body[i].second_nearest_neighbor].pos
               ri2 = r*r
               r = @body[j].pos - @body[@body[j].second_nearest_neighbor].pos
@@ -1029,6 +1082,10 @@ class Worldsnapshot < Nbody
        E_tot - E_init = #{sprintf("%.3g", etot - e0)}
         (E_tot - E_init) / E_init = #{sprintf("%.3g", (etot - e0)/e0 )}
     END
+  end
+
+  def deep_copy
+    Marshal.load(Marshal.dump(self))
   end
 
 end
