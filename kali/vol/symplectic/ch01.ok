@@ -1,3 +1,49 @@
-= Introduction
+= Shared Time Steps
 
-== xxx
+== Picking up the Pieces
+
+*Alice*: We have been quite busy with our project to lay the foundations
+for a N-body simulation environment.
+
+*Bob*: I'd say!  It seems like ages since we did some actual N-body
+calculations.  We started with the two-body problem . . .
+
+*Alice*: . . . and then you got carried away, adding one integrator after
+another, before we finally moved on to the general N-body problem . . .
+
+*Bob*: . . . at which point you told us to stop moving, and to lay
+foundations instead!  I feel like we turned into computer scientists
+instead of astrophysicists.
+
+*Alice*: I'm afraid we had no choice.  The alternative would have been
+to come up with stopgap solutions at every turn in the road.  Now at least
+we have a reliable and flexible data format and corresponding I/O routines,
+and we have an extendable command line options argument which makes our codes
+self-describing through a detailed help facility, and so on.
+
+*Bob*: I must admit, all those features do make life easier.  I remember
+getting rather tired, editing a file each time I wanted to perform a different
+run.  Okay, where were we?
+
+*Alice*: In volume ???acsio??? we had collected the various integrators in a
+single file <tt>nbody_cst1.rb</tt>, while we were getting the ACS data format
+straightened out.  Let us start from the same file, in this new directory,
+corresponding to the current volume.
+
+*Bob*: Do you remember how to run it?
+
+*Alice*: Don't have to!  Remember, we had a <tt>---help</tt> option, which
+should give not only a detailed description of what the codes does, but in
+addition it should give a simple example invocation.
+
+*Bob*: Ah, yes, that's one of the nifty features we added.  We've sure done
+a lot!  Let's try:
+
+ :commandoutput: ruby nbody_cst1.rb ---help
+
+Well, let's follow the advice:
+
+ :commandoutput: ruby mkplummer.rb -n 4 -s 1 | ruby nbody_cst1.rb -t 1 > /dev/null
+
+== Estimating the Time Step Size
+
