@@ -1,0 +1,153 @@
+<HEAD>
+<TITLE> Variatonal Programming -- The Art of Computational Science</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#EEFFEE" BACKGROUND=""
+      LINK="#0000CC" ALINK="#CCCCCC" VLINK="#000099">
+
+<H1> Variatonal Programming</H1>
+
+
+  
+
+Copyright  2003 Piet Hut and Jun Makino
+
+
+<p>
+We have coined the term {\it Variational Programming} to describe our
+prefered approach to programming: to follow a path of least action.
+The name is borrow from physics, where Hamilton's variational
+principle states that a physical trajectory of a particle is given by
+a path along which the action is minimal. <a href=#footnote1>1)</a>
+Our goal is to be lazy in the optimal sense: to minimize the amount of
+time and energy to along the path of writing a piece of software, from
+start to finish, \ie from the first idea to the completion of a robust
+and well-tested product, that can be easily and flexibly used in
+connection with other pieces of software.  
+<p>
+As is the case in physics, the least action principle is a global one,
+not a local one.  The challenge is to minimize the total time required
+to put together a whole software package.  If we want to write the
+code for an individual model, it is by far the easiest to throw
+something together quickly and make it work.  However, after writing a
+few dozen modules that way, it quickly becomes clear that making them
+together smoothly requires more and more work, forcing a repeated
+rewrite of many of the pieces that originally were easy to dash of.
+<p>
+Clearly, there is an optimum approach.  If you spend too much time
+polishing each module to make it really elegant and beautiful, you
+will spend (almost) forever before you finish your software package.
+If you rush each module writing too much, and don't think carefully
+about how they should fit together, you spend (almost) forever chasing
+bugs all over the place.  The question is: where, in between these two
+extremes, is the optimum approach, which minimizes the total amount of
+work?
+<p>
+Finding the optimum is an art, not a science.  Hence the title of our
+series {\it The Art of Computational Science}.  But an art requires
+particular skills and can be learned, ideally by exposure to many
+hands-on examples, the more real-life-like the better.  And while
+being exposed to such examples, it does become clear that there are
+some general rules.
+<p>
+In our experience, which between the two of us includes half a century
+of frequent scientific simulation code writing, the main rule is: try
+to make frequent variations.  Hence our term {\it Variational Programming},
+which we will now summarize.
+<p>
+The first improvement over rushing into software writing is to test
+every step carefully, it to make sure it is correct.  While this is
+much better than a rush job, it still is no guarantee at all that the
+module one is working on will function optimally in a larger setting,
+connected to other modules.
+<p>
+The next improvement is to look/feel/grope around a solution, looking
+at neighboring and slightly different approaches.  The goal of
+variational programming is: pragmatic simplicity, avoiding the
+rigidity of an approach that is too narrow, as well as the complexity
+of an approach that is too baroque and general-purpose.
+<p>
+In summary: before writing anything, try to get a sense of the
+landscape of the problem.  Then come up with a tentative solution, a
+toy model.  This most likely will be wrong, the first time.  But if
+you don't try something, you'll never get there.  However, if you try
+something while building it in grandious ways, you will waste a lot of
+time if it turns out to be ill-directed.  So be pragmatic: try something
+complex enough that it can actually do something interesting, given
+the landscape of the problem, but not much more than that.  And above
+all, don't be attached to your first (few) attempt(s): be prepared to
+clean the decks and throw stuff away.
+<p>
+After one or more tries, you will get a hands-on feel for the landscape,
+and you will get an idea how much work will be required to go from A
+to B along different paths.  Only then can you choose the path that
+(most likely) will require the least action.  And while exploring that
+path, it remains important to keep making local variations, to
+continue trying to find a more optimal solution.
+<p>
+This holds on all levels, down to the smallest module.
+When you write something, first of all write in small
+chunks.  For each chunk, while writing and while testing, think about
+whether it makes sense to generalize it a bit more or streamline it a
+bit more.  Play around with it, both while writing and testing, rather
+than just following your first idea like an arrow let loose.  Arrows
+are bad at following corners in the road.
+<p>
+So the principle of least action in programming means:
+Be comfortable and lazy, but only so in the long run.
+If you write quickly, you'll have to do a lot of nasty debugging later.
+For most people, this is less comfortable that writing new clean code.
+But even for those who like to both create and solve problems: you'll
+spend more time and therefore you'll have to work harder to get at
+your goal.  If you follow the path of least action, you'll introduce
+bugs, for sure, but they will be interesting complex bugs, since
+you've avoid the annoying ones (ever spent half an hour searching for
+a bug, only to find that it was a matter of misspelling something
+somewhere in an overly long function spilling out over a few pages?).
+<p>
+Another way to characterize variational programming concerns the
+way to learn from errors.  The key is to let the problem tell you how
+it wants to be solved.  Of course, the problem won't talk to you, so
+you have to start with an initial attempt.  But rather than trying to
+solve a task in the first attempt like blasting a tunnel through
+all the problems, it often makes more sense to try to see whether the
+type of problem that comes up by itself can suggest how you can change
+your approach a bit.  That way, you often find opportunities to wind
+your way between the hills, rather than blasting tunnels in a straight
+line, as the crow flies or the mole bores, as the case may be.
+<p>
+Finally, we call our approach variational because making variations is
+in fact the only way to find the path of least action.  If there where
+only a few paths, you could try all or most of them.  The problem with
+paths is, there are not only infinitely many of them, but the family
+of paths itself even has infinitely many degrees of freedom, or more
+strictly speaking, about as many degrees of freedom as there are key
+strokes in your code.  So the number of possibilities is, roughly
+speaking, infinity to the power infinity.  The only way to find a
+reasonably optimal choice in such a vast sea of possibilities is to:
+1) try a few global choices of different paths to see which one looks
+promising; 2) after settling on one, make very many local variations
+to explore in much greater detail the space of paths around the one
+you're beating.  Each local variation gives you a choice, and with
+sufficient experience your final result will be the product of all the
+choice you have made along the way, selecting your approach from among
+a very large number of ways to write your code: a factor of a few to
+the power of the number of choice you have made!
+
+<p>
+
+<a name=footnote1>
+1)
+  In physics, the concept of action has a precise mathematical
+  definition, as a time integral of the Lagrangian of a system; and
+  although in physics, too, Hamilton's principle is often called the
+  principle of least action, strictly speaking the action should only
+  be an extremum, so it could be a saddle point, for example, rather
+  than a minimum.  However, these technical considerations are not
+  relevant here, since we use the term only as a metaphor.}
+<hr>
+
+Go back to <a href=index.html>Home page</a>
+<p>
+</BODY>
+
+

@@ -191,6 +191,9 @@ END
   end
 
   def process_headers(instring)
+    
+    nosectionnumber = nil
+    
     ostring=[]
     afterverbatim = nil
     inabstract = nil
@@ -211,8 +214,15 @@ END
 	    header = "\\end{abstract}\n\n" 
 	    inabstract = nil
 	  end
-	  header+= "\\"+@@header[header_candidate.length]+"{" +
-	    header_text += "}"
+	  sectiontype= nosectionnumber ? "*":""
+	  header+= "\\"+@@header[header_candidate.length]+sectiontype+"{" +
+	    header_text + "}"
+	  if nosectionnumber
+	    header+= "\n\\addcontentsline{toc}{" +
+	      @@header[header_candidate.length]+"}{" +
+	      header_text + "}"
+	    nosectionnumber=nil
+	  end
 	end
 	ostring.push(header)
 	instring.unshift(s)
@@ -223,6 +233,8 @@ END
 	  ostring.push("\n\\bigskip\n\n\\hrule\n\n")
 	end
 	afterverbatim = nil
+      elsif /^\s*:nosectionnumber:\s*$/ =~ header_candidate
+	nosectionnumber = true
       else
 	ostring.push(s)
       end
@@ -728,6 +740,38 @@ module Acsdoc
     ostring
   end
 
+  def process_nosectionnumber(realtag,s,taggedstring,dirname)
+    print "Enter process_nosectionnumber\n"
+    p realtag
+    p s
+    p taggedstring
+    p dirname
+    ""
+  end
+
+  def find_and_process_generic_tag(instring,dirname,tagname,funcname)
+    tagexpr = Regexp.compile("^\\s*:"+tagname+"\\s*:")
+    is = instring.split("\n");
+    ostring=""
+    while s = is.shift
+      p s  if $DEBUG
+      if s =~ tagexpr
+	realtag = $1
+	taggedstring = ""
+	while (ss = is.shift ) =~ /\S/
+	  taggedstring += ss + "\n"
+	  if ss == nil 
+	    raise "End of file reached while searching for newline: #{$infile}"
+	  end
+	end
+	ostring +=send(funcname,realtag,s,taggedstring,dirname)
+      else
+	ostring += s+"\n"
+      end
+    end
+    ostring
+  end
+  
   def copy_figure_file(figurefilename,dirname, figure_number)
     imgbase =".imgs/"
     imgdir =  imgbase 
@@ -832,6 +876,8 @@ module Acsdoc
       tmp2= find_and_process_tex_inlines(tmpstring,dirname);
       tmp2= find_and_process_tex_equations(tmp2,dirname);
       tmp2= find_and_process_figures(tmp2,dirname);
+      tmp2= find_and_process_generic_tag(tmp2,dirname,"nosectionnumber",
+					 "process_nosectionnumber")
       tmp2= process_tex_labels(tmp2,dirname);
       tmp2= process_toc(tmp2,infile);
       tmp2= process_section_headers(tmp2,infile)

@@ -1,4 +1,4 @@
-== Integration of the old bool (Moving Stars Around)
+== Integration of the old book (Moving Stars Around)
 
 I created $ACSROOT/msa directory, where the first book (MSA) will be
 kept. It has two subdirectories, web and originals, the former has
@@ -51,3 +51,35 @@ tried.
 I also added Makefile to each of msa/ original/ books/ directories, so
 that I can just say make at msa to re-create the PDF files etc.
 
+== Wishlist for acsdoc
+
+* Capability to create links from sourcecode view to the location in
+  the book where that function or segment is decribed.
+
+* Table
+
+* Title
+
+* A more general and easy way to extend acsdoc itself
+
+Currently, things like : equation : and : figure : are handled by
+separate functions, which are called from the top level function,
+where the specific function names are actually written. We could think
+of a mechanism, where the function name and trigger word ( : equation
+: for example) is given as the list of pairs (a Ruby array) and the
+dispatcher automatically call the created functions.
+
+In this way, it is possible to dynamically add commands.
+
+I added the tag : nosectionnumber :, which suppresses the numbering of
+immediately following section (or chapter or subsection or whatever).
+Thus,
+
+   : nosectionnumber :
+
+   == Preface
+
+would create the section "Preface", but without number, yet appearing
+in the table of content.
+
+   

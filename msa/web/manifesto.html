@@ -1,0 +1,158 @@
+<HEAD>
+<TITLE>MANIFESTO-- The Art of Computational Science</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#EEFFEE" BACKGROUND=""
+      LINK="#0000CC" ALINK="#CCCCCC" VLINK="#000099">
+
+<H1> The Art of Computational Science</H1>
+
+&#169;  2003- Piet Hut and Jun Makino
+
+<p>
+
+The aim of our series is to provide a student with a hands-on guide to
+building a computational laboratory, and doing state-of-the-art
+research with it.  The series will be self-contained: a high-school
+student should be able to start at page 1, and work her way through
+the series.
+<p>
+It may seem like a tall order, to use a series of books to lead a
+student through a process that normally takes five years, from
+entering college to being able to do research as a graduate student.
+What we offer here is a shortcut, not a replacement of a traditional
+curriculum.  A motivated high school student or undergraduate could
+set aside a summer for self-study, or even better, pair up with
+another student, to start working through this book series.  That way,
+they would quickly get a taste for conducting real independent research.
+Having acquired the taste and experience will be invaluable for them,
+no matter what speciality they would choose in the end.
+<p>
+The problem with the hundreds of introductory text books to science is
+that they mostly provide summaries, highly distilled collections of
+knowledge that can only be internalized through a process of hands-on
+experience that is generally left out.  Even when detailed exercises
+are given, together with their solutions, this still leaves out the
+actual experience of anybody trying to solve a problem, and getting
+hopelessly astray.  Research is (much) more than 90% about making
+mistakes, and (much) less than 10% about finding something new and
+original.  Educational learning is no different.  We all learn from
+solving excercises, not by the answer we get, but by learning what not
+to do wrong in the process.
+<p>
+Of course, there is a good reason that text books are presented in the
+style they are presented.  Giving the reader a real-life impression of
+all (or at least much) that can go wrong in solving problems would
+expand the size of a book by a factor of ten, if not more.  Therefore,
+it is certainly a good thing that most text books are as they are,
+providing reference material for a course, and providing the kernel of
+knowledge for gifted or already somewhat experienced students who are
+brave enough to try to learn the material on their own.
+<p>
+However, we think there is room for a different approach, one that has
+not been attempted earlier, as far as we know.  We will try to follow
+a few individual students, getting occasional guidance from a teacher,
+in the actual process of learning through trial and error.  This
+choice dictates the format as that of a dialogue, in which we can
+overhear what goes wrong, and how the students sooner or later find
+out how to correct their errors and misunderstandings.
+<p>
+Still, we are faced with the problem of cramming five years of student
+experience in only ten volumes.  Our solution has been to take as
+simple a problem we could think of within science.  In fact it is the
+oldest unsolved problem ever since the day Newton formulated
+mathematical physics, as the basis of modern science.  It is the
+gravitional many-body problem, in which a collection of celestial
+bodies move under the influence of their mutual gravitational
+interactions.
+<p>
+An example of the two-body problem is the motion of the Moon around
+the Earth, or that of the Earth around the Sun.  An example of the
+three-body problem is that of the Earth, Moon, and Sun now taken
+together, with the perturbations of the Sun taking into account in
+following the Moon on its way around the earth.  The Sun and the major
+planets, from Mercury to Neptune, offers an example of a nine-body
+problem.  A rich star cluster, such as M15 or 47 Tuc, provides an
+example of a million-body problem.  And our whole galaxy, as well as
+our neighbor the Andromeda galaxy, can be modeled as a
+multi-billion-body gravitational problem.
+<p>
+Having selected a problem that can be explained relatively easily, we
+plan to introduce the notion of a physical force, the notion of a
+gravitational force, the idea of a differential equation, as well as
+the concept of numerical approximations to its solution.  This will
+all appear in Volume 1.  Hands-on experience in simulating the dance
+of two or three bodies will be the topic of Volume 2, while the study
+of a 32-body system, as a model for a star cluster, will occupy Volume
+3.  The current manuscript provides a first draft for these three
+volumes combined, but as yet without the most introductory steps; we
+hope to provide those soon(ish), in the next few years.
+<p>
+Volume 4 will introduce the notion of individual time steps, a crucial
+ingredient for simulating larger numbers of particles.  I will also
+focus on a number of technical details in computer science, such as
+the introduction of self-describing flexible data formats, the use of
+classes in C++, XML of I/O, more complex command-line arguments, etc.
+This approach will show how to build robust modules that are flexible
+enough to function as tools in a growing toolbox that can used to
+build your own software environment tailered to the type of scientific
+simulations you would like to perform.  We will use these tools to
+model 256-body systems.
+<p>
+Volume 5 will introduce the last major ingredient needed to model
+large systems, namely special treatments of tight binaries.  With this
+in place, we can go to 2048-body systems (each increase of a factor
+eight in 3D doubles the number of particles in each spatial dimension).
+We will explore applications such as core collapse, and while doing
+so, we will find the need to add additional ingredients, such as a
+special treatments of triple star systems.
+<p>
+Volume 6 will introduce a diversion: it will focus on three-body
+scattering experiments.  Just as high-energy particle accelerators
+probe the behavior of subatomic particles, we can probe the complex
+interactions between single stars and double stars in the virtual
+laboratory of the computer, by sending `beams' of single stars to
+(gravitationally) crash into `target plates' of double stars.  These
+experiments are useful to predict and analyse the `microscopic'
+processes that happen within a star cluster scales small with respect
+to that of the cluster as a whole.
+<p>
+Volume 7 will continue the scattering treatment, but will handle the
+scattering of two double stars off each other, as well as the
+scattering of doubles and triples, and even more complex varieties,
+all of which occur within a large-scale simulation of a dense stellar
+system.  As we will see, the automatization of such experiments,
+together with the automated reporting of the many different outcomes,
+will provide quite a challenge.
+<p>
+Volume 8 will pick up the main line of our series, the development of
+<i>N</i>-body codes with increasing sophistication (for historical
+reasons, the gravitional many-body problem is often called the
+<i>N</i>-body problem).  This time we will start from scratch, using all
+the experience we have collected in volumes 1 through 7, by making a
+top-down design in terms of modules, while giving a complete
+specification of the interfaces between all these modules.  This
+approach will allow us to mix and match different pieces written by
+different people, using different computer languages, and even adding
+different physical effects.
+<p>
+Volume 9 will continue this quest, by showing how such a code can be
+made to deal with the challenge of following close encounters, as well
+as tight double stars.  Here we will learn to deal with various types
+of special treatments of neighboring particles, which is the main
+reasons that state-of-the-art <i>N</i>-body codes have grown so bulky.
+We will apply this code to some 16k-body systems.
+<p>
+Volume 10 will wrap us the quest, by introducing a way to handle even
+collisions between stars, through simple forms of hydrodynamics and
+stellar evolution.  Depending on the speed of computers by the time we
+finish our series, we may be able to illustrate our code by taking two
+more steps of two in each dimension, leading us to the 128k-body system
+as well as the million-body system.
+<p>
+
+<hr>
+
+Go back to <a href=index.html>Home page</a>
+<p>
+</BODY>
+

@@ -1,0 +1,103 @@
+<HEAD>
+<TITLE> Extreme Research -- The Art of Computational Science</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#EEFFEE" BACKGROUND=""
+      LINK="#0000CC" ALINK="#CCCCCC" VLINK="#000099">
+
+<H1> Extreme Research</H1>
+
+&#169;  2003- Piet Hut and Jun Makino
+
+<p>
+The central aim of our book series is to break down the barrier
+between research and education.  From an educational point of view,
+our approach is unusual in that we aim to lead a student along the
+shortest path from an elementary introduction to the cutting edge of
+research.  At the same time, the reverse is true as well: from a
+research point of view, we want to illustrate how extensive
+documentation is beneficial for a research project.  To put it in a
+more radical form: we believe that education is the key to success in
+research.
+<p>
+To express these ideas, we introduce the term {\it extreme research},
+in analogy of the term {\it extreme programming}, a methodology aimed
+at frequent testing and fast turn-around, in which there is much
+interaction between users and producers of the code being developed.
+Typically there is a tight coupling between the producers as well,
+through pair programming, in which two people sit behind a computer
+screen, developing a piece of code together.  In our case, extreme
+research indicates a similar type of interaction between students
+developing a simulation code, and between them and their supervisors
+and colleagues.
+<p>
+A key idea in our notion of extreme research is what we call {\it
+variational programming}, which we will discuss below.  Briefly,
+variational programming invites a `slower but faster' approach, in
+which we first take our time, feeling our way around a solution path,
+before settling on a specific approach.  The familiarity with the
+local landscape of possible approaches typically speeds up the process
+of reaching a simple yet robust final product.  Experience has shown
+us that the time lost in looking around is more than made up by the
+fact that we thus avoid having to backtrack excessively in the final
+stages.
+<p>
+A related example of a `slower but faster' approach is to make it a
+habit of writing extensive documentation.  This applies to adding
+detailed and frequent comments with the computer code itself, as well
+as writing manual pages and introductory and explenatory notes.  At
+first, this may seem to slow down the process of rapid prototyping.
+In fact, by having to explain what you are doing to an anonymous
+reader, you often reach a much deeper understanding of the problem at
+hand, by being forced to make your reasoning explicit.  In addition,
+you often find errors in your thinking as well as ways to improve
+aspects, even if they were correct.
+<p>
+Actually, wide and deep documentation goes hand in hand with variational
+programming.  A description of anything is like drawing an outline around
+that thing, and the very process of doing so gives one many glimpses
+of the adjacent terrain.  Successful documentation of a code is a form
+of variational description.  And in our current series we have taken
+this approach to an extreme: one of our main motivations for writing
+an education ten-volume series was our desire to develop for ourselves
+a robust software environment for large-scale experiments in stellar
+dynamics, relying on a process of extreme documentation.
+<p>
+The central engine of this environment would be an <i>N</i>-body code
+that would be completely documented, down to every decision made.
+This implies a description of not only what decision was made, made
+also how it was made, and why.  When we thought this true, we realized
+that we had no choice but to start from scratch.  Tempting as it had
+been to take a code such as the Kira code, the central engine of the
+<a href="http://www.manybody.org/manybody/starlab.html">starlab
+software environment</a>, it would be
+impossible to reconstruct all the decisions that had gone into its ten
+year history.  The same considerations hold even more for NBODY4 and
+related codes in the NBODY<i>x</i> family, developed and maintained by
+Sverre Aarseth, author of <i>Gravitational N-Body Simulations :
+Tools and Algorithms</i> (Cambridge Univ. Pr., 2003), since these codes
+have grown over a forty-year period.
+<p>
+We finally decided to accept the challenge we had posed for ourselves,
+and to test our notion of extreme programming in practice, by indeed
+starting from scratch.
+Here is a very brief outline of our plans.  The top view of our code
+would reveal four parts: a scheduler, a module for the global
+dynamics, one for the local dynamics, and one for stellar physics
+(stellar evolution and hydrodynamics).  Each of the latter three would
+be built from several modules.  At that level, we would thus have a
+dozen or more modules, each of which would ideally be so independent
+that they could be written by different people using different
+computer languages.  Most importantly, these different people would
+have no need even to communicate with each other, since the top-down
+specification would indeed be completely specific about how each
+module would talk to each other module, and what would be expected to
+be delivered by each one, in what way.
+<p>
+
+<hr>
+
+Go back to <a href=index.html>Home page</a>
+<p>
+</BODY>
+
+

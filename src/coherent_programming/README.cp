@@ -167,12 +167,16 @@ that location. In latex conversion, it is simply replaced by latex
 \tableofcontents. In rdoc-html conversion, all headers (= name )
 automatically appear in nested list.
 
+The : nosectionnumber : directive will suppress the numbering of the
+header (chapter, section or whatever) immediately after the
+directive. 
+
 == Changes made to rdoc itself
 
 We try as hard as possible not to change rdoc itself, but some things
 are hardcoded in rdoc which can only be changed by tweaking the source
 code of rdoc. However, few changes are necessary, and they are
-currently done in the directory   $ACSROOT/rdoc-0.9.0acs1/. Current
+currently done in the directory   <tt>$ACSROOT/rdoc-0.9.0acs1/</tt>. Current
 changes are
 
 * new directive to make HTML name tags, by \!word! and
