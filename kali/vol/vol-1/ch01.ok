@@ -72,9 +72,10 @@ the astrophysical legacy codes.
 Given that there was no middle ground, I did not want them to focus
 too much on computational techniques, because that would have just
 taken too much time.  My hope is, frankly, that our toy model approach
-will bridge the huge gap between the arcane and the arcane.
+will bridge this huge gap, between books that are clear but of very limited
+use, and codes that are useful but of very limited clarity.
 
-*Bob*: You always find a way to introduce a world wide vision for
+*Bob*: You seem to find a way to introduce a world wide vision for
 every small task that you encounter.  As for me, I'm happy to just
 build a toy model, and if students will find it helpful, I'd be happy
 too.  But just to answer your question, defining a class is just a way
@@ -151,6 +152,14 @@ suggest we first implement a particle.  I think this is how we
 can introduce a minimal class for a single particle:
 
  :inccode: body1.rb
+
+In a few minutes, we can go through the precise meaning of these
+constructs, but here is the general idea: you can give three arguments
+in a call to +initialize+, to specify the mass, position, and velocity.
+If you don't specify some of these arguments, they will acquire the
+default values that are given here by all the zeroes in the first line
+of the definition of +initialize+.  The next line assignes these values
+to internal variables that have names starting with a <tt>@</tt> sign.
 
 *Alice*: That is remarkably short and simple!  In fact, it seems too
 simple.  I am surprised that we do not have to declare the internal
@@ -295,11 +304,21 @@ a block of text that ends with +end+.
 
 *Bob*: And since you only give the definition of +Body+ without yet
 creating any instances, there is no value associated with it.  Here
-+nil+ means effectively `undefined'.  In Ruby, the definition of a
-class does not return a value.
++nil+ means effectively `undefined'.
 
-*Alice*: That makes sense.  So the class +Body+ has only one function,
-starting with +def+ and ending with the inner +end+, correct?
+*Alice*: But we have just defined the +Body+ class; why does Ruby
+claim it is undefined?
+
+*Bob*: In Ruby, the definition of a class does not return a value,
+since there is no reasonable answer that can be given to a non-existent
+question.  But since the interpreter wants to echo something, it just
+returns, `nil' as meaning an undefined value, or literally nothing.
+And this has nothing to do with the definition of a class.  This may
+sound more complicated than it is, but it is quite logical.
+
+*Alice*: I see, yes, that makes sense.  So the class +Body+ has only
+one function, starting with +def+ and ending with the inner +end+,
+correct?
 
 *Bob*: Indeed.  And the last +end+ is the end of the class definition,
 that starts with <tt>class Body</tt>.  Note the grammatical rule that

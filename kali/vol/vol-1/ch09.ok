@@ -27,10 +27,13 @@ For the many-body problem in general, however, we are a lot less
 lucky.  All we know is that the total energy and total angular
 momentum of the system are conserved.  That gives us one scalar and
 one vector, or in three dimensions it gives us four conserved
-quantities.  So we cannot compare all the details of the motion of the
+quantities.  In addition, there are the position and velocity of the
+center-of-mass motion, which give us another six conserved quantities,
+ten in total.
+So we cannot compare all the details of the motion of the
 <tex>$N$</tex> particles with theory, not by a long shot.  An
 N-body system in three dimensions has <tex>$6N$</tex>
-degrees of freedom, far more than the 4 handles we have.
+degrees of freedom, far more than the 10 handles we have in our 2-body case.
 
 However, things are not as bad as they may seem.  If you make errors
 in your integration, and you always make errors at some level, those

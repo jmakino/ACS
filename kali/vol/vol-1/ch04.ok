@@ -166,11 +166,11 @@ program, you might be surprised to see someone using unfamiliar
 aliases.  However, I presume that you get used to that pretty quickly.
 
 What I am curious about is that you haven't specified anywhere that we
-live in three dimensions.  In Fortran or C or C++, nowhere did I have
-to specify.  That is remarkable.  This must mean that the code will
-work equally well for a two-dimensional simulations, where a body has
-position and velocity vectors with only two components, as for a
-three-dimensional simulation.
+live in three dimensions.  I find that pretty remarkable: in Fortran
+or C or C++, you could not get away with that.  This must mean that
+the code will work equally well for a two-dimensional simulations,
+where a body has position and velocity vectors with only two
+components, as for a three-dimensional simulation.
 
 *Bob*: Right you are, and that gives you indeed a wonderful flexibility.
 In C you would first define <tt>#define NDIM 3</tt>, and then specify

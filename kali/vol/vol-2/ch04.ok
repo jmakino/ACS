@@ -33,14 +33,98 @@ link:rk4.gif
 
 *Alice*: Quite a bit more complex than the second order one.
 
-*Bob*: I think I'll give this as an exercise to my students.  After
-they have followed our detailed discussion of how to construct the
-various second-order integrators, perhaps they can figure out how to
-code up these equations from Abramowitz and Stegun.
+*Bob*: Yes, and of course it is written in a rather different form
+that the way I chose to implement it.  I prefered to stay close to the
+same style in which I had written the leapfrog and second-order Runge
+Kutta.  This means that I first had to rewrite the Abramowitz and
+Stegun expression.
 
-*Alice*: Good idea.  Once they have learned how to translate these
-formulas into Ruby code, they can go to any book on numerical methods,
-and try other integration schemes as well.  But wait a minute, what
+*Alice*: Let's write it out specifically, just to check what you did.
+I know from experience how easy it is to make a mistake in these kinds
+of transformations.
+
+*Bob*: So do I!  Okay, the book starts with the differential equation:
+
+:equation:
+y''=f(x,y)
+
+whereas we want to apply it to Newton's equation, which in a similar notation
+would read
+
+:equation:
+\frac{d^2}{dt^2}\br = \ba(t,\br)
+
+with the only difference that of course there is no specific time dependence
+in Newton's equations of gravity, so we only have
+
+:equation:
+\frac{d^2}{dt^2}\br = \ba(\br)
+
+To make a connection with Abramowitz and Stegun, their _x_ becomes our
+time _t_, their _y_ becomes our position vector <tex>$\br$</tex>, and their
+_f_ becomes our acceleration vector <tex>$\ba$</tex>.  Also, their <i>y'</i>
+becomes our velocity vector <tex>$\bv$</tex>.  Finally, their _h_ is
+our time step +dt+.
+
+*Alice*: Let us rewrite their set of equations in terms of the
+dictionary you just provided.  And instead of +dt+ it is better to 
+write <tex>$\Delta t$</tex>, since +dt+ is not an infinitesimal quantity
+here, but a finite time interval.  This then gives us:
+
+:eqnarray:
+\br(t+\Delta t) &=& \br(t) + \Delta t\left(\bv(t) + {\textstyle {1 \over 6}}
+              (\bk_1 + 2\bk_2)\right)                           \nonumber\\
+\bv(t+\Delta t) &=& \bv(t) + {\textstyle {1 \over 6}}\bk_1 +
+              {\textstyle {2 \over 3}}\bk_2 +
+              {\textstyle {1 \over 6}}\bk_3                     \nonumber\\
+\bk_1 &=& \Delta t\ba(\br(t))                                   \nonumber\\
+\bk_2 &=& \Delta t\ba\left(\br(t) + {\textstyle {1 \over 2}}\Delta t\bv +
+          {\textstyle {1 \over 8}}\Delta t\bk_1\right)          \nonumber\\
+\bk_3 &=& \Delta t\ba\left(\br(t) + \Delta t\bv +
+          {\textstyle {1 \over 2}}\Delta t\bk_2\right)          \nonumber
+
+In order to make a connection with your code, we can define three
+variables <tex>$\ba_0$</tex>, <tex>$\ba_1$</tex>, and <tex>$\ba_2$</tex>
+as follows, taking the right hand sides of the last three equations above,
+but without the <tex>$\Delta t$</tex> factor:
+
+:eqnarray:
+\ba_0 &=& \ba(\br(t))                                           \nonumber\\
+\ba_1 &=& \ba\left(\br(t) + {\textstyle {1 \over 2}}\Delta t\bv +
+          {\textstyle {1 \over 8}}\Delta t\bk_1\right)          \nonumber\\
+\ba_2 &=& \ba\left(\br(t) + \Delta t\bv +
+          {\textstyle {1 \over 2}}\Delta t\bk_2\right)          \nonumber
+
+Comparing this with the definitions of <tex>$\bk_1$</tex>,
+<tex>$\bk_2$</tex>, and <tex>$\bk_3$</tex>, we can eliminate all
+<tex>$\bk$</tex> values from the right hand side:
+
+:eqnarray:
+\ba_0 &=& \ba(\br(t))                                           \nonumber\\
+\ba_1 &=& \ba\left(\br(t) + {\textstyle {1 \over 2}}\Delta t\bv +
+          {\textstyle {1 \over 8}}\Delta t^2\ba_0\right)        \nonumber\\
+\ba_2 &=& \ba\left(\br(t) + \Delta t\bv +
+          {\textstyle {1 \over 2}}\Delta t^2\ba_1\right)        \nonumber
+
+And indeed, these are exactly the three variables <tt>a0</tt>, <tt>a1</tt>,
+and <tt>a2</tt>, that are computed in your <tt>rk4</tt> method.
+
+We can now rewrite the first two of Abramowitz and Stegun's equations as:
+
+:eqnarray:
+\br(t+\Delta t) &=& \br(t) + \Delta t\bv(t) +
+              {\textstyle {1 \over 6}}\Delta t^2(\ba_0 + 2\ba_1)  \nonumber\\
+\bv(t+\Delta t) &=& \bv(t) + {\textstyle {1 \over 6}}\Delta t(\ba_0 +
+              4\ba_1 + \ba_2)                                     \nonumber
+
+And these correspond precisely to the last two lines in your
+<tt>rk4</tt> method.
+
+*Bob*: Yes, that was how I derived my code, but I must admit, I did
+not write it down as neatly and convincingly as you just did.
+
+*Alice*: So yes, you have indeed implemented Abramowitz and Stegun's
+fourth-order Runge Kutta scheme.  But wait a minute, what
 you found here, equation 22.5.22, shows a right-hand side with a
 stated energy error of order <tex>$h^4$</tex> -- which would suggest
 that the scheme is is only third-order accurate.
@@ -51,7 +135,7 @@ therefore the total error for a give problem will grow proportionally
 to <tex>$h^4.(1/h) \propto h^3$</tex>.  This would indeed imply that
 this method is third-order.  But that would be very unusual.  In all
 text books I've seen, you mostly come across second-order and
-fourth-order Runge Kuttas.  While you might be able to construct a
+fourth-order Runge Kuttas.  While you certainly can construct a
 third-order version, I wouldn't have expected Abramowitz and Stegun to
 feature one.
 
@@ -77,13 +161,44 @@ of ten time units.
 
 *Alice*: Just to compare, why don't you run them for all four schemes.
 
-*Bob*: Okay: forward Euler, leapfrog, 2nd order R-K, 4th order R-K:
+*Bob*: I am happy to do so.  And while we are not sure yet wether our
+higher-order Runge-Kutta scheme is 3rd order or 4th order, let me
+continue to call it 4th order, since I've called it <tt>rk4</tt> in my
+code.  If it turns out that it is 3rd order, I'll go back and rename
+it to be <tt>rk3</tt>.
+
+*Alice*: Fair enough.
+
+*Bob*: Okay: forward Euler, leapfrog, 2nd order R-K, and hopefully-4th
+order R-K:
 
  :commandoutput: ruby integrator_driver2d.rb < euler.in
 
+*Alice*: Ah, this is the result from the forward Euler algorithm,
+because the fifth line of the output announces that this was the
+integration method used.  As we have seen before, energy conservation
+has larger errors.  We have an absolute total energy error of 0.425,
+and a relative change in total energy of -0.486.  I see that you
+indeed used <tt>dt = 0.001</tt> from what is echoed on the first line
+in the output.  And yes, for these choices of initial conditions and
+time step size we had seen that things went pretty badly.
+
+*Bob*: The leapfrog does better:
+
  :commandoutput: ruby integrator_driver2e.rb < euler.in
 
+*Alice*: Much better indeed, as we had seen before.  A relative energy
+error of <tex>$-4\times10^{-7}$</tex> is great, an error much less
+than one in a million.
+
+*Bob*: Time for second-order Runge-Kutta:
+
  :commandoutput: ruby integrator_driver2f.rb < euler.in
+
+*Alice*: Not as good as the leapfrog, but good enough.  What I'm curious
+about is how your hopefully-fourth-order Runge-Kutta will behave.
+
+*Bob*: Here is the answer:
 
  :commandoutput: ruby integrator_driver2g.rb < euler.in
 
@@ -96,7 +211,7 @@ accurate previous runs.  And all that with hardly any waiting time.
 *Bob*: Yes, I'm really glad I threw that integrator into the menu.
 The second-order Runge-Kutta doesn't fare as well as the leapfrog, at
 least for this problem, even though they are both second-order.  But
-the fourth-order Runge-Kutta wins hands down.
+the hopefully-fourth-order Runge-Kutta wins hands down.
 
 == Fourth Order Runge-Kutta
 
@@ -105,9 +220,10 @@ the fourth-order Runge-Kutta wins hands down.
  :commandoutput: ruby integrator_driver2h.rb < euler.in
 
 *Bob*: What a charm!  Essentially machine accuracy.  This makes it
-pretty obvious that fourth order integrators win out hands down, in
-problems like this.  Higher order integrators may be even faster, but
-that is something we can explore later.
+pretty obvious that fourth-order integrators win out hands down, in
+problems like this, over second-order integrators.  Higher order
+integrators may be even faster, but that is something we can explore
+later.
 
 *Alice*: Well done.  And, by the way, this does suggest that the scheme
 that you copied from that book is indeed fourth-order.  It almost seems
@@ -115,18 +231,28 @@ better than fourth order.
 
 *Bob*: Let me try a far larger time step, but a much shorter duration,
 so that we don't have to integrate over a complicated orbit.  How
-about these two choices:
+about these two choices.  First:
 
  :commandoutput: ruby integrator_driver2i.rb < euler.in
 
+And then:
+
  :commandoutput: ruby integrator_driver2j.rb < euler.in
 
-This does it!  Fourth order, almost exactly.
+*Alice*: This comes close to proving it.  Fourth order, almost exactly.
 
 == Snap, Crackle, and Pop
 
-*Alice*: Still I'd like to make sure with pen and paper as well.
-Let us take your implementation
+*Bob*: What do you mean with `comes close'?  What more proof would you
+like to have?
+
+*Alice*: I would still be happier if I could really prove it,
+with pen and paper, rather than through the plausibility of numerical
+experimentation.
+
+*Bob*: Go ahead, if you like!
+
+*Alice*: Let us take your implementation
 
  :inccode:.rkbody.rb+rk4
 
@@ -153,7 +279,7 @@ time as <tex>$\ba_0$</tex>, namely at the beginning of our time step.
 is sometimes called the <i>jerk</i>.  How about the following notation:
 
 :equation:
-\bj = \frac{d^3}{dt^3} \br = \frac{d\br}{dt}
+\bj = \frac{d^3}{dt^3} \br = \frac{d\ba}{dt}
 
 *Alice*: Fine with me.  I believe the term `jerk' has crept into the
 literature relatively recently, probably originally as a pun.  If a

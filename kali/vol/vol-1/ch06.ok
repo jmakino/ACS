@@ -308,9 +308,9 @@ we get a chance, let's test it for ourselves.
 *Alice*: And you were right: it is converging.
 
 *Bob*: But I was wrong in thinking that the error would be only a few
-percent.  It is still 8% of in the _x_ position.  I want to get to the
-bottom of this.  Let us send Ruby out for a long errand, with one hundred
-million time steps:
+percent.  It is still eight percent in the _x_ position.  I want to
+get to the bottom of this.  Let us send Ruby out for a long errand,
+with one hundred million time steps:
 
  :inccode: .euler1i.rb-barebones
 
@@ -334,7 +334,7 @@ We may as well get a bit to eat, since we can't wait for this to finish.
 A nice side effect of a slow integration.
 
 *Alice*: And look, Ruby has done it's job.  Now the error is down to
-about 1% in any of the position or velocity coordinates.
+about one percent in any of the position or velocity coordinates.
 
 *Bob*: Good!  Now I believe that we have done things correctly.  But boy,
 that took a long time to converge.  Two morals of the story: to do anything

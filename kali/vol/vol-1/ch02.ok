@@ -13,7 +13,7 @@ should be <tt>b = Body.initialize</tt>, since <tt>initialize</tt> is
 the name of the one method that we have defined in our +Body+ class.
 
 *Bob*: All I can tell you is what I read in the manual.  Let's try it
-both!
+both ways!
 
     irb(main):012:0> b = Body.new
     => #<Body:0x4008a1b0 @mass=0, @vel=[0, 0, 0], @pos=[0, 0, 0]>

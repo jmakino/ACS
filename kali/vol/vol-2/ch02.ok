@@ -321,7 +321,7 @@ a few time steps, both with forward Euler and with leapfrog.
 == A Comparison test
 
 *Bob*: Okay.  Let me first repeat forward Euler, for a couple choices.
-This was the smallest time step for which we did not get an explosion:
+This was the largest time step for which we did not get an explosion:
 
  :inccode: .integrator_driver1a.rb-barebones
 
@@ -386,8 +386,9 @@ accuracy of a few time <tex>$10^{-7}$</tex>.
 
 *Alice*: This must be an example of what we talked about, when we first
 discussed the limits of using energy conservation as a check.  The leapfrog
-is an example of a symplectic integration scheme, one that is build to
-conserve energy.  Clearly it conserves energy better than position.
+is an example of a symplectic integration scheme, one which has better
+built-in energy conservation.  Clearly it conserves energy better than
+position.
 
 *Bob*: But since it is a second order scheme, also the accuracy of the
 position should increase by a factor hundred when we decrease the time
