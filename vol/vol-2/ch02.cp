@@ -196,7 +196,7 @@ And now you are using the same logic to define a v-to-s method, from
 vector to string.
 
 *Bob*: Yes, and I thought it would be more consistent to stress the fact
-that we are not dealing with any old vector, but with a vector that has
+that we are not dealing with any type of vector, but with a vector that has
 floating point values in it.  Hence the name <tt>f_v_to_s</tt>.
 
 *Alice*: But we use vectors exclusively for physical quantities, that are

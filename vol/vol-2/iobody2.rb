@@ -76,7 +76,3 @@ class Body
   end
 
 end
-
-#c = Body.new
-#c.read("begin particle star giant AGB")
-#c.write
