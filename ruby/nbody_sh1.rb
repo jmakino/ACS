@@ -6,6 +6,8 @@
 
 class Body
 
+  attr_accessor :mass, :pos, :vel, :acc, :jerk
+
   def initialize(mass = 0, pos = [0,0,0], vel = [0,0,0])
     @mass, @pos, @vel = mass, pos, vel
   end
@@ -58,6 +60,9 @@ VERY_LARGE_NUMBER = 1e300
     @@coll_time_q = VERY_LARGE_NUMBER
   end
 
+  def pairwise_acc_jerk_pot_coll(other)
+    rji = other.pos
+  end
 end
 
 def get_snapshot
@@ -152,6 +157,15 @@ def get_acc_jerk_pot_coll(nb)
   nb.each do |b| b.clear_acc_and_jerk end
   nb[0].clear_epot
   nb[0].reset_coll_time_q
+  i = 0
+  while (i < nb.size) 
+    j = i+1
+    while (j < nb.size)
+      nb[i].pairwise_acc_jerk_pot_coll(nb[j])
+      j += 1
+    end
+    i += 1
+  end
 end
 
 def evolve(nb, dt_param, dt_dia, dt_out, dt_tot, init_out, x_flag)
