@@ -1,7 +1,8 @@
 $acsdate="20050303"
+require "acsrequire"
+acsrequire "clop"
 
 require "rknbody.rb"
-require "clop.rb"
 
 options_definition_string = <<-END
 
