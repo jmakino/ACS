@@ -33,9 +33,9 @@ class Nbody
   def quartiles
     a = order_squared_radii
     n = a.size
-    r_1 = sqrt a[(n/4.0).round - 1]
-    r_2 = sqrt a[(n/2.0).round - 1]
-    r_3 = sqrt a[(n*3/4.0).round - 1]
+    r_1 = sqrt(a[(n/4.0).round - 1])                                         #1
+    r_2 = sqrt(a[(n/2.0).round - 1])                                         #1
+    r_3 = sqrt(a[(n*3/4.0).round - 1])                                       #1
     print "The values of the three quartiles for r(M) are:\n"
     print "  r(1/4) = "
     printf("%.4g\n", r_1)

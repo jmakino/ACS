@@ -359,6 +359,7 @@ softened particles that we have been using occasionally: the
 potential--density pair of a softened point particle is Plummer's pair:
 
 :equation:
+\label{firstpotdenspair}
 \left\{ \begin{array}{lcl}
 \Phi(r)\,&=&\,
  -\,GM {\displaystyle {1\over \,\left(r^2 + a^2\right)^{1/2}}} \\

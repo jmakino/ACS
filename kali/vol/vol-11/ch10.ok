@@ -1,8 +1,208 @@
-= Quiet Start
+= An Improved Code
 
-== xx
+== Standard Units
 
-layered particle positions:
+*Alice*: In order to adapt your code <tt>mkplummer2.rb</tt>
+to standard units, we have to change scales, both in position space
+and in velocity space.  Let us start with positions.  In our old
+system, we had a structural length <tex>$a=1$</tex>.  In that system,
+the virial radius was:
+
+<tex>$$
+r_V \, = \, {16\over3\pi}
+$$</tex>
+
+Let us call this quantity our scale factor.
+In standard units, the virial radius <tex>$r_V=1$</tex>.
+This means that we have to divide the virial radius by the scale factor,
+when we switch from the old units to standard units.
+
+*Bob*: And this means that _all_ distances have to be scaled this way,
+since that is the definition of a scale factor after all.  I'll copy
+the previous code in a file called <tt>mkplummer3.rb</tt>, and add this
+scaling.  That will take only two lines.  Here, right at the top of the
++mkplummer+ method, I'm adding this line:
+
+ :include: .mkplummer3.rb-1
+
+Then at the place where we initialize the positions for each body, we
+have to divide by that scale factor, just as we had to divide the virial
+radius by that factor:
+
+ :include: .mkplummer3.rb-2
+
+*Alice*: That must be right.  Now the velocity scaling is a bit more tricky.
+How shall we approach that?
+
+*Bob*: Velocities come into the kinetic energy.  Since the masses of the
+particles are not affected, the velocities must scale like the square root
+of the energy.
+
+*Alice*: Good point!  The total mass of a cluster with <tex>$N$</tex> stars
+is unity, and each star therefore has a mass of <tex>$m=1/N$</tex> in
+both systems, or old system of units, and the standard system of
+units.  It is only a change in the magnitude of their velocities that
+can make up for a change in kinetic energy -- or in total or potential
+energies, for that matter, since all these quantities are related.
+And we know that the potential energy can only scale with the
+distances, since <tex>$G=M=1$</tex> in both the old system and the new
+one.
+
+*Bob*: In other words, we have for the potential energy of the cluster
+as a whole:
+
+<tex>$$
+E_{pot} \,\propto\, {1\over r}
+$$</tex>
+
+and
+
+<tex>$$
+E_{kin} \,\propto\, v^2
+$$</tex>
+
+Since they must remain proportional to each other, with the virial factor
+of two between them, we know that
+
+<tex>$$
+v \,\propto\, r^{-1/2}
+$$</tex>
+
+*Alice*: That is an extremely sloppy notation, using <tex>$r$</tex> and
+<tex>$v$</tex> as arbitrary lengths and velocities, but I see what you
+mean, and yes, obviously the square of the velocities transform inversely
+proportional to the distances.
+
+*Bob*: This means that I can add the following conversion factor to the
+code, at the point where the velocities are calculated:
+
+ :include: .mkplummer3.rb-3
+
+== Checking Quartiles
+
+*Alice*: That must be correct, but let's make sure that we get the right
+energy and the right quartiles again -- and this time in standard units.
+
+*Bob*: Let's start with the quartiles:
+
+ :commandoutput: ruby mkplummer3.rb -n 10000 | ruby quartiles.rb
+
+ :commandoutput: ruby mkplummer3.rb -n 10000 | ruby quartiles.rb
+
+ :commandoutput: ruby mkplummer3.rb -n 10000 | ruby quartiles.rb
+
+*Alice*: These are indeed what we had derived a bit earlier, in
+eqs. (ref(standardquantities)) and (ref(standardquartiles)):
+
+:equation:
+\left\{ \begin{array}{lclcl}
+r(1/4) \, &=& \,
+{\displaystyle {3\pi\over16}{1\over\sqrt{2^{4/3}-1}}} \, & \approx & \,0.4778\\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+r_h \, &=& \,
+{\displaystyle {3\pi\over16}{1\over\sqrt{2^{2/3}-1}}} \, & \approx & \,0.7686\\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+r(3/4) \, &=& \,
+{\displaystyle {3\pi\over16}{1\over\sqrt{2^{4/3}3^{-2/3}-1}}}
+\, & \approx & \,1.2811
+\end{array} \right.
+
+Well done!
+
+== Checking Energy
+
+*Bob*: Now let's see whether the energies come out standardized as well.
+That should be easy to verify: in the standard units, the total energy
+should be -1/4.  Let's check:
+
+ :commandoutput: ruby mkplummer3.rb -n 1000 | ruby energy.rb
+
+ :commandoutput: ruby mkplummer3.rb -n 1000 | ruby energy.rb
+
+ :commandoutput: ruby mkplummer3.rb -n 1000 | ruby energy.rb
+
+*Alice*: Just as it should be, within the expected statistical errors of a
+few percent.  Great!  Now we can generate a truly
+standard realization of Plummer's model.
+
+== Quiet Start
+
+*Bob*: There are a couple other features I'd like to add to the code:
+a quiet start, and center-of-mass adjustment.  Let's start with the
+first one.
+
+In my original code, each star is given a position in the star cluster
+independently of all other stars.  If you make a small star cluster,
+it is possible that you wind up with a significant excess of stars, in
+the core, say, or equally likely a significant lack of stars, there
+or somewhere else.
+
+I have found it helpful in some of my simulations to start in a more
+quiet way, in which the stars are initially layered, each occupying a
+position somewhere in their proper mass shell.  In other words, you
+divide the N-body system as an onion into N different concentric
+shells, centered on the center of the cluster, and each having the
+same amount of mass.  You then sprinkle one star into each different
+shell.
+
+*Alice*: I'm not sure whether that really helps.  After you let the
+system evolve for a while, you will soon develop fluctuations that
+obey Poissonian statistics.  You won't keep your neat layering for
+long.  As a matter of fact, within a small fraction of the crossing
+time, your particles will visit other shells than the ones they were
+born in.
+
+*Bob*: That is true, but even so, I like to start with a more orderly
+bunch of stars.  For one thing, the quartiles will come out better initially.
+
+*Alice*: I'm still not convinced that it will help, but it won't hurt either.
+Go right ahead!
+
+*Bob*: I'll copy the previous version in a new file <tt>mkplummer4.rb</tt>
+Now I have to be careful.  Given me a minute. . . . .  Ah, this should
+do it.  Here is the new version of the +mkplummer+ method:
+
+ :inccode: .mkplummer4.rb+mkplummer
+
+== Quiet Indeed
+
+*Alice*: Can you point out what you changed?
+
+*Bob*: There are only two places where I added something.  Before entering
+the <tt>nb.body.each</tt> loop, I define the inner mass shell -- in fact,
+an inner mass sphere; the central layer is a sphere, and all the subsequent
+ones are shells -- as follows:
+
+ :include: .mkplummer4.rb-1
+
+Then, at the beginning of the loop, I pick a random value for the
+cumulative mass within the constraint that the value for the
+cumulative mass has to lie within the range present within the current
+mass shell:
+
+ :include: .mkplummer4.rb-2
+
+As soon as I have done that, I shift the boundaries of the mass shell up
+by one shell, to make them ready for the next traversal of the loop:
+
+ :include: .mkplummer4.rb-3
+
+The last difference is that the radius is now determined from the value
+for the cumulative mass that I had just found, rather than from using the
+random number generator here directly:
+
+ :include: .mkplummer4.rb-4
+
+*Alice*: How about testing the new version?
+
+*Bob*: The total energy should remain unchanged, still -1/4.  Here it is:
+
+ :commandoutput: ruby mkplummer4.rb -n 1000 | ruby energy.rb
+
+*Alice*: Fair enough.  And your quartiles should come out wonderfully
+accurate, even for, say, 100 particles, by construction.
+
+*Bob*: I hope so!  Let's try:
 
  :commandoutput: ruby mkplummer4.rb -n 100 | ruby quartiles.rb
 
@@ -10,9 +210,138 @@ layered particle positions:
 
  :commandoutput: ruby mkplummer4.rb -n 100 | ruby quartiles.rb
 
-and of course even more so for:
+Indeed, as expected.  And of course it will be even more accurate
+for 10,000 particles:
 
  :commandoutput: ruby mkplummer4.rb -n 10000 | ruby quartiles.rb
 
+*Alice*: Quiet indeed.  You have managed to shove the statistical noise
+under the rug.
 
+== Center of Mass Adjustment
 
+*Bob*: I expect that you may be more interested in the last improvement
+I would like to make, the center of mass adjustment.
+
+*Alice*: Indeed.  I think it would be better to shift to a coordinate
+system in which the newly created star cluster has its center of mass
+in the origin of the coordinate system.  In addition, it would be nice
+to give the coordinate system a boost in such as way that the velocity
+of the center of mass is zero in that coordinate system.  Is this what
+you had in mind?
+
+*Bob*: Exactly.  It would of course be possible to sprinkle particles
+in space, and in velocity space, in pairs, so that you would cancel
+the contributions: you could place them at opposite sides of the center,
+and give them opposite velocities.  But that would create artificial
+correlations, and I don't like to do that.  Better to create a realization
+first, and then to shift the coordinate system in the way you suggested.
+
+After creating our model, we measure the center of mass position
+<tex>$\br_{\rm com}$</tex>, which I will name <tt>pos_com</tt> in the
+code, as follows:
+
+<tex>$$
+\br_{\rm com} \,=\, {\sum_{i=0}^{N-1} m_i\br_i \over \sum_{i=0}^{N-1} m_i}
+\,=\, {1\over M}\sum_{i=0}^{N-1} m_i\br_i
+$$</tex>
+
+and similarly for the velocity of the center of mass, which I will call
+<tt>vel_com</tt> in the code:
+
+<tex>$$
+\bv_{\rm com} \,=\, {\sum_{i=0}^{N-1} m_i\bv_i \over \sum_{i=0}^{N-1} m_i}
+\,=\, {1\over M}\sum_{i=0}^{N-1} m_i\bv_i
+$$</tex>
+
+If we then subtract <tex>$\br_{\rm com}$</tex> from each particle's
+position, and also subtract <tex>$\bv_{\rm com}$</tex> from each particle's
+velocity, we will be guaranteed that
+<tex>$\br_{\rm com}=\bv_{\rm com}=0$</tex>.  This is then the shift that
+we ordered.
+
+== Implementation
+
+Here is a straightforward implementation, in file <tt>mkplummer5.rb</tt>.
+At the end of the +mkplummer+, after all the work is done, I am adding
+a line:
+
+ :include: .mkplummer5.rb-1
+
+which invokes the following method:
+
+ :inccode: .mkplummer5.rb+adjust_center_of_mass
+
+*Alice*: Straightforward indeed.  Normally you would have to divide
+the positions and the velocities by the total mass, but here the
+total mass is unity, so you can skip that.  Okay, that looks good,
+but as always, let's first do a couple checks.
+
+*Bob*: Never hurts.  Here they are.  First the energy:
+
+ :commandoutput: ruby mkplummer5.rb -n 1000 | ruby energy.rb
+
+That certainly looks fine.  Now the quartiles:
+
+ :commandoutput: ruby mkplummer5.rb -n 100 | ruby quartiles.rb
+
+Hmm, a bit less quiet than before, it seems.  Let me try a few more:
+
+ :commandoutput: ruby mkplummer5.rb -n 100 | ruby quartiles.rb
+
+ :commandoutput: ruby mkplummer5.rb -n 100 | ruby quartiles.rb
+
+Definitely less quiet than before.  How can shifting . . . ah, shifting
+the center of mass also shifts the positions of my idealized mass shells
+which provided the scaffolding for sprinkling particles in such a nicely
+layered way.  Of course!
+
+*Alice*: Yes, that must be the reason.  Well, that's the price you have to pay
+for preventing your model for being off-center!
+
+*Bob*: Perhaps layering was not such a hot idea after all.  Oh, well.
+I may as well leave it in.
+
+== Checking
+
+*Alice*: So far, so good, but we should check that the center of mass
+is indeed in the center, and will stay there.
+
+*Bob*: That may not be so easy to check, unless we write a new analysis
+tool to report the center of mass position and motion.
+
+*Alice*: And that tool would reflect the same equations you just entered
+in the code, making it less of independent check.
+
+*Bob*: Ah, wait a minute: we can look at a few-body system.  Starting with
+one body, it should sit happily in the center, and two bodies should now
+be placed opposite each other, in position as well as in velocity.
+
+*Alice*: Yes, of course.  That's a good way to check.  Better first run those
+cases with the version you created when you went to standard units, and then 
+to repeat them for your shifted version.
+
+*Bob*: Okay, here is a one-body system without shifting:
+
+ :commandoutput: ruby mkplummer3.rb -n 1
+
+and here with the proper center of mass shifts:
+
+ :commandoutput: ruby mkplummer5.rb -n 1
+
+*Alice*: Proper indeed.
+
+*Bob*: And here for the two-body system, unshifted:
+
+ :commandoutput: ruby mkplummer3.rb -n 2
+
+and shifted:
+
+ :commandoutput: ruby mkplummer5.rb -n 2
+
+*Alice*: Good!  I believe the code now.  We have acquired a well-adjusted
+codes that speaks in standard units.
+
+*Bob*: I think we can call it a day.
+
+*Alice*: Same thought here.

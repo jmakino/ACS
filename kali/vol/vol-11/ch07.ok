@@ -1,4 +1,4 @@
-= Checks
+= Energy Checks
 
 == More Modular
 
@@ -140,7 +140,7 @@ E_{pot}\,=\,{1\over2}\int_0^\infty \rho(r)\Phi(r)4\pi r^2dr
 *Bob*: I guess that is right, or is it?  The more I think about it, I
 wonder.  You are talking about pairwise interactions, but we are letting
 each mass element feel the rest of the cluster through the whole potential
-<tex>$\Phi(r)$</tex>.  If I were to think about pairwise intereactions,
+<tex>$\Phi(r)$</tex>.  If I were to think about pairwise interactions,
 I would immediately think about how the cluster can be build up by
 bringing each new mass element in from an infinite distance.  At first
 there would be little mass, and later, when more and more mass is
@@ -310,6 +310,7 @@ list of most common integrals:
 *Bob*: Substituting eq. (ref(AaS)) into eq. (ref(endpot)), we get:
 
 :eqnarray:
+\label{thepot}
 E_{pot}\,&=&\,-\,{3\over8}\,{GM^2\over a^2}\,
 \int_0^\infty \left(1+{r^2\over a^2}\right)^{-2} dr            \nonumber\\
 &=&\,-\,{3\over8}\,GM^2a^2\,

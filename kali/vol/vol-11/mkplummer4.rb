@@ -1,4 +1,3 @@
-#:segment start: toriaezu
 require "vector.rb"
 
 class Body
@@ -43,6 +42,16 @@ def frand(low, high)
   low + rand * (high - low)
 end
 
+def spherical(r)
+  vector = Vector.new
+  theta = acos(frand(-1, 1))
+  phi = frand(0, 2*PI)
+  vector[0] = r * sin( theta ) * cos( phi )
+  vector[1] = r * sin( theta ) * sin( phi )
+  vector[2] = r * cos( theta )
+  vector
+end  
+
 def mkplummer(n, seed)
   if seed == 0
     srand
@@ -50,23 +59,16 @@ def mkplummer(n, seed)
     srand seed
   end
   scalefactor = 16.0 / (3.0 * PI)
-  inv_scalefactor = 1.0 / scalefactor
-  sqrt_scalefactor = sqrt( scalefactor )
   nb = Nbody.new(n)
-  cumulative_mass_min = 0
-  cumulative_mass_max = 1.0/n
+  cumulative_mass_min = 0                                                    #1
+  cumulative_mass_max = 1.0/n                                                #1
   nb.body.each do |b|
     b.mass = 1.0/n
-    cumulative_mass = frand(cumulative_mass_min, cumulative_mass_max)
-    cumulative_mass_min = cumulative_mass_max
-    cumulative_mass_max += 1.0/n
-    radius = 1.0 / sqrt( cumulative_mass ** (-2.0/3.0) - 1.0)
-    theta = acos(frand(-1, 1))
-    phi = frand(0, 2*PI)
-    b.pos[0] = radius * sin( theta ) * cos( phi )
-    b.pos[1] = radius * sin( theta ) * sin( phi )
-    b.pos[2] = radius * cos( theta )
-    b.pos *= inv_scalefactor
+    cumulative_mass = frand(cumulative_mass_min, cumulative_mass_max)        #2
+    cumulative_mass_min = cumulative_mass_max                                #3
+    cumulative_mass_max += 1.0/n                                             #3
+    radius = 1.0 / sqrt( cumulative_mass ** (-2.0/3.0) - 1.0)                #4
+    b.pos = spherical(radius) / scalefactor
     x = 0.0
     y = 0.1
     while y > x*x*(1.0-x*x)**3.5
@@ -74,18 +76,11 @@ def mkplummer(n, seed)
       y = frand(0,0.1)
     end
     velocity = x * sqrt(2.0) * ( 1.0 + radius*radius)**(-0.25)
-    theta = acos(frand(-1, 1))
-    phi = frand(0, 2*PI)
-    b.vel[0] = velocity * sin( theta ) * cos( phi )
-    b.vel[1] = velocity * sin( theta ) * sin( phi )
-    b.vel[2] = velocity * cos( theta )
-    b.vel *= sqrt_scalefactor
+    b.vel = spherical(velocity) * sqrt(scalefactor)
   end
   STDERR.print "seed used = ", srand, "\n"
   nb.simple_print
 end
-
-#:segment end:
 
 def print_help
   print "usage: ", $0,
