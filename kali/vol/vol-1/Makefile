@@ -1,5 +1,5 @@
-SRC =  title.cp pref.cp ch01.cp  ch02.cp  ch03.cp  ch04.cp \
-       ch05.cp  ch06.cp  ch07.cp  ch08.cp  ch09.cp  ch10.cp  ch11.cp  ch12.cp
+SRC =  title.ok pref.ok ch01.ok  ch02.ok  ch03.ok  ch04.ok \
+       ch05.ok  ch06.ok  ch07.ok  ch08.ok  ch09.ok  ch10.ok  ch11.ok  ch12.ok
 
 TARGET = volume1
 
