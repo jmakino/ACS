@@ -15,6 +15,17 @@
 #    in the same directory as doc directory
 #    (to get volume0.ps and volume0.pdf etc)
 # -- all files (except under .svn) under msa
+#
+# 
+
+#
+# Information on where to install the web pages
+# 
+installhost="grape.astron.s.u-tokyo.ac.jp"
+installuname="acs"
+installdir="WWW/tmp/artcompsci"
+
+
 
 load "src/utilities/svn-recursive-print-files.rb"
 
@@ -84,7 +95,7 @@ svnlist = svn_files(".",/(^\.\/msa$)/)
 
 STDERR.print "svn files finished ..."
 doclist = doc_directories(".")
-doclist += add_files(doclist, ["v*.ps.gz",  "v*.pdf"])
+doclist += add_files(doclist, ["v*.ps.gz",  "v*.pdf", ".imgs"])
 #doclist.each{|x| print x,"\n"}
 STDERR.print "doc files finished ..."
 
@@ -153,13 +164,8 @@ system "(echo -n Date: ;date) >> #{releasefile}"
 system "(echo -n Person: ;whoami) >> #{releasefile}"
 open(releasefile,"a"){|f| f.print "Release: #{newversion}\n"}
 
-
-installhost="grape.astron.s.u-tokyo.ac.jp"
-installuname="acs"
-installdir="WWW/tmp/artcompsci"
-
 sendcommand="rsync -e ssh -avprog versions #{installuname}@#{installhost}:#{installdir}"
-extractcommand="ssh -l #{installuname} #{installhost} \"cd #{installdir} ; tar xvzf #{tarfilename}\""
+extractcommand="ssh -l #{installuname} #{installhost} \"cd #{installdir} ; tar xzf #{tarfilename}\""
 
 STDERR.print <<END
 Do you want to update the files on the ACS WEB SERVER now?
