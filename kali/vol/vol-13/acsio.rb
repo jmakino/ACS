@@ -34,7 +34,8 @@ end
 
 module ACS_IO
 
-  ACS_HEADER = "ACS"
+  ACS_HEADER = "ACS\n"
+  ACS_FOOTER = "#{ACS_HEADER.chomp.reverse}\n"
   PRECISION = 16
   BASE_INDENT = 0
   ADD_INDENT = 2
@@ -71,12 +72,65 @@ module ACS_IO
   end
 
   def acs_write(file = $stdout, precision = PRECISION, add_indent = ADD_INDENT)
-    file.print ACS_HEADER + "\n" +
-               to_acs_s("", precision, add_indent, add_indent)
+    file.print ACS_HEADER +
+               to_acs_s("", precision, add_indent, add_indent) +
+               ACS_FOOTER
+  end
+
+  def read_acs_string(file = $stdin)
+    s = file.gets
+    while s =~ /^\s*$/
+      s = file.gets
+    end 
+    return nil if not s
+    raise "Not an ACS file" if s.chomp != ACS_HEADER
+    contents = ""
+    s = file.gets
+    while s.chomp != ACS_FOOTER
+      contents += s
+      s = file.gets
+    end
+    contents
   end
 
   def acs_read(file = $stdin)
+    s = read_acs_string(file)
+    return nil if not s
+    a = s.split("\n")
+    acs_parse(a)
+  end
+
+  def io_name_okay?(w)
+    if defined? ACS_IO_NAME
+      if w != ACS_IO_NAME
+        raise "first_word = #{first_word} != #{ACS_IO_NAME}"
+      end
+    else
+      if w != self.class.to_s
+        raise "first_word = #{first_word} != #{self.class.to_s}"
+      end
+    end
+  end
+
+  def acs_parse(a)
+    first_line = a.shift.split
+    io_name_okay?(first_line[0])
+    name = first_line[1]
+    first_line =~ /^ */
+    indent = $&.size
+    line = a.shift
+    return nil if not line
+    raise if line !~ /^ */    
+    return a.unshift(line) if $&.size <= indent
+
+    # we now know that we have gone one level deeper, where we expect
+    # to find either an instance variable or the value for one of the
+    # special classes: Float, Fixednum, Bignum, String, Array
+
+#    while((line = a.shift) =~ /^*/
     
+    
+
   end
 
 end
@@ -86,4 +140,3 @@ class Object
   include ACS_IO
 
 end
-
