@@ -1,5 +1,11 @@
 #!/usr/local/bin/ruby -w
 
+def acsp(s)
+  
+
+  STDERR.print "#{s} = #{eval(s)}\n"
+end
+
 require "kali/nbody.rb"
 
 module Integrator_force_default
@@ -1002,6 +1008,18 @@ class Worldera
     e
   end
 
+  def census(t = @end_time)
+    t_overshoot = t
+    @worldline.each do |w|
+      t_overshoot = [t_overshoot, w.first_time_after(t)].max
+    end
+    n_steps = [0,0,0,0,0].to_v
+    @worldline.each do |w|
+      n_steps += w.census(@begin_time, t, t_overshoot)
+    end
+    n_steps
+  end
+
   def prune(k)
     new_worldline = []      # protect the original; not yet cleanly modular
     @worldline.each do |w|
@@ -1039,10 +1057,16 @@ end
 
 module Output
 
-  def diagnostics_and_output(c, initial_output = false)
-    t_target = set_target(initial_output)
-    diagnostics(t_target, c.dt_dia, initial_output)
-    output(c, t_target, initial_output)
+  def diagnostics_and_output(c)
+    t_target = set_target(false)
+    diagnostics(t_target, c.dt_dia, false)
+    output(c, t_target, false)
+  end
+
+  def initial_diagnostics_and_output(c)
+    t_target = set_target(true)
+    diagnostics(t_target, c.dt_dia, true)
+    output(c, t_target, true)
   end
 
   def set_target(init)
@@ -1111,7 +1135,7 @@ include Output
   end
 
   def continue_from_world(c)
-    diagnostics_and_output(c, true)
+    initial_diagnostics_and_output(c)
     @t_out += c.dt_out
     @t_end += c.dt_end
     @dt_max = c.dt_era * c.dt_max_param
@@ -1133,7 +1157,7 @@ include Output
   def startup(c)
     @era.startup(@dt_max, c.init_timescale_factor)
     @initial_energy = @era.report_energy
-    diagnostics_and_output(c, true)
+    initial_diagnostics_and_output(c)
   end
 
   def evolve(c)
@@ -1144,6 +1168,16 @@ include Output
       diagnostics_and_output(c)
       @old_era, @era = @era, @new_era
     end
+    x = 3.6
+
+acsp("x")
+
+#print "@time = ", @time, "\n"
+#acsp("@time")
+#acsr {"@time"}
+#print "x = ", x, "\n"
+##acsp("x")
+##acsr{"x"}
   end
 end
 

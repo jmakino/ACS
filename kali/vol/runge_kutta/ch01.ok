@@ -124,7 +124,7 @@ we use a finite time step <tex>$\tau$</tex>.  For now, we will analyze
 the properties of the first time step.  We choose <tex>$t=0$</tex> at
 the beginning of the first time step, and we denote the positions at
 the beginning and end of the first time step by <tex>$x_0$</tex> and
-<tex>$x_1$</tex>, respectively:
+<tex>$x_1$</tex> , respectively:
 
 :equation:
 x_0 \equiv x(0) \ \ \ \ \ ; \ \ \ \ x_1 \equiv x(\tau)
@@ -179,7 +179,7 @@ However, for now we will stick to the first-order differential
 equation, using the general expression that we started with, but
 without any explicit time dependence.
 
-== Taylor Series
+== A Matter of Interpretation
 
 *Bob*: Even though this is just a warming-up exercise, it would be nice to
 give a physical interpretation to the first-order differential equation
@@ -188,20 +188,79 @@ that you wrote down:
 :equation:
 {dx \over dt} = f(x)
 
-I think it can be interpreted as describing the motion of an object
-that is being pushed through a very resistive medium, such as a spoon
-being pushed through molasses.  The velocity of the spoon is
-proportional to the force term <tex>$f(x)$</tex> on the right-hand
-side.
+You have been calling <tex>$f(x)$</tex> a force, but that doesn't seem
+right.  This equation tells us that the velocity is prescribed, and
+equal to <tex>$f(x)$</tex>.  A true force would give rise to an
+acceleration, not a velocity.
 
-*Alice*: That would be a good example.
+*Alice*: In principle that is correct, but in practice, if we have a lot of
+resistance, it is the velocity that is proportional to the force.  If you
+move a spoon through molasses, you have to push twice as hard to go twice
+as fast.
 
-*Bob*: Okay, let's get to work.  You have struggled with these things
-a lot more than I have.  How do we get started?
+*Bob*: But even in that case, the initial acceleration must still be
+proportional to the applied force.
+
+*Alice*: Yes, but only very briefly.  As soon as you pick up a very small
+amount of speed, friction starts to resist, canceling part of your force.
+So after the initial transients die out, the velocity settles to a constant
+value, proportional to the force you use.  From than on, in the limit
+of changes that are slow with respect to the duration of the transients,
+the acceleration is proportional to the <i>rate of change</i> of the force,
+not to the magnitude of the force.
+
+*Bob*: I don't like the idea of posing a problem, and then neglecting the
+interesting part of the solution, namely the transients.
+
+*Alice*: So for once you are looking for a more clearly abstract model;
+I thought you would like a quick and dirty physics example!
+
+*Bob*: Molasses may indeed be too dirty for me.  Why don't we stick with
+considering <tex>$f(x)$</tex> as a velocity.
+
+*Alice*: But the left hand side of the differential equation is a velocity.
+The right-hand side has to be something else.  In Newtonian dynamics
+we have <tex>$f=ma$</tex>, which means that the acceleration is
+proportional to the net force acting on the body.  You now want to
+have a velocity, but you have to specify what it is that is imposing
+itself on your particle to produce that velocity.
+
+*Bob*: Well, yeah, hmmm, let's see, that's not so clear.
+
+*Alice*: Forgive the pun, but why don't we stick to molasses?
+
+*Bob*: Ah, I got it!  Hey, elementary, my dear Watson.
+If a particle would be rolling down a potential well, without
+any friction, the total energy would be constant.  If we write
+<tex>$\Phi(x)$</tex> for the potential energy per unit mass, and
+<tex>$E$</tex> for the total energy per unit mass, then the velocity
+can be expressed as:
+
+:equation:
+v(t) = \sqrt{2E - \Phi(x(t))}
+
+*Alice*: Bravo, that works.  Interesting.  I hadn't even considered such
+a possibility, probably because I started out calling <tex>$f(x)$</tex>
+a force from the beginning.
+
+*Bob*: Okay, so we're talking now about a particle in a potential well.
+
+*Alice*: You may, but I still prefer to talk about molasses, since in
+that case we can make a more smooth transition to the case of a second
+order differential equation.
+
+== Taylor Series
+
+*Bob*: I still prefer my interpretation.  Let's just agree to disagree.
+
+*Alice*: Fine with me, since, after all, the math will be the same.
+
+*Bob*: Exactly.  Okay, let's get to work.  You have struggled with these
+things a lot more than I have.  How do we get started?
 
 *Alice*: We want to check the quality of any given numerical approximation
 scheme to the solution of our differential equation.  In order to do
-so, we can compare such a scheme with a Taylor series developoment of
+so, we can compare such a scheme with a Taylor series development of
 the true solution, around the starting point of our one integration
 step.
 
@@ -229,18 +288,27 @@ j_0 &=& \dot a_0 \ = \ f_0^2 f_0'' + f_0 (f_0')^2     \label{j0} \\
 s_0 &=& \dot j_0 \ = \ f_0^3 f_0''' + 4f_0^2f_0'f_0'' +
 (f_0')^3 f_0                                          \label{s0}
 
-*Bob*: Note that we should not interpret the acceleration as something that
-happens as the result of a force being applied.  If a spoon moving
-through molasses accelerates, it is the result of an <i>increase</i>
-in the force.
+*Alice*: Here, you see, the acceleration comes out nicely as the rate
+of change of the force applied, as would happen for a spoon moving
+slowly through molasses.
 
-*Alice*: That may take a bit of getting used to, but of course, for a
-first-order differential equation, that makes sense.  Yes, it's nice to
-have this picture of movement through a viscous medium as a guide.
+*Bob*: That would take a lot of getting used to!  For me, the acceleration
+is just the rate of change of the velocity.
+
+*Alice*: But isn't that a tautology?  After all, the acceleration is
+by definition the rate of change of the velocity, as a mathematical
+construction.  I thought we were trying to come up with a physical system
+as an example.
+
+*Bob*: But a potential well is surely a physical system!  And what I thought
+is that we had agreed to disagree.
+
+*Alice*: I agree!
 
 == New Force Evaluations
 
-*Bob*: I like the systematic approach idea, of using up to two
+*Bob*: Me too.  Coming back to our task,
+I like the systematic approach idea, of using up to two
 new force evaluations per time step.  Well, this gives us two
 choices: either one or two force evaluations.
 
@@ -257,8 +325,19 @@ nature of that force calculation.
 at the boundary of two steps, otherwise you can't recycle it.  But that
 doesn't seem to be a particularly severe restriction to me.
 
-*Alice*: Oh, but there is more.  In a general Runge-Kutta approach, you
-compute a few forces here and there, and only after doing that, you
+*Alice*: In principle, you could even recycle a force that is used in the
+middle, if you would be willing to used the remembered values of the
+previous step, you could still recycle.  However, that would mean that
+we would go beyond Runge-Kutta methods, and enter the area of multi-step
+methods.
+
+*Bob*: Let's not get into that, at least not know.  I'd be happy to first
+explore the landscape of Runge-Kutta algorithms.  Okay, as long as we let
+our last force calculation occur at the end of a step, we can recycle that
+calculation for the next step.
+
+*Alice*: Oh, no, it's not that simple.  In a general Runge-Kutta approach,
+you compute a few forces here and there, and only after doing that, you
 combine those forces in such a way as to get a combination of them,
 to give you a value of the new position accurate to high order.
 
@@ -354,7 +433,7 @@ k_1 &=& f(x_0)
 which is the forward-Euler algorithm.  This scheme is only first-order
 accurate, since it cannot possibly reproduce the <tex>$O(\tau^2)$</tex> term in
 Eq. (ref(taylor1)):
-such a match would require <tex>$\half f_0 f_0' = 0$</tex>,
+such a match would require <tex>$\half f_0 f_0' = 0$</tex> ,
 which is certainly not true for general force prescriptions.
 
 *Bob*: Of course, forward Euler is the simplest possible scheme.  It is
@@ -406,10 +485,10 @@ x_1 = x_0 + \left\{
 defined at the start of the time step, right?
 
 *Alice*: Yes.  And since that Taylor series for <tex>$x_1$</tex> is defined
-as a series in <tex>$\tau$</tex>, we must somehow translate the above
-expressions, too, a series in <tex>$\tau$</tex>, around <tex>$\tau = 0$</tex>.
+as a series in <tex>$\tau$</tex> , we must somehow translate the above
+expressions, too, a series in <tex>$\tau$</tex> , around <tex>$\tau = 0$</tex>.
 
-*Bob*: The main obstacle here is <tex>$k_2$</tex>,
+*Bob*: The main obstacle here is <tex>$k_2$</tex> ,
 which itself involves an expression that depends on <tex>$\tau$</tex>.
 
 *Alice*: The solution here is that we can develop <tex>$k_2$</tex>
@@ -454,7 +533,7 @@ x_1 = x_0 + f_0\tau + \half f_0 f_0'\tau^2
 + O(\tau^4) 
 
 To what order can we make Eqs. (ref(rk2)) and (ref(taylor2)) compatible?
-Starting with terms to first order in <tex>$\tau$</tex>, we have to insist that
+Starting with terms to first order in <tex>$\tau$</tex> , we have to insist that
 
 :equation:
 (\alpha_1 + \alpha_2) f_0 = f_0
@@ -468,7 +547,7 @@ $\displaystyle{
 }$
 }
 
-To second order in <tex>$\tau$</tex>, we would like to satisfy:
+To second order in <tex>$\tau$</tex> , we would like to satisfy:
 
 :equation:
 \alpha_2 \eta f_0 f_0' = \half f_0 f_0'
@@ -490,7 +569,7 @@ third order in <tex>$\tau$</tex> ?  This would require
 \one{6} \left\{f_0^2 f_0'' + f_0 (f_0')^2 \right\}
 
 While we can match the first term on the right-hand side, by choosing
-<tex>$\alpha_2 \eta^2 = 1/3$</tex>, this would require that <tex>$f_0 (f_0')^2 = 0$</tex>,
+<tex>$\alpha_2 \eta^2 = 1/3$</tex> , this would require that <tex>$f_0 (f_0')^2 = 0$</tex> ,
 which is not true for general force prescriptions.
 
 == A One-Parameter Family of Algorithms
@@ -518,13 +597,13 @@ derivations.
 order gives us more freedom, rather than less.  Unlike the first-order case,
 we now have an extra parameter to play with.
 
-We started with three free parameters, <tex>$\alpha_1$</tex>,
-<tex>$\alpha_2$</tex>, and <tex>$\eta$</tex>.  Since we only have the
+We started with three free parameters, <tex>$\alpha_1$</tex> ,
+<tex>$\alpha_2$</tex> , and <tex>$\eta$</tex>.  Since we only have the
 two boxed conditions above, we can expect to be left with one degree
 of freedom in choosing the coefficients in our algorithm.
 
 *Alice*: Well, let's check.  If we define
-<tex>$\alpha \equiv \alpha_2$</tex>, we find:
+<tex>$\alpha \equiv \alpha_2$</tex> , we find:
 
 :equation:
 \left\{ \begin{array}{lcl}
@@ -546,7 +625,7 @@ k_2 &=& f(x_0 + {1\over 2 \alpha} k_1 \tau)
 
 *Bob*: Ah, this is nice.  I recognize some of the algorithms that I've been
 using in the past.  One classical choice for a second-order Runge-Kutta is
-<tex>$\alpha = \half$</tex>, leading to:
+<tex>$\alpha = \half$</tex> , leading to:
 
 :equation:
 \label{rk2alphahalf}
@@ -557,7 +636,9 @@ k_1 &=& f(x_0)  \\
 k_2 &=& f(x_0 + k_1 \tau)
 \end{array} \right.                     
 
-Another classical choice is <tex>$\alpha = 1$</tex>, which gives:
+This one goes under the name `improved Euler scheme.'
+
+Another classical choice is <tex>$\alpha = 1$</tex> , which gives:
 
 :equation:
 \left\{ \begin{array}{lcl}
@@ -567,19 +648,21 @@ k_1 &=& f(x_0)  \\
 k_2 &=& f(x_0 + \half k_1 \tau)
 \end{array} \right.
 
+This integration scheme is called the `midpoint scheme.'
+
 *Alice*: Yes, and now we have given a derivation for why they work.
 In general, for higher-order algorithms, you have to follow such a
 derivation to convince yourself that the recipe has the order that is
 claimed for it.  However, in this second-order case, you can still
 use your intuition to convince yourself that the expressions are okay.
 
-For <tex>$\alpha = \half$</tex>, we effectively average the
+For <tex>$\alpha = \half$</tex> , we effectively average the
 evaluations at the beginning and at the end of the trial step, and you
 can imagine that this gives you one extra order of accuracy, since you
 effectively cancel the types of error you would make if you were using
 a force calculation only at one end of the step.
 
-Similarly, for <tex>$\alpha = 1$</tex>, we use the evaluation at the
+Similarly, for <tex>$\alpha = 1$</tex> , we use the evaluation at the
 end of a smaller trial step that brings us approximately mid-way
 between the beginning and the end of the step.  Then, at that point,
 we again obtain an estimate for the average of the forces at begin and

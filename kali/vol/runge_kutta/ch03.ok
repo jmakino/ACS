@@ -171,7 +171,7 @@ should be a tensor.  In neither case does it produce a vector.
 What does it look like in components?
 
 *Alice*: Let us check.  The most intuitive approach would be to start
-with a small variation in <tex>$\vec g$</tex>, which can be
+with a small variation in <tex>$\vec g$</tex> , which can be
 expressed as
 
 :equation:
@@ -335,7 +335,7 @@ and we can also write
 d \vec s = {dx \choose dv} = \eta {v_0 \choose f_0} \tau
 
 The two results that are encoded here, <tex>$dx = \eta v_0 \tau$</tex>
-and <tex>$dv = \eta f_0 \tau$</tex>, can now be plugged back into the
+and <tex>$dv = \eta f_0 \tau$</tex> , can now be plugged back into the
 definition of <tex>$d\vec g$</tex>
 
 :equation:
@@ -402,7 +402,7 @@ $\displaystyle{
 }$
 }
 
-To second order in <tex>$\tau$</tex>, we would like to satisfy:
+To second order in <tex>$\tau$</tex> , we would like to satisfy:
 
 :equation:
 \alpha_2 \eta \vec h_0 = \half \vec h_0
@@ -528,7 +528,7 @@ of the step.
 <tex>$k_1$</tex> is the force evaluation at the beginning of the step,
 the _exact_ force calculation at the end of the step would be
 <tex>$f(x_1) = x_0 + v_0 \tau + \half k_1\tau^2$</tex>.  However, in
-our scheme above, <tex>$k_2 = x_0 + v_0 \tau$</tex>, and the last term
+our scheme above, <tex>$k_2 = x_0 + v_0 \tau$</tex> , and the last term
 is missing.
 
 *Bob*: Tricky!  So we are dealing with an almost-leapfrog scheme, where

@@ -15,7 +15,7 @@ v_1 &=& v_0 + \left(\beta_1 k_1 + \beta_2 k_2\right) \tau
 
 3rd order not possible: in Eq. (ref(standard1)) we see that starting
 the first force calculation at time zero implies that the coefficient
-for <tex>$v_0$</tex> in <tex>$k_2$</tex> should be <tex>$2/3$</tex>, and not <tex>$1$</tex> as we insist upon above.
+for <tex>$v_0$</tex> in <tex>$k_2$</tex> should be <tex>$2/3$</tex> , and not <tex>$1$</tex> as we insist upon above.
 
 This means that we only have to expand up to powers in <tex>$\tau^2$</tex>.
 
@@ -91,7 +91,7 @@ x_1 &=& x_0 + v_0 \tau +
 
 Already okay.  So we are left with a two-parameter freedom.
 
-For <tex>$\alpha = 0$</tex> and <tex>$\eta = \half$</tex>, simplest choice: leapfrog.
+For <tex>$\alpha = 0$</tex> and <tex>$\eta = \half$</tex> , simplest choice: leapfrog.
 
 [check for which values time symmetry; 
 presumably only for <tex>$\alpha = 0$</tex> and <tex>$\eta = \half$</tex>]
@@ -236,7 +236,7 @@ next to last equation and the one above that.  Contradiction.  Hence:
 :equation:
 \eta_{22}=\half\eta_{21}
 
-Introduce <tex>$\alpha \equiv \alpha_2$</tex> and <tex>$\eta \equiv \eta_{21}$</tex>, and use
+Introduce <tex>$\alpha \equiv \alpha_2$</tex> and <tex>$\eta \equiv \eta_{21}$</tex> , and use
 <tex>$\zeta \equiv \eta_{33}$</tex> as the third parameter.
 Then
 
@@ -281,7 +281,7 @@ k_3 &=& f(x_0 + v_0\tau +
 ((\half-\zeta) k_1 + \zeta k_2 )\tau^2)
 \end{array} \right.             
 
-Example: for <tex>$\alpha = \zeta=0$</tex>, <tex>$\eta=\half$</tex>:
+Example: for <tex>$\alpha = \zeta=0$</tex> , <tex>$\eta=\half$</tex>:
 
 :equation:
 \left\{ \begin{array}{lcl}
@@ -296,7 +296,7 @@ k_3 &=& f(x_0 + v_0\tau + \half k_1 \tau^2)
 
 Like trapezium rule for integration!
 
-Another example: for <tex>$\alpha = \zeta=0$</tex>, <tex>$\eta=\one{3}$</tex>:
+Another example: for <tex>$\alpha = \zeta=0$</tex> , <tex>$\eta=\one{3}$</tex>:
 
 :equation:
 \left\{ \begin{array}{lcl}
@@ -358,7 +358,7 @@ recycling scheme that is third order correct, it is tempting to search
 for a fourth-order scheme, based on only two new force calculations
 per time step.  
 
-Repeating the previous analysis to one order higher in <tex>$\tau$</tex>, we get
+Repeating the previous analysis to one order higher in <tex>$\tau$</tex> , we get
 
 :eqnarray:
 k_2 &=& f_0 + \eta_{21}v_0f_0'\tau 
@@ -514,7 +514,7 @@ Together, these two expressions imply
 :equation:
 \eta_{21}(1-\eta_{21}) = 2\eta_{21}^2(1-\eta_{21})
 
-There are three solutions: <tex>$\eta_{21} = 0$</tex>, <tex>$\eta_{21} = 1$</tex>, and
+There are three solutions: <tex>$\eta_{21} = 0$</tex> , <tex>$\eta_{21} = 1$</tex> , and
 <tex>$\eta_{21} = \half$</tex>.  The first two solutions can be discarded, because
 they would imply that the left-hand side of the 6th, 7th, and 8th
 equations above would all have the same value, contradicting the fact
@@ -618,14 +618,14 @@ ten unknowns and found a consistent solution!  To summarize:
 
 Not only that, it turns out that we get an additional bonus: these
 solutions solve the previous relation for demanding the
-<tex>$\tilde x_1 = x_1 + O(\tau^3)$</tex>, which was
+<tex>$\tilde x_1 = x_1 + O(\tau^3)$</tex> , which was
 
 :equation:
 \eta_{32} + \eta_{33} = \half
 
 We have thus found a consistent set of solutions for ten variables
 satisfying twelve equations.  Could we be really lucky?  Could it be
-that in fact <tex>$\tilde x_1 = x_1 + O(\tau^4)$</tex>?  If that were true,
+that in fact <tex>$\tilde x_1 = x_1 + O(\tau^4)$</tex> ?  If that were true,
 our fourth-order scheme would allow us to recycle the last force
 calculation, and we would really have obtained a fourth-order scheme
 with an effective costs of only two new force calculations per step.
@@ -668,7 +668,7 @@ be fourth order, the position where the last force calculation is
 computed should agree to third order with the new position at the end
 of the time step.  However, the latter has a <tex>$k_1$</tex> term which the
 former lacks, and since the difference <tex>$k_1 - k_2$</tex> is of first order
-in <tex>$\tau$</tex>, there is a real third-order difference between the two
+in <tex>$\tau$</tex> , there is a real third-order difference between the two
 positions, hence between the forces computed in these two positions.
 The upshot is that this will introduce a fourth-order error in the
 velocity in the next step, when we recycle the last force calculation.
@@ -679,6 +679,6 @@ new forces anew at each step.
 By the way, as a fourth-order scheme, it is listed in Abramowitz and
 Stegun's welknown Handbook of Mathematical Functions as eq. 25.5.22,
 but with a typo: the error in the position is listed as being
-<tex>$O(\tau^4)$</tex>, while it really should be <tex>$O(\tau^5)$</tex>; in addition no
+<tex>$O(\tau^4)$</tex> , while it really should be <tex>$O(\tau^5)$</tex> ; in addition no
 error is listed for the velocity.  As we have seen, for the velocity,
 too, the error is <tex>$O(\tau^5)$</tex>.

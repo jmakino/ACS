@@ -24,7 +24,7 @@ the first step, and to recycle its use, to let it function as the
 <tex>$k_1$</tex> contribution to the second step?
 
 *Bob*: Not really, no.  At least, I don't think so.  The first force
-calculation for the second step will be evaluated at <tex>$x_1$</tex>,
+calculation for the second step will be evaluated at <tex>$x_1$</tex> ,
 the end point of the first step.  However, the last force calculation
 for the first step was not evaluated at that exact point.  Rather it
 was evaluated at the point that was reached by using only the information
@@ -41,8 +41,8 @@ certainty.
 the strict sense, the position at which <tex>$k_2$</tex> is calculated
 during the first step should coincide with the position at which
 <tex>$k_1$</tex> needs to be calculated during the second step.
-Let us define that first position as <tex>$\tilde x_1$</tex>, which
-means that <tex>$k_2 \equiv f(\tilde x_1)$</tex>, which implies
+Let us define that first position as <tex>$\tilde x_1$</tex> , which
+means that <tex>$k_2 \equiv f(\tilde x_1)$</tex> , which implies
 
 :equation:
 \tilde x_1 = x_0 + {1\over 2 \alpha} k_1 \tau
@@ -65,11 +65,11 @@ or
 \label{hunch}
 2 \alpha^2\left(k_1 - k_2 \right) = (2 \alpha -1)k_1
 
-Since our algorithm should work for any force <tex>$f(x)$</tex>, this
+Since our algorithm should work for any force <tex>$f(x)$</tex> , this
 expression should hold for arbitrary values of <tex>$k_1$</tex> and
-<tex>$k_2$</tex>.  If we first look at the dependence on <tex>$k_2$</tex>,
+<tex>$k_2$</tex>.  If we first look at the dependence on <tex>$k_2$</tex> ,
 we find <tex>$2 \alpha^2k_2 = 0$</tex> and therefore <tex>$\alpha = 0$</tex>.
-But this then implies that <tex>$k_1 = 0$</tex>, which is not true in general.
+But this then implies that <tex>$k_1 = 0$</tex> , which is not true in general.
 
 So here is the formal check that your hunch was right!
 
@@ -86,10 +86,10 @@ recycling of a force evaluation, come to think of it.
 good enough, so to speak.  Now the question is whether we can find a
 precise meaning for `good enough.'  What does it mean for
 <tex>$\tilde x_1$</tex> not to differ too much from the corrected value
-<tex>$x_1$</tex>?
+<tex>$x_1$</tex> ?
 
 *Bob*: Lookinging at Eq. (ref(hunch)) as a physicist, rather than a
-mathematician, I would start by noting that <tex>$k_1 \approx k_2$</tex>,
+mathematician, I would start by noting that <tex>$k_1 \approx k_2$</tex> ,
 at least in the limit of a small time step.  This suggests that the
 best we can do is to let the right hand side disappear, through the
 choice <tex>$\alpha=\half$</tex>.  In that case, the left-hand side
@@ -169,10 +169,10 @@ the remaining term is second order in <tex>$\tau$</tex>.
 physical intuition derivation.  At the beginning of the second step,
 we can only recycle a previous force if that force was performed at
 the end of the previous step.  In first approximation, given the force
-<tex>$f_0$</tex> at <tex>$x_0$</tex>, we can write
+<tex>$f_0$</tex> at <tex>$x_0$</tex> , we can write
 <tex>$x_1 = x_0 + f_0 \tau + O(\tau^2)$</tex>.  Comparing this with
 Eq. (ref(rk2alpha2)), we see immediately that <tex>$1/(2\alpha) =
-1$</tex>, hence <tex>$\alpha = \half$</tex>.
+1$</tex> , hence <tex>$\alpha = \half$</tex>.
 
 *Alice*: Yes, I fully agree that it is helpful to look at the results
 from several angles, to get more of a fingertip feeling of what it all
@@ -193,7 +193,7 @@ This means that the slight offset will cause only third order errors,
 on the same level of the truncation errors we are making anyway.
 
 To show this explicitly, let us extend our notation, using <tex>$k_{i,j}$</tex>
-to denote <tex>$k_j$</tex> for the step starting at <tex>$x_i$</tex>, and let us use tildes
+to denote <tex>$k_j$</tex> for the step starting at <tex>$x_i$</tex> , and let us use tildes
 to indicate the approximate solution that we obtain when we recycle
 the previous force evaluation.  Here are the expressions for the first
 step:
@@ -244,7 +244,7 @@ x_i + \half \left(\tilde k_{i-1,2} + \tilde k_{i,2}\right) \tau \\
 \end{array} \right.                        
 
 At each step, the difference between <tex>$\tilde x_{i+1}$</tex> and
-<tex>$x_{i+1}$</tex> is of third order in <tex>$\tau$</tex>, as we can
+<tex>$x_{i+1}$</tex> is of third order in <tex>$\tau$</tex> , as we can
 illustrate by evaluating down the differences in position at the end of
 the second step:
 
@@ -341,7 +341,7 @@ again.
   in terms of number of force evaluations as the first-order scheme.  This
   clever scheme is given in Eq. (ref(second2)), as the recycled version of
   what otherwise be Eq. (ref(second1)), which is the same as
-  Eq. (ref(rk2alpha)) for <tex>$\alpha = \half$</tex>, also given above as
+  Eq. (ref(rk2alpha)) for <tex>$\alpha = \half$</tex> , also given above as
   Eq.(ref(rk2alphahalf)).
 
 == Two Force Evaluations per Step
@@ -505,7 +505,7 @@ at our hands.
 
 *Alice*: A natural choice would be to require that the second force
 evaluation takes place in the middle of the time step
-<tex>$(\eta_{21} = \half)$</tex>, while the third force evaluation
+<tex>$(\eta_{21} = \half)$</tex> , while the third force evaluation
 takes place at the end of the step <tex>$(\eta_{31}+\eta_{32} = 1)$</tex>.
 With these two extra conditions, barring unforeseen complications, we
 can expect to find a unique solution.
@@ -525,7 +525,7 @@ boxed equations we found above, we get:
 \end{array} \right.
 
 The second and third equations above can be solved readily to find
-<tex>$\alpha_2 = 2/3$</tex> and <tex>$\alpha_3 = 1/6$</tex>,
+<tex>$\alpha_2 = 2/3$</tex> and <tex>$\alpha_3 = 1/6$</tex> ,
 after which the first equation yields <tex>$\alpha_1 = 1/6$</tex>.
 The last equation then gives <tex>$\eta_{32}=2$</tex> which implies
 <tex>$\eta_{31}=-1$</tex>.  We thus arrive at the following
@@ -544,8 +544,8 @@ k_3 &=& f(x_0 - k_1 \tau + 2k_2\tau)
 Runge-Kutta algorithms.
 
 *Alice*: Another natural choice is to spread the force calculations evenly over
-the interval, at times <tex>$0$</tex>, <tex>$\tau/3$</tex>, and
-<tex>$2\tau/3$</tex>, before starting the calculations for the new
+the interval, at times <tex>$0$</tex> , <tex>$\tau/3$</tex> , and
+<tex>$2\tau/3$</tex> , before starting the calculations for the new
 step at time <tex>$\tau$</tex>.
 
 *Bob*: Such a scheme obviously cannot be used for our current purposes.
@@ -571,7 +571,7 @@ four conditions we have found before leads to:
 \end{array} \right.
 
 The second and third equations imply <tex>$\alpha_2 = 0$</tex> and
-<tex>$\alpha_3 = 3/4$</tex>, and whith the first equation we find
+<tex>$\alpha_3 = 3/4$</tex> , and whith the first equation we find
 <tex>$\alpha_1 = 1/4$</tex>.  The last equation yields
 <tex>$\eta_{32}=2/3$</tex> which then determines
 <tex>$\eta_{31}=0$</tex>.  We thus arrive at:
@@ -686,7 +686,7 @@ There is no way that we can satisfy these two equations simultaneously!
 
 The last line implies that either <tex>$\alpha_2 = 0$</tex> or
 <tex>$\eta_{21} = 0$</tex>.  Either case would imply
-<tex>$\alpha_2\eta_{21} = 0$</tex>, in contradiction with
+<tex>$\alpha_2\eta_{21} = 0$</tex> , in contradiction with
 the requirement that <tex>$\alpha_2\eta_{21} = 1/6$</tex>.
 
 *Bob*: I guess hatching was unsuccessful.  That's a disappointment!
@@ -726,8 +726,8 @@ which simplifies to
 \end{array} \right.
 
 These are three equations for six unknown variables.  If we introduce
-<tex>$\alpha \equiv \alpha_2$</tex>, <tex>$\eta \equiv \eta_{21}$</tex>, and
-<tex>$\zeta \equiv \eta_{32}$</tex>, we get the following parametrized solutions:
+<tex>$\alpha \equiv \alpha_2$</tex> , <tex>$\eta \equiv \eta_{21}$</tex> , and
+<tex>$\zeta \equiv \eta_{32}$</tex> , we get the following parametrized solutions:
 
 :equation:
 \left\{ \begin{array}{lcl}
@@ -800,13 +800,13 @@ new position:
 :equation:
 x_1 = x_0 + \left( (1-\alpha)k_1 + \alpha k_2 \right) \tau
 
-just as in Eq. (ref(sum2).  Since <tex>$\eta = 1/(2\alpha)$</tex>,
+just as in Eq. (ref(sum2).  Since <tex>$\eta = 1/(2\alpha)$</tex> ,
 the expression for the second force becomes:
 
 :equation:
 k_2 = f(x_0 + {1\over 2 \alpha} k_1 \tau)
 
-We conclude that, for the choice <tex>$\eta = 1/(2\alpha)$</tex>,
+We conclude that, for the choice <tex>$\eta = 1/(2\alpha)$</tex> ,
 Eq. (ref(sum1)) becomes Eq. (ref(sum2)).  It all hangs together!  The
 third force calculation in Eq. (ref(sum1)) effectively drops out, for
 this choice of parameters.

@@ -1,16 +1,46 @@
 = Partitioned Runge-Kutta Algorithms
 
-It turns out that we can do a lot better, in the case of our special
-second-order differential equation
+*Bob*: You promised a better approach to solving second-order differential
+equations, using Runge-Kutta schemes.  What did you call such an algorithm
+again?
+
+*Alice*: It is called a partitioned Runge-Kutta algorithm.  The idea is to
+combine the force calculations in different ways for the position and for
+the velocity.  The word `partitioned' here means that separate the treatment
+of <tex>$x$</tex> from the treatment of <tex>$v$</tex>.  We already saw
+an example at the end of our previous discussion, where we had found a
+scheme that was almost, but not quite, a leapfrog scheme.  If we would have
+tinkered with that scheme, we could have turned it into a leapfrog,
+but it would then no longer be a vector generalization of a
+Runge-Kutta scheme.
+
+*Bob*: So you're saying that we have a lot more freedom, when we allow
+separate ways to update position and velocity, after first calculation
+a number of force evaluations.
+
+*Alice*: Exactly.  And we have already done this, for our fourth-order
+integrator, the one we plucked from Abramowitz and Stegun.
+
+*Bob*: Does this mean that we can write our good old leapfrog as a partitioned
+Runge-Kutta scheme?  That would be interesting!  I have always thought about
+Runge-Kutta methods and the leapfrog scheme as two completely different
+animals, pardon the pun.  Do you think that the leapfrog can be view
+as a type of Runge-Kutta algorithm?
+
+*Alice*: I'm not sure.  One reason to do this systematic landscape exploration
+is to find the answers to that type of question!  And I'm sure we'll
+find out soon.  By exploring all possible schemes with up to two new
+force calculations per step, we're bound to encounter the leapfrog, if
+indeed it is a citizen of the Runge-Kutta world.
+
+So let us return to our special second-order differential equation
 
 :equation:
 {d^2x \over dt^2} = f(x).
 
 Instead of simply treating it as a set of two coupled first-order
 differential equations, we can exploit the fact that the right-hand
-side does not depend on <tex>$v$</tex>.  This will allow us to construct
-partitioned schemes {\bf [explain the notion of partitioned RK schemes]}.
-Before we show this, let us first gather
+side does not depend on <tex>$v$</tex>.  Let us first gather
 some useful expressions, starting with the two first-order equations
 
 :equation:
@@ -45,14 +75,12 @@ c_0 &=& \dot s_0 \ \ = \ \ f_0''' v_0^3 + 3f_0'' f_0 v_0 +
 p_0 &=& \dot c_0 \ \ = \ \ f_0'''' v_0^4 + 6f_0''' f_0 v_0^2 +
 f_0''\left\{3f_0^2 + 2f_0' v_0^2\right\} + (f_0')^2 f_0
 
-== New Force Evaluations
-
-xxx
-
 == One Force Evaluation per Step
 
-%\subsubsubsection{An Immediate Force Evaluation}
-{\bf 4.1.1.1. An Immediate Force Evaluation}
+*Bob*: I guess we will forget about force recycling, at least for now.
+
+*Alice*: Yes.  To keep things simple, let us look at a single integration
+step.  But we have another choice to make.
 
 In the case of a first-order differential equation, at the start of
 our integration we can only evaluate the right-hand side at time zero,
@@ -160,7 +188,7 @@ This leads to the following dimensionally correct expressions:
 x_1 &=& x_0 + v_0 \tau + \alpha_1 k_1\tau^2  \\
 v_1 &=& v_0 + \beta_1 k_1\tau   
 
-If we expand <tex>$k_1$</tex> to first order in <tex>$\tau$</tex>, we obtain:
+If we expand <tex>$k_1$</tex> to first order in <tex>$\tau$</tex> , we obtain:
 
 :equation:
 k_1 = f_0 + \eta_1 f_0' v_0 \tau
@@ -223,13 +251,13 @@ In this way, all three free parameters are fixed, by requiring the
 algorithm to be second-order in <tex>$O(\tau)$</tex> in both position and velocity.
 
 Could it be that we are in luck, and that this fixed solution can give
-us expressions for <tex>$x$</tex> and <tex>$v$</tex> that are also third-order correct in <tex>$O(\tau)$</tex>?
+us expressions for <tex>$x$</tex> and <tex>$v$</tex> that are also third-order correct in <tex>$O(\tau)$</tex> ?
 Let us start with the position equation.  This would require:
 
 :equation:
 j_0 = f_0' v_0 = 6 \alpha_1 \eta_1 f_0' v_0
 
-Alas, since we are forced to use <tex>$\alpha_1 = \eta_1 = \half$</tex>, the
+Alas, since we are forced to use <tex>$\alpha_1 = \eta_1 = \half$</tex> , the
 coefficient on the right-hand side is <tex>$3/2$</tex> while the one on the
 left-hand side is <tex>$1$</tex>.  We have no freedom left, so this equation has
 no solutions for a general function <tex>$f$</tex> and a general initial velocity <tex>$v_0$</tex>.
@@ -305,10 +333,10 @@ symmetric.  This fact was rather hidden in the original formulation,
 eqs. (ref(verlet)).  However, if we explicitly take a step forward
 and then another step backward, using eqs. (ref(verlet)), we can
 recover the time symmetry inherent in these equations, as follows.
-Let us denote the resulting position and velocity by <tex>$\{x_{-0}, v_{-0}\}$</tex>,
+Let us denote the resulting position and velocity by <tex>$\{x_{-0}, v_{-0}\}$</tex> ,
 which are obtained from <tex>$\{x_{1}, v_{1}\}$</tex> by taking a time step with
 size <tex>$-\tau$</tex>.  Our task is to show that <tex>$\{x_{-0}, v_{-0}\}$</tex> actually
-coincide with <tex>$\{x_{0}, v_{0}\}$</tex>, not only to second order, as would
+coincide with <tex>$\{x_{0}, v_{0}\}$</tex> , not only to second order, as would
 be guaranteed in any second order scheme, but in fact to all orders in
 <tex>$\tau$</tex>.
 
@@ -474,7 +502,7 @@ v_0\ +\  \beta_1 f(x_0+\eta_{11} v_0 \tau)\tau \ +\  \\
 
 So far, everything is still the exact prescription, given in the
 original algorithmic scheme.  If we now expand the expressions in
-powers of <tex>$\tau$</tex>, we get:
+powers of <tex>$\tau$</tex> , we get:
 
 :equation:
 \left\{ \begin{array}{lcl}
@@ -522,7 +550,7 @@ This leads to the following conditions:
 \beta_2\eta_{22} = {\displaystyle \frac {1}{6}}
 \end{array} \right.
 
-These can be solved in terms of <tex>$\eta_{11}$</tex>, as follows:
+These can be solved in terms of <tex>$\eta_{11}$</tex> , as follows:
 
 :equation:
 \left\{ \begin{array}{lcl}
@@ -553,7 +581,7 @@ These can be solved in terms of <tex>$\eta_{11}$</tex>, as follows:
 
 {\bf 4.1.2.2. Examples}
 
-If we take the standard assumption <tex>$\eta_{11} = 0$</tex>, we get:
+If we take the standard assumption <tex>$\eta_{11} = 0$</tex> , we get:
 
 :equation:
 \label{standard1}
@@ -587,7 +615,7 @@ coefficient as <tex>$\one{3}k_1\tau^2$</tex>.
 <tex>Nystr\"om</tex> does list the term correctly,
 as <tex>${\textstyle\frac{2}{9}} k_1\tau^2$</tex>.
 
-If we try the other obvious choice <tex>$\eta_{11} = \half$</tex>, we find that
+If we try the other obvious choice <tex>$\eta_{11} = \half$</tex> , we find that
 some of the coefficients diverge: <tex>$\eta_{21} = \eta_{21} = \infty$</tex>.
 With two force evaluations, it seems not to be possible to let the
 first one start right in the middle.
@@ -620,7 +648,7 @@ k_2 &=& f(x_0 + v_0 \tau +
 {\textstyle\frac{2}{3}} k_1\tau^2)
 \end{array} \right.
 
-A complementary choise is <tex>$\eta_{11}={2\over3}$</tex>, for which the first
+A complementary choise is <tex>$\eta_{11}={2\over3}$</tex> , for which the first
 force evaluation takes place after two third of the duration of the
 time step.  In this case we get:
 
@@ -647,7 +675,7 @@ k_2 &=& f(x_0 + {\textstyle\frac{2}{3}} k_1\tau^2)
 \end{array} \right.
 
 There seem to be no other sets of simple coefficients.
-We might be tempted to try, say, <tex>$\eta_{11}={1\over4}$</tex>,
+We might be tempted to try, say, <tex>$\eta_{11}={1\over4}$</tex> ,
 but in that case we get the much more complicated looking set:
 
 :equation:
