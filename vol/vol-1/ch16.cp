@@ -130,7 +130,7 @@ Ha!  That was it.  Interesting.  But at least it now works.
 
 == An Extra Safety Check
 
-*Alice*: I heard you talking in yourself, but I must admit, I couldn't
+*Alice*: I heard you talking to yourself, but I must admit, I couldn't
 follow all that.  We'll have to step through the class definition a lot
 slower, so that I can catch up.  But before doing that, are you _sure_
 that it now works, and more importantly, that your understanding why it
@@ -229,16 +229,356 @@ before taking their inner product:
 *Bob*: This can't be.
 
 *Alice*: And yet it is.  Something must be different.  Something must
-have happened.
+have happened.  I wonder, do we know what +a+ and +b+ _really_ are?
+They are the only variables in town, in this small session.  And the
+session is so short, we should be able to look at them under a
+microscope at every step.  And let us try to make our steps as small
+as we can, doing only one thing at a time.
 
+*Bob*: Okay, divide and conquer.  That's generally a good method.
+Let me start a new +irb+ session.  Above we started by creating a
+vector with three components, to which we assigned values.  One
+way to split this command in into smaller steps is to separate the
+creating and assigning parts.  First I'll create a vector and then
+I'll assign its values.  I'll do the same for the second vector,
+replacing the second command above by a creation and assignment
+statement.
 
- . . . .
+*Alice*: And then I suggest you replace the third command by a simple
+addition, rather than the <tt>+=</tt> combination.
 
-*Bob*: So now we can translate our formulas directly into computer code!
+*Bob*: Good, more divide and conquer strategy!  Let's see what
+sort of surprise we'll run into next.
+
+    |gravity> irb --prompt short_prompt -r vector.rb
+    001:0> a = Vector.new
+    []
+    002:0> a = [1, 2, 3]
+    [1, 2, 3]
+    003:0> b = Vector.new
+    []
+    004:0> b = [0.1, 0.01, 0.001]
+    [0.1, 0.01, 0.001]
+    005:0> a + b
+    [1, 2, 3, 0.1, 0.01, 0.001]
+
+AAHHHAAAA!!  There we have a clear smoke signal.  A new trail to follow!
+But the trail seems to hang in mid air . . .
+
+*Alice*: Somehow Ruby has fallen back onto its old habit of adding by
+concatenation.  But I thought you had taught Ruby to not do that any
+longer?
+
+*Bob*: I taught Ruby not to concatenate when adding vectors.  Normal
+arrays will still be concatenated by addition.  But +a+ and +b+ are
+_not_ normal arrays.  You are my witness that we have created both
++a+ and +b+ as vectors, brand new vectors, right out of the oven!
+And yet they don't behave like vectors.  I'm beginning to despair.
+There seems to be no room left here for introducing a bug.
+
+Hmmmm.  Maybe we should go over the vector class definition in more
+detail.  There just has to be something wrong there.
+
+*Alice*: Before doing that, let us enlarge the magnification of our
+microscope just a bit more.  We have taken smaller steps now, but we
+haven't yet looked into the results of each step further.  In other
+words, we have divided, but not yet conquered.
+
+How about asking +a+ and +b+ themselves what they think that is going
+on?  For starters, we can ask them their type, what class they think
+they are, with the <tt>class</tt> method we have seen before.
+
+*Bob*: That's not a bad idea.  Actually a great idea.  Let's try it.
+
+    |gravity> irb --prompt short_prompt -r vector.rb
+    001:0> a = Vector.new
+    []
+    002:0> a.class
+    Vector
+    003:0> a = [1, 2, 3]
+    [1, 2, 3]
+    004:0> a.class
+    Array
+
+What the heck . . . !!  How can that possibly be?  We created +a+ as a
+vector, it told us that it was a vector, we gave it some values, and
+now it thinks it is an ordinary array.
+
+*Alice*: It seems to have forgotten its vectorness.  Growing up in a bad
+environment, it seems.
+
+*Bob*: But how bad can this environment be?  Let me think, and stare
+at the third line for a while.  Hmmppfff . . .  On the left hand side
+we have a variable called +a+ that has just told us that it considers
+itself to be a decent citizen of class +Vector+.  Good.  On the right
+hand side we have an array with three components.  Good.  We give those
+values to the vector and . . . hey, that must be it!
+
+*Alice*: what must be what?
+
+*Bob*: That's the answer!
+
+*Alice*: You sure look happier now, but can you enlighten me?
+
+*Bob*: Dynamic typing!!
+
+*Alice*: Yes, Ruby as dynamic types, how does that solve our problem?
+
+*Bob*: Elementary, my dear Watson.  Because Ruby hsa dynamic typing,
+upon assignment of an array to a vector, the vector changes into an
+array.  Instantly.  Like a chameleon, changing colors to adapt to its
+environment!
+
+*Alice*: I told you +a+ was growing up in a bad environment!  But yes,
+now I see what you mean.  How very tricky.
+
+*Bob*: And this explains all the error messages we have seen so far.
+As long as we did not feed any of our vectors, and only printed the
+results of operations on them, they remained pristine little vectors.
+But as soon as we fed them a value, they flipped into the type of that
+value, confusing us no end.  It all makes sense now . . . .
+
+*Alice*: I have heard that before.
+
+*Bob*: I know, I know.  But no I can _proof_ to you that we have traced
+the bug.  We can easily repair our +Vector+ class.  So let's go back
+into the file <tt>vector.rb</tt>.  Ahh, no, it is even easier!
+
+*Alice*: What is?
+
+*Bob*: See, this business with introducing +iproduct+ and +sproduct+,
+you know what?  I bet that was not necessary.  I got sidetracked, in
+the wrong direction.
+
+*Alice*: Sidetracking usually gets you in the wrong direction allright,
+but what was it that was wrong?
+
+*Bob*: Ah, remember?  You said something about hearing me talking to
+myself, and not being able to follow all that.  That was when I had
+convinced myself that the type problem lie in the use of different
+types for the variable +product+ in the +Vector+ class definition.
+But my first attempt _was_ right, after all.  You _can_ perfectly
+well use the same variable to stand for different types in different
+branches of an +if+ statement.  It is _exactly_ because Ruby is a
+dynamically typed language that you can do that!
+
+So if I would have _really_ thought through what I was trying at the
+very start, while I was writing the +Vector+ class, I would have
+realized the cameleon behavior of Ruby variables.  The problem was
+_not_ with switching color somewhere in the process, but the problem
+was to make sure that the right color was being returned at the end!
+Object oriented programming!  Epiphany!
+
+*Alice*: Modularity!
+
+*Bob*: Modularity if you like, right now I'm ready to go along with
+anything.  This is wonderful, that a language can be so malleable!
+Wow.  I can just begin to see how powerful Ruby is, when you can turn
+any type into anything else, whenever and wherever you need it, without
+having to declare and define various things at multiple places and then
+recompile and link again and so on.  What a delight!
+ 
+*Alice*: I'm glad that you're glad, and I see that you have undone all
+your edits in <tt>vector.rb</tt>; how are you going to return the right
+color?
+
+*Bob*: Here, at these two places, where I previously wrote
+<tt>sum = []</tt> and <tt>product = []</tt>.  By doing so, I dynamically
+typed both +product+ and +sum+ to become an array.  At the end of the
+<tt>+</tt> method, +sum+ appears, so the value of +sum+ is the value
+that is returned by <tt>+</tt>, and it is an array, not a vector!
+That is why <tt>a+b</tt> returned the concatenation of two arrays.
+Similarly, the <tt>*</tt> method returns the value of +product+, also
+an array.
+
+So the remedy is really simple.  We just have to return vectors
+instead of arrays.  And we can do that by declaring both +sum+ and
++product+ to be vectors from the start.  That is all!  Here it is:
+
+ :inccode: vector3.rb
+
+*Alice*: Mind if we test it, by going through the _exact_ same moves
+as before?
+
+*Bob*: My pleasure!  And a pleasure it will be.  Here you go:
+
+    |gravity> irb --prompt short_prompt -r vector.rb
+    001:0> a = Vector[1, 2, 3]
+    [1, 2, 3]
+    002:0> b = Vector[0.1, 0.01, 0.001]
+    [0.1, 0.01, 0.001]
+    003:0> a += b
+    [1.1, 2.01, 3.001]
+    004:0> p a
+    [1.1, 2.01, 3.001]
+    nil
+    005:0> a = b*2
+    [0.2, 0.02, 0.002]
+    006:0> p a
+    [0.2, 0.02, 0.002]
+    nil
+    007:0> p b
+    [0.1, 0.01, 0.001]
+    nil
+    008:0> a*b
+    0.020202
+
+*Alice*: As it should be.  Congratulations!
+
+*Bob*: Well, I couldn't have done it without you.  Once I got my teeth
+firmly into the problem, I must admit I felt quite stuck.
+
+*Alice*: I couldn't even have started if you hadn't showed me how to
+get going with Ruby.  I guess this idea of pair programming is much
+more efficient than people think.  It seems that you can get more
+lines of code written when you're alone behind a key board, and that
+may or may not be true, but at least when chasing bugs, more eyes make
+all the difference.
+
+*Bob*: Yeah, I agree.  I've done almost all my coding in the privacy
+of my own office, or home, depending; but when I worked with someone
+else on a debugging session, it often helped to look at the same
+problem from two different directions.
+
+*Alice*: I find it funny to read so much about it these days in
+computer productivity literature.  They make it sound as if this whole
+notion of pair programming is this wonderful new invention.  When I
+was at MIT as a graduate student, I dropped in at the AI department
+quite frequently.  And everywhere I saw people coding together.  When
+I did a little project there, I also teamed up with one of my fellow
+students.  That was an eye opener for me, and ever since I have
+prefered to program together with someone else.  Besides, it is more
+fun too!
+
+*Bob*: You're right.  Apart from my total annoyance at first with that
+recalcitrant bug, it has been fun to explore together.  And I must admit,
+even that bug gave me a lot of excitement.  Like watching a horror movie
+and then finding that you're part of the movie itself.  But still, it
+sounds a bit extreme to do all your programming with somebody sitting
+next to you.
+
+*Alice*: That must be why they call it <i>extreme programming</i> these
+days, again as if they have just invented something new.
+
+*Bob*: You're kidding.
+
+*Alice*: No, I'm not.  They really call it that!  But enough management
+talk.  We have certified our vector class, let's now put it to work for
+our integrator.
+
+*Bob*: Certified, he?  You must be born to become a manager.  Okay, here
+is the next step.  We first have to tell our +Body+ class that the
+positions and velocities are no longer arrays, but vectors.  Let me
+create a new file +vbody.rb+ for this modified class.  I will call the
+modified class +Body+ as well.  If we are happy with it, we can discard
+the previous +Body+ class definition.
+
+ :inccode: vbody1.rb
+
+Here it is.  I have added one line and modified one line, that's all!
+The line on top <tt>require "vector.rb"</tt> I have added so as to make
+Ruby aware of our new class +Vector+; as we have seen, the Ruby interpreter
+effectively replaces this line by the file +vector.rb+.  Now the only
+thing I changed is the initialization line for +pos+ and +vel+.  They
+are now <i>bona fide</i> vectors, right when they see the light of day.
+
+The next step is to adapt our integrator, so that it can handle particles
+with vectors for their positions and velocities.  Remember, that was the
+whole reason for the exercise: to simplify the notation in our forward
+Euler integrator.  You were unhappy with the <tt>|k|</tt> notation, and
+that started us off on this long trek.
+
+*Alice*: But we learned a lot on our journey.  Yes, I remember now.
+I was complaining about component notation, and then you decided you
+can give me real vector notation, without components.  Seem like a
+while ago!
+
+*Bob*: But now we're getting close.  Let me rename the old file
+<tt>euler1.rb</tt>, and then add vectors to <tt>euler2.rb</tt>.
+Just to remind ourselves, here is what <tt>euler1.rb</tt> looked like:
+
+ :inccode: euler1.rb
+
+All we have to do is to change the first +require+ line to require
++vbody.rb+ to be loaded instead of +body.rb+, and then we are free
+to purge the +do+ loop from the obnoxious +k+ component notation.
+Are you ready for this?
+
+*Alice*: Sure thing!
+
+*Bob*: Here it is.  One line shorter in total, which most of the
+lines shorter in length as well:
+
+ :inccode: euler2.rb
+
+*Alice*: One of these days you'll shorten it so much that you can hand
+me a one-line integrator, just like you produced one-line read and write
+functions, earlier!
+
+*Bob*: Don't count on it; I think a five-line integrator is good enough
+already.  What a difference with +euler1.rb+!  Instead of asking
+<tt>b.pos</tt> to add the square of each of its components to +r2+,
+after setting +r2+ to zero, we simply order +r2+ to be the inner product
+of <tt>b.pos</tt> with itself, in the first line of the +do+ loop.
+
+The next line is unchanged.  But then the fun really starts: the
+acceleration vector is now directly given as the product of the
+velocity vector with the terms mass over distance cubed.
+
+*Alice*: Just as we saw it in formula form earlier:
+
+<tex>
+\begin{equation}
+{\bf a} = - \frac{M}{r^3}{\bf r}
+\end{equation}
+</tex>
+
+*Bob*: So you see, now we can translate our formulas directly into
+computer code!
 
 *Alice*: Perhaps Ruby should be called FORmula TRANslator.
 
 *Bob*: I'm afraid that name has already been taken, a few years ago . . .
+
+*Alice*: And the next two lines clearly mean:
+
+<tex>
+\begin{eqnarray}
+{\bf r}_{i+1} & = & {\bf r}_i + {\bf v}_i dt     \nonumber \\
+{\bf v}_{i+1} & = & {\bf v}_i + {\bf a}_i dt     \nonumber
+\end{eqnarray}
+</tex>
+
+also just like we wrote it before.  What a relief, to write a computer
+code as if you write equations directly down into the software!
+
+*Bob*: Indeed.  I've seen C++ doing that, what they call overloading
+operators, and you can get a similar notation, but with far more work.
+
+*Alice*: And with a complex class definition and declaration structure
+that is very hard to play with and to change at will.  In contrast, here
+with Ruby we can really do what they always advertise as rapid prototyping.
+
+*Bob*: But before congratulating ourselves too much, let us first see
+whether this now runs.  I've grown a bit more cautious after those
+surprises we got earlier.  Ruby is certainly powerful, but as we have
+seen, we'd better now what we are doing, in order to use all that power
+wisely.
+
+*Alice*: Well said, Bob!  Let's run the new version of the integrator
+with the same values we had before, which I see you have still there in
+the file <tt>euler2.rb</tt>: a hundred time steps of 0.01 time units
+each.
+
+*Bob*: Here goes:
+
+ :command: cp -f euler2a.rb test.rb
+ :commandoutput: ruby test.rb < euler.in
+ :command: rm -f test.rb
+
+
+
+
 
 
 

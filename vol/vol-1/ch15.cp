@@ -34,9 +34,7 @@ particle, spans a unique plane.  The fact that the other particle
 moves in the (scaled) opposite way then implies that the other
 particle moves in the same plane as well.
 
-<i>[A new figure should appear instead of the place holder below -- Piet]</i>
-
-link:../vol/vol-1/twopfig.gif
+link:../vol/vol-1/twopfig2.gif
 
 *Bob*: Yes, even if you know the answer, it always requires some thinking
 to reconstruct the reason for the answer.  So because a two-body
