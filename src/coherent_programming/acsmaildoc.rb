@@ -43,6 +43,8 @@ module Acsmaildoc
 	s.chomp!
 	if s =~ /^Date:/
 	  time = Time.parse(s[5,s.length])
+	  year = time.year
+	  month = time.month
 	  print "time for file ", seqnum, " = ",  time, "\n"
 	end
 	if s =~ /^From:/ 
@@ -50,10 +52,17 @@ module Acsmaildoc
 	end
 	if s.empty? 
 	  inheader = 0
+	  outfile=open($docroot + "/"+ year.to_s + "/"+ month.to_s + 
+		       seqnum.to_s, "w+")
+	  print "open file ", $docroot + "/"+ year.to_s + "/"+ month.to_s + 
+	    seqnum.to_s, "\n";
 	end
+      else
+	outfile.print s
       end
     end
     infile.close
+    outfile.close if inheader == 0
   end
   # :segment end: prep_rb
   def acsmaildoc()
