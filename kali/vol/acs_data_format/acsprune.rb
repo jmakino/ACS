@@ -1,6 +1,6 @@
-require "vector.rb"
-require "clop.rb"
-require "acsio.rb"
+#!/usr/local/bin/ruby -w
+
+require "acs"
 
 options_text= <<-END
 

@@ -7,6 +7,9 @@ the first two of which were already introduced in the previous volume,
 and all of which still depend on <tt>clop.rb</tt> as introduced in the
 previous volume.
 
+Note that the change from +Nbody+ to +NBody+ is described in the text
+that is temporarily parked in the next chapter
+
 Then start improving the <tt>clop.rb</tt> function.
 
-Finally move from <tt>rkn4.rb</tt> to <tt>nbody_cst0.rb</tt>,
+Finally move from <tt>rkn4.rb</tt> to <tt>nbody_cst0.rb</tt>.

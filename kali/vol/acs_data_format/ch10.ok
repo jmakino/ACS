@@ -2,25 +2,13 @@
 
 == xxx
 
-ruby mkplummer.rb -n 5 -s 1 | ruby nbody_cst1.rb -t 2 -o 2 > t2.out
+ :commandoutput: ruby sim2acs.rb < cube1.in > tmp1.out
+ :commandoutput: ruby sim2acs.rb < cube1.in | ruby acs2sim.rb | ruby sim2acs.rb > tmp2.out
+ :commandoutput: diff tmp[12].out
 
-ruby mkplummer.rb -n 5 -s 1 | ruby nbody_cst1.rb -t 1 -o 1 | ruby nbody_cst1.rb -t 2 -o 2 > t11.out
-
-diff t11.out t2.out
-
-== xxx
-
-ruby sim2acs.rb < cube1.in > tmp1.out
-
-ruby sim2acs.rb < cube1.in | ruby acs2sim.rb | ruby sim2acs.rb > tmp2.out
-
-diff tmp[12].out
-
-ruby sim2acs.rb < cube1.in | ruby acs2sim.rb > tmp3.out
-
-ruby sim2acs.rb < cube1.in | ruby acs2sim.rb | ruby sim2acs.rb | ruby acs2sim.rb > tmp4.out
-
-diff tmp[34].out
+ :commandoutput: ruby sim2acs.rb < cube1.in | ruby acs2sim.rb > tmp3.out
+ :commandoutput: ruby sim2acs.rb < cube1.in | ruby acs2sim.rb | ruby sim2acs.rb | ruby acs2sim.rb > tmp4.out
+ :commandoutput: diff tmp[34].out
 
 == xxx
 

@@ -1,14 +1,8 @@
-require "vector.rb"
-require "clop.rb"
-require "acsio.rb"
+#!/usr/local/bin/ruby -w
+
+require "nbody.rb"
 
 class Body
-
-  attr_accessor :mass, :pos, :vel
-
-  def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
-    @mass, @pos, @vel = mass, pos, vel
-  end
 
   def simple_print(precision, no_exp_flag)
     if no_exp_flag
@@ -24,13 +18,7 @@ class Body
 
 end
 
-class Nbody
-
-  attr_accessor :time, :body
-
-  def initialize
-    @body = []
-  end
+class NBody
 
   def simple_print(precision, no_exp_flag)
     print @body.size, "\n"
@@ -52,7 +40,7 @@ options_text= <<-END
     This program takes an N-body snapshot in the standard ACS format:
 
                   ACS
-                    Nbody 
+                    NBody 
                       Array body
                         Body body[0]
                           Float mass
@@ -119,5 +107,5 @@ c = parse_command_line(options_text, true)
 
 include Math
 
-nb = ACS_IO.acs_read(Nbody)
+nb = ACS_IO.acs_read(NBody)
 nb.simple_print(c.precision, c.no_exponents)

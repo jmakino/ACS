@@ -1,4 +1,6 @@
-require "acs.rb"
+#!/usr/local/bin/ruby -w
+
+require "acs"
 
 options_text= <<-END
 

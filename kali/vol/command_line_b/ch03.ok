@@ -1,0 +1,65 @@
+= XXX
+
+== xxx
+
+== No Retrofitting
+
+*Bob*: Oh, by the way, I decided to make a slight change in notation.
+So far, we have called our N-body class <tt>Nbody</tt>.  However, it
+seems that in the Ruby community people have developed a clear
+convention to name all classes using the socalled MixedCase notation:
+each word is capitalized.  Since in our case _N_ and _body_ are really
+different words, it would be much more consisten to call our N-body
+class <tt>NBody</tt>.
+
+*Alice*: That's a really good idea.  It is important to stick to the
+conventions that are used in a community.  That will make it easier
+for others to read our code, and to jump right in, making their own
+additions.  I guess this means that you will go back and change
+<tt>Nbody</tt> into <tt>NBody</tt> everywhere in the volumes that
+we've already written?
+
+*Bob*: That would be a lot of work.  Besides, it might confuse students
+and colleagues who have already downloaded some of our earlier volumes,
+if we were to suddenly change our notation, retroactively.
+
+*Alice*: Again, you have a good point.  Retrofitting what we have done,
+in order to make the past consistent with the present, is a dubious idea,
+I agree.  Do you think it would be better not to do that, in general?
+
+*Bob*: I think so.  And since you like rules and abstractions, how about
+making this into a rule of ours: thou shalt not retrofit.  Or in plain
+English: we will consider our work up till now read-only.  We can add
+to it, but we will resist the temptation to clean it all up.
+
+*Alice*: Perhaps in the future, if and when we make everything available
+as a book series, we could make a cleaning-up pass through the whole
+collection.  But until that point, yes, I agree, let's just accumulate,
+rather than correct.
+
+*Bob*: Of course, if we find plain mistakes, we should correct them, but
+other than that, we'll simply freeze each volume after we finish it.
+
+*Alice*: The more I think about it, the more I realize that is the _only_
+way to go.  After all, when we have <tex>$N$</tex> previous volumes,
+the probability that we find some sort of minor inconsistency is at
+least proportional to <tex>$N$</tex>.  And if you take into account
+the way that inconsistencies may influence each other, you get
+something like compound interest, which was the way that the
+exponential function was first discovered!  In the light of that, I
+guess the probability to be still consistent after <tex>$N$</tex>
+volumes must be something like <tex>$1-{\rm exp}(-cN)$</tex> for some
+constant _c_.
+
+Even without taking into account compound effects, of changes
+triggering other changes, if one new volume gives rise to one
+incompatibility with each previous volume, we have <tex>$N$</tex>
+incompatibility, which should then be repaired in each of the
+<tex>$N$</tex> previous volumes, giving rise to an amount of work of
+order <tex>$N^2$</tex>.  For <tex>$N$</tex> new volumes, the work will
+scale as <tex>$N^3$</tex>.  And that is using only the most optimistic
+assumption!  Okay, I'm convinced.
+
+*Bob*: Good!  That will save us a lot of work.
+
+== xxx

@@ -1,14 +1,8 @@
-require "vector.rb"
-require "clop.rb"
-require "acsio.rb"
+#!/usr/local/bin/ruby -w
+
+require "nbody.rb"
 
 class Body
-
-  attr_accessor :mass, :pos, :vel
-
-  def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
-    @mass, @pos, @vel = mass, pos, vel
-  end
 
   def simple_read
     @mass = gets.to_f
@@ -18,13 +12,7 @@ class Body
 
 end
 
-class Nbody
-
-  attr_accessor :time, :body
-
-  def initialize
-    @body = []
-  end
+class NBody
 
   def simple_read
     n = gets.to_i
@@ -56,7 +44,7 @@ options_text= <<-END
     The output is given in standard ACS format, as follows:
 
                   ACS
-                    Nbody 
+                    NBody 
                       Array body
                         Body body[0]
                           Float mass
@@ -117,6 +105,6 @@ c = parse_command_line(options_text, true)
 
 include Math
 
-nb = Nbody.new
+nb = NBody.new
 nb.simple_read
 nb.acs_write($stdout, false, c.precision, c.add_indent)

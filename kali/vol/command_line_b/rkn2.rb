@@ -120,7 +120,7 @@ options_definition_string = <<-END
   Short name:		-i
   Long name:  		--init_out
   Value type:  		bool
-  Variable name:	init_out
+  Global variable: 	init_out
   Description:		Output the initial snapshot
   Long description:
     If this flag is set to true, the initial snapshot will be output
