@@ -204,7 +204,7 @@ class History
       end
       p x[0]
       x[1].each do |y|
-        print "                   "
+        print "       "
         p y
       end
       print "   ]\n"
