@@ -84,11 +84,12 @@ system.  How about:
 *B*: This is only the class definition.  Let's see whether we can do a
 little bit of useful work, by adding the following lines
 
- :inccode: .body-init-demo1.rb-demo
+ :inccode: .test.rb-demo
 
+Let's call this file <tt>test.rb</tt>.
 Now let's run it:
 
- :output: ruby body-init-demo1.rb
+ :commandoutput: ruby test.rb
 
 *A*: So far so good.  The +p+ command just dumps the value of the object
 +b+ that is created.  The first number after <tt>Body:</tt> must be the id or
@@ -100,13 +101,6 @@ me try to assign values other than the default zeroes:
 Let's see a non-trivial output:
 
  :output: ruby body-init-demo2.rb
-
-    irb(main):002:0> c = Body.new(1, 0.5, 0, 0, 0, 0.7, 0)
-    ArgumentError: wrong # of arguments(7 for 3)</tt>
-	    from (irb):2:in `initialize'
-	    from (irb):2:in `new'
-	    from (irb):2
-    irb(main):003:0> 
 
 *B*: Nontrivial indeed -- but how nice to get such clear instructions!
 Quite a bit more helpful than <i>segmentation fault</i> or something
@@ -121,25 +115,11 @@ This should work:
 
  :output: ruby body-init-demo3.rb
 
-    irb(main):003:0> c = Body.new(1, [0.5, 0, 0], [0, 0.7, 0])
-    => #<Body:0x4023b31c @mass=1, @vel=[0, 0.7, 0], @pos=[0.5, 0, 0]>
-    irb(main):004:0> 
-
 *B*: Let's try the getter and setter commands.
 
  :inccode: .body-init-demo4.rb-demo
 
  :output: ruby body-init-demo4.rb
-
-    irb(main):004:0> c.mass
-    => 1
-    irb(main):005:0> c.pos[0]
-    => 0.5
-    irb(main):006:0> c.vel[1] = 0.8
-    => 0.8
-    irb(main):007:0> c.vel
-    => [0, 0.8, 0]
-    irb(main):008:0> 
 
 *A*: Well, that's simple and straightforward.  You can even use array
 notation, and everything works just like you would hope it would.
@@ -152,9 +132,6 @@ thought you would type something like:
 which would have given the same effect:
 
  :output: ruby body-init-demo5.rb
-
-    irb(main):006:0> c.vel = [0, 0.8, 0]
-    => [0, 0.8, 0]
 
 *A*: Yes, you read my mind.  I had understood that "<tt>c.vel =</tt>"
 is parsed by Ruby as an assignment operator "<tt>vel=</tt>"
@@ -175,10 +152,6 @@ in Ruby:
  :inccode: .body-print-demo.rb-demo
 
  :output: ruby body-print-demo.rb
-
-    irb(main):009:0> print c
-    #<Body:0x4023b31c>=> nil
-    irb(main):010:0> 
 
 *A*: It still gives some information, but only the id.  And as with
 the previous command, it returns +nil+ which probably means that there
@@ -207,16 +180,6 @@ Let's see what this version will do.
 
  :output: ruby body-to_s-wrong-demo.rb
 
-    |gravity> irb -r body02.rb
-    irb(main):001:0> b = Body.new(3, [0.1, 0.2, 0.3], [4, 5, 6])
-    => #<Body:0x401bfb50 @mass=3, @vel=[4, 5, 6], @pos=[0.1, 0.2, 0.3]>
-    irb(main):002:0> print b.to_s
-      mass = 3
-       pos = 0.10.20.3
-       vel = 456
-    => nil
-    irb(main):003:0> 
-
 *B*: Huh?  Why are the contents of the arrays smeared together this way?
 
 *A*: Remember that Ruby is an untyped language.  The interpreter has
@@ -239,16 +202,6 @@ to a string, and you can give a separator as an arguments.  How about:
 
  :output: ruby body-to_s-demo.rb
 
-    |gravity> irb --prompt short_prompt -r body03.rb
-    001:0> b = Body.new(3, [0.1, 0.2, 0.3], [4, 5, 6])
-    #<Body:0x401be944 @vel=[4, 5, 6], @pos=[0.1, 0.2, 0.3], @mass=3>
-    002:0> print b.to_s
-      mass = 3
-       pos = 0.1, 0.2, 0.3
-       vel = 4, 5, 6
-    nil
-    003:0> 
-
 *B*: Much better!  And I like the shorter prompt.  Interesting that
 the order of the dumped variables seems to be arbitrary: the mass
 value suddenly appeared at the end.  One more reason to define our own
@@ -266,12 +219,6 @@ well use the <tt>to_s</tt> method to define a pretty printing method
 *B*: Let's run it:
 
  :output: ruby body-pp-demo.rb
-
-    |gravity> ruby body04.rb
-      mass = 3
-       pos = 0.1, 0.2, 0.3
-       vel = 4, 5, 6
-    |gravity>
 
 *A*: Pretty indeed, and much less clutter, only the essentials.
 
