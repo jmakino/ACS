@@ -5,6 +5,10 @@ LIBSRCS = acsio.rb vector.rb
 
 LOCALLIBSRCS = nbody.rb
 
+SCRIPTSRCS = acsprune.rb acstail.rb
+
+LOCALSCRIPTSRCS = acs2sim.rb sim2acs.rb
+
 TARGET = volume8
 
 include ../etc/Makefile.inc
