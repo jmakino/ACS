@@ -3,7 +3,8 @@
 1. Handcoded interface Ruby - C
 
 Jun wrote a faster handcoded interface, in which two parallel data
-representations are used, one in C and one in Ruby.
+representations are used, one in C and one in Ruby.  After that, he
+wrote various other Ruby-C interface versions.
 
 Here are the timing results, first in seconds, than as the ratios of
 the execution time, for N particles in cold collapse.
@@ -44,11 +45,18 @@ So starting with C++, asymptotically for large N we loose a factor 5
 going to shared data, another factor 4 going to only C function calls,
 and a factor 10 going to ruby altogether.
 
+Note that the ruby-c5 timings come for a C code that is compiled with
+an optimizer, while the C++ timings come from a code that was not
+compiled with an optimizer flag; this explains why the ruby-c5 code
+can run 10% to 20% faster than the original C++ code.
 
-book as a tree with internal nodes and leaves.  Each leaf is a
-subdirectory with codes and manuals for the codes, and a chapter.
-Each internal (non-leaf) node is also a chapter, but without code,
-giving an introduction and overview of stuff below.
+2. Our book project
+
+We discussed how we can set up our book chapters as a tree with
+internal nodes and leaves.  Each leaf is a subdirectory with codes and
+manuals for the codes, and a chapter.  Each internal (non-leaf) node
+is also a chapter, but without code, giving an introduction and
+overview of stuff that is present in the nodes below.
 
 Each leaf directory has one mother file, written in literate programming
 style, which contains book text, manual text, and source code.  The book 
@@ -57,6 +65,11 @@ pages or a ps or pdf file.  The manual text can be extracted to yield
 several manual pages.  The source code is directly compiled from the
 mother file into executables and libraries.
 
-labnotes as an array.
+In contrast, the labnotes have a linear order, as an array.
 
-acs 0.1 : individual time steps and softening, simple data format.
+3. Public version
+
+We decided to make ACS 0.1 our first public release.  It will include
+an individual time step code in ruby, with various C speedups options.
+We will stick to our current simple data format.  The codes will include
+softening as well.
