@@ -39,3 +39,6 @@ initialization file is searched in the order of $ACSDOCINITRC,
 ./.acsdocinitrc, and ~/.acsdocinitrc.
 
 Equation numbering... 
+
+Memo: simplest way to make big arrows in Tgif: create small figure and
+resize if by layout->setreduction. 
