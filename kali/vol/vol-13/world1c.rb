@@ -24,7 +24,7 @@ class Worldpoint < Body
   attr_accessor :mass, :pos, :vel, :acc, :jerk, :snap, :crackle,
                 :time, :next_time, :nsteps,
                 :minstep, :maxstep,
-                :nearest_neighbor, :second_nearest_neighbor
+                :nearest_neighbor
 
   def initialize
     @nsteps = 0
@@ -815,7 +815,8 @@ Safety_hysteris_factor = 1.5
     t = wp.most_recent_return_time(wp.time)
     return if t < w.worldpoint[0].time
     return if t < @start_time
-STDERR.printf("**entering show_binary for time t = %.3g\n", t)
+STDERR.printf("**entering show_binary at time t = %.3g ; ", t)
+STDERR.printf("%d -> %d particles\n", @worldline.size, @worldline.size + 1)
     w.cap_at(t)
     b1, b2 = w.worldpoint.last.dissolve
 #b1.acs_write($stderr)
@@ -863,11 +864,12 @@ STDERR.printf("**entering show_binary for time t = %.3g\n", t)
     t1 = w1.next_worldpoint_at_or_after(@start_time).time
     t2 = w2.next_worldpoint_at_or_after(@start_time).time
     t = min(t1, t2)
+STDERR.print "t1 = #{t1} ; t2 = #{t2} ; t = #{t}\n"
 #take_snapshot(t).acs_write($stderr)
 #take_snapshot(t).write_diagnostics(1.0)
 #take_full_snapshot(t).acs_write($stderr)
 #take_full_snapshot(t).write_diagnostics(1.0)
-STDERR.printf("*entering merge_worldlines for time t = %.3g and ", t)
+STDERR.printf("*entering merge_worldlines at time t = %.3g to merge ", t)
     w1.cap_at(t)
     w2.cap_at(t)
     b = Binary.new(w1.worldpoint.last, w2.worldpoint.last, t)
@@ -881,11 +883,10 @@ STDERR.printf("*entering merge_worldlines for time t = %.3g and ", t)
     end
     @worldline.each_index do |i|
       if @worldline[i] == w1 or @worldline[i] == w2
-STDERR.print "#{i} "
+STDERR.print "|#{i}"
         @worldline[i] = nil
       end
     end
-STDERR.print "\n"
 #STDERR.print "w1.wordline.last.class = ", w1.worldpoint.last.class, "\n"
 #STDERR.print "w2.wordline.last.class = ", w2.worldpoint.last.class, "\n"
    @worldline.compact!
@@ -895,6 +896,8 @@ STDERR.print "\n"
       break if w.startup_done?(self, dt_max)
     end    
     @worldline.push(w)
+STDERR.printf("| ; %d -> %d particles", @worldline.size + 1, @worldline.size)
+STDERR.print "\n"
 #take_snapshot(t).acs_write($stderr)
 #take_snapshot(t).write_diagnostics(1.0)
 #take_full_snapshot(t).acs_write($stderr)
@@ -1082,20 +1085,16 @@ class Worldsnapshot < Nbody
     sqrt(time_scale_sq)                  # time scale value
   end
 
-  def find_first_and_second_nearest_neighbors
+  def find_nearest_neighbors
     @body.each_index do |i|
-      d1sq = d2sq = VERY_LARGE_NUMBER
+      d2 = VERY_LARGE_NUMBER
       @body.each_index do |j|
         if j != i
           r = @body[j].pos - @body[i].pos
           r2 = r*r
-          if d1sq > r2
-            d1sq = r2
-            @body[i].second_nearest_neighbor = @body[i].nearest_neighbor
+          if d2 > r2
+            d2 = r2
             @body[i].nearest_neighbor = j
-          elsif d2sq > r2
-            d2sq = r2
-            @body[i].second_nearest_neighbor = j
           end
         end
       end
@@ -1121,7 +1120,7 @@ class Worldsnapshot < Nbody
   end
 
   def find_isolated_binaries(factor)
-    find_first_and_second_nearest_neighbors
+    find_nearest_neighbors
     list = []
     return [[0, 1]] if @body.size == 2
     @body.each_index do |i|
@@ -1129,16 +1128,8 @@ class Worldsnapshot < Nbody
         if j > i
           if @body[i].nearest_neighbor == j and @body[j].nearest_neighbor == i
             b = Binary.new(@body[i], @body[j])
-            if b.rel_energy < 0
-              r = @body[i].pos - @body[@body[i].second_nearest_neighbor].pos
-              ri2 = r*r
-              r = @body[j].pos - @body[@body[j].second_nearest_neighbor].pos
-              rj2 = r*r
-              r2 = ri2
-              r2 = rj2 if rj2 < ri2
-              if sqrt(r2) > factor * b.semi_major_axis
-                list.push([i, j])
-              end
+            if b.rel_energy < 0 and isolated?(b, factor)
+              list.push([i, j])
             end
           end
         end
