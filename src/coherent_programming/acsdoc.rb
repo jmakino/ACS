@@ -51,14 +51,25 @@ module Rdoctotex
   @@imglinkcount = 0
   @@latexscalingforimage = 0.5
 
-  @@charstoescape =/(#)|(\{)|(\})|(\_)|(\{)|(\\)/
+  @@charstoescape =/(#)|(\{)|(\})|(\_)/
+  @@charstotexmath =[
+    [/\\/,"$\\backslash$"],
+    ["{","\\{"],
+    ["}","\\}"],
+    [/#/,"\\#"],
+    [/\_/,"\\_"],
+    [/</,"$<$"],
+    [/>/,"$>$"],
+    [/\^/,"$\\hat{\\ }$"]]
 
   @@basic_preambles_for_tex = "\\documentclass{book}\n\\usepackage{graphicx}"
   @@additional_preambles_for_tex = ""
   @@additional_commands_for_tex = ""
 
   def escapetexspecialcharacters(instring)
-    s=instring.gsub(@@charstoescape){|word| "\\"+word}
+    s = instring
+    @@charstotexmath.each{|x| s=s.gsub(x[0],x[1])}
+#    s=s.gsub(@@charstoescape){|word| "\\"+word}
     s
   end
   
