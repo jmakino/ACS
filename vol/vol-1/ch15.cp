@@ -123,11 +123,21 @@ the acceleration twice in the leapfrog as well.  However, it would be easy
 to rewrite it in such a way that it needs only once acceleration calculation.
 And in the Runge-Kutta method you cannot do that.
 
+== Translating Formulas Again
 
+*Alice*: Going back to the original equations you wrote down for your
+second-order Runge-Kutta code:
 
+<tex>\begin{eqnarray}
+{\bf r}_{i+1/2} & = & {\bf r_i}_i + {\bf v}_{i} dt/2     \nonumber \\
+{\bf v}_{i+1/2} & = & {\bf v_i}_i + {\bf a}_{i} dt/2     \nonumber \\
+{\bf r}_{i} & = & {\bf r_i}_i + {\bf v}_{i+1/2} dt       \nonumber \\
+{\bf v}_{i} & = & {\bf v_i}_i + {\bf a}_{i+1/2} dt       \nonumber
+\end{eqnarray}</tex>
 
-
-
+I must admit that your way of coding them up is not immediately transparent
+to me.  If I had to implement these equations, I would have written something
+like:
 
   def rk2(dt)
     old_pos = pos
@@ -140,8 +150,21 @@ And in the Runge-Kutta method you cannot do that.
     @pos = old_pos + half_vel*dt
   end
 
+*Bob*: Yes, that is how I started as well.  But then I realized that
+I could save three lines by writing them the way I did in the code:
 
+ :inccode:.rkbody.rb+rk2
 
+The number of times you calculate the acceleration is the same, but
+instead of introducing five new variable, I only introduced two.
+
+*Alice*: it is probably a good idea to show both ways to the students,
+so that the whole process of coding up an algorithm becomes more
+transparent to them.
+
+*Bob*: Yes, I'll make sure to mention that to them.
+
+== Energy Conservation
 
 *Alice*: Since we know now that the two methods are different, it seems
 likely that the energy conservation in the Runge-Kutta method is a
@@ -149,7 +172,7 @@ better indicator for the magnitude of the positional errors than it
 was in the leapfrog case.  Shall we try the same values as we used
 before, but now for the Runge-Kutta method?
 
-*Bob*: Good idea.  
+*Bob*: I'm all for it!
 
  :inccode: .integrator_driver2a.rb-barebones
 
@@ -175,6 +198,8 @@ second-order integrator are only guaranteed to be smaller than something
 that scales like the square of the time step, but still, this is a bit
 mysterious.  Shall we shrink the time step by another factor ten?
 
+== Accuracy in Position
+
 *Bob*: Sure.  But before doing that, note that the position error in our
 first run is about <tex>$10^{-3}$</tex>, where we had <tex>$10^{-4}$</tex>
 for the leapfrog.  So the Runge-Kutta, for a time step of 0.001, is a
@@ -195,6 +220,63 @@ in energy error, to within a factor of two or so.
 as we can now see by comparison with the third run.  That is strange.
 The positional accuracy increases by a factor 100, yet the energy accuracy
 increases by a factor 1000.
+
+*Alice*: Let's shrink the step size by another factor of ten.
+
+    |gravity> ruby test.rb < euler.in
+    dt = 1.0e-06
+    dt_dia = 10
+    dt_out = 10
+    dt_end = 10
+    method = rk2
+    at time t = 0, after 0 steps :
+      E_kin = 0.125 , E_pot =  -1, E_tot = -0.875
+                 E_tot - E_init = 0
+      (E_tot - E_init) / E_init =-0
+    at time t = 10, after 10000000 steps :
+      E_kin = 0.554 , E_pot =  -1.43, E_tot = -0.875
+                 E_tot - E_init = -1.66e-13
+      (E_tot - E_init) / E_init =1.9e-13
+      1.0000000000000000e+00
+      5.9961755426085783e-01 -3.6063458453782676e-01
+      1.0308069106006272e+00  2.1389530234024676e-01
+
+*Bob*: This time the energy error shrunk only by two and a half orders
+of magnitude, about a factor 300, but still more than the factor
+hundred than we would have expected.  Also, with <tex>$10^{7}$</tex>
+integration steps, I'm surprised we got even that far.  At each time,
+round off errors must occur in the calculations that are of order
+<tex>$10^{-16}$</tex>.  Then statistical noice in so many calculations
+must be larger than that by at least the square root of the number of
+time steps, or <tex>$10^{3.5}.10^{-16}=3.10^{-13}$</tex>.
+
+*Alice*: Which is close to what we got.  So that would suggest that
+further shrinking the time step would not give us more accuracy.
+
+*Bob*: I would expect so much.  But these calculations are taking a
+long time again, so I'll let the computer start the calculation, and
+we can check later.  At least now we are pushing machine accuracy for
+64-bit floating point with our second-order integrator; before 
+
+
+    |gravity> ruby test.rb < euler.in
+    dt = 1.0e-07
+    dt_dia = 10
+    dt_out = 10
+    dt_end = 10
+    method = rk2
+    at time t = 0, after 0 steps :
+      E_kin = 0.125 , E_pot =  -1, E_tot = -0.875
+                 E_tot - E_init = 0
+      (E_tot - E_init) / E_init =-0
+    at time t = 10, after 100000000 steps :
+      E_kin = 0.554 , E_pot =  -1.43, E_tot = -0.875
+                 E_tot - E_init = -4.77e-13
+      (E_tot - E_init) / E_init =5.45e-13
+      1.0000000000000000e+00
+      5.9961755488235224e-01 -3.6063458345517674e-01
+      1.0308069102692998e+00  2.1389530417820268e-01
+
 
 
 
