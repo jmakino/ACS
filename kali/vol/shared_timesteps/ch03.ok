@@ -1,0 +1,28 @@
+= XXX
+
+== xxx
+
+
+
+
+
+
+why not more accurate for variable time step?
+		    write nbodydiff
+
+discuss how to extend it to variable time steps, then implement:
+nbody_cst1.rb
+
+nbody_sh1.rb
+
+nbody_ind1.rb
+
+nbody_ind2.rb
+
+nbody_ind3.rb
+
+world1.rb
+
+world2.rb
+
+world3.rb

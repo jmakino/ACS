@@ -70,22 +70,45 @@ one, but you can start at zero as well, or at any other place you like.
 Let's test it with our Plummer Model:
 
  :commandoutput: acsnumber.rb -h
-
  :commandoutput: mkplummer.rb -n 2 -p 5 | acsnumber.rb 
-
  :commandoutput: mkplummer.rb -n 2 -p 5 | acsnumber.rb -n 42
 
-== A Test Count
+== Defensive Programming
 
 *Bob*: Now, with identifiers in place, we can extend our <tt>nbody.rb</tt> file
 by adding a subtraction operator:
 
  :inccode:.nbody.rb+-
 
-This includes proper testing of particle identities.  Given this, it
-now becomes really trivial to check for the actual size of the
-difference between two N-body systems, by defining the absolute value
-method:
+This includes proper testing of particle identities.
+
+*Alice*: And I see that you are returning the newly constructed nbody system
++nb+ at the end of the method.  Also, you're getting quite defensive
+in your programming!
+
+*Bob*: This is a situation where defensive programming is called for.
+In general, I don't like to litter my code with many error checking
+lines all over the place, but in this particular case, it is quite
+likely that the difference operator will be invoked for incompatible
+N-body systems.  So I'm checking whether the other object is really
+of +NBody+ class, whether it has the same number of particles as the
+calling +NBody+ object, and most importantly, I am then checking
+whether each particle in the calling system has a counter part in the
+other system, with the same <tt>body_id</tt>.
+
+*Alice*: Applause, applause!  As you know, I like to check things, as
+a matter of habit, in order to prevent future surprises that may be
+hard to debug.  But I agree, you can overdo with anything, and there
+is a lot to say for keeping code small.  In this case, though, the
+whole code is so small that it doesn't distract to have these extra
+safeguards built in.
+
+== Putting it together
+
+*Bob*: With our new tools in hand, it now becomes really trivial to
+check for the actual size of the difference between two N-body
+systems, by defining the absolute value method, also within the file
+<tt>nbody.rb</tt>:
 
  :inccode:.nbody.rb+abs
 
@@ -99,11 +122,14 @@ ourselves to configuration space, rather than to phase space.
 *Alice*: Let me try to implement the module that gives the difference
 between two N-body systems, as the 6N-dimensional distance in phase space,
 or the 2DN-dimensional distance for the general case of D spatial dimensions.
-It's time to practice my Ruby skills again.
+It's time to practice my Ruby skills again.  Let's call the file
+<tt>acsdiff.rb</tt>:
 
  :inccode:acsdiff.rb
 
 How about this?
+
+== Checking it out
 
 *Bob*: Looks fine, as far as I can see.  You put in options to allow for more
 precision, without burdening the reader with all those extra digits in
@@ -140,32 +166,3 @@ Just what it should be!  Now for positions only, and a higher precision:
  :command: rm -f tmp0.in tmp1.in
 
 Perfect.  I think we're ready to move on.
-
-
-
-
-
-
-
-
-
-
-why not more accurate for variable time step?
-		    write nbodydiff
-
-discuss how to extend it to variable time steps, then implement:
-nbody_cst1.rb
-
-nbody_sh1.rb
-
-nbody_ind1.rb
-
-nbody_ind2.rb
-
-nbody_ind3.rb
-
-world1.rb
-
-world2.rb
-
-world3.rb
