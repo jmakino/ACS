@@ -154,7 +154,72 @@ in front of me, in spacetime, with each particle following a worldline,
 where some worldlines are extended further than others, like a ragged
 carpet where the different strands have different lengths.
 
-== Spacetime
+== Wordlines and Worldpoints
 
-*Bob*: that's an interesting way of looking at the evolution of an N-body
-system.  Normally we 
+*Bob*: You always manage to complicate things!  As soon as you understand
+how something works in three dimensions, you add another dimension for
+good measure!
+
+*Alice*: I'm serious, though.  I do think it may be an interesting way
+of looking at the evolution of an N-body system.  Normally we
+associate a spacetime view with special relativity, where particles
+follow worldlines in space and time, but there is no reason not to use
+such a picture in classical mechanics as well.
+
+*Bob*: So instead of talking about the N-body problem, from now on you
+want to talk about the N-worldline problem?
+
+*Alice*: Well, why not?
+
+*Bob*: I know why not.  Nobody will understand what you're talking about.
+
+*Alice*: We'll worry about that later.  Why not pursue this idea for a
+moment.  Rather than thinking in terms of a bunch of separate bodies,
+as isolated point masses in 3-D, it may be more natural to think of
+them as strings in 4-D.  Such a picture could actually be helpful in
+visualizing the basic idea of an individual time step code.
+
+*Bob*: A string theory for classical gravity?
+
+*Alice*: If you like!  But without Calabi-Yau manifolds, don't worry!
+We'll try to keep it simple.
+
+*Bob*: What are Calabi-Yau manifolds?
+
+*Alice*: Something quite a bit more difficult to visualize than
+individual time step algorithms.  Forgot about that.
+
+*Bob*: With pleasure; life is already complicated enough.
+So instead of having N particles in space, you want us to look at N
+worldlines in spacetime.  And each worldline has a number of knots,
+one at each point where we compute the positions and velocities.
+Do you want to call those knots worldpoints?
+
+*Alice*: That would be a natural term, although I haven't heard it before.
+But why not?  In special relativity textbooks, these points in 4-D are
+called events, since they are associated with a particular time and place.
+However, the word worldpoint is more descriptive, in that they convey the
+notion that they belong to a particular worldline.  Different worldpoints
+on the same worldline then share the same <tt>body_id</tt> identity, but
+are different in having different values for the time <tt>@time</tt>
+
+*Bob*: Taking a time step is then a temporal operation, while syncing
+for output is a spatial operation?
+
+*Alice*: You're getting it!  See how natural it is to view the N-body
+problem in four dimensions?
+
+*Bob*: The N-worldline problem.
+
+*Alice*: I'm happy to keep calling it the N-body problem, not to worry.
+And I do think this way of looking at things has mileage.  Synchronization
+means constructing a cross section of the full bundle of worldline with a
+hypersurface at a constant time.
+
+*Bob*: And what is the mileage in being abstract to that degree?
+
+*Alice*: Let me think about it a bit more, and continue tomorrow.
+
+*Bob*: Good idea: with all this talking about spacetime, we forgot the
+time.  It's getting late.
+
