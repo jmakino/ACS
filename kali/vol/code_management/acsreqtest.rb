@@ -1,5 +1,5 @@
-  $acsdate="20050305"
   $acsreqverbosemode=1
   require "acs"
+  require "kali/testlocal"
   p "end"
 

@@ -1,10 +1,10 @@
+#   Time-stamp: <05/03/14 13:36:55 makino>
 #
 # acsstart.local.sample
 #
 # copy this file to $ACSSCRIPTS/acsstart.local
 # and edit if necessary
 #
-#   Time-stamp: <05/03/14 13:30:40 makino>
 #
 
 # set the following to "yes" if you want to add your things to SVN

@@ -13,6 +13,6 @@ if ( $?ACSROOT) then
    setenv RUBYPATH .:$ACSSCRIPTS
    setenv RUBYLIB .:$ACSLIBS
    if ( -e $ACSSCRIPTS/acsstart.local ) then
-      source  -e $ACSSCRIPTS/acsstart.local
+      source   $ACSSCRIPTS/acsstart.local
    endif
 endif

@@ -5,6 +5,8 @@ SCRIPTSRCS = check_and_install.rb acsstart.cshrc acsresetlibrary.rb \
              acsstart.local.example
 
 LIBSRCS = acsrequire.rb acs.rb
+LOCALLIBSRCS = testlocal.rb
+
 
 TARGET = volume7
 

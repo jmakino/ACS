@@ -40,7 +40,14 @@ def check_and_install(sourcename, dirname)
   if File.exist?(checkfilename)
     oldsource= open(checkfilename,"r"){|f| f.gets}.chomp
     if oldsource != fullsourcename
-      raise "Target file comes from #{oldsource}, different from #{fullsourcename}"
+      print "#{__FILE__} error:" 
+      print "  Target file comes from #{oldsource}," 
+      print "  different from #{fullsourcename}\n"
+      print "  If you want to overwrite , please remove file #{checkfilename}\n"
+      print "  Also, make sure that you do not export file #{sourcename} from\n"
+      print "  more than one place.\n"
+      print "File #{sourcename} is not installed. Exiting...\n"
+      exit 1
     end
   end
   copyfile=1
