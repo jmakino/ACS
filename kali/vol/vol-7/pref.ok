@@ -2,14 +2,13 @@
 	
 = Preface
 
-The current version of this volume contains only half of the material
-that we plan to include here, in a future release.  We started writing
-the text while we considered this volume to become volume 4 in the
-<i>Kali</i> series, but later considerations moved us to change the
-order of volumes 4 through 7.  After we finish these earlier volumes,
-we will write the second half of the current volume.  Undoubtedly,
-some of the material present here will be changed, but we decided to
-offer it here as a preview of things-to-come.
+In this volume, Alice and Bob develop a robust and flexible ACS data
+format, and implement basic I/O modules, based on that format.  The
+current version of this volume contains only half of the material that
+we plan to include here, in a future release, by late 2004 or early
+2005.  One working example is given in section 4.3, where the Plummer
+model generator, developed in volume 5, is provided with ACS-style
+data output.
 
 [add reference to starlab, for hierarchical particle data structure idea]
 
@@ -24,6 +23,4 @@ Professor Masao Ninomiya.
 
 Piet Hut and Jun Makino
 
-Kyoto, June 2004
-
-(written for the occasion of the ACS 1.0 release)
+Kyoto, July 2004

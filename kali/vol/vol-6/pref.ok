@@ -2,9 +2,14 @@
 	
 = Preface
 
-== xxx
+This volume will show several ways for speeding up Ruby code, by
+replacing a small amount of time-critical Ruby lines by short C functions.
+We have started writing some text here, but the bulk of the text will
+appear later, by late 2004 or early 2005.
+
+== Acknowledgments
 
 We thank xxx, xxx, and xxx for their comments on the
 manuscript.
 
-[ ]  Piet Hut and Jun Makino
+Piet Hut and Jun Makino
