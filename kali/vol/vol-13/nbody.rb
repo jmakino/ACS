@@ -4,7 +4,7 @@ class Body
 
   ACS_OUTPUT_NAME = self.to_s
 
-  attr_accessor :mass, :pos, :vel
+  attr_accessor :mass, :pos, :vel, :number
 
   def initialize
     @mass = 0.0

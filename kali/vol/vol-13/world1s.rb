@@ -331,13 +331,14 @@ end
 
 class Worldline
 
-  attr_accessor  :worldpoint, :method
+  attr_accessor  :worldpoint, :method, :number
 
   def initialize
     @worldpoint = []
   end
 
   def setup(time)
+    @number = @worldpoint[0].number
     eval("#{@method}_setup(time)")
   end
 
@@ -345,7 +346,15 @@ class Worldline
     eval("#{@method}_startup_done?(era, dt_max)")
   end
 
+  def reach(time, era, dt_max)
+#p "entering reach for worldline #{@number}; worldpoint.last.time = #{worldpoint.last.time} ; time = #{time}"
+    while (worldpoint.last.time < time)
+      extend(era, dt_max)
+    end
+  end
+
   def extend(era, dt_max)
+#p "extend worldline #{@number}"
     new_point = eval("take_#{@method}_step(era, dt_max)")
     @worldpoint.push(new_point)
   end
@@ -372,7 +381,7 @@ class Worldline
 
   def forward_startup_done?(era, dt_max)
     wp = @worldpoint[0]
-    acc = era.acc(self, wp)
+    acc = era.try_to_get_acc(self, wp)
     timescale = era.timescale(self, wp)
     wp.forward_init(acc, timescale, @dt_param, dt_max)
     true
@@ -380,7 +389,7 @@ class Worldline
 
   def leapfrog_startup_done?(era, dt_max)
     wp = @worldpoint[0]
-    acc = era.acc(self, wp)
+    acc = era.try_to_get_acc(self, wp)
     timescale = era.timescale(self, wp)
     wp.leapfrog_init(acc, timescale, @dt_param, dt_max)
     true
@@ -388,7 +397,7 @@ class Worldline
 
   def hermite_startup_done?(era, dt_max)
     wp = @worldpoint[0]
-    acc, jerk = era.acc_and_jerk(self, wp)
+    acc, jerk = era.try_to_get_acc_and_jerk(self, wp)
     timescale = era.timescale(self, wp)
     wp.hermite_init(acc, jerk, timescale, @dt_param, dt_max)
     true
@@ -398,13 +407,13 @@ class Worldline
     wp = @worldpoint[0]
     if not defined? @startup_cycle
       @startup_cycle = 1
-      acc, jerk = era.acc_and_jerk(self, wp)
+      acc, jerk = era.try_to_get_acc_and_jerk(self, wp)
       timescale = era.timescale(self, wp)
       wp.ms4_init_first_round(acc, jerk, timescale, @dt_param, dt_max)
       return false
     elsif @startup_cycle == 1
       @startup_cycle += 1
-      snap, crackle = era.snap_and_crackle(self, wp)
+      snap, crackle = era.try_to_get_snap_and_crackle(self, wp)
       wp.ms4_init_second_round(snap, crackle)
       time = wp.time
       dt = wp.next_time - time
@@ -419,7 +428,13 @@ class Worldline
 
   def take_forward_step(era, dt_max)
     new_point = forward_predict
-    acc = era.acc(self, new_point)
+    x = nil
+    loop do
+      x = era.try_to_get_acc(self, new_point)
+      break if x.class != Worldline
+      x.extend(era, dt_max)
+    end
+    acc = x      
     timescale = era.timescale(self, new_point)
     new_point.forward_correct(@worldpoint.last, acc,
                               timescale, @dt_param, dt_max)
@@ -427,7 +442,13 @@ class Worldline
 
   def take_leapfrog_step(era, dt_max)
     new_point = leapfrog_predict
-    acc = era.acc(self, new_point)
+    x = nil
+    loop do
+      x = era.try_to_get_acc(self, new_point)
+      break if x.class != Worldline
+      x.extend(era, dt_max)
+    end
+    acc = x      
     timescale = era.timescale(self, new_point)
     new_point.leapfrog_correct(@worldpoint.last, acc,
                               timescale, @dt_param, dt_max)
@@ -435,7 +456,13 @@ class Worldline
 
   def take_hermite_step(era, dt_max)
     new_point = hermite_predict
-    acc, jerk = era.acc_and_jerk(self, new_point)
+    x = nil
+    loop do
+      x = era.try_to_get_acc_and_jerk(self, new_point)
+      break if x.class != Worldline
+      x.extend(era, dt_max)
+    end
+    acc, jerk = x      
     timescale = era.timescale(self, new_point)
     new_point.hermite_correct(@worldpoint.last, acc, jerk,
                               timescale, @dt_param, dt_max)
@@ -443,7 +470,13 @@ class Worldline
 
   def take_ms4_step(era, dt_max)
     new_point = ms4_predict
-    acc = era.acc(self, new_point)
+    x = nil
+    loop do
+      x = era.try_to_get_acc(self, new_point)
+      break if x.class != Worldline
+      x.extend(era, dt_max)
+    end
+    acc = x      
     timescale = era.timescale(self, new_point)
     k = @worldpoint.size
     wp_array = @worldpoint[k-4...k].reverse
@@ -471,28 +504,27 @@ class Worldline
   end
 
   def valid_extrapolation?(time)
-    unless @worldpoint.last.time <= time and time <= @worldpoint.last.next_time
-      raise "#{time} not in [#{@worldpoint.last.time}, #{@worldpoint.last.next_time}]"
+    if @worldpoint.last.time <= time and time <= @worldpoint.last.next_time
+      true
+    else
+      false
     end
   end
 
   def valid_interpolation?(time)
-    unless @worldpoint[0].time <= time and time <= @worldpoint.last.time
-      raise "#{time} not in [#{@worldpoint[0].time}, #{@worldpoint.last.time}]"
+    if @worldpoint[0].time <= time and time <= @worldpoint.last.time
+      true
+    else
+      false
     end
   end
 
-  def valid_time?(time)
-    raise unless @worldpoint[0].time <= time and
-      time <= @worldpoint.last.next_time
-  end
-
-  def take_snapshot(time)
+  def try_to_take_snapshot_of_worldline(time)
     if time >= @worldpoint.last.time
-      valid_extrapolation?(time)
+      return nil unless valid_extrapolation?(time)
       @worldpoint.last.extrapolate(time, @method)
     else
-      valid_interpolation?(time)
+      return nil unless valid_interpolation?(time)
       @worldpoint.each_index do |i|
         if @worldpoint[i].time > time
           return @worldpoint[i-1].interpolate(@worldpoint[i], time, @method)
@@ -539,22 +571,31 @@ class Worldera
     @worldline = []
   end
 
-  def acc(wl, wp)
-    take_snapshot_except(wl, wp.time).get_acc(wp.pos)
+  def try_to_get_acc(wl, wp)
+    w = try_to_take_snapshot_except(wl, wp.time)
+    return w if w.class == Worldline
+    w.get_acc(wp.pos)
   end
 
-  def acc_and_jerk(wl, wp)
-    take_snapshot_except(wl, wp.time).get_acc_and_jerk(wp.pos, wp.vel)
+  def try_to_get_acc_and_jerk(wl, wp)
+    w = try_to_take_snapshot_except(wl, wp.time)
+    return w if w.class == Worldline
+    w.get_acc_and_jerk(wp.pos, wp.vel)
   end
 
-  def snap_and_crackle(wl, wp)
-    take_snapshot_except(wl, wp.time).get_snap_and_crackle(wp.pos, wp.vel,
-                                                           wp.acc, wp.jerk)
+  def try_to_get_snap_and_scrackle(wl, wp)
+    w = try_to_take_snapshot_except(wl, wp.time)
+    return w if w.class == Worldline
+    w.get_snap_and_scrackle(wp.pos, wp.vel)
   end
 
   def timescale(wl, wp)
-    take_snapshot_except(wl, wp.time).collision_time_scale(wp.mass,
-                                                           wp.pos, wp.vel)
+    ss = try_to_take_snapshot_except(wl, wp.time)
+    if ss.class == Worldsnapshot
+      ss.collision_time_scale(wp.mass, wp.pos, wp.vel)
+    else
+      nil
+    end
   end
 
   def startup_and_report_energy(dt_max)
@@ -566,7 +607,12 @@ class Worldera
       end
       list = new_list
     end
-    take_snapshot(@start_time).total_energy
+    ss = try_to_take_snapshot(@start_time)
+    if ss.class == Worldsnapshot
+      ss.total_energy
+    else
+      raise "cannot take snapshot at #{@start_time}"
+    end
   end
 
   def shortest_extrapolated_worldline
@@ -593,18 +639,31 @@ class Worldera
     wl
   end
 
-  def evolve(dt_era, dt_max, shared_flag)
-    nsteps = 0
-    while shortest_interpolated_worldline.worldpoint.last.time < @end_time
-      unless shared_flag
-        shortest_extrapolated_worldline.extend(self, dt_max)
-        nsteps += 1
+  def evolve(dt_era, dt_max, shared_flag, self_scheduling_flag)
+#p "entering era.evolve at time #{@start_time}"
+    if self_scheduling_flag
+      if shared_flag
+        raise "shared time steps unreasonable for self-scheduling code"
       else
-        t = shortest_extrapolated_worldline.worldpoint.last.next_time
-        @worldline.each do |w|
-          w.worldpoint.last.next_time = t
-          w.extend(self, dt_era)
+        nsteps_old = nsteps_new = 0
+        @worldline.each{|w| nsteps_old += w.worldpoint.last.nsteps}
+        @worldline[0].reach(@end_time, self, dt_max)
+        @worldline.each{|w| nsteps_new += w.worldpoint.last.nsteps}
+        nsteps = nsteps_new - nsteps_old
+      end
+    else
+      nsteps = 0
+      while shortest_interpolated_worldline.worldpoint.last.time < @end_time
+        unless shared_flag
+          shortest_extrapolated_worldline.extend(self, dt_max)
           nsteps += 1
+        else
+          t = shortest_extrapolated_worldline.worldpoint.last.next_time
+          @worldline.each do |w|
+            w.worldpoint.last.next_time = t
+            w.extend(self, dt_era)
+            nsteps += 1
+          end
         end
       end
     end
@@ -621,23 +680,21 @@ class Worldera
     e
   end
 
-  def take_snapshot(time)
-    take_snapshot_except(nil, time)
+  def try_to_take_snapshot(time)
+    try_to_take_snapshot_except(nil, time)
   end
 
-  def take_snapshot_except(wl, time)
+  def try_to_take_snapshot_except(wl, time)
     ws = Worldsnapshot.new
     ws.time = time
     @worldline.each do |w|
-      s = w.take_snapshot(time)
+      s = w.try_to_take_snapshot_of_worldline(time)
+      unless s
+        return w
+      end
       ws.body.push(s) unless w == wl
     end
     ws
-  end
-
-  def valid_time?(time)
-    return true if @start_time <= time and time <= @end_time
-    false
   end
 
   def write_diagnostics(t, nsteps, initial_energy, init_flag = false)
@@ -648,7 +705,12 @@ class Worldera
     else
       STDERR.print "to time #{sprintf("%g", @end_time)}):\n"
     end
-    take_snapshot(t).write_diagnostics(initial_energy)
+    ss = try_to_take_snapshot(t)
+    if ss.class == Worldsnapshot
+      ss.write_diagnostics(initial_energy)
+    else
+      raise "cannot take snapshot at #{t}"
+    end
   end
 
   def setup_from_snapshot(ss, method, dt_param, dt_era)
@@ -667,7 +729,8 @@ class World
 
   def evolve(c)
     while @era.start_time < @t_end
-      @new_era, dn = @era.evolve(c.dt_era, @dt_max, c.shared_flag)
+      @new_era, dn = @era.evolve(c.dt_era, @dt_max, c.shared_flag,
+                                 c.self_scheduling_flag)
       @nsteps += dn
       @time = @era.end_time
       while @t_dia <= @era.end_time and @t_dia <= @t_end
@@ -687,8 +750,12 @@ class World
     if c.world_output_flag
       acs_write($stdout, false, c.precision, c.add_indent)
     else
-      @era.take_snapshot(@t_out).acs_write($stdout, true,
-                                           c.precision, c.add_indent)
+      ss = @era.try_to_take_snapshot(@t_out)
+      if ss.class == Worldsnapshot
+        ss.acs_write($stdout, true, c.precision, c.add_indent)
+      else
+        raise "cannot take snapshot at #{@t_out}"
+      end
     end
   end
 
@@ -724,8 +791,12 @@ class World
       if c.world_output_flag
         acs_write($stdout, false, c.precision, c.add_indent)
       else
-        @era.take_snapshot(@t_out).acs_write($stdout, true,
-                                            c.precision, c.add_indent)
+        ss = @era.try_to_take_snapshot(@t_out)
+        if ss.class == Worldsnapshot
+          ss.acs_write($stdout, true, c.precision, c.add_indent)
+        else
+          raise "cannot take snapshot at #{@t_out}"
+        end
       end
     end
   end
@@ -875,7 +946,7 @@ options_text= <<-END
     (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
 
     example:
-    ruby mkplummer.rb -n 5 -s 1 | ruby #{$0} -t 1
+    ruby mkplummer.rb -n 5 | ruby #{$0} -t 1
 
 
   Short name: 		-g
@@ -1009,6 +1080,21 @@ options_text= <<-END
     such an world again will allow an fully accurate restart of the
     integration,  since no information is lost in the process of writing
     out and reading in in terms of world format.
+
+
+  Short name:		-s
+  Long name:  		--self_scheduling
+  Value type:  		bool
+  Variable name:	self_scheduling_flag
+  Description:		Particles trigger each other; no central command
+  Long description:
+    If this flag is set to true, there is no central manager that orders
+  particles to step forward.  Instead, when the output routine attempts
+  to print data at a desired time about particles that have not yet reached
+  that time, each particle will respond by attempting to step forward.  Each
+  such attempt will trigger other particles to step forward, where needed,
+  and the result of this multiple ripple effect will be the complete evolution
+  of the system until, and somewhat past, the desired time.
 
 
   Short name:		-a
