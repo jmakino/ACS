@@ -329,7 +329,7 @@ orbit, or a planetary system in a planar approximation, later on.
 *B*: Since I don't like global variables, let's encapsulate +NDIM+ as
 a class constant, with the +Body+ class:
 
-:inccode: .body.rb-simple-IO-demo
+:inccode: .body.rb-simple-IO
 
  :inccode: .body-simple-io-demo.rb-demo
 
