@@ -2,9 +2,3 @@
 
 == xxx
 
-ruby mkplummer.rb -n 5 -s 1 | ruby nbody_cst1.rb -t 2 -o 2 > t2.out
-
-ruby mkplummer.rb -n 5 -s 1 | ruby nbody_cst1.rb -t 1 -o 1 | ruby nbody_cst1.rb -t 2 -o 2 > t11.out
-
-diff t11.out t2.out
-
