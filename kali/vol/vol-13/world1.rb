@@ -62,10 +62,27 @@ class Worldpoint
     p
   end
 
-  def ppx                    # pretty print, with extra information (acc, jerk)
+  def to_s
+    "  mass = " + @mass.to_s + "\n" +
+    "   pos = " + @pos.join(", ") + "\n" +
+    "   vel = " + @vel.join(", ") + "\n"
+  end
+
+  def ppx(body_array)        # pretty print, with extra information (acc, jerk)
     STDERR.print to_s
-    STDERR.print "   acc = " + @acc.join(", ") + "\n"
-    STDERR.print "   jerk = " + @jerk.join(", ") + "\n"
+    a = j = @pos*0              # this repeats the get_acc_and_jerk calculation
+    body_array.each do |b|      # above; a kludge for now to get it working,
+      unless b == self          # but this should be cleaned up soon.
+        r = b.pos - @pos
+        r2 = r*r
+        r3 = r2*sqrt(r2)
+        v = b.vel - @vel
+        a += b.mass*r/r3
+        j += b.mass*(v-3*(r*v/r2)*r)/r3
+      end
+    end    
+    STDERR.print "   acc = " + a.join(", ") + "\n"
+    STDERR.print "   jerk = " + j.join(", ") + "\n"
   end
 
   def read
@@ -301,9 +318,10 @@ class Worldera
 #  def read          # for self-documenting data, either Worldera or Snapshot
 #  end
 
-  def read_initial_snapshot
+  def read_initial_snapshot(dt_era)
     n = gets.to_i
     @start_time = gets.to_f
+    @end_time = @start_time + dt_era
     for i in 0...n
       @worldline[i] = Worldline.new
       @worldline[i].read_initial_worldpoint(@start_time)
@@ -354,9 +372,9 @@ class World
     end
   end
 
-  def read_initial_snapshot
+  def read_initial_snapshot(c)
     @era = Worldera.new
-    @era.read_initial_snapshot
+    @era.read_initial_snapshot(c.dt_era)
   end
 
   def write_snapshot(time)
@@ -554,7 +572,7 @@ options_text= <<-END
 clop = parse_command_line(options_text, true)
 
 w = World.new
-w.read_initial_snapshot                     # for now; "read" w. self-doc. data
+w.read_initial_snapshot(clop)               # for now; "read" w. self-doc. data
 #w.write_snapshot(0)
 #w.write
 w.evolve(clop)
