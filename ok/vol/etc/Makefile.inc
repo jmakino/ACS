@@ -19,6 +19,7 @@ $(TARGET).pdf: $(TARGET).dvi
 $(TARGET).dvi: $(TARGET).tex
 	latex $(TARGET)
 	latex $(TARGET)
+	latex $(TARGET)
 $(TARGET).tex: doc $(SRC) .acsdocinitrc
 	cat $(SRC) > $(TARGET).cp
 	ruby ../../../src/coherent_programming/acsdoc.rb --tolatex $(TARGET).cp
