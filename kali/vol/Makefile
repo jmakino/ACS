@@ -1,7 +1,7 @@
 all:
 	$(MAKE) -C acs_data_format
 	$(MAKE) -C binary_trees
-	$(MAKE) -C binary_trees_b
+	$(MAKE) -C black_hole_trees
 	$(MAKE) -C code_management
 	$(MAKE) -C command_line
 	$(MAKE) -C command_line_b
@@ -13,19 +13,19 @@ all:
 	$(MAKE) -C lab_tools
 	$(MAKE) -C n_body_problem
 	$(MAKE) -C plummer
-	$(MAKE) -C plummer_b
+	$(MAKE) -C polytropes
 	$(MAKE) -C shared_timesteps
 	$(MAKE) -C speedup
 	$(MAKE) -C two_body_problem
 	$(MAKE) -C two_body_problem_b
-	$(MAKE) -C two_body_problem_c
+	$(MAKE) -C runge_kutta
 	$(MAKE) -C vision
-	$(MAKE) -C vision_b
+	$(MAKE) -C documentation
 
 clean:
 	$(MAKE) -C acs_data_format clean
 	$(MAKE) -C binary_trees clean
-	$(MAKE) -C binary_trees_b clean
+	$(MAKE) -C black_hole_trees clean
 	$(MAKE) -C code_management clean
 	$(MAKE) -C command_line clean
 	$(MAKE) -C command_line_b clean
@@ -37,11 +37,11 @@ clean:
 	$(MAKE) -C lab_tools clean
 	$(MAKE) -C n_body_problem clean
 	$(MAKE) -C plummer clean
-	$(MAKE) -C plummer_b clean
+	$(MAKE) -C polytropes clean
 	$(MAKE) -C shared_timesteps clean
 	$(MAKE) -C speedup clean
 	$(MAKE) -C two_body_problem clean
 	$(MAKE) -C two_body_problem_b clean
-	$(MAKE) -C two_body_problem_c clean
+	$(MAKE) -C runge_kutta clean
 	$(MAKE) -C vision clean
-	$(MAKE) -C vision_b clean
+	$(MAKE) -C documentation clean
