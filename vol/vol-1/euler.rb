@@ -13,7 +13,7 @@ class Body
     r2 = 0
     pos.each {|p| r2 += p*p}
     r3 = r2 * sqrt(r2)
-    acc = pos.map { |x| -x/r3 }
+    acc = pos.map { |x| -b.mass * x/r3 }
     pos.each_index { |k| pos[k] += vel[k] * dt }
     vel.each_index { |k| vel[k] += acc[k] * dt }
   end
