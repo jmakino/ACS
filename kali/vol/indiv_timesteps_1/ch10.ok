@@ -43,9 +43,8 @@ mechanics system should not be influenced by a measurement!
 code, since we evolve all particles one era at a time, and then do the
 diagnostics off-line, so to speak.  Well, we'd better check:
 
- :commandoutput: ruby world1.rb -t 1 -c 1 < test.in > test1.out
-
- :commandoutput: ruby world1.rb -t 1 -c 0.5 < test.in > test2.out
+ :commandoutput: ruby world1.rb -t 1 -d 1 < test.in > test1.out
+ :commandoutput: ruby world1.rb -t 1 -d 0.5 < test.in > test2.out
 
 *Alice*: At least the number of steps has not been changed.
 

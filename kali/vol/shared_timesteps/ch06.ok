@@ -1,95 +1,165 @@
-= Efficiency
+= Reproducibility Gained
 
-== Pure Thought
+== Asynchronicity
 
-*Bob*: There is one thing we haven't checked yet.  The whole motivation for
-going to variable time steps was to improve accuracy, for the same amount
-of computer time.  Or to put it differently, to save computer time, if the
-goal is to reach a certain accuracy.
+*Alice*: We have seen that constant time steps allow you to stop and 
+restart, and to get exactly the same results as you would have gotten,
+had you done one single integration from being to end.  But when we
+tried to do the same thing with adaptive, shared time steps, we found
+that we could not reproduce the same orbits.
 
-*Alice*: Good idea.  Let's check that.
+*Bob*: And we knew why.  In fact, we had predicted that we couldn't.
 
-*Bob*: It is pretty clear, on general grounds, that an adaptive algorithm
-must be more accurate, but I like to see by how much.
+*Alice*: Yes.  Now the question is: can we regain our reproducibility?
 
-*Alice*: I don't think it is always clear, since there are algorithms that
-do a lot better for constant time steps than for variable time steps.  The
-leapfrog is an example of an algorithm that is almost unreasonably accurate
-in energy conservation, basically because it is time symmetric.  But that
-symmetry property is lost when you allow the time steps to become variable,
-unless you make sure that your time step criterion is again time symmetric,
-something we haven't done here.
+*Bob*: How?
 
-*Bob*: That may be, but in general, adaptive algorithms should do better,
-as a rule of thumb.
+*Alice*: What did _not_ work was to force an output at exactly the right
+time.  That had the side effect of forcing the last step to be smaller
+than it would have otherwise been.
 
-*Alice*: Well, yes, in the limit of many particles and relatively large
-time steps you must be right, for sure.  And most importantly, an adaptive
-time step scheme is safer, since particles are guaranteed not to suddenly
-run into each other.  If you don't have softening, and you choose a fixed
-time step, you can never guarantee that you don't accidentally step on
-another particle.  I mean, you could reach another particle in one time
-step, which would result in a huge energy error.
+However, there is an alternative.  How about letting the system overshoot,
+so that it can do an output a time it is happy with.  When we then restart
+the system, the integration should happen just like it would have otherwise.
 
-*Bob*: With all this pure thought, let's do a hard-nosed test.  I think
-we've done something like this already, but let's run it again, from the
-same initial conditions:
+*Bob*: I see what you mean.  Well, let's test it!
 
- :commandoutput: ruby mkplummer.rb -n 4 -s 1 | ruby nbody_set_id.rb > test
+*Alice*: Here is what we did before, but this time without the
+<tt>--exact_time</tt> option:
 
-== Concrete Results
+ :commandoutput: ruby nbody_sh1.rb -t 1 < test.in > test01n.out
+ :commandoutput: ruby nbody_sh1.rb -t 1 < test01n.out > test12n.out
+ :commandoutput: ruby nbody_sh1.rb -t 2 -o 2 < test.in > test02n.out
 
-*Alice*: And we may as well start with the same type of accuracy requirements
-as we did before.
+*Bob*: So you think we'll get a smaller distance now?
 
-*Bob*: Here is the shared time step version:
+*Alice*: As close to zero as we can!  
 
- :commandoutput: ruby nbody_sh1.rb -t 1 -c 0.01 --exact_time -o 2 < test.in
+*Bob*: Well, let's hope for the best:
 
-And here is the constant time step version:
+ :commandoutput: cat test12n.out test02n.out | ruby nbody_diff.rb
 
- :commandoutput: ruby nbody_cst1.rb -c 0.001 -t 1 -o 2 < test.in
+== Overshooting
 
-*Alice*: Well, the constant time step version seems to do a somewhat better
-job!  I suggest you increase the timestep a bit, to bring out the difference
-more clearly.
+*Alice*: Hmmm, that's not good at all.  What did we do to deserve that!
 
-*Bob*: Okay, I'll make the timestep 0.00125 time units:
+*Bob*: If we look at the diagnostics output, we see that we needed the same
+number of steps to reach time 1, exactly 1263 in each case.  Then in
+the continued run, we took another 669 steps.  This gives us a total
+number of 1932 steps.  Aha!  That is _not_ the number of steps that
+the second run took.
 
- :commandoutput: ruby nbody_cst1.rb -c 0.00125 -t 1 -o 2 < test.in
+*Alice*: Good catch!  The second run stopped too early.  And yes, of course,
+we could have noticed that directly, had we looked at the final time: the
+second run indeed shows an earlier ending time than the first one.
 
-*Alice*: With nearly the same number of time steps, the constant time step
-is scheme is more accurate by almost a factor two.
+*Bob*: And that makes sense, too: we ask each run to go fro one or two time
+units, or slightly more if they overshoot.  Now asking a code to overshoot
+twice in a row is likely to produce a larger overshoot than doing it
+only once.
 
-*Bob*: Hmmm.  So much for all that hard work, to make the time step adaptive!
+*Alice*: Again, you must be right.  Going from time 0 to 1, with an
+overshoot, and then adding one more time unit plus a new overshoot is
+_not_ the same as going from 0 to 2 immediately, with whatever overshoot
+that gives.
 
-== More is Different
+*Bob*: Well, shall we try to let the long run proceed a little further,
+to match up with the previous one?
 
-*Alice*: Well, we are dealing only with five particles, and we are running
-at relatively high accuracy.  I sugest we increase the number of particles
-and decrease the accuracy.  At some point the adaptive time step
-scheme should win out from the constant time step scheme.
+*Alice*: You can certainly try.  So this means adding the difference
+of the two ending times to the desired duration; or in fact slightly
+less, since we'll produce an overshoot anyway.
 
-*Bob*: Okay, five times more particles:
+*Bob*: Okay, how about this:
 
- :commandoutput: ruby mkplummer.rb -n 25 -s 1 | ruby nbody_set_id.rb > test2.in
+ :commandoutput: ruby nbody_sh1.rb -t 2.0037 -o 2.0037 < test.in > test02n.out
+ :commandoutput: cat test12n.out test02n.out | ruby nbody_diff.rb
 
-And a ten times longer time step.  The shared time step code should be able
-to handle that gracefully.
+== Living in a Logical World
 
- :commandoutput: ruby nbody_sh1.rb -t 1 -c 0.1 --exact_time -o 2 < test2.in
+*Alice*: The right distance, this time, namely zero.  Perfect!
 
-*Alice*: Indeed.  I'm not so sure about the constant time step scheme.
+*Bob*: It literally couldn't have been better.
 
-*Bob*: Perhaps less gracefully, we have to see:
+*Alice*: Wait, wait: we still have only 1927 steps, and we still stop at
+too early a time.  What is going on?  According to the diagnostics, nothing
+has changed from the previous run.
 
- :commandoutput: ruby nbody_cst1.rb -c 0.01 -t 1 -o 2 < test2.in
+*Bob*: Now _that_ is strange.  Obviously, the phase space distance is zero.
+So something has changed.  Yet I see your point.  This is a real paradox.
 
-Indeed, quite a bit less.  Let's bring the number of time steps in line
-with that of the shared time step code:
+*Alice*: What could possibly be . . . .
 
- :commandoutput: ruby nbody_cst1.rb -c 0.005 -t 1 -o 2 < test2.in
+*Bob*: . . .  Ahaha!  Of course!  We changed the ending time and output
+time, by a slight amount, but we did not change the diagnostics output
+time!
 
-Good.  The shared time step code is a lot better now, by orders of magnitude.
+*Alice*: Of course, of course!  Ah, that is a relief.  Good!  Mystery solved,
+hopefully.  You'd better check, though!
 
-*Alice*: So all the hard work _did_ pay off, after all!
+*Bob*: Okay, here we go again:
+
+ :commandoutput: ruby nbody_sh1.rb -t 2.0037 -d 2.0037 -o 2.0037 < test.in > test02n.out
+ :commandoutput: cat test12n.out test02n.out | ruby nbody_diff.rb
+
+*Alice*: All is well.
+
+*Bob*: How easy to get confused!
+
+*Alice*: And how nice to be reassured, afterwards, that the world is still
+logical, after all.
+
+== An ACS <tt>tail</tt> Version
+
+*Bob*: You know, there is a better solution for the problem we encountered,
+when we had to deal with an output file that had more than one
+snapshot in it.
+
+*Alice*: You mean in the case in which we ran a code for two time steps,
+but we had forgotten that we get by default an output at every time step,
+so that when we looked at the start of the file, we found the output for
+time 1, rather than for time 2?
+
+*Bob*: Yes, that was the problem.  I'm sure we'll run into this again,
+often, and what we really need is a tool that picks up the _last_ ACS
+object from a file, not the first one.  Normally, if you open a file
+and start reading, you would read in the first ACS file first, but
+instead, we need to do something like what in Unix the command +tail+
+does, showing the end of a file.
+
+*Alice*: The Unix command +tail+ has a default of showing you ten lines,
+but you can ask it to show more or fewer lines, with the option <tt>-n</tt>
+as in:
+
+ :commandoutput: tail -n 3 test02n.out
+
+which shows the last three lines.
+
+*Bob*: Okay, let us call the file <tt>acstail.rb</tt>.  How about this?
+
+ :inccode: .acstail.rb
+
+== Testing <tt>tail</tt>
+
+*Alice*: Looks fine to me.  How about doing our previous experiment, 
+without adjusting the output frequency, and using <tt>acstail.rb</tt>
+instead?
+
+*Bob*: Good idea!  Here you go.  Let's be systematic.  We know that this
+works:
+
+ :commandoutput: ruby nbody_cst1.rb -t 2 -o 2 < test.in > test02.out
+ :commandoutput: cat test12.out test02.out | ruby nbody_diff.rb
+
+and we also know that this doesn't work:
+
+ :commandoutput: ruby nbody_cst1.rb -t 2 < test.in > test02.out
+ :commandoutput: cat test12.out test02.out | ruby nbody_diff.rb
+
+And if all is well, our new tool should be able to repair the last
+problem, as follows:
+
+ :commandoutput: ruby nbody_cst1.rb -t 2 < test.in | ruby acstail.rb > test02.out
+ :commandoutput: cat test12.out test02.out | ruby nbody_diff.rb
+
+*Alice*: Well done!

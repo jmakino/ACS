@@ -45,14 +45,8 @@ class Body
   attr_accessor :body_id
 end
 
-class WorldPoint < Body
-end
-
-class WorldSnapshot < NBody
-end
-
-nb1 = ACS_IO.acs_read(WorldSnapshot)
-nb2 = ACS_IO.acs_read(WorldSnapshot)
+nb1 = ACS_IO.acs_read(NBody)
+nb2 = ACS_IO.acs_read(NBody)
 nb = nb1 - nb2
 d = nb.body[0].pos.size
 n = nb.body.size

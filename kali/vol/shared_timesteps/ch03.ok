@@ -1,6 +1,6 @@
 = A Puzzle
 
-== Yoshida
+== Starting with Runge-Kutta
 
 *Bob*: We can now put our distance measurement tool to good use, by
 testing whether our shared time step integrator really does the right
@@ -9,8 +9,8 @@ We'll do a test run with the constant time step code first,
 and then compare the results with that from the shared time step
 code.
 
-*Alice*: Let's take an unusual integrator.  How about Yoshida's fourth order
-scheme?
+*Alice*: Let's take an unusual integrator.  How about the good old
+fourth order Runge-Kutta scheme?
 
 *Bob*: As you wish.  And while we're at it, let's check whether the scheme
 is still fourth order, in constant as well as shared time step form.  First
@@ -19,28 +19,59 @@ I'll prepare initial conditions with the particles all properly numbered:
  :commandoutput: ruby mkplummer.rb -n 4 -s 1 | ruby nbody_set_id.rb > test.in
 
 Starting with the constant time step version, let's choose the
-<tt>yo4</tt> integrator, but what options did we use for algorithm
-choice?  I always forget what names we gave our options.  Let's ask
-our clop function to provide them:
+<tt>rk4</tt> integrator, but what options did we use for algorithm
+choice?  I always forget what names we gave our options.
+
+*Alice*: Let's ask our clop function to provide them:
 
  :commandoutput: ruby nbody_cst1.rb -h
 
 == Energy Scaling
 
-Aha, now I remember.  Okay, how about this?
+*Bob*: Aha, now I remember.  Okay, how about this?
 
- :commandoutput: ruby nbody_cst1.rb -g yo4 -t 1 < test.in > yo4cst.out
+ :commandoutput: ruby nbody_cst1.rb -g rk4 -t 1 < test.in > rk4cst.out
 
-Now let's make the time step twice as big:
+Now let's make the time step two times smaller
 
- :commandoutput: ruby nbody_cst1.rb -g yo4 -t 1 -c 0.002 < test.in > yo4cst_twice.out
+ :commandoutput: ruby nbody_cst1.rb -g rk4 -t 1 -c 0.0005 < test.in > rk4cst_half.out
 
 == Phase Space Distance Scaling
 
-*Alice*: Indeed, fourth order.  Very close to a factor <tex>$2^4=16$</tex>
-difference.  But before we go further, and use our shared time step
-integrator, let's first see whether in this case the distance
-in phase space also scales like the fourth power in the time step.
+*Alice*: Well, that doesn't look like a fourth-order behavior.  The second
+run was far too accurate, as if it were a fifth-order algorithm.  The reason
+may well be that running constant time steps in a system where particles
+are allowed to come arbitrarily close to each other is not a good
+thing.  We really should have used softening.
+
+*Bob*: That's easy to test.  Here you are:
+
+ :commandoutput: ruby nbody_cst1.rb -s 0.01 -g rk4 -t 1 -c 0.001 < test.in > /dev/null
+ :commandoutput: ruby nbody_cst1.rb -s 0.01 -g rk4 -t 1 -c 0.0005 < test.in > /dev/null
+
+It still behaves like a fifth-order scheme, with an improvement of
+about a factor <tex>$2^5=32$</tex> instead of the expected <tex>$2^5=16$</tex>.
+
+*Alice*: Hmm, that's surprising.  In any case, we don't want to use softening
+in our shared time step code, so we should find a reasonable run for
+our constant time step code without softening.  How about making the total
+time integration ten times shorter?
+
+*Bob*: I'm all for speeding things up.  Here is the original set, now
+shortened:
+
+ :commandoutput: ruby nbody_cst1.rb -g rk4 -t 0.1 -d 0.1 -o 0.1 < test.in > rk4cst.out
+ :commandoutput: ruby nbody_cst1.rb -g rk4 -c 0.0005 -t 0.1 -d 0.1 -o 0.1 < test.in > rk4cst_half.out
+
+*Alice*: And now it scales indeed like fourth order.  I don't like the fact
+that we don't have a good explanation for this phenomenon, but I guess the
+only thing that is really guaranteed in an integration scheme is that things
+scale at least as good as the order they are supposed to have.  For now, let
+us test things with the shorter run.
+
+Before we go any further, and use our shared time step integrator, let's
+first see whether in this case the distance in phase space also scales
+like the fourth power in the time step.
 
 *Bob*: Ah, yes, good idea.  But in order to do so, we have to know what the
 `true' solution is.  When we check energy conservation, we know that a
@@ -51,35 +82,52 @@ time step, and declare that the result should be close to `true'.  Or to
 speed things up a bit, we can take a higher-order integrator.  Why not
 throw the sixth-oder Yoshida version in, to help us:
 
- :commandoutput: ruby nbody_cst1.rb -g yo6 -t 1 < test.in > yo6cst.out
+ :commandoutput: ruby nbody_cst1.rb -g yo6 -t 0.1 -d 0.1 -o 0.1 < test.in > yo6cst.out
 
 First we'll compare the first run with the `true' run:
 
- :commandoutput: cat yo4cst.out yo6cst.out | ruby nbody_diff.rb
+ :commandoutput: cat rk4cst.out yo6cst.out | ruby nbody_diff.rb
 
 And then we'll take the second run, to compare it with the `true' one:
 
- :commandoutput: cat yo4cst_twice.out yo6cst.out | ruby nbody_diff.rb
+ :commandoutput: cat rk4cst_half.out yo6cst.out | ruby nbody_diff.rb
 
-*Alice*: Very nice indeed, almost exactly a factor 16 bigger.
+*Alice*: Very nice indeed, almost exactly a factor <tex>$2^4$</tex> smaller.
 
 == The Shared Time Step Code
 
 *Bob*: After all these preliminaries, we can finally test our shared time
 step code:
 
- :commandoutput: ruby nbody_sh1.rb -g yo4 -t 1 < test.in > yo4sh.out
+ :commandoutput: ruby nbody_sh1.rb -g rk4 -t 0.1 -d 0.1 -o 0.1 < test.in > rk4sh.out
 
-Not terribly accurate.  Let's half the step size:
+Not quite as accurate as the comparable run for constant step size, even
+though we used slightly more steps.
 
- :commandoutput: ruby nbody_sh1.rb -g yo4 -t 1 -c 0.005 < test.in > yo4sh_half.out
+*Alice*: I guess that is the price we have to pay for constructing a
+more robust code.
 
-That's better, and comparable to the accuracy that we got with the default
-time step size for <tt>nbody_cst1.rb</tt> while using Yoshida's fourth-order
-integrator.  Let's see whether we're getting equally close to the `true'
-run in phase space:
+*Bob*: Yes, that must be the case.  In general, when you're developing a
+more complex algorithm, you have to pay an initial price of a reduce
+efficiency.
 
- :commandoutput: cat yo4sh_half.out yo6cst.out | ruby nbody_diff.rb
+But we had no choice.  In fact, we were lucky that we got such a good
+result with a constant time step code, without using any softening.
+If we would have repeated those runs with other Plummer realizations,
+sooner or later we would have found ourselves in a situation in which
+two particles have a close encounter at a distance less than the step
+size, leading to huge errors.  That at least cannot happen in our
+shared time step code, where the adaptive time step determination
+would always shrink the time step to be much less than the encounter
+time.
+
+*Alice*: This may be the first time I've heard you arguing eloquently
+for reducing efficiency!
+
+*Bob*: Only when necessary!  Now let's see whether we're getting equally
+close to the `true' run in phase space:
+
+ :commandoutput: cat rk4sh.out yo6cst.out | ruby nbody_diff.rb
 
 *Alice*: What is that?!?
 
@@ -87,41 +135,46 @@ run in phase space:
 
 == Back to Basics
 
-*Alice*: Could it be that Yoshida's integrator is just too fancy for our
-purpose?  Perhaps that was not such a good choice to start our testing
-with.  Let's go back to basics, and do the same thing with the leapfrog
-integrator instead:
+*Alice*: Let's go back to basics, and do the same thing with the leapfrog
+integrator instead.  And since we'll have lower accuracy, we may as well
+go to a comparison with time steps that are a factor of ten smaller; we
+won't have to be afraid to run into round-off errors:
 
- :commandoutput: ruby nbody_sh1.rb -g leapfrog -t 1 < test.in > leap_sh.out
- :commandoutput: ruby nbody_sh1.rb -g leapfrog -t 1 -c 0.001 < test.in > leap_sh_tenth.out
+ :commandoutput: ruby nbody_sh1.rb -g leapfrog -t 0.1 -d 0.1 -o 0.1 < test.in > leap_sh.out
+ :commandoutput: ruby nbody_sh1.rb -g leapfrog -c 0.001 -t 0.1 -d 0.1 -o 0.1 < test.in > leap_sh_ten.out
 
 *Bob*: The energy scales like it should for a second-order integrator:
 a hundred times better accuracy for a ten times smaller time step.
 
 *Alice*: And, really, the phase space distance should also become a
-hundred times better.  I hope it does:
+hundred times better.  Let's see whether it does:
 
  :commandoutput: cat leap_sh.out yo6cst.out | ruby nbody_diff.rb
- :commandoutput: cat leap_sh_tenth.out yo6cst.out | ruby nbody_diff.rb
+ :commandoutput: cat leap_sh_ten.out yo6cst.out | ruby nbody_diff.rb
 
 == Even more Basic
 
-*Bob*: Well, it doesn't.  What is going on here?
+*Bob*: No, it doesn't.  Given the fact that energy conservation was
+scaling so perfectly like second-order, it is very hard to believe
+that the individual positions and velocities wouldn't scale in the
+same way.  What is going on here?
 
-*Alice*: Let's completely forget about fourth-order integrators, and
+*Alice*: Let's completely forget about higher-order integrators, and
 stick to the basics completely.  If we do a third leapfrog integration,
 we can use the result of that run as our yard stick:
 
- :commandoutput: ruby nbody_sh1.rb -g leapfrog -t 1 -c 0.0001 < test.in > leap_sh_hundredth.out
- :commandoutput: cat leap_sh.out leap_sh_hundredth.out | ruby nbody_diff.rb
- :commandoutput: cat leap_sh_tenth.out leap_sh_hundredth.out | ruby nbody_diff.rb
+ :commandoutput: ruby nbody_sh1.rb -g leapfrog -c 0.0001 -t 0.1 -d 0.1 -o 0.1 < test.in > leap_sh_hundred.out
+ :commandoutput: cat leap_sh.out leap_sh_hundred.out | ruby nbody_diff.rb
+ :commandoutput: cat leap_sh_ten.out leap_sh_hundred.out | ruby nbody_diff.rb
 
 *Bob*: That doesn't make much difference.  Still no quadratic behavior.
 
-*Alice*: No matter what we do, we get a behavior that is closer to linear
-than quadratic.
+*Alice*: And even if it were quadratic, I'm still worried about the large
+magnitude of the phase space distance for our fourth-order integrator.
+And in fact, these leapfrog phase space distances are also larger than
+I would have expected.
 
-*Bob*: That should tell us something.  But what?
+*Bob*: All this should tell us something.  But what?
 
 *Alice*: Beats me.
 

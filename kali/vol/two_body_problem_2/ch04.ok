@@ -129,7 +129,7 @@ not write it down as neatly and convincingly as you just did.
 *Alice*: So yes, you have indeed implemented Abramowitz and Stegun's
 fourth-order Runge Kutta scheme.  But wait a minute, what
 you found here, equation 22.5.22, shows a right-hand side with a
-stated energy error of order <tex>$h^4$</tex> -- which would suggest
+stated position error of order <tex>$h^4$</tex> -- which would suggest
 that the scheme is is only third-order accurate.
 
 *Bob*: Hey, that is right.  If you make <tex>$h$</tex> smaller,

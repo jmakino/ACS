@@ -62,7 +62,7 @@ module Integrator_forwardplus
   end
 end
 
-module Integrator_adams2kana
+module Integrator_protohermite
 
   include Integrator_pec_mode
 
@@ -75,11 +75,8 @@ module Integrator_adams2kana
   def correct(old, dt)
     @vel = old.vel + (1/2.0)*(old.acc + @acc)*dt
     @pos = old.pos + (1/2.0)*(old.vel + @vel)*dt
-# same as:
+# same as leapfrog, apart from the an extra term in @pos, proportional to jerk:
 #   @pos = old.pos + old.vel*dt + (1/4.0)*(old.acc + @acc)*dt^2
-#   @vel = old.vel + (1/2.0)*(old.acc + @acc)*dt
-# the last expression is fixed, as for leapfrog; the first one differs from
-# leapfrog only in mixing in a 3rd-order term proportional to the jerk
   end
 
   def interpolate_pos_vel(wp, dt)
@@ -236,7 +233,7 @@ module Integrator_hermite
   end
 end
 
-module Integrator_rk4
+module Integrator_rk4n                  # not partitioned
 
   include Integrator_force_default
 
@@ -272,6 +269,116 @@ module Integrator_rk4
     new_point.pos += (k1[0]+2*k2[0]+2*k3[0]+k4[0])*dt/6
     new_point.vel += (k1[1]+2*k2[1]+2*k3[1]+k4[1])*dt/6
     new_point.time=@next_time
+    new_point.force(wl,era)
+    new_point.estimate_jerk(self)
+    new_point
+  end
+
+  def estimate_jerk(old)
+    @jerk = (old.acc - @acc) / (old.time - @time)
+  end
+
+  def predict_pos_vel(dt)
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3,
+      @vel + @acc*dt + (1/2.0)*@jerk*dt**2                       ]
+  end
+
+  def interpolate_pos_vel(wp, dt)
+    tau = wp.time - @time
+    jerk = (-6*(@vel - wp.vel) - 2*(2*@acc + wp.acc)*tau)/tau**2
+    snap = (12*(@vel - wp.vel) + 6*(@acc + wp.acc)*tau)/tau**3
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*jerk*dt**3 +
+                       (1/24.0)*snap*dt**4,
+      @vel + @acc*dt + (1/2.0)*jerk*dt**2 + (1/6.0)*snap*dt**3 ]
+  end
+end
+
+module Integrator_rk4                  # Abramowitz and Stegun's eq. 25.5.22
+
+  include Integrator_force_default
+
+  attr_reader :acc, :jerk
+  attr_writer :time
+
+  def setup_integrator
+    @acc = @pos*0
+    @jerk = @pos*0
+  end
+
+  def startup_force(wl, era)
+    @acc, @jerk = era.acc_and_jerk(wl, @pos, @vel, @time)
+  end
+
+  def force_on_pos_at_time(pos,time,wl, era)
+    era.acc(wl, pos, time)
+  end
+
+  def integrator_step(wl, era)
+    dt = @next_time - @time
+    k1 = @acc
+    k2 = force_on_pos_at_time(@pos + 0.5*@vel*dt + 0.125*k1*dt**2,
+                              @time + 0.5*dt, wl, era)
+    k3 = force_on_pos_at_time(@pos + @vel*dt + 0.5*k2*dt**2,
+                              @time + dt, wl, era)
+    new_point = deep_copy
+    new_point.pos += @vel*dt + (1.0/6)*(k1 + 2*k2)*dt**2
+    new_point.vel += (1.0/6)*(k1 + 4*k2 + k3)*dt
+    new_point.time = @next_time
+    new_point.force(wl,era)
+# replace the line above by the line below, to get a third-order FSAL scheme:
+#    new_point.acc = k3
+    new_point.estimate_jerk(self)
+    new_point
+  end
+
+  def estimate_jerk(old)
+    @jerk = (old.acc - @acc) / (old.time - @time)
+  end
+
+  def predict_pos_vel(dt)
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3,
+      @vel + @acc*dt + (1/2.0)*@jerk*dt**2                       ]
+  end
+
+  def interpolate_pos_vel(wp, dt)
+    tau = wp.time - @time
+    jerk = (-6*(@vel - wp.vel) - 2*(2*@acc + wp.acc)*tau)/tau**2
+    snap = (12*(@vel - wp.vel) + 6*(@acc + wp.acc)*tau)/tau**3
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*jerk*dt**3 +
+                       (1/24.0)*snap*dt**4,
+      @vel + @acc*dt + (1/2.0)*jerk*dt**2 + (1/6.0)*snap*dt**3 ]
+  end
+end
+
+module Integrator_rk3
+
+  include Integrator_force_default
+
+  attr_reader :acc, :jerk
+  attr_writer :time
+
+  def setup_integrator
+    @acc = @pos*0
+    @jerk = @pos*0
+  end
+
+  def startup_force(wl, era)
+    @acc, @jerk = era.acc_and_jerk(wl, @pos, @vel, @time)
+  end
+
+  def force_on_pos_at_time(pos,time,wl, era)
+    era.acc(wl, pos, time)
+  end
+
+  def integrator_step(wl, era)
+    dt = @next_time - @time
+    k1 = @acc
+    k2 = force_on_pos_at_time(@pos + (2.0/3)*@vel*dt + (2.0/9)*k1*dt**2,
+                              @time + (2.0/3)*dt, wl, era)
+    new_point = deep_copy
+    new_point.pos += @vel*dt + 0.25*(k1 + k2)*dt**2
+    new_point.vel += 0.25*(k1 + 3*k2)*dt
+    new_point.time = @next_time
     new_point.force(wl,era)
     new_point.estimate_jerk(self)
     new_point

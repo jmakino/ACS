@@ -1,5 +1,5 @@
 ACS
-     Nbody 
+     NBody 
           Array body
                Body body[0]
                     Float mass

@@ -1,4 +1,4 @@
-= Reproducibility
+= Reproducibility Lost
 
 == Making Sure
 
@@ -116,81 +116,7 @@ Indeed, the difference is slight, but clearly noticeable.
 *Alice*: Let's make sure that it's not a matter of having a different ending
 time:
 
- :commandoutput: cat test12.out test02.out
+ :commandoutput: cat test12e.out test02e.out
 
 *Bob*: No, they both end nicely at time 2.  So the difference is really a
 difference between the orbits.  This is the toll that synchronisation takes!
-
-== Asynchronicity
-
-*Alice*: Time to check whether asynchronicity leaves things undisturbed.
-
- :commandoutput: ruby nbody_sh1.rb -t 1 < test.in > test01n.out
- :commandoutput: ruby nbody_sh1.rb -t 1 < test01n.out > test12n.out
- :commandoutput: ruby nbody_sh1.rb -t 2 -o 2 < test.in > test02n.out
-
-*Bob*: So you think we'll get a smaller distance now?
-
-*Alice*: As close to zero as we can!  I already see an encouraging sign
-in the diagnostics output of the runs above.  Did you notice that the
-total number of steps in the long run exactly equals the sum of the
-number of steps of the two shorter runs?
-
-*Bob*: Right you are!  Well, let's hope for the best.
-
- :commandoutput: cat test12n.out test02n.out | ruby nbody_diff.rb
-
-*Alice*: And the best came true.  Very nice.
-
-== An ACS <tt>tail</tt> Version
-
-*Bob*: You know, there is a better solution for the problem we encountered,
-when we had to deal with an output file that had more than one
-snapshot in it.
-
-*Alice*: You mean in the case in which we ran a code for two time steps,
-but we had forgotten that we get by default an output at every time step,
-so that when we looked at the start of the file, we found the output for
-time 1, rather than for time 2?
-
-*Bob*: Yes, that was the problem.  I'm sure we'll run into this again,
-often, and what we really need is a tool that picks up the _last_ ACS
-object from a file, not the first one.  Normally, if you open a file
-and start reading, you would read in the first ACS file first, but
-instead, we need to do something like what in Unix the command +tail+
-does, showing the end of a file.
-
-*Alice*: The Unix command +tail+ has a default of showing you ten lines,
-but you can ask it to show more or fewer lines, with the option <tt>-n</tt>
-as in:
-
- :commandoutput: tail -n 3 test02n.out
-
-which shows the last three lines.
-
-*Bob*: Okay, let us call the file <tt>acstail.rb</tt>.  How about this?
-
- :inccode: .acstail.rb
-
-*Alice*: Looks fine to me.  How about doing our previous experiment, 
-without adjusting the output frequency, and using <tt>acstail.rb</tt>
-instead?
-
-*Bob*: Good idea!  Here you go.  Let's be systematic.  We know that this
-works:
-
- :commandoutput: ruby nbody_cst1.rb -t 2 -o 2 < test.in > test02.out
- :commandoutput: cat test12.out test02.out | ruby nbody_diff.rb
-
-and we also know that this doesn't work:
-
- :commandoutput: ruby nbody_cst1.rb -t 2 < test.in > test02.out
- :commandoutput: cat test12.out test02.out | ruby nbody_diff.rb
-
-And if all is well, our new tool should be able to repair the last
-problem, as follows:
-
- :commandoutput: ruby nbody_cst1.rb -t 2 < test.in | ruby acstail.rb > test02.out
- :commandoutput: cat test12.out test02.out | ruby nbody_diff.rb
-
-*Alice*: Well done!

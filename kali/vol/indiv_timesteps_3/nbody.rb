@@ -2,11 +2,15 @@ require "acs"
 
 class Body
 
+  ACS_OUTPUT_NAME = self.name
+
   attr_accessor :mass, :pos, :vel
 
 end
 
 class NBody
+
+  ACS_OUTPUT_NAME = self.name
 
   attr_accessor :time, :body
 
