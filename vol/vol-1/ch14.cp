@@ -156,9 +156,18 @@ only the actual integrator in our file <tt>test.rb</tt>.
 
 *Alice*: Sure, whenever I can get away with it!
 
-*Bob*: It may not be a bad idea, in this case.  Yes, you can do something
-similar as you do in C and C++ with an include file -- only more
-easily so.
+*Bob*: It may not be a bad idea, in this case.  And to show you how
+modular I can be, I will even call my first attempt <tt>body0.rb</tt>.
+When we create other versions, we can give them higher numbers, and when
+we are really happy, we can call the final version <tt>body.rb</tt>.
+
+*Alice*: That sort-of goes in a modular direction.  It all depends
+on what you do with that stack of versions.  But I appreciate your
+attempt!
+
+*Bob*: Coming back to your suggestion, yes, you van put the +Body+
+class definition in a separate file.  This is similar as what you do
+in C and C++ with an include file -- only here it is more easy to do so.
 
 *Alice* I well remember those constructs in C where you had to write things
 like <tt>#ifndef</tt> _this_ and <tt>#ifndef</tt> _that_ before you could
@@ -169,9 +178,9 @@ once?  You're saying that Ruby makes life easier?
 <i>"filename"</i>: it only includes the file if it hasn't been
 included yet, directly or indirectly.
 
-Here is the file <tt>body.rb</tt>:
+Here is the file <tt>body0.rb</tt>:
 
- :inccode: body.rb
+ :inccode: body0.rb
 
 It is just as we left it, but without my one-liner I/O hacks.  Now
 give me some time to figure out how to implement the forward Euler
@@ -180,7 +189,7 @@ idea . . . .
 == The First Integrator
 
 . . .  Here it is, the new version of <tt>test.rb</tt>.  As you can
-see, it starts with requiring that <tt>body.rb</tt> gets included at
+see, it starts with requiring that <tt>body0.rb</tt> gets included at
 the top.
 
  :inccode: euler1.rb
