@@ -29,7 +29,7 @@ momentum of the system are conserved.  That gives us one scalar and
 one vector, or in three dimensions it gives us four conserved
 quantities.  So we cannot compare all the details of the motion of the
 <tex>$N$</tex> particles with theory, not by a long shot.  An
-<tex>$N$</tex>-body system in three dimensions has <tex>$6N$</tex>
+N-body system in three dimensions has <tex>$6N$</tex>
 degrees of freedom, far more than the 4 handles we have.
 
 However, things are not as bad as they may seem.  If you make errors
@@ -39,8 +39,8 @@ a random fashion.  It would require a very clever conspiracy for those
 errors to work together in such a way as the keep the energy conserved
 to a high degree of accuracy, while still introducing much larger errors
 elsewhere.  In practice, therefore, checking energy conservation in an
-<tex>$N$</tex>-body system has become the standard test to see how
-accurate the integration of an <tex>$N$</tex>-body system is.
+N-body system has become the standard test to see how
+accurate the integration of an N-body system is.
 
 *Alice*: Another way of saying this is to picture the phase space of
 the whole system.
@@ -50,7 +50,7 @@ particle its position and velocity?
 
 *Alice*: I was thinking aoubt the alternative way of picturing the whole
 system as one point in a <tex>$6N$</tex>-dimensional system.  The
-evolution of an <tex>$N$</tex>-body system can then be viewed as the
+evolution of an N-body system can then be viewed as the
 complex motion of this one point through this huge space.  Now in this
 space you can define layer of subspaces, on each of which the total
 energy of the system is constant.  Once the particle starts on such a
@@ -65,7 +65,7 @@ including the direction perpendicular to the energy hypersurface.
 dimensions is incredibly complicated, the distance away from the energy
 hypersurface will typically be of the same order of magnitude as the
 total length of the drift of that master particle that symbolizes our
-whole <tex>$N$</tex>-body system.
+whole N-body system.
 
 *Bob*: More mathematical minded students might prefer your explanation;
 I think I'll just stick to my more lowbrow explanation.  But however
@@ -98,7 +98,7 @@ more accurate.  Symplectic integrators are a example.
 are.
 
 *Alice*: They are a lot of fun, from a mathematical point of view.
-How useful they may be for real <tex>$6N$</tex>-body simulations,
+How useful they may be for real 6N-body simulations,
 that is not too clear.  They are more accurately, for sure, but they
 are hard to generalize to individual time steps.  And for our game,
 we have no choice to go to individual time steps.  Perhaps we can

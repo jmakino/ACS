@@ -2,12 +2,12 @@
 
 == Evolve
 
-You are familiar already with the accessor shorthand that gives read
+*Bob*: You are familiar already with the accessor shorthand that gives read
 and write handles to the internal variables for the mass, position,
 and velocity, as well as with the initialization method, that uses our
 nifty vector class.
 
-The first new function is is +evolve+, the one function that the driver
+The first new function is +evolve+, the one function that the driver
 program invokes, and that guides all the work.  Here it is, by itself:
 
  :inccode: .body.rb+evolve
@@ -33,7 +33,7 @@ doing there, all by itself?  It looks a bit lonely and lost.
 
 == Brevity and Modularity
 
-*Bob*: Ah, the brevity of Ruby!  +e_nit+ is not a variable, it is a
+*Bob*: Ah, the brevity of Ruby!  +e_init+ is not a variable, it is a
 method, in other words a function or subroutine, depending on your
 dialect.
 
@@ -44,7 +44,8 @@ So why put parentheses around nothing?
 
 *Alice*: But in any language I have worked with, if a fuction
 +do_something+ has no arguments, you still have to invoke it with
-<tt>do_something()</tt>.  Otherwise how will the compiler know that
+<tt>do_something()</tt>, or <tt>call do_something</tt.  Otherwise how
+will the compiler know that
 it is dealing with a function, sorry, method, rather than a variable?
 
 *Bob*: The compilers of the languages you are familiar with cannot.
@@ -64,7 +65,7 @@ within the body of the class definition we are in . . .
 
 *Bob*: . . . yes, names can get confusing, even for human interpreters.
 And the Ruby interpreter will then see a statement <tt>def e_init</tt>,
-and will realize that the name <tt>e_init</tt> pertains to a method.
+and will realize that the name <tt>e_init</tt> belongs to a method.
 
 *Alice*: How elegant.
 
@@ -291,7 +292,7 @@ you anymore.
 
 *Alice*: While I get the idea of what you want to print out, in the
 statement starting with <tt>STDERR.print</tt>, I'm completely confused
-by what follows on the next few lines.  Here, let me have the key board,
+by what follows on the next few lines.  Here, let me have the keyboard,
 and let me at least properly indent it, it hurts my eyes.
 
 *Bob*: No, stop, don't do that!  It has a meaning.
