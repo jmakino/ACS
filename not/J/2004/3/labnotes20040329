@@ -41,4 +41,20 @@ initialization file is searched in the order of $ACSDOCINITRC,
 Equation numbering... 
 
 Memo: simplest way to make big arrows in Tgif: create small figure and
-resize if by layout->setreduction. 
+resize if by layout->setreduction.
+
+The way rdoc handles link: is quite annoying. You need to specify
+../test.gif, for the file at the directory the command was run (the
+current directory).
+
+A better way would be to specify the location relative to the
+directory that the .cp file lives.
+
+
+Memo: to look at older versions of (possibly removed) files in svn,
+you can use svn ls and svn cat, like:
+
+  1089  0:44    svn ls -r 299
+  1097  0:49    svn cat -r 299 svn+ssh://grape.astron.s.u-tokyo.ac.jp/usr2/acs/svn/acs/vol/vol-1/vector1.rb
+
+  

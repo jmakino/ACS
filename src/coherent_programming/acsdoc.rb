@@ -20,7 +20,7 @@
 # string as an argument
 #
 #==============================================================================
-
+#$DEBUG=1
 module Rdoctotex
 
   @@wordreplace=[
@@ -319,9 +319,9 @@ module Acsdoc
     prompt = " "* indent + @@prompt
     commandline = a[1..a.size].join(" ").chomp
     ostring = ostring +  "---\n"     unless noout
-    fullcommand = "cd #{dirname}; "+commandline
+      fullcommand  = "cd #{dirname}; #{commandline}" 
     unless noout
-      fullcommand  = "(#{fullcommand})>&  #{tmpname}" 
+      fullcommand  = "cd #{dirname}; (#{commandline})>&  #{tmpname}" 
       print "Generating output of \"#{commandline}\"...\n" 
     else
       print "Executing command \"#{commandline}\"...\n" 
@@ -368,8 +368,10 @@ module Acsdoc
     fullcommand = "cd #{dirname}; (" +commandline+ "<" + tmpinname + " )"
     if showout
 #      fullcommand  +=   " >& " + tmpname 
-      fullcommand  = "(#{fullcommand})>& #{tmpname}" if showout
-
+      fullcommand  = "(#{fullcommand})" if showout
+      if showout
+	fullcommand = "cd #{dirname}; (( #{commandline} < #{tmpinname}  ))>& #{tmpname}"
+      end
       print "Generating output of \"#{commandline}\"...\n" 
     else
       print "Executing command \"#{commandline}\"...\n" 
