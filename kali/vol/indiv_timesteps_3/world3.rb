@@ -125,6 +125,10 @@ module Integrator_multistep
     @acc = [@pos*0]
   end
 
+  def force(wl, era)
+    @acc[0] = era.acc(wl, @pos, @time)
+  end
+
   def intermediate_point(old_ip, i)
     nil
   end

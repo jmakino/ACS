@@ -3,13 +3,7 @@ require "acs"
 
 class Body
 
-# naming convention for instance variables in class Body:
-#
-# @mass    : mass 
-# @pos     : position
-# @vel     : velocity
-# @idn     : identification number of a body, typically used when
-#            numbering the bodies consecutively within an N-body system
+  attr_accessor :mass, :pos, :vel
 
 end
 
@@ -17,7 +11,7 @@ class NBody
 
   ACS_OUTPUT_NAME = self.to_s
 
-  attr_accessor :time, :body             # an array with elements of class Body
+  attr_accessor :time, :body
 
   def initialize
     @body = []
@@ -33,7 +27,10 @@ class NBody
     end
     nb = NBody.new
     body.each_index do |i|
-      ob = other.body.find{|oi| oi.body_id == body[i].body_id}
+      if (id = body[i].body_id) == nil
+        raise "body[#{i}].body_id == nil"
+      end
+      ob = other.body.find{|oi| oi.body_id == id}
       if ob == nil
         raise "body_id = #{body[i].body_id} not found in other N-body system"
       end
@@ -47,6 +44,18 @@ class NBody
   def abs
     a = 0
     body.each{ |b| a += b.pos*b.pos + b.vel*b.vel }
+    sqrt a
+  end
+
+  def abs_pos
+    a = 0
+    body.each{ |b| a += b.pos*b.pos }
+    sqrt a
+  end
+
+  def abs_vel
+    a = 0
+    body.each{ |b| a += b.vel*b.vel }
     sqrt a
   end
 
