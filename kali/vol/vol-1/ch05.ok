@@ -136,8 +136,12 @@ the acceleration <tex>${\bf a}$</tex> of our single particle, that now
 stands in for the relative motion between two particles.  The index
 <tex>$i$</tex> indicates the values for time <tex>$t_i$</tex> and
 <tex>$i+1$</tex> for the time <tex>$t_{i+1}$</tex> after one more time
-step has been taken: <tex>$dt = t_{i+1} - t_i$</tex>.  So, all we have
-to do now is to code it up.
+step has been taken: <tex>$dt = t_{i+1} - t_i$</tex>.
+
+Of course, we have to provide intial conditions for the position and
+velocity vectors, before we can solve the equations, and we will do
+that as soon as we have a working integrator.  For now, all we have
+to do now is to code up these equations.
 
 *Alice*: That was an even shorter lecture.  Yes, let's do it.
 

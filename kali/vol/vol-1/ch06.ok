@@ -5,7 +5,8 @@
 *Bob*: Time to test our Forward Euler code!
 
 *Alice*: I see there is a call to <tt>simple_read</tt>, so I presume we have
-to provide an input file.
+to provide an input file, that will contain the initial conditions,
+from which we can then start to integrate the equations of motion.
 
 *Bob*: Let's call it <tt>euler.in</tt>; how about this one?
 

@@ -54,17 +54,21 @@ An even better way is to go one step further: to replace the orbit of
 a very tight binary star by the analytic solution of the Kepler
 problem, an elliptical orbit for which we only have to solve Kepler's
 equation to know where the two particles are with respect to each
-other, at any given time.
+other, at any given time.  This will be an excellent approximation
+when there are no other stars anywhere in the area.
 
-Now sooner or later, a third particle may happen to be close to a
-hard binary on an eccentric orbit.  In that case we can simply replace
-the numerical binary treatment by an analytic Kepler orbit.  We could
-introduce a celestial mechanics perturbation treatment.  But in general,
-the best solution is to use what is called a Kustaanheimo-Stiefel
-transformation, or other variants that have been introduced later.
-These of course are only the first steps.  There are many other very
-nice tricks of the trade.  If you use chain regularization and Stumpf
-. . . 
+Now sooner or later, a third star may happen to come near.  In that
+case we can temporarily switch back to numerical integration.  Or, if
+the binary has a very eccentric orbit, we may want to avoid
+significant numerical errors by introducing a celestial mechanics
+perturbation treatment.  In that case, we stick to an analytical
+Kepler orbit as the unperturbed solution, and we integrate the
+perturbation equations.  But in general, the best solution is to use
+direct numerical integration in four dimenstions, using
+what is called a Kustaanheimo-Stiefel transformation, or other
+variants that have been introduced later.  These of course are only
+the first steps.  There are many other very nice tricks of the trade.
+If you use chain regularization and Stumpf . . .
 
 *Alice*: Yes, yes, I'm sure there are many wonderful tricks, but we
 have to offer your students something that they can understand and
@@ -169,7 +173,7 @@ people do when they collide two galaxies, and they want to suppress
 two-body relaxation, which would be unphysical anyway in that case,
 since each single particle represents thousands of stars, if not more.
 But in the case of a star cluster, you could give each star a softening
-radius that is equal to the physical radius of a star.  In that case,
+length that is equal to the physical radius of a star.  In that case,
 binaries could form and two-body relaxation will be just fine.  You
 would have to do more, since you would have to prevent stars from
 passing through each other, as softened particles would.  When you

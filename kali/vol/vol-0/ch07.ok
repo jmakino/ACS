@@ -31,10 +31,13 @@ and similarly for stellar hydrodynamics.
 determine everything just by giving it a mass.  It will then compute
 the ZAMS radius, as well as the lifetime, by a simple power law formula.
 It can keep the radius constant for the first 90 percent of its lifetime,
-and then linearly increase the radius to a 100 times larger radius
-during the giant phase.  After that, the radius will go to zero, and
-the mass becomes that of a typical white dwarf.  This is all at least
-qualitatively correct for relatively low-mass stars.
+and then linearly increase it to a value that is 100 times larger
+during the giant phase.  After that, we can let the radius go to zero,
+sine the actual radius of a white dwarf is a hundred times smaller
+than the original ZAMS radius.  The mass we can reduce to that of a
+typical white dwarf, assuming that the remaining mass is lost in last
+stages of stellar evolution, through AGB and horizontal branch evolution.
+This is all at least qualitatively correct for relatively low-mass stars.
 
 *Bob*: Simple indeed.  Now what would be the equivalent for
 hydrodynamics?  Obviously something simpler than SPH.  Well, how about
@@ -217,7 +220,11 @@ or tell it that it is no longer needed, in the case of a merger.
 
 We can find out what type of instructions should be passed through the
 interface, by looking at the physical requirement of the system that
-we are modeling.  Let us make a list:
+we are modeling.  Let us make a list of what the stellar dynamics module
+would like to have.  It needs to tell a star to evolve itself for a certain
+amount of time; it needs to tell a star to destroy itself, in a collision;
+and it needs to ask a star for its mass and radius.  That already
+gives us a list of four necessary functions:
 
 - a star evolution function
 
@@ -359,6 +366,12 @@ identifier for the particular star that has been created.  A negative
 return value will signal an error (e.g. not enough storage left;
 unreasonable initial conditions provided; or some other internal error
 in the stellar evolution module).
+
+Note that we don't have to give the position and velocity of the new
+star to the stellar evolution module.  That is none of its business;
+it is information that the stellar dynamics module keeps track of.
+Position and velocity do not even any meaning within the stellar
+evolution part of the software.
 
 *Bob*: We'd better specify the units for the variables as well.  How
 about: 

@@ -197,8 +197,6 @@ link:m67.jpg
 The open star cluster M67, in a picture taken by the Anglo-Australian
 Observatory.
 
-
-
 The above photo shows one of the richest and densest open clusters,
 M67, as observed by the Anglo-Australian Observatory.  Since this
 cluster is old enough to have lost its gas and dust, all stars are
@@ -209,11 +207,14 @@ Consequently, this star cluster qualifies as a dense stellar system.
 
 Open clusters typically have fewer members than globular clusters.
 Also, they are younger.  Both facts makes it easier to simulate open
-clusters than globular clusters.  On the other hand, the densest
-globular clusters show a higher frequency and a far richer variety of
-stellar collisions, making them a more interesting laboratory.  In
-that sense, a dynamical simulation of an open cluster can be seen as
-providing preparatory steps toward the modeling of globular clusters,
-just as a study of the latter forms a stepping stone toward the
-investigation of galactic nuclei.
+clusters than globular clusters, in terms of computer time needed,
+when we model the stars on a one-to-one basis in a direct N-body
+simulation.
+
+On the other hand, the densest globular clusters show a higher
+frequency and a far richer variety of stellar collisions, making them
+a more interesting laboratory.  In that sense, a dynamical simulation
+of an open cluster can be seen as providing preparatory steps toward
+the modeling of globular clusters, just as a study of the latter forms
+a stepping stone toward the investigation of galactic nuclei.
 
