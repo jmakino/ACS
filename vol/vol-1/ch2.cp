@@ -179,7 +179,7 @@ arrays such as <tt>pos[]</tt> and <tt>vel[]</tt> as well as single
 variables such as +m+ will probably have already a +to_s+ method
 associated with them.  Let's check.  How about this:
 
-:inccode: .body.rb.to-s-wrong
+:inccode: .body.rb.to_s-wrong
 
 *A*: Good idea to write a comment at the top, to remind us what this
 class is for.  We may as well get into the habit of writing comments

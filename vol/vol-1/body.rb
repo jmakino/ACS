@@ -16,8 +16,8 @@ class Body
 #:segment start: to_s-wrong
   def to_s
     "  mass = " + @mass.to_s + "\n" +
-    "   pos = " + @pos.join(", ") + "\n" +
-    "   vel = " + @vel.join(", ") + "\n"
+    "   pos = " + @pos.to_s + "\n" +
+    "   vel = " + @vel.to_s + "\n"
   end
 #:segment end:
 
