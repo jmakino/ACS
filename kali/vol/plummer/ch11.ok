@@ -1,0 +1,292 @@
+= Final Centering and Scaling
+
+== Center of Mass Adjustment
+
+*Bob*: I could see that you were not too impressed with my quiet start.
+However, I expect that you may be more interested in a more important
+improvement I would like to make, the center of mass adjustment.
+
+*Alice*: Indeed.  I think it would be better to shift to a coordinate
+system in which the newly created star cluster has its center of mass
+in the origin of the coordinate system.  In addition, it would be nice
+to give the coordinate system a boost in such as way that the velocity
+of the center of mass is zero in that coordinate system.  Is this what
+you had in mind?
+
+*Bob*: Exactly.  It would of course be possible to sprinkle particles
+in space, and in velocity space, in pairs, so that you would cancel
+the contributions: you could place them at opposite sides of the center,
+and give them opposite velocities.  But that would create artificial
+correlations, and I don't like to do that.  Better to create a realization
+first, and then to shift the coordinate system in the way you suggested.
+
+After creating our model, we measure the center of mass position
+<tex>$\br_{\rm com}$</tex>, which I will name <tt>pos_com</tt> in the
+code, as follows:
+
+<tex>$$
+\br_{\rm com} \,=\, {\sum_{i=0}^{N-1} m_i\br_i \over \sum_{i=0}^{N-1} m_i}
+\,=\, {1\over M}\sum_{i=0}^{N-1} m_i\br_i
+$$</tex>
+
+and similarly for the velocity of the center of mass, which I will call
+<tt>vel_com</tt> in the code:
+
+<tex>$$
+\bv_{\rm com} \,=\, {\sum_{i=0}^{N-1} m_i\bv_i \over \sum_{i=0}^{N-1} m_i}
+\,=\, {1\over M}\sum_{i=0}^{N-1} m_i\bv_i
+$$</tex>
+
+If we then subtract <tex>$\br_{\rm com}$</tex> from each particle's
+position, and also subtract <tex>$\bv_{\rm com}$</tex> from each particle's
+velocity, we will be guaranteed that
+<tex>$\br_{\rm com}=\bv_{\rm com}=0$</tex>.  This is then the shift that
+we ordered.
+
+== Implementation
+
+Here is a straightforward implementation, in file <tt>mkplummer5.rb</tt>.
+At the end of the +mkplummer+, after all the work is done, I am adding
+a line:
+
+ :include: .mkplummer5.rb-1
+
+which invokes the following method:
+
+ :inccode: .mkplummer5.rb+adjust_center_of_mass
+
+*Alice*: Straightforward indeed.  Normally you would have to divide
+the positions and the velocities by the total mass, but here the
+total mass is unity, so you can skip that.  Okay, that looks good,
+but as always, let's first do a couple checks.
+
+*Bob*: Never hurts.  Here they are.  First the energy:
+
+ :commandoutput: ruby mkplummer5.rb -n 1000 | ruby energy.rb
+
+That certainly looks fine.  Now the quartiles:
+
+ :commandoutput: ruby mkplummer5.rb -n 100 | ruby quartiles.rb
+
+Hmm, a bit less quiet than before, it seems.  Let me try a few more:
+
+ :commandoutput: ruby mkplummer5.rb -n 100 | ruby quartiles.rb
+
+ :commandoutput: ruby mkplummer5.rb -n 100 | ruby quartiles.rb
+
+Definitely less quiet than before.  How can shifting . . . ah, shifting
+the center of mass also shifts the positions of my idealized mass shells
+which provided the scaffolding for sprinkling particles in such a nicely
+layered way.  Of course!
+
+*Alice*: Yes, that must be the reason.  Well, that's the price you have to pay
+for preventing your model for being off-center!
+
+*Bob*: Perhaps layering was not such a hot idea after all.  Oh, well.
+I may as well leave it in, for now.
+
+== Checking
+
+*Alice*: So far, so good, but we should check that the center of mass
+is indeed in the center, and will stay there.
+
+*Bob*: That may not be so easy to check, unless we write a new analysis
+tool to report the center of mass position and motion.
+
+*Alice*: And that tool would reflect the same equations you just entered
+in the code, making it less of independent check.
+
+*Bob*: Ah, wait a minute: we can look at a few-body system.  Starting with
+one body, it should sit happily in the center, and two bodies should now
+be placed opposite each other, in position as well as in velocity.
+
+*Alice*: Yes, of course.  That's a good way to check.  Better first run those
+cases with the version you created when you went to standard units, and then 
+to repeat them for your shifted version.
+
+*Bob*: Okay, here is a one-body system without shifting:
+
+ :commandoutput: ruby mkplummer3.rb -n 1
+
+and here with the proper center of mass shifts:
+
+ :commandoutput: ruby mkplummer5.rb -n 1
+
+*Alice*: Proper indeed.
+
+*Bob*: And here for the two-body system, unshifted:
+
+ :commandoutput: ruby mkplummer3.rb -n 2
+
+and shifted:
+
+ :commandoutput: ruby mkplummer5.rb -n 2
+
+*Alice*: Good!  I believe the code now.  We have acquired a well-adjusted
+codes that speaks in standard units.
+
+== Units Adjustment
+
+*Bob*: I think we can call it a day.
+
+*Alice*: Before doing so, there is just one thing that is still bothering me.
+Even though our Plummer realizations are now perfectly centered, their units
+are not quite right.
+
+*Bob*: But I thought we had checked that?  Starting with <tt>mkplummer3.rb</tt>
+we have made sure to use standard units.
+
+*Alice*: Well, let's see what happens for really low N values:
+
+ :commandoutput: ruby mkplummer5.rb -n 3 -s 1 | ruby energy.rb
+ :commandoutput: ruby mkplummer5.rb -n 3 -s 2 | ruby energy.rb
+ :commandoutput: ruby mkplummer5.rb -n 3 -s 3 | ruby energy.rb
+ :commandoutput: ruby mkplummer5.rb -n 3 -s 4 | ruby energy.rb
+
+*Bob*: Hmm, that doesn't look like the desired total energy value of minus
+one quarter.  And I certainly don't like the total energy to become positive!
+That means that some of our realizations are actually unbound!
+
+*Alice*: The problem is that, even though our underlying distribution function
+has been scaled correctly, any small-number realization will introduce
+fluctuations in the actual numbers that are picked out.
+
+*Bob*: Ah, of course, this is just what happened with the center of mass.
+Even though an ensemble of many realizations will shown the average
+center of mass position and velocity values to be almost zero, individual
+realizations need to be adjusted, as we just did.  Similarly, we will have
+to rescale the positions and velocities, to make any single realization
+come out with the right energy.
+
+*Alice*: Effectively, we have to rescale length and time units; length
+for the positions, and in addition separately time for the velocities.
+
+*Bob*: Let's create a new file.  How about calling it <tt>mkplummer.rb</tt>,
+without a number attached to it now, to show that this will be our final
+version, that we can use as a work horse?
+
+*Alice*: Hope springs eternal.  But go ahead, we can always rename it to
+<tt>mkplummer.rb6</tt>, like in a few minutes.
+
+*Bob*: No, I think this will be really it.  Well, we will see.
+
+== Implementation
+
+*Alice*: We have to do two separate things.  Just getting the total energy
+to be -1/4 is not good enough: we want to make sure that we have an
+accurate virial equilibrium, with a kinetic energy of +1/4 and a potential
+energy of -1/2.  This is the reason that we have to scale length and time
+units separately.
+
+*Bob*: In analogy with our way to adjust the center of mass, we can now
+adjust the units.  If I understand correctly what you just said, it should
+be this, right?
+
+ :inccode: .mkplummer.rb+adjust_units
+
+*Alice*: That indeed looks correct.  And you invoke that function _after_
+you invoke the center-of-mass adjustment.
+
+*Bob*: Ah, yes, the order is important.  Not for the potential energy,
+since that only depends on relative distances.  But the kinetic energy
+depends on the square of the velocity differences between each particle
+and the center of mass.  Good point.
+
+You know, let me modularize the +mkplummer+ method a bit further.
+I'm sure you would love that!
+
+*Alice*: Any move to more modularity is welcome, within reason, but something
+tells me you won't unreasonably overshoot toward modularity.
+
+*Bob*: You bet I won't.  But with all the adjustments we are now making,
+it would seem more clear to isolate the actual sampling procedure in a
+separate methods <tt>plummer_sample</tt>, and to leave the rest of the
+administrative details to the higher-level function <tt>mkplummer</tt>,
+which can deal with picking the right seed, invoking the sampling function,
+pushing the sampling results on the stack, and doing all the final adjustments.
+
+*Alice*: You're becoming a true modularity spokesman!
+
+*Bob*: I'll ignore that.  This is just common sense.
+
+*Alice*: Let's hope it becomes more common.
+
+*Bob*: Here is the top level method:
+
+ :inccode: .mkplummer.rb+mkplummer
+
+and here is where the actual sampling is done, the place where a
+single particle receives its initial position and velocity values,
+before they later will be adjusted:
+
+ :inccode: .mkplummer.rb+plummer_sample
+
+In addition, let me take out this quiet start business.  It was an interesting
+idea, but as we noticed above, with center of mass adjustment it will get
+partly screwed up anyway.  Actually, I just realized a much more
+important reason _not_ to do a radial layering of particles.  Pretty
+soon we may want to give some particles extra properties.  We could
+introduce a mass spectrum, or promordial binaries, or what not.  If we
+make sure that the original distribution of particles is truly random,
+without any layering bias, we are less likely to wind up with
+unrealistic distributions . . . 
+
+*Alice*: . . . such as having the lighter particles all in the center
+and the heavier ones outside.  Yes, I see what you mean.  Let's keep
+it simple and forget about being too quiet.
+
+*Bob*: Finally, I'll use the full power of our command line arguments
+and acs data format degrees of freedom, to let the user specify the
+number of digits accuracy and indentation prefered.  If you're dealing
+with only a thousand particles, you may not want double precision, if
+that will cut down your inital file length by a factor half.  How about
+this:
+
+ :commandoutput: ruby mkplummer.rb -h
+ :commandoutput: ruby mkplummer.rb -n 3 -p 7 --indentation 4
+
+*Alice*: Fine to have the extra freedom, but I doubt we'll ever use it;
+as soon as you start doing a run, you'll probably want to keep the output
+to full precision.
+
+*Bob*: In any case, at least for display purposes it all fits
+within the good old VT100 80-column wide screen.
+
+*Alice*: Which actually came from the 80-column punched card format.
+But you're too young to remember that.
+
+*Bob*: Next time we go to a museum you can point out to me what the world was
+like when you grew up.
+
+== Checking
+
+*Alice*: Let's check again, starting with the one-body problem, while working
+our way up.  And we might as well use your precision cap to keep it punched
+card printable:
+
+ :commandoutput: ruby mkplummer.rb -n 1 -p 10
+ :commandoutput: ruby mkplummer.rb -n 2 -p 10
+
+That still works as it should.  Now an energy check:
+
+ :commandoutput: ruby mkplummer.rb -n 1 | ruby energy.rb
+ :commandoutput: ruby mkplummer.rb -n 2 | ruby energy.rb
+
+Looks good so far!  A single particle at rest in the center has
+neither potential nor kinetic energy.  And the two-particle
+realization is nicely scaled to virial equilibrium. 
+
+*Bob*: Let's try the same four realizations you made earlier, with
+the very same seeds:
+
+ :commandoutput: ruby mkplummer.rb -n 3 -s 1 | ruby energy.rb
+ :commandoutput: ruby mkplummer.rb -n 3 -s 2 | ruby energy.rb
+ :commandoutput: ruby mkplummer.rb -n 3 -s 3 | ruby energy.rb
+ :commandoutput: ruby mkplummer.rb -n 3 -s 4 | ruby energy.rb
+
+*Alice*: Good!  Believe it or not, we may not need to call this
+version <tt>mkplummer6.rb</tt>, after all.  It may remain
+<tt>mkplummer.rb</tt> and become our standard initial conditions
+generator.
+
+*Bob*: I told you so!

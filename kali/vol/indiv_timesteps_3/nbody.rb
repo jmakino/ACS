@@ -8,8 +8,6 @@ end
 
 class NBody
 
-  ACS_OUTPUT_NAME = self.to_s
-
   attr_accessor :time, :body
 
   def initialize

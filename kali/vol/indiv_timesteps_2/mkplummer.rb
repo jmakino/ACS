@@ -1,6 +1,72 @@
 #!/usr/local/bin/ruby -w
 
-require "nbody.rb"
+require "acs.rb"
+
+require "acs"
+
+class Body
+
+  attr_accessor :mass, :pos, :vel
+
+  def ekin                         # kinetic energy
+    0.5*@mass*(@vel*@vel)
+  end
+
+  def epot(body_array)             # potential energy
+    p = 0
+    body_array.each do |b|
+      unless b == self
+        r = b.pos - @pos
+        p += -@mass*b.mass/sqrt(r*r)
+      end
+    end
+    p
+  end
+
+end
+
+class NBody
+
+  attr_accessor :time, :body
+
+  def initialize
+    @body = []
+  end
+
+  def ekin                        # kinetic energy
+    e = 0
+    @body.each{|b| e += b.ekin}
+    e
+  end
+
+  def epot                        # potential energy
+    e = 0
+    @body.each{|b| e += b.epot(@body)}
+    e/2                           # pairwise potentials were counted twice
+  end
+
+  def adjust_center_of_mass
+    vel_com = pos_com = @body[0].pos*0     # null vectors of the correct length
+    @body.each do |b|
+      pos_com += b.pos*b.mass
+      vel_com += b.vel*b.mass
+    end
+    @body.each do |b|
+      b.pos -= pos_com
+      b.vel -= vel_com
+    end
+  end
+
+  def adjust_units
+    alpha = -epot / 0.5
+    beta = ekin / 0.25
+    @body.each do |b|
+      b.pos *= alpha
+      b.vel /= sqrt(beta)
+    end
+  end
+
+end
 
 def frand(low, high)
   low + rand * (high - low)
@@ -28,15 +94,17 @@ def mkplummer(c)
     b.mass = 1.0/c.n
     nb.body.push(b)
   end
+  nb.adjust_center_of_mass
+  nb.adjust_units
   STDERR.print "             actual seed used\t: ", srand, "\n"
   nb.acs_write($stdout, false, c.precision, c.add_indent)
 end
 
 def plummer_sample
   b = Body.new
-  scalefactor = 16.0 / (3.0 * PI)                                            #1
+  scalefactor = 16.0 / (3.0 * PI)
   radius = 1.0 / sqrt( rand ** (-2.0/3.0) - 1.0)
-  b.pos = spherical(radius) / scalefactor                                    #2
+  b.pos = spherical(radius) / scalefactor
   x = 0.0
   y = 0.1
   while y > x*x*(1.0-x*x)**3.5
@@ -44,7 +112,7 @@ def plummer_sample
     y = frand(0,0.1)
   end
   velocity = x * sqrt(2.0) * ( 1.0 + radius*radius)**(-0.25)
-  b.vel = spherical(velocity) * sqrt(scalefactor)                            #3
+  b.vel = spherical(velocity) * sqrt(scalefactor)
   b
 end
 
