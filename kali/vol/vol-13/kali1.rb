@@ -2,34 +2,103 @@ require "nbody.rb"
 
 module Integrator_forward
 
-  def integrator_setup
+  def clear_force
     @acc = @pos*0
+  end
+
+  def force(wl, era)
+    @acc = era.acc(wl, self)
+  end
+
+  def predict(old, dt)
+    @pos = old.pos + old.vel*dt
+    @vel = old.vel + old.acc*dt
+  end
+
+  def correct(old, dt)
+  end
+
+  def interpolate_pos_vel(wp1, wp2, dt)
+    @pos = wp1.pos + wp1.vel*dt
+    @vel = wp1.vel + wp1.acc*dt
   end
 
 end
 
 module Integrator_leapfrog
 
-  def integrator_setup
+  def clear_force
     @acc = @pos*0
+  end
+
+  def force(wl, era)
+    @acc = era.acc(wl, self)
+  end
+
+  def predict(old, dt)
+    @pos = old.pos + old.vel*dt + (1/2.0)*old.acc*dt**2
+    @vel = old.vel + old.acc*dt
+  end
+
+  def correct(old, dt)
+    @vel = old.vel + (1/2.0)*(old.acc + @acc)*dt
+    @pos = old.pos + (1/2.0)*(old.vel + @vel)*dt
+  end
+
+  def interpolate_pos_vel(wp1, wp2, dt)
+    jerk = (wp2.acc - wp1.acc) / (wp2.time - wp1.time)
+    @pos = wp1.pos + wp1.vel*dt + (1/2.0)*wp1.acc*dt**2 + (1/6.0)*jerk*dt**3
+    @vel = wp1.vel + wp1.acc*dt + (1/2.0)*jerk*dt**2
   end
 
 end
 
 module Integrator_hermite
 
-  def integrator_setup
+  attr_reader :jerk
+
+  def clear_force
     @acc = @pos*0
     @jerk = @pos*0
+  end
+
+  def force(wl, era)
+    @acc, @jerk = era.acc_and_jerk(wl, self)
+  end
+
+  def predict(old, dt)
+    @pos = old.pos + old.vel*dt + (1/2.0)*old.acc*dt**2 +
+                                  (1/6.0)*old.jerk*dt**3
+    @vel = old.vel + old.acc*dt + (1/2.0)*old.jerk*dt**2
+  end
+
+  def correct(old, dt)
+    @vel = old.vel + (1/2.0)*(old.acc + @acc)*dt +
+                     (1/12.0)*(old.jerk - @jerk)*dt**2
+    @pos = old.pos + (1/2.0)*(old.vel + @vel)*dt +
+                     (1/12.0)*(old.acc - @acc)*dt**2
+  end
+
+  def interpolate_pos_vel(wp1, wp2, dt)
+    tau = wp2.time - wp1.time
+    snap = (-6*(wp1.acc - wp2.acc) - 2*(2*wp1.jerk + wp2.jerk)*tau)/tau**2
+    crackle = (12*(wp1.acc - wp2.acc) + 6*(wp1.jerk + wp2.jerk)*tau)/tau**3
+    @pos = wp1.pos + wp1.vel*dt + (1/2.0)*wp1.acc*dt**2 +
+                                  (1/6.0)*wp1.jerk*dt**3 +
+                                  (1/24.0)*snap*dt**4 +
+                                  (1/120.0)*crackle*dt**5
+    @vel = wp1.vel + wp1.acc*dt + (1/2.0)*wp1.jerk*dt**2 +
+                                  (1/6.0)*snap*dt**3 +
+                                  (1/24.0)*crackle*dt**4
   end
 
 end
 
 class Worldpoint < Body
 
-  attr_accessor :mass, :pos, :vel,
-                :time, :next_time,
-                :nsteps, :minstep, :maxstep
+  attr_reader :mass, :pos, :vel, :acc,
+              :time, :next_time, :nsteps,
+              :minstep, :maxstep
 
   def initialize
     @nsteps = 0
@@ -40,178 +109,60 @@ class Worldpoint < Body
   def setup(dt_param, time)
     @dt_param = dt_param
     @time = @next_time = time
-    integrator_setup
+    clear_force
   end
 
-  def forward_init(acc, timescale, dt_param, dt_max)
-    @acc = acc
-    dt = timescale * dt_param
+  def startup(wl, era, dt_max)
+    force(wl, era)
+    timescale = era.timescale(wl, self)
+    dt = timescale * @dt_param
     dt = dt_max if dt > dt_max
     @next_time = @time + dt
-  end    
-
-  def leapfrog_init(acc, timescale, dt_param, dt_max)
-    @acc = acc
-    dt = timescale * dt_param
-    dt = dt_max if dt > dt_max
-    @next_time = @time + dt
-  end    
-
-  def hermite_init(acc, jerk, timescale, dt_param, dt_max)
-    @acc = acc
-    @jerk = jerk
-    dt = timescale * dt_param
-    dt = dt_max if dt > dt_max
-    @next_time = @time + dt
-  end    
-
-  def forward_correct(old_point, acc, timescale, dt_param, dt_max)
-    @acc = acc
-    dt = timescale * dt_param
-    dt = dt_max if dt > dt_max
-    @next_time = @time + dt
-    dt = @time - old_point.time
-    @vel = old_point.vel + (old_point.acc)*dt
-    @pos = old_point.pos + (old_point.vel)*dt
-    admin(old_point.time)
-    self
+    true
   end
 
-  def leapfrog_correct(old_point, acc, timescale, dt_param, dt_max)
-    @acc = acc
-    dt = timescale * dt_param
-    dt = dt_max if dt > dt_max
-    @next_time = @time + dt
-    dt = @time - old_point.time
-    @vel = old_point.vel + (1/2.0)*(old_point.acc + @acc)*dt
-    @pos = old_point.pos + (1/2.0)*(old_point.vel + @vel)*dt
-    admin(old_point.time)
-    self
+  def step(wl, era, dt_max)
+    new_point = extrapolate(@next_time)
+    new_point.force(wl, era)
+    timescale = era.timescale(wl, new_point)
+    new_point.correct(self, new_point.time - @time)
+    new_point.admin(@time, timescale, dt_max)
+    new_point
   end
 
-  def hermite_correct(old_point, acc, jerk, timescale, dt_param, dt_max)
-    @acc = acc
-    @jerk = jerk
-    dt = timescale * dt_param
-    dt = dt_max if dt > dt_max
-    @next_time = @time + dt
-    dt = @time - old_point.time
-    @vel = old_point.vel + (1/2.0)*(old_point.acc + @acc)*dt +
-                           (1/12.0)*(old_point.jerk - @jerk)*dt**2
-    @pos = old_point.pos + (1/2.0)*(old_point.vel + @vel)*dt +
-                           (1/12.0)*(old_point.acc - @acc)*dt**2
-    admin(old_point.time)
-    self
+  def extrapolate(t)
+    wp = deep_copy
+    wp.predict(self, t - @time)
+    wp.extrapolate_admin(t)
+    wp
   end
 
-  def admin(old_time)
-    dt = @time - old_time
-    @maxstep = dt if @maxstep < dt
-    @minstep = dt if @minstep > dt
+  def extrapolate_admin(t)
+    @time = t
+  end
+
+  def interpolate(other, t)
+    wp = deep_copy
+    wp.interpolate_pos_vel(self, other, t)
+    wp.interpolate_admin(self, other, t)
+    wp
+  end
+
+  def interpolate_admin(wp1, wp2, t)
+    @minstep = min(wp1.minstep, wp2.minstep)
+    @maxstep = max(wp1.maxstep, wp2.maxstep)
+    @nsteps = max(wp1.nsteps, wp2.nsteps)
+    @time = t
+  end
+
+  def admin(old_time, timescale, dt_max)
+    old_dt = @time - old_time
+    @maxstep = old_dt if @maxstep < old_dt
+    @minstep = old_dt if @minstep > old_dt
     @nsteps = @nsteps + 1
-  end
-
-  def extrapolate(t, method)
-    eval("#{method}_extrapolate(t)")
-  end
-
-  def interpolate(other, t, method)
-    eval("#{method}_interpolate(other, t)")
-  end
-
-  def forward_extrapolate(t)
-    if t > @next_time
-      raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
-    end
-    wp = Worldpoint.new
-    wp.minstep = @minstep
-    wp.maxstep = @maxstep
-    wp.nsteps = @nsteps
-    wp.mass = @mass
-    wp.time = t
-    dt = t - @time
-    wp.pos = @pos + @vel*dt
-    wp.vel = @vel + @acc*dt
-    wp
-  end
-
-  def leapfrog_extrapolate(t)
-    if t > @next_time
-      raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
-    end
-    wp = Worldpoint.new
-    wp.minstep = @minstep
-    wp.maxstep = @maxstep
-    wp.nsteps = @nsteps
-    wp.mass = @mass
-    wp.time = t
-    dt = t - @time
-    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2
-    wp.vel = @vel + @acc*dt
-    wp
-  end
-
-  def hermite_extrapolate(t)
-    if t > @next_time
-      raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
-    end
-    wp = Worldpoint.new
-    wp.minstep = @minstep
-    wp.maxstep = @maxstep
-    wp.nsteps = @nsteps
-    wp.mass = @mass
-    wp.time = t
-    dt = t - @time
-    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3
-    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2
-    wp
-  end
-
-  def forward_interpolate(other, t)
-    wp = Worldpoint.new
-    wp.minstep = @minstep
-    wp.maxstep = @maxstep
-    wp.nsteps = @nsteps
-    wp.mass = @mass
-    wp.time = t
-    dt = other.time - @time
-    dt = t - @time
-    wp.pos = @pos + @vel*dt
-    wp.vel = @vel + @acc*dt
-    wp
-  end
-
-  def leapfrog_interpolate(other, t)
-    wp = Worldpoint.new
-    wp.minstep = @minstep
-    wp.maxstep = @maxstep
-    wp.nsteps = @nsteps
-    wp.mass = @mass
-    wp.time = t
-    dt = other.time - @time
-    jerk = (other.acc - @acc)/dt
-    dt = t - @time
-    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*jerk*dt**3
-    wp.vel = @vel + @acc*dt + (1/2.0)*jerk*dt**2
-    wp
-  end
-
-  def hermite_interpolate(other, t)
-    wp = Worldpoint.new
-    wp.minstep = @minstep
-    wp.maxstep = @maxstep
-    wp.nsteps = @nsteps
-    wp.mass = @mass
-    wp.time = t
-    dt = other.time - @time
-    snap = (-6*(@acc - other.acc) - 2*(2*@jerk + other.jerk)*dt)/dt**2
-    crackle = (12*(@acc - other.acc) + 6*(@jerk + other.jerk)*dt)/dt**3
-    dt = t - @time
-    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
-             (1/24.0)*snap*dt**4 + (1/120.0)*crackle*dt**5
-    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*snap*dt**3 + 
-             (1/24.0)*crackle*dt**4
-    wp
+    new_dt = timescale * @dt_param
+    new_dt = dt_max if new_dt > dt_max
+    @next_time = @time + new_dt
   end
 
   def kinetic_energy
@@ -241,12 +192,12 @@ class Worldline
 
   def setup_from_single_worldpoint(b, method, dt_param, time)
     @worldpoint[0] = b.to_worldpoint
-    @worldpoint[0].extend(eval("Integrator_#{@method}"))
+    @worldpoint[0].extend(eval("Integrator_#{method}"))
     @worldpoint[0].setup(dt_param, time)
   end
 
   def startup(era, dt_max)
-    @worldpoint[0].startup(era, dt_max)
+    @worldpoint[0].startup(self, era, dt_max)
   end
 
   def grow(era, dt_max)
@@ -268,12 +219,12 @@ class Worldline
   def take_snapshot_of_worldline(time)
     if time >= @worldpoint.last.time
       valid_extrapolation?(time)
-      @worldpoint.last.extrapolate(time, @method)
+      @worldpoint.last.extrapolate(time)
     else
       valid_interpolation?(time)
       @worldpoint.each_index do |i|
         if @worldpoint[i].time > time
-          return @worldpoint[i-1].interpolate(@worldpoint[i], time, @method)
+          return @worldpoint[i-1].interpolate(@worldpoint[i], time)
         end
       end
     end

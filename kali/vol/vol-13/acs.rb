@@ -9,6 +9,12 @@ include Math
 
 VERY_LARGE_NUMBER = 1e30
 
+class Object
+  def deep_copy
+    Marshal.load(Marshal.dump(self))
+  end
+end
+
 def min(a, b)
   if a > b
     return b
