@@ -336,7 +336,7 @@ right-hand side.  As a first step in our iteration process, we will simply
 replace the corrected values on the right-hand side by the predicted values:
 
 :equation:
-\bv_{c,1} &=& \bv_0 + \ba_{p,1}\Delta t
+\bv_{c,1} \,=\, \bv_0 + \ba_{p,1}\Delta t
 - \hhalf \bj_{p,1}(-\Delta t)^2
 
 Having done that, we can do the same trick for our first guess for the
@@ -344,7 +344,7 @@ corrected value for the position, since now we can use our first guess
 for the corrected value for the velocity in the right-hand side:
 
 :equation:
-\br_{c,1} &=& \br_0 + \bv_{c,1}\Delta t
+\br_{c,1} \, = \,\br_0 + \bv_{c,1}\Delta t
 - \hhalf \ba_{p,1}(-\Delta t)^2
 
 In principle, we could repeat this procedure, plugging the corrected values
