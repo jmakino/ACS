@@ -181,7 +181,7 @@ module Acsdoc
     texsource.close
     system("cat "+texname)
     system "latex #{texname}"
-    system "dvips -o #{texbase}.ps -l 1 -x 1440 -E #{texbase}"
+    system "dvips -o #{texbase}.ps -l 1 -x 1900 -E #{texbase}"
     system "rm -f #{texbase}.jpeg; convert  #{texbase}.ps  #{texbase}.jpeg "
     imgname = imgbase + @@imgcount.to_s + ".jpeg"
     if File.exist?(texbase+".jpeg")
