@@ -1,0 +1,21 @@
+Date: Fri Jan 02 10:17:28 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+ > Well, now it *should* work. By sending mail to either
+ > not@artcompsci.org (Cced to Piet and Jun) or notonly@..., you can add
+ > notes automatically to the svn repository at grape (after 1 munutes or
+ > so). So, by svn update, you get files in Mail/200x/x. update-lab is
+ > changed to look at Mail/xxxx/xx as well. Also, not/TODO is now
+ > included in update-lab.
+
+Thank you!  I will respond to this message now, to see whether it indeed
+gets into the lab note system.
+
+By the way, what is the intention behind "notonly@...";
+is that an alternative way of writing quick lab notes,
+without sending each other a copy by email, or do you 
+have another use in mind?
+
+Piet
+
