@@ -1,0 +1,80 @@
+Date: Fri Jan 09 17:43:06 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Hi Jun:
+
+[this is an email I wrote yesterday evening -- Piet]
+
+I continued working on chapter 2, but I have not written new text,
+since I first wanted to check with you whether you agree about the
+direction I have in mind.
+
+Since we now are dealing with professionals, not students, I would prefer
+to write our first ruby nbody code NOT in one large file, but distributed
+over a few smaller files, in a cleaner way.
+In addition, I think that those professionals will start to write a simple
+equal-timestep leapfrog, when they explore a new language like ruby, before
+they go to an individual-timestep hermite, just to check whether they
+understand ruby well enough.
+
+So with those two ideas in mind, I wrote the following 6 new files:
+
+leapfrog.rb        : contains a module Leapfrog, to be mixed in with class Body
+body-leapfrog.rb   : extends the class Body with @acc, @pot, and helper methods
+nbody-leapfrog.rb  : extends the class Nbody with helper methods (evolve, etc.)
+leapfrog-driver.rb : the only tool, which uses the three previous files
+
+body-energy.rb  : extends the class Body with methods for energy calculation
+nbody-energy.rb : extends the class Nbody with methods for energy calculation
+
+Of course, I could have only used three files, namely:
+
+  body-leapfrog.rb    as a type of subclass, inheriting body
+  nbody-leapfrog.rb   as a type of subclass, inheriting nbody
+  leapfrog-driver.rb  as the tool that drives the integration
+
+However, I thought it would be fun to try the `mixin' idea, to extend
+the Body class both directly with extra variables and methods, and
+indirectly by adding a module Leapfrog.
+In addition, the calculations of potential and kinetic theory are so
+general, they should not be part of something called `leapfrog', so
+I made special additions for them, for the Body and Nbody classes.
+
+Now, there are a few decisions we can make here, such as:
+
+-- I have simply added extra material to the Body/Nbody classes; would it
+   be better to define a subclass, instead of just adding stuff this way?
+   The effect is the same, more or less.  I'm not sure
+-- I could put all the "leapfrog.rb" stuff in "body-leapfrog.rb" and so
+   skip the idea of a `mixin'; that might actually be better in this case.
+
+There are several smaller points as well, such as the question where
+to put NDIM = 3.  With the DRY idea, it would be best to have only one
+place, but I'm not quite sure how to do that.  I could only make it
+work so far by including it in two places: as a global variable in the
+`tool', leapfrog-driver.rb while keeping it also within the Body class
+definition.
+
+To see that the leapfrog is indeed second-order accurate,
+you can try:
+    ruby mk_triple-demo.rb | ruby leapfrog-driver.rb -e 10 -d 0.01 > /dev/null
+which will give:
+    absolute energy error: E_tot - E_init = -7.57522027761137e-05
+    relative energy error: (E_tot - E_init) / E_init = 5.88573784174027e-05
+and 10x shorter timestep:
+    ruby mk_triple-demo.rb | ruby leapfrog-driver.rb -e 10 -d 0.001 > /dev/null
+which will give:
+    absolute energy error: E_tot - E_init = -7.55571959887291e-07
+    relative energy error: (E_tot - E_init) / E_init = 5.87058635061733e-07
+
+In any case, if you agree with the general idea, I can start writing
+the dialogue for it; but if you prefer something else, please let me
+know!  Today is my last day at Kiken, but tomorrow evening I *should*
+have internet access at Sanjoukaikan, before leaving the Sunday morning
+for Switzerland.
+
+Cheers,
+
+Piet
+
