@@ -57,6 +57,16 @@ New paragraph
  * continued varbatim
 Back to normal
 
+listing stuff
+
+   simple listing
+   simple listing continued
+
+The above should show up as preformatted
+
+      Simple list
+   impossible next line   
+
 ---
  :include:sample.rb
 ---

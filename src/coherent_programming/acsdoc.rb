@@ -344,6 +344,8 @@ END
 	new_type=4
 	new_item = nil
       end
+      p s1
+      print type, new_type, indent, new_indent,"\n"
 	  
       if new_indent != indent and new_item == nil and new_indent > 0
 	new_type = 4 
@@ -375,11 +377,12 @@ END
       else
 	if type == 4 and new_type==4
 	  indent = new_indent
+	  ostr.push s1
 	else
 	  ostr.push("\\end{"+@@listtypes[type][1]+"}")
+	  instring.unshift(s)
+	  return ostr
 	end
-	instring.unshift(s)
-	return ostr
       end
       s_prev = s
     end	
@@ -1090,6 +1093,3 @@ if del_flag
 
 end
 # :segment end:
-
-
-
