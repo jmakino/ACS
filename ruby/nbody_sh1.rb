@@ -6,20 +6,37 @@
 
 class Body
 
-  attr_accessor :mass, :pos, :vel, :acc, :jerk
+  NDIM = 3
+
+  attr_accessor :mass, :pos, :vel, :acc, :jerk,
+                :old_pos, :old_vel, :old_acc, :old_jerk
 
   def initialize(mass = 0, pos = [0,0,0], vel = [0,0,0])
     @mass, @pos, @vel = mass, pos, vel
+    @old_pos, @old_vel = [0, 0, 0], [0, 0, 0]   # necessary to give the correct
+    @old_acc, @old_jerk = [0, 0, 0], [0, 0, 0]  # type to old_something ???
   end
 
   def to_s
     "  mass = " + @mass.to_s + "\n" +
-      "   pos = " + @pos.join(", ") + "\n" +
-      "   vel = " + @vel.join(", ") + "\n"
+    "   pos = " + @pos.join(", ") + "\n" +
+    "   vel = " + @vel.join(", ") + "\n"
   end
 
   def pp            # pretty print
     print to_s
+  end
+
+  def diag_to_s
+    "  mass = " + @mass.to_s + "\n" +
+    "   pos = " + @pos.join(", ") + "\n" +
+    "   vel = " + @vel.join(", ") + "\n" +
+    "   acc = " + @acc.join(", ") + "\n" +
+    "   jerk = " + @jerk.join(", ") + "\n"
+  end
+
+  def diag_pp            # pretty print
+    STDERR.print diag_to_s
   end
 
   def simple_print
@@ -33,8 +50,8 @@ class Body
     s = gets
     a = s.split
     @mass = a[0]
-    @pos = a[1..3]
-    @vel = a[4..6]
+    @pos = a[1..NDIM]
+    @vel = a[(NDIM+1)..(NDIM*2)]
   end
 
   def get_time
@@ -45,23 +62,122 @@ class Body
     @@time = time
   end
 
+  def inc_time(dt)
+    @@time += dt
+  end
+
   def clear_acc_and_jerk
     @acc = [0,0,0]
     @jerk = [0,0,0]
+  end
+
+  def clear_ekin
+    @@ekin = 0
+  end
+
+  def get_ekin
+    @@ekin
   end
 
   def clear_epot
     @@epot = 0
   end
 
-VERY_LARGE_NUMBER = 1e300
+  def get_epot
+    @@epot
+  end
+
+  VERY_LARGE_NUMBER = 1e300
 
   def reset_coll_time_q
     @@coll_time_q = VERY_LARGE_NUMBER
   end
 
+  def get_collision_time
+    Math.sqrt(Math.sqrt(@@coll_time_q))
+  end
+
+  def add_kin
+    for k in 0...NDIM
+      @@ekin += 0.5 * @mass.to_f * @vel[k].to_f * @vel[k].to_f
+    end
+  end
+
+  def update_old_coordinates
+    for k in 0...NDIM
+      @old_pos[k] = @pos[k]
+      @old_vel[k] = @vel[k]
+      @old_acc[k] = @acc[k]
+      @old_jerk[k] = @jerk[k]
+    end
+  end
+
+  def predict_step(dt)
+    for k in 0...NDIM
+      self.pos[k] = self.pos[k].to_f + self.vel[k].to_f*dt +
+	            self.acc[k].to_f*dt*dt/2 + self.jerk[k].to_f*dt*dt*dt/6
+      self.vel[k] = self.vel[k].to_f + self.acc[k].to_f*dt +
+	            self.jerk[k].to_f*dt*dt/2
+    end
+  end
+
+  def correct_step(dt)
+    for k in 0...NDIM
+      self.vel[k] = self.old_vel[k].to_f +
+	            (self.old_acc[k].to_f + self.acc[k].to_f)*dt/2 +
+	            (self.old_jerk[k].to_f - self.jerk[k].to_f)*dt*dt/12
+      self.pos[k] = self.old_pos[k].to_f + 
+                    (self.old_vel[k].to_f + self.vel[k].to_f)*dt/2 +
+	            (self.old_acc[k].to_f - self.acc[k].to_f)*dt*dt/12
+    end
+  end
+
   def pairwise_acc_jerk_pot_coll(other)
-    rji = other.pos
+    rji = Array.new(NDIM)
+    vji = Array.new(NDIM)
+    for k in 0...NDIM
+      rji[k] = other.pos[k].to_f - self.pos[k].to_f
+      vji[k] = other.vel[k].to_f - self.vel[k].to_f
+    end
+    r2 = v2 = rv_r2 = 0.0
+    for k in 0...NDIM
+      r2 += rji[k] * rji[k]
+      v2 += vji[k] * vji[k]
+      rv_r2 += rji[k] * vji[k]
+    end
+    rv_r2 = rv_r2 / r2
+    r = Math.sqrt(r2)
+    r3 = r * r2
+
+    @@epot -= self.mass.to_f * other.mass.to_f / r
+
+    da = Array.new(NDIM)
+    dj = Array.new(NDIM)
+    for k in 0...NDIM
+      da[k] = rji[k] / r3
+      dj[k] = (vji[k] - 3 * rv_r2 * rji[k]) / r3
+    end
+    for k in 0...NDIM
+      self.acc[k] += other.mass.to_f * da[k]
+      other.acc[k] -= self.mass.to_f * da[k]
+      self.jerk[k] += other.mass.to_f * dj[k]
+      other.jerk[k] -= self.mass.to_f * dj[k]
+    end
+
+    coll_est_q = (r2*r2) / (v2*v2)
+    if @@coll_time_q > coll_est_q
+      @@coll_time_q = coll_est_q
+    end
+    da2 = 0
+    for k in 0...NDIM
+      da2 += da[k] * da[k]
+    end
+    mij = self.mass.to_f + other.mass.to_f
+    da2 = da2 * mij * mij
+    coll_est_q = r2/da2;
+    if @@coll_time_q > coll_est_q
+      @@coll_time_q = coll_est_q;
+    end
   end
 end
 
@@ -90,6 +206,17 @@ def pp_snapshot(nb)
   print "N = ", nb.size, "\n"
   print "time = ", nb[0].get_time, "\n"
   nb.each do |b| b.pp end
+end  
+
+def diag_pp_snapshot(nb)
+  STDERR.print "N = ", nb.size, "\n"
+  STDERR.print "time = ", nb[0].get_time, "\n"
+  i = 0
+  nb.each do |b|
+    i += 1
+    STDERR.print "internal data for particle ", i, " :\n"
+    b.diag_pp
+  end
 end  
 
 def print_help
@@ -153,6 +280,27 @@ def read_options(parser)
   return dt_param, dt_dia, dt_out, dt_tot, init_out, x_flag
 end
 
+def write_diagnostics(nb, nsteps, einit, init_flag, x_flag)
+  nb[0].clear_ekin
+  nb.each do |b| b.add_kin end
+  ekin = nb[0].get_ekin
+  epot = nb[0].get_epot
+  etot = ekin + epot
+  einit = etot if init_flag
+  STDERR.print "at time t = ", nb[0].get_time, " , after ", nsteps,
+               " steps :\n  E_kin = ", ekin, " , E_pot = ", epot,
+               " , E_tot = ", etot, "\n                ",
+               "absolute energy error: E_tot - E_init = ", etot - einit,
+               "\n                ",
+               "relative energy error: (E_tot - E_init) / E_init = ",
+               (etot - einit) / einit, "\n"
+  if x_flag
+    STDERR.print "  for debugging purposes, here is the internal data ",
+                 "representation:\n"
+    diag_pp_snapshot(nb)
+  end
+end
+
 def get_acc_jerk_pot_coll(nb)
   nb.each do |b| b.clear_acc_and_jerk end
   nb[0].clear_epot
@@ -168,6 +316,22 @@ def get_acc_jerk_pot_coll(nb)
   end
 end
 
+def predict_step(nb, dt)
+  nb.each do |b| b.predict_step(dt) end
+end
+
+def correct_step(nb, dt)
+  nb.each do |b| b.correct_step(dt) end
+end
+
+def evolve_step(nb, dt)
+  nb.each do |b| b.update_old_coordinates end
+  predict_step(nb, dt)
+  get_acc_jerk_pot_coll(nb)
+  correct_step(nb, dt)
+  nb[0].inc_time(dt)
+end
+
 def evolve(nb, dt_param, dt_dia, dt_out, dt_tot, init_out, x_flag)
 
   STDERR.print "Starting a Hermite integration for a ", nb.size,
@@ -179,6 +343,38 @@ def evolve(nb, dt_param, dt_dia, dt_out, dt_tot, init_out, x_flag)
 
   get_acc_jerk_pot_coll(nb)
 
+  nsteps = 0
+
+  einit = 0.0    # undefined before first diagnostics call
+  write_diagnostics(nb, nsteps, einit, true, x_flag)
+  einit = nb[0].get_ekin + nb[0].get_epot
+
+  put_snapshot(nb) if init_out
+
+  t = nb[0].get_time
+  t_dia = t + dt_dia
+  t_out = t + dt_out
+  t_end = t + dt_tot
+
+  loop do
+    while t < t_dia and t < t_out and t < t_end
+      dt = dt_param * nb[0].get_collision_time
+      evolve_step(nb, dt)
+      t = nb[0].get_time
+      nsteps += 1
+    end
+    if t >= t_dia
+      write_diagnostics(nb, nsteps, einit, false, x_flag)
+      t_dia += dt_dia
+    end
+    if t >= t_out
+      put_snapshot(nb)
+      t_out += dt_out
+    end
+    if t >= t_end
+      break;
+    end
+  end
 end
 
 dt_param, dt_dia, dt_out, dt_tot, init_out, x_flag = read_options(parser)
