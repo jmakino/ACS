@@ -8,8 +8,12 @@ class Body
 
   def to_s
     "  mass = " + @mass.to_s + "\n" +
-    "   pos = " + @pos.to_s + "\n" +
-    "   vel = " + @vel.to_s + "\n"
+    "   pos = " + @pos.join(", ") + "\n" +
+    "   vel = " + @vel.join(", ") + "\n"
+  end
+
+  def pp               # pretty print
+    print to_s
   end
 
 end

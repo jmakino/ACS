@@ -8,8 +8,15 @@ class Body
 
   def to_s
     "  mass = " + @mass.to_s + "\n" +
-    "   pos = " + @pos.to_s + "\n" +
-    "   vel = " + @vel.to_s + "\n"
+    "   pos = " + @pos.join(", ") + "\n" +
+    "   vel = " + @vel.join(", ") + "\n"
+  end
+
+  def pp               # pretty print
+    print to_s
   end
 
 end
+
+b1 = Body.new(0.1, [1.3, 0, 0], [0, 0.5, 0])
+b1.pp
