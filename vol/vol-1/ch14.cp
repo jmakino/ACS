@@ -1,6 +1,6 @@
-= XXX
+= Integrators on the Menu
 
-== xxx
+== The Leapfrog Method
 
 *Bob*: It will be easy to show you what I have done, in order to
 implement the leapfrog.  My first attempt was to code it up in the
@@ -56,7 +56,11 @@ that, I'd better use the old acceleration <tex>${\bf a}_i$</tex>, since
 another acceleration call that would calculate <tex>${\bf a}_{i+1}$</tex>
 would overwrite <tex>${\bf a}_i$</tex>.
 
-This is the reason for the ordering:
+== Two Different Versions
+
+*Alice*: Can you summarize that in a list of steps?
+
+*Bob*: Here is my recipe:
 
 - calculate <tex>${\bf a}_i$</tex>
 
@@ -127,6 +131,8 @@ modularity, cleanliness, and all that stands in the way of optimized code.
 But for now, as long as we are still working on a toy project, I really
 don't mind.
 
+== Tidying Up
+
 *Alice*: You have told us how you wrote your first leapfrog version of
 +evolve_step+; and now I can see what you did in the much more condensed
 version in your code:
@@ -179,29 +185,94 @@ to like so much.
 *Alice*: Seriously, when we're going to explore very high-order integrators,
 a notation like that might well come in handy.  But not right now.
 
-Okay, I like your two integrator methods, while seperating out the
-acceleration, but where is the magic that enables you to call the
-shots, when you call +evolve+.  How does evolve know that a first
+== Ordering an Integrator
+
+*Bob*: Agreed.
+
+*Alice*: Okay, I like your two integrator methods, while seperating
+out the acceleration, but where is the magic that enables you to call
+the shots, when you call +evolve+.  How does evolve know that a first
 argument of the string +"forward"+ directs it to execute the method
 +forward+, and similarly that a first argument of the string
 +"leapfrog"+ directs it to execute the method +leapfrog+?
 
 *Bob*: That happens through the +send+ method.
 
-*Alice*: 
+*Alice*: Another piece of Ruby magic, I take it.  But how does it work?
+It seems too easy, though.  You send the integration method on its way?
+
+*Bob*: +send+ is a method that comes with each object in Ruby.  It is
+one of the general methods that each object inherits as soon as it is
+created.  What +send+ does is to call another method.  +send+ first
+reads the name of the other method from the string in its first argument,
+and then it passes its remaining arguments to the other method.  So in
+our case <tt>send("leapfrog", dt)</tt>, for example amounts to the
+same as giving the command <tt>leapfrog(dt)</tt> directly.
+
+*Alice*: That's really nice.  Clearly, the designer of Ruby had a very
+good sense of what is needed to built a truly flexible language.  What
+is his name?
+
+*Bob*: Matsumoto.  I don't know much about him, but yes, he clearly
+knows how to create a clean yet powerful language.
+
+*Alice*: I'd like to meet him someday.  Does he live in Japan?
+
+*Bob*: He does.
+
+*Alice*: Well, there are many astronomy conferences in Japan, so I'm
+sure I'll get a chance, some day.  Especially if we really get to build
+a nice toy model in Ruby, he may enjoy playing with stars.
+
+*Bob*: Now that you see he I have extended our +Body+ class with a menu
+of integrators, would you like to see it all in action?
+
+*Alice*: Sure.  Let's try the hard case again, for ten time units.  That
+seemed to take forever with the forward Euler method.  Let's try it for
+a few time steps, both with forward Euler and with leapfrog.
+
+== A Comparison test
+
+*Bob*: Okay.  Let me first repeat forward Euler, for a couple choices.
+This was the smallest time step for which we did not get an explosion:
+
+ :inccode: .integrator_driver1a.rb-barebones
+
+ :command: cp -f integrator_driver1a.rb test.rb
+ :commandoutput: ruby test.rb < euler.in
+ :command: rm -f test.rb
+
+And here is the same run with a ten times smaller time step.
+
+ :inccode: .integrator_driver1b.rb-barebones
+
+ :command: cp -f integrator_driver1b.rb test.rb
+ :commandoutput: ruby test.rb < euler.in
+ :command: rm -f test.rb
+
+As expected for a first order method, we got a ten times smaller error.
+Now let us try the leapfrog method:
+
+ :inccode: .integrator_driver1c.rb-barebones
+
+ :command: cp -f integrator_driver1c.rb test.rb
+ :commandoutput: ruby test.rb < euler.in
+ :command: rm -f test.rb
+
+*Alice*: Ah, already _much_ better.  What will happen with a ten times
+smaller time step?
+
+ :inccode: .integrator_driver1d.rb-barebones
+
+ :command: cp -f integrator_driver1d.rb test.rb
+ :commandoutput: ruby test.rb < euler.in
+ :command: rm -f test.rb
+
+*Bob*: A hundred times smaller error, as is appropriate for a second order
+method.  What a relief, after this slooooow convergence of forward Euler!
+Clearly leapfrog is a much much better integrator.
+
+*Alice*: Yes, to get such a high accuracy would have taken forever with
+a forward Euler integrator.  Congratulations, Bob!
 
 
-
-
-
-
-
-
-
-
-
-
-
-<tex>$$</tex>
-<tex>$$</tex>
-<tex>$$</tex>
