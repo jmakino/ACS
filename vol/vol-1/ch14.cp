@@ -1,6 +1,6 @@
 = The Two-Body Problem
 
-== 
+== Equations of Motion
 
 *Alice*: That was great, to be able to do such rapid prototyping in a
 language we hardly knew.  I can see the advantages of an interpreted
@@ -42,8 +42,8 @@ course, since you only have to solve the relative motion between the
 two particles.
 
 *Alice*: You say "of course", but if this is going to be a presentation
-for students, we'd better be more explicit.  Starting with the general
-equations of motion for a gravitational many-body system:
+for students, we'd better be more explicit.  We should start with
+Newton's equations of motion for a gravitational many-body system:
 
 <tex>
 \def\br{{\bf r}}
@@ -59,11 +59,39 @@ gravitational constant.  To bring out the inverse square nature of
 gravity, we can define
 <tex>${\bf r}_{ji} = {\bf r}_j - {\bf r}_i$</tex>, with
 <tex>$r_{ji} = |{\bf r}_{ji}|$</tex>, and unit vector
-<tex>$\hat {\bf r}_{ji} = {\bf r}_{ji} / r_{ji}$</tex>:
+<tex>$\hat {\bf r}_{ji} = {\bf r}_{ji} / r_{ji}$</tex>.  The
+gravitational acceleration on particle <tex>$i$</tex> then becomes:
 
 <tex>
 \begin{equation}
 {\bf a}_i = G \sum_{j=1 \atop j \neq i}^N
 \frac{M_j}{r_{ji}^2} \,\hat{\bf r}_{ji}\label{newton}
 \end{equation}
+</tex>
+
+For a 2-body system, everything simplifies a lot.  Instead of dealing
+with position <tex>${\bf r}_1$</tex> for the first particle and
+<tex>${\bf r}_2$</tex> for the second particle, we can write the
+above system of equations of motion as a single equation instead, in
+terms of the relative position, defined as:
+
+<tex>
+\begin{equation}
+{\bf r} = {\bf r}_2 - {\bf r}_1
+\end{equation}
+</tex>
+
+This can be visualized as a vector pointing from particle 1 to particle
+2, in other words with its head at the position of particle 2, and its
+tail at the position of particle 1.  Introducing
+<tex>$r = |{\bf r}_2 - {\bf r}_1|$</tex>, we then get:
+
+<tex>
+\begin{eqnarray}
+\frac{d^2}{dt^2}{\bf r} & = &
+\frac{d^2}{dt^2}\br_2 - \frac{d^2}{dt^2}\br_2           \\
+& = & G M_1 \frac{\br_1 - \br_2}{\,|\br_1 - \br_2|^3}
+- G M_2 \frac{\br_2 - \br_1}{\,|\br_2 - \br_1|^3}       \\
+ & = & - G \frac{M_1 + M_2}{r^3}{\bf r}
+\end{eqnarray}
 </tex>
