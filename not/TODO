@@ -1,6 +1,22 @@
 = TODO for acs
 
-Time-stamp: <2004-06-17 10:30:03 piet>
+Time-stamp: <2005-01-09 12:41:37 piet>
+
+* get kali1.rb working for N=128 particles:
+
+  -- implement general order Hermite, Aarseth, and collocation Runge-Kutta
+
+  -- implement kira-type binary tree, at least one level deep
+
+  -- make a C speed-up version
+
+  -- calculate forces from worldline interactions (rather than snapshot)
+
+  -- start thinking about quadruple precision implementation
+
+  -- start thinking about implementing a perturber implementation
+
+PREVIOUS NOTES, from 2004-06-17:
 
 * in volume 2
 
