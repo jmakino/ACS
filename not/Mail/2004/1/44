@@ -1,0 +1,54 @@
+Date: Mon Jan 12 22:47:15 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+ > For the above two, I have been wondering whether or not it is better
+ > to have only "to_s" and an "initialize" fucntion which takes String
+ > argument, instead of file-connected IO functions. To have conversions
+ > to and from strings seems to be a rather natural way in Ruby, and is
+ > certainly natural with a language with good GC, and nicely solves your
+ > second concern of files versus stdio.
+ > 
+ > This will change the use of to_s, but it may be more natural for a
+ > Ruby program to use to_s not just as printing function for human
+ > readability but as real format transformation function.
+
+That's a good idea!
+
+ > For NDIM, I believe it MUST be in the first declaration of the class
+ > Body, and not in something like stdinc.rb, since it is defined as
+ > a class constant, not as a global constant. 
+
+Okay.
+
+ > > Another aspect: it would be most natural in the last example, and in a way
+ > > in all examples, to have an extra prompt "|gravity>" appear, to show that
+ > > you get *no* output in the last three lines, especially in the last line,
+ > > with the result of the "diff".
+ > 
+ > I do not think so....
+ > 
+ > a) To add "|gravity>" at the end gives absolutely no useful
+ > information. At the beginning you can say that we omit the next
+ > command prompt (and blinking cursor, which you omit without saying
+ > anything in the current text anyway), and give something like the
+ > general guide on the style (what fonts are used for command, command
+ > output etc etc, at the beginning of the book).
+
+Okay, that makes sense, the only question is whether it is not confusing
+to have an output like:
+
+-------------------------------------------------------------------------------
+ yebisu>diff test.out test-io.out
+-------------------------------------------------------------------------------
+
+But I gues people will understand that it means there is no difference.
+
+ > One note: a :commandinputoutput: directive with piped commands
+ > currently does not work, and it is not impossible but in my opinion
+ > not worth the effort to support that.
+
+Okay, we can leave this for now and decide this later.
+
+Piet
+
