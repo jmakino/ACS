@@ -1,8 +1,6 @@
 require "rknbody.rb"                                                         #1
 require "clop.rb"
 
-include Math
-
 options_definition_string = <<-END
 
   Description:		The simplest ACS N-body code
@@ -65,7 +63,7 @@ options_definition_string = <<-END
     A snapshot of an N-body system contains the values of the
     mass, position, and velocity for each of the N particles.
 
-        These diagnostics appear on the standard output stream,
+        This information appears on the standard output stream,
     currently in the following simple format (only numbers):
 
       N:            number of particles
@@ -138,6 +136,9 @@ options_definition_string = <<-END
   END
 
 parse_command_line(options_definition_string)
+
+include Math
+
 nb = Nbody.new
 nb.simple_read
 nb.evolve($method, $eps, $dt, $dt_dia, $dt_out, $dt_end, $init_out, $x_flag)

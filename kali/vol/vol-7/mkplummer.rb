@@ -207,33 +207,6 @@ options_text= <<-END
       E is the total energy of the N-body system
 
 
-  Short name:           -s
-  Long name:            --seed
-  Value type:           int
-  Default value:        0
-  Description:          pseudorandom number seed given
-  Print name:           
-  Global variable:      seed
-  Long description:
-    Seed for the pseudorandom number generator.  If a seed is given with
-    value zero, a preudorandom number is chosen as the value of the seed.
-    The seed value used is echoed separately from the seed value given,
-    to allow the possibility to repeat the creation of an N-body realization.
-
-      Example:
-
-        |gravity> ruby mkplummer1.rb -n 42 -s 0
-        . . .
-        pseudorandom number seed given	: 0
-                     actual seed used	: 1087616341
-        . . .
-        |gravity> ruby mkplummer1.rb -n 42 -s 1087616341
-        . . .
-        pseudorandom number seed given	: 1087616341
-                     actual seed used	: 1087616341
-        . . .
-
-
   Short name:		-o
   Long name:		--output_file_name
   Value type:		string
@@ -272,6 +245,33 @@ options_text= <<-END
     Starting at zero indentation at the level of the top ACS structure,
     one set of incremental indentation is added for each level down,
     from ACS to DSS, from DSS to Nbody, from Nbody to Body, and so on.
+
+
+  Short name:           -s
+  Long name:            --seed
+  Value type:           int
+  Default value:        0
+  Description:          pseudorandom number seed given
+  Print name:           
+  Global variable:      seed
+  Long description:
+    Seed for the pseudorandom number generator.  If a seed is given with
+    value zero, a preudorandom number is chosen as the value of the seed.
+    The seed value used is echoed separately from the seed value given,
+    to allow the possibility to repeat the creation of an N-body realization.
+
+      Example:
+
+        |gravity> ruby mkplummer1.rb -n 42 -s 0
+        . . .
+        pseudorandom number seed given	: 0
+                     actual seed used	: 1087616341
+        . . .
+        |gravity> ruby mkplummer1.rb -n 42 -s 1087616341
+        . . .
+        pseudorandom number seed given	: 1087616341
+                     actual seed used	: 1087616341
+        . . .
 
 
   END

@@ -135,6 +135,7 @@ options_definition_string = <<-END
       acceleration (for all integrators)
       jerk (for the Hermite integrator)
 
+
   END
 #:segment end:
 
