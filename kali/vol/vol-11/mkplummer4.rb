@@ -1,4 +1,4 @@
-#:segment start: classes
+#:segment start: toriaezu
 require "vector.rb"
 
 class Body
@@ -36,9 +36,7 @@ class Nbody
   end
 
 end
-#:segment end:
 
-#:segment start: worker
 include Math
 
 def frand(low, high)
@@ -51,34 +49,44 @@ def mkplummer(n, seed)
   else
     srand seed
   end
+  scalefactor = 16.0 / (3.0 * PI)
+  inv_scalefactor = 1.0 / scalefactor
+  sqrt_scalefactor = sqrt( scalefactor )
   nb = Nbody.new(n)
+  cumulative_mass_min = 0
+  cumulative_mass_max = 1.0/n
   nb.body.each do |b|
-    b.mass = 1.0/n                                                       #3
-    radius = 1.0 / sqrt( rand ** (-2.0/3.0) - 1.0)                       #4
-    theta = acos(frand(-1, 1))                                           #5
-    phi = frand(0, 2*PI)                                                 #6
-    b.pos[0] = radius * sin( theta ) * cos( phi )                        #7
-    b.pos[1] = radius * sin( theta ) * sin( phi )                        #7
-    b.pos[2] = radius * cos( theta )                                     #7
-    x = 0.0                                                              #8
-    y = 0.1                                                              #8
-    while y > x*x*(1.0-x*x)**3.5                                         #8
-      x = frand(0,1)                                                     #8
-      y = frand(0,0.1)                                                   #8
-    end                                                                  #8
-    velocity = x * sqrt(2.0) * ( 1.0 + radius*radius)**(-0.25)           #8
-    theta = acos(frand(-1, 1))                                           #9
-    phi = frand(0, 2*PI)                                                 #9
-    b.vel[0] = velocity * sin( theta ) * cos( phi )                      #9
-    b.vel[1] = velocity * sin( theta ) * sin( phi )                      #9
-    b.vel[2] = velocity * cos( theta )                                   #9
+    b.mass = 1.0/n
+    cumulative_mass = frand(cumulative_mass_min, cumulative_mass_max)
+    cumulative_mass_min = cumulative_mass_max
+    cumulative_mass_max += 1.0/n
+    radius = 1.0 / sqrt( cumulative_mass ** (-2.0/3.0) - 1.0)
+    theta = acos(frand(-1, 1))
+    phi = frand(0, 2*PI)
+    b.pos[0] = radius * sin( theta ) * cos( phi )
+    b.pos[1] = radius * sin( theta ) * sin( phi )
+    b.pos[2] = radius * cos( theta )
+    b.pos *= inv_scalefactor
+    x = 0.0
+    y = 0.1
+    while y > x*x*(1.0-x*x)**3.5
+      x = frand(0,1)
+      y = frand(0,0.1)
+    end
+    velocity = x * sqrt(2.0) * ( 1.0 + radius*radius)**(-0.25)
+    theta = acos(frand(-1, 1))
+    phi = frand(0, 2*PI)
+    b.vel[0] = velocity * sin( theta ) * cos( phi )
+    b.vel[1] = velocity * sin( theta ) * sin( phi )
+    b.vel[2] = velocity * cos( theta )
+    b.vel *= sqrt_scalefactor
   end
   STDERR.print "seed used = ", srand, "\n"
   nb.simple_print
 end
+
 #:segment end:
 
-#:segment start: driver
 def print_help
   print "usage: ", $0,
     " [-h (for help)] [-n particle_number] [-s seed]\n"
@@ -123,4 +131,3 @@ STDERR.print "N = ", n, "\n",
       "seed given = ", s, "\n"
 
 mkplummer(n, s)
-#:segment end:

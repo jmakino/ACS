@@ -24,7 +24,7 @@ class Vector < Array
       raise
     else
       quotient = Vector.new           # scalar quotient
-      self.each_index{|k| product[k] = self[k]/a}
+      self.each_index{|k| quotient[k] = self[k]/a}
     end
     quotient
   end

@@ -1,18 +1,4 @@
-= Quiet Start
+= Center of Mass Adjustment
 
-== xx
-
-layered particle positions:
-
- :commandoutput: ruby mkplummer3.rb -n 100 | ruby quartiles.rb
-
- :commandoutput: ruby mkplummer3.rb -n 100 | ruby quartiles.rb
-
- :commandoutput: ruby mkplummer3.rb -n 100 | ruby quartiles.rb
-
-and of course even more so for:
-
- :commandoutput: ruby mkplummer3.rb -n 10000 | ruby quartiles.rb
-
-
+== xxx
 
