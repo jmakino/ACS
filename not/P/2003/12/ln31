@@ -1,0 +1,85 @@
+2003, December 31, Wednesday, Kyoto: Jun and Piet
+
+1. New Book Writing Plan
+
+Jun and I spoke on the phone for three quarters of an hour, this afternoon.
+Fitting for the last day of the year, we rounded off our work of the last
+two months by hitting upon a grand plan for our ACS book series.  Here are
+the main points:
+
+* we will number the volumes in our book series consecutively,
+  according to the history of our writing; so we now start with
+  volume 1, then the next volume we write will be volume 2, etc.
+ 
+* volume 1 will start in the real world, not in an imagined vacuum.
+  Our two main players will get a NBODY1 copy from the web, with
+  Hermite scheme and block timestep, and they will discuss the pro
+  and cons of that approach.
+
+* they will then discover Nemo, and use the flexibility of its tool
+  approach to set up experiments with NBODY1 and analyze the output
+  of NBODY1; they will also notice Nemo's drawback, its lack of
+  flexibility in defining new physical variables such as density.
+
+* they will then find Starlab, use a Nemo tool to translate their
+  data format into that of Starlab, and play with Starlab's story
+  mechanism and more flexible data format; they will notice the
+  drawback of using C++ as a main language, and wonder whether it
+  would be possible to start with a really high-level language.
+
+* they will then hear about Ruby, start playing with it, and decide
+  to rewrite NBODY1 in various forms: from Fortran to C to C++ to
+  Ruby.  They will experiment with using C routines for the force
+  calculation to speed up the Ruby code in various ways.
+
+* All this will be more than enough for volume 1.  Volume 2 will
+  start with coherent programma .cp files, rdoc, lab note mechanism,
+  and general infrastructure for our ACS environment, something that
+  was used throughout the writing of volume 1, but not discussed in
+  the narrative until the start of volume 2.  It will also include
+  more structured I/O formats.
+
+* at a later time, when we are ready to do so, we will write one or
+  more introductory volumes.  We will give them whatever number we
+  will have reached as the next volume by that time.  For example,
+  we could image the following sequence, as just one possibility:
+
+  * 1: writing simple N-body codes
+  * 2: setting up an N-body lab
+  * 3: three-body scattering
+  * 4: many-body scattering
+  * 5: introduction to the Kali code
+  * 6: local interactions in the Kali code
+  * 7: gravity on a computer: an introduction
+  * 8: gravity on a computer: numerical integration
+  * 9: integrating stellar evolution, dynamics, and hydrodynamics
+
+* the book we wrote this year, we will keep being available on the web,
+  but we will not give it a number in our series.  When we are ready
+  to do so, we will recycle most of its material (in book 8, if we
+  would follow the above example), and rewrite the codes in Ruby.
+
+It will be important to describe NBODY1, Nemo, and Starlab all in a
+positive light.  In each case, these were developed without a clear
+alternative being available.  C was invented after the first Aarseth
+code was already available; C++ was invented during the time that Nemo
+was being developed; Ruby was invented after the first serious Starlab
+version had already been written.  In addition, each subsequent
+package was built upon the success of their predecessor(s).
+
+We should describe carefully how we made a decision between improving
+starlab and writing a new package.  It would seem simpler, after all,
+to improve starlab, with better documentation and a cleaner set of
+functions, compared to doing a complete rewrite.  In fact, the
+opposite is the case.  Most of the work of developing starlab was to
+get the know-how of what to put in how.  All of that we can take and
+learn from, without necessarily taking the particular implementation.
+If one has the right language and the right tools, then rewriting a
+new code from an existing design takes less than 10% of the time of
+developing and testing a new idea leading ultimately to a new code.
+So the challenge was to pick such a language and develop te right
+tools.  For the language we took Ruby, and for the tools we take the
+combination of narrative, manual pages, and lab notes; a triple
+structure of which starlab and nemo had provided only the middle level.
+
+
