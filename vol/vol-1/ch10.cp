@@ -14,7 +14,11 @@ add to each variable its derivative multiplied by the value of the
 time step.  In other words, you just step forward by incrementing each
 variable by its derivative, as specified by the differential equation.
 
-<i>[We will have to put an equation here -- Piet]</i>
+#<i>[We will have to put an equation here -- Piet]</i>
+
+<tex> $$\frac{dx}{dt} = f(x)$$</tex>
+
+<tex> $$x_{\rm new} = x_{\rm old}+ f(x_{\rm old})\Delta t$$</tex>
 
 *Alice*: The only way to make that sentence clear to someone with little
 experience in this area is to give an example.  So let's code it up.

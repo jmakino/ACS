@@ -167,7 +167,7 @@ module Acsdoc
   def process_texcode(texcode,dirname)
     p texcode
     imgbase =".imgs/"
-    imgdir = dirname + "/"+ imgbase 
+    imgdir =  imgbase 
     p imgdir
     Dir.mkdir(imgdir) unless File.exist?(imgdir)
     texname = "tmp.tex"
@@ -188,9 +188,9 @@ module Acsdoc
     system "rm -f #{texbase}.jpeg; convert  #{texbase}.ps  #{texbase}.jpeg "
     imgname = imgbase + @@imgcount.to_s + ".jpeg"
     if File.exist?(texbase+".jpeg")
-      system "mv -f #{texbase}.jpeg #{dirname}/#{imgname}"
+      system "mv -f #{texbase}.jpeg #{imgname}"
     elsif File.exist?(texbase+".jpeg.0")
-      system "mv -f #{texbase}.jpeg.0 #{dirname}/#{imgname}"
+      system "mv -f #{texbase}.jpeg.0 #{imgname}"
     else
       raise "Failed to create the jpeg file #{texbase}.jpeg"
     end
