@@ -277,7 +277,7 @@ Can you just double the time step, to check whether the errors get
 
 == A Predictor-Corrector Version
 
-*Alice*: Now that everything works, how about trying the apply a
+*Alice*: Now that everything works, how about trying to apply a
 corrector loop?  In the case of your second-order version, we saw
 that there was no need to bother doing so, since we convinced ourselves
 that we just got the leapfrog method back.  But that must have been a
@@ -285,26 +285,21 @@ low-order accident.  The fourth-order predictor-corrector version will
 surely lead to a new algorithm, one that you haven't already implemented
 in our N-body code.
 
-*Bob*: I'm sure you're right.  Okay, let's!
+*Bob*: I bet you're right.  Okay, let's do it!
 
 *Alice*: Given that I already reconstructed your instructions on paper before,
 I only have to extend it to two orders higher.  Here are the results
 on a backward extrapolation, starting with the predicted values at time
-<tex>$t=1$</tex>, and going back to time <tex>$t=0$</tex>:
+<tex>$t=1$</tex>, and going back to time <tex>$t=0$</tex>, as a higher-order
+analogy of Eq. (ref(ms2back)) :
 
 :eqnarray:
-\tilde\br_0 &=& \br_1 + \bv_1 (-\Delta t) + \hhalf \ba_1 (-\Delta t)^2
-+ \one{6}\bj_1 (-\Delta t)^3 + \one{24}\bs_1 (-\Delta t)^4          \nonumber\\
-\tilde\bv_0 &=& \bv_1 + \ba_1 (-\Delta t) + \hhalf \bj_1 (-\Delta t)^2
-+ \one{6}\bs_1 (-\Delta t)^3 + \one{24}\bc_1 (-\Delta t)^4
-
-which lead to the corrected versions of position and velocity as follows:
-
-:eqnarray:
-\bv_{c,1} &=& \bv_0 + \ba_{p,1} \Delta t - \hhalf \bj_{p,1} (\Delta t)^2
-+ \one{6}\bs_{p,1} (\Delta t)^3 - \one{24}\bc_{p,1} (\Delta t)^4    \nonumber\\
-\br_{c,1} &=& \br_0 + \bv_{c,1} \Delta t - \hhalf \ba_{p,1} (\Delta t)^2
-+ \one{6}\bj_{p,1} (\Delta t)^3 - \one{24}\bs_{p,1} (\Delta t)^4 
+\tilde\br_0 &=& \br_{p,1} + \bv_{p,1} (-\Delta t)
++ \hhalf \ba_{p,1} (-\Delta t)^2
++ \one{6}\bj_{p,1} (-\Delta t)^3 + \one{24}\bs_{p,1} (-\Delta t)^4  \nonumber\\
+\tilde\bv_0 &=& \bv_{p,1} + \ba_{p,1} (-\Delta t)
++ \hhalf \bj_{p,1} (-\Delta t)^2
++ \one{6}\bs_{p,1} (-\Delta t)^3 + \one{24}\bc_{p,1} (-\Delta t)^4
 
 where again <tex>$\ba_{p,1}= \ba(\br_{p,1})$</tex> and where
 <tex>$\bj_{p,1}$</tex>, <tex>$\bs_{p,1}$</tex>, and <tex>$\bc_{p,1}$</tex>
@@ -313,6 +308,16 @@ four accelerations, which are now
 <tex>$\left\{\ba_{-2},\ba_{-1},\ba_0,\ba_{p,1}\right\}$</tex>, instead of
 the previous series of four that were used in the prediction step, which were
 <tex>$\left\{\ba_{-3},\ba_{-2},\ba_{-1},\ba_0\right\}$</tex>.
+
+The same arguments as I gave before will now lead to the following expression
+for the first-iteration solution for the corrected quantities, as an extension
+of Eq. (ref(ms2c))
+
+:eqnarray:
+\bv_{c,1} &=& \bv_0 + \ba_{p,1} \Delta t - \hhalf \bj_{p,1} (\Delta t)^2
++ \one{6}\bs_{p,1} (\Delta t)^3 - \one{24}\bc_{p,1} (\Delta t)^4    \nonumber\\
+\br_{c,1} &=& \br_0 + \bv_{c,1} \Delta t - \hhalf \ba_{p,1} (\Delta t)^2
++ \one{6}\bj_{p,1} (\Delta t)^3 - \one{24}\bs_{p,1} (\Delta t)^4 
 
 Note that once more I have interchanged the order of the calculations of
 the position and velocity: by calculating the corrected value of the velocity
@@ -347,11 +352,18 @@ wrote out.  What do you think of this:
 
  :inccode: .ms4body.rb+ms4pc
 
-*Bob*: That ought to work.  Let's see whether it does:
+*Bob*: That ought to work, with a little bit of luck, if we didn't
+overlook any typos or logopos.
+
+*Alice*: logopos?
+
+*Bob*: errors in logic, as opposed to typing.
+
+*Alice*: Let's run it and see:
 
  :commandoutput: ruby integrator_driver4dpc.rb < euler.in
 
-*Alice*: Much better!  More than ten times more accurate than the
+Much better!  More than ten times more accurate than the
 predictor-only version, the method <tt>ms4</tt>.  Let me give a
 ten times smaller time step:
 

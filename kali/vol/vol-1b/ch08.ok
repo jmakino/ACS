@@ -222,7 +222,7 @@ Simulations</i>.  He implemented a predictor-corrector scheme in the
 early sixties, and his algorithm became the standard integration scheme
 for collisional N-body calculations, during three decades.  It was only
 with the invention of the Hermite scheme, by Jun makino, in the early
-nineties, that we an alternative was offered.
+nineties, that an alternative was offered.
 
 *Alice*: I'd like to see a Hermite scheme implementation, too, in that
 case.  As for the older scheme, is there an intuitive reason that the
@@ -252,10 +252,15 @@ velocity <tex>$\bv_{p,1}$</tex> are determined as follows:
 \br_{p,1} &=& \br_0 + \bv_0 \Delta t + \hhalf \ba_0 (\Delta t)^2    \nonumber\\
 \bv_{p,1} &=& \bv_0 + \ba_0 \Delta t + \hhalf \bj_0 (\Delta t)^2
 
-This is the extrapolation part.  If we now go back one time step,
-we get the backward interpolation part, for which we compute our
-reconstructed values <tex>$\tilde\br_0$</tex> and <tex>$\tilde\bv_0$</tex>
-for the position and velocity at time <tex>$t=0$</tex> as:
+This is the extrapolation part.  If we now compute the acceleration and
+jerk at time <tex>$t=1$</tex> using these new values for the position
+and the velocity, we can take a step backwards.
+
+Of course, going back one step will not return us to the same position
+<tex>$\br_0$</tex> and velocity <tex>$\bv_0$</tex> that we started with.
+Instead, we will obtain slightly different values
+<tex>$\tilde\br_0$</tex> and <tex>$\tilde\bv_0$</tex> for the position
+and velocity at time <tex>$t=0$</tex>, as follows:
 
 :eqnarray:
 \label{ms2back}
@@ -277,50 +282,89 @@ which is the same procedure that we used to obtain
 \bj_0 \,=\, {1\over\Delta t}\, \left\{\ba_0 - \ba_{-1}\right\}
 $$</tex>
 
-but just shifted by one unit in time.
+but just shifted by one unit in time.  Note that our last step has
+really been an interpolation step, since we are now using the
+acceleration and jerk values at both ends of the step.  In contrast,
+during the extrapolation step, we used information based on the last
+two accelerations, both of which are gained at the past side of that
+step.
 
-If we now reinterpret Eq. (ref(ms2back)) as giving us _corrected_
-values for the position and velocity at time <tex>$t=\Delta t$</tex>,
-we have to shift <tex>$\tilde\br_0$</tex> and <tex>$\tilde\bv_0$</tex>
-to <tex>$\br_0$</tex> and <tex>$\bv_0$</tex>, and apply that same
-shift to the predicted quantities at time <tex>$t=\Delta t$</tex>.
-
-As always, this sounds more complicated than it reads.  Let me write
-it as equations.  First I express Eq. (ref(ms2back)) as an expression
-for the predicted values in terms of the tilde values:
-
-:eqnarray:
-\br_{p,1} &=& \tilde\br_0 + \bv_{p,1}\Delta t
--\hhalf \ba_{p,1}(\Delta t)^2                                     \nonumber\\
-\bv_{p,1} &=& \tilde\bv_0 + \ba_{p,1}\Delta t
-- \hhalf \bj_{p,1}(\Delta t)^2
-
-Then I shift the tilde values back to the original values at time
-<tex>$t=0$</tex>, and in the process I should get the corrected
-values for the position
-<tex>$\br_{c,1}$</tex> and velocity <tex>$\bv_{c,1}$</tex> :
+Now let us engage in some wishful thinking.  We start with Eq. (ref(ms2back))
+with tells us that we return to the wrong starting point, when we go backward
+in time.  Wouldn't it be nice if we somehow could find out at which point
+we should start so that we would be able to go backwards in time and return
+to the right spot?  Let us call these alternative position and velocity
+at time <tex>$t=1$</tex> the _corrected_ values:
+<tex>$\br_{c,1}$</tex> for the position and <tex>$\bv_{c,1}$</tex> for
+the velocity.  If our wish would be granted, and someone would hand us
+those values, then they would by definition obey the equations:
 
 :eqnarray:
-\label{ms2cwrong}
-\br_{c,1} &=& \br_0 + \bv_{p,1} \Delta t - \hhalf \ba_{p,1} (\Delta t)^2
-                                                                    \nonumber\\
-\bv_{c,1} &=& \bv_0 + \ba_{p,1} \Delta t - \hhalf \bj_{p,1} (\Delta t)^2
+\label{ms2backc}
+\br_0 &=& \br_{c,1} + \bv_{c,1}(-\Delta t) +
+\hhalf \ba_{c,1}(-\Delta t)^2                                     \nonumber\\
+\bv_0 &=& \bv_{c,1} + \ba_{c,1}(-\Delta t)
++ \hhalf \bj_{c,1}(-\Delta t)^2
 
-In other words, starting with the corrected values for the differences
-in position and velocity in the last time step, I shift everything in
-such as way that we have:
+Wouldn't that be nice!  In that case, we could form expressions for those
+desired quantities, by bringing them to the left-hand side of these equations:
 
 :eqnarray:
-\br_{c,1} - \br_{p,1} &=& \br_0 - \tilde\br_0    \nonumber\\
-\bv_{c,1} - \bv_{p,1} &=& \bv_0 - \tilde\bv_0    \nonumber
+\label{ms2backcc}
+\br_{c,1} &=& \br_0 + \bv_{c,1}\Delta t
+-\hhalf \ba_{c,1}(\Delta t)^2                                     \nonumber\\
+\bv_{c,1} &=& \bv_0 + \ba_{c,1}\Delta t
+- \hhalf \bj_{c,1}(-\Delta t)^2
 
-But wait a minute, something is not quite optimal in Eq. (ref(ms2cwrong)).
-The second line is expressed in terms of the best values we have for
-all the quantities that occur there, but in the first line we can do better.
-There is no reason to use the _predicted_ velocity at time <tex>$t=1$</tex>.
-If we simply reverse the order in which we calculate those two lines, we can
-instead use the _corrected_ version for the velocity at time <tex>$t=1$</tex>.
-I mean:
+Unfortunately, there is no fairy to fulfill our wishes, since the quantities
+on the right-hand side are not known, as long as the quantities on the
+left-hand side are not known, since <tex>$\ba_{c,1}=\ba(\br_{c,1})$</tex>
+and <tex>$\bj_{c,1}$</tex> is the jerk that would be obtained from the
+last two values of the acceleration, including the as yet unknown
+corrected one:
+
+:equation:
+\bj_{c,1} \,=\, {1\over\Delta t}\, \left\{\ba_{c,1} - \ba_0\right\}
+
+However, we do have an approximate way out: we can start with
+Eq. (ref(ms2backcc)), and try to solve them in an iterative way.
+
+Let us start with the second equation, since that only involves quantities
+that are freshly recomputed, namely the acceleration and jerk, reserving
+the first equation for later, since that has a velocity term in the
+right-hand side.  As a first step in our iteration process, we will simply
+replace the corrected values on the right-hand side by the predicted values:
+
+:equation:
+\bv_{c,1} &=& \bv_0 + \ba_{p,1}\Delta t
+- \hhalf \bj_{p,1}(-\Delta t)^2
+
+Having done that, we can do the same trick for our first guess for the
+corrected value for the position, since now we can use our first guess
+for the corrected value for the velocity in the right-hand side:
+
+:equation:
+\br_{c,1} &=& \br_0 + \bv_{c,1}\Delta t
+- \hhalf \ba_{p,1}(-\Delta t)^2
+
+In principle, we could repeat this procedure, plugging the corrected values
+back into the right-hand sides of these last two equations, getting an even
+better approximation for the truly corrected position and velocity.
+If we denote these doubly-corrected values by 
+<tex>$\br_{cc,1}$</tex> and <tex>$\bv_{cc,1}$</tex>, we can obtain
+those as:
+
+:eqnarray:
+\bv_{cc,1} &=& \bv_0 + \ba_{c,1}\Delta t
+- \hhalf \bj_{c,1}(-\Delta t)^2                                   \nonumber\\
+\br_{cc,1} &=& \br_0 + \bv_{cc,1}\Delta t
+-\hhalf \ba_{c,1}(\Delta t)^2 
+
+And we can even continue to higher iterations.  In practice, however, it
+is quite likely that most of the improvement will already be gained with
+the first iteration.  So let us implement that first, and see how much
+more accuracy we will obtain.  Let me put those first-iteration equations
+together:
 
 :eqnarray:
 \label{ms2c}
@@ -328,7 +372,7 @@ I mean:
                                                                     \nonumber\\
 \br_{c,1} &=& \br_0 + \bv_{c,1} \Delta t - \hhalf \ba_{p,1} (\Delta t)^2
 
-*Bob*: Yes, this is exactly the procedure, with a clever twist at the end.
+*Bob*: Yes, this is exactly the procedure, in all detail!
 
 == An Old Friend
 
@@ -358,7 +402,7 @@ for second order you can expect some degeneracies to occur.
 
 *Bob*: But before philosophizing further, let me see whether my hunch
 is actually correct.  First I'll get rid of the predicted value for
-the jerk, using Eq. (ref(jerkp)) in order to turn Eq. (ref(msc) into
+the jerk, using Eq. (ref(jerkp)) in order to turn Eq. (ref(ms2c)) into
 expressions only in terms of the acceleration:
 
 :eqnarray:
