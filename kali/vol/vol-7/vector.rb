@@ -34,10 +34,23 @@ class Vector < Array
     end
     quotient
   end
+  def to_s(name = nil, precision = 16, indentation = 0)
+    s = " " * indentation
+    s += name + " = " if name
+    s += self.map{|x| sprintf(" %#{precision+8}.#{precision}e", x)}.join
+  end
 end
 
 class Array
   def to_v
     Vector[*self]
+  end
+end
+
+class Float
+  def to_s(name = nil, precision = 16, indentation = 0)
+    s = " " * indentation
+    s += name + " = " if name
+    s += sprintf(" %#{precision+8}.#{precision}e", self)
   end
 end
