@@ -329,18 +329,24 @@ module Acsdoc
     ofile = Array.new;
     oname = Array.new;
     olevel = Array.new;
+    classname = "noname"
     while s = ifile.gets
       s.gsub!(/([^\t]{8})|([^\t]*)\t/n){[$+].pack("A8")}
-      if s.split[0]== "def"
+      if s.split[0]== "class"
+	classname = s.split[1]
+      elsif s.split[0]== "module"
+	classname = s.split[1]
+      elsif s.split[0]== "def"
 	method_name = s.gsub(/\(/," ").split[1]
 	print method_name if $DEBUG
 	outfile = File.dirname(infile)+"/."+File.basename(infile) +
 	  "+" + method_name
+	outfilelong=outfile+ "+" +classname
 	if oname[0...method_level].index(outfile) != nil
 	  raise "Too many defs for file #{infile} line #{ARGF.lineno}"
 	end
-	oname[method_level]=outfile
-	ofile[method_level] = open(outfile, "w+")
+	oname[method_level]=[outfile,outfilelong]
+	ofile[method_level] = [open(outfile, "w+"),open(outfilelong, "w+")]
 	olevel[method_level] = s.index("def")
 	method_level += 1
       elsif  s.split[0] == "end"
@@ -349,8 +355,8 @@ module Acsdoc
 	if method_level > 0
 	  lastlevel = method_level-1
 	  if olevel[lastlevel] == loc 
-	    ofile[lastlevel].print s
-	    ofile[lastlevel].close
+	    ofile[lastlevel].each{|x| x.print s}
+	    ofile[lastlevel].each{|x| x.close}
 	    method_level -= 1
 	  elsif olevel[lastlevel] > loc 
 	    raise "Unexpected \"end\" with level #{loc} for expected level "+
@@ -359,7 +365,7 @@ module Acsdoc
 	end
       end
       for i in 0...method_level do
-	ofile[i].print s
+	ofile[i].each{|x| x.print s}
       end
     end
     ifile.close

@@ -5,10 +5,32 @@ are strange problems in the way rdoc handle link: file stuff.
 
 Thing to be done
 
-* configulation file to set
+* configuration file to set
    * the image size
    * location of commands like dvips, netpbm etc
 
 * some error message capability?
 
-   
+* capability to translate to rd. This is useful to generalte tex.
+
+* How to implement translation from cp to rd?
+
+  * from cp to some abstract or interpreted format to
+    rd or rdoc
+  * from cp directly to rd using differnt command than acsdoc
+  * from acsdoc output to rd.
+
+  The third option would not actually work, sicen acsdoc output has
+  already converted inlined tex sources to images.
+
+  So the only viable options are the first and second ones. Well, the
+  first one is cleaner, and perhaps actually easier to implement.
+
+  Well, a very different possibility is to translate directly to
+  latex, which may actually be simpler to do.
+
+  Ths can be done by implementing the conversion from preprocessed
+  rdoc format to latex, before passed to find-and-process-tex-inlines in
+  acsdoc.rb, as completely separate stuff. This is a reasonably clean
+  implementation for independent paths to make outputs in different
+  format. 
