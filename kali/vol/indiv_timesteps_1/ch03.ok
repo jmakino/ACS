@@ -242,9 +242,9 @@ pushing toward machine accuracy.
 I will repeat the two previous runs, with a ten times shorter time step,
 and then treat the new code in the same way:
 
- :commandoutput: ruby nbody_cst1.rb -d 0.0001 -t 1 < test.in > tmpc.out
- :commandoutput: ruby nbody_sh1.rb -t 1 -d 0.001 --exact_time < test.in > tmps.out
- :commandoutput: ruby nbody_ind1.rb -t 1 -d 0.001 < test.in > tmpi.out
+ :commandoutput: ruby nbody_cst1.rb -c 0.0001 -t 1 < test.in > tmpc.out
+ :commandoutput: ruby nbody_sh1.rb -t 1 -c 0.001 --exact_time < test.in > tmps.out
+ :commandoutput: ruby nbody_ind1.rb -t 1 -c 0.001 < test.in > tmpi.out
 
 *Alice*: And now let's check whether the results are really similar:
 

@@ -71,7 +71,7 @@ full new list:
 
 *Bob*: Let's go back to our original Yoshida tests.  Here you are:
 
- :commandoutput: ruby nbody_sh1.rb -m yo6 -t 1 --exact_time < test.in > yo6sh.out
+ :commandoutput: ruby nbody_sh1.rb -g yo6 -t 1 --exact_time < test.in > yo6sh.out
  :commandoutput: cat yo6sh.out
 
 *Alice*: Good!  Indeed at time 1.  Let's repeat our
@@ -93,9 +93,9 @@ integrator, since before you know it you are up to the round-off barrier.
 
 *Bob*: Here are the three output files, now finished at the exact time:
 
- :commandoutput: ruby nbody_sh1.rb -m leapfrog -t 1 --exact_time < test.in > leap_sh.out
- :commandoutput: ruby nbody_sh1.rb -m leapfrog -t 1 --exact_time -d 0.001 < test.in > leap_sh_tenth.out
- :commandoutput: ruby nbody_sh1.rb -m leapfrog -t 1 --exact_time -d 0.0001 < test.in > leap_sh_hundredth.out
+ :commandoutput: ruby nbody_sh1.rb -g leapfrog -t 1 --exact_time < test.in > leap_sh.out
+ :commandoutput: ruby nbody_sh1.rb -g leapfrog -t 1 --exact_time -c 0.001 < test.in > leap_sh_tenth.out
+ :commandoutput: ruby nbody_sh1.rb -g leapfrog -t 1 --exact_time -c 0.0001 < test.in > leap_sh_hundredth.out
 
 == Testing the Leapfrog
 

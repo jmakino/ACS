@@ -43,7 +43,7 @@ a lot!  Let's try:
 
 Well, let's follow the advice:
 
- :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby nbody_cst1.rb -d 0.001 -t 1 > /dev/null
+ :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby nbody_cst1.rb -c 0.001 -t 1 > /dev/null
 
 *Alice*: That all seems quite reasonable.
 

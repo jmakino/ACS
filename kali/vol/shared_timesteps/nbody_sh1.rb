@@ -14,8 +14,8 @@ class Body
     time_scale_sq = VERY_LARGE_NUMBER
     body_array.each do |b|
       unless b == self
-        r = b.pos - @pos
-	v = b.vel - @vel
+        r = b.pos - @pos                                                     #2
+	v = b.vel - @vel                                                     #2
 	r2 = r*r
 	v2 = v*v
         estimate_sq = r2 / v2            # [distance]^2/[velocity]^2 = [time]^2
@@ -257,7 +257,7 @@ options_text= <<-END
     ruby mkplummer.rb -n 5 -s 1 | ruby #{$0} -t 1 > /dev/null
 
 
-  Short name:		-m
+  Short name:		-g
   Long name:  		--integration_method
   Value type:  		string
   Default value:	hermite
@@ -265,10 +265,10 @@ options_text= <<-END
   Description:		Integration method
   Long description:
     This option receives a string, containing the name of the integration
-    method that will be used.  Example: "-m hermite" .
+    method that will be used.  Example: "-g hermite" .
 
 
-  Short name: 		-d
+  Short name: 		-c
   Long name:		--step_size_control
   Value type:		float
   Default value:	0.01
@@ -282,7 +282,7 @@ options_text= <<-END
     product t_scale * dt_param << t_scale.
 
 
-  Short name: 		-e
+  Short name: 		-d
   Long name:		--diagnostics_interval
   Value type:		float
   Default value:	1

@@ -151,7 +151,7 @@ system:
 
 Here is our comparison run for the older code:
 
- :commandoutput: ruby nbody_ind1.rb -t 1 -d 0.001 < test.in > tmpi.out
+ :commandoutput: ruby nbody_ind1.rb -t 1 -c 0.001 < test.in > tmpi.out
 
 And here is what our new code gives:
 
@@ -171,7 +171,7 @@ distance will become larger.
 
 *Bob*: Why not.  When we take time steps that are ten times longer, we get:
 
- :commandoutput: ruby nbody_ind1.rb -t 1 -d 0.01 < test.in > tmpi.out
+ :commandoutput: ruby nbody_ind1.rb -t 1 -c 0.01 < test.in > tmpi.out
 
 An increase in error of a factor 10,000, roughly; so we were just far
 enough away from the round-off barrier, and we still have a nicely

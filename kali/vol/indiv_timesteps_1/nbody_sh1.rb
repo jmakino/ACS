@@ -257,7 +257,7 @@ options_text= <<-END
     ruby mkplummer.rb -n 5 -s 1 | ruby #{$0} -t 1 > /dev/null
 
 
-  Short name:		-m
+  Short name:		-g
   Long name:  		--integration_method
   Value type:  		string
   Default value:	hermite
@@ -265,10 +265,10 @@ options_text= <<-END
   Description:		Integration method
   Long description:
     This option receives a string, containing the name of the integration
-    method that will be used.  Example: "-m hermite" .
+    method that will be used.  Example: "-g hermite" .
 
 
-  Short name: 		-d
+  Short name: 		-c
   Long name:		--step_size_control
   Value type:		float
   Default value:	0.01
@@ -282,7 +282,7 @@ options_text= <<-END
     product t_scale * dt_param << t_scale.
 
 
-  Short name: 		-e
+  Short name: 		-d
   Long name:		--diagnostics_interval
   Value type:		float
   Default value:	1

@@ -213,7 +213,7 @@ the parameter <tt>dt_max</tt> that is passed as a parameter to +evolve+.
 <tt>World#setup_from_snapshot</tt>, the value of <tt>dt_max</tt>
 is set as being equal to the duration of the era, multiplied by a
 factor <tt>dt_max_param</tt>.  By default, this last number is equal
-to one, but we can set it with the command line argument <tt>-m</tt>
+to one, but we can set it with the command line argument <tt>-g</tt>
 or <tt>--max_timestep_param</tt>.
 
 *Bob*: So we can limit the growth of an era in two ways, by setting

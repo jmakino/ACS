@@ -352,7 +352,7 @@ options_text= <<-END
     ruby mkplummer.rb -n 5 -s 1 | ruby #{$0} -d 0.001 -t 1 > /dev/null
 
 
-  Short name:		-m
+  Short name:		-g
   Long name:  		--integration_method
   Value type:  		string
   Default value:	hermite
@@ -360,7 +360,7 @@ options_text= <<-END
   Description:		Integration method
   Long description:
     This option receives a string, containing the name of the integration
-    method that will be used.  Example: "-m hermite" .
+    method that will be used.  Example: "-g hermite" .
 
 
   Short name: 		-s
@@ -375,7 +375,7 @@ options_text= <<-END
     Plummer softening, where rs2=r**2+eps**2 is used in place of r**2.
 
 
-  Short name: 		-d
+  Short name: 		-c
   Long name:		--step_size
   Value type:		float
   Default value:	0.01
@@ -387,7 +387,7 @@ options_text= <<-END
     softening length that is significantly larger than the time step size.
 
 
-  Short name: 		-e
+  Short name: 		-d
   Long name:		--diagnostics_interval
   Value type:		float
   Default value:	1

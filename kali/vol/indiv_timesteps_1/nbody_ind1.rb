@@ -210,7 +210,7 @@ options_text= <<-END
     ruby mkplummer.rb -n 5 -s 1 | ruby #{$0} -t 1 > /dev/null
 
 
-  Short name: 		-d
+  Short name: 		-c
   Long name:		--step_size_control
   Value type:		float
   Default value:	0.01
@@ -224,7 +224,7 @@ options_text= <<-END
     product t_scale * dt_param << t_scale.
 
 
-  Short name: 		-e
+  Short name: 		-d
   Long name:		--diagnostics_interval
   Value type:		float
   Default value:	1

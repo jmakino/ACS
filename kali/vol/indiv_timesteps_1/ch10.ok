@@ -21,11 +21,11 @@ choice:
 We will run the code first with two energy reports, only at the beginning
 and the end:
 
- :commandoutput: ruby nbody_ind1.rb -t 1 -e 1 < test.in > test1.out
+ :commandoutput: ruby nbody_ind1.rb -t 1 -d 1 < test.in > test1.out
 
 and then with three reports:
 
- :commandoutput: ruby nbody_ind1.rb -t 1 -e 0.5 < test.in > test2.out
+ :commandoutput: ruby nbody_ind1.rb -t 1 -d 0.5 < test.in > test2.out
 
 Note, first of all, that the total number of steps is different, which
 is a dead giveaway that something has changed.  And indeed, we can
@@ -43,9 +43,9 @@ mechanics system should not be influenced by a measurement!
 code, since we evolve all particles one era at a time, and then do the
 diagnostics off-line, so to speak.  Well, we'd better check:
 
- :commandoutput: ruby world1.rb -t 1 -d 1 < test.in > test1.out
+ :commandoutput: ruby world1.rb -t 1 -c 1 < test.in > test1.out
 
- :commandoutput: ruby world1.rb -t 1 -d 0.5 < test.in > test2.out
+ :commandoutput: ruby world1.rb -t 1 -c 0.5 < test.in > test2.out
 
 *Alice*: At least the number of steps has not been changed.
 

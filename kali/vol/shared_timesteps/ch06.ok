@@ -44,11 +44,11 @@ as we did before.
 
 *Bob*: Here is the shared time step version:
 
- :commandoutput: ruby nbody_cst1.rb -d 0.001 -t 1 -o 2 < test.in
+ :commandoutput: ruby nbody_cst1.rb -c 0.001 -t 1 -o 2 < test.in
 
 And here is the constant time step version:
 
- :commandoutput: ruby nbody_sh1.rb -t 1 -d 0.01 --exact_time -o 2 < test.in
+ :commandoutput: ruby nbody_sh1.rb -t 1 -c 0.01 --exact_time -o 2 < test.in
 
 *Alice*: Well, the constant time step version seems to do a somewhat better
 job!  I suggest you increase the timestep a bit, to bring out the difference
@@ -56,7 +56,7 @@ more clearly.
 
 *Bob*: Okay, I'll make the timestep 0.00125 time units:
 
- :commandoutput: ruby nbody_cst1.rb -d 0.00125 -t 1 -o 2 < test.in
+ :commandoutput: ruby nbody_cst1.rb -c 0.00125 -t 1 -o 2 < test.in
 
 *Alice*: With nearly the same number of time steps, the constant time step
 is scheme is more accurate by almost a factor two.
@@ -77,18 +77,18 @@ scheme should win out from the constant time step scheme.
 And a ten times longer time step.  The shared time step code should be able
 to handle that gracefully.
 
- :commandoutput: ruby nbody_sh1.rb -t 1 -d 0.1 --exact_time -o 2 < test2.in
+ :commandoutput: ruby nbody_sh1.rb -t 1 -c 0.1 --exact_time -o 2 < test2.in
 
 *Alice*: Indeed.  I'm not so sure about the constant time step scheme.
 
 *Bob*: Perhaps less gracefully, we have to see:
 
- :commandoutput: ruby nbody_cst1.rb -d 0.01 -t 1 -o 2 < test2.in
+ :commandoutput: ruby nbody_cst1.rb -c 0.01 -t 1 -o 2 < test2.in
 
 Indeed, quite a bit less.  Let's bring the number of time steps in line
 with that of the shared time step code:
 
- :commandoutput: ruby nbody_cst1.rb -d 0.005 -t 1 -o 2 < test2.in
+ :commandoutput: ruby nbody_cst1.rb -c 0.005 -t 1 -o 2 < test2.in
 
 Good.  The shared time step code is a lot better now, by orders of magnitude.
 
