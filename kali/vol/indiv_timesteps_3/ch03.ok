@@ -1,0 +1,20 @@
+= XXX
+
+== xxx
+
+ :commandoutput: ruby mkplummer.rb -n 3 -s 1 | acsnumber.rb > tmp.in
+
+ :commandoutput: ruby world3.rb -t 0.1 -d 0.1 -o 0.1 < tmp.in > tmp.h
+
+ :commandoutput: ruby world3.rb -t 0.1 -d 0.1 -g leapfrog -c 0.0001 -o 0.1 < tmp.in > tmp.l
+
+ :commandoutput: ruby world3.rb -t 0.1 -d 0.1 -g multistep -o 0.1 < tmp.in > tmp.m
+
+ :commandoutput: ruby world3.rb -t 0.1 -d 0.1 -g rk4 -o 0.1 < tmp.in > tmp.r
+
+ :commandoutput: cat tmp.h tmp.l | acsdiff.rb
+
+ :commandoutput: cat tmp.h tmp.m | acsdiff.rb
+
+ :commandoutput: cat tmp.h tmp.r | acsdiff.rb
+
