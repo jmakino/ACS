@@ -1,8 +1,0 @@
-= Running Hermite
-
-== xxx
-
- :commandoutput: ruby integrator_driver2g.rb < euler.in
-
-
- :commandoutput: ruby integrator_driver5a.rb < euler.in

@@ -90,7 +90,7 @@ position and velocity look like, in terms of those two quantities?
 \bv_{i+1} & = & \bv_i + \hhalf(\ba_i + \ba_{i+1}) \Delta t +
                 \one{12}(\bj_i - \bj_{i+1})(\Delta t)^2
 
-*Alice*: That looks like a direct generalization of the leepfrog!
+*Alice*: That looks like a direct generalization of the leapfrog!
 I had not expected such simplicity an elegance.
 
 *Bob*: Yes, I think you can look at the Hermite scheme as a generalization
@@ -309,10 +309,12 @@ for the position and velocity at time <tex>$t_{i+1}$</tex> with a
 subscript _s_ :
 
 :eqnarray:
-\br_{c,i+1} & = & \br_i + \hhalf(\bv_i + \bv_{p, i+1}) \Delta t +
-                \one{12}(\ba_i - \ba_{p, i+1})(\Delta t)^2   \nonumber\\
 \bv_{c,i+1} & = & \bv_i + \hhalf(\ba_i + \ba_{p, i+1}) \Delta t +
-                \one{12}(\bj_i - \bj_{p, i+1})(\Delta t)^2   \nonumber
+                \one{12}(\bj_i - \bj_{p, i+1})(\Delta t)^2   \nonumber\\
+\br_{c,i+1} & = & \br_i + \hhalf(\bv_i + \bv_{c, i+1}) \Delta t +
+                \one{12}(\ba_i - \ba_{p, i+1})(\Delta t)^2   \nonumber
+
+Note that xxxx (corrector form for velocity)
 
 Here is explicitly how I do it, on the code level:
 
@@ -324,3 +326,21 @@ uses the new value for the velocity, so the position can be updated
 only after you update the velocity.
 
 *Alice*: Let's see whether your procedure is acceptable.  The errors 
+
+xxx
+
+== Testing
+
+For comparison, first the old <tt>rk</tt> method:
+
+ :commandoutput: ruby integrator_driver2j.rb < euler.in
+
+Now the Hermite:
+
+ :commandoutput: ruby integrator_driver5a.rb < euler.in
+
+And for a two times larger time step:
+
+ :commandoutput: ruby integrator_driver5b.rb < euler.in
+
+A factor 15, where you would expect a factor 16.  Good enough.
