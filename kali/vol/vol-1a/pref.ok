@@ -7,7 +7,7 @@
 The current manuscript is Volume 1a in a series of books titled <i>The
 Kali Code</i>, which in turn is part of a larger series, under the
 name <i>The Art of Computational Science (ACS)</i>.  We refer to the
-preface of Volume 0 for more background concerning both series.
+preface of Volume 0a for more background concerning both series.
 Briefly, the aim of the larger ACS series is to provide real-world
 guides to designing, developing, using, and extending computational
 laboratories.  The specific <i>Kali</i> series will provide a detailed
@@ -65,7 +65,7 @@ of a C or Fortran code within Ruby, by replacing only a very small
 fraction of the code by functions written in C, while leaving the vast
 majority of the code complexity within Ruby's domain.  We will
 describe this process of speeding up Ruby in great detail only in
-Volume 6, after we have presented Ruby in sufficient detail in
+Volume 5, after we have presented Ruby in sufficient detail in
 practical applications, to set the stage for an informed discussion
 about what does and does not need such hand-coded speed-up.
 

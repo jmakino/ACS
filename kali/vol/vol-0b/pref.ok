@@ -2,7 +2,56 @@
 	
 = Preface
 
-== 
+== Time Ordering
+
+At the end of Volume 0a, Alice and Bob briefly discussed the question
+of documentation.  They then move on, in Volume 1a, to learn Ruby and
+to write their first 2-body code in Ruby.  While doing the reseach
+described in Volume 1a, they also learned how to write Volume 1a.
+However, in order to avoid confusion, we decided not to include the
+description of their volume writing in that volume.
+
+Instead, we reserve this current volume for a meta view of their
+documentation project.  The story goes like this.  After Alice and Bob
+decided to put together a N-body pilot project, with various toy models,
+they looking for a way to document their activities.  After some
+discussion (see chapter 1 in this volume) they decided to use Ruby for
+documentation as well as for code writing.
+
+The time ordering of their discussions here overlaps the flow of
+narrative time in Volume 1a and subsequent volumes.  Strictly speaking,
+the first chapter in the current volume should follow the first few
+chapters in Volume 1a, and the subsequent chapters fit in time with
+further chapters in Volume 1a, 1b, <i>etc.</i>, in an interleaved way.
+
+For most readers it may be easiest to skip the current volume at first
+reading, and just to follow the adventures of Alice and Bob in N-body
+land, in the Volumes starting with Volume 1a.  Then, after some
+familiarity has been gained with the whole project, it may be interesting
+to have a look in the current volume, to see how all these volumes have
+been written.
+
+== The Main Idea
+
+The main idea of our writing system is to use a specially designed
+format, called <i>acsdoc</i>, which in turn is a a variant of
+<web>http://rdoc.sourceforge.net|rdoc</web>.  From each acsdoc file,
+html or postcript or pdf files can be automatically generated.
+
+For those readers who are interested in making a small contribution to
+our project, in the form of some code extensions or other small tools,
+it is not necessary to master the acsdoc format.  However, for those
+of you who are interested in writing a whole volume, either by yourself
+or in collaboration with us, it is important to do so in acsdoc.
+
+In order to write in acsdoc, not much more is needed than to go through
+the original <web>http://rdoc.sourceforge.net/doc|rdoc tutorial</web>,
+and to browse through the current volume to see what type of additions
+we have introduced for our specific needs.  Of course, if you really
+like to know what we did, how we did it, and most importantly, why we
+did it, by all means, read on!
+
+== Acknowledgments
 
 We thank xxx, xxx, and xxx for their comments on the
 manuscript.

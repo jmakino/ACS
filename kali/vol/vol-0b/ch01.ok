@@ -1,26 +1,113 @@
 = Introduction
 
-== xxx
+== Documentation
 
-<b>Note:</b>
+*Alice*: Now that we got started writing some simple Ruby codes,
+it is high time that we begin to write some documentation.
 
-Mention here also PROMINENTLY things like <i>Libraries, Code Index,
-Documentation</i>.
+*Bob*: I don't like writing documentation.
 
-It is especially important to point out how and where to find the
-codes that are being mentioned in the volumes.
+*Alice*: How about reading documentation?
 
-== Test of TeX Math macros
+*Bob*: Well, it depends.  If it is written well, and if it is useful,
+of course I like it.  But so much documentation is neither written
+well nor useful, whether it is a manual that comes with a new DVD
+player or instructions to fill out your tax form.  And software
+documentation especially seems to lack clarity, in many cases.
 
-Try <$a^2 = b^2 + c^2$> first and then 
+*Alice*: What do you find lacking?
 
-and <$$a^2 = b^2 + c^2$$> and also
+*Bob*: For one thing, it is often too short to be useful.  It is written
+as an afterthought, by someone who already has been working on a project
+for a long time.  As a result, this person can no longer imagine what
+the original problems where, and probably not even what led him or her
+to the original design decisions.  Typically, reading a software
+manual is like walking into a theater in the middle of a movie.  Lots
+of action, but hard to say what is going on, or why.
 
-<$$
-a^2 = b^ + c^2
-$$>
+*Alice*: So, let's do things better then.  Why don't we keep notes of all
+of our conversations, and present those to the users of our software, our
+students or whomever else will find our codes on the web?
 
-to see what happens.
+*Bob*: Surely you are joking.  Notes of <i>all</i> of our conversations?
+That will quickly produce a few shelves worth of books!
 
-Ah: the first two work, but the last one doesn't.
+*Alice*: As long as we keep it all online, who cares how many shelves would be
+stacked with printed versions.  The point is to have it available, later,
+both for ourselves and others.  And we don't have to write up every scrap
+of dialogue between us: we can certainly distill it a bit.  But it should
+retain the flavor of a dialogue, rather than a laundry list of things-to-do
+and things-done.
+
+*Bob*: You seem to be serious!  Do you have any idea of how much work this
+will be?
+
+*Alice*: It will be quite a bit of work, but I think that _not_ doing so will
+be even more work.
+
+*Bob*: Huh?
+
+*Alice*: I mean, if we don't write notes about the whole process of code
+development, we are destined to spend more time later trying to reconstruct
+it.  Just imagine what will happen.  We start with a few nice toy models.
+Some students come and make some extensions.  Before we know it, they
+or we or both use it in a little research project.  Then, a few months
+later, we want to extend its use for another research project.  By
+that time everyone will have forgotten the details of how the code was
+modified at which stage, and how the code was designed in the first place.
+
+Now imagine the alternative.  We keep notes about our discussions even
+<i>before</i> we type the first key stroke of a program.  In doing so,
+we summarize what we think the problem is, and the way we think we can
+solve the problem.  Then, while we write the code, and while we keep
+changing it, we also realize that the way we look at the problem keeps
+changing.  So everything will be in flux: questions, answers, methods,
+approaches.  But, because we keep some notes during each session, at
+any stage we can go back and check to see what happens.
+
+So half a year later, a student comes into your office, and asks you
+questions about a piece of code.  Instead of taking a deep breath, and
+steadying yourself for an hour of digging and trying to remember, you
+just smile and hand the student the URL of our conversation notes.
+The students happily leaves your office, and you happily continue your
+own work.
+
+*Bob*: I must say, that sounds almost idyllic.
+
+*Alice*: and here is another thought experiment.  You yourself want to
+extend a piece of code you wrote a year ago.  You vaguely remember that
+you stopped development on that code because something wasn't quite right.
+However, you can't remember what wasn't right.  Was it that you had to give
+a conference presentation on another topic, so you had to stop working on
+the code, and never got back to it?  Or was it that you realized that the
+underlying idea had some logical problems in some cases?  Or did you just
+loose interest in the problem?  Or did you find that another piece of code
+by someone else already did the job and you used that?
+
+If you had gotten into the discipline of always making notes during each
+session of working on your code, you would never have to scratch your head
+in such a case; you'd just look up what happened.  And what I just described
+is only the top layer.  If you decide to continue working on the code,
+it would be wonderful to be able to refresh your memory about the many
+details that went into the design process in the first place.
+
+*Bob*: I must admit, that also sounds good, but I'm afraid it sounds
+too good to be true.  If it is a matter of just a few notes, the
+information will be hopelessly incomplete.  On the other hand, if we
+had detailed notes for every session that I worked on a code, I'm not
+sure that I could retrieve the information I wanted.
+
+So I don't think it will work.  Just listing: ``I did this, because of
+that, and then I did such in order to do so'' does not generate a
+very interesting document.  In order to make it useful, you'd better
+provide some good structure.  But doing so takes time: it would be
+like writing a paper, each time you write a piece of code!
+
+*Alice*: You put your finger on the problem.  And your last point shows to me
+what is so nice about a dialogue.  Just listing what happened will be
+dry and boring, and indeed hard to read later on.  But if
+
+*Bob*: 
+
+== xx
 
