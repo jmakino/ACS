@@ -1,4 +1,4 @@
-# Nbody models an N-body system
+#<em> Nbody models an N-body system </em>
 
 class Nbody
 

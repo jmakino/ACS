@@ -1,4 +1,4 @@
-# Body models a single particle in an N-body system
+#<em> Body models a single particle in an N-body system </em>
 
 class Body
 

@@ -39,11 +39,11 @@ version.
 We start by giving a simple example.  Here is the definition of a star
 cluster, modeled as an N-body system:
 
-:include:sample_nbody.rb
+:includecode:sample_nbody.rb
 
 And here is the definition of a single star, modeled as a celestial body:
 
-:include:sample_body.rb
+:in hi ha ho code:sample_body.rb
 
 == Sample Session
 
