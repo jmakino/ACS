@@ -1,7 +1,12 @@
 #!/usr/bin/ruby
 # not2.rb
 #
-# test program to start writing conversion from .not to various formats
+# convers the mother .not file to HTML files with ponters and all fancy
+# stuffs
+#
+# usage: ruby not2.rb mother_not_file_name
+#
+# example: ruby not2.rb all.not
 #
 session_time = "-1";
 session_number = "-1";
@@ -11,6 +16,7 @@ main_index_file_name = "index.html"
 main_index_file = open(main_index_file_name, "w+");
 $singlesession_source_file = nil;
 $multisession_source_file = nil;
+$backward_pointer_file_name = "backaward_pointers.dat";
 
 def printboth(s)
   $singlesession_source_file.print s
@@ -38,13 +44,14 @@ def make_ref_tag(s,mode)
 end
 
 
-def process_reference(s)
-  
+def process_reference(s,scurrent)
+  mask = 0777 ^ File.umask;
+  backward_pointer_file=open($backward_pointer_file_name,"w+");
   while (ref_pos = s.index("\\ref")) != nil
     printboth(s[0..ref_pos-1]);
     s=s[(ref_pos+4)..(s.length)];
     refid = s.split[0];
-    p refid;
+    backward_pointer_file.print scurrent, " ", refid, "\n"
 #
 # now we need to make:
 #
@@ -63,6 +70,7 @@ end
 #create session list 
 session_list = `ls ????-??/??-???`.split($/);
 session_id={session_list[0]=>0}
+section_header="";
 i=0;
 while  i<session_list.length 
    session_id[session_list[i]]=i;
@@ -70,11 +78,10 @@ while  i<session_list.length
 end
 session_list.each{|s|
    i = session_id[s];
-   p i
-   p session_list[i]
-   p session_list[i-1]
-   p session_list[i+1]
 }
+
+#create backward_pointer list
+
 
 def make_relative_tag(s,i,session_id,session_list)
     current_index = session_id[s];
@@ -92,6 +99,7 @@ in_preformatted = 0;
 while str=gets
   if (str =~ /\\header/)==0
     
+    section_header="";
     print "header found ",  str;
     splitted_header=str.split(" ");
     year = splitted_header[6];
@@ -205,7 +213,7 @@ END_SINGLESOURCE
       #string contains reference to a previous note
       print "Found referene ", str;
       s = str;
-      process_reference(s)
+      process_reference(s,current_time + "-"+ current_session_number + "-"+section_header)
     else
       #normal line. 
       if  prev_line == "\n"
