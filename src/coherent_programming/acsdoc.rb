@@ -58,8 +58,6 @@ module Rdoctotex
     ["}","\\}"],
     [/#/,"\\#"],
     [/\_/,"\\_"],
-    [/</,"$<$"],
-    [/>/,"$>$"],
     [/\^/,"$\\hat{\\ }$"]]
 
   @@basic_preambles_for_tex = "\\documentclass{book}\n\\usepackage{graphicx}"
