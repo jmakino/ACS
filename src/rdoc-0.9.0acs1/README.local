@@ -39,3 +39,39 @@ diff -C0  rdoc/generators/html_generator.rb    rdoc/generators/html_generator.rb
 !         "<img ALIGN=\"middle\" src=\"#{url}\">"
 --- 158 ----
 !         "<img src=\"#{url}\">"
+
+
+Jun Makino 2004/5/2
+
+More changes to rdoc, to support links within a document (cross
+referencing)
+
+!132 
+diff -C0 to_html.rb.original to_html.rb
+*** to_html.rb.original 2003-02-21 00:50:43.000000000 +0900
+--- to_html.rb  2004-05-02 19:02:18.000000000 +0900
+***************
+*** 29 ****
+--- 30,32 ----
++         InlineTag.new(SM::Attribute.bitmap_for(:XNAME),   "<a name=", ">"),
++         InlineTag.new(SM::Attribute.bitmap_for(:XNTAGA),   "<a href=#", ">"),
++         InlineTag.new(SM::Attribute.bitmap_for(:XNTAGB),   "", "</a>"),
+<yebisu|/home/makino/acs/src/rdoc-0.9.0acs1/markup/simple_markup> !133
+diff -C0 inline.rb.original inline.rb
+*** inline.rb.original  2003-03-09 14:20:12.000000000 +0900
+--- inline.rb   2004-05-02 19:01:37.000000000 +0900
+***************
+*** 225 ****
+--- 226 ----
++       add_word_pair("!", "!", :XNAME)
+***************
+*** 230 ****
+--- 232,234 ----
++       add_html("name", :XNAME)
++       add_html("ntaga", :XNTAGA)
++       add_html("ntagb", :XNTAGB)
+
+<name> label </name> defines a name tag (<a name= label>). Ntaga and
+ntagb should be used in a pair, like <ntaga> label </ntaga><ntagb>link
+to label</ntagb>, which is translated to <a href=#label>link to
+label</a>.

@@ -92,6 +92,41 @@ module Rdoctotex
     instring.each{|s| ostring.push(tagmarkup(s))}
   end
 
+
+  def process_refmarkup(instring)
+    ostring = []
+    instring.each{|x| 
+      ostring.push(x.gsub(/ref\(((\w|\d|\:)*)\)/){|s|  "\\ref{"+ $1 + "}"})}
+    ostring
+  end
+
+  def process_tex_equations_for_latex(s,instring)
+    eqtype = s
+    texcode = "<tex>\n\\begin{#{eqtype}}\n"
+    while (s = instring.shift ) =~ /\S/
+      texcode += s + "\n"
+      if s == nil 
+	raise "End of file reached while searching for newline: #{$infile}"
+      end
+    end
+    texcode += "\\end{#{eqtype}}\n</tex>\n"
+  end
+
+
+  def latex_process_tex_equations(instring)
+    ostring=[]
+    while s = instring.shift
+      if s =~ /^\s*:(equation|eqnarray):\s*$/
+	ostring.push(process_tex_equations_for_latex($1,instring))
+      else
+	ostring.push(s)
+      end
+    end
+    ostring
+  end
+
+
+
   def process_headers(instring)
     ostring=[]
     afterverbatim = nil
@@ -277,9 +312,11 @@ module Rdoctotex
   
   def convert_to_latex(instring,dirname)
     s=process_include(instring)
+    s=latex_process_tex_equations(s)
     s=process_single_paragraphs_lists_etc(s,0,0,1)
     s=process_link(s)
     s=process_wordmarkup(s,dirname)
+    s=process_refmarkup(s)
     s=process_headers(s)
     s = process_tagmarkup(s,dirname).join("\n")
     s= <<-END_TEXSOURCE
@@ -544,10 +581,12 @@ module Acsdoc
   def process_tex_equations(s,instring,dirname)
     @@tex_equation_number += 1
     eqtype = s
+    namelabel = ""
     texcode = "\\setcounter{equation}{#{@@tex_equation_number-1}}\n\\begin{#{eqtype}}\n"
     while (s = instring.shift ) =~ /\S/
       if s =~ /\\label\{(\S+)\}/ 
 	@@tex_labels[$1]=@@tex_equation_number
+	namelabel = "<name>" + $1 + "</name>\n"
       end
       texcode += s + "\n"
       if s == nil 
@@ -557,7 +596,7 @@ module Acsdoc
     texcode += "\\end{#{eqtype}}\n"
 
 
-    process_texcode(texcode,dirname)+"\n\n"
+    namelabel + process_texcode(texcode,dirname)+"\n\n"
   end
 
 
@@ -578,7 +617,8 @@ module Acsdoc
 
 
   def process_tex_labels(instring,dirname)
-    instring.gsub(/\\ref\{(\S+)\}/){|s| @@tex_labels[$1]}
+    instring.gsub(/ref\(((\w|\d|\:)*)\)/){|s| 
+      "<ntaga>"+ $1 + "</ntaga><ntagb>"+ @@tex_labels[$1].to_s+ "</ntagb>"}
   end
 
 

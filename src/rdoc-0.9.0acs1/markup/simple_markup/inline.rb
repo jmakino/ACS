@@ -230,6 +230,8 @@ module SM
       add_html("b",  :BOLD)
       add_html("tt", :TT)
       add_html("name", :XNAME)
+      add_html("ntaga", :XNTAGA)
+      add_html("ntagb", :XNTAGB)
     end
 
     def add_word_pair(start, stop, name)

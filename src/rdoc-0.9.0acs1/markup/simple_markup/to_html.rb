@@ -28,6 +28,8 @@ module SM
         InlineTag.new(SM::Attribute.bitmap_for(:TT),   "<tt>", "</tt>"),
         InlineTag.new(SM::Attribute.bitmap_for(:EM),   "<em>", "</em>"),
         InlineTag.new(SM::Attribute.bitmap_for(:XNAME),   "<a name=", ">"),
+        InlineTag.new(SM::Attribute.bitmap_for(:XNTAGA),   "<a href=#", ">"),
+        InlineTag.new(SM::Attribute.bitmap_for(:XNTAGB),   "", "</a>"),
       ]
     end
 
