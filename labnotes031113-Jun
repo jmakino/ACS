@@ -91,4 +91,18 @@ lab directory contains
        these files have name xxx.not
    --- directory named 001 etc to store subsidary information
     
- 
+Things to do:
+
+Concerning the pointers
+
+forward/backward pointers in
+   --- long session file
+   --- short session file
+
+more pointers:   
+session files (each item)  should have
+   --- pointers to long session file
+   --- pointers to index file
+
+previous session : exist if my session number is larger than 1
+next session : test the existence by looking at the directory.
