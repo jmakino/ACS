@@ -29,7 +29,9 @@ The changes we made are
   name... Hmm, a bit inconvenient?  Anyway, here is a sample inline
   image: 
 
-  link:sample.gif
+  link:../sample.gif
+
+  This is made with "link: ../sample.gif" but without space after link:
 
 * added a pair of directives, ":segment start:" and ":segment end:".
   texts between  ":segment start: segment_name" and corresponding
