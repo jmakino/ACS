@@ -18,10 +18,21 @@ print "day", Time.now.day, "\n";
 year =  addpreceedingzeros(4,Time.now.year.to_s);
 month = addpreceedingzeros(2,Time.now.month.to_s);
 day =   addpreceedingzeros(2,Time.now.day.to_s);
+
+if ARGV[0] =~ /^-/
+  $_ = ARGV.shift
+  dates=split("-")
+  p dates
+  year= addpreceedingzeros(4,dates[1]);
+  month= addpreceedingzeros(2,dates[2]);
+  day= addpreceedingzeros(2,dates[3]);
+  STDERR.print "date forced to ", year, " ", month, " ", day, "\n";
+end
+
 dirname = year + "-" +  month;
 mask = 0777 ^ File.umask;
 p dirname
-seqname = dirname + "/"  + sequence_file_name + Time.now.day.to_s;
+seqname = dirname + "/"  + sequence_file_name + day;
 unless File.exist?(dirname)
    print "creating the new directory", dirname, "\n";
    Dir.mkdir(dirname, mask);
