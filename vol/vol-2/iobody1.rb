@@ -3,10 +3,12 @@ require "vector.rb"
 class Body
 
 #:segment start: tag
-  TAG = "particle"                                                #1 vol 2, 2.3
+  TAG = "particle"                                          #1 vol 2, 2.3 ka na
 #:segment end:
 
+#:segment start: type_acc
   attr_accessor :mass, :pos, :vel, :type
+#:segment end:
 
   def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
     @mass, @pos, @vel = mass, pos, vel
@@ -26,7 +28,9 @@ class Body
       value.map{|x| sprintf(" %#{precision+8}.#{precision}e", x)}.join + "\n"
   end
 
+#:segment start: to_s_def
   def to_s(precision = 16, base_indentation = 0, additional_indentation = 2)
+#:segment end:
     subtag = if @type then " "+@type else "" end
     indent = base_indentation + additional_indentation
     " " * base_indentation + "begin " + TAG + subtag + "\n" +
@@ -41,47 +45,4 @@ class Body
     file.print to_s(precision, base_indentation, additional_indentation)
   end
 
-  def read(header, file = $stdin)
-    raise unless header =~ /^\s*begin\s+particle/
-    a = header.split
-    if a.size > 2
-      a.shift
-      a.shift
-      @type = a.join(" ")
-    end
-    loop {
-      s = file.gets
-      name = s.split[0]
-      case name
-        when /^mass/
-          @mass = s_to_f(s)
-        when /^position/
-          @pos = s_to_f_v(s)
-        when /^velocity/
-          @vel = s_to_f_v(s)
-        when "begin"
-          subread(file, s)
-        when "end"
-          break
-        else
-          @story.push(s)
-      end
-    }
-  end
-
-  def subread
-  end
-
-  def s_to_f(s)                               # string to floating-point number
-    s.split("=")[1].to_f
-  end
-
-  def s_to_f_v(s)                             # string to floating-point vector
-    s.split("=")[1].split.map{|x| x.to_f}.to_v
-  end
-
 end
-
-#c = Body.new
-#c.read("begin particle star giant AGB")
-#c.write
