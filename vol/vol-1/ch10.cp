@@ -229,15 +229,14 @@ clear by echoing the value of each line as soon as you type it in.
 me try to change the type of +id+.
 
     irb(main):002:0> id = cat
-    NameError: undefined local variable or method `cat' for m
-     ain
+    NameError: undefined local variable or method `cat' for main
       :Object
     	from (irb):2
 
-<i>[Note to the reader: because of limited page width, the characters
-that overflow from a line are here printed on the next line (+ain+ in
-this case); on a computer screen those characters all appear on the
-original line]</i>
+#<i>[Note to the reader: because of limited page width, the characters
+#that overflow from a line are here printed on the next line (+ain+ in
+#this case); on a computer screen those characters all appear on the
+#original line]</i>
 
 *Bob*: Ah, Ruby treats your +cat+ in an equally friendly way as
 your +id+, assuming it is itself a name of a variable (or a method),
@@ -283,8 +282,7 @@ Let's see what happens when I type in the text of the +Body+ class
 declaration above.
 
     irb(main):007:0> class Body
-    irb(main):008:1>   def initialize(mass = 0, pos = [0,0,0]
-      , vel = [0,0,0])
+    irb(main):008:1>   def initialize(mass = 0, pos = [0,0,0], vel = [0,0,0])
     irb(main):009:2>     @mass, @pos, @vel = mass, pos, vel
     irb(main):010:2>   end
     irb(main):011:1> end
