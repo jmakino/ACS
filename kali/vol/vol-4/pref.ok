@@ -2,9 +2,41 @@
 	
 = Preface
 
-== xxx
+The current volume contains a rather fancy parser of command line arguments,
+together with a detailed help facility.  We have found such a system
+to be indispensable when running large numbers of simulations, using
+different codes to generate initial data, evolve the N-body systems,
+and analyze the results.  Therefore, we decided to take the time to
+develop and introduce the whole system here in detail.  An additional
+advantage is that we can show the power and practical usefulness of
+Ruby, not only for prototyping the scientific modules in a simulation,
+but also for helping out with the important task of administering
+N-body runs.
+
+A good piece of software should administer the runs in such a way as
+to keep the astrophysicists protected from the details, so that they
+can give their full attention to the scientific problems at hand.  If
+you are not interested in the details of how this administration is
+carried out, it would be sufficient to just skim this volume, reading
+only sections 1, 2, and 11.  However, if you plan to use Ruby
+extensively for your own simulation needs, in new and creative ways,
+it probably will pay off to spend some time looking at the other
+chapters as well, in order to get an idea of the rich pallet of
+possibilities that Ruby has to offer.  It may well give you some new
+ideas for your own applications.
+
+== Acknowledgments
+
+Besides thanking our home institutes, the Institute for Advanced Study
+in Princeton and the University of Tokyo, we want to convey our
+special gratitude to the Yukawa Institute of Theoretical Physics in
+Kyoto, where this volume was written, during a visit in June 2004, made
+possible by the kind invitations to both of us by Professor Masao
+Ninomiya.
 
 We thank xxx, xxx, and xxx for their comments on the
 manuscript.
 
 Piet Hut and Jun Makino
+
+Kyoto, July 2004
