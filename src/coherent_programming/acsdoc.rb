@@ -126,6 +126,63 @@ module Rdoctotex
   end
 
 
+  def latex_copy_figure_file(figurefilename,dirname, figure_number)
+    imgbase =".imgs/"
+    imgdir =  imgbase 
+    Dir.mkdir(imgdir) unless File.exist?(imgdir)
+    imgname = imgbase + figure_number.to_s + "_" +figurefilename + ".eps"
+    p imgname
+    if figurefilename =~ /eps$/ 
+      system "/bin/cp -p #{dirname}/#{figurefilename} #{imgname}"
+    else
+      system "convert #{dirname}/#{figurefilename} #{imgname}"
+    end
+    system "mv -f #{imgname}.0 #{imgname}"if File.exist?(imgname + ".0")
+    imgname
+  end
+
+@@latex_figure_number = 0
+  def latex_process_figures(s,instring,dirname)
+    @@latex_figure_number += 1
+
+    a=s.chomp.split
+    figurefilename,size,label = a[1],a[2],a[3]
+    caption = ""
+    while (s = instring.shift ) =~ /\S/
+      caption += s + "\n"
+      if s == nil 
+	raise "End of file reached while searching for newline: #{$infile}"
+      end
+    end
+    filename_to_link = latex_copy_figure_file(figurefilename,dirname,
+					      @@latex_figure_number)
+    texstring = <<-END
+
+<tex>
+\\begin{figure}
+\\begin{center}
+    \\includegraphics[width=#{size}]{#{filename_to_link}}
+\\caption{#{caption}}
+\\label{#{label}}
+\\end{center}
+\\end{figure}
+</tex>
+END
+  end
+
+
+  def latex_find_and_process_figures(instring,dirname)
+    ostring=[]
+    while s = instring.shift
+      p s
+      if s =~ /^\s*:figure:\s*/
+	ostring.push(latex_process_figures(s,instring,dirname))
+      else
+	ostring.push(s)
+      end
+    end
+    ostring
+  end
 
   def process_headers(instring)
     ostring=[]
@@ -313,6 +370,7 @@ module Rdoctotex
   def convert_to_latex(instring,dirname)
     s=process_include(instring)
     s=latex_process_tex_equations(s)
+    s=latex_find_and_process_figures(s,dirname)
     s=process_single_paragraphs_lists_etc(s,0,0,1)
     s=process_link(s)
     s=process_wordmarkup(s,dirname)
@@ -615,6 +673,53 @@ module Acsdoc
     ostring
   end
 
+  def copy_figure_file(figurefilename,dirname, figure_number)
+    imgbase =".imgs/"
+    imgdir =  imgbase 
+    Dir.mkdir(imgdir) unless File.exist?(imgdir)
+    imgname = imgbase + figure_number.to_s + "_" +figurefilename + ".jpeg"
+    p imgname
+    system "convert #{dirname}/#{figurefilename} #{imgname}"
+    system "mv -f #{imgname}.0 #{imgname}"if File.exist?(imgname + ".0")
+    "../"+imgname
+  end
+
+  @@figure_number =0
+
+  def process_figures(s,instring,dirname)
+    @@figure_number += 1
+    a=s.chomp.split
+    figurefilename,size,label = a[1],a[2],a[3]
+    @@tex_labels[label]=@@figure_number
+    namelabel = "<name>" + label + "</name>\n"
+    caption = ""
+    while (s = instring.shift ) =~ /\S/
+      caption += s + "\n"
+      if s == nil 
+	raise "End of file reached while searching for newline: #{$infile}"
+      end
+    end
+    filename_to_link = copy_figure_file(figurefilename,dirname,@@figure_number)
+    namelabel + "link:"+filename_to_link+"\n\n Figure " +
+      @@figure_number.to_s + ": " + caption + "\n\n"
+  end
+
+
+  def find_and_process_figures(instring,dirname)
+    is = instring.split("\n");
+    ostring=""
+    while s = is.shift
+      p s
+      if s =~ /^\s*:figure:\s*/
+	r = process_figures(s,is,dirname)
+	ostring +=r
+      else
+	ostring += s+"\n"
+      end
+    end
+    ostring
+  end
+
 
   def process_tex_labels(instring,dirname)
     instring.gsub(/ref\(((\w|\d|\:)*)\)/){|s| 
@@ -643,6 +748,7 @@ module Acsdoc
     else
       tmp2= find_and_process_tex_inlines(tmpstring,dirname);
       tmp2= find_and_process_tex_equations(tmp2,dirname);
+      tmp2= find_and_process_figures(tmp2,dirname);
       tmp2= process_tex_labels(tmp2,dirname);
       p tmp2
     end
