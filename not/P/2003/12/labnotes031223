@@ -1,0 +1,35 @@
+2003, December 23, Tuesday, Kyoto: Jun, Piet
+
+1. Gravitylab
+
+We started the filetransfer to set up a CVS version of our gravitylab
+software in Strasbourg.
+
+2. Pgplot
+
+We decided to switch from Gnuplot, which we used for gravitylab, to
+pgplot for ACS 0.1.  We wrote an email to Tim, the person maintaining
+pgplot, to ask for his permission to put a version of pgplot up on our
+web site.
+
+3. Plans for the coming three days
+
+First we will finish writing the labnote software.  Next we will start
+to experiment with literate programming, using docbook.  We may want
+to write our own version of a translator from a simple subset of Latex
+to XML, in a similar way as we are writing a translator for our labnotes,
+from a small subset of Latex to HTML.  Finally, we will start to write
+a version of an individual timestep program, after first cleaning up
+our current version nbody_sh1.rb.
+
+4. Nbody class structure
+
+We will rewrite nbody_sh1.rb to define a class Nbody, that contains
+all data for a star cluster or other type of Nbody system, together
+with a single variable @bodies.  The variable can the be associated
+with an array, or a tree, or a hash table, or whatever else we like
+to choose or design.  The minimal requirement is that @bodies is an
+object for which Enumerable is mixed in, so that we can ask it to do
+an @bodies.each operation.
+
+
