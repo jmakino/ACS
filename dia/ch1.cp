@@ -69,6 +69,8 @@ something like this?</p>
 
 xxxx
 
+[Piet, well, _something_ like this, certainly... -- JM]
+
 Perhaps they talk a bit more about the nature of simulations.
 
 Perhaps they make a rough outline of what a big project could be like.
@@ -78,5 +80,11 @@ themselves to a many-year project; otherwise it would not make sense
 for them to spend a lot of time on designing mechanisms for lab notes
 and docbook and all that.  Do you have suggestions of how to present
 that?</p>
+
+[Piet, well, even if it is _not_ a multi-year project, we can start
+talking about how we had difficulty digging out a script to generate
+figures for some paper we wrote some years ago, and whether or not
+there would be some better way -- Jun]
+
 
 They then decide to get together the next day to get started.

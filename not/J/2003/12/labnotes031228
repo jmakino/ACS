@@ -1,0 +1,14 @@
+change made to acsdoc.rb:
+
+To create .xxx.cp file, the previous way was:
+
+   dot_a = '.'+a
+
+Now I changed it to:
+ 
+    dot_a = File.dirname(a)+"/."+File.basename(a);
+
+which can handle files in anywhere, including current, since
+File.dirname(a) returns "." for a = "xxx[.yyy]".
+
+

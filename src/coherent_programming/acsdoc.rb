@@ -44,7 +44,8 @@ del_file_list = Array.new
 
 ARGV.collect! do |a|
   if a =~ /\.cp$/
-    dot_a = '.'+a
+    dot_a = File.dirname(a)+"/."+File.basename(a);
+#    dot_a = '.'+a
     prep_cp(a, dot_a)
     a = dot_a
     del_file_list.push(dot_a)

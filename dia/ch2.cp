@@ -4,8 +4,34 @@
 
 <p>we need some explanation about why they choose ruby.  They are
 probably tired with Fortran, have significant experience with C and C++,
-and have played around a bit with other languages.  Any suggestions?</p>
+and have played around a bit with other languages.  Any
+suggestions?</p>
 
+[Piet, I think the selection of the language comes _after_ we did some
+experiments, writing things in fortran, C and something else, or at
+least after discussing on the possibility of using them.
+
+I *think* here we *have to* discuss the pros and cons of nemo and
+starlab, in reasonable details. This may make Steve and/or Peter
+unhappy, but do you think you can explain the reason to start from
+scratch without discussing the limitation of existing packages?
+
+I would have something like the following plot:
+
+* first discuss the possibility to use nemo
+  * its data structure is hardcoded to array, which is not ideal for many applications.
+  * its data structure (for particles) cannot be extended easily
+* then go to starlab
+  * its data I/O is, well, great, but still lacks flexibilities
+* Then discuss the limitation of statically-typed compiler-based   language
+  * we could go around the limitations, by using templates and STL,  but...
+  
+* Then we can introduce a dynamically-typed language
+
+* Then we naturally have speed concern.
+
+* So we will write, as an experiment, substantial program in Ruby and  see the speed penalty
+      
 == 2.2. Rapid Prototyping
 
 *A* So we are thinking about spending a few years to set up a software
