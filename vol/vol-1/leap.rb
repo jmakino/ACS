@@ -17,19 +17,23 @@
 #               [-t total_duration] [-i (start output at t = 0)]
 #               [-x (extra debugging diagnostics)]
 
-# number of spatial dimensions:
-
-NDIM = 3
-
 #<i>Body models a single particle in an N-body system</i>
 
+#:segment start: barebones
+
 class Body
+
+NDIM = 3           # number of spatial dimensions
 
   attr_accessor :mass, :pos, :vel      # mass, position, velocity
 
   def initialize(mass = 0, pos = [0,0,0], vel = [0,0,0])
     @mass, @pos, @vel = mass, pos, vel
   end
+
+#
+#end
+#:segment end:
 
   def to_s
     "  mass = " + @mass.to_s + "\n" +
@@ -64,6 +68,8 @@ class Body
 end
 
 #<i> Nbody models an N-body system </i>
+
+#:segment start: nbody
 
 class Nbody
 
@@ -103,6 +109,8 @@ class Nbody
   end
 
 end
+
+#:segment end:
 
 #<i>extends Body class to provide energy diagnostics</i>
 

@@ -1,8 +1,92 @@
 = TODO for acs
 
-Time-stamp: <03/12/31 16:10:53 makino>
+Time-stamp: <2004-01-19 17:23:02 piet>
 
-* Lots of things to do....
+* in ch2.cp, in:
 
-* Getting nbody1h from Sverre
+  <tt>:inccode: .leap.rb+write</tt>
 
+  acsdoc picks up <tt>nbody.write</tt> instead of <tt>body.write</tt>
+
+  Perhaps we can implement <tt>.leap.rb+body.write</tt> ?
+
+  That way, having +def+ and +end+ in the same column may no longer be
+  necessary (though still a good idea!)
+
+  Of course, we can make this arbitrarily complicated, but perhaps it
+  would be worth while to allow something like <tt>.leap.rb+body</tt>
+  for including the whole class definition of <tt>body</tt>, although
+  we then probably would have to add some form of numbering, given that
+  there are various additions, all called <tt>body</tt> class in the
+  file <tt>leap.rb</tt>; perhaps <tt>.leap.rb+body+3</tt> ?  Hmmmm....
+
+* how about replacing
+
+  <tt>segment start: <i>name</i></tt>
+
+  by 
+
+  <tt>segment: <i>name</i></tt>
+
+  ?
+
+* what about <tt>sample_init.rb</tt> ?  Leave out opening specific files?
+
+* what about empty lines at the very end of our current <tt>ch2.rb</tt>
+
+* how to run acsdoc; for only one chapter at a time?
+
+* a cleanup mechanism for all the <tt>.something</tt> files?
+
+* we haven't yet succeeded in including figures in our old lab notes;
+  the following, at the end of section 3.3 in <tt>labnotes031112</tt>
+  did not work (I'm using LINK instead of link, to get the output here):
+
+  <tt>LINK:../P/2003/11/images/labnote-031112.gif</tt>
+
+* in this same file, in <tt>5. Generation of Lab Notes</tt>
+  mysteriously the number 5 becomes 1 !?!
+
+* we should implement Ato's errata in our first book:
+
+  .
+ Dear Piet and Jun,
+  I have started reading "The Art of Computational Science". I do not know
+  if the version on the web is the latest and if you are interested in
+  hearing bug reports, but I thought I would let you know of some typos
+  I noticed in the book. 
+  
+  7.2 A Standard $N$-Body Snapshot Format
+   
+  after the paragraph that starts with "For example, to store the initial..."
+  the given example has one line too many.
+   
+  - - -
+   
+  after the paragraph that starts with "As soon as our program starts..."
+  the array indices are all 0, they should be 0, 1, and 2
+   
+  - - -
+   
+  11.4 Dynamically Produced Binaries
+   
+ in Alice, starting with "You may not have heard of it...", says "Monte Carol",
+  should be "Monte Carlo", spoils the joke that comes afterward :-)
+  
+  I hope you find this useful,
+  
+  cheers,
+  
+  ato
+
+* in our book, we may want to say a few more words about the notion of
+  the `order' of a differential equation?  This was the main point of
+  criticism that Bob Vanderbei mentioned.
+
+* in our labnotes and elsewhere, how/when shall we implement reference
+  pointers?
+
+* what shall we do with a table of contents, for our book in rdoc?
+
+* are <tt>!name!</tt> and <something> useful, as mentioned
+  in <tt>rdoc-0.9.0acs1/README.local</tt> ?

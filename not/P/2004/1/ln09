@@ -1,0 +1,54 @@
+2004, January 9, Friday, Kyoto: Piet
+
+=== 1. Book outline
+
+Two phone conversations with Jun.  After the first one,
+I wrote an outline for our book, and after the second one,
+I wrote a revised version.  Here are a few notes from our
+second conversation.
+
+Jun pointed out that I had gone back to the old idea,
+of having stellar dynamics experts from outside dense stellar
+systems.  I told him that I had forgotten that we had made
+the change to dss experts.  We talked a bit again about that
+decision, and Jun convinced me that introducing dss experts
+would be better, since it would be more realistic.
+
+Jun suggested to switch chapter 4 and 5.  We will start
+with leapfrog, for plotting we'll only use pgplot, starting
+with binary/triple examples but then we'll quickly move to a
+virial equilibrium for a homogeneous sphere, also homogeneous
+in velocity space up to a cut-off, a model for which there is
+no further freedom in choice.  We will use softening.  After
+that, introduce first Hermite, then C speed up.  No cold
+collapse.  Then individual time steps.  For Ruby version, note
+that C speed up requires block time steps, which is also useful
+for parellilization and GRAPE.  Discuss this.  Core collapse:
+density, lagrangian radii, detecting binaries.
+
+We talked at length about the pros and cons of having all
+code in one file, or distributed over different files.  Jun
+strongly felt that one file would be better, for now.  I agreed
+that it might be easier to understand that way, though it would
+introduce more clutter.  In this context, I asked Jun whether
+we could desing a mechanism to include single methods directly
+from a code, without putting in extra lines cluttering things
+up, as with :segment start: directives.  Jun will look into
+that.
+
+When I said that my motivation for smaller files stemmed
+partly from wanting to keep simple versions of, say, "body.rb"
+intact for inclusion in the early part of the book, Jun said
+that it might be unrealistic to try to collect all code for the
+whole book under rdoc all at once; perhaps better to run rdoc
+separately for each chapter.  That's an interesting idea, and
+that would certainly make things more flexible.  We'll have to
+see in more detail how that would work out.  It would be like
+having different Mozilla tabs for each chapter, each with its
+own rdoc windows on files and classes and methods.
+
+I asked Jun how rdoc documents the entire Ruby code.  Jun
+thought it didn't, and had read that someone, while trying to
+do so, saw rdoc crash.  We'll have to look into this further.
+
+Piet

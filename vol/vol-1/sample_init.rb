@@ -56,3 +56,5 @@ def mk_sample_init_files
   triple_file = File.open("triple.in", "w+")
   triple.simple_fprint(triple_file)
 end
+
+mk_sample_init_files

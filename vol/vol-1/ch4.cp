@@ -1,1 +1,1 @@
-= Chapter 4.  Coherent Programming
+= Chapter 4.  Virial Equilibrium and Plotting

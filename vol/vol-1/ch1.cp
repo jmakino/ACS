@@ -1,4 +1,58 @@
-= Chapter 1.  Setting the Stage
+= Chapter 1.  Dense Stellar Systems
+
+Alice and Bob meet each other.  Alice is 45, started out in particle
+physics, then worked on various astrophysical topics, including
+cosmology, and also has extensive experience in simulating dense
+stellar systems..  Bob is 35, just got tenure, and has worked on dense
+stellar systems modeling for most of his career, mostly stellar dynamics,
+but with some work in SPH.
+
+They talk about how the astrophysics of dense stellar systems is going
+to be a central topic for decades to come.  Cosmology, from the top
+down, is now able to resolve star cluster size masses, and in addition
+star formation is now the largest uncertainty in large scale structure
+simulations.  Star formation, from the bottom up, is now being modeled
+in the context of giant molecular clouds, and before long will be able
+to model the formation of reasonably large star clusters.  Besides
+forming the meeting ground of stellar astrophysics and cosmology,
+dense stellar systems include the most fascinating astrophysical
+environments, those that can be found around supermassive black holes
+in the nuclei of galaxies.
+
+They then lament the fact that many hundreds of astronomers are
+observing dense stellar systems, but that only a few dozen individuals
+are involved in modeling those systems.  They wonder what the reasons
+are.  They suggest the fact that cosmology has been the most fascinable
+topic; the fact that the elegance of equal-mass modeling ended in the
+late eighties when the mathematical physics of those systems were
+finally understood; the problem with kitchen-sink simulations that you
+are not sure what to believe of the outcome.
+
+Next, they discuss the state of the art of modeling dense stellar systems.
+They briefly look back at the history.  Alice talks about the late eighties,
+when she started her first work on dense stellar systems, after getting
+her PhD, using NBODY5, and later working with Kira.  Bob also has used
+NBODYx codes in his work, as well as Kira.
+
+Alice talks about how little modularity there is, and how difficult
+it will be to validate and modify the codes, two things that prior
+experience has taught her to be absolutely crucial.  Bob can see her
+point theoretically, but his experience has shown him, in contrast,
+that any clean idea will soon get dirty as soon as you start working
+on realistic applications.  They both think the other person is a bit
+unreasonable, but decide not to stress their points, and instead they
+continue to talk about what they have in common.
+
+They discuss the way in which (astro)physicists write code, how their
+education does not teach them anything about good style and approach.
+They swap anecdotes about stellar evolution codes that are unreadable
+and about a recent book by a well known hydro expert without even
+subroutines.  They also talk about stories they have heard from people
+in other areas of scientific modeling where people finally decided to
+rewrite legacy code, how it took a few years, but how that resulted in
+a much more flexible to build further software on.
+
+== old material
 
 Two astronomers meet each other over tea, one afternoon.
 

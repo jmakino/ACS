@@ -250,9 +250,9 @@ special file "notdefs.tex".
 
 We made the following todo list:
 
--- finish writing yesterday's lab notes
--- implement block timestep code
--- write a Ruby implementation of our lab note mechanism
--- implement docbook XML version of our (book and code) source
--- work on a paper for the Kali code, using the block time step code
-     as a toy model
+- finish writing yesterday's lab notes
+- implement block timestep code
+- write a Ruby implementation of our lab note mechanism
+- implement docbook XML version of our (book and code) source
+- work on a paper for the Kali code, using the block time step code
+  as a toy model
