@@ -2,26 +2,57 @@
 	
 = Preface
 
-== A New Book Series
+== The ACS Initiative
 
-This book is the first in a series of books titled <i>The Art of
-Computational Science.</i> The aim of the series is to provide
-real-world guides to designing, developing, using, and extending
-computational laboratories.  In many areas of science, computer
-simulations of complex physical systems cannot be performed with
-off-the-shelf software packages.  Instead, computational scientists
-have to design and build their own software environment, just as
-experimental scientists have to design and build their own
-laboratories, before being able to use them.
+This book is the first in a series of books titled <i>The Kali
+Code</i>, which in turn is part of a larger series, under the name
+<i>The Art of Computational Science (ACS)</i>.  The aim of the larger
+ACS series is to provide real-world guides to designing, developing,
+using, and extending computational laboratories.  The specific
+<i>Kali</i> series will provide a detailed example of a setting up
+such a lab, for simulations of dense stellar systems in astrophysics.
 
-The first few volumes in this series will focus on one particular
-topic, the <i>gravitational N-body problem</i>, the oldest unsolved
-problem in mathematical physics, and an area of active research in
-astrophysics, with applications ranging from star formation to
-collisions between normal stars, neutron stars and black holes, with
-implication for the growth of structure in the universe on all scales,
-from that of clusters of galaxies down to the formation of planets and
-their satellites.
+In many areas of science, computer simulations of complex physical
+systems cannot be performed with off-the-shelf software packages.
+Instead, computational scientists have to design and build their own
+software environment, just as experimental scientists have to design
+and build their own laboratories, before being able to use them.  For
+a long time, however, the know-how needed to construct computational
+laboratories has remained only a form of tacit knowledge, passed down
+in an oral tradition among experts.  It was not written down anywhere
+in sufficient detail to allow this knowledge to be passed down without
+direct personal instructions, or indirect osmosis through personal
+participation in a joint project.
+
+We have started the ACS series with the aim of making explicit the
+implicit knowledge of experts of scientific simulations.  Besides
+offering detailed explanations of the structure of the computer codes
+used, in an `open source' style, we provide a deeper layer of knowledge.
+Besides the <i>what</i> and <i>how</i> for any computer code, we also
+provide the <i>why</i>: the motivation for writing it the way it was
+written, within the context in which it was conceived.  This will give
+the user more appreciation for the background of the structure chosen,
+and most importantly, this will give the user the ability to easily
+modify and extend the codes presented, without finding oneself at odds
+with the original style and aim.
+
+The umbrella series within ACS is called <i>Open Knowledge</i>, to
+indicate the fact that we aim at far more than providing an `open
+source' project.  In that series we plan to publish what we have
+learned about the ACS approach, in sofar as it is generally
+applicable, to any area in computatonial science.
+
+== The Kali Code
+
+The <i>Kali</i> series will contain the first such fully worked-out
+example of building a computational lab.  The first few volumes in
+this series will focus on one particular topic, the <i>gravitational
+N-body problem</i>, the oldest unsolved problem in mathematical
+physics, and an area of active research in astrophysics, with
+applications ranging from star formation to collisions between normal
+stars, neutron stars and black holes, with implication for the growth
+of structure in the universe on all scales, from that of clusters of
+galaxies down to the formation of planets and their satellites.
 
 One reason to choose this topic is to provide an example of a
 computational lab where the underlying physics is very simple, just
@@ -40,11 +71,24 @@ present these first few books in sufficient detail for researchers
 from other areas of natural science to be able to follow and
 appreciate the approach to virtual lab building presented here.
 
+The aim of the _Kali_ series is to develop, in many small steps, a
+state-of-the-art code that can be used for research in dense stellar
+systems.  We borrowed the name from the Sanskrit _kali_, meaning
+_dark_, as in the <i>kali yuga</i>, the dark ages we are currently in
+according to Hindu mythology.  The same word also occurs in the name
+_Kali_, the Hindu Goddess who is depicted as black.  The term _dark_
+seemed appropriate for our project of focusing on tacit knowledge,
+which has not been brought to light, so far, and perhaps cannot be
+presented in a bright, logical series of statements.  Instead, we
+expect our dialogues to carry the many less formal and less bright
+shades of meaning, that pervade any craft.
+
 Future volumes in this series are expected to cover wider and wider
-areas of science.  Most likely, we will move from stellar dynamics,
-associated with the gravitational N-body problem, first to stellar
-evolution and stellar hydrodynamics, followed by other areas of
-simulations in astrophysics and physics in general.  But before too
+areas of science.  Within the _Kali_ series, we will move from stellar
+dynamics, associated with the gravitational N-body problem, first to
+stellar evolution and stellar hydrodynamics.  It is our hope that this
+series will be followed by additional series for other areas of
+simulations in astrophysics and physics in general.  And before too
 long, we hope to attract chemists and biologists, and well as
 scientists from other areas.  If they find our approach useful, and
 like to try it out in their own field of expertise, we will welcome
@@ -63,16 +107,15 @@ to other topics.
 
 == A Narrative in Dialogue Form
 
-The format we have chosen for our book series, at least for the first
-several volumes, is sufficiently unusual that it deserves some
-clarification.  Most scientific text books summarize the state of the
-art of a field `after the dust has settled.'  Students are presented
-with a clean path of logic that bears little resemblance to the
-historical process of trial and error that underlies any scientific
-discovery, large or small.  As a result, a graduate student facing his
-or her first major piece of independent research is in for a big shock,
-suddenly realizing how hard it is to derive anything new with little
-or no guidance.
+The format we have chosen for our book series, is sufficiently unusual
+that it deserves some clarification.  Most scientific text books
+summarize the state of the art of a field `after the dust has
+settled.'  Students are presented with a clean path of logic that
+bears little resemblance to the historical process of trial and error
+that underlies any scientific discovery, large or small.  As a result,
+a graduate student facing his or her first major piece of independent
+research is in for a big shock, suddenly realizing how hard it is to
+derive anything new with little or no guidance.
 
 In practice, the blow is softened in many cases by conversations
 with a range of helpers, from fellow students, somewhat more senior
@@ -85,14 +128,14 @@ area such as computational science, where the most basic tools, from
 languages to packages to the very approach to programming, have
 changed so much even in the last ten years.
 
-Browsing in a book store is not likely to be very helpful either.
-While there are many books that discuss algorithms and programming
-languages, those are necessary but far from sufficient ingredients for
-building a computational lab.  What is needed is a practical form of
-know-how, of how to approach the whole process of lab building, from
-developing an overarching vision to connecting it to nitty-gritty
-details.  To present this form of know-how, via case studies, is the
-central aim of our book series.
+Nor is browsing in a book store is likely to turn up much that is
+helpful.  While there are many books that discuss algorithms and
+programming languages, those are necessary but far from sufficient
+ingredients for building a computational lab.  What is needed is a
+practical form of know-how, of how to approach the whole process of
+lab building, from developing an overarching vision to connecting it
+to nitty-gritty details.  To present this form of know-how, via case
+studies, is the central aim of our book series.
 
 Given this wide ranging challenge, a traditional approach of just
 summarizing our basic points would most likely be insufficient to let
@@ -133,20 +176,16 @@ which the books provide the narrative.  The environment includes the
 collection of computer codes discussed in the books, together with the
 infrastructure to make it all work together seemlessly.  This implies
 extensive comments provided in the codes themselves, as well as manual
-pages and detailed lab notes made by us while we developed the whole
-package, code, book text, and everything else.  These lab notes, while
-rough and really meant for our own use, provide an extra level of
-background information, which may be useful in addition to the more
-polished narrative provided through the dialogues.
+pages.
 
 Our plan is to make successive stable versions of this software
-environment available, starting with ACS 0.1, which contains a small
+environment available, starting with ACS 1.0, which contains a small
 but self-sufficient core of simple N-body programs and accompanying
 documentation and narrative.  These versions can be freely downloaded
 from our web site "http://www.ArtCompSci.org".  They include all
-completed volumes in our book series.  Text, code, and everything else
-is presented as open source software under the conditions of the MIT
-license:  
+completed and partly completed volumes in our book series.  Text,
+code, and everything else is presented as open source software under
+the conditions of the MIT license:
 
     Copyright (c) 2004 -- present, Piet Hut & Jun Makino
 
@@ -174,24 +213,24 @@ license:
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-#In addition, we plan to make these volumes available in print, with
-#the xxxx company.  We hope, of course, that our software environment
-#will be sufficiently attractive that serious users will want to
-#purchase printed copies of these books for their extra convenience; as
-#a side effect, this may convince book publishers that there really is
-#a market for `open source' book publishing.
-
 == A Historical Note
 
 In preparing for our project, we wrote a complete manuscript, titled
-<i>Moving Stars Around</i>, also in dialogue form, but aimed more at
-beginning students who may not yet have much familiarity with computer
-programming and the use of numerical methods.  We do not plan to
-publish that manuscript, which we put up on our web site in the Fall
-of 2003, in its current form.  Instead, we intend to recycle much of
-the text in one or more volumes in our current series.
-However, until we find the time to do so, we will keep <i>Moving Stars
-Around</i> around on our web site, as introductory material.
+<i>Moving Stars Around MSA)</i>, also in dialogue form, but aimed more
+at beginning students who may not yet have much familiarity with
+computer programming and the use of numerical methods.  We have no
+current plans to continue that particular approach, but even so, the
+manuscript will remain a useful guide for N-body calculations, with a
+somewhat different emphasis than the one presented in the _Kali_
+series.
+
+For example, MSA provides a very quick shortcut to playing with simple
+algorithms and simple graphics representations of orbit calculations.
+Both topics are treated in far more detail in the _Kali_ series,
+leading to far more robust and general code, but it will also require
+far more patience from the reader to get there.  This is one of the
+reasons that we decided to keep the MSA volume on our web site
+indefinitely, as additional introductory material.
 
 == Acknowledgments
 
@@ -205,7 +244,11 @@ Ninomiya.  In addition, we thank the Observatory of Strasbourg, where
 the kind invitation of Professor Christian Boily allowed us to make a
 rapid beginning with the current volume.
 
-We thank Douglas Heggie, xxx, and xxx for their comments on the
-manuscript.
+Finally, it is our pleasure to thank Douglas Heggie for his comments
+on the manuscript.
 
 Piet Hut and Jun Makino
+
+Kyoto, June 2004
+
+(written for the occasion of the ACS 1.0 release)

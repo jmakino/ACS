@@ -102,9 +102,9 @@ Comparing this with the definitions of <tex>$\bk_1$</tex>,
 :eqnarray:
 \ba_0 &=& \ba(\br(t))                                           \nonumber\\
 \ba_1 &=& \ba\left(\br(t) + {\textstyle {1 \over 2}}\Delta t\bv +
-          {\textstyle {1 \over 8}}\Delta t^2\ba_0\right)        \nonumber\\
+          {\textstyle {1 \over 8}}(\Delta t)^2\ba_0\right)        \nonumber\\
 \ba_2 &=& \ba\left(\br(t) + \Delta t\bv +
-          {\textstyle {1 \over 2}}\Delta t^2\ba_1\right)        \nonumber
+          {\textstyle {1 \over 2}}(\Delta t)^2\ba_1\right)        \nonumber
 
 And indeed, these are exactly the three variables <tt>a0</tt>, <tt>a1</tt>,
 and <tt>a2</tt>, that are computed in your <tt>rk4</tt> method.
@@ -113,9 +113,9 @@ We can now rewrite the first two of Abramowitz and Stegun's equations as:
 
 :eqnarray:
 \br(t+\Delta t) &=& \br(t) + \Delta t\bv(t) +
-              {\textstyle {1 \over 6}}\Delta t^2(\ba_0 + 2\ba_1)  \nonumber\\
+              {\textstyle {1 \over 6}}(\Delta t)^2(\ba_0 + 2\ba_1)  \nonumber\\
 \bv(t+\Delta t) &=& \bv(t) + {\textstyle {1 \over 6}}\Delta t(\ba_0 +
-              4\ba_1 + \ba_2)                                     \nonumber
+              4\ba_1 + \ba_2)                                       \nonumber
 
 And these correspond precisely to the last two lines in your
 <tt>rk4</tt> method.
@@ -239,176 +239,9 @@ And then:
 
  :commandoutput: ruby integrator_driver2j.rb < euler.in
 
-*Alice*: This comes close to proving it.  Fourth order, almost exactly.
+*Alice*: The time step went down by a factor 10, and the energy
+conservation got better by a factor of almost exactly <tex>$10^4$</tex>.
+This proves it: we really have a fourth order integration scheme.
 
-== Snap, Crackle, and Pop
-
-*Bob*: What do you mean with `comes close'?  What more proof would you
-like to have?
-
-*Alice*: I would still be happier if I could really prove it,
-with pen and paper, rather than through the plausibility of numerical
-experimentation.
-
-*Bob*: Go ahead, if you like!
-
-*Alice*: Let us take your implementation
-
- :inccode:.rkbody.rb+rk4
-
-and let us determine analytically what the first five terms in a Taylor
-series in +dt+ look like.  We can then see directly whether the error term
-is proportionally to <tex>$h^4$</tex>, as the book claims, or <tex>$h^5$</tex>,
-as our calculations indicate.
-
-To start with, let us look at your variable <tt>a2</tt>, which is the
-acceleration after a time step +dt+, starting from an initial
-acceleration <tt>a0</tt>.  A Taylor expansion can approximate
-<tt>a2</tt> as:
-
-:equation:
-\ba_2 = \ba_0 + {d\ba\over dt} dt
-              + {1 \over 2}{d^2\ba\over dt^2} (dt)^2
-              + {1 \over 6}{d^3\ba\over dt^3} (dt)^3
-              + {1 \over 24}{d^4\ba\over dt^4} (dt)^4
-
-where all the derivatives are understood to be evaluated at the same
-time as <tex>$\ba_0$</tex>, namely at the beginning of our time step.
-
-*Bob*: The first derivative of the acceleration, <tex>${d\ba\over dt}$</tex>,
-is sometimes called the <i>jerk</i>.  How about the following notation:
-
-:equation:
-\bj = \frac{d^3}{dt^3} \br = \frac{d\ba}{dt}
-
-*Alice*: Fine with me.  I believe the term `jerk' has crept into the
-literature relatively recently, probably originally as a pun.  If a
-car or train changes acceleration relatively quickly you experience
-not a smoothly accelerating or decelerating motion, but instead a
-rather `jerky' one.
-
-*Bob*: It may be more difficult to come up with terms for the unevenness
-in the jerk.
-
-*Alice*: Actually, I saw somewhere that someone had used the words
-_snap_, _crackle_, and _pop_, to describe the
-next three terms.
-
-*Bob*: As in the rice crispies?  Now that will confuse astronomers
-who did not grow up in the United States!  If they haven't seen the
-rice crispy commercials, they will have no clue why we would use those
-names.  And come to think of it, I don't have much of a clue yet either.
-
-:figure: scp.jpg 5cm scp
-Snap, Crackle, and Pop
-
-*Alice*: Ah, but the point is that the names of these three cheerful
-characters lend themselves quite well to describe more-than-jerky behavior.
-After all, the popping of a rice crispy is a rather sudden change of state.
-
-*Bob*: Okay, now I get the drift of the argument.  A sudden snap comes to
-mind, as a change in jerk.  And what changes its state more suddenly than
-a snap?  Well, perhaps something that crackles, although that is pushing
-it a bit.  But a pop is certainly a good word for something that
-changes high derivatives of positions in a substantial way!
-
-== An Analytic Proof
-
-*Alice*: Okay, let's make it official:
-
-:eqnarray:
-\bs &=& \frac{d^4}{dt^4} \br \quad = \quad \frac{d^2}{dt^2} \ba \nonumber\\
-\bc &=& \frac{d^5}{dt^5} \br \quad = \quad \frac{d^3}{dt^3} \ba \nonumber\\
-\bp &=& \frac{d^6}{dt^6} \br \quad = \quad \frac{d^4}{dt^4} \ba
-
-Which turns my earlier equation into:
-
-:equation:
-\ba_2 = \ba_0 + \bj_0 dt
-              + {\textstyle {1 \over 2}}\bs_0 (dt)^2
-              + {\textstyle {1 \over 6}}\bc_0 (dt)^3
-              + {\textstyle {1 \over 24}}\bp_0 (dt)^4
-
-*Bob*: Much more readable.
-
-*Alice*: And your other variable <tt>a1</tt>, which indicates the acceleration
-after only half a time step, now becomes:
-
-:equation:
-\ba_1 = \ba_0 + {\textstyle {1 \over 2}}\bj_0 dt
-              + {\textstyle {1 \over 8}}\bs_0 (dt)^2
-              + {\textstyle {1 \over 48}}\bc_0 (dt)^3
-              + {\textstyle {1 \over 384}}\bp_0 (dt)^4
-
-*Bob*: Ah, and now we can evaluate the last two lines in my <tt>rk4</tt>
-method:
-
- :inccode:.rkbody.rb-1
-
-*Alice*: Yes.  These two lines translate to:
-
-:eqnarray:
-\br_1 &=& \br_0 + \bv_0 dt
-          + {\textstyle {1 \over 6}}(\ba_0+2\ba_1)(dt)^2 \nonumber\\
-\bv_1 &=& \bv_0 + {\textstyle {1 \over 6}}(\ba_0+4\ba_1+\ba_2)dt
-
-Upon substitution the first line becomes:
-
-:eqnarray:
-\br_1 &=& \br_0 + \bv_0 dt
-          + {\textstyle {1 \over 6}}\ba_0(dt)^2
-          + {\textstyle {1 \over 3}}\ba_1(dt)^2 \nonumber\\
-&=& \br_0 + \bv_0 dt
-          + {\textstyle {1 \over 2}}\ba_0(dt)^2
-          + {\textstyle {1 \over 6}}\bj_0 (dt)^3
-          + {\textstyle {1 \over 24}}\bs_0 (dt)^4
-          + {\textstyle {1 \over 144}}\bc_0 (dt)^5
-          + O((dt)^6) \nonumber
-
-And the second line becomes:
-
-:eqnarray:
-\bv_1 &=& \bv_0
-          + {\textstyle {1 \over 6}}\ba_0dt
-          + {\textstyle {2 \over 3}}\ba_1dt
-          + {\textstyle {1 \over 6}}\ba_2dt \nonumber\\
-&=& \bv_0 + \ba_0dt
-          + {\textstyle {1 \over 2}}\bj_0 (dt)^2
-          + {\textstyle {1 \over 6}}\bs_0 (dt)^3
-          + {\textstyle {1 \over 24}}\bc_0 (dt)^4
-          + {\textstyle {5 \over 576}}\bp_0 (dt)^5
-          + O((dt)^6) \nonumber
-
-*Bob*: Very nice.  In both cases the terms up to <tex>$(dt)^4$</tex> are
-perfectly correct, and the error starts in the <tex>$(dt)^5$</tex> term,
-where the Taylor series coefficient would have been <tex>${1 \over 120}$</tex>.
-So the leading error terms are:
-
-:eqnarray:
-\delta \br_1 &=& {\textstyle -{1 \over 720}}\bc_0 (dt)^5 \nonumber\\
-\delta \bv_1 &=& {\textstyle {1 \over 2880}}\bp_0 (dt)^5 \nonumber
-
-*Alice*: Which proves that your Runge-Kutta method is truly fourth-order,
-and that there was a typo in Abramowitz and Stegun.
-
-*Bob*: And now that that is settled once and for all, I suggest we continue
-to move toward introducing some sort of graphics.  I would really like
-to see this eccentric Kepler orbit in front of me, after having talked
-so much about it, integrated it, and diagnosed it both numerically and
-analytically.
-
-*Alice*: Me too.  However, when we set up some form of graphics, it would
-be nice not to have too many parallel version.  Our current code gives
-output appropriate for the two-body problem, which is translated, as a
-kind of trick, into a pseude-one-body problem: we only output the
-relative position and velocity of the two particles.
-
-I think it would be better if we first would translate our current
-code to a true N-body version.  When we then develop a graphics
-package for it, we can use it for any number of particles we like.
-
-*Bob*: You have a point.  And now that we have four different integrators,
-it would be a pity not to use them for the real N-body problem.  I think
-we have done most of the work already, anyway.  Going from the pseudo-1-body
-problem to the N-body problem will require some careful thought, but
-not a whole lot of extra work.
+*Bob*: And I can keep the name <tt>rk4</tt>, since it lives up to its
+claim.  Good!
