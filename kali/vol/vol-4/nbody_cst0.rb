@@ -416,7 +416,11 @@ options_text= <<-END
     option to provide softening for the potential.  This is essential for
     a constant time step code; the alternative, instead of softening, would
     be to use a variable time step algorithm.
+
     (c) 2004, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
+
+    example:
+    ruby #{$0} -t 1 < cube1.in
 
 
   Short name:		-m

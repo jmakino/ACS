@@ -134,6 +134,7 @@ options_text= <<-END
     The default precision is comparable to double precision accuracy.
 
 
+  Short name:           -i
   Long name:            --indentation
   Value type:           int
   Default value:        2

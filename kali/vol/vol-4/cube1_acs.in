@@ -1,0 +1,62 @@
+ACS
+     Nbody 
+          Array body
+               Body body[0]
+                    Float mass
+                            1.00e+00
+                    Vector pos
+                            1.00e+00   1.00e+00   1.00e+00
+                    Vector vel
+                            0.00e+00   0.00e+00   0.00e+00
+               Body body[1]
+                    Float mass
+                            1.10e+00
+                    Vector pos
+                            1.00e+00   1.00e+00  -1.00e+00
+                    Vector vel
+                            0.00e+00   0.00e+00   0.00e+00
+               Body body[2]
+                    Float mass
+                            1.20e+00
+                    Vector pos
+                            1.00e+00  -1.00e+00   1.00e+00
+                    Vector vel
+                            0.00e+00   0.00e+00   0.00e+00
+               Body body[3]
+                    Float mass
+                            1.30e+00
+                    Vector pos
+                            1.00e+00  -1.00e+00  -1.00e+00
+                    Vector vel
+                            0.00e+00   0.00e+00   0.00e+00
+               Body body[4]
+                    Float mass
+                            1.40e+00
+                    Vector pos
+                           -1.00e+00   1.00e+00   1.00e+00
+                    Vector vel
+                            0.00e+00   0.00e+00   0.00e+00
+               Body body[5]
+                    Float mass
+                            1.50e+00
+                    Vector pos
+                           -1.00e+00   1.00e+00  -1.00e+00
+                    Vector vel
+                            0.00e+00   0.00e+00   0.00e+00
+               Body body[6]
+                    Float mass
+                            1.60e+00
+                    Vector pos
+                           -1.00e+00  -1.00e+00   1.00e+00
+                    Vector vel
+                            0.00e+00   0.00e+00   0.00e+00
+               Body body[7]
+                    Float mass
+                            1.70e+00
+                    Vector pos
+                           -1.00e+00  -1.00e+00  -1.00e+00
+                    Vector vel
+                            0.00e+00   0.00e+00   0.00e+00
+          Float time
+                  0.00e+00
+SCA

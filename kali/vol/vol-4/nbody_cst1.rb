@@ -391,7 +391,11 @@ options_text= <<-END
     option to provide softening for the potential.  This is essential for
     a constant time step code; the alternative, instead of softening, would
     be to use a variable time step algorithm.
+
     (c) 2004, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
+
+    example:
+    ruby sim2acs < cube1.in | ruby #{$0} -t 1
 
 
   Short name:		-m
@@ -452,23 +456,7 @@ options_text= <<-END
     standard output channel.
 
     The snapshot contains the mass, position, and velocity values
-    for all particles in an N-body system.
-
-    The program expects input of a single snapshot of an N-body
-    system, in the following format: the number of particles in the
-    snapshot n; the time t; mass mi, position ri and velocity vi for
-    each particle i, with position and velocity given through their
-    three Cartesian coordinates, divided over separate lines as
-    follows:
-
-                  n
-                  t
-                  m1 r1_x r1_y r1_z v1_x v1_y v1_z
-                  m2 r2_x r2_y r2_z v2_x v2_y v2_z
-                  ...
-                  mn rn_x rn_y rn_z vn_x vn_y vn_z
-
-    Output of each snapshot is written according to the same format.
+    for all particles in an N-body system, in ACS format
 
 
   Short name: 		-t
