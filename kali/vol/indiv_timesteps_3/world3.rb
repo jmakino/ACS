@@ -1,6 +1,6 @@
 #!/usr/local/bin/ruby -w
 
-require "nbody.rb"
+require "kali/nbody.rb"
 
 module Integrator_force_default
 

@@ -1,6 +1,6 @@
 #!/usr/local/bin/ruby -w
 
-require "nbody.rb"
+require "kali/nbody.rb"
 
 #:segment start: WorldPoint
 class WorldPoint < Body
