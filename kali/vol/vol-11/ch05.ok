@@ -1,4 +1,4 @@
-= A Derivation from First Principles
+= Getting the Physics Right
 
 == An Analytic Recipe
 
@@ -92,7 +92,7 @@ f(\E)\,&=&\, {3\times20\over8\sqrt2\pi^3}\,
 
 == The Full Form
 
-Well, I guess I was not as rusty in these kind of manupilations as I had
+Well, I guess I was not as rusty in these kind of manipulations as I had
 thought I was.
 
 *Alice*: You shouldn't, since you did your undergraduate studies a lot more
@@ -223,7 +223,7 @@ has the following dimension:
 
 Now the crucial point is that only <tex>$G$</tex> can help us in
 giving us a velocity dimension.  Velocity involves time, since its
-dimension is lenght over time, and neither <tex>$M$</tex> nor <tex>$a$</tex>
+dimension is length over time, and neither <tex>$M$</tex> nor <tex>$a$</tex>
 have a time component.
 
 The dimension of <tex>$G$</tex> follows from the fact that potential energy
@@ -338,7 +338,7 @@ g(t) \,&=&\, {\sin \pi \alpha \over \pi}\,{d\over dt} \,
        \int_0^t {f(x)dx \over (t-x)^{1-\alpha}}                     \nonumber\\
 &=&\, {\sin \pi \alpha \over \pi}\,\left[
 \int_0^t{df\over dt}\,{dx \over (t-x)^{1-\alpha}}+
-{f(0)/over t^{1-\alpha}}\right]
+{f(0)\over t^{1-\alpha}}\right]
 
 I like that terse style: only "Let . . then . .", what a difference with
 our constant chattering!
@@ -375,7 +375,7 @@ t\,& \rightarrow &\,\E                                \\
 for two very different functions, in their two languages.  We'll have
 to be careful with this dictionary.
 
-*Alice*: But I thought you didn't like hats and tildes, and prefered to use
+*Alice*: But I thought you didn't like hats and tildes, and preferred to use
 the same symbol for different things?
 
 *Bob*: Only if they have the same physical meaning.  Here we're talking
@@ -408,302 +408,6 @@ f(\E)\,&=&\,{\sin\left({\pi\over2}\right)\over\pi}\,{d\over d\E}\,
 *Bob*: Indeed, these are exactly the eqs. (ref(fcurlyEa)) and (ref(fcurlyEb))
 that we set out to prove.  Great!  Now can we start testing my code?
 
-== A Mathematical Proof
-
 *Alice*: Ho!  Not so quick.  All we have done is verify that Binney and
 Tremaine's claim in the appendix leads to their claim in the main text.
-Now we have to prove the claim in their appendix.
-
-*Bob*: But that is mathematics!  Look, there is no physics in the relation
-between eqs. (ref(fx)) and (ref(gt)).  It's just a matter of some kind
-of mathematical transformation, like Fourier transforms or Laplace
-transforms.
-
-*Alice*: Even so, we set out to prove things from first principles, and I
-certainly would feel more comfortable to do exactly that.  And I don't feel
-I can call Abel transforms first principles.  Besides, they may well
-come in handy when we will start constructing more complicated models, and
-I wouldn't mind getting some more practice in these type of manipulations.
-
-Come on, let's just do it.
-
-*Bob*: Okay, but not a bit more than is really necessary.  Look, they
-introduce <tex>$\alpha$</tex> where we only needed the number
-<tex>$1/2$</tex>.
-
-*Alice*: I'll do it for <tex>$\alpha$</tex>, why not.  You can just watch.
-So how is the problem posed exactly?  In the "if . . then . . " sentence
-in their appendix . . . 
-
-*Bob*: . . . their "Let . . then . . " sentence . . . 
-
-*Alice*: . . . yes, of course, they are mathematical physicists, not
-computer scientists.  Okay, in the "Let . . then . . " sentence
-in their appendix, Binney and Tremaine actually assert two results.
-Let me start trying to prove the first one, which is:
-
-Let
-
-:equation:
-\label{fx2}
-f(x) = \int_0^x {g(t)dt \over (x-t)^\alpha}
-\quad\quad\quad\quad  0<\alpha<1
-
-Then
-
-:equation:
-\label{gt2}
-g(t) \,=\, {\sin \pi \alpha \over \pi}\,{d\over dt} \,
-       \int_0^t {f(x)dx \over (t-x)^{1-\alpha}}
-
-Now how shall we prove this?
-
-== The Problem
-
-*Bob*: They give a terse hint about substituting the first equation in the
-second and interchanging the order of the integration.  Now why would you
-want to substitute the first equation in the second?  I like brevity, but
-this is a bit too brief for me.
-
-*Alice*: Well, given that their book as it is runs already well over
-700 pages, they probably thought they couldn't afford more room for
-explanations.
-
-*Bob*: Good thing we don't suffer from that constraint.  The world wide web
-is wide enough for our meanderings.
-
-*Alice*: But let's not meander too far.  I want to crack this nut.  Let's
-see.  Ah, they must mean that they take the right hand side of eq. (ref(gt2)),
-and work that out, in order to see whether they really get <tex>$g(t)$</tex>
-back in the end.
-
-*Bob*: What do you mean?  They have already called it <tex>$g(t)$</tex>.
-
-*Alice*: Well, they have _asserted_ that the right hand side is the answer
-to the question of what <tex>$g(t)$</tex> is.  We now have to prove it.
-
-*Bob*: I find that confusing.
-
-*Alice*: It is a bit confusing.  Here, let's be more precise and explicit,
-without confusing name spaces.  Forget about eq. (ref(gt2)) . . .
-
-*Bob*: . . . with pleasure and glee.  I'd just as soon forget about this
-whole derivation . . .
-
-*Alice*: Patience, please.  Forget about eq. (ref(gt2)), and write instead
-
-:equation:
-\label{ht2}
-h(t) \,=\, {\sin \pi \alpha \over \pi}\,{d\over dt} \,
-       \int_0^t {f(x)dx \over (t-x)^{1-\alpha}}
-
-*Bob*: Exactly the same, but now you're calling it <tex>$h(t)$</tex>.
-
-*Alice*: Exactly.  Exactly exactly, I mean.  The point is that now we
-don't make any claim about what <tex>$h(t)$</tex> is supposed to mean,
-it is just a function we happen to define this way, right?  Now, this
-new function <tex>$h(t)$</tex> also happens to have this factor
-<tex>$f(x)$</tex> in the integrand, and nothing stops us from substituting
-the expression for <tex>$f(x)$</tex>, given in eq. (ref(fx2)) into eq.
-(ref(ht2)).
-
-*Bob*: Yes, and yes.  I agree.  That is much clearer, since there are only
-one <tex>$f(x)$</tex> and one <tex>$g(t)$</tex> and one <tex>$h(t)$</tex>
-in the game, rather than two different <tex>$g(t)$</tex>'s with different
-status.  And ah, now I see why you would want to substitute
-eq. (ref(fx2)) into eq. (ref(ht2)).  Is that what they meant?
-
-*Alice*: I guess it is.
-
-*Bob*: Okay, now I see why.  Boy, they _are_ terse!
-
-*Alice*: In math, more than half the work is often to find out exactly
-_what_ to do.  Actually doing it is typically the least of the problem.
-
-*Bob*: But let's do it, and get it over with.
-
-== The Answer
-
-*Alice*: Yes, let's.  Here is the result of substituting
-eq. (ref(fx2)) into eq. (ref(ht2)):
-
-:eqnarray:
-h(t) &=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
-   \int_0^t {dx \over (t-x)^{1-\alpha}}\,
-   \int_0^x {g(t')dt' \over (x-t')^\alpha}                        \nonumber\\
-&=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
-\int_0^t dx \int_0^x dt'{g(t')\over (t-x)^{1-\alpha}(x-t')^\alpha}  \nonumber\\
-&=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
-\int_0^tdt'\int_{t'}^t dx{g(t')\over(t-x)^{1-\alpha}(x-t')^\alpha}  \nonumber\\
-&=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
-\int_0^tdt'g(t')\int_{t'}^t {dx\over(t-x)^{1-\alpha}(x-t')^\alpha}
-
-*Bob*: What did you do exactly when you went from the second to the third
-line?
-
-*Alice*: I followed Binney and Tremaine's advice, to interchange the order
-of integration.
-
-*Bob*: But how did you get the new limits for the two integral signs in the
-third line so quickly?
-
-*Alice*: If you draw a picture, you can see what is going on here.
-Instead of <tex>$t'$</tex> use <tex>$y$</tex> instead.  We then have
-a double integral over the <tex>$\{x,y\}$</tex> plane.  The area over
-which we take the integral is a triangle bounded on top by the diagonal
-<tex>$x=y$</tex>, on the bottom by the positive <tex>$x$</tex> axis,
-and on the right by the line <tex>$x=t$</tex>.  Now in the second line
-the inner integral runs over vertical lines, and in the third integral,
-integration runs over horizontal lines.
-
-<b>[We should probably draw a picture here]</b>
-
-*Bob*: Ah, yes, I see now.  It has been a while since I interchanged the
-order of integrations, I must admit.  But your picture makes it clear.
-Onward!
-
-*Alice*: Let us focus on the inner integral, and let us call it
-
-:equation:
-I(t,t') \,=\, \int_{t'}^t {dx\over(t-x)^{1-\alpha}(x-t')^\alpha}
-
-It is natural to introduce:
-
-:equation:
-y = x - t' \,\,\,\,\Rightarrow\,\,\,\, x = y + t'  \,\,\,\,\Rightarrow
-
-:equation:
-I(t,t') \, = \,\int_0^{t-t'} {dy\over(t-t'-y)^{1-\alpha}y^\alpha}
-
-This in turn invites a second change of variables:
-
-:equation:
-z \,=\, {y \over t -t'} \, \,\,\Rightarrow\,\, \, y = (t-t')z\, \,\,\Rightarrow
-
-:equation:
-t-t'-y \,=\, (t-t')(1-z)\, \,\,\Rightarrow
-
-:eqnarray:
-I(t,t') \, &=&\, \int_0^1 {(t-t')dz\over(t-t')^{1-\alpha}(1-z)^{1-\alpha}
-(t-t')^\alpha z^\alpha}                       \nonumber\\
-&=&\, \int_0^1 {dz\over(1-z)^{1-\alpha} z^\alpha}
-
-That is nice: both the <tex>$t$</tex> and the <tex>$t'$</tex> dependences
-have dropped out, and we are left with a definite integral that only has
-one parameter, <tex>$\alpha$</tex>.
-
-*Bob*: And the answer is:
-
-:equation:
-I(t,t') \, =\, \int_0^1 {dz\over(1-z)^{1-\alpha} z^\alpha}
-\,=\, {\pi \over \sin \pi \alpha}
-
-== All the Way
-
-*Alice*: How did you get that so quickly?  Did you use a symbolic integrator?
-That is cheating?
-
-*Bob*: No, I used Binney and Tremaine again, their appendix eq. (1B-58).
-You see, they give you just the minimal amount of information needed
-to get this all worked out.
-
-*Alice*: But we haven't worked out the integral yet.
-
-*Bob*: Are you kidding?  Perhaps I should call up a symbolic integrator!
-
-*Alice*: Look, Bob, we're nearly there, a few feet from the finish line,
-and you want to give up now?  Let's just work it out, and then we can tell
-all of our friends and family that we have just derived the
-distribution function corresponding to a softened potential, really from
-first principles.
-
-*Bob*: My mom will be thrilled to hear that.  I can't get you out of this
-room until you've proved everything, right?  Well, I'll play along
-under one condition: this time we really will use only
-<tex>$\alpha=\half$</tex>.  That is all that we needed to prove Binney
-and Tremaine's main text results, eqs.  (ref(fcurlyEa)) and
-(ref(fcurlyEb)).  Anything more would be masochism.
-
-*Alice*: Okay, okay, <tex>$\alpha=\half$</tex> it will be.  I'll take a deep
-breath, and take off:
-
-<tex>$$
-\int_0^1 {dz\over(1-z)^{1/2} z^{1/2}} \,=\,
-\int_0^1 {dz\over(z-z^2)^{1/2}} \,=\,
-\int_0^1 {dz\over\sqrt{{1\over4}-\left(z-{1\over2}\right)^2}} \,=
-$$</tex>
-
-<tex>$$
-\int_{-\half}^\half {dx\over\sqrt{{1\over4}-x^2}} \,=
-\int_{-1}^1 {{1\over2}dy\over\sqrt{{1\over4}-\left({y^2\over4}\right)}} \,=
-\int_{-1}^1 {dy\over\sqrt{1-y^2}}
-$$</tex>
-
-Aha!  Now we're getting there.  And rather than looking _this_ one up,
-I do remember now how it went.  It is all coming back to me now from my
-freshman years.  You start with the following tautology, given that arcsin
-function is the inverse of the sin function:
-
-<tex>$$
-\sin({\rm asin}x) = x
-$$</tex>
-
-When you differentiate this with respect to <tex>$x$</tex>, you get
-
-<tex>$$
-{d\over dx}\,\sin({\rm asin}x) \,=\,
-\cos({\rm asin}x)\,{d\over dx}\,{\rm asin}x \,=\,1
-$$</tex>
-
-This implies:
-
-<tex>$$
-{d\over dx}\,{\rm asin}x \,=\,
-{1\over\sqrt{1-[\sin({\rm asin}x)]^2}}\,=\,{1\over\sqrt{1-x^2}}
-$$</tex>
-
-This means that the solution of our integral is:
-
-<tex>$$
-\int_0^1 {dz\over(1-z)^{1/2} z^{1/2}} \,=\, \int_{-1}^1 {dy\over\sqrt{1-y^2}}
-\,=\,\left.\{{\rm asin}x\}\right|_{-1}^1 \,=\, {\pi\over2}+{\pi\over2}\,=\, \pi
-$$</tex>
-
-xxx
-
-
-
-== xx
-
-and therefore
-
-:equation:
-h(t) = {d\over dt} \int_0^t g(t')dt' = g(t)
-
-We can work out the expression for <tex>$g(t)$</tex> by taking the
-time derivative of the integral, by substituting
-
-:equation:
-w = t - x \, \,\,\Rightarrow\,\, \, x = t -w  \, \,\,\Rightarrow
-
-x
-
-x
-
-x
-
-:eqnarray:
-g(t) &=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
-       \int_0^t {f(x)dx \over (t-x)^{1-\alpha}}                    \nonumber\\
-&=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
-\int_0^t {f(t-w)dw \over w^{1-\alpha}}                             \nonumber\\
-&=& {\sin \pi \alpha \over \pi}\, \left[
-\left.{f(t-w) \over w^{1-\alpha}}\right|_{w=t}+\int_0^t \left({d\over dt}f(t-w)\right)
-{dw \over w^{1-\alpha}} \right]                                    \nonumber\\
-&=& {\sin \pi \alpha \over \pi}\, \left[
-{f(0)\over t^{1-\alpha}} + \int_0^t \left({d\over dx}f(x)\right)
-{dx \over (t-x)^{1-\alpha}} \right]                                \nonumber\\
-&=& {\sin \pi \alpha \over \pi}\, \left[
-{f(0)\over t^{1-\alpha}} + \int_0^t {df\over dx}
-{dx \over (t-x)^{1-\alpha}} \right]                               
-
+Now we have to prove the claim they make in their appendix.

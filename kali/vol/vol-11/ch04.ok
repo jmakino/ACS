@@ -106,7 +106,7 @@ might otherwise have overlooked, and to help us in our teaching, to
 make things crystal clear to the students.
 
 *Bob*: How do you expect to get new insight into the fact that the distribution
-function of Plummer's model is a seven-halfth power of the energy?  That fact
+function of Plummer's model is a seven-halves power of the energy?  That fact
 will not change, no matter how long you stare at it.
 
 *Alice*: That's not the point.  Once we spell out in complete detail how
@@ -160,7 +160,7 @@ becomes, in terms of <tex>$q$</tex>, proportional to the following function:
 :equation:
 g(q) \, = \, \left(1 - q^2\right)^{7/2}q^2
 
-*Alice*: And the range of admissable _q_ values is <tex>$0\le q \le 1$</tex>.
+*Alice*: And the range of admissible _q_ values is <tex>$0\le q \le 1$</tex>.
 This looks exactly like the problem we had for determining the radial
 positions.  There we knew the density, <i>i.e.</i> the probability function
 to find a particle at a given position.  By integrating the density we
@@ -206,7 +206,7 @@ of <tex>$g(q)$</tex> is
   2q\left(1 - q^2\right)^{7/2} -7q^3\left(1 - q^2\right)^{5/2}      \nonumber\\
 &=& \, q\left(2 - 9 q^2\right)\left(1 - q^2\right)^{5/2}
 
-To find the extrema for <tex>$g(q)$</tex>, we set the derative to zero,
+To find the extrema for <tex>$g(q)$</tex>, we set the derivative to zero,
 and solve for <tex>$0<q_x<1$</tex>:
 
 :equation:
@@ -244,9 +244,9 @@ me a number of times to refresh my memory about Jeans equations, the
 tensor virial theorem and those sort of things.
 
 *Bob*: I see that your browsing was rather uneven: there is a piece, about
-one third along the way, which has a grey strip.  Let me open it up there.
+one third along the way, which has a gray strip.  Let me open it up there.
 Aha, chapter 4: Equilibria of Collisionless Systems.  How come those pages
-are so well-used?  I thought you were mainly interested in collisionial
+are so well-used?  I thought you were mainly interested in collisional
 systems?
 
 *Alice*: I didn't realize my copy of Binney and Tremaine betrayed my past
@@ -310,7 +310,7 @@ per unit mass of the particles that reside in the volume element
 
 Now you see why I started with that funny tilde over the distribution
 function: since we will be dealing primarily with <tex>$f(E)$</tex>,
-I prefered to use the <tex>$f$</tex> notation for a distribution
+I preferred to use the <tex>$f$</tex> notation for a distribution
 function with an <tex>$E$</tex> dependence, leaving the <tex>$\tilde f$</tex>
 notation for the dependence of Cartesian phase space coordinates.
 
@@ -447,7 +447,7 @@ as the independent variable in the expression for <tex>$\rho$</tex>.
 there would be some values <tex>$r_1$</tex> and <tex>$r_2$</tex> with
 <tex>$r_1 \ne r_2$</tex> for which <tex>$\Psi(r_1)=\Psi(r_2)$</tex>.
 In that case, if you would write <tex>$\rho(\Psi)$</tex>, you would not
-know whether you would be refering to <tex>$\rho(r_1)$</tex> or
+know whether you would be referring to <tex>$\rho(r_1)$</tex> or
 <tex>$\rho(r_2)$</tex>.
 
 *Alice*: Right.  But here everything is monotonic: the density keeps dropping

@@ -1,4 +1,381 @@
-= Center of Mass Adjustment
+= Standard Units
+
+== Confusion
+
+*Bob*: One thing students always have great trouble with is scaling the
+results from an N-body simulation back to physical quantities, expressed
+in physical or astrophysical units.
+
+*Alice*: That is not surprising.  And I must say, I often have to think
+careful about such questions.  It may be trivial, from a scientific point
+of view, but in practice, it is easy to make a mistake.  It is one thing
+to get as an answer that your starcluster retains a final mass of
+<tt>0.765</tt> at the end of a run, but it is quite another to translate
+that into grams, or into solar masses.
+
+*Bob*: At least the physical units are standardized.  Mass comes in grams,
+or in kilograms.  It is annoying that there are still two sets of
+units in general use in astrophysics, _MKS_ and _cgs_, but at least
+the conversation between those two is relatively straightforward, just
+a factor of a thousand in the case of masses.  And similarly, astrophysical
+units are standardized: mass general comes in units of a solar mass.
+But in computer simulations, everybody is using whatever convention
+they like.  I find it often difficult to interpret the results that
+come from running someone else's code.  Not everybody clearly
+documents what the units is they have been using.
+
+*Alice*: But there _is_ a standard for computer simulations in stellar
+dynamics.  And I have been using that standard ever since I started running
+simulations.
+
+*Bob*: What are they called?
+
+*Alice*: Hmm.  They are generally refered to as `standard units.'  Perhaps
+that is one reason that they haven't found general acceptance yet.  Maybe
+we should give them a real name!  They are sometimes refered to as `Heggie
+units,' since Douglas Heggie was the first one, as far as I know, to stress
+the need for such standardization.  
+
+*Bob*: Did he publish the definition of his standards?
+
+*Alice*: Yes, in a paper with Bob Mathieu, back in 1986, as a contribution
+to a conference where this issue of standardization was discussed.
+The reference is <i>xxx xxx xxx</i>, by Douglas Heggie and Robert Mathieu,
+and it appeared in 1986, on page 233 in <i>The Use of Supercomputers
+in Stellar Dynamics</i>, edited by Steve McMillan and Piet Hut, and
+published by Springer.
+
+*Bob*: How did they define their units?
+
+*Alice*: They took the gravitational constant and total mass of a star
+cluster to be unity, and they took the total energy to be -1/4.
+
+*Bob*: Why one quarter?  Unlike the first two choices, that doesn't sound
+very natural to me.  Why not unity?
+
+*Alice*: Actually, the origin of their definition stems from the fact that
+they took the virial radius <tex>$r_V$</tex> to be unity.  I should have
+introduced their choice as:
+
+:equation:
+G \, = \, M \, = \, r_V \, = \, 1
+
+The fact that <tex>$E_{tot}=-0.25$</tex> is a consequence from this fact.
+
+*Bob*: I know the virial _theorem_, but what is a virial _radius_?
+
+*Alice*: For an equal mass system, an elegant definition is: the virial
+radius is the inverse of the average inverse distance between particles
+in an N-body system.  Expressed as a formula:
+
+:equation:
+{1\over r_V} \, = \, \left<{1\over |\br_i -\br_j|}\right>_{i\neq j}
+
+avaraged over all particle pairs <tex>$i, j$</tex>.  For a general system
+of particles with masses <tex>$m_i$</tex> and total mass _M_, the definition
+is:
+
+:equation:
+{M\over r_V} \, = \, \sum_i\sum_{j\atop j\neq i}{m_im_j\over |\br_i -\br_j|}
+
+and of course, we recognize that this is the potential energy of an N-body
+system, for <tex>$G=1$</tex>, apart for a factor of two, because we
+have now counted every pair twice.  So we can write the potential energy of
+an N-body system as:
+
+:equation:
+E_{pot} \, = \, -\,G\sum_{i<j}{m_im_j\over |\br_i -\br_j|}
+  \, = \, - \, \half {GM\over r_V}
+
+*Bob*: and now we can use the virial theorem, which tells us that
+the magnitude of the total energy is half that of the potential energy,
+to write:
+
+:equation:
+E_{tot} \, = \, -\half E_{pot} \, =\, -\, {1 \over 4}{GM\over r_V}
+
+and with our previous choice of <tex>$G=M=1$</tex>, we get:
+
+:equation:
+E_{tot} \, = \, -\, {1 \over 4}{1\over r_V}
+
+Now I see what you meant, with the total energy of -1/4 being a consequence
+the choice of <tex>$G=M=r_V=1$</tex>.  But I'm still puzzled.  What is
+so special about the virial radius that you want to set it equal to unity?
+Why not set the total energy equal to unity, say?
+
+*Alice*: I think that the original idea was that we would like to choose the
+most natural units for the three basic physical units, namely those of mass,
+length, and time.  But since we also like to scale the gravitational constant
+to unity, we have only two degrees of freedom left over.  The total mass is
+an obvious candidate, since it appears in many equations as <tex>$GM$</tex>,
+which is nice to forget about by equating it to <tex>$1$</tex>.  It
+also means that for equal-mass N-body systems, you can count on each particle
+always having a mass of <tex>$1/N$</tex>.
+
+The only remaining question is: what to do with the last degree of freedom.
+Do you want to find a natural length scale or a natural time scale, or do
+you want to take a more derived quantity, not directly coupled to the basic
+physical units, such as the energy?  I for one agree with Heggie and Mathieu
+that it is more elegant to choose a basic physical quantity, either a length
+or time scale.
+
+*Bob*: I think I would prefer total energy, derived or not.  But if you insist
+on purity, well, a natural length scale for a star cluster is the half-mass
+radius <tex>$r_h$</tex>.  And a natural time scale in turn is the
+crossing time <tex>$t_h$</tex> at the half-mass radius, the typical
+time for a particle to cross the system, starting at the half-mass radius.
+
+*Alice*: It is already clear from your suggestion that choosing a length
+scale is somewhat more natural than choosing a time scale, since in
+your time scale definition you make use of an earlier length scale definition.
+
+*Bob*: So what is wrong with the choice of <tex>$G=M=r_h=1$</tex>?
+
+*Alice*: There is nothing wrong with that, and people have used that choice
+as well.  The problem is that in that case the total energy has a non-obvious
+value, typically somewhere like 
+<tex>$E_{tot}=0.2$</tex>, but not exactly.
+
+*Bob*: Well, my original suggestion was to make <tex>$E_{tot}=1$</tex>.
+Not only is that an exact number, it is a very simple number.  I'm
+still not sure what is wrong with that.
+
+*Alice*: If you choose the total energy to be one, your half-mass radius
+comes out to be very small, about 1/5, and that is not a very natural value.
+
+*Bob*: Hmm, yes, it would be a bit of a nuisance, to deal with a core radius
+of <tex>$r_c=0.02$</tex>, say, and then having to remember that we are dealing
+with a not very concentrated cluster, since <tex>$r_h=0.2$</tex> and therefore
+<tex>$r_c/r_h=0.1$</tex>.
+
+*Alice*: To sum up, we really would like to have a system of length units,
+in which the half-mass radius is close to unity.  However, the
+half-mass radius is not a conserved quantity, and as soon as you start
+a simulation, the half-mass radius may change.  Therefore, it is better
+to take a conserved quantity, such as the total energy, as a gauge,
+and to give it a simple value in such a way that it implies that the
+unit of length is at least close to the half-mass radius.  This must
+have been the sort of thinking that went into the definition of the
+standard units, I'm pretty sure.
+
+*Bob*: That all makes sense.  But in practice, the half-mass radius does
+not change much, if you simulate a star cluster.  Only after core collapse
+does the half-mass radius begin to expand.
+
+*Alice*: You are used to dealing with a system that starts in dynamic
+equilibrium.  However, if you start with a cold collapse, or a system
+that has too much kinetic energy and starts off expanding, in both cases
+the half-mass radius will change right away, while the total energy will
+remain conserved.
+
+*Bob*: Okay, I see the advantages of the standard units.  And since I don't
+feel very strong about my other two candidates for standardization,
+I'm happy to use those virial units, what did you call them, Heggie units?
+
+*Alice*: Yes, were it not for the fact that Douglas Heggie is a modest
+gentleman, who would be the first to point out that those units have been
+used by others before he suggested them.  Virial units might actually be
+a reasonable name; I haven't heard that expression yet.
+
+*Bob*: Hmmm.  It just slipped out, but to me it sounds too much like a
+medical term, reminding me of a virus.  And I certainly don't like computer
+viruses.  I prefer the term Heggie units: he should get credit for his
+suggestion.
+
+*Alice*: We'll see what the field decides.
+
+*Bob*: By the way, I was impressed by the fact that you juggled those numbers
+so easily, like that value 0.2 that you pulled out of a hat.  What was that
+again?
+
+*Alice*: That was the value for the half-mass radius, if you would insist on a
+total mass of unity.
+
+*Bob*: Ah yes, did you make that up to impress me, or did you calculate or
+guestimate that quickly?
+
+*Alice*: None of the above.  Since I have been working with these standard
+units for a long time, and especially since I have been teaching it to my
+students, some of these numbers just stick in my mind.  You mentioned from
+the start that students always have problems with scaling, and my students
+are no exception.
+
+*Bob*: I guess the counter-intuitive aspect is that if your ruler shrinks,
+everything you measure becomes bigger, and similarly, if you take a ruler
+with larger units of length, the whole world gets smaller, in terms of the
+values you read off.  Knowing where to multiply and where to divide is
+something that requires some thought.  With one ruler changing, you have
+to be careful, and if you simultaneously change your ruler, your clock,
+and your scales, changing your units of length, time, and mass, it is real
+easy to go wrong.
+
+*Alice*: I know from experience!  And still I always have to double check.
+
+*Bob*: Glad to hear we share the same problem.  And just to make sure that
+I can buy into your story, scaring me away with having to handle tiny values
+for the half-mass radius, shall we quickly check with Plummer's model as a
+concrete application how you can derive the numbers you mentioned?
+
+*Alice*: Good idea!  It never hurts to check, as we've seen now already a
+number of times.  But I don't like working with factors like
+<tex>$3\pi/16$</tex> and <tex>$(2^{2/3}-1)^{-1/2}$</tex>.  Let's make
+some simplications, trying to use only fractions like <tex>$1/3$</tex>
+and <tex>$1/4$</tex> and the like, but let's not get more accurate.  That
+should be enough to show our main point.
+
+So let us start with the original expressions for the total energy
+<tex>$E_{tot}$</tex> which we may as well abbreviate as <tex>$E$</tex>,
+the half-mass radius <tex>$r_h$</tex> and the virial radius <tex>$r_V$</tex>,
+given in terms of the structural length <tex>$a$</tex>.  Remember that
+<tex>$a$</tex> was what we first encountered as the softening length, when
+we smoothed the potential of point particles.  In analogy, we started of 
+with our Plummer potential
+
+:equation:
+U(r) \, = \, -\,GM {1\over \,\left(r^2 + a^2\right)^{1/2}}
+
+And in terms of <tex>$a$</tex>, we can write, with <tex>$G=M=1$</tex>:
+
+:equation:
+E \, = \, -\, {3\pi\over64}{1\over a} \, \approx \,
+   {1\over 10}\times{3\over 2}{1\over a}
+
+:equation:
+r_h \, = \, \left(2^{2/3}-1\right)^{-1/2} a  \, \approx \, {4\over 3} a
+
+:equation:
+r_V \, = \, {16 \over 3\pi} a  \, \approx \, {5\over 3} a
+
+I have split off the factor <tex>$1/10$</tex> in the expression for
+the energy, so that we can deal with remaining numbers that are all of
+order unity, in the form of fractions of small integers.
+
+All we have to do now is to choose different values for <tex>$a$</tex>.
+For each choice of <tex>$a$</tex>, we can see explicitly how everything
+else will receive different values.  The structural length <tex>$a$</tex>
+plays the role of our ruler.
+
+*Bob*: That is a nice way to lay it all out.  Okay, so we have talked about
+three choices of units, based on what we choose to set equal to one: the
+energy, the half-mass radius, and the virial radius.  Let us start
+with the energy
+
+*Alice*: If we take <tex>$E=1$</tex>, we are forced to take <tex>$a=3/20$</tex>
+which implies <tex>$r_h=1/5$</tex> and <tex>$r_V=1/4$</tex>.
+
+*Bob*: How simple!  Yes, it is clear now, and you were right about that value
+of roughly <tex>$0.2$</tex> for the half-mass radius.  I'm curious to
+see what the other two choices will lead to.  Let us make a list:
+
+:equation:
+E = -1 \Rightarrow r_h \approx 1/5 , r_V = 1/4
+
+:equation:
+r_h = 1 \Rightarrow E \approx -1/5 , r_V \approx 5/4
+
+:equation:
+r_V = 1 \Rightarrow E = -1/4 , r_h \approx 4/5
+
+*Alice*: Yes, that is a good summary, and it important to indicate which
+relations are approximate and which are exact because the follow from the
+definitions.
+
+*Bob*: And these are useful numbers to remember.  Actually, now that we
+have decided to adopt the `standard units' as standard units (we have
+to come up with a better name), it is only the bottom line that is
+really worth remembering.
+
+*Alice*: And since <tex>$E=-1/4$</tex> for all models in the standard units,
+for Plummer's model there is only one number to remember: the fact
+that the half-mass radius is roughly <tex>$4/5$</tex>.
+
+*Bob*: Ah, but there is also the structural length.  Let's see, in standard
+units that is roughly <tex>$3/5$</tex>.  That is a second useful number to
+remember, since it gives a measure for the size of the core of the potential.
+So we have:
+
+:equation:
+r_V : r_h : a  \approx 5 : 4 : 3
+
+And this shows that Plummer's model is not very centrally condensed:
+the core is barely smaller than the half-mass radius.
+
+*Alice*: We can define a core radius more exactly.  The standard definition
+for observers is to require the projected mass density
+<tex>$\Sigma$</tex> to drop by a factor of two.  Since
+
+:equation:
+\Sigma = {M\over\pi a^2}\left(1+{d^2\over a^2}\right)^{-2}
+
+this gives for the core radius <tex>$r_c$</tex> the value
+
+:equation:
+r_c = {a\over\sqrt{2}}
+
+*Bob*: And that gives us a third number to remember for Plummer's model:
+
+:equation:
+r_V : r_h : a : r_c \approx 5 : 4 : 3 : 2
+
+*Alice*: I like that!  An unlikely simple progression.  I thought I knew
+Plummer's model by now, but I had not realized how simple the ratios for
+these main numbers are.  Okay, let's remember them all!
+
+*Bob*: Or, to be a bit more lazy, I may just remember that the half-mass
+radius is twice as large as the core radius, that the structural radius
+lies about half-way in between, and that the virial radius is a bit larger
+than the half-mass radius.
 
 == xxx
+
+== xxx
+
+== xxx
+
+== Virial radius
+
+:equation:
+E_{pot} = -{3\pi\over32}{GM^2\over a}
+
+Standard Units:
+
+:equation:
+E_{pot} = -{3\pi\over32}{1\over a} = -{1 \over 2} \Rightarrow
+
+:equation:
+a = {3\pi\over16}
+
+We had:
+
+:equation:
+R_v = {16\over3\pi}a
+
+In standard units:
+
+R_v = 1
+
+Our previous results need to be renormalized:
+
+<tex>$$
+r(1/4) \, = \, {3\pi\over16}\left(2^{4/3}-1\right)^{-1/2} \approx 0.4778
+$$</tex>
+
+<tex>$$
+r(1/2) \, = \, {3\pi\over16}\left(2^{2/3}-1\right)^{-1/2} \approx 0.7686
+$$</tex>
+
+<tex>$$
+r(3/4) \, = \, {3\pi\over16}\left(2^{4/3}3^{-2/3}-1\right)^{-1/2} \approx 1.281
+$$</tex>
+
+== xxx
+
+Velocities need to be scaled too.
+
+ :commandoutput: ruby mkplummer3.rb -n 10000 | ruby quartiles.rb
+
+ :commandoutput: ruby mkplummer3.rb -n 10000 | ruby quartiles.rb
+
+ :commandoutput: ruby mkplummer3.rb -n 10000 | ruby quartiles.rb
 

@@ -91,11 +91,11 @@ I agree that that would be highly improbable.  Still, I would feel
 much better to derive the results ourselves.  Besides, if we work
 it out now, we can both use those notes when we have to teach it in
 class to the student.  Better still, we just put it into the material
-we preper for them on the web.
+we prepare for them on the web.
 
 *Bob*: Okay, if you like.  Your turn, though, I already derived the
 density.  Do you want to use a package from symbolic integration?
-Differentation is easy enough by hand, but I must admit, I'm a bit
+Differentiation is easy enough by hand, but I must admit, I'm a bit
 rusty in my integration.
 
 == Cumulative Mass
@@ -197,7 +197,7 @@ of that type of calculation can come out in such a simple form.
 Let's think.  I started with density, something that you had found by
 differentiation, and then I integrated the product of the density and
 the geometric opening angle factor of <tex>$4\pi r^2$</tex>.  Apart from
-that factor, integration and differentiation would have cancelled.  Pity.
+that factor, integration and differentiation would have canceled.  Pity.
 
 *Bob*: Hey, wait a minute.  I found the density by integrating alright, but
 in the following way, using Poisson's equation:
@@ -411,6 +411,6 @@ abilities as you.  So I suggest we at least add my derivation as well.
 
 *Bob*: In that case I insist that we leave my derivation in too, for those
 younger versions of me who already got the physics, and don't want to accrete
-unnecesarry mathematical niceties.
+unnecessary mathematical niceties.
 
 *Alice*: So be it.
