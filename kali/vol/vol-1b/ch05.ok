@@ -36,7 +36,7 @@ problem.
 Indeed, the physical coupling constant _G_ appears only on the right-hand
 side, where the gravitational interaction is specified, while the
 left-hand side tells us how the orbit is bent: non-zero acceleration
-describes the deviation van uniform rectilinear motion.  Okay, I'm
+describes the deviation of uniform rectilinear motion.  Okay, I'm
 still with you.
 
 *Alice*: Now the trick is to make explicit what we normal vaguely understand,
@@ -199,7 +199,7 @@ _k_ variables.
 
 Let us work out what these _k_ variables actually look like, when we
 substitute the orbit dependence in the right hand side.  What we see
-there is an interesting interplay between an physical interaction term
+there is an interesting interplay between a physical interaction term
 _f_ that has as an argument the mathematical orbit <tex>$r(t)$</tex>.
 
 Since you have introduced <tex>$\tau$</tex> as the increment in time,
@@ -363,24 +363,12 @@ f_0f_r + v_0^2f_{rr} +2v_0f_{rt}+ f_{tt}
 
 == The Next Velocity
 
-*Bob*: And this shows how some of the higher time derivatives of the position,
-which we introduced before, are related to the interaction terms.
-Let's write them down specifically, to show how these orbit
-characteristics on the left-hand side are related to interaction terms
-and their space and time derivatives on the right hand side.  For the
-jerk we read off:
+*Bob*: And the last term in curly brackets, in the first line of the
+last equation must be the jerk.  I begin to see some structure in these
+expressions.
 
-:equation:
-j_0 \,=\, v_0 f_r + f_t
-
-and for the snap we find:
-
-:equation:
-s_0 \,=\, f_0f_r + v_0^2f_{rr} +2v_0f_{rt}+ f_{tt}
-
-*Alice*: Yes, and we're going to get one more from the expression for the
-velocity term, I think, since for the same order in <tex>$\tau$</tex>
-we will go one order higher in the derivatives.  Let's see.  To solve
+*Alice*: Yes.  But let me get the velocity as well, and then we can take
+stock of the whole situation.  Let's see.  To solve
 for <tex>$v_1$</tex> in Eq. (ref(base)), we need to use the following
 combination of <tex>$k_i$</tex> values:
 
@@ -417,13 +405,10 @@ v_0\left(f_r\right)^2 + f_rf_t +
 + 3v_0^2f_{rrt}+ 3v_0f_{rtt}
 + f_{ttt} \Big\} \tau^4
 
-*Bob*: And from this we can read off the crackle:
+*Bob*: Quite an expression.  Well done!
 
-:equation:
-c_0 \,=\, v_0\left(f_r\right)^2 + f_rf_t + 3v_0f_0f_{rr} + 3f_0f_{rt} 
-+ v_0^3f_{rrr} + 3v_0^2f_{rrt}+ 3v_0f_{rtt} + f_{ttt} \ \ \ 
-
-*Alice*: Yes, and we can also see that indeed the velocity, Eq. (ref(v1)),
+*Alice*: And an expression that makes sense: we see that indeed the
+velocity, Eq. (ref(v1)),
 is the time derivative of the position, Eq. (ref(r1)), up to the order given
 there.  So everything is consistent.
 

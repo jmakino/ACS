@@ -271,7 +271,7 @@ experimentation.
 
 and let us determine analytically what the first five terms in a Taylor
 series in +dt+ look like.  We can then see directly whether the error term
-is proportionally to <tex>$h^4$</tex>, as the book claims, or <tex>$h^5$</tex>,
+is proportional to <tex>$h^4$</tex>, as the book claims, or <tex>$h^5$</tex>,
 as our calculations indicate.
 
 To start with, let us look at your variable <tt>a2</tt>, which is the
