@@ -3,25 +3,63 @@ require "clop.rb"
 
 class Body
 
+@@coll_time = 0
+
   attr_accessor :mass, :pos, :vel
 
   def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
     @mass, @pos, @vel = mass, pos, vel
   end
 
-  def calc(softening_parameter, body_array, time_step, s)
+  def calc(body_array, time_step, s)
     ba  = body_array
-    dt = time_step
-    eps = softening_parameter
+    dt = time_step*get_time
+    #    printf "body'de %f\n",dt
     eval(s)
   end
 
-  def acc(body_array, eps)
+  def new_dt(body_array,time_st)
+	  @@coll_time_sq=1e30
+    body_array.each do |b|
+      unless b == self
+        r = b.pos - @pos
+	v = b.vel - @vel
+	r2 = r*r
+	v2 = v*v
+	  coll_est_q=(r2*r2)/(v2*v2)
+	if @@coll_time_sq > coll_est_q
+		@@coll_time_sq = coll_est_q
+	end
+	r3 = r2 *sqrt(r2)
+	rv = r*v/r2
+	da = r/r3
+	da2 = da*da*b.mass*b.mass
+	  coll_est_q=r2/da2
+	if @@coll_time_sq > coll_est_q
+		@@coll_time_sq = coll_est_q
+	end
+	end
+    end
+	#@@dtn = time_st*@@dtn
+	@@coll_time = sqrt(sqrt(@@coll_time_sq))
+	@@coll_time
+   end
+#	printf("r2 = %.3g \n",r2)
+#	printf("v2 = %.3g \n",v2)
+	#coll_time = sqrt(coll_time_sq)
+	#printf("dt ilk = %.3g \n",sqrt(coll_time_sq))
+#	b.dtn = dt*b.dtn
+#	printf("coll_est_sq= %.3g \n",coll_est_sq)
+  def get_time
+    @@coll_time
+  end
+      
+ def acc(body_array)
     a = @pos*0                              # null vector of the correct length
     body_array.each do |b|
       unless b == self
         r = b.pos - @pos
-        r2 = r*r + eps*eps
+        r2 = r*r
         r3 = r2*sqrt(r2)
         a += r*(b.mass/r3)
       end
@@ -29,12 +67,12 @@ class Body
     a
   end    
 
-  def jerk(body_array, eps)
+  def jerk(body_array)
     j = @pos*0                              # null vector of the correct length
     body_array.each do |b|
       unless b == self
         r = b.pos - @pos
-        r2 = r*r + eps*eps
+        r2 = r*r
         r3 = r2*sqrt(r2)
         v = b.vel - @vel
         j += (v-r*(3*(r*v)/r2))*(b.mass/r3)
@@ -47,12 +85,12 @@ class Body
     0.5*@mass*(@vel*@vel)
   end
 
-  def epot(body_array, eps)        # potential energy
+  def epot(body_array)             # potential energy
     p = 0
     body_array.each do |b|
       unless b == self
         r = b.pos - @pos
-        p += -@mass*b.mass/sqrt(r*r + eps*eps)
+        p += -@mass*b.mass/sqrt(r*r)
       end
     end
     p
@@ -68,9 +106,9 @@ class Body
     print to_s
   end
 
-  def ppx(body_array, eps)   # pretty print, with extra information (acc, jerk)
-    STDERR.print to_s + "   acc = " + acc(body_array, eps).join(", ") + "\n"
-    STDERR.print to_s + "   jerk = " + jerk(body_array, eps).join(", ") + "\n"
+  def ppx(body_array)              # pretty print, with extra information (acc)
+    STDERR.print to_s + "   acc = " + acc(body_array).join(", ") + "\n"
+    STDERR.print to_s + "   jerk = " + jerk(body_array).join(", ") + "\n"
   end
 
   def simple_print
@@ -95,22 +133,27 @@ class Nbody
     @body = []
   end
 
-  def evolve(integration_method, eps, dt, dt_dia, dt_out, dt_end,
-             init_out, x_flag)
-    @dt = dt                                                                 #1
-    @eps = eps                                                               #1
+  def evolve(integration_method, dt, dt_dia, dt_out, dt_end, init_out, x_flag)
     nsteps = 0
     e_init
     write_diagnostics(nsteps, x_flag)
+    @dt = dt
+    dtilk = @dt
+#printf "YENÝ DT: %f\n",@dt
     t_dia = dt_dia - 0.5*dt
     t_out = dt_out - 0.5*dt
     t_end = dt_end - 0.5*dt
-
-    simple_print if init_out
-
+    simple_print if init_out                                                 #1
     while @time < t_end
-      send(integration_method)
-      @time += dt
+    calc(" dt = new_dt(ba,dt) ")
+      send(integration_method)                                               #2
+#printf "YENÝ DT: %f\n",body[0].get_time
+	#dt=dtilk*body[0].get_time
+#printf "YENÝÝÝÝ: %f\n",dt
+	#@time += dt
+	dtn=body[0].get_time
+	@time += dtilk*dtn
+#printf "evolve'de time : %f\n",@time
       nsteps += 1
       if @time >= t_dia
         write_diagnostics(nsteps, x_flag)
@@ -124,68 +167,52 @@ class Nbody
   end
 
   def calc(s)
-    @body.each{|b| b.calc(@eps, @body, @dt, s)}
+    @body.each{|b| b.calc(@body, @dt, s)}
   end
 
   def forward
-    calc(" @old_acc = acc(ba,eps) ")
+    calc(" @old_acc = acc(ba) ")
     calc(" @pos += @vel*dt ")
     calc(" @vel += @old_acc*dt ")
   end
 
   def leapfrog
-    calc(" @vel += acc(ba,eps)*0.5*dt ")
+    #calc(" dt =dt*new_dt(dt) ")
+    calc(" @vel += acc(ba)*0.5*dt ")
     calc(" @pos += @vel*dt ")
-    calc(" @vel += acc(ba,eps)*0.5*dt ")
+    calc(" @vel += acc(ba)*0.5*dt ")
   end
 
   def rk2
     calc(" @old_pos = @pos ")
-    calc(" @half_vel = @vel + acc(ba,eps)*0.5*dt ")
+    calc(" @half_vel = @vel + acc(ba)*0.5*dt ")
     calc(" @pos += @vel*0.5*dt ")
-    calc(" @vel += acc(ba,eps)*dt ")
+    calc(" @vel += acc(ba)*dt ")
     calc(" @pos = @old_pos + @half_vel*dt ")
   end
 
   def rk4
     calc(" @old_pos = @pos ")
-    calc(" @a0 = acc(ba,eps) ")
+    calc(" @a0 = acc(ba) ")
     calc(" @pos = @old_pos + @vel*0.5*dt + @a0*0.125*dt*dt ")
-    calc(" @a1 = acc(ba,eps) ")
+    calc(" @a1 = acc(ba) ")
     calc(" @pos = @old_pos + @vel*dt + @a1*0.5*dt*dt ")
-    calc(" @a2 = acc(ba,eps) ")
+    calc(" @a2 = acc(ba) ")
     calc(" @pos = @old_pos + @vel*dt + (@a0+@a1*2)*(1/6.0)*dt*dt ")
     calc(" @vel += (@a0+@a1*4+@a2)*(1/6.0)*dt ")
-  end
-
-  def yo6
-    d = [0.784513610477560e0, 0.235573213359357e0, -1.17767998417887e0,
-         1.31518632068391e0]
-    old_dt = @dt
-    for i in 0..2
-      @dt = old_dt * d[i]
-      leapfrog
-    end
-    @dt = old_dt * d[3]
-    leapfrog
-    for i in 0..2
-      @dt = old_dt * d[2-i]
-      leapfrog
-    end
-    @dt = old_dt
   end
 
   def hermite
     calc(" @old_pos = @pos ")
     calc(" @old_vel = @vel ")
-    calc(" @old_acc = acc(ba,eps) ")
-    calc(" @old_jerk = jerk(ba,eps) ")
+    calc(" @old_acc = acc(ba) ")
+    calc(" @old_jerk = jerk(ba) ")
     calc(" @pos += @vel*dt + @old_acc*(dt*dt/2.0) + @old_jerk*(dt*dt*dt/6.0) ")
     calc(" @vel += @old_acc*dt + @old_jerk*(dt*dt/2.0) ")
-    calc(" @vel = @old_vel + (@old_acc + acc(ba,eps))*(dt/2.0) +
-                      (@old_jerk - jerk(ba,eps))*(dt*dt/12.0) ")
+    calc(" @vel = @old_vel + (@old_acc + acc(ba))*(dt/2.0) +
+                      (@old_jerk - jerk(ba))*(dt*dt/12.0) ")
     calc(" @pos = @old_pos + (@old_vel + vel)*(dt/2.0) +
-                      (@old_acc - acc(ba,eps))*(dt*dt/12.0) ")
+                      (@old_acc - acc(ba))*(dt*dt/12.0) ")
   end
 
   def ekin                        # kinetic energy
@@ -196,7 +223,7 @@ class Nbody
 
   def epot                        # potential energy
     e = 0
-    @body.each{|b| e += b.epot(@body, @eps)}
+    @body.each{|b| e += b.epot(@body)}
     e/2                           # pairwise potentials were counted twice
   end
 
@@ -230,7 +257,7 @@ END
   def ppx                          # pretty print, with extra information (acc)
     print "     N = ", @body.size, "\n"
     print "  time = ", @time, "\n"
-    @body.each{|b| b.ppx(@body, @eps)}
+    @body.each{|b| b.ppx(@body)}
   end
 
   def simple_print
@@ -252,16 +279,13 @@ end
 
 options_text= <<-END
 
-  Description: Constant Time Step Hermite Code
+  Description: Shared Time Step Hermite Code
   Long description:
     This program evolves an N-body code with a fourth-order Hermite Scheme,
     or various other schemes such as forward Euler, leapfrog, or Runge-Kutta,
-    using constant time steps, shared by all particles, where the size of
-    of the time step is prescribed beforehand.  The program includes the
-    option to provide softening for the potential.  This is essential for
-    a constant time step code; the alternative, instead of softening, would
-    be to use a variable time step algorithm.
-    (c) 2004, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
+    using variable time steps, shared by all particles, where the size of
+    of the time step is determined adaptively.
+    (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
 
 
   Short name:		-m
@@ -275,28 +299,18 @@ options_text= <<-END
     method that will be used.  Example: "-m hermite" .
 
 
-  Short name: 		-s
-  Long name:		--softening_length
-  Value type:		float
-  Default value: 	0.0
-  Global variable: 	eps
-  Description:		Softening length
-  Long description:
-    This option sets the softening length used to calculate the force
-    between two particles.  The calculation scheme comforms to standard
-    Plummer softening, where rs2=r**2+eps**2 is used in place of r**2.
-
-
   Short name: 		-d
-  Long name:		--step_size
+  Long name:		--step_size_control
   Value type:		float
   Default value:	0.01
-  Global variable:	dt
-  Description:		Time step size
+  Global variable:	dt_param
+  Description:		Parameter to determine time step size
   Long description:
-    This option sets the size of the time step, which is constant and
-    shared by all particles.  It is wise to use option -s to specify
-    a softening length that is at least as large as the time step size.
+    This option sets the step size control parameter dt_param << 1.  Before
+    each new time step, we first calculate the time scale t_scale on which
+    changes are expected to happen, such as close encounters or significant
+    changes in velocity.  The new shared time step is then given as the
+    product t_scale * dt_param << t_scale.
 
 
   Short name: 		-e
@@ -386,4 +400,4 @@ include Math
 
 nb = Nbody.new
 nb.simple_read
-nb.evolve($method, $eps, $dt, $dt_dia, $dt_out, $dt_end, $init_out, $x_flag)
+nb.evolve($method, $dt_param, $dt_dia, $dt_out, $dt_end, $init_out, $x_flag)
