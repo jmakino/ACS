@@ -187,7 +187,7 @@ class WorldLine
 
   def setup_from_single_worldpoint(b, dt_param, time)
     @worldpoint[0] = b.to_worldpoint
-    @body_id = @worldpoint[0].@body_id
+    @body_id = @worldpoint[0].body_id
     @dt_param = dt_param
     setup(time)
   end
