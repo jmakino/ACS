@@ -1,0 +1,84 @@
+= Tuning Ruby
+
+== xxx
+
+*Bob*: Before we start adding pieces of C code to our Ruby code, let us
+first see whether we can improve the speed of our N-body code purely
+within the Ruby realm.  As we discussed before, that should be the first
+step, even though the second step, adding C, will buy us more in the end.
+We may as well get extra speed from wherever we can.
+
+*Alice*: So this means avoiding double work in pairwise interactions.
+
+*Bob*: Exactly.  What we have been doing so far was to let each particle
+determine the acceleration it feels by interrogating all other particles.
+However, the work done in calculating the gravitational acceleration from
+particle _j_ on particle _i_:
+
+:equation:
+\ba_i(r_i, r_j) \,=\, G\, {m_j \over \left|\br_i - \br_j\right|^3}
+\left(\br_j - \br_i\right)
+
+overlaps a lot with the work done in calculating the gravitational
+acceleration from particle _i_ on particle _j_:
+
+:equation:
+\ba_j(r_j, r_i) \,=\, G\, {m_i \over \left|\br_i - \br_j\right|^3}
+\left(\br_i - \br_j\right)
+
+Subtracting the two vectors, and determining the third power of
+the magnitude of the difference is what takes most of the computer
+time.  The minus sign and the different mass multiplication factor
+is peanuts, in comparison.
+
+*Alice*: So you suggest rewriting our N-body code in such a way as
+to allow both calculations to be done simultaneously.
+
+*Bob*: Exactly.
+
+*Alice*: That may not be so easy.  Also, it may not be so pretty.
+I like the modularity of our code, where each particle has its own
+job to do in finding out how to determine the total gravitational
+acceleration it feels from all other particles.  I don't like the
+idea of messing up everything by crossing levels of command.
+
+*Bob*: And I don't like codes that are unnecessarily slow!  At the
+very least we have to try and find out.  Only when we see what it
+really looks like, and how much speed increase we really get, can we
+decide whether the increas of speed is worth the decrease in
+prettiness, however you may want to define that.
+
+*Alice*: Fair enough.
+
+
+Now new code version:
+
+ :commandoutput: time ruby nb2.rb -t1 -d0.01 -s0.1 < plum.in
+
+Compare with previous version
+
+ :commandoutput: time ruby nb1.rb -t1 -d0.01 -s0.1  < plum.in
+
+and following version:
+
+ :commandoutput: time ruby nb3.rb -t1 -d0.01 -s0.1  < plum.in
+
+== xxx
+
+Adding the line
+
+ require "profile"
+
+at the top of a file gives profiling information when you run the file.
+
+ :commandoutput: time ruby nb3p.rb -t1 -d0.01 -s0.1  < plum.in
+
+Hey, this and that.
+
+Now all three:
+
+ :commandoutput: (ruby nb1p.rb -t1 -d0.01 -s0.1 < plum.in) | & head -25 | & tail -10
+
+ :commandoutput: (ruby nb2p.rb -t1 -d0.01 -s0.1 < plum.in) | & head -25 | & tail -10
+
+ :commandoutput: (ruby nb3p.rb -t1 -d0.01 -s0.1 < plum.in) | & head -25 | & tail -10

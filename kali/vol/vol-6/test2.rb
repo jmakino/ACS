@@ -10,4 +10,4 @@ end
 
 N.times{a = new_a(a)}
 
-print "a = #{a}\n"
+print "N = #{N} ; a = #{a}\n"

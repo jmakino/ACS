@@ -1,4 +1,4 @@
-#define  N  100000000
+#define  N  10000000
 
 double new_a(double old_a)
 {
@@ -12,9 +12,8 @@ int main()
 
     a = 1.0;
 
-    for (i = 0; i < N; i++){
+    for (i = 0; i < N; i++)
         a = new_a(a);
-    }
     
-    printf("a = %g\n", a);
+    printf("N = %d ; a = %g\n", N, a);
 }
