@@ -1,0 +1,16 @@
+Date: Sat Oct 02 07:41:02 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Somewhere in ACS (and for ourselves) make very clear that
+
+  a = b.pos
+
+causes a to point to the position vector of world point b,
+and that from there on any operation on a affects b.
+
+We probably want to find some form of formalism to prevent
+that possibility.  The best solution may be to override =.
+
+Piet and Jun
+
