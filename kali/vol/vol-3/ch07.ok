@@ -196,7 +196,7 @@ for +evolve+, and above the introduction of the two flags in analogy with
 the other parameters.  Let's test it out, to see whether we still get
 the same results for our figure out orbit:
 
- :commandoutput: ruby rknbody7a_driver.rb < figure8.in
+ :commandoutput: ruby rknbody8a_driver.rb < figure8.in
 
 *Alice*: All is well, clearly.  Good!  So now we have a version of the code
 that is both lean and easy to read on the level of the integrators,

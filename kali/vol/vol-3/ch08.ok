@@ -1,24 +1,32 @@
-= Softening
+= An Eight-Body System
 
-== 
+== Setting Up a Cube
 
- :commandoutput: ruby rknbody8b_driver.rb < cube.in
+*Bob*: Now that we have settled on a tool for doing N-body simulations,
+it would be a pity to stop with three bodies.  Let's try it out on a
+bunch more particles.
 
- :commandoutput: ruby rknbody8c_driver.rb < cube.in
+*Alice*: We haven't yet written tools for setting up initial conditions,
+though, such as a Plummer model, or a King model, or even just a
+homogeneous sphere with particles sprinkled in.  We will certainly do
+that later, but starting with that right know would be too much of a
+distraction.  After all, it was you who wanted to move on quickly to
+graphics!
 
- :commandoutput: ruby rknbody8d_driver.rb < cube.in
+*Bob*: I agree.  Let's do something really simple then.  How about
+setting up eight 
 
- :commandoutput: ruby rknbody8e_driver.rb < cube.in
 
- :commandoutput: ruby rknbody8f_driver.rb < cube.in
+ :inccode: cube1.in
 
- :commandoutput: ruby rknbody9a_driver.rb < figure8.in
+ :commandoutput: ruby rknbody8b_driver.rb < cube1.in
 
- :commandoutput: ruby rknbody9b_driver.rb < cube.in
+ :commandoutput: ruby rknbody8c_driver.rb < cube1.in
 
- :commandoutput: ruby rknbody9c_driver.rb < cube.in
+ :commandoutput: ruby rknbody8d_driver.rb < cube1.in
 
- :commandoutput: ruby rknbody9d_driver.rb < cube.in
+ :commandoutput: ruby rknbody8e_driver.rb < cube1.in
 
- :commandoutput: ruby rknbody9e_driver.rb < cube.in
+ :commandoutput: ruby rknbody8f_driver.rb < cube1.in
+
 
