@@ -11,7 +11,7 @@
 \bigskip
 The Kali Code\\
 \medskip
- 4: Structured Input/Output
+ 4: Self-Describing Data Files
 }
 \author{\bf Piet Hut and Jun Makino}
 
