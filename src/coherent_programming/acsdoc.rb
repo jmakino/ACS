@@ -184,16 +184,28 @@ END
   def process_headers(instring)
     ostring=[]
     afterverbatim = nil
+    inabstract = nil
     while s=instring.shift
       header_candidate =s.split[0] 
       if /^=+$/ =~ header_candidate
-	ostring.push("\\"+@@header[header_candidate.length]+"{")
 	header_text = s.sub(/=+/," ")
 	while /^\s+$/ =~ (s = instring.shift )
 	  header_text += s + " "
 	end
-	header_text += "}"
-	ostring.push(header_text)
+	p header_text
+	if header_text =~ /^\s*Abstract\s*$/ then
+	  inabstract = true
+	  header = "\\begin{abstract}"
+	else
+	    header = ""
+	  if inabstract 
+	    header = "\\end{abstract}\n\n" 
+	    inabstract = nil
+	  end
+	  header+= "\\"+@@header[header_candidate.length]+"{" +
+	    header_text += "}"
+	end
+	ostring.push(header)
 	instring.unshift(s)
       elsif /^---+/ =~ header_candidate
 	if afterverbatim
@@ -299,7 +311,6 @@ END
 #
     
     while s=instring.shift
-      p s
       header_candidate =s.split[0] 
       new_item = nil
       new_type = 1
@@ -328,11 +339,7 @@ END
       if new_indent != indent and new_item == nil and new_indent > 0
 	new_type = 4 
       end
-      p s1
-      print "indent, type, new = #{indent}, #{type}, #{new_type}, #{new_indent}\n"
       s1= process_tex_special_chars(s1) unless new_type == 4
-      p "after processed"
-      p s1
       if new_indent > indent
 	instring.unshift(s)
 	new=1
@@ -383,6 +390,20 @@ END
     ostr
   end
 
+
+  def process_toc_latex(instring)
+    ostring=[]
+    while s=instring.shift
+      if /:tableofcontents:/ =~ s
+	ostring.push("\\newpage\n\\tableofcontents\n\\newpage\n")
+      else
+	ostring.push(s)
+      end
+    end
+    ostring
+  end
+  
+
   
   
   def convert_to_latex(instring,dirname)
@@ -395,6 +416,7 @@ END
     s=process_wordmarkup(s,dirname)
     s=process_refmarkup(s)
     s=process_headers(s)
+    s=process_toc_latex(s)
     s = process_tagmarkup(s,dirname).join("\n")
     s= <<-END_TEXSOURCE
     #{@@basic_preambles_for_tex}
@@ -751,6 +773,10 @@ module Acsdoc
       "<ntaga>"+ $1 + "</ntaga><ntagb>"+ @@tex_labels[$1].to_s+ "</ntagb>"}
   end
 
+  def process_toc(instring)
+    instring.gsub(/:tableofcontents:/,"")
+  end
+
 
   def prep_cp(infile, outfile,tolatex_flag)
     $infile = infile
@@ -779,6 +805,7 @@ module Acsdoc
       tmp2= find_and_process_tex_equations(tmp2,dirname);
       tmp2= find_and_process_figures(tmp2,dirname);
       tmp2= process_tex_labels(tmp2,dirname);
+      tmp2= process_toc(tmp2);
     end
     ofile.print tmp2
     ofile.close
