@@ -40,7 +40,6 @@ we use a softening length of, say, 0.01, we can probably still use a time
 step of 0.1 -- but perhaps I'm too optimistic.  Let's try it:
 
  :commandoutput: ruby mkplummer.rb -n 8 | ruby nb1.rb -t 1 -d 0.01 -s 0.1
-
 == Energy Conservation
 
 *Alice*: That's not bad, as far as energy conservation is concerned.  I see

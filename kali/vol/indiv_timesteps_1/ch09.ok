@@ -445,4 +445,3 @@ kinds of ways.
 *Bob*: I'm happy with the current choice, to keep the interpolator
 fifth-order accurate in position.  But it was a good exercise to check
 exactly what we did and why.
-

@@ -2,5 +2,28 @@
 
 == xxx
 
- :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby acsnumber.rb > test.in
-
+ :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby acsnumber.rb > tmp0
+ :commandoutput: ruby world1.rb -t 1 < tmp0 | ruby acstail.rb > tmp1s
+ :commandoutput: ruby world1.rb -t 1 -r < tmp0 | ruby acstail.rb > tmp1w
+ :commandoutput: ruby world1.rb -t 1 -r < tmp1w | ruby acstail.rb > tmp2ww
+ :commandoutput: ruby world1.rb -t 2 -o 2 -r < tmp0 | ruby acstail.rb > tmp2w
+ :commandoutput: ruby world1.rb -t 2 -o 2 < tmp0 | ruby acstail.rb > tmp2s
+ :commandoutput: ruby world1.rb -t 1 < tmp1s | ruby acstail.rb > tmp2ss
+ :commandoutput: ruby world1.rb -t 1 < tmp1w | ruby acstail.rb > tmp2ws
+ :commandoutput: ruby world1.rb -t 1 -r < tmp1s | ruby acstail.rb > tmp2sw
+ :commandoutput: ruby world1.rb -t 1 -r < tmp2ww | ruby acstail.rb > tmp3www
+ :commandoutput: ruby world1.rb -t 1 -r < tmp2w | ruby acstail.rb > tmp3ww
+ :commandoutput: ruby world1.rb -t 3 -o 3 -r < tmp0 | ruby acstail.rb > tmp3w
+ :commandoutput: echo "diff tmp2w tmp2ww | wc:"
+ :commandoutput: diff tmp2w tmp2ww | wc
+ :commandoutput: echo "diff tmp2ws tmp2s | wc:"
+ :commandoutput: diff tmp2ws tmp2s | wc
+ :commandoutput: echo "diff tmp3w tmp3ww | wc:"
+ :commandoutput: diff tmp3w tmp3ww | wc
+ :commandoutput: echo "diff tmp3w tmp3www | wc:"
+ :commandoutput: diff tmp3w tmp3www | wc
+ :commandoutput: echo "diff tmp2ss tmp2s | wc:"
+ :commandoutput: diff tmp2ss tmp2s | wc
+ :commandoutput: echo "cat tmp2s | wc:"
+ :commandoutput: cat tmp2s | wc
+ :commandoutput: cat tmp2ss tmp2s | ruby newacsdiff.rb

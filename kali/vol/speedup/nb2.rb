@@ -1,5 +1,5 @@
+require "clop"
 require "nbody2.rb"
-require "clop.rb"
 
 options_definition_string = <<-END
 
@@ -135,10 +135,11 @@ options_definition_string = <<-END
 
   END
 
-parse_command_line(options_definition_string)
+c = parse_command_line(options_definition_string)
 
 include Math
 
 nb = Nbody.new
 nb.simple_read
-nb.evolve($method, $eps, $dt, $dt_dia, $dt_out, $dt_end, $init_out, $x_flag)
+nb.evolve(c.method, c.eps, c.dt, c.dt_dia, c.dt_out, c.dt_end, c.init_out,
+          c.x_flag)

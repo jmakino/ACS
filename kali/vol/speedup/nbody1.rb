@@ -1,5 +1,3 @@
-require "vector.rb"
-
 class Body
 
   attr_accessor :mass, :pos, :vel
