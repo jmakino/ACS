@@ -24,9 +24,9 @@
 module Rdoctotex
 
   @@wordreplace=[
-    [/\+\w+\+/,"{\\tt", "}"],
+    [/\+(\w|(\\_))+\+/,"{\\tt", "}"],
     [/\*\w+\*/,"{\\bf", "}"],
-    [/_\w+_/,"{\\it", "}"]
+    [/\\_\w+\\_/,"{\\it", "}"]
   ]
   
   @@tagreplace=[
@@ -47,10 +47,29 @@ module Rdoctotex
     ["ulist-","itemize"],
     ["nlist", "enumerate"],
     ["verbatim","verbatim"]]
+
+  @@imglinkcount = 0
+  @@latexscalingforimage = 0.5
+
+  @@charstoescape =/(#)|(\{)|(\})|(\_)|(\{)|(\\)/
+
+  def escapetexspecialcharacters(instring)
+    print "escapeto ... "
+    p instring
+    s=instring.gsub(@@charstoescape){|word| "\\"+word}
+    print "after conversion "
+    p s
+    s
+  end
   
   def wordmarkup(instr)
-    @@wordreplace.each do |x| instr.gsub!(x[0]) do
-	|word|	x[1]+ " " + word[1,word.length-2] +x[2]
+    @@wordreplace.each do |x| instr.gsub!(x[0]) do |word|
+	if /_/ =~word[1,1]
+	  start = 2 ; cut=4
+	else
+	  start = 1; cut=2
+	end
+	x[1]+ " " + word[start,word.length-cut] +x[2]
       end
     end
     instr
@@ -87,8 +106,82 @@ module Rdoctotex
 	header_text += "}"
 	ostring.push(header_text)
 	instring.unshift(s)
+      elsif /^---+/ =~ header_candidate
+	ostring.push("\\hrule\n\\smallskip\n\n")
       else
 	ostring.push(s)
+      end
+    end
+    ostring
+  end
+  
+  def process_include(instring)
+    ostring=[] 
+    while s=instring.shift
+      if /^(\s*)\:include\:\s*(\S+)$/  =~ s
+	indent = $1
+	infile= open($2,"r")
+	print "indent = ", indent, "\n"
+	while ss=infile.gets
+	  ostring.push(indent+ss.chomp!)
+	end
+	infile.close
+      else
+	ostring.push(s)
+      end
+    end
+    ostring
+  end
+  
+  def process_link(instring)
+    ostring=[] 
+    while s=instring.shift
+      if /(^|\s)link\:(\S+)/  =~ s
+	imglinkfile = $2
+	imgbase =".imgs/"
+	imgdir =  imgbase
+	epsfilename = @@imglinkcount.to_s+".eps"
+	Dir.mkdir(imgdir) unless File.exist?(imgdir)
+	print "cd #{imgdir}; convert  #{imglinkfile} #{epsfilename}\n"
+	system "cd #{imgdir}; convert  #{imglinkfile} #{epsfilename}"
+	s.sub!(/(^|\s)link\:(\S+)/,
+	       "\n\\scalebox{#{@@latexscalingforimage}}{\\includegraphics{#{imgbase+epsfilename}}}\n")
+	@@imglinkcount+=1
+      end
+      ostring.push(s)
+    end
+    ostring
+  end
+
+  @@intex_state = 0
+
+  def process_tex_special_chars(instring)
+    s = instring
+    ostring =""
+    while s.length > 0
+      p s
+      if @@intex_state == 0
+	texloc = /<tex>/ =~ s
+	if texloc
+	  print "tex start tag found in |#{s}|\n"
+	  ostring+=escapetexspecialcharacters(s[0,texloc])+"<tex>"
+	  @@intex_state = 1
+	  s = s[texloc+5,s.length]
+	else
+	  ostring += escapetexspecialcharacters(s)
+	  s=""
+	end
+      else
+	texloc = /<\/tex>/ =~ s
+	if texloc
+	  print "tex end tag found in |#{s}|\n"
+	  ostring+=s[0,texloc]+"</tex>"
+	  @@intex_state = 0
+	  s = s[texloc+6,s.length]
+	else
+	  ostring += s
+	  s=""
+	end
       end
     end
     ostring
@@ -97,14 +190,27 @@ module Rdoctotex
   def process_single_paragraphs_lists_etc(instring,indent,type,new)
     s_prev = ""
     ostr=[]
-    p type
     ostr.push("\\begin{"+@@listtypes[type][1]+"}")  if new and (type >0)
+
+    intex = nil
+
+#
+# intex is used to suppress formatting. As you can see from the code below, 
+# suppression can take place only if "<tex>" appears as single item in one 
+# line, and suppression stops only of "</tex>" appears as single item in one
+# line. So if you use them in a more complex ways, it might cause strange 
+# problems.
+#
     
     while s=instring.shift
       header_candidate =s.split[0] 
       new_item = nil
       new_type = 1
-      if (/^(\*|\-|\d+\.)$/ =~ header_candidate) 
+      if @@intex_state == 1
+	new_type = type
+	new_indet = indent
+	s1 = s
+      elsif (/^(\*|\-|\d+\.)$/ =~ header_candidate) 
 	new_type = 1+[/\*/,/\-/,/\d+\./].collect{
 	  |x| x=~ header_candidate}.index(0)
 
@@ -122,15 +228,15 @@ module Rdoctotex
 	new_item = nil
       end
 	  
-      p s
-      p new_item
-      p new_indent
       new_type = 4 if new_indent > 0 and new_item == nil
+      print "before calling process tex "; p s1
+      s1= process_tex_special_chars(s1) unless new_type == 4
+      print "after  calling process tex "; p s1
       if new_indent > indent
 	instring.unshift(s)
 	new=1
 	new = nil if new_type == type and type == 4 
-	print "type =  #{new_type}, #{type}, #{new}\n"
+#	print "type =  #{new_type}, #{type}, #{new}\n"
 	if new 
 	  ostr+= process_single_paragraphs_lists_etc(instring,new_indent,
 						     new_type,new)
@@ -165,14 +271,15 @@ module Rdoctotex
   
   
   def convert_to_latex(instring,dirname)
-    print "Enter convert "; p instring
-    s=process_single_paragraphs_lists_etc(instring,0,0,1)
-    p s
+    s=process_include(instring)
+    s=process_single_paragraphs_lists_etc(s,0,0,1)
+    s=process_link(s)
     s=process_wordmarkup(s,dirname)
     s=process_headers(s)
     s = process_tagmarkup(s,dirname).join("\n")
     s= <<-END_TEXSOURCE
     \\documentclass{book}
+    \\usepackage{graphicx}
     \\begin{document}
        #{s}
     \\end{document}
@@ -335,6 +442,7 @@ module Acsdoc
     texsource=open(texname,"w+")
     texsource.print <<-END_TEXSOURCE
     \\documentclass{article}
+    \\usepackage{graphicx}
     \\begin{document}
        \\pagestyle{empty}
        \\thispagestyle{empty}
@@ -410,7 +518,6 @@ module Acsdoc
     ifile.close
     tmpstring=prep_cp_string(instring,dirname).split("\n");
     if tolatex_flag
-      p Rdoctotex.instance_methods
       tmp2= Rdoctotex::convert_to_latex(tmpstring,dirname);
     else
       tmp2= find_and_process_tex_inlines(tmpstring,dirname);
@@ -517,7 +624,11 @@ tolatex_flag = false
 
 ARGV.collect! do |a|
   if a =~ /\.cp$/
-    dot_a = File.dirname(a)+"/."+File.basename(a);
+    unless tolatex_flag 
+      dot_a = File.dirname(a)+"/."+File.basename(a);
+    else
+      dot_a = File.dirname(a)+"/"+File.basename(a,".cp")+ ".tex"
+    end
     prep_cp(a, dot_a, tolatex_flag)
     a = dot_a
     del_file_list.push(dot_a)
