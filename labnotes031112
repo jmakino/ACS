@@ -242,3 +242,13 @@ by the HTML files that will include them.  For the specific case of
 LaTeX equations that will be turned into figures, we will create a
 special file "notdefs.tex".
 
+6. Todo List
+
+We made the following todo list:
+
+-- finish writing yesterday's lab notes
+-- implement block timestep code
+-- write a Ruby implementation of our lab note mechanism
+-- implement docbook XML version of our (book and code) source
+-- work on a paper for the Kali code, using the block time step code
+     as a toy model
