@@ -1,6 +1,6 @@
-require "acs.rb"
+require "nbody.rb"
 
-class Worldpoint
+class Worldpoint < Body
 
   attr_accessor :mass, :pos, :vel, :acc, :jerk, :time, :next_time, :nsteps,
                 :minstep, :maxstep
@@ -156,12 +156,6 @@ class Worldpoint
     @pos = gets.split.map{|x| x.to_f}.to_v
     @vel = gets.split.map{|x| x.to_f}.to_v
   end
-
-#  def write
-#    printf("%24.16e\n", @mass)
-#    @pos.each{|x| printf("%24.16e", x)}; print "\n"
-#    @vel.each{|x| printf("%24.16e", x)}; print "\n"
-#  end
 
 end
 
@@ -407,7 +401,7 @@ class World
 #        @snap_time = @era.snap_time = t_out               # KLUDGE !!!
 #        write($stdout, c.precision, c.add_indent)
 ##        @era.acs_write("era", $stdout, c.precision, 0, c.add_indent)
-        @era.take_snapshot(t_out).acs_write("", $stdout, c.precision, 0, c.add_indent)
+        @era.take_snapshot(t_out).acs_write($stdout, c.precision, c.add_indent)
         t_out += c.dt_out
       end
       @old_era = @era
@@ -426,16 +420,9 @@ class World
 
 end
 
-class Worldsnapshot
+class Worldsnapshot < Nbody
 
-  TAG = "worldsnapshot"
-
-  attr_accessor :body, :time
-
-  def initialize
-    @body = []
-    @greeting = "hi\nJun!\n"
-  end
+  attr_accessor :time
 
   def kinetic_energy
     e = 0
@@ -643,7 +630,6 @@ options_text= <<-END
     The default precision is comparable to double precision accuracy.
 
 
-  Short name:           -n
   Long name:            --indentation
   Value type:           int
   Default value:        2
