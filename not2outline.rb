@@ -1,5 +1,7 @@
 #!/usr/local/bin/ruby -w
 #
+#  not2outline.rb
+#
 #  this script converts the "all.not" file to usage in emacs outline mode
 #
 #  usage:  not2outline.rb < all.not > allout.not
