@@ -1,11 +1,11 @@
-class Vector < Array
+ class Vector < Array
   def +(a)
     sum=[]
     self.each_index{|k| sum[k]=self[k]+a[k]}
     sum
   end
   def *(a)
-    if a.class == yVector              # inner product
+    if a.class == Vector              # inner product
       product=0
       self.each_index{|k| product += self[k]*a[k]}
     else
