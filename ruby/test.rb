@@ -227,12 +227,32 @@ p y.acc
 x.clear_acc_and_jerk
 p y.acc
 cb = x.cbody
-cb.set_acc_jerk(x);
 x.acc=[1,2,3]
 p x.acc
 x.cbody.get_acc_jerk(x);
 p x.cbody
 p cb
+
+class Cbody
+  def set_xx(a)
+    @xx = a
+  end
+  def get_xx
+    @xx
+  end
+end
+
+cb.set_xx(2)
+p cb.get_xx
+x.clear_acc_and_jerk
+p x.acc
+x.cbody.get_acc_jerk(x);
+p x.acc
+  
+class Cbody
+  attr_accessor :xx
+end
+p cb.xx
 
 
 
