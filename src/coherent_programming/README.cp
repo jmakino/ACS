@@ -30,21 +30,30 @@ The changes we made are
   This is made with "link: sample.gif" but without space after link:
 
 * added a pair of directives, ":segment start:" and ":segment end:".
-  texts between  ":segment start: segment_name" and corresponding
+  texts between  ":segment start: segment name" and corresponding
   ":segment end:" will be stored the file .foo.rb-segment.name, where
   foo.rb is the source file. Here is a sample code segment included:
 
-:inccode: .acsdoc.rb-prep_rb
+ :inccode: .acsdoc.rb-prep_rb
 
 
-:inccode: .acsdoc.rb-acsdoc
+ :inccode: .acsdoc.rb-acsdoc
 
 Now, by using "." + filename + "+" methodname, you can show a method
 defined in a file: The following is an example, using
 ": inccode: .acsdoc.rb+prep_rb" (no space after the first ":")
 
-:inccode: .acsdoc.rb+prep_rb
+ :inccode: .acsdoc.rb+prep_rb
 
+* added special form of comment, ##number (like ##1, ##2 etc), which
+  write the line with that comment to the file named .foo.rb-1 if
+  number is 1 and filename is foo.rb, but removing the ##1 itself. 
+
+* it creates the file .foo.rb, from foo.rb. The created file  is an
+  stripped out  version of the input file, with segment directives and
+  the above ##number directives removed.
+
+* <b>This process need to be applied to the partial files!  </b>
 
 Here is an example of ":output:" with "echo foo" as arguments
 
@@ -111,6 +120,48 @@ I changed the prompt to "yebisu>" using ":prompt:" directive here.
   without any intervening text, the generated tex source might have
   wrong nesting of begin{itemize} etc.
 
+== Numbered figures and equations
+
+Now it is possible to write numbered figures and eqations, similar to
+latex but in more simple form.
+
+The following:
+
+   : equation :
+   \label{equation1}
+   a = b
+
+(blanck line is recognized as the end of equation) is essentially the
+same as writing
+
+  < tex >
+  \begin{equation}
+  \label{equation1}
+  a = b
+  \end{equation}
+  < /tex >
+
+Which is processed to:
+
+<tex>
+\begin{equation}
+\label{equation1}
+a = b
+\end{equation}
+</tex>
+
+but equation number is maintained within acsdoc.rb. To refer to
+an equation, use ref(equation1). equation label must be composed of
+alphanumerics and ":". "_" or any other symbol is currently illegal.
+
+I also added numbered figures, in the form
+
+  : figure : name_of_the_figure_file size label
+  caption text for the figure.
+
+
+  
+
 == Changes made to rdoc itself
 
 We try as hard as possible not to change rdoc itself, but some things
@@ -142,5 +193,5 @@ something like:
    @@addtional_preambles_for_inline_tex = "\\usepackage{epsf}"
    @@addtional_commands_for_inline_tex = "\\input macros"
   
-In the above example, 
+
     

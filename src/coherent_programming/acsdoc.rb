@@ -299,6 +299,7 @@ END
 #
     
     while s=instring.shift
+      p s
       header_candidate =s.split[0] 
       new_item = nil
       new_type = 1
@@ -324,8 +325,14 @@ END
 	new_item = nil
       end
 	  
-      new_type = 4 if new_indent > 0 and new_item == nil
+      if new_indent != indent and new_item == nil and new_indent > 0
+	new_type = 4 
+      end
+      p s1
+      print "indent, type, new = #{indent}, #{type}, #{new_type}, #{new_indent}\n"
       s1= process_tex_special_chars(s1) unless new_type == 4
+      p "after processed"
+      p s1
       if new_indent > indent
 	instring.unshift(s)
 	new=1
@@ -819,6 +826,39 @@ module Acsdoc
   # :segment end: prep_rb
 
 
+  def prep_rb_special_comments(infile)
+    begin
+      ifile = open(infile, "r")
+    rescue
+      raise "#{infile} does not exist"
+    end
+    outfile = File.dirname(infile)+"/."+File.basename(infile)
+    ofile = open(outfile,"w+")
+    while s = ifile.gets
+      case s
+      when /\#(\d+)(.*)/  
+	s = s.gsub(/\#(\d+)(.*)/,'')      
+      when /(^|(\s)+)\#(\s*)\:segment /
+	s = nil
+      end
+      ofile.print s if s
+    end
+    ifile.close
+    ofile.close
+  end
+
+  def prep_rb_special_comments_for_partfiles(file)
+    basename =File.dirname(file)+"/."+File.basename(file) 
+    p basename+"{+,-}*"
+    p Dir[basename+"{+,-}*"]
+    Dir[basename+"{+,-}*"].each{|f|
+      newname =File.dirname(f)+"/."+File.basename(f) 
+      print "modifying #{f} through #{newname}\n" 
+      prep_rb_special_comments(f)
+      File.rename(newname,f)
+      system "cat #{f}"
+    }
+  end
   def prep_rb_hashes(infile)
     begin
       ifile = open(infile, "r")
@@ -827,9 +867,9 @@ module Acsdoc
     end
     hashnames=[]
     while s = ifile.gets
-      if s  =~ /\#(\d+)/
+      if s  =~ /\#(\d+)(.*)/
 	segment_name = $1
-	s = s.gsub(/\#(\d+)/,'')
+	s = s.gsub(/\#(\d+)(.*)/,'')
 	print segment_name if $DEBUG
 	outfile = File.dirname(infile)+"/."+File.basename(infile) +
 	  "-" + segment_name
@@ -986,8 +1026,10 @@ ARGV.collect! do |a|
     del_file_list.push(dot_a)
   elsif a =~ /\.rb$/
     prep_rb(a)
-    prep_rb_hashes(a)
     prep_rb_defs(a)
+    prep_rb_hashes(a)
+    prep_rb_special_comments(a)
+    prep_rb_special_comments_for_partfiles(a)
     a
   elsif a == "--keep-dot-files"
     del_flag = false
@@ -1011,6 +1053,8 @@ if del_flag
   del_file_list.each do |f|
     File.delete(f)
   end
+
+
 end
 # :segment end:
 
