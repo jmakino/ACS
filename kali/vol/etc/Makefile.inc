@@ -37,10 +37,10 @@ scripts : $(SCRIPTSRCS)
 libs : $(LIBSRCS)
 	ruby -S check_and_install.rb ACSLIBS $(LIBSRCS)
 
-localscripts : $(LOCALSCRIPTSRCS)
+localscripts : $(LOCALSCRIPTSRCS) $(KALI_SCRIPTSRCS)
 	ruby -S check_and_install.rb $(ACSSCRIPTS)/$(LOCALDIR) $(LOCALSCRIPTSRCS)
 	
-locallibs : $(LOCALLIBSRCS)
+locallibs : $(LOCALLIBSRCS) $(KALI_LIBSRCS)
 	ruby -S check_and_install.rb $(ACSLIBS)/$(LOCALDIR) $(LOCALLIBSRCS)
 
 clean : 
