@@ -123,10 +123,6 @@ module Acsdoc
     dirname = File.dirname(infile)
     ofile = open(outfile, "w+")
     while s = ifile.gets
-      s.gsub!(/<p>/, '<i>[Jun: ')
-      s.gsub!(/<\/p>/, ' -- Piet] </i>')
-      s.gsub!(/<j>/, '<i>[Piet ')
-      s.gsub!(/<\/j>/, ' -- Jun] </i>')
       if s =~ /:in.*code:/ and s.index("\":inccode:\"")==nil
 	s.sub!(/:in.*code:/, ':include:')
 	ofile.print "---\n"
