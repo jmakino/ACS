@@ -1,3 +1,5 @@
+$acsdate="20050303"
+
 require "rknbody.rb"
 require "clop.rb"
 
