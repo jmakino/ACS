@@ -1360,7 +1360,7 @@ reulse_fpag = false
 ARGV.collect! do |a|
   if a =~ /\.((cp)|(ok))$/
     extention = "."+$1
-    if File.exist?(a)
+    if FileTest.size?(a)
       unless tolatex_flag 
 	dot_a = File.dirname(a)+"/."+File.basename(a);
       else
