@@ -6,9 +6,9 @@
 # 	       
 $(TARGET).tex: doc $(SRC) .acsdocinitrc
 	cat $(SRC) > $(TARGET).cp
-	ruby ../../src/coherent_programming/acsdoc.rb --tolatex $(TARGET).cp
+	ruby ../../../src/coherent_programming/acsdoc.rb --tolatex $(TARGET).cp
 doc : $(SRC) .acsdocinitrc 
-	ruby ../../src/coherent_programming/acsdoc.rb  $(SRC) *.rb
+	ruby ../../../src/coherent_programming/acsdoc.rb  $(SRC) *.rb
 	touch doc
 
 clean : 
