@@ -31,10 +31,10 @@ xxx
 {m(r)\over M} \, &=& \, 
 -\int_0^{r^2/a^2} x^{1/2}{d\over dx}\left\{(1+x)^{-3/2}\right\}dx  \nonumber\\
 \, &=& \, -\int_0^{r^2/a^2} d\left\{x^{1/2}(1+x)^{-3/2}\right\}
-+\half\int_0^{r^2/a^2}(1+x)^{-3/2}
+\,\,+\half\int_0^{r^2/a^2}(1+x)^{-3/2}
 {d\over dx}\left\{x^{1/2}\right\}dx                             \nonumber\\
 &=& \, -\left. x^{1/2}(1+x)^{-3/2}\right|_0^{r^2/a^2}
-+\half\int_0^{r^2/a^2} x^{-1/2}(1+x)^{-3/2}dx                       \nonumber
+\quad\quad\quad+\half\int_0^{r^2/a^2} x^{-1/2}(1+x)^{-3/2}dx         \nonumber
 
 With
 
