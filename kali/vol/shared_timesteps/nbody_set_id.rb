@@ -4,10 +4,11 @@ require "nbody.rb"
 
 options_text= <<-END
 
-  Description: Takes an N-body system, and numbers all particles
+  Description: Takes an N-body system, and gives each body a unique ID
   Long description:
     This program accepts an N-body system, and assigns a number to each
-    body, as an instance variable @body_id which takes on integer values.
+    body consecutively, as an instance variable @body_id which takes on
+    integer values.
 
     (c) 2005, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
@@ -19,7 +20,7 @@ options_text= <<-END
   Long name:            --starting_number
   Value type:           int
   Default value:        1
-  Description:          The value of @body_id for the first particle
+  Description:          value of @body_id for 1st body
   Variable name:        n
   Long description:
     This option allows the user to start numbering the particles at a
