@@ -1,12 +1,21 @@
 
+<b> </b>	
+
+<b> </b>
+
+<tt> </tt>
+	
 <tex>
-\title{The Art of Computational Science\\
-~\\
+
+\title{\bf The Art of Computational Science\\
+\bigskip
 The Kali code for Dense Stellar Systems\\
-~\\
- Volume 0: A Vision
+\medskip
+ 0: A Vision
 }
-\author{Piet Hut and Jun Makino}
+\author{\bf Piet Hut and Jun Makino}
+
+
 \maketitle
 \thispagestyle{empty}
 </tex>

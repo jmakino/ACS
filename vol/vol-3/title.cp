@@ -1,12 +1,21 @@
 
+<b> </b>	
+
+<b> </b>
+
+<tt> </tt>
+	
 <tex>
-\title{The Art of Computational Science\\
-~\\
-The Kali code for Dense Stellar Systems\\
-~\\
- Volume 3: The N-Body Problem
+
+\title{\bf The Art of Computational Science\\
+\bigskip
+The Kali Code\\
+\medskip
+ 3: The N-Body Problem
 }
-\author{Piet Hut and Jun Makino}
+\author{\bf Piet Hut and Jun Makino}
+
+
 \maketitle
 \thispagestyle{empty}
 </tex>

@@ -1,12 +1,21 @@
 
+<b> </b>	
+
+<b> </b>
+
+<tt> </tt>
+	
 <tex>
-\title{The Art of Computational Science\\
-~\\
-The Kali code for Dense Stellar Systems\\
-~\\
- Volume 8: The Hermite Algorithm
+
+\title{\bf The Art of Computational Science\\
+\bigskip
+The Kali Code\\
+\medskip
+ 8: The Hermite Algorithm
 }
-\author{Piet Hut and Jun Makino}
+\author{\bf Piet Hut and Jun Makino}
+
+
 \maketitle
 \thispagestyle{empty}
 </tex>

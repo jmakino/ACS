@@ -1,12 +1,21 @@
 
+<b> </b>	
+
+<b> </b>
+
+<tt> </tt>
+	
 <tex>
-\title{The Art of Computational Science\\
-~\\
-The Kali code for Dense Stellar Systems\\
-~\\
- Volume 4: Structured Input/Output
+
+\title{\bf The Art of Computational Science\\
+\bigskip
+The Kali Code\\
+\medskip
+ 4: Structured Input/Output
 }
-\author{Piet Hut and Jun Makino}
+\author{\bf Piet Hut and Jun Makino}
+
+
 \maketitle
 \thispagestyle{empty}
 </tex>

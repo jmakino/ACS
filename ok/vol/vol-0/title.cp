@@ -9,9 +9,9 @@
 
 \title{\bf The Art of Computational Science\\
 \bigskip
-The Kali Code\\
+Open Knowledge\\
 \medskip
- 9: Speeding up Ruby
+0: Manifesto
 }
 \author{\bf Piet Hut and Jun Makino}
 
