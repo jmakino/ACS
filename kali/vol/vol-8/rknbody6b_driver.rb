@@ -1,4 +1,4 @@
-require "hnbody.rb"
+require "rknbody6.rb"
 
 include Math
 
@@ -9,8 +9,7 @@ dt_end = 2.1088      # duration of the integration
 ##method = "forward"  # integration method
 ##method = "leapfrog" # integration method
 ##method = "rk2"      # integration method
-##method = "rk4"      # integration method
-method = "yo6"      # integration method
+method = "rk4"       # integration method
 
 STDERR.print "dt = ", dt, "\n",
       "dt_dia = ", dt_dia, "\n",
