@@ -578,8 +578,8 @@ class Worldera
     wl
   end
 
-  def evolve(dt_era, dt_max, shared_flag)
-    nsteps = 0
+  def evolve(dt_era, dt_max, shared_flag, dia_flag, dn_dia, n_dia, nsteps,
+             initial_energy)
     while wordline_with_minimum_interpolation.worldpoint.last.time < @end_time
       unless shared_flag
         wordline_with_minimum_extrapolation.grow(self, dt_max)
@@ -592,8 +592,15 @@ class Worldera
           nsteps += 1
         end
       end
+      unless dia_flag
+        if nsteps >= n_dia
+          t = wordline_with_minimum_interpolation.worldpoint.last.time
+          write_diagnostics(t, nsteps, initial_energy)
+          n_dia += dn_dia
+        end
+      end
     end
-    [next_era(dt_era), nsteps]
+    [next_era(dt_era), nsteps, n_dia]
   end
 
   def next_era(dt_era)
@@ -676,6 +683,7 @@ class World
     @t_dia = @time
     @t_out = @time
     @t_end = @time + c.dt_end
+    @n_dia = @nsteps + c.dn_dia
   end
 
   def startup(c)
@@ -685,16 +693,18 @@ class World
   end
 
   def evolve(c)
+    dia_flag = true
     while @era.start_time < @t_end
-      @new_era, dn = @era.evolve(c.dt_era, @dt_max, c.shared_flag)
-      @nsteps += dn
+      @new_era, @nsteps, @n_dia = @era.evolve(c.dt_era, @dt_max, c.shared_flag,
+                          dia_flag, c.dn_dia, @n_dia, @nsteps, @initial_energy)
       @time = @era.end_time
-      diagnostics_and_output(c)
+      dia_flag = diagnostics_and_output(c)
       @old_era, @era = @era, @new_era
     end
   end
 
   def diagnostics_and_output(c, initial_output = false)
+    dia_flag = false
     if initial_output
       t_target = @time
     elsif @t_end < @era.end_time
@@ -705,6 +715,8 @@ class World
     while @t_dia <= t_target
       @era.write_diagnostics(@t_dia, @nsteps, @initial_energy, initial_output)
       @t_dia += c.dt_dia
+      @n_dia = @nsteps + c.dn_dia
+      dia_flag = true
     end
     if (k = c.async_output_interval) > 0 and not initial_output
       @era.clone.prune(k).acs_write($stdout, false, c.precision, c.add_indent)
@@ -716,6 +728,7 @@ class World
         @t_out += c.dt_out
       end
     end
+    dia_flag
   end
 
   def output(c)
@@ -912,6 +925,20 @@ options_text= <<-END
     This option sets the time interval between diagnostics output,
     which will appear on the standard error channel.
 
+    Note: this is a preliminary test implementation.  This option only starts
+    to do its work after a whole era has passed without diagnostics output.
+
+
+  Short name: 		-n
+  Long name:		--diag_steps_max_n
+  Value type:		int
+  Default value:	1_000_000
+  Variable name:	dn_dia
+  Description:		Max. steps to diagnostics
+  Long description:
+    This option sets the maximum interval between diagnostics output,
+    as the maximum number of time steps since the last diagnostics output.
+
 
   Short name: 		-o
   Long name:		--output_interval
@@ -980,7 +1007,7 @@ options_text= <<-END
   Long name:  		--world_output
   Value type:  		bool
   Variable name:	world_output_flag
-  Description:		World output format, instead of snapshot
+  Description:		World output format
   Long description:
     If this flag is set to true, each output will take the form of a
     full world dump, instead of a snapshot (the default).  Reading in
@@ -993,7 +1020,7 @@ options_text= <<-END
   Long name:  		--full_output_dump
   Value type:  		bool
   Variable name:	dump_flag
-  Description:		Full output of all worldpoints in World output format
+  Description:		Full output of all worldpoints
   Long description:
     If this flag is set to true, the full information of all worldpoints will
     be written out.  This option, when switched on, overrides the normal output
@@ -1004,7 +1031,7 @@ options_text= <<-END
   Long name:  		--shared_timesteps
   Value type:  		bool
   Variable name:	shared_flag
-  Description:		All particles share the same time step
+  Description:		All particles share time step
   Long description:
     If this flag is set to true, all particles will march in lock step,
     all sharing the same time step.
