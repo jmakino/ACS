@@ -1,0 +1,62 @@
+2003, December 18, Thursday, Kyoto: Jun, Piet
+
+1. Handcoded interface Ruby - C
+
+Jun wrote a faster handcoded interface, in which two parallel data
+representations are used, one in C and one in Ruby.
+
+Here are the timing results, first in seconds, than as the ratios of
+the execution time, for N particles in cold collapse.
+
+N	nsteps	C++	ruby-c5	ruby-c4	ruby-c3	ruby-c2	rubyc1	ruby
+
+2	235703	0.86	7.49	9.28	13.02	67.71	61.72	87.35
+3	88165	0.53	3.32	4.61	6.70	36.73	35.29	64.29
+10	11590	0.54	1.12	2.78	3.66	16.59	19.74	77.69
+30	2150	0.77	0.91	3.59	4.09	11.29	18.84	123.48
+100	118	0.48	0.45	2.05	2.13	3.56	8.81	77.24
+100	960	3.71	3.32	16.39	17.16	28.67	73.34	
+300	27	0.99	0.96	4.28	4.36	5.52	21.35	191.35
+300	750	25.89	21.36	112.5	116.44	150.4	570.15	
+1,000	16	6.57	6.74	29.11	29.7	32.35	176.52	1427.91
+1,000	41	16.29	14.38	72.8	72.73	79.63	435.8	
+1,000	1012	383.25	311.02		1756.65	1924.8	10723
+3,000	2	10.70	24.33	54.16	54.48	55.68	337.38	
+10,000	1	77.64						
+
+N	nsteps	C++	ruby-c5	ruby-c4	ruby-c3	ruby-c2	rubyc1	ruby
+
+2	235703	1	8.7	11	15	79	72	102
+3	88165	1	6.3	8.7	13	69	67	121
+10	11590	1	2.1	5.1	6.8	31	37	144
+30	2150	1	1.2	4.7	5.3	15	24	160
+100	118	1	0.9	4.3	4.4	7.4	18	161
+100	960	1	0.9	4.4	4.6	7.7	20	
+300	27	1	1.0	4.3	4.4	5.6	22	193
+300	750	1	0.8	4.3	4.5	5.8	22	
+1,000	16	1	1.0	4.4	4.5	4.9	27	193
+1,000	41	1	0.9	4.5	4.5	4.9	27	
+1,000	1012	1	0.8		4.6	5.0	28
+3,000	2	1	2.3	5.1	5.1	5.2	32	
+10,000	1	1						
+
+So starting with C++, asymptotically for large N we loose a factor 5
+going to shared data, another factor 4 going to only C function calls,
+and a factor 10 going to ruby altogether.
+
+
+book as a tree with internal nodes and leaves.  Each leaf is a
+subdirectory with codes and manuals for the codes, and a chapter.
+Each internal (non-leaf) node is also a chapter, but without code,
+giving an introduction and overview of stuff below.
+
+Each leaf directory has one mother file, written in literate programming
+style, which contains book text, manual text, and source code.  The book 
+text can be extracted as a single chapter, either as a bundle of web
+pages or a ps or pdf file.  The manual text can be extracted to yield
+several manual pages.  The source code is directly compiled from the
+mother file into executables and libraries.
+
+labnotes as an array.
+
+acs 0.1 : individual time steps and softening, simple data format.
