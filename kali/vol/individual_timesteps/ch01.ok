@@ -125,4 +125,116 @@ mean that in at least one respect we would be ahead of the pack.
 *Alice*: I'd love to see that!  But okay, for now let's be content with
 Hermite.  Can you show me what you did?
 
-== 
+== A Latest Sales Date
+
+*Bob*: Let me skip the start-up phase for now.  Often in life, it is not
+so easy to start at the beginning.  Let's start in the middle instead.
+Imagine that all of our particles have already taken at least one step.
+Let me show you how which particle takes the next step.  There are two
+questions here: at any given time we first have to determine which particle
+needs to take a step, and then we have to figure out how that step can be
+taken.
+
+*Alice*: I'm all ears.
+
+*Bob*: First a bit more background.  In the past, the state of each
+particle was characterized by a mass <tt>@mass</tt>, position
+<tt>@pos</tt>, and velocity <tt>@vel</tt>, all given at a shared
+system time <tt>@time</tt>, an instance variable of the class +NBody+.
+In the case of individual time steps, each particle has its own time
+<tt>@time</tt>, which is now an instance variable of the class +Body+.
+
+In addition, since each body has its own time step, it has a predicted
+time <tt>@next_time</tt>, again different for each body, which is the
+time of completion of the next time step: <tt>@next_time - time</tt> is
+by definition the indivdual time step of the particle.
+
+The concept of a <tt>@next_time</tt> is an important one: it plays the
+role of a latest sales date.  If you go to the store to buy some cookies,
+you can look at the box, and read the latest sales date.  If that date is
+in the past, you probably don't want to buy the cookies, since you can't
+trust them to be fresh enough.
+
+*Alice*: Though they won't go bad overnight, as soon as the latest sales
+date has passed.
+
+*Bob*: Neither will our particles lose predictability completely, after
+<tt>@next_time</tt>, but still, it is a good measure of the time until
+which we can predict the position of a particle.  If another particle
+needs to know the position of our particle at time +t+,, there is no
+problem as long as <tt>t <= @next_time</tt>.
+
+To sum up: each particle carries with it a predictor that allows it to
+predict its own position during the interval <tt>[ @time, @next_time ]</tt>.
+
+*Alice*: If another particle asks for the position of our particle at time
++t+, within that interval, how does our particle communicate its predicted
+position?
+
+*Bob*: Through its instance variable <tt>@pred_pos</tt>.  Here is the hand
+shaking mechanism.  First the other particle sends the time for which
+it wants to get the information.  If the time is outside the proper interval,
+our particle will complain.  If the time is within the interval, our
+particle will oblige, and predict its position and velocity, and store
+those values in the variables <tt>@pred_pos</tt> and <tt>@pred_vel</tt>.
+The other particle can then read off the values, and determine the
+acceleration and jerk exercised on itself by our particle.
+
+*Alice*: Ah yes, jerk, we are dealing with a Hermite scheme, and therefore
+you have to predict the velocity as well.
+
+*Bob*: Indeed.  For any other scheme that we have implemented so far,
+it would suffice just to predict the position, since we would only
+need the acceleration.
+
+*Alice*: So our +Body+ class now has four extra instance variables,
+over and above what we had in the shared time stap class: <tt>time</tt>,
+<tt>@next_time</tt>, <tt>@pred_pos</tt>, and <tt>@pred_vel</tt>.
+
+*Bob*: Indeed.
+
+== Scheduling
+
+*Alice*: You mentioned that you wanted to explain how to find the particle
+that needs to be moved, before explaining how to move it.
+
+*Bob*: Yes, but we need still more background first.  Let us again call +t+
+the time at which we decide to look at the system.  We know for sure that
+for all particles, <tt>@time <= t</tt> and <tt>@next_time >= t</tt>.
+
+*Alice*: Why?
+
+*Bob*: Whenever a particle runs out of predictive power, it has to be
+updated immediately.  In other words, as soon as the latest sales date,
+<tt>@next_time</tt>, is passed, the particle position needs to be updated.
+This means that the particle takes a step at this time, and in doing so,
+it acquires a new latest sales date.  So if all marches well, the latest
+sales date for each particle will remain in the future, or at worst will
+be in the present, never in the past.  This means <tt>@next_time >= t</tt>.
+
+*Alice*: Fair enough.
+
+*Bob*: And since you cannot predict particles past their
+latest sales date, and since latest sales dates can be arbitrarily
+close to the present time +t+, no particle can take a step in the future.
+Only when the time +t+ has caught up with the latest sales date 
+<tt>@next_time</tt> of a particular particle, will that particle make a
+step.  When it does so, its new time <tt>time</tt> will take on the same
+value that <tt>@next_time</tt> had, which at the time of the step taking
+is exactly +t+.  From that time on, +t+ will march forward, while
+<tt>@time</tt> is frozen until the next step.  Hence <tt>@time <= t</tt>.
+QED.
+
+*Alice*: Hmmm.  I sort-of get it, but I must admit, I don't see it very
+clearly yet.  I bet looking at the code will makes things clearer.
+
+*Bob*: It always does.  Here is how it works.  Let's jump right into the
+heart of the matter, the method +evolve+.  For comparison, here is
+what +evolve+ looked like in the case of shared time steps:
+
+ :inccode:.nbody_sh1+evolve
+
+And here is how I rewrote it for the individual time step case:
+
+ :inccode:.nbody_ind1+evolve
+
