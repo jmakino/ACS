@@ -1,0 +1,83 @@
+Date: Sun Oct 03 02:56:51 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Hi Jun and Murat:
+
+I made two more changes to world1.rb .
+First, I combined world1_sh.rb and world1.rb into one file, world1.rb .
+I simply gave world1.rb an extra option:
+
+  |gravity> ruby world1.rb --help -a
+  -a  --shared_timesteps	: All particles share the same time step
+
+    If this flag is set to true, all particles will march in lock step,
+    all sharing the same time step.
+
+The default for this flag is false, which means true individual time steps.
+If you agree with this way of combining, I can svn del world1_sh.rb
+
+
+The other change I made was to implement the possibility to multiply
+scalar with vectors also by putting scalars in front of vectors.
+Jun, you remembered it correctly: we somehow did that, but only in
+volume-2, and there we called it "newvector.rb", which was the reason
+that we could not find it, a few days ago!
+
+I have now added this multiplication to both Float and Fixnum classes,
+and I must say, the code looks much prettier.  There is a slowdown in
+speed, but `only' by 25%.  For now, given all our other inefficiencies
+of factors of two, 25% is not so much, but some day, when we speed
+things up, we should experiment with what exactly gives the highest
+speed (probably by not overloading Float).
+
+I have committed the new world1.rb to svn, with both changes (new
+option -a and scalar-in-front multiplication).  Here are the differences
+with respect to what the multiplications look like:
+
+  |gravity> diff 041002world1.rb world1.rb
+  24,25c24,25
+  <       a += r*(b.mass/r3)
+  <       j += (v-r*(3*(r*v)/r2))*(b.mass/r3)
+  ---
+  >       a += b.mass*r/r3
+  >       j += b.mass*(v-3*(r*v/r2)*r)/r3
+  51c51
+  <     0.5*@mass*(@vel*@vel)
+  ---
+  >     0.5*@mass*@vel*@vel
+  91,92c91,92
+  <     wp.pos = @pos + @vel*dt + @acc*(dt*dt/2.0) + @jerk*(dt*dt*dt/6.0)
+  <     wp.vel = @vel + @acc*dt + @jerk*(dt*dt/2.0)
+  ---
+  >     wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3
+  >     wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2
+  101,102c101,102
+  <     snap = ((@acc - other.acc)*(-6) - (@jerk*2 + other.jerk)*2*dt)/(dt*dt)
+  <     crackle = ((@acc - other.acc)*12 + (@jerk + other.jerk)*6*dt)/(dt*dt*dt)
+  ---
+  >     snap = (-6*(@acc - other.acc) - 2*(2*@jerk + other.jerk)*dt)/dt**2
+  >     crackle = (12*(@acc - other.acc) + 6*(@jerk + other.jerk)*dt)/dt**3
+  104,107c104,107
+  <     wp.pos = @pos + @vel*dt + @acc*(dt**2/2.0) + @jerk*(dt**3/6.0) +
+  <              snap*(dt**4/24.0) + crackle*(dt**5/120.0)
+  <     wp.vel = @vel + @acc*dt + @jerk*(dt**2/2.0) + snap*(dt**3/6.0) + 
+  <              crackle*(dt**4/24.0)
+  ---
+  >     wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
+  >              (1/24.0)*snap*dt**4 + (1/120.0)*crackle*dt**5
+  >     wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*snap*dt**3 + 
+  >              (1/24.0)*crackle*dt**4
+  113,116c113,116
+  <     @vel = old.vel + (old.acc + @acc)*(dt/2.0) +
+  <                       (old.jerk - @jerk)*(dt*dt/12.0)
+  <     @pos = old.pos + (old.vel + @vel)*(dt/2.0) +
+  <                       (old.acc - @acc)*(dt*dt/12.0)
+  ---
+  >     @vel = old.vel + (1/2.0)*(old.acc + @acc)*dt +
+  >                      (1/12.0)*(old.jerk - @jerk)*dt**2
+  >     @pos = old.pos + (1/2.0)*(old.vel + @vel)*dt +
+  >                      (1/12.0)*(old.acc - @acc)*dt**2
+  
+Piet
+
