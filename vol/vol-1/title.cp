@@ -4,7 +4,7 @@
 ~\\
 The Kali code for Dense Stellar Systems\\
 ~\\
- Volume 1: The Two-Body Problem in Ruby
+ Volume 1: The Two-Body Problem
 }
 \author{Piet Hut and Jun Makino}
 \maketitle
