@@ -330,11 +330,15 @@ from the term linear in <tex>$\tau$</tex>:
 hence
 
 :equation:
+\label{samplebox}
 \fbox{
 $\displaystyle{
 \alpha_1 = 1
 }$
 }
+
+Equation ref(samplebox) looks ok.
+
 
 We have no free parameter left, so this leads us to the
 only possible explicit first-order integration scheme
@@ -479,7 +483,7 @@ $\displaystyle{
 }
 
 Would it be possible to match Eqs. (ref(rk2)) and (ref(taylor2)) also to
-third order in <tex>$\tau$</tex>?  This would require
+third order in <tex>$\tau$</tex> ?  This would require
 
 :equation:
 \half \alpha_2 \eta^2 f_0^2 f_0'' =
