@@ -1,0 +1,50 @@
+Date: Sun Jul 11 00:37:45 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Jun,
+
+ > There can be commas in some URL, though the formal specification does
+ > not allow it. So probably we need a slightly different syntax. How
+ > about "|", like
+ > 
+ >   <web>xxx|online version</web>
+ > 
+ > Here, instead of the *first* comma, we can use *last* "|". This means
+ > you cannot use  "|" in the link label. Do you mind?  
+
+Fine!
+
+ > By the way, I think "acswebref" is unnecessarily long.
+
+Sure, that was just to make myself clear, anything shorter is fine and
+probably better.
+
+ > > > 2)
+ > > > 
+ > > > Could you replace tabs in code text (Ruby and C) with the right
+ > > > number of spaces?  Right now, I belive the tabs don't appear correctly
+ > > > in code mode under acsdoc.  I've been taking out tabs by hand, but
+ > > > whenever I make a modification, emacs tend to put some tabs back
+ > > > in again, with automatic identation.  It is better to automatize
+ > > > this.
+ > > 
+ > > I checked, and indeed, this doesn't work yet.  So whenever it is
+ > > convenient, it would be nice to add that feature to acsdoc.
+ > 
+ > I *think* this is now done.
+
+Great!  I tested it, and I realized that it works only for
+
+  :include: .somename.rb
+
+and not for 
+
+  :include: somename.rb
+
+(without the initial dot).  That is fine with me: it is probably a
+good habit to always use a dot (even though I often still forget).
+Perhaps I made that mistake when I tested the tabs las time.
+
+Piet
+
