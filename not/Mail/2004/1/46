@@ -1,0 +1,129 @@
+Date: Fri Jan 23 23:35:09 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+
+Piet,
+
+ > I just arrived in New York.  I wrote about half of chapter 1.
+ > Before I continue, can you have a look at it, and tell me whether this
+ > goes roughly in the right direction?  Let me know if you have any
+ > suggestions for changes!
+
+I wrote a long comment yesterday, which somehow I failed to send and
+succeeded to delete from archive of messages... Here follows what I
+remember:
+
+* For the reasons I'll write, it may be difficult to make *both* A and
+  B experts in collisional stellar dynamics
+
+Stellar births and transformations
+
+* Rosemary would be very unhappy reading: 
+
+ * B: Since I was modeling globular clusters, the encounter speeds were
+   not very high, just barely above parabolic, so there were only two
+   possibilities: the two stars only weakly interacted, each going their
+   own way, or they stuck together, forming a new star as a single
+   merger remnant.
+
+* On:    this is a point you have made a few times; do you have
+  any other suggestions about what we can add here?
+
+  I think what you wrote is nice.
+
+* The following and the next subsection are, however, probably a bit
+  hard to understand by more than a dozen people:
+
+---  
+  
+B: Yes, let’s not ask for too much. How many people could look at
+the source code of an purely gravitational N-body code that
+integrates the equations of motions just for point particles? 
+
+A: A dozen?
+
+B: Something like that, I would say, if we really ask for proficiency. 
+
+---  
+
+I mean, basically here you are far too quick in explaining what are
+the problems, and if we want to have more than 12 readers, I think it
+is absolutely crucial not to let potential readers feel, how do you
+say, well, left alone?
+
+I mean, at the first sight, N-body problem look simple. And exactly
+that's one of the reasons many people have tried it when they first
+learned to program. Here we need to describe what are the problems and
+difficulties, and that means one of the two need to know better than
+the other. Or you can have two experts, but then they need to
+*explicitly* describe the difficulties in such a way that is
+understandable to the readers.
+
+I believe the whole point of book writing for us is to make
+assumptions and "common sense" we have for N-body simulation
+explicitly expressed, thereby viewing and scrutinize them and try to
+see alternatives.
+
+Well, to  have two experts or  one expert and the
+other with broader background (but with less hands-on experience on
+dense stellar systems) we can chose, but if we have two experts one of
+them should try to be either skeptical or simplistic or both at the
+same time or something like that. 
+
+In the current text, the two talk very much like twins...
+
+After you moved to the modular approach, the difference between two is
+clear. We need something like that in the part they talk about KS and
+individual timestep.
+
+API is application programming interface. Well, strictly speaking what
+we want to specify is not exactly an API, which is normally used as
+the description of the way some system (a good example is subroutine
+package. but X window system or MS Windows operating system or UNIX
+are other examples) talk to "application programs". Here, there is an
+hierarchy What we talk about here is the way in which modules within a
+system talks to each other. So simply something like the interface
+specification or interface definition is closer to what we mean here.
+
+Clarification of clarity
+
+I do not think the answer to the question: 
+
+Would it be easy to to transform two stars, when they come close
+together, from point particles into SPH blobs, modeling them as the
+gas spheres that they are, rather than gravitational singularities? 
+
+can be "yes", in any circumstance. If the code is modular, that would
+also help dealing with  gravitational singularities, and integrating
+one-body system is always easier than doing SPH calculation.
+
+So I guess A has to come up with the need (or interest) to do that
+kind of treatment, and B would say such thing is impossible because
+the code will be too complex and slow and unmaintainable and beyond
+the capability of a single person and.... then A would talk about
+modular approach.
+
+For speed analysis, extreme approach is to assume *all* stars *may*
+involve collisions. Since there are only N stars, there are only N
+treatment. If you use m SPH particles, the total calculation cost is
+O(Nm) (SPH is order m, not m^2), with some fairly large constant
+(number of timesteps), on the other hand, the total cost is O(N^3),
+with big constant. So it is unlikely that SPH cost is larger unless
+m>>N.
+
+For your final question:
+
+Here are some possible continuations; which shall we take?
+
+I think we definitely have to proceed with:
+
+    * Bob reluctantly admits that speed may not be as problematic as
+      he thought, but he clearly is not convinced. In addition, he
+      maintains that, even if you start in a clean way, by the time
+      you make the code really work, you are bound to make it dirty
+      again.
+
+Jun
+      
+
