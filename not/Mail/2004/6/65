@@ -1,0 +1,185 @@
+Date: Mon Jun 28 15:09:21 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Jun,
+
+ > > I have added a new FAQ page.
+ > > Could you check it out, and see whether you agree with everything?
+ > 
+ > Great! Two small points:
+ > 
+ > a) In "Why So Many Volumes?", "We now consider hundred volumes ..."
+ >    may sounds a bit unrealistic, even though that may be
+ >    realistic. How about "several tens of volumes"?
+
+Done.
+
+ > b) Since we have "I am an amateur astronomer. Is this for me?",
+ >    perhaps we should also have "I am an astronomy
+ >    student/postdoc/.... Is this for me?", or something like that.
+
+Will do.
+
+ > > In general, we need a way to cross link between different volumes.
+ > > Did you get a chance to think about how to implement that in acsdoc?
+ > 
+ > Well, technically speaking it is easy. One problem is perhaps
+ > that you have been changing the volume number quite a bit.
+
+Thanks for the explanation!  Yes, we have been changing the numbers
+quite a bit.  Of course, each time we change, I am much more happy
+with the new numbering, and I think that from that point on, we will
+keep the numbering fixed . . . ;>).
+
+We can discuss the linking of references when we meet on Wednesday.
+One question is whether we should/could give section numbers to rdoc.
+
+I am including your message below, and sending it to the "not" email
+address, in order to add it to our lab notes.
+
+Piet
+
+------- Start of forwarded message -------
+Date: Mon, 28 Jun 2004 00:53:15 +0900 (JST)
+To: piet@ias.edu
+Subject: Re: FAQ page
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > I have added a new FAQ page.
+ > Could you check it out, and see whether you agree with everything?
+
+Great! Two small points:
+
+a) In "Why So Many Volumes?", "We now consider hundred volumes ..."
+   may sounds a bit unrealistic, even though that may be
+   realistic. How about "several tens of volumes"?
+
+b) Since we have "I am an amateur astronomer. Is this for me?",
+   perhaps we should also have "I am an astronomy
+   student/postdoc/.... Is this for me?", or something like that.
+
+ > It would be good to add a sentence at the bottom of our home page,
+ > in Japanese, asking for volunteers to translate the ACS material
+ > in Japanese.  Best thing would be to make a special page, where
+ > you explain in one or more paragraphs what the goal is, and how
+ > we need several people to do this.  At the bottom of the home
+ > page you can then have a one-liner, something like
+ > <a hreff="rel/nihongo.html">tasukete choudai"</a>, but then in
+ > kanji.
+
+Okay, I'll make something.
+
+ > By the way, I used "kali/vol/vol-6/doc/files/_/_title_ok.html".
+ > Is that a stable way to link to a book volume, from the FAQ page?
+
+As far as we keep rdoc same, this is the safe way. 
+
+ > In general, we need a way to cross link between different volumes.
+ > Did you get a chance to think about how to implement that in acsdoc?
+
+Well, technically speaking it is easy. One problem is perhaps
+that you have been changing the volume number quite a bit.
+
+Currently, for example, the HTML file for the first section of book 1a
+looks like:
+
+-----------------------------------------------------------
+<div class="description"><h1>Setting the Stage</h1>
+<p>
+<a name=rdocsect6>
+</p>
+-----------------------------------------------------------
+The name tag is added to make the table of content. The numbering is
+automatic.  So it is relatively easy to translate an expression like:
+
+crosslink(vol-1a/ch01/"Setting the Stage")
+
+to appropriate HTML link. However, there are several practical
+implementation problems:
+
+a) How to uniquely specify, for example, the section name. It is quite
+   possible that a same section or subsection name appears multiple
+   times in one volume.
+
+   In latex the problem is solved by letting the user to specify a
+   unique label to anything to be referred. We can take that approach
+   if you like, by, for example, writing
+
+   = Setting the Stage
+   <name>Name-here-must-be-unique-over-entire-ACS-or-Kali</name>
+
+   This will be transrated to 
+
+   <h1>Setting the Stage</h1>
+   <p>
+   <a name=Name-here-must-be-unique-over-entire-ACS-or-Kali>
+   </p>
+
+   and we could refer to it by, for example,
+
+   globallink(Name-here-must-be-unique-over-entire-ACS-or-Kali)
+
+   or
+
+   globallink(Name-here-must-be-unique-over-entire-ACS-or-Kali, ../)
+
+   to specify that you want to search for all volumes under the parent
+   directory of the current volume.
+
+b) How to handle the possible changes to the volume name, file name
+   etc, when you divide one book into two or shuffle the ordering of
+   the book.
+
+   Actually, as you can see, requesting the global name for the place
+   to be referenced does solve this problem as well.
+
+c) How the link should appear in the text? I mean, what should we
+   specify for "X"  below? 
+
+      <a href=....#Name-here-must-be-unique-over-entire-ACS-or-Kali>X</a>
+   
+   In latex, sections are numbered, so the solution was easy. In
+   acsdoc, sections are not numbered, nor the volumes (well, at least
+   not in a stable way). So it is not clear what to write at "X". We
+   could write:
+
+      "Volume 1a, Chapter 01, Section  Setting the Stage"
+   
+   But I'm not sure if that is the best way or not.
+
+d) In PS or TeX version there is no way to cross referensing to other
+   books. So what should we do there? 
+
+ > On the FAQ page, toward the end, under "how can I help?", I would
+ > like to give people a way to send email to us.  Is the following
+ > way the correct method to do so?
+ > 
+ >   If you would like to make a serious contribution in any of these
+ >   areas, please <a href="mailto:comments@artcompsci.org">contact us</a>.
+
+I think that's right. The best way is to test it...
+
+ > Finally, note that I have add some "meta" information for search
+ > engines, at the top of the FAQ page:
+ > 
+ >   <meta NAME="Keywords"
+ >   CONTENT="N-body code, N-body problem, N-body simulations,
+ >   amateur astronomy, open source, science, star clusters,
+ >   Ruby, Ruby code">
+ > 
+ > I *think* this is the correct way to do it.  Do you have experience
+ > with this?
+
+No...
+
+ > Do you have other suggestions for key words?  Do you
+ > want to add some Japanese terms in kanji?
+
+No.
+
+Jun
+------- End of forwarded message -------
+
