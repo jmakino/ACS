@@ -15,10 +15,10 @@ I actually went to 6th _and_ 8th order.
 pulling my leg.
 
 Bob: No, I did not do the combinatorics myself.  Instead, I used a
-symbolic integrator.  When I saw you struggling with all those
+symbolic manipulation package.  When I saw you struggling with all those
 substitutions when we tracked the fourth-order nature of the
 Runge-Kutta integrator, I was already wondering whether we shouldn't
-use a symbolic integration package.  At that point I didn't bring it
+use a symbolic package.  At that point I didn't bring it
 up, since we were in the middle of trying to figure out how things
 worked in the first place, and introducing yet another tool might have
 been confusing.
@@ -31,6 +31,14 @@ now that the procedure has become crystal clear, we are just faced
 with solving a large number of linear equations with the same number
 of unknowns, and that is really not something I want to do by hand;
 not would I learn much from doing so.
+
+Incidentally, I also had a look at the literature, and I found that
+people general solve this type of problem using what they call divided
+differentces, really a form of Newton interpolation.  In that case
+they do not have to solve the system of equations that we set out to
+do.  Even so, their approach is not that simple either when going to
+higher order.  Given the ease of using a symbolic manipulation program,
+I think that our approach is just as good as the standard one.
 
 Here is what I found, with the results for the coefficients directly
 plugged back into the code:
