@@ -1,0 +1,30 @@
+Date: Mon Jan 05 15:31:26 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+ > > I guess what we really need is 1) a small gif file (acs logo would be nice!)
+ > > and 2) a way to escape the "link:sample.gif" statement so that we can
+ > > include that in the rdoc output *without* it being translated by acsdoc.
+ > 
+ > I implemented a try. Please take a look at the current document,   which
+ > you have to make by  
+ >     
+ >    ruby acsdoc.rb -S README.cp acsdoc.rb
+
+Ah, yes, very nice!
+
+ > Well, to actually make a link to a image is currently a bit more
+ > complex, since the link is relative to the place where the generated
+ > HTML file is placed. Thus, you have to write (I believe)
+ > 
+ >    link: ../P/2003/11/images/labnote-031111.gif
+ > 
+ > (without space after link: )   
+
+I tried this, and it did not work yet.
+
+Let us discuss this tomorrow, together with the other points you
+addressed in this message.
+
+Piet
+
