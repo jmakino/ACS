@@ -5,8 +5,8 @@
 In this volume, Alice and Bob develop a robust and flexible ACS data
 format, and implement basic I/O modules, based on that format.  The
 current version of this volume contains only half of the material that
-we plan to include here, in a future release, by late 2004 or early
-2005.  One working example is given in section 4.3, where the Plummer
+we plan to include here, in a future release, by late 2004 or early 2005.
+One working example is given in section 4.3, where the Plummer
 model generator, developed in volume 5, is provided with ACS-style
 data output.
 

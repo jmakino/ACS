@@ -2,13 +2,12 @@ require "vector.rb"
 
 class Body
 
-  TAG = "particle"                                              #1 vol 2, ch. 2
+  TAG = "particle"                                              #1 vol 7, ch. 2
 
   attr_accessor :mass, :pos, :vel, :acc, :type                               #2
 
   def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
     @mass, @pos, @vel = mass, pos, vel
-    @type = nil                                                              #3
   end
 
 #:segment start: to_s_def

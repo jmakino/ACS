@@ -115,11 +115,8 @@ The rest of the tag, in our example <tt>star giant AGB</tt>, which I call
 the type, in our case the type of particle, I assume will be stored in
 an instance variable <tt>@type</tt>.  By default, when you create a
 vanilla flavor +Body+ instance, there is no extra type information,
-so I have added the following line to the +initialize+ method:
-
- :inccode: .iobody1.rb-3
-
-and I added <tt>@type</tt> to the list of accessor macros:
+so <tt>@type = nil</tt>.  I added <tt>@type</tt> to the list of
+accessor macros:
 
  :inccode: .iobody1.rb-2
 
@@ -133,7 +130,7 @@ but I guess I can make sense of it.  What appears to the right of the
 usual indentation.
 
 *Bob*: Yes, it seemed a bit wasteful of space to use five lines for what
-can be easily written in half a line.  But note that I added the word
+can be easily written in just one line.  But note that I added the word
 +then+, which you don't use when you write it over several lines.
 Ruby insists on using +then+ for inline constructs like this, since
 otherwise it would not know how to separate the condition from the
@@ -149,6 +146,7 @@ used it a few times.  Here is what I could have written more explicitly:
       subtag = " "+@type
     else
       subtag = ""
+    end
 
 In inline-version that would have become
 
@@ -215,8 +213,8 @@ for example, was read in as follows:
 
 So you see, from that point of view it is natural to make a
 combination like <tt>to_f_v</tt>, as we will undoubtedly do later on
-in our new read method.  For our write method this means that <tt>f_v_to</tt>
-is natural.
+in our new read method.  For our write method this means that
+<tt>f_v_to_s</tt> is natural.
 
 *Alice*: I see your point.  But how about making it a bit more compact,
 like <tt>fv_to_s</tt>?  I would prefer that, it is visually more pleasing.
@@ -275,7 +273,7 @@ Let's test it:
 require "iobody1.rb"
 
 b = Body.new(1, [2,3], [4.5, 6.7])
-b.write($stdout, 4, 16, 4)
+b.write($stdout, 4, 20, 4)
 END
 
  :output: cat test.rb

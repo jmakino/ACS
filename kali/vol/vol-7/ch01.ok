@@ -130,7 +130,11 @@ Computational Science.
 
 *Alice*: I like that!  ACS, for short.  Okay, the first line for any file
 in our new date format will then be <tt>begin ACS</tt>, and the last
-line will be +end+.
+line will be +end+ :
+
+ begin ACS
+   . . .
+ end
 
 == Physical Quantities
 
@@ -184,10 +188,10 @@ of
  position=1.0 0.0 0.5
 
 I suggest that we either introduce commas to separate the three
-numbers on the right, or allow spaces around the <tt>=</tt> sign.
+numbers on the right, and allow spaces around the <tt>=</tt> sign.
 
 *Bob*: I prefer spaces over commas.  Okay, let's make both legal, what
-you wrote above and also
+you just wrote with the equal sign crammed in, as well as
 
  position = 1.0 0.0 0.5
 

@@ -101,7 +101,6 @@ class Clop_Option
   end
 
 end
-#:segment end:
 
 class Clop
 

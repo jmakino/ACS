@@ -34,6 +34,11 @@ class Vector < Array
     end
     quotient
   end
+  def to_acs(name = nil, precision = 16, indentation = 0)
+    s = " " * indentation
+    s += name + " = " if name
+    s += self.map{|x| sprintf(" %#{precision+8}.#{precision}e", x)}.join
+  end
 end
 
 class Array
