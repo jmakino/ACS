@@ -28,7 +28,7 @@ include Integrator_force_default
     new_point
   end
 end
-
+
 module Integrator_forward
 
   include Integrator_pec_mode
@@ -85,7 +85,7 @@ module Integrator_protohermite
       @vel + @acc*dt + (1/2.0)*jerk*dt**2 ]
   end
 end
-
+
 module Integrator_leapfrog
 
   include Integrator_pec_mode
@@ -107,7 +107,7 @@ module Integrator_leapfrog
       @vel + @acc*dt + (1/2.0)*jerk*dt**2 ]
   end
 end
-
+
 module Integrator_multistep
 
   include Integrator_pec_mode
@@ -155,7 +155,7 @@ module Integrator_multistep
       wp.predict_pos_vel(dt + @time - wp.time)
     end
   end
-
+
   def make_taylor(a, d_0, t)
     dt = []
     t.each do |time|
@@ -194,7 +194,7 @@ module Integrator_multistep
     result*dt
   end
 end
-
+
 module Integrator_hermite
 
   include Integrator_pec_mode
@@ -232,7 +232,7 @@ module Integrator_hermite
                        (1/24.0)*crackle*dt**4                        ]
   end
 end
-
+
 module Integrator_rk4n                  # not partitioned
 
   include Integrator_force_default
@@ -292,7 +292,7 @@ module Integrator_rk4n                  # not partitioned
       @vel + @acc*dt + (1/2.0)*jerk*dt**2 + (1/6.0)*snap*dt**3 ]
   end
 end
-
+
 module Integrator_rk2n                        # not partitioned
 
   include Integrator_force_default
@@ -335,7 +335,7 @@ module Integrator_rk2n                        # not partitioned
       @vel + @acc*dt                      ]
   end
 end
-
+
 module Integrator_rk2n_fsal                  # not partitioned
 
   include Integrator_force_default
@@ -378,7 +378,7 @@ module Integrator_rk2n_fsal                  # not partitioned
       @vel + @acc*dt                      ]
   end
 end
-
+
 module Integrator_rk4                  # Abramowitz and Stegun's eq. 25.5.22
 
   include Integrator_force_default
@@ -435,7 +435,7 @@ module Integrator_rk4                  # Abramowitz and Stegun's eq. 25.5.22
       @vel + @acc*dt + (1/2.0)*jerk*dt**2 + (1/6.0)*snap*dt**3 ]
   end
 end
-
+
 module Integrator_rk3
 
   include Integrator_force_default
@@ -488,7 +488,7 @@ module Integrator_rk3
       @vel + @acc*dt + (1/2.0)*jerk*dt**2 + (1/6.0)*snap*dt**3 ]
   end
 end
-
+
 module Integrator_cc # NOTE: ONLY WORKS NOW IF ALL BODIES USE THIS METHOD
                      # since I haven't added acc extra/inter-polation elsewhere
   include Integrator_force_default
@@ -546,7 +546,7 @@ module Integrator_cc # NOTE: ONLY WORKS NOW IF ALL BODIES USE THIS METHOD
       @vel + @acc*dt + (1/2.0)*@jerk*dt**2,
       @acc + @jerk*dt                                            ]
   end
-
+
   def interpolate_pos_vel(wp, dt)
     tau = wp.time - @time
     jerk = (-6*(@vel - wp.vel) - 2*(2*@acc + wp.acc)*tau)/tau**2
@@ -566,7 +566,7 @@ module Integrator_cc # NOTE: ONLY WORKS NOW IF ALL BODIES USE THIS METHOD
       @acc + jerk*dt + (1/2.0)*snap*dt**2                        ]
   end
 end
-
+
 module Integrator_cco # NOTE: ONLY WORKS NOW IF ALL BODIES USE THIS METHOD
                      # since I haven't added acc extra/inter-polation elsewhere
   include Integrator_force_default
@@ -623,7 +623,7 @@ module Integrator_cco # NOTE: ONLY WORKS NOW IF ALL BODIES USE THIS METHOD
       @vel + @acc*dt + (1/2.0)*@jerk*dt**2,
       @acc + @jerk*dt                                            ]
   end
-
+
   def interpolate_pos_vel(wp, dt)
     tau = wp.time - @time
     jerk = (-6*(@vel - wp.vel) - 2*(2*@acc + wp.acc)*tau)/tau**2
@@ -1037,7 +1037,63 @@ class Worldera
   end
 end
 
+module Output
+
+  def diagnostics_and_output(c, initial_output = false)
+    t_target = set_target(initial_output)
+    diagnostics(t_target, c.dt_dia, initial_output)
+    output(c, t_target, initial_output)
+  end
+
+  def set_target(init)
+    if init
+      @time
+    elsif @t_end < @era.end_time
+      @t_end
+    else
+      @era.end_time
+    end
+  end
+
+  def diagnostics(t_target, dt_dia, init)
+    while @t_dia <= t_target
+      @era.write_diagnostics(@t_dia, @nsteps, @initial_energy, init)
+      @t_dia += dt_dia
+    end
+  end
+
+#  def output(c, t_target, initial_output)
+#    if (k = c.async_output_interval) > 0 and not initial_output
+#      do_pruned_dump
+#    else
+#      do_timed_output
+#    end
+#  end
+
+  def output(c, t_target, initial_output)
+    if (k = c.async_output_interval) > 0 and not initial_output
+      @era.clone.prune(k).acs_write($stdout, false, c.precision, c.add_indent)
+    elsif c.dump_flag and not initial_output
+      @era.acs_write($stdout, false, c.precision, c.add_indent)
+    else
+      while @t_out <= t_target
+        if not initial_output or c.init_out_flag
+          if c.world_output_flag
+            acs_write($stdout, false, c.precision, c.add_indent)
+          else
+            @era.take_snapshot(@t_out).acs_write($stdout, true,
+                                                 c.precision, c.add_indent)
+          end
+        end
+        @t_out += c.dt_out
+      end
+    end
+  end
+end
+
 class World
+
+include Output
 
   def World.admit(file, c)
     object = acs_read([self, Worldsnapshot], file)
@@ -1087,39 +1143,6 @@ class World
       @time = @era.end_time
       diagnostics_and_output(c)
       @old_era, @era = @era, @new_era
-    end
-  end
-
-  def diagnostics_and_output(c, initial_output = false)
-    if initial_output
-      t_target = @time
-    elsif @t_end < @era.end_time
-      t_target = @t_end
-    else
-      t_target = @era.end_time
-    end
-    while @t_dia <= t_target
-      @era.write_diagnostics(@t_dia, @nsteps, @initial_energy, initial_output)
-      @t_dia += c.dt_dia
-    end
-    if (k = c.async_output_interval) > 0 and not initial_output
-      @era.clone.prune(k).acs_write($stdout, false, c.precision, c.add_indent)
-    elsif c.dump_flag and not initial_output
-      @era.acs_write($stdout, false, c.precision, c.add_indent)
-    else
-      while @t_out <= t_target
-        output(c) if not initial_output or c.init_out_flag
-        @t_out += c.dt_out
-      end
-    end
-  end
-
-  def output(c)
-    if c.world_output_flag
-      acs_write($stdout, false, c.precision, c.add_indent)
-    else
-      @era.take_snapshot(@t_out).acs_write($stdout, true,
-                                           c.precision, c.add_indent)
     end
   end
 end
