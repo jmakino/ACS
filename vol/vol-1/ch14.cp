@@ -244,8 +244,6 @@ This was the smallest time step for which we did not get an explosion:
 
 And here is the same run with a ten times smaller time step.
 
- :inccode: .integrator_driver1b.rb-barebones
-
  :command: cp -f integrator_driver1b.rb test.rb
  :commandoutput: ruby test.rb < euler.in
  :command: rm -f test.rb
@@ -262,8 +260,6 @@ Now let us try the leapfrog method:
 *Alice*: Ah, already _much_ better.  What will happen with a ten times
 smaller time step?
 
- :inccode: .integrator_driver1d.rb-barebones
-
  :command: cp -f integrator_driver1d.rb test.rb
  :commandoutput: ruby test.rb < euler.in
  :command: rm -f test.rb
@@ -275,4 +271,36 @@ Clearly leapfrog is a much much better integrator.
 *Alice*: Yes, to get such a high accuracy would have taken forever with
 a forward Euler integrator.  Congratulations, Bob!
 
+*Bob*: Thanks, but don't get too excited yet: note that the error in the
+position is quite a bit larger than the error in the energy.  The difference
+between the positions in the last two runs is of the order of
+<tex>$10^{-4}$</tex>, while the next-to-last run already had an energy
+accuracy of a few time <tex>$10^{-7}$</tex>.
+
+*Alice*: This must be an example of what we talked about, when we first
+discussed the limits of using energy conservation as a check.  The leapfrog
+is an example of a symplectic integration scheme, one that is build to
+conserve energy.  Clearly it conserves energy better than position.
+
+*Bob*: But since it is a second order scheme, also the accuracy of the
+position should increase by a factor hundred when we decrease the time
+step by a factor ten.  Let's try and see.
+
+ :command: cp -f integrator_driver1e.rb test.rb
+ :commandoutput: ruby test.rb < euler.in
+ :command: rm -f test.rb
+
+*Alice*: You are right.  The difference between the _x_ component of the
+position in the last two runs is <tex>$2.10^{-6}$</tex>, while the
+difference between the previous run and the run before that was
+<tex>$2.10^{-4}$</tex>.  So the scheme really is second-order accurate.
+Still, it would be nice to try another second order integrator, one
+that does not have built-in energy conservation.
+
+*Bob*: I'll try to see what I can do, this evening.  And who knows,
+I might even try my hand at a fourth-order integrator.  But that will
+be it; we can't go on testing the two-body problem forever.  We have
+other work to do: finding a reasonable graphics package, for one thing.
+
+*Alice*: Definitely.  Okay, see you tomorrow!
 
