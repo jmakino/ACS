@@ -8,7 +8,7 @@ This is a normal text.
 
 Equation sample:
 
-<tex>$$ x = \frac{1}{2}$$</tex>
+<tex>$$ x = \frac{1}{t}$$</tex>
 
 Sample to have to tex inlines in a single
-line <tex> $\alpha$</tex> and  <tex> $\beta$</tex>.
+line <tex> $\alpha=0$</tex> and  <tex> $\beta = 1$</tex>.

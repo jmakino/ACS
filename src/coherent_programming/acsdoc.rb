@@ -160,15 +160,12 @@ module Acsdoc
 	ostring = ostring +  s
       end
     end
-    print ostring
     ostring
   end
 
   def process_texcode(texcode,dirname)
-    p texcode
     imgbase =".imgs/"
     imgdir =  imgbase 
-    p imgdir
     Dir.mkdir(imgdir) unless File.exist?(imgdir)
     texname = "tmp.tex"
     texbase = "tmp"
@@ -184,7 +181,7 @@ module Acsdoc
     texsource.close
     system("cat "+texname)
     system "latex #{texname}"
-    system "dvips -l 1 -x 1440 -E #{texbase}"
+    system "dvips -o #{texbase}.ps -l 1 -x 1440 -E #{texbase}"
     system "rm -f #{texbase}.jpeg; convert  #{texbase}.ps  #{texbase}.jpeg "
     imgname = imgbase + @@imgcount.to_s + ".jpeg"
     if File.exist?(texbase+".jpeg")
@@ -194,13 +191,11 @@ module Acsdoc
     else
       raise "Failed to create the jpeg file #{texbase}.jpeg"
     end
-    system "echo #{dirname}/#{imgname}"
     @@imgcount+=1
     "link:../#{imgname}"
   end
 
   def process_tex_inlines(s,instring,dirname)
-    p s
     if s.index("<tex>")-1==  s.index("\\<tex>")
       print "s is escaped ", s, "\n"
       return [s[s.index("<tex>")+5,s.length],s[0,s.index("<tex>")+5]]
@@ -218,7 +213,6 @@ module Acsdoc
     texcode += s[0,s.index("</tex>")];
     s = s[s.index("</tex>")+6,s.length]
     texresult=    process_texcode(texcode,dirname)
-    p texresult
     ostring += texresult
     [s,ostring]
   end
@@ -227,11 +221,9 @@ module Acsdoc
     ostring=""
     while s = instring.shift
       while loc = s.index("<tex>")  
-	print "in file_and ...", s, "\n"
 	r = process_tex_inlines(s,instring,dirname)
 	ostring +=r[1]
 	s = r[0]
-	p r
       end
       ostring += s+"\n"
     end
@@ -255,7 +247,6 @@ module Acsdoc
     ifile.close
     tmpstring=prep_cp_string(instring,dirname).split("\n");
     tmp2= find_and_process_tex_inlines(tmpstring,dirname);
-    p tmp2
     ofile.print tmp2
     ofile.close
   end
