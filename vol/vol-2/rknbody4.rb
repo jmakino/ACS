@@ -86,12 +86,12 @@ class Nbody
       @time += dt
       nsteps += 1
       if @time >= t_dia
-	write_diagnostics(nsteps)
-	t_dia += dt_dia
+        write_diagnostics(nsteps)
+        t_dia += dt_dia
       end
       if @time >= t_out
-	simple_print
-	t_out += dt_out
+        simple_print
+        t_out += dt_out
       end
     end
   end

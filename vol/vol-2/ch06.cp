@@ -11,10 +11,11 @@ methods from the +Body+ to the +Nbody class, as well as the +evolve+ function
 that calls them.
 
 *Bob*: The +evolve+ function orchestrates the whole integration process, and
-it is called by the driver, which only knows about the one +Nbody+ instance
-that it has created.  So it is logical to put the +evolve+ method inside
-the +Nbody+ class.  And since +evolve+ calls the various integration methods,
-it also seemed logical to have +leapfrog+, +rk2+, and so on, reside there.
+it is called by the driver, which only knows about the one +Nbody+
+instance that it has created.  So it is logical to put the +evolve+
+method inside the +Nbody+ class.  And since +evolve+ calls the various
+integration methods, it also seemed logical to have +leapfrog+,
+<tt>rk2</tt>, and so on, reside there.
 
 *Alice*: I could imagine an alternative, where each particle is given the
 freedom to use its own integration method, in which case you would

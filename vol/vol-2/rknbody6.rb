@@ -102,38 +102,39 @@ class Nbody
     end
   end
 
+  def calc(x,y,s)
+    x.each{|b| b.calc(x,y,s)}
+  end
+
   def forward(dt)
-    @body.each{|b| b.calc(@body,dt," @old_acc = acc(ba) ")}               #1
-    @body.each{|b| b.calc(@body,dt," @pos += @vel*dt ")}
-    @body.each{|b| b.calc(@body,dt," @vel += @old_acc*dt ")}
+    calc(@body,dt," @old_acc = acc(ba) ")
+    calc(@body,dt," @pos += @vel*dt ")
+    calc(@body,dt," @vel += @old_acc*dt ")
   end
 
   def leapfrog(dt)
-    @body.each{|b| b.calc(@body,dt," @vel += acc(ba)*0.5*dt ")}
-    @body.each{|b| b.calc(@body,dt," @pos += @vel*dt ")}
-    @body.each{|b| b.calc(@body,dt," @vel += acc(ba)*0.5*dt ")}
+    calc(@body,dt," @vel += acc(ba)*0.5*dt ")
+    calc(@body,dt," @pos += @vel*dt ")
+    calc(@body,dt," @vel += acc(ba)*0.5*dt ")
   end
 
   def rk2(dt)
-    @body.each{|b| b.calc(@body,dt," @old_pos = @pos ")}
-    @body.each{|b| b.calc(@body,dt," @half_vel = @vel + acc(ba)*0.5*dt ")}
-    @body.each{|b| b.calc(@body,dt," @pos += @vel*0.5*dt ")}
-    @body.each{|b| b.calc(@body,dt," @vel += acc(ba)*dt ")}
-    @body.each{|b| b.calc(@body,dt," @pos = @old_pos + @half_vel*dt ")}
+    calc(@body,dt," @old_pos = @pos ")
+    calc(@body,dt," @half_vel = @vel + acc(ba)*0.5*dt ")
+    calc(@body,dt," @pos += @vel*0.5*dt ")
+    calc(@body,dt," @vel += acc(ba)*dt ")
+    calc(@body,dt," @pos = @old_pos + @half_vel*dt ")
   end
 
   def rk4(dt)
-    @body.each{|b| b.calc(@body,dt," @old_pos = @pos ")}
-    @body.each{|b| b.calc(@body,dt," @a0 = acc(ba) ")}
-    @body.each{|b| b.calc(@body,dt," @pos = @old_pos + 
-                                            @vel*0.5*dt + @a0*0.125*dt*dt ")}
-    @body.each{|b| b.calc(@body,dt," @a1 = acc(ba) ")}
-    @body.each{|b| b.calc(@body,dt," @pos = @old_pos + 
-                                            @vel*dt + @a1*0.5*dt*dt ")}
-    @body.each{|b| b.calc(@body,dt," @a2 = acc(ba) ")}
-    @body.each{|b| b.calc(@body,dt," @pos = @old_pos +
-                                        @vel*dt + (@a0+@a1*2)*(1/6.0)*dt*dt ")}
-    @body.each{|b| b.calc(@body,dt," @vel += (@a0+@a1*4+@a2)*(1/6.0)*dt ")}
+    calc(@body,dt," @old_pos = @pos ")
+    calc(@body,dt," @a0 = acc(ba) ")
+    calc(@body,dt," @pos = @old_pos + @vel*0.5*dt + @a0*0.125*dt*dt ")
+    calc(@body,dt," @a1 = acc(ba) ")
+    calc(@body,dt," @pos = @old_pos + @vel*dt + @a1*0.5*dt*dt ")
+    calc(@body,dt," @a2 = acc(ba) ")
+    calc(@body,dt," @pos = @old_pos + @vel*dt + (@a0+@a1*2)*(1/6.0)*dt*dt ")
+    calc(@body,dt," @vel += (@a0+@a1*4+@a2)*(1/6.0)*dt ")
   end
 
   def ekin                        # kinetic energy

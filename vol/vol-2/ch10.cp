@@ -1,4 +1,4 @@
-= Two More Versions
+= Three More Versions
 
 == Extra +Body+ Variables
 
@@ -40,29 +40,29 @@ versions in order: your original one; the one we got by including an explicit
 parameter in the +acc+ call; and the new version you're writing now with extra
 variables in the +Body+ class:
 
- :include: .rknbody2.rb+forward
+ :inccode: .rknbody2.rb+forward
 
- :incode: .rknbody3.rb+forward
+ :include: .rknbody3.rb+forward
 
- :include: .rknbody4.rb+forward
+ :inccode: .rknbody4.rb+forward
 
 == Clean Code
 
 *Bob*: I must say, it is very gratifying to see how much cleaner this last
-version looks.  Let me rewrite the other three methods as well, and call
-this file <tt>rknbody4.rb</tt>.  Here they all are:
+version looks.  Let me rewrite the other three integration methods as
+well, and call this file <tt>rknbody4.rb</tt>.  Here they all are:
 
- :include: .rknbody4.rb+leapfrog
+ :inccode: .rknbody4.rb+leapfrog
 
- :incode: .rknbody4.rb+rk2
+ :include: .rknbody4.rb+rk2
 
- :include: .rknbody4.rb+rk4
+ :inccode: .rknbody4.rb+rk4
 
 *Alice*: A lot easier to read.  A great improvement over the previous
 two versions, though not _quite_ as clean as the two-body version.  Let's
-put up the +rk4+ method for the old two-body code:
+put up the <tt>rk4</tt> method for the old two-body code:
 
- :include: .rkbody.rb+rk4
+ :inccode: .rkbody.rb+rk4
 
 *Bob*: The difference is that in our latest version we still have to indicate
 which body +b+ it is that gets the instructions, hence the "<tt>b.</tt>"
@@ -125,7 +125,7 @@ named +b+ to calculate something, by issuing a command <tt>b.calc(s)</tt>,
 where +s+ is a string that will get executed by +b+.  The forward Euler
 method would then look like this:
 
- :include: .rknbody5.rb+forward
+ :inccode: .rknbody5.rb+forward
 
 *Bob*: And indeed, with no mention of +b+ anymore within the string that is
 passed as the third argument of +calc+.
@@ -148,7 +148,7 @@ pretty sure it will.
 *Bob*: You used the +calc+ method in the middle line of +forward+ as well,
 even though you could have used the simpler statement
 
- :inccode: .rknbody4.rb-2
+ :include: .rknbody4.rb-2
 
 which we used before, in the previous version.
 
@@ -159,11 +159,11 @@ which is the same in all cases.  Here, let me write the other three methods
 as well, and then it will become more clear how the actual strings
 that contain the commands will stand out:
 
- :include: .rknbody5.rb+leapfrog
+ :inccode: .rknbody5.rb+leapfrog
 
- :incode: .rknbody5.rb+rk2
+ :include: .rknbody5.rb+rk2
 
- :include: .rknbody5.rb+rk4
+ :inccode: .rknbody5.rb+rk4
 
 *Bob*: It's an improvement over the first two versions, which used
 an index _i_.  In the previous version, we could leave out that obnoxious
@@ -176,14 +176,108 @@ will declare the extra variables for us when the string is evaluated in
 the +Body+ class.  Here is how I would write the +calc+ method for the
 +Body+ class:
 
- :include: .rknbody5.rb+calc
+ :inccode: .rknbody5.rb+calc
 
 *Bob*: Simplicity itself.  I see now what you meant, when you described
 the way the two parameters +ba+ and +dt+ were going to be substituted
 in an actual call to +calc+.
 
-*Alice*: Almost too simple to be true.
+*Alice*: Almost too simple to be true, but I think this is all correct.
 
-== xxx
+== Indirect String Sending
 
-*Bob*: No matter how clever your approach is,
+*Bob*: No matter how clever your approach is, I must say that the integration
+methods still look too cluttered for my taste.  They miss the simple elegance
+and brevity of expression of our previous version.  For one thing, in
+that version we did not have to break any statement up over two
+lines.  What bothers me especially is that for most statements, more
+than half of the line gets repeated exactly.  I wonder whether we can do
+something about that.
+
+*Alice*: I think we can.  So far, we have introduced a +calc+ function on
+the +Body+ level.  How about introducing a second +calc+ function on the
++Nbody+ level?  Let's create one more file, <tt>rknbody6.rb</tt>, in which
+we give the +Nbody+ class the following extra method:
+
+ :inccode: .rknbody6.rb+calc+Nbody
+
+*Bob*: Brevity indeed.  I see what you mean.  Forward Euler then becomes,
+instead of
+
+ :inccode: .rknbody5.rb+forward
+
+which we just wrote, quite a bit shorter as:
+
+ :inccode: .rknbody6.rb+forward
+
+*Alice*: Exactly.  And the following three methods become:
+
+ :inccode: .rknbody6.rb+leapfrog
+
+ :include: .rknbody6.rb+rk2
+
+ :inccode: .rknbody6.rb+rk4
+
+*Bob*: I like that: every statement now fits on one line, we don't have to
+modify the +Body+ class when we introduce a new integration scheme, and we
+don't mention the variable <tt>@body</tt> more than once per line.  I'm
+satisfied: this combines all good things in one.  And I must say, I'm growing
+fond of working with Ruby.
+
+*Alice*: So do I.  Even though I knew that Ruby was a well designed language,
+I was a bit skeptical at first about how much that would really buy
+us.  But as we already have seen, it buys us quite a bit in terms of clarity
+of expression.  And when writing complicated programs and packages, something
+we will start doing soon, clarity of expression is more important than anything
+else.  Nothing else will allow you to maintain an overview over the whole
+situation.
+
+== Testing
+
+*Bob*: However, we haven't tested yet any of our latest three versions.
+For now, let's just try the figure-8 triple.  I'll run the first
+singly-linked code version again, to make sure we got the right
+output.
+
+ :commandoutput: ruby rknbody3b_driver.rb < figure8.in
+
+And then our version with the extra variables added by hand to the
++Body+ class:
+
+ :commandoutput: ruby rknbody4a_driver.rb < figure8.in
+
+Good!  Now the version that is sending a string from +Nbody+ to <tt>Body</tt>:
+
+ :commandoutput: ruby rknbody5a_driver.rb < figure8.in
+
+Also perfect.  Finally our last version with the two +calc+ methods:
+
+ :commandoutput: ruby rknbody6a_driver.rb < figure8.in
+
+Great!  It all works.
+
+== The Next Step
+
+*Alice*: That's very nice.  As we already said, almost too good to believe.
+
+*Bob*: Perhaps it is time to move on.  I'd love to tinker further with
+other variations on a theme, but it is high time to get a graphics
+implementation.
+
+*Alice*: But let me remind you: before doing so, we really need to settle
+down on a good data format, ideally a self-describing type of format.
+Already during our debugging adventure, I sometimes got confused as to
+which numbers where which.  You mentioned the FITS format.  Something like
+that would be much easier to work with, and much safer too.
+
+*Bob*: If we are to implement such a format, and I think that is a good idea,
+we should probably do it right now.  Otherwise we'll be writing a graphics
+package for our current format, and then we have to put a connection piece
+to that package for our later format.  And we will always risk
+confusion as to which of the two formats we are using, at any given
+time.
+
+Okay, as much as I would like to delve into graphics, let's first get our
+data format defined and implemented.
+
+*Alice*: Agreed!
