@@ -1,3 +1,364 @@
 = Encapsulating Information
 
-== xxx
+== A Soft Violation
+
+*Bob*: Hi Alice, are you still convinced that you find a way to avoid
+repetition in a command line option parser?
+
+*Alice*: Hi Bob!  I gave it a good deal of thought, and I came to the
+conclusion that we were both right.
+
+*Bob*: How can that be?
+
+*Alice*: You were right in pointing out that the three places in your
+program did three quite different things: parsing information, passing
+it on to the computer, and optionally passing it to the user through a
+help facility.
+
+At the same time, I was right in pointing out the danger of having the
+information about that information scattered around in those three
+different places.  I called it a violation of the DRY principle, the
+notion of Don't Repeat Yourself.  But I guess you did not commit a hard
+violation of the principle, since you did not literally repeat yourself.
+
+Perhaps you could call it a soft violation.  The problem I objected to
+was the fact that you mentioned the same option in three different places.
+And even though you did something different concerning that option in
+each of those different places, there still is the danger that if you
+change the functionality of that option, you can introduce subtle bugs
+if you don't update all three places correctly.
+
+*Bob*: Yes, I agree that there is that danger.
+
+*Alice*: In fact, when I looked at your code, I realized that you actually
+deal with each option _four_ times!  I only saw the first three, when I
+scanned the actual mention of each option, but at the end you use the option
+information once again.
+
+*Bob*: Can you show me?
+
+== Four Occurrences
+
+*Alice*: Take the time step information, for example.  First it appears
+in your +help+ description of the <tt>-d</tt> option:
+
+ :inccode: .rkn1.rb+print_help
+
+Then it occurs a second time as the first option listed in the call to
+the parser, which have loaded through the +getoptlong+ package:
+
+ :inccode: .rkn1.rb-second
+
+The third time, we encounter this same <tt>-d</tt> option in the inner loop
+of the <tt>read_options</tt> method, in the lines:
+
+ :inccode: .rkn1.rb-6
+
+What I had not realized yesterday was the fact that at the end, you echo
+all the values that are set, before you start the integration.  That is
+certainly a good thing to do, since it allows the user to see explicitly
+what parameter values were used by the integrater, including default values
+that were not set by the user.  But you see, again the time step shows up,
+this time not through a mention of <tt>-d</tt>, but through the second
+line in the initial print statement:
+
+ :inccode: .rkn1.rb-3
+
+== Danger
+
+*Bob*: But why should that bother you?
+
+*Alice*: imagine that you want to change the internal way to store the
+data.  Or more seriously, imagine that someone else wants to adapt your
+program for additional applications, and therefore wants to change the
+internal way to store the data.  Instead of assigning the time step to
+the variable +dt+, perhaps she wants to assign that value to a variable
+<tt>dynamics_dt</tt>, since she also has a stellar evolution module for
+which she is using a time step <tt>evolution_dt</tt>.
+
+Now she has to realize that she has to change the appropriate line in
+the inner loop of the <tt>read_options</tt> method, and in the second
+line of the <tt>STDERR.print</tt> command.  In those two places, +dt+
+occurse _three_ times, and she has to realize that she has to change
+two of the three as follows: in the <tt>read_options</tt> place she
+has to write:
+
+        dynamics_dt = arg.to_f
+
+and in the <tt>STDERR.print</tt> command, she has to write:
+
+      "dt = ", dynamics_dt, "\n",
+
+Do you see the potential for confusion, and hence mistakes.
+
+*Bob*: Hmmm.  I must admit that there is that possibility, yes.
+
+*Alice*: So this is what I meant when I said that we were both right.
+You are doing four _different_ things in four different places, so
+in that sense you are not repeating anything.  At the same time, you
+deal with the _same_ variable in those four different places, either
+through their command line option or their internal representation.
+
+*Bob*: You are saying that I do _repeatedly_ something different with
+the same piece of information.
+
+*Alice*: Exactly.
+
+*Bob*: And it would be better if we could avoid that.
+
+*Alice*: Indeed.
+
+*Bob*: But I come back to my question: how can we avoid that?
+It would be terribly clumsy to do all four actions for the first
+option first, then to do those for actions for the second option,
+and so on.  In that way, you could keep the information for one
+option all close together, but you would have to write a copy of
+all four commands for each new option!
+
+*Alice*: That would not be a good solution, I agree.  We have to think
+of something better.
+
+== A Matter of Principle
+
+*Bob*: You always like to come up with principles.  Can't you think of a
+principle that will help us out here?
+
+*Alice*: Now that you challenge me, perhaps we can use Ruby itself as an
+example.  Ruby is built on the principle of indirect addressing, which is
+why it is so flexible.  Perhaps we could avoid using the information itself
+in the four places that I pointed out.  How about storing the real
+information in a fifth place?  If we can find a way to access that
+fifth place in the other four instances where we need the information,
+we can keep things under control.
+
+*Bob*: Ah, you mean that the code writer has write access to the data
+in that fifth place, while the other four places only have read access
+to those data?
+
+*Alice*: I guess, yes, that is a good way to put it.  I mentioned the case of
+someone wanting to adapt the code for a different purpose.  Rather
+than changing it in the two different places I mentioned above, writing
+
+        dynamics_dt = arg.to_f
+
+and
+
+      "dt = ", dynamics_dt, "\n",
+
+all she would have to do is to go to the storage place where all the real
+information is kept, and change one line there.  If the information was
+kept there as:
+
+  Internal variable:  dt
+
+then all she would have to do is change this line to:
+
+  Internal variable:  dynamics_dt
+
+*Bob*: I think I begin to see how this could be implemented.  The two
+lines you mentioned could be replaced by:
+
+        time_step_variable_name = arg.to_f
+
+and
+
+      "dt = ", time_step_variable_name, "\n",
+
+and somewhere an action would be taken that would replace 
+<tt>time_step_variable_name</tt> everywhere with whatever the code
+writer would have specified in the <tt>Internal variable:</tt> slot
+for the time step option.  In the above case,
+<tt>time_step_variable_name</tt> would be replaced everywhere by
+<tt>dynamics_dt</tt>.
+
+*Alice*: Yes.  This is the principle of indirect addressing, or the
+principle of indirection, I guess.
+
+*Bob*: That sounds like a lack of direction to me.  But lets forget
+about naming your principle -- we could leave that open as well, and
+indirectly address your principle later.
+
+*Alice*: I see you still don't like principles, but you must admit,
+this one gave us a new idea.
+
+== An Option Block
+
+*Bob*: I admit.  So how to go about this?  Ah, each option would have
+such a definition, right?  And each option would need more than the
+information of the name of the _internal_ variable.  At a minimum, it
+would have to know about the name of the _external_ handle, namely the
+name of the option on the command line argument; in our case <tt>-d</tt>
+or in longer form <tt>--step_size</tt>.
+
+*Alice*: I can see from the look in your eyes that you're getting ready
+to code something up!
+
+*Bob*: And each option would need a type, for the input to work properly.
+Even though Ruby has dynamic typing, someone somewhere has to tell Ruby
+that the number of particles, when read in from the command line, has
+to be converted to an integer, while the name of the integration method
+retains the type of a string, and the time step size becomes a floating
+point number.
+
+Hmm.  This becomes really interesting.  So each option will be characterized
+by a single block of information, which could be an instance of a new class.
+And it could contain help information as well!
+
+*Alice*: Ah, yes, of course.  And if you would change either the functionality
+or just the names of some of the information in a block, you would naturally
+modify the help message as well, to reflect the changes you made.  Since
+everything lives together in one paragraph, so to speak, there is no obstacle
+against keeping things up-to-date together.
+
+*Bob*: We could even have more than one help level.  For example, typing
+"-h" could lead to a one-line help message being displayed, while typing
+"--help" could give you a more detailed multi-line message.
+
+*Alice*: So all the information would be bundled: the internal representation,
+to be used by the computer when running a program, the specification
+of the command line interface, to get the information from the user into
+the computer, and help messages, to get information back to the user.
+I like it!
+
+*Bob*: Not only that, there is another flow of information back to the user,
+when a program starts running and echoes its initial state, as you pointed
+out earlier.  So each block could have a `print name' for its internal
+variable as well.  For example, the number of particles could be specified
+on the command line by typing <tt>-n 3</tt> for an N-body system, or
+<tt>--number_of_particles 3</tt> or something like that.  Internally the
+variable storing that information might be <tt>n_part</tt>.  But when you
+echo the initial state, it is much more natural to just type <tt>N = 3</tt>.
+This could be specified by a block with the lines
+
+  Short name:           -n
+  Long name:            --number_of_particles
+  Value type:           int
+  Default value:        1
+  Global variable:      n_part
+  Print name:           N
+  Description:          Number of particles
+  Long description:
+    Number of particles in the N-body system,
+    that is generated by this program.  The
+    positions will be chosen at random within
+    a sphere of unit radius, and the velocities
+    will be set to zero.
+
+The +Description+ content can then be displayed after a <tt>-h</tt> request,
+and the <tt>Long description</tt> content appears when you give a
+<tt>--help</tt> request.  I started the latter on a new line, since it will
+be the only piece of information that will need to be spread out over more
+than one line, and starting it at the beginning of the line will allow us
+to format it properly for display.
+
+== Growing a Manual
+
+*Alice*: Very nice!  In fact, when you have several options, and you give each
+option such a detailed <tt>Long description</tt>, those together in effect
+form a kind of man page, like in the Unix system, a form of manual page
+that summarizes the interface to the program.  And keeping all that
+information within the code itself will be a form of insurance.
+
+We all know of cases where the manual page for a code says one thing,
+while the code does something else, because someone modified the code
+and did not bother to update the man page.  Now if the manual information
+lives in the very same place where the actual information about the main
+variables is kept, there is no longer _any_ barrier against keeping
+information up to date.
+
+*Bob*: Even I can bring up the discipline to keep documentation up to date
+in that way, I expect.  And now that you mention man pages, a natural thing
+would be to add examples in the <tt>Long description</tt>.  How about:
+
+  Long description:
+    Number of particles in the N-body system,
+    that is generated by this program.  The
+    positions will be chosen at random within
+    a sphere of unit radius, and the velocities
+    will be set to zero.
+
+      Example: "ruby mk_cold_collapse -n 100"
+
+      will generate a cold system containing 100
+      particles.
+
+*Alice*: So you allow blank lines in the output.  Well, why not.  If we
+consider each help message to form a part of a manual, it would only be
+natural to allow new paragraphs and blank lines to appear.  It certainly
+will make things more readable.  We just have to be careful to find a unique
+way to get the information listed so as not to confuse two options.
+
+*Bob*: Easy!  We can insist on _two_ blank lines between options.  If we
+insist that the <tt>Long description</tt> allows appears at the very
+end of a block, then a single blank line means that the <tt>Long
+description</tt> still continues, whereas a double blank line means that
+we now start the next block, for a new option.
+
+*Alice*: I think you have found a great way to make a top-down specification
+for a user interface for all of our programs!  Before we write a
+program to parse all that information, how about going all the way,
+top-down wise?  We may as well specify the whole series of option blocks
+for our N-body program.  Once we are happy with that, we can implement
+a parser, and then use all that to replace your previous driver
+<tt>rkn1.rb</tt>.
+
+*Bob*: Good!  In that way, it will be easier to write the parser, with a
+concrete example in front of us.  I can just take the options from
+<tt>rkn1.rb</tt>, fill in the blanks for the variables, and weave the
+appropriate help texts into each block.
+
+*Alice*: Go right ahead!
+
+== An Full Option List
+
+*Bob*: Okay.  This is the type of code that writes itself, once you get
+the idea!
+
+*Alice*: As long as you write it, I can maintain your illusion that the
+program writes itself.
+
+*Bob*: What about this, for our N-body program?  You see: I am adding a
+top-level not-an-option option, which only contains two entries,
+<tt>Description</tt> and <tt>Long description</tt> to tell us what the
+whole code is doing, before getting into the detailed information of each
+option.  This could be the opening paragraph of the manual page.
+
+And come to think of it, let me put everything in one long `here document'.
+That will make it easy to pass this option block list around, as a single
+string.
+
+ :inccode: .rkn2.rb-optionlist
+
+*Alice*: Wonderful!  That contains all the information needed for a computer
+as well as for a human reader.  How nice!  You can just go through it and
+already get a good feeling for what the code is doing, without reading any
+line of code yet.
+
+Just one question: why is there a minus sign before the +END+ in the 
+beginning of the specification of the `here document'?
+
+*Bob*: Oh, that means that we can put the +END+ anywhere on a line,
+not necessarily flush with the left margin.  In other words, it does
+not have to start in the first column, in the old language of punch cards,
+but it can appear indented and still be recognized as the proper +END+.
+And as you can see, I indeed ended the `here document' with a few spaces
+in front of the ending +END+, since it looked more natural in that way.
+
+*Alice*: Now all we have to do is implement it, by writing a parser.
+
+*Bob*: I'm happy to give that a try.  Now that we have specified the procedure,
+it shouldn't be too hard to write the code to make it all come alive.  Given
+the flexibility of Ruby, and a healthy dose of regular expression
+magic, this should be doable.  And I'm sure glad we don't have to code
+this up in C++ or Fortran!
+
+*Alice*: Indeed, this is the ideal task for a scripting language.  Even
+the name fits: we have just produced a script for specifying an N-body
+dance.
+
+*Bob*: Okay, let me give it a shot.  Next time we meet I should have
+at least something workable.
+
+
+
+

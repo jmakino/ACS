@@ -1,0 +1,245 @@
+= The First Journey: +Clop+, the Non-help Part
+
+== Three Journeys
+
+*Alice*: I have enjoyed getting a bird's eye view of your <tt>clop.rb</tt>
+file.  Let's get a little closer to the ground now.  Where shall we swoop
+down?
+
+*Bob*: I suggest that we continue our tour on the level of the +Clop+ class,
+before descending all the way to the internal workings of the individual
+options, the machinery of which is contained in the <tt>Clop_option</tt>
+class.
+
+However, more than halve of the +Clop+ class code lines are dedicated to
+the help facility.  It is not necessary to look at these lines in order to
+understand how normal options are being parsed.  So I suggest that we
+continue our tour in three easy journeys.  First we inspect how a normal
+option is handled on the +Clop+ level.  Second, we descend to the
+<tt>Clop_option</tt> level, to see how the corresponding option block
+is parsed and used.  Third, we go back to the +Clop+ level in order to
+figure out how the help facilities works.
+
+*Alice*: Sounds good to me!
+
+*Bob*: The first journey is by far the simplest, and shortest.  Of the
+three actions ordered in the +Clop+ initializer:
+
+ :inccode: .clop.rb+initialize+Clop
+
+we have already seen how the first action <tt>parse_option_definitions</tt>
+consisted in handing all the work to the initializer one level lower,
+through a call to <tt>Clop_Option.new</tt>.  So that part will be visited
+in our second journey.
+
+Similarly, we have seen that the request for the third action also was
+handed down directly to the individual options on the <tt>Clop_Option</tt>
+level.  All we have to do in our first journey is to figure out how the
+method <tt>parse_command_line_options</tt> works.
+
+== Inspecting <tt>find_option</tt>
+
+*Alice*: Can you show me this method again?
+
+*Bob*: Here it is:
+
+ :inccode: .clop.rb+parse_command_line_options
+
+The first two +if+ and +elsif+ branches concern the help facility, which
+we will address in our third journey.  So we only have to inspect the
+following three methods here, during our first journey: <tt>find_option</tt>
+and <tt>parse_option</tt> and <tt>initialize_global_variables</tt>.
+
+Here is the first one:
+
+ :inccode: .clop.rb+find_option
+
+*Alice*: The top part is clear.  You hand it a string that contains
+something like <tt>"-d"</tt> or <tt>"--step_size"</tt>.  I presume
+that the option class <tt>Clop_option</tt> has a method +longname+
+that returns exactly the string <tt>"--step_size"</tt> and a methodo
++shortname+ that similarly returns <tt>"-d"</tt>.
+
+*Bob*: Well presumed!
+
+*Alice*: Now if the option is recognized as the long name version
+of option +i+ in the option array, the value +i+ is returned, as it
+should be.  But what happens with the short name?
+
+Ah, wait, before you answer my question, let me think.  This must be
+connected with the fact that you allow for short options to be glued
+to their values.  For example <tt>"-d0.001"</tt> would be a valid
+format.
+
+*Bob*: Indeed, even though a user would not be likely to write it that
+way, since it does look a bit confusing.  However, if we allow
+<tt>"-n3"</tt>, we should allow <tt>"-d0.001"</tt> as well.
+
+*Alice*: Agreed.  So I understand that you want to check only whether
+the <tt>-d</tt> part is present in the string +s+, while that string
+is allowed to contain more.  Now you do that by turning the +shortname+
+of the option into a regular expression.
+
+*Bob*: Yes: if you want to compare two strings, the proper and clean
+way to do so in Ruby is to change the string at the right-hand side into a
+regular expression.  This is like converting a integer into a floating point
+number.  In a way, nothing changes, except that now it has become an instance
+of a different class.  For the number, an +Int+ instance has become a +Float+
+instance, and here in our case, a +String+ instance has become a +Regexp+
+instance.
+
+*Alice*: and the comparison operator <tt>=~</tt> returns +true+ if
+<tt>@options[x].shortname</tt> is indeed contained in the string +s+.
+
+*Bob*: Yes, except that it returns the position of the first character
+of the match, rather than +true+.  But what concerns us here is that it
+does _not_ return +nil+, which would be interpreted sa +false+; anything
+that is not +nil+ or +false+ is considered to be +true+.  Even the
+null string <tt>""</tt> is +true+ in Ruby, another thing to watch out
+for if you are a C programmer.
+
+*Alice*: And a more logical use of the notion of +true+, if you ask me.
+A non-null string string is still more than nothing.
+
+*Bob*: Yes, I agree, though it took me a while to shake the C habit.
+
+== The Last Cryptic Bit
+
+*Alice*: Now I think I understand all about this <tt>find_option</tt> method,
+except for that last cryptic bit, <tt>and $` == ""</tt>.  What is that doing
+there?  And what _does_ it do?
+
+*Bob*: Ah, that is a nice addition, if I may say so myself.  At first
+I had not put that in, but when I looked at this method, without that
+addition, I had the feeling that something wasn't right.  When I thought
+about it, I realized that there was still a possibility for ambiguity.
+
+*Alice*: Like?
+
+*Bob*: Like having an option with a long form <tt>--number_of_particles</tt>
+and a short form <tt>-n</tt>.  Can you see what would happen in that case?
+
+*Alice*: Let me inspect.  Ah!  Yes, of course.  In the case of the long form,
+you still match correctly against <tt>-n</tt>, as the second and third
+character of the long form.  How devious!
+
+But wait a minute.  If you first check the long form, you could bypass the
+check for the short form, by turning the two +if+ statements into an
+<tt>if...else</tt> statement.
+
+*Bob*: Yes, that would work in the specific case I just mentioned, where
+there is only a confusion between the two ways of writing the _same_ option.
+But what if there is a possible confusion between two different options?
+
+Here is an example.  Let there be another option with a long form called
+<tt>--neutronstar_type</tt>.  Now that option, too, matches <tt>-n</tt>.
+So we have to protect different options from each other, and we cannot
+assume safety just by shadowing the short option check by the long option
+check.
+
+*Alice*: You are right!  But I still don't understand the syntax of your
+solution.  I would have checked whether the match started at the beginning.
+Didn't you say that the match attempt returns the position of the first
+character of a successful match?
+
+*Bob*: Indeed.  And you are right.  I could have written
+
+        i = x if (s =~ Regexp.new(@options[x].shortname)) == 0
+
+However, I prefered to use the <tt>$`</tt> variable.  After every
+successful match, the matched part of the string is assigned to the
+variable <tt>$&</tt>, while the part of the string before the match
+is assigned to <tt>$`</tt> and the part of the string following the
+match to <tt>$'</tt>.  So I just checked whether <tt>$`</tt> was
+equal to the empty string:
+
+ :include: .clop.rb-4
+
+*Alice*: I see.  That is good to know.  I guess those rather cryptic
+shorthands are borrowed from Perl.
+
+*Bob*: I think so.
+
+*Alice*: Okay, I now fully understand how <tt>find_option</tt>.  On to the
+next station of our first journey!
+
+== Inspecting <tt>parse_option</tt>
+
+*Bob*: Here is the next station.  After we know which option we are dealing
+with, we have to parse it.  This happens in the following method:
+
+ :inccode: .clop.rb+parse_option
+
+Now this is a bit more complicated, since there are several forks in the
+road.  The first fork is related to the question: is the type of the
+option boolean?  In other words: are we dealing with a flag?  A flag can
+only be +true+ or +false+.  By name the flag as a command line option,
+the user intends to set the flag, <i>i.e.</tt>, to the value +true+.  By
+leaving out that option, the user intends to keep the default value +false+.
+
+For example, in our N-body code, the user can ask for extra
+diagnostics by including the option <tt>-x</tt>, which leads to the
+corresponding global variable <tt>$x_flag</tt> as we have specified
+already.  By default <tt>$x_flag = false</tt>.  If the option <tt>-x</tt>
+is encountered, we have to change this variable to <tt>$x_flag = true</tt>.
+
+This happens by setting the +valuestring+ of the boolean option to +true+
+as you can see at the beginning of the code fragment above.
+
+*Alice*: This +valuestring+ is probably implemented as a string
+<tt>@valuestring</tt> within the <tt>Clop_option</tt> class, and there
+that string is used later to obtain the actual value?
+
+*Bob*: All correct, as we will see during our second journey, but you don't
+have to rely on that, on this level: it could have been implemented in
+a different way, as far as the +Clop+ class is concerned.  The only important
+thing is that there is a `setter' method provided for the <tt>Clop_option</tt>
+class, that somehow sets the internal information of the <tt>Clop_option</tt>
+instance in such a way as to guarantee that the boolean value of the option,
+when asked for later, will return +true+.
+
+Hmm, that sounded more complicated than it really is.  Often things are
+much clearer on the code level than when you try to express it in words.
+
+*Alice*: The same is true in mathematical equations, of course, once you
+understand all the symbols . . .
+
+*Bob*: . . . and once you are sufficiently familiar with manipulating the
+symbols that they are becoming old friends.
+
+*Alice*: Yes, until that point it is still helpful to have clumsy sentences
+in a natural language to help you get the idea.  So, please continue
+to be clumsy, and tell me what happens next.  We have encountered a fork
+in the road.  It the option is boolean, we set it to true without needing
+to read anything more from the command line, and we happily +return+.
+
+*Bob*: And if the option is not boolean, we take the other fork in the road,
+by continuing the travel through the method <tt>parse_option</tt>.
+
+== xxx
+
+*Alice*: Ah, I see, if the type of the option is _not_ boolean, you have
+to extract the value from the next little bit of command line information,
+by accessing <tt>arg_array</tt>.  But wait a minute, I see two lines
+where you assing something to <tt>@options[i].valuestring</tt>, no, three
+lines; one at the very bottom too.
+
+Ah, that last one deals with vectors, and you already explained that vectors
+are special, in that their value can be spread out over different bits of
+string in the command line.  So let's leave that for later.  But what about
+these two assignments of <tt>@options[i].valuestring</tt> right in the middle?
+
+*Bob*: 
+
+
+
+
+
+
+
+
+
+
+
+
+== Inspecting <tt>initialize_global_variables</tt>

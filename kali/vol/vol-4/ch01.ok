@@ -127,7 +127,7 @@ start your critical quest!
 
 The first line of the file <tt>rkn1.rb</tt> reads:
 
- :include .rkn1.rb-1
+ :include: .rkn1.rb-1
 
 which means that it reads in the file <tt>rknbody.rb</tt>, which is
 just a straight copy from the file <tt>rknbody9.rb</tt>, where we had
@@ -146,14 +146,14 @@ get there, it will be easiest to read the file starting at the end.
 
 The last three lines:
 
- :include .rkn1.rb-2
+ :include: .rkn1.rb-2
 
 are exactly the same as the last three lines of the old driver file
 that we used to invoke the softened version of our N-body code.  Just
 above that, we report the parameter values that are actually used in
 the run:
 
- :include .rkn1.rb-3
+ :include: .rkn1.rb-3
 
 These are also exactly the same as what was written in the old driver.
 However, working our way back up, from here on things are different.
@@ -161,7 +161,7 @@ Where we wrote down the values of all parameters by hand in the old
 driver code, here there are assigned by a call to <tt>read_options</tt>
 with a single argument, called +parser+, as follows:
 
- :include .rkn1.rb-4
+ :include: .rkn1.rb-4
 
 The method <tt>read_options</tt> is written just above this call.  At
 the top of that method, all default values are assigned to the parameters
@@ -179,7 +179,7 @@ as well as the longer command line arguments that start with "<tt>--</tt>".
 *Bob*: Yes, this is a piece of magic that is provided by a package that
 I loaded through the statement near the top:
 
- :include .rkn1.rb-5
+ :include: .rkn1.rb-5
 
 *Alice*: What does this package do, and roughly how does it work?
 

@@ -9,6 +9,7 @@ def print_help
     "         [-m integration_method]\n"
 end
 
+#:segment start: second
 require "getoptlong"                                                         #5
 
 parser = GetoptLong.new
@@ -22,6 +23,7 @@ parser.set_options(
   ["-s", "--softening_length", GetoptLong::REQUIRED_ARGUMENT],
   ["-t", "--total_duration", GetoptLong::REQUIRED_ARGUMENT],
   ["-x", "--extra_diagnostics", GetoptLong::NO_ARGUMENT])
+#:segment end:
 
 def read_options(parser)
   dt = 0.001
@@ -38,26 +40,26 @@ def read_options(parser)
       opt, arg = parser.get
       break if not opt
 
-      case opt
-      when "-d"
-	dt = arg.to_f
+      case opt                                                               #6
+      when "-d"                                                              #6
+        dt = arg.to_f                                                        #6
       when "-e"
-	dt_dia = arg.to_f
+        dt_dia = arg.to_f
       when "-h"
-	print_help
+        print_help
         exit         # exit after providing help
       when "-i"
-	init_out = true
+        init_out = true
       when "-m"
-	method = arg
+        method = arg
       when "-o"
-	dt_out = arg.to_f
+        dt_out = arg.to_f
       when "-s"
-	eps = arg.to_f
+        eps = arg.to_f
       when "-t"
-	dt_end = arg.to_f
+        dt_end = arg.to_f
       when "-x"
-	x_flag = true
+        x_flag = true
       end
 
     rescue => err

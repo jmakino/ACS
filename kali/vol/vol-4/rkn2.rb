@@ -1,8 +1,9 @@
-require "rknbody.rb"                                                         #1
+#:segment start: head
+require "rknbody.rb"
 require "clop.rb"
+#:segment end:
 
-include Math
-
+#:segment start: optionlist
 options_definition_string = <<-END
 
   Description:		The simplest ACS N-body code
@@ -65,7 +66,7 @@ options_definition_string = <<-END
     A snapshot of an N-body system contains the values of the
     mass, position, and velocity for each of the N particles.
 
-        These diagnostics appear on the standard output stream,
+        This information appears on the standard output stream,
     currently in the following simple format (only numbers):
 
       N:            number of particles
@@ -134,10 +135,15 @@ options_definition_string = <<-END
       acceleration (for all integrators)
       jerk (for the Hermite integrator)
 
-
   END
+#:segment end:
 
-parse_command_line(options_definition_string)
+#:segment start: tail
+parse_command_line(options_definition_string)                                #9
+
+include Math
+
 nb = Nbody.new
 nb.simple_read
-nb.evolve($method, $eps, $dt, $dt_dia, $dt_out, $dt_end, $init_out, $x_flag)
+nb.evolve($method, $eps, $dt, $dt_dia, $dt_out, $dt_end, $init_out, $x_flag) #8
+#:segment end:

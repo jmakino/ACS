@@ -1,0 +1,490 @@
+= Implementation
+
+== A New Driver
+
+*Alice*: Hi Bob!  How's it going with your attempt to implement the
+option block idea?
+
+*Bob*: Well, it took me quite a bit longer than I thought, but that was mainly
+because I got more and more ideas for further improvements, while I was
+writing the parser.  And now I'm really hooked to the use of a scripting
+language!  It was wonderful to see how easy it was to add functonality,
+and to change prototype behavior on the fly, just to try out various options.
+
+*Alice*: Ah, I can see that your parsing code grew as a result.
+
+*Bob*: Yes, but not as much as I would have expected.  Compared to my much
+simpler parser, the length grew by only a factor four, and even that is not
+a fair comparison at all, since I used a piece of canned magic before,
+by adding
+
+ :include: .rkn1.rb-5
+
+Who knows how long that code is.  In contrast, this time I wrote everything
+myself, and the functionality is vastly increased.
+
+*Alice*: Can you walk me through the code, to show me the new magic?
+
+*Bob*: I'm glad to do so!  Let me just follow the flow of control, right
+from the beginning.
+
+In my new driver, <tt>rkn2.rb</tt>, I now start as follows:
+
+ :inccode: .rkn2.rb-head
+
+You see, I'm including the +Body+ and +Nbody+ classes, as before, in
+the first line, and I'm including the new parser that I wrote, which
+lives in <tt>clop.rb</tt>.  You will appreciate the modularity:
+In <tt>clop.rb</tt> there is no knowledge about N-body systems; in
+fact, a chemist or a biologist could use <tt>clop.rb</tt> equally well
+for completely different purposes.
+
+*Alice*: Hear, hear!
+
+*Bob*: I thought you would like that.  Now following those two lines,
+there appears this one long `here document' that we already wrote
+before, containing the full list of option blocks.  Then, the only
+thing left in this file <tt>rkn2.rb</tt>, are the following lines:
+
+ :inccode: .rkn2.rb-tail
+
+So that is all there is to it!  This is the whole driver.  It contains
+a two lines at the start to specify what needs to be included, a few
+lines at the end, the rest is one long list of option blocks in a
+single `here document'.  And all the work is done in the file
+<tt>clop.rb</tt> that contains the parser.
+
+== Invoking the Parser
+
+*Alice*: So the last three lines are almost the same as the last three
+lines in your first attempt at parsing the command line, in file
+<tt>rkn1.rb</tt>:
+
+ :inccode: .rkn1.rb-2
+
+The only difference is that all the parameters of the call to +evolve+
+are now global variables, if I remember Ruby's convention correctly.
+
+*Bob*: Yes, in Ruby, a variable starting with a dollar sign is by definition
+a global variable.  Normally I would not like to use global variables, but
+here it seemed like a natural way to get the information from the parse
+file <tt>clop.rb</tt> back into our driver.  The alternative would
+have been to turn each variable into a method that interrogates the class
++Clop+ that is hiding inside <tt>clop.rb</tt>.  Instead of using the
+global variable <tt>$dt</tt>, we could define an instance
+<tt>my_clop.dt</tt>, and so on.
+
+*Alice*: I agree that this is one of the few places where global variables
+seem like a reasonable solution.  Although I don't like them in general,
+I also don't like to stick to literally to any principle, even the
+principle `thou shalt not use global variables'.
+
+*Bob*: Another meta principle, not to stick to any principle?
+
+*Alice*: Watch out, if you apply that to itself, you may get into a paradox!
+
+*Bob*: Like the question ``who shaves the barber?'' if the barber shaves
+everyone who doesn't shave himself.  But let's not get into that.
+
+*Alice*: Now all the magic occurs because of the one call
+
+ :include: .rkn2.rb-9
+
+I see that you take the one humongous `here document' string, and feed
+it into this method, that must be defined inside the file <tt>clop.rb</tt>.
+
+*Bob*: Indeed!  Time to open that file, and to show you what is going on.
+Instead of going through it from beginning to end, let me walk through
+the file, following the flow of the logic, starting with the method that
+is called here.
+
+*Alice*: I'm all ears and eyes!
+
+== The Clop Class
+
+*Bob*: The file <tt>clop.rb</tt> contains two things: first the definition
+of a class called <tt>Clop</tt>, and then the following three line definition:
+
+ :inccode: .clop.rb+parse_command_line
+
+*Alice*: That's all that happens, in order to parse the command line?
+This method just creates a new instances of the class +Clop+, and
+that's it?
+
+*Bob*: That's it.  Note that two essential pieces of information are passed
+to that new instance.  The first argument contains the string with the whole
+list of option blocks, that was defined in the driver.  That was the one
+and only argument passed from the driver to the <tt>clop.rb</tt> file.
+The second argument is +ARGV+, the array that contains the command line,
+broken up in space separated pieces.
+
+*Alice*: So that is very similar to C.
+
+*Bob*: Yes, except that <tt>ARGV[0]</tt> is already the first argument to
+the program, not the program name, as a C programmer might expect.  So if
+you give a command:
+
+  ruby test.rb -x -o out_file
+
+then <tt>ARGV[0] = "-x"</tt>, <tt>ARGV[1] = "-o"</tt>, and
+<tt>ARGV[2] = "out_file"</tt>.  Effectively what has happened is that
+the piece of the command line that follows the program name is treated
+as a string, on which the command +split+ is run.  In the above case,
+when we call the remainder of the command line, after <tt>test.rb</tt>,
++str+, then <tt>ARGV</tt> is the same as the array +a+ that we would
+obtain from the statement:
+
+  a = str.split
+
+The +split+ command splits the one string +str+ into an array of smaller
+strings, where blank spaces function as separators defining the extent
+of each smaller string.
+
+*Alice*: So the logic here is that you create a new instance of the class
++Clop+, and you give it all the information that it needs: the `here document'
+that contains the complete interface information of our N-body code, and the
++ARGV+ array that contains the full information of what the user wrote on
+the command line.  And somehow everything else happens as a side effect of
+creating this new +Clop+ instance.
+
+*Bob*: Yes.  I did it that way so that you don't have to bother anymore
+later on about +Clop+ classes.  You just create one, and then you can
+already discard it, since upon creation it has done all its work.  Let
+me show how.
+
+*Alice*: By the way, why the name +Clop+ ?
+
+*Bob*: Ah, I should have mentioned that.  +Clop+ stands for Command
+Line Option Parser.
+
+*Alice*: I should have guessed.
+
+*Bob*: A class name <tt>Command_Line_Option_Parser</tt> just sounded
+a bit too long for my taste.  On the other hand, feel free to change
+the name that way, if you like.  In true object-oriented and modular
+way, the name of the class is not visible to the user.  Instead, the
+user just gives the command
+
+ :include: .rkn2.rb-9
+
+Still, as you know, I prefer more terse names, hence +Clop+.
+
+== Creating a +Clop+ Instance
+
+*Alice*: So what happens when you create a new +Clop+ instance?
+
+*Bob*: Here is the initializer for the +Clop+ class:
+
+ :inccode: .clop.rb+initialize+Clop
+
+*Alice*: It indeed seems to do all the work required: first it parses
+all the definitions from the option block list from the N-body driver,
+then it parses all the options given on the command line.
+
+*Bob*: And finally it echoes all the values that it gives back to the
+driver.  Some of the values will be specified by the user.  Other values,
+not specified by the user, will retain their default value.  By echoing
+the whole set, the user will know exactly how the N-body integration got
+started, with what set of initial parameters.
+
+*Alice*: But where does this method give those values back to the driver?
+
+*Bob*: Ah, global variables, remember?  Nothing is passed back explicitly.
+It is just made visibly globally.  That's why the driver could simply give
+the command:
+
+ :include: .rkn2.rb-8
+
+*Alice*: Ah, yes, of course.  One more advantage of global variables.  Once
+you have decided to go that dangerous path, you might as well enjoy it.
+
+Okay, the logic is still crystal clear, so far.  Let us start with the
+first command.  How do you parse the option definitions?
+
+== Parsing Option Definitions: the Idea
+
+*Bob*: Before showing you the method, let me first explain the idea.
+The full list with all the option blocks is contained in the single
+string <tt>def_str</tt>.  What we would like to do is to cut up this
+list in two steps.  The first logical step would be to divide the full
+string into shorter strings, one for each option.  The second logical
+step would be to split each option string into lines, so that you can
+parse the meaning of each line.
+
+Now a more practical approach would be to reverse the order.  It is
+much easier to split the original <tt>def_str</tt> string immediately
+into individual lines.  You can do that with the +split+ method we
+just talked about: by default it cuts up a string wherever a blank
+space appears, but if you give it an argument, such as a newline
+<tt>\n</tt>, it will cut the string wherever in encounters the symbol
+specified in the argument.
+
+In other words, the command
+
+ :inccode: .clop.rb-1
+
+will produce an array of single lines, that together make up the original
+list of option blocks.
+
+So now we have to go back to the step we skipped: we have to stitch the
+lines together that belong to a single option.  To do this, we hand the
+whole array of lines to another method, which is so friendly as to take
+off enough lines from the array as are needed to reconstruct a single
+option block.  That friendly method then passes back that single option,
+as a nice package, while leaving all the unrelated lines on the array of
+lines.  After each call to this method, the line of arrays shrinks, until
+the whole array has been eaten up, and we are left with a stack of package,
+one for each option.
+
+Now what I call a package is -- you guessed it -- an instance of a new class,
+called <tt>Clop_Option</tt>.  It is a helper class, used by the +Clop+ class,
+to wrap up all the information for a single option.  The +Clop+ class itself
+contains an array of instances of <tt>Clop_Option</tt>.
+
+*Alice*: Just like an N-body system is represented by an instance of the
+class <tt>Nbody</tt>, which contains an array of instances of the +Body+
+class, one instance for each particle.
+
+== Parsing Option Definitions: the Method
+
+*Bob*: Exactly.  And here is the method that parses the option definitions.
+
+ :inccode: .clop.rb+parse_option_definitions+Clop
+
+What I just described as the friendly method that wraps related lines into
+a single package is nothing else but . . . the initializer for the 
+<tt>Clop_Option</tt> class!  I use the same approach that we started with,
+one level lower.  On the top level all the parsing work, for all options,
+was done as a side effect of creating a single +Clop+ instance.  On this
+level here, the parsing work for a single option is done as a side effect
+of creating an instance of the <tt>Clop_Option</tt> class.
+
+*Alice*: All very clear.  So you create an empty array of options, called
+<tt>@options</tt>, an instance variable within the +Clop+ class.  As long
+as there is anything left on the array of single lines, you traverse the
++while+ loop.  Only when <tt>a[0] = nil</tt>, in other words when the
+array of lines has been picked empty of lines, and nothing is left anymore,
+do you end your work.
+
+Now within the +while+ loop, whenever you encounter a line that is completely
+blank, you discard it.  That is what the lines
+
+ :include: .clop.rb-2
+
+mean, right?
+
+*Bob*: Right.  The regular expression indicates lines that contain zero
+or more blanks, between begin and end of a line.  The symbol <tt>\s</tt>
+stands for any type of white space, such as a single space or a tab.  The
+symbol <tt>^</tt> at the beginning of a regular expression <tt>/^.../</tt>
+means the beginning of a line, while the symbol <tt>$</tt> means the end
+of a line.  The symbol <tt>*</tt> as usual means zero or more instances
+of the previous symbel, so <tt>\s*</tt> means any number of spaces or tabs,
+possibly zero.
+
+Taken together, the regular expression <tt>/^\s*$/</tt> corresponds to any
+line that looks blank to the eye, whether it is a null string <tt>""</tt>
+or a string with a few blanks like <tt>"   "</tt> or a string containing
+tabs as well, like <tt>"  \t    \t\t  "</tt>.  Now whenever such a line
+is encountered, the array method +shift+ is called in the second line above,
+which simply discards the first element of the array.  As a result, the
+new element <tt>a[0]</tt> now contains what used to be stored in <tt>a[1]</tt>,
+<tt>a[1]</tt> contains what used to be in <tt>a[2]</tt>, and so on.  The
+array consequently has become one element less in length.
+
+*Alice*: And as soon as a non-blank line is encountered, you create a new
+instance of <tt>Clop.Option</tt>.
+
+*Bob*: Yes, and I give the line array +a+ as an argument to the 
+of <tt>Clop.Option</tt>.  This is the friendly function that gobbles
+up as many lines as needed to complete a well wrapped single option.
+
+*Alice*: Ah, this means that it stops when it encounters two blank lines.
+
+*Bob*: Yes, since we had agreed that that would be the sign that would
+separate two different option blocks.  But the <tt>Clop.Option</tt>
+initializer is even friendlier than that: it also stops when there is
+something wrong with the syntax of the option that it is trying to wrap
+up.  It doesn't just wrap any random bunch of double-blank-line-separated
+stuff.
+
+So we can be assured that when <tt>Clop_Option.new</tt> returns, we have
+a valid new option package, in the form of a new instance of the
+<tt>Clop.Option</tt> class, and we can safely add that to the array of
+options called <tt>@options</tt>, using the command 
+
+ :include: .clop.rb-3
+
+*Alice*: Okay, I get it!  In a moment, I would like to see how
+<tt>Clop.Option</tt> does its work, but for now, let us assume
+it knows what it is doing, and let us look at the second action
+that the initializer for +Clop+ itself is performing.
+
+== Parsing Command Line Options: the Idea
+
+*Bob*: Again, let me lay out the logic first.  After the definitions
+of all options have been read in and parsed, it is time to see which
+options the user has actually specified, and to take the corresponding
+actions, such as modifying the default values of the appropriate
+global variables, or providing help of one type or another, as the
+case may be.
+
+So there are two steps to the process of parsing the command line options:
+first make an inventory of options specified, and then take the appropriate
+actions.  If a help request is encountered in the first step, the second
+step consists of printing out the corresponding help message(s).  If
+no help is requested, the second step consists of initializing the
+proper global variables.
+
+The first step is carried out in a loop.  At the beginning of the loop,
+the first element of the +ARGV+ array is examined.  Depending on the
+option found, the correct action is taken.  For example, if an option
+is found that does not require a value, this option is assumed to be a
+boolean variable, in other words a flag.  Such a flag is by default
+set to be +false+, but when the option is encountered, the value of
+the flag is set to be +true+.  If an option does require a value,
+another element is taken from the +ARGV+ array, and properly interpreted.
+
+This last element can be a bit complex, since some values may be spread
+over several elements of the +ARGV+ array.  For example, if a vector is
+specified, through <tt>-v [ 1, 2, 3 ]</tt>, several elements from the
+array have to be parsed until the closing <tt>]</tt> symbol is encountered.
+
+*Alice*: But you could have required the reader to put the whole vector
+into a string, as follows: <tt>-v "[ 1, 2, 3 ]"</tt>.
+
+*Bob*: Yes, and that is also a legal option.  However, I wanted to make
+the parser really general, and I also wanted to free the reader from
+thinking about such aspects as how the command line would be parsed.
+In the spirit of Ruby, I prefer to download as much of the complexity
+of the interface to the code behind the interface, keeping the interface
+itself as natural as can be.  Rather than training the user to add those
+double quotes, I would rather train the computer to figure out what to
+do even without quotes.
+
+*Alice*: And as long as you insist that every vector starts with an opening
+square bracket and ends with a closed square bracket, there is no ambiguity.
+
+*Bob*: Exactly.  Ambiguity would be impossible to correct, of course.  But as
+long as everything is unambiguous, I prefer the parser to do the hard work.
+
+Now all of what I have just mentioned is still part of step one.  Step two
+is more straightforward: You just ask each option to initialize its
+own global variable.  And here you don't care whether such an option
+still has its default value, or whether that value has been modified
+through a command line option that was just read in.
+
+*Alice*: Okay, got it!  Let me see how you coded this.
+
+== Parsing Command Line Options: the Method
+
+*Bob*: Here is the actual method:
+
+ :inccode: .clop.rb+parse_command_line_options
+
+As long as there is something left in the array that contains
+all the command line bits and pieces, you take the next piece,
+call it +s+, and inspect that string.  Now there are four
+possibilities.  It could be a request for short help, in the form of a
+<tt>-h</tt> string; or it could be a request for long help, in the form of a
+<tt>--help</tt> string; or it could be the beginning of a regular option;
+or none of these three.  In the last case, an error is reported, and the
+program is halted.  The command +raise+ prints the string that follows it,
+and stops execution of the code.
+
+*Alice*: The call to <tt>find_option</tt> takes only one argument,
+while <tt>parse_option</tt> takes three arguments.  Why is that?
+
+*Bob*: The string +s+ should contain one or two minus signs, followed
+by the name of the option, and that unique name is enough to determine
+which option we are dealing with.  Therefore <tt>find_option</tt>
+takes only one argument, namely +s+, and returns the number of the
+option, +i+, which is simply the index of the option in the array of
+options.  Remember that +Clop+ has an instance variable <tt>@options</tt>
+for the option array, and the number +i+ just means that we are dealing
+with option <tt>@options[i]</tt>.
+
+However, knowing which option we have just encountered is not enough to
+completely parse the information for that option.  In general, the next
+element in the +ARGV+ array will contain the new value for that option.
+And as I just mentioned, in the case of a vector value, thta value may
+be distributed over an unknown number of further +ARGV+ array alements.
+Therefore the call to <tt>parse_option</tt> needs to receive both +i+
+and <tt>argv_array</tt>.
+
+*Alice*: Yes, but why do you give it +s+ as well?  Haven't you squeezed
+all the information out of it by finding out which option it refers to?
+If <tt>s = "-d"</tt> or <tt>s = "--step_size"</tt>, there is no need
+to pass that string +s+ on to <tt>parse_option</tt>.
+
+*Bob*: Ah, you are completely right in those both cases.  But there are
+other cases!
+
+*Alice*: I can see that you are proud of having find a clever solution
+for something.  But for what?  There are only two cases for _any_ option;
+either it is a one-letter option, starting with a single minus sign;
+or it is a multi-letter option, starting with a double minus sing.
+
+*Bob*: Right.
+
+*Alice*: Right?  So, then why pass it on?
+
+*Bob*: Imagine that a user wants to set up a three-body system,
+and tries to give that option as <tt>-n3</tt> . . . 
+
+*Alice*: . . . instead of the more proper <tt>-n 3</tt>.  I see.
+Yes, that makes sense.  I like that!  It is another example where
+you could have trained the user to always leave a blank space between
+an option and a value, but why do that?  Better let the computer
+figure it out.  And in that case, of course <tt>parse_option</tt> needs
+to have access to the string +s+, just in case not all the information
+has been squeezed out of it.  It may still contain the value of the option.
+
+*Bob*: Right!  Of course, this only applies to one-letter options.
+In this case, too, we cannot allow ambiguity.  An option specification
+like <tt>-n3</tt> is unambiguous, but writing <tt>--number_of_particles3</tt>
+would be confusion.  It could refer to a boolean flag with a name
+<tt>number_of_particles3</tt>.  An unlikely name in this case, but there
+are other option names that could naturally take a number, such as
+<tt>--high5</tt> or <tt>--loveU2</tt>, which may or may not be defined
+as boolean.  So I only allow leaving out a space in the case of one-letter
+options.
+
+*Alice*: And finally you initialize all global variables through a call
+to <tt>initialize_global_variables</tt>.  No arguments needed, since the
+variables are global, and we deal with all of them.  I like the long names
+you have chosen for your methods.  That really helps in following the flow
+of the logic!
+
+== Printing Values
+
+*Bob*: Thanks!  Now let us go back to the initializer for the +Clop+
+class, where all the action started.  Let me show it again:
+
+ :inccode: .clop.rb+initialize+Clop
+
+We have now seen, in outline, how the options definitions are parsed,
+until the definition string <tt>def_str</tt> has been eaten up, and
+how the command line options are parsed, until the array containing
+command line fragments, <tt>argv_array</tt>, has been digested.  All
+that is left to do at that point is to print the values and, you
+guessed it, that is done with the method <tt>print_values</tt>:
+
+ :inccode: .clop.rb+print_values
+
+You see, this is a very simple method: it just gives an order to each
+option to print its own value.  Remember, we want the output of each
+program to start with a list of values used, to remind the user what
+the initial state is that the program starts out with.
+
+*Alice*: And the actual work is done through <tt>print_value</tt>,
+which must be a method associated with the <tt>Clop_option</tt> class.
+
+*Bob*: Exactly.  It is time that we look at that class as well.  Here
+we have reached the end of the top level tour.
+
+*Alice*: Thank you!  Now I see clearly how you have laid out the program.
+Indeed: time to open some of the black boxes that you have mentioned so
+far.
+
+*Bob*: Yes, these boxes were left in the dark so far.  Now let there be light!

@@ -5,9 +5,7 @@
 #
 require "vector.rb"
 
-class Clop
-
-  class Command_line_option
+  class Clop_Option
 
     attr_reader :shortname, :longname, :type,
                 :description, :longdescription, :printname, :defaultvalue
@@ -114,6 +112,8 @@ class Clop
 
   end
 
+class Clop
+
   def initialize(def_str, argv_array = nil)
     parse_option_definitions(def_str)
     if argv_array
@@ -123,13 +123,13 @@ class Clop
   end
 
   def parse_option_definitions(def_str)
-    a = def_str.split("\n")
+    a = def_str.split("\n")                                                  #1
     @options=[]
     while a[0]
-      if a[0] =~ /^\s*$/ 
-        a.shift
+      if a[0] =~ /^\s*$/                                                     #2
+        a.shift                                                              #2
       else
-        @options.push(Command_line_option.new(a))
+        @options.push(Clop_Option.new(a))                                    #3
       end
     end
   end
@@ -236,7 +236,7 @@ class Clop
     @options.each_index do |x|
       i = x if s == @options[x].longname
       if @options[x].shortname
-        i = x if s =~ Regexp.new(@options[x].shortname) and $` == ""
+        i = x if s =~ Regexp.new(@options[x].shortname) and $` == ""         #4
       end
     end
     return i
