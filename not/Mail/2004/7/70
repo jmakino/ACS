@@ -1,0 +1,28 @@
+Date: Sat Jul 10 19:05:08 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > There can be commas in some URL, though the formal specification does
+ > not allow it. So probably we need a slightly different syntax. How
+ > about "|", like
+ > 
+ >   <web>xxx|online version</web>
+ > 
+ > Here, instead of the *first* comma, we can use *last* "|". This means
+ > you cannot use  "|" in the link label. Do you mind?  
+ > 
+ > By the way, I think "acswebref" is unnecessarily long.
+
+This is done. You can try this after you update your local rdoc by
+
+  cd $ACSROOT/src/rdoc*
+  su
+  ruby install.rb
+
+There is something very strange with rdoc, but I *think* in most cases
+it should work.
+
+Jun
+
