@@ -21,6 +21,32 @@
 #
 #==============================================================================
 
+module Rdoctotex
+
+  @@wordreplace=[
+    [/\+\w+\+/,"{\\tt", "}"],
+    [/\*\w+\*/,"{\\bf", "}"],
+    [/_\w+_/,"{\\it", "}"]]
+
+  def wordmarkup(instr)
+    @@wordreplace.each{|x| s.gsub!(x[0]){|word|
+	x[1]+ " " + word[1,word.length-2] +x[2]}}
+    s
+  end
+
+  def process_wordmarkup(instring)
+    ostring = []
+    instring.each{|s| ostring.push(wordmarkup(instring))}
+  end
+
+  def convert_to_latex(instring,dirname)
+    process_wordmarkup(instring).join("\n")
+  end
+  module_function :convert_to_latex
+end
+
+
+
 module Acsdoc
 
   @@prompt = "|gravity>"
@@ -231,7 +257,7 @@ module Acsdoc
   end
 
 
-  def prep_cp(infile, outfile)
+  def prep_cp(infile, outfile,tolatex_flag)
     $infile = infile
     begin
       ifile = open(infile, "r")
@@ -246,7 +272,12 @@ module Acsdoc
     end
     ifile.close
     tmpstring=prep_cp_string(instring,dirname).split("\n");
-    tmp2= find_and_process_tex_inlines(tmpstring,dirname);
+    if tolatex_flag
+      p Rdoctotex.instance_methods
+      tmp2= Rdoctotex::convert_to_latex(tmpstring,dirname);
+    else
+      tmp2= find_and_process_tex_inlines(tmpstring,dirname);
+    end
     ofile.print tmp2
     ofile.close
   end
@@ -333,47 +364,44 @@ module Acsdoc
     end
     ifile.close
   end
-  
-  # :segment start: acsdoc
-  def acsdoc()
-    
-    del_flag = true
-    del_file_list = Array.new
-    
-    ARGV.collect! do |a|
-      if a =~ /\.cp$/
-	dot_a = File.dirname(a)+"/."+File.basename(a);
-	prep_cp(a, dot_a)
-	a = dot_a
-	del_file_list.push(dot_a)
-      elsif a =~ /\.rb$/
-	prep_rb(a)
-	prep_rb_defs(a)
-	a
-      elsif a == "--keep-dot-files"
-	del_flag = false
-	a = ""
-      end
-      a
-    end
-    
-    system("rdoc #{ARGV.join(" ")}")
-    
-    if del_flag
-      del_file_list.each do |f|
-	File.delete(f)
-      end
-    end
+end  
+
+# :segment start: acsdoc
+include Acsdoc
+
+del_flag = true
+del_file_list = Array.new
+tolatex_flag = false
+
+ARGV.collect! do |a|
+  if a =~ /\.cp$/
+    dot_a = File.dirname(a)+"/."+File.basename(a);
+    prep_cp(a, dot_a, tolatex_flag)
+    a = dot_a
+    del_file_list.push(dot_a)
+  elsif a =~ /\.rb$/
+    prep_rb(a)
+    prep_rb_defs(a)
+    a
+  elsif a == "--keep-dot-files"
+    del_flag = false
+    a = ""
+  elsif a == "--tolatex"
+    tolatex_flag = true
+    del_flag = false
+    a = ""
   end
-  # :segment end:
+  a
 end
 
-include Acsdoc
-acsdoc
+system("rdoc #{ARGV.join(" ")}")
 
-
-
-
+if del_flag
+  del_file_list.each do |f|
+    File.delete(f)
+  end
+end
+# :segment end:
 
 
 
