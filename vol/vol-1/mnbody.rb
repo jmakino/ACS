@@ -5,7 +5,7 @@ require "mnhistory.rb"
 
 class Body
 
-  attr_accessor :mass, :nb
+  attr_accessor :mass, :nb, :ekin_init, :epot_init
 
   def initialize(time = 0, mass = 0, pos = Vector[], vel = Vector[])
     @hist = History.new
@@ -13,7 +13,7 @@ class Body
     @mass, @pos, @vel = mass, pos, vel
     @hist.set_last_rndot(0, @pos)
     @hist.set_last_rndot(1, @vel)
-    @acc_initializing = false
+    @init_flag = true                # if true, needs initialization
   end
 
   def rndot(n, time)
@@ -28,29 +28,40 @@ class Body
     @hist.rndot(n, time)
   end
 
+  def finish_init
+    @init_flag = false
+    t_init = @hist.latest
+    @hist.set_last_rndot(2, calculate_acc(t_init))
+    @ekin_init = ekin(t_init)
+    @epot_init = epot(t_init)
+  end
+
   def pos(time)
-    unless @acc_initializing
-      @acc_initializing = true
-      @hist.set_last_rndot(2, calculate_acc(@hist.latest))
-    end
+    finish_init if @init_flag
     rndot(0, time)
   end
 
   def vel(time)
-    unless @acc_initializing
-      @acc_initializing = true
-      @hist.set_last_rndot(2, calculate_acc(@hist.latest))
-    end
+    finish_init if @init_flag
     rndot(1, time)
   end    
 
   def acc(time)
-    unless @acc_initializing
-      @acc_initializing = true
-      @hist.set_last_rndot(2, calculate_acc(@hist.latest))
-    end
+    finish_init if @init_flag
     rndot(2, time)
   end    
+
+  def set_last_pos(x)
+    @hist.set_last_rndot(0, x)
+  end
+
+  def set_last_vel(x)
+    @hist.set_last_rndot(1, x)
+  end
+
+  def set_last_acc(x)
+    @hist.set_last_rndot(2, x)
+  end
 
   def integrate
     if @hist.predicting?
@@ -104,6 +115,26 @@ class Body
     timestep*@nb.eta
   end
 
+  def ekin(time)                        # kinetic energy
+    vel(time)*vel(time) * 0.5 * @mass
+  end
+
+  def pot_from(other, time)
+    rji = other.pos(time) - pos(time)
+    r2 = rji * rji
+    -other.mass/sqrt(r2)
+  end
+
+  def epot(time)                        # potential energy
+    pot = 0
+    @nb.body.each do |b|
+      unless b==self
+        pot += pot_from(b, time)
+      end
+    end
+    pot
+  end
+
   def collision_time_by(other, time)
     delta_pos = other.pos(time) - pos(time)
     delta_vel = other.vel(time) - vel(time)
@@ -127,33 +158,14 @@ class Body
   end
 
   def forward(t, dt)
-    @hist.set_last_rndot(0, pos(t) + vel(t)*dt)
-    @hist.set_last_rndot(1, vel(t) + acc(t)*dt)
+    set_last_pos(pos(t) + vel(t)*dt)
+    set_last_vel(vel(t) + acc(t)*dt)
   end
 
   def leapfrog(t, dt)
-    @vel += acc(t)*0.5*dt
-    @pos += @vel*dt
-    @vel += acc(t+dt)*0.5*dt
-  end
-
-  def rk2(t, dt)
-    old_pos = @pos
-    half_vel = @vel + acc(t)*0.5*dt
-    @pos += @vel*0.5*dt
-    @vel += acc(t+0.5*dt)*dt
-    @pos = old_pos + half_vel*dt
-  end
-
-  def rk4(t, dt)
-    old_pos = @pos
-    a0 = acc(t)
-    @pos = old_pos + @vel*0.5*dt + a0*0.125*dt*dt
-    a1 = acc(t)
-    @pos = old_pos + @vel*dt + a1*0.5*dt*dt
-    a2 = acc(t)
-    @pos = old_pos + @vel*dt + (a0+a1*2)*(1/6.0)*dt*dt
-    @vel = @vel + (a0+a1*4+a2)*(1/6.0)*dt
+    half_vel = vel(t) + acc(t)*0.5*dt
+    set_last_pos(pos(t) + half_vel*dt)
+    set_last_vel(half_vel + acc(t+dt)*0.5*dt)
   end
 
   def print_history
@@ -220,6 +232,26 @@ class Nbody
       print "history for body ", b.id, " : \n"
       b.print_history
     end
+  end
+
+  def write_diagnostics(time)
+    ekin = epot = ekin_init = epot_init = 0
+    @body.each do |b|
+      ekin += b.ekin(time)
+      epot += b.epot(time)
+      ekin_init += b.ekin_init
+      epot_init += b.epot_init
+    end
+    etot = ekin + 0.5 * epot
+    etot_init = ekin_init + 0.5 * epot_init
+    STDERR.print <<END
+at time t = #{sprintf("%g", time)}:
+  E_kin = #{sprintf("%.3g", ekin)} ,\
+ E_pot =  #{sprintf("%.3g", epot)},\
+ E_tot = #{sprintf("%.3g", etot)}
+             E_tot - E_init = #{sprintf("%.3g", etot - etot_init)}
+  (E_tot - E_init) / E_init = #{sprintf("%.3g", (etot - etot_init)/etot_init )}
+END
   end
 
   def write(time)

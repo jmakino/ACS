@@ -91,6 +91,9 @@ class History
   def set_last_rndot(n, rndot)             # rndot = d^n r / dt^n
     @history.last[1][n] = rndot
   end
+  def set_penultimate_rndot(n, rndot)
+    @history[@history.size-2][1][n] = rndot
+  end
   def arrived?
     @history.last[1][0] and @history.last[1][1]
   end
@@ -172,6 +175,24 @@ class History
       @history[i][1][n] + increment
     end
   end
+  def improved_extrapolate(n, i, dt)     # extend Taylor series by one term.
+    if i == 0                            #   if no past information:
+      increment = Vector.new(ndim, 0.0)  #     return zero
+    else                                 #   if there is past information:
+      dn = 0                             #     use previous time to estimate
+      while @history[i][1][n+dn+1]       #     one higher order Taylor term
+        dn += 1                          #     (first value of increment)
+      end                                #
+      increment = (@history[i][1][n+dn] - @history[i-1][1][n+dn]) *
+                  (1.0/ (@history[i][0] - @history[i-1][0]) )
+      dn += 1
+      while (dn > 0)
+        increment *= dt/dn               # computer Taylor coefficient
+        dn -= 1
+      end
+    end
+    extrapolate(n, i, dt) + increment
+  end
   def rndot(n,t)
     if t < earliest or t > latest
       nil
@@ -182,7 +203,8 @@ class History
         if @history[i][1][n]
           @history[i][1][n]
         elsif @history[i-1][1][n]
-          extrapolate(n, i-1, t - @history[i-1][0])
+#          extrapolate(n, i-1, t - @history[i-1][0])
+          improved_extrapolate(n, i-1, t - @history[i-1][0])
         else
           nil
         end
