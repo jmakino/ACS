@@ -3,6 +3,8 @@ SRC =  title.ok pref.ok  ch01.ok  ch02.ok  ch03.ok  ch04.ok \
 
 LIBSRCS = acsio.rb vector.rb
 
+LOCALLIBSRCS = nbody.rb
+
 TARGET = volume8
 
 include ../etc/Makefile.inc
