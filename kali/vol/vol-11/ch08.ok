@@ -79,7 +79,7 @@ g(t) &=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
 &=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
 \int_0^t {f(t-w)dw \over w^{1-\alpha}}                             \nonumber\\
 &=& {\sin \pi \alpha \over \pi}\, \left[
-{f(t-w) \over w^{1-\alpha}}|_{w=t} + \int_0^t \left({d\over dt}f(t-w)\right)
+{f(t-w) \over w^{1-\alpha}}\bigg|_{w=t}+\int_0^t \left({d\over dt}f(t-w)\right)
 {dw \over w^{1-\alpha}} \right]                                    \nonumber\\
 &=& {\sin \pi \alpha \over \pi}\, \left[
 {f(0)\over t^{1-\alpha}} + \int_0^t \left({d\over dx}f(x)\right)
