@@ -1,0 +1,37 @@
+Date: Wed Dec 31 20:34:44 JST 2003
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+
+> Well, I don't have any experience with systematic ways of dealing with
+> bug reports.  My naive idea was to make a linear list, and number the
+> bugs, and their solutions.  Like a todo list, but because there will
+> be much more text than in the todo list, it would make the todo list
+> hard to read.  So it would be a specialization of the todo list.
+> The problem with not/BUGS/200x/x is that some bugs may not be corrected
+> until after a few months, and then we could forget about it; or do you
+> think we should try to correct every bug immediately?  There are grey
+> areas between bugs and features, and some features for sure will be
+> taken care of only after a few months.
+
+Well, the directory structure has little to do with the way the files
+appear to the brouser.  We can make
+
+* list of BUGS as single, big file
+* list of BUGS as links to single files
+* or whatever we can think of
+
+from BUGS/200x/x structure.
+
+I guess a question would be what we want to do with additional
+comments on bug reports, or bug fixes. At least for the time being, we
+can just add notes to the particular BUG report file, I think.
+
+> As for not/TODO, shall I just make a (short) list for now?
+> And I guess we just add and remove things, because it is under svn?
+> Or do you prefer to only add, like in lab notes (but that would make
+> the list longer and longer, and hard to see quickly what needs to be done)?
+
+No. I think TODO list must be short. It may be a good exercise to move
+the entries of TODO list to lab notes, presumablly manually.
+
