@@ -53,6 +53,9 @@ module Rdoctotex
 
   @@charstoescape =/(#)|(\{)|(\})|(\_)|(\{)|(\\)/
 
+  @@addtional_preambles_for_tex = ""
+  @@addtional_commands_for_tex = ""
+
   def escapetexspecialcharacters(instring)
     print "escapeto ... "
     p instring
@@ -280,7 +283,9 @@ module Rdoctotex
     s= <<-END_TEXSOURCE
     \\documentclass{book}
     \\usepackage{graphicx}
+    #{@@addtional_preambles_for_tex}
     \\begin{document}
+       #{@@addtional_commands_for_tex}
        #{s}
     \\end{document}
     END_TEXSOURCE
@@ -296,6 +301,9 @@ module Acsdoc
   @@prompt = "|gravity>"
 
   @@imgcount = 0
+  @@addtional_preambles_for_inline_tex = ""
+  @@addtional_commands_for_inline_tex = ""
+
 #
 # takes a single string which contains a command
 # and creates processed string which contain output
@@ -445,9 +453,11 @@ module Acsdoc
     texsource.print <<-END_TEXSOURCE
     \\documentclass{article}
     \\usepackage{graphicx}
+    #{@@addtional_preambles_for_inline_tex}
     \\begin{document}
        \\pagestyle{empty}
        \\thispagestyle{empty}
+       #{@@addtional_commands_for_inline_tex}
        #{texcode}
     \\end{document}
     END_TEXSOURCE
@@ -616,10 +626,27 @@ module Acsdoc
     end
     ifile.close
   end
+
+  def initacs
+    acsdocinitfile=nil
+    for fname in [ENV["ACSDOCINITRC"], ".acsdocinitrc", ENV["HOME"]+"/.acsdocinitrc"]
+      if acsdocinitfile == nil and fname != nil and File.exist?(fname)
+	acsdocinitfile = fname 
+      end
+    end
+    
+    if acsdocinitfile
+      print "Loading initialization file #{acsdocinitfile}\n"
+      load acsdocinitfile
+    else
+      print "No config file found\n"
+    end
+  end
 end  
 
 # :segment start: acsdoc
 include Acsdoc
+initacs
 del_flag = true
 del_file_list = Array.new
 tolatex_flag = false

@@ -1,0 +1,41 @@
+== Still more on acsdoc
+
+Remained thing to do
+
+* title
+
+* something like <texonly> for use only inside tex
+
+
+In HTML generation
+
+* placement of tex image
+
+* config file for macros for tex
+
+* equation numbering?
+
+Let's start with the simplest thing, namely the placement of the tex
+image in HTML version.
+
+This turned out to be rather ... nasty, since the easiest way to
+change it is to add ALIGN="middle" to IMG tags in HTML, but that tag
+is generated in rdoc, not by our acsdoc part.
+
+What I now implemented is to change rdoc source so that it now
+add ALIGN= stuff. The other way would be to extend rdoc in a more
+generic way, to have something like \<html> ...</html> tag, which
+passes the content as is without further complicacy.
+
+Anyway, one thing done. Next: config file.
+
+What config file specifies:
+
+Just the ruby code run in init function for Module Acsdoc.
+
+Done!
+
+initialization file is searched in the order of $ACSDOCINITRC,
+./.acsdocinitrc, and ~/.acsdocinitrc.
+
+Equation numbering... 

@@ -1,0 +1,60 @@
+== Still more on acsdoc
+
+Bug fix: Do not interpret *, -, indent etc in the region for inline
+tex.
+
+
+Minimal to do:
+
+In latex generation
+
+* include, link, title
+
+* way to generate .tex instead of .x.cp
+
+* something like <texonly> for use only inside tex
+
+
+In HTML generation
+
+* placement of tex image
+
+* config file for macros for tex
+
+* equation numbering?
+
+I'll start with include and link
+
+Include was rather easy (though not fully tested yet...)
+
+Now for the link. Questions are:
+
+- What image formats we should recognize
+- What about image sizes
+
+Other related problems
+
+- equation numbering
+
+- figure numbering
+
+- generic label for link/index/tableofcontents
+
+Go back to the image link:
+
+Image formats which should clearly be recognized:
+
+gif, jpeg (jpg or jpeg), png
+
+This seems to be working now.
+
+When I tried to process chapter 14, I found <tt>#ifdef</tt> is not
+processed correctly. Hmm, which other characters should I handle?
+
+
+(The following is actually written on 29th)
+
+I put "#", "{", "}", "_" etc as things to be escaped. To force escape
+"_" cause additional problem, since it made word markup for _italic_
+treated not quite correctly, but what else can I do?
+
