@@ -17,13 +17,58 @@
 # -- all files (except under .svn) under msa
 #
 # 
+$LOAD_PATH.push(ENV["ACSROOT"]+"/src/utilities")
+require "clop.rb"
+
+optionstext= <<-END
+
+Short name: -l
+Long name:  --local_only
+Value type:  bool
+Default value: nil
+Description: if set, only the local archive file is made
+Global variable: localonly
+Long description:
+When this option is set, #{$0} does create a new release,
+but does not upload the release to the web server.
+
+
+Short name: -w
+Long name:  --web_inly
+Value type:  bool
+Default value: nil
+Description: if set, web update is run, from existing release
+Global variable: webonly
+Long description:
+When this option is set, #{$0} does not create a new release,
+but still uploads the existing release to the web server.
+
+
+Short name: -r
+Long name:  --release_name
+Value type:  string
+Default value:NONE
+Description: New release name
+Global variable: releasename
+Long description:
+New release name (specify "1.0" for version 1.0). If not specified,
+#{$0} requests input from standard input.
+
+
+  END
+
+  clop= Clop.new(optionstext,ARGV)
+p $webonly
+p $localonly
+p $releasename
+
 
 #
 # Information on where to install the web pages
 # 
 installhost="grape.astron.s.u-tokyo.ac.jp"
 installuname="acs"
-installdir="WWW/tmp/artcompsci"
+installdir="WWW/artcompsci"
 
 #
 # filenames will be acs_(version).tgz acs_lite_(version).tgz
@@ -104,30 +149,32 @@ def add_files(dirlist,fileexpressions)
   newfiles
 end
 
+unless $webonly
 
-STDERR.print "Creating the file list....."
-svnlist = svn_files(".",/(^\.\/msa$)/)
-
-STDERR.print "svn files finished ..."
-doclist = doc_directories(".")
-doclist += add_files(doclist, ["v*.ps.gz",  "v*.pdf", ".imgs"])
-#doclist.each{|x| print x,"\n"}
-STDERR.print "doc files finished ..."
-
-msafiles,excludefiles = all_files("msa", /(^\.svn$)/)
-STDERR.print "msa files finished ..."
-
-open("tmp.tarfilelist","w"){
-  |f| f.print(svnlist.join("\n"))
-}
-open("tmp.tarfilelist2","w"){
-  |f| f.print((svnlist+doclist+["msa"]).join("\n"))
-}
-open("tmp.tarfilelist3","w"){
-  |f| f.print((excludefiles).join("\n"))
-}
-STDERR.print "file list  finished\n"
-
+  STDERR.print "Creating the file list....."
+  svnlist = svn_files(".",/(^\.\/msa$)/)
+  
+  STDERR.print "svn files finished ..."
+  doclist = doc_directories(".")
+  doclist += add_files(doclist, ["v*.ps.gz",  "v*.pdf", ".imgs"])
+  #doclist.each{|x| print x,"\n"}
+  STDERR.print "doc files finished ..."
+  
+  msafiles,excludefiles = all_files("msa", /(^\.svn$)/)
+  STDERR.print "msa files finished ..."
+  
+  open("tmp.tarfilelist","w"){
+    |f| f.print(svnlist.join("\n"))
+  }
+  open("tmp.tarfilelist2","w"){
+    |f| f.print((svnlist+doclist+["msa"]).join("\n"))
+  }
+  open("tmp.tarfilelist3","w"){
+    |f| f.print((excludefiles).join("\n"))
+  }
+  STDERR.print "file list  finished\n"
+  
+end
 
 releasefile=storedir+"/"+releaselog
 if File.exist?(releasefile)
@@ -137,49 +184,55 @@ else
   print "\nNo release file exist\n"
 end
 ans = ""
-newversion=""
-begin
-  print "Enter new version:"
-  x = STDIN.gets().chomp
-  print "\nNew version: #{x}\n\nAre you sure to make this version?(y/q/n)"
-  ans = STDIN.gets()
-  newversion=x
-end  while ans !~ /(y)|(q)/
-if ans == "q"
-  STDERR.print "Abort: version #{newversion} is not created\n"
-  exit
+newversion=$releasename
+if newversion=="NONE"
+  begin
+    print "Enter new version:"
+    x = STDIN.gets().chomp
+    print "\nNew version: #{x}\n\nAre you sure to make this version?(y/q/n)"
+    ans = STDIN.gets()
+    newversion=x
+  end  while ans !~ /(y)|(q)/
+  if ans == "q"
+    STDERR.print "Abort: version #{newversion} is not created\n"
+    exit
+  end
 end
 
 tarfilename= storedir+"/acs-#{newversion}.tgz"
 tarlitefilename= storedir+"/acs-lite-#{newversion}.tgz"
-STDERR.print "Creating  #{tarfilename}...."
-system "tar czf #{tarfilename} -X tmp.tarfilelist3 `cat tmp.tarfilelist2`"
-STDERR.print "finished\n"
 
-STDERR.print "Creating  #{tarlitefilename}...."
-system "tar czf  #{tarlitefilename} `cat tmp.tarfilelist`"
-STDERR.print "finished\n"
-system "rm tmp.tarfilelist*"
-system "echo '' >> #{releasefile}"
-system "(echo -n Date: ;date) >> #{releasefile}"
-system "(echo -n Person: ;whoami) >> #{releasefile}"
-open(releasefile,"a"){|f| f.print "Release: #{newversion}\n"}
+unless $webonly
+  STDERR.print "Creating  #{tarfilename}...."
+  system "tar czf #{tarfilename} -X tmp.tarfilelist3 `cat tmp.tarfilelist2`"
+  STDERR.print "finished\n"
+  
+  STDERR.print "Creating  #{tarlitefilename}...."
+  system "tar czf  #{tarlitefilename} `cat tmp.tarfilelist`"
+  STDERR.print "finished\n"
+  system "rm tmp.tarfilelist*"
+  system "echo '' >> #{releasefile}"
+  system "(echo -n Date: ;date) >> #{releasefile}"
+  system "(echo -n Person: ;whoami) >> #{releasefile}"
+  open(releasefile,"a"){|f| f.print "Release: #{newversion}\n"}
+end
 
-sendcommand="rsync -e ssh -avprog #{storedir} #{installuname}@#{installhost}:#{installdir}"
-extractcommand="ssh -l #{installuname} #{installhost} \"cd #{installdir} ; tar xzf #{tarfilename}\""
-
-STDERR.print <<END
-Do you want to update the files on the ACS WEB SERVER now?
-You do not need to do this rigt now. If you want to do so later, 
-you can do, at $ACSROOT
-   	#{sendcommand}
-and
-        #{extractcommand}
-END
-print "(y/n)?"
-
-ans = STDIN.gets().chomp
-if ans == "y"
-  system sendcommand
-  system extractcommand
+unless $localonly
+  sendcommand="rsync -e ssh -avprog #{storedir} #{installuname}@#{installhost}:#{installdir}"
+  extractcommand="ssh -l #{installuname} #{installhost} \"cd #{installdir} ; tar xzf #{tarfilename}\""
+  
+  STDERR.print <<-END
+  Do you want to update the files on the ACS WEB SERVER now?
+  You do not need to do this rigt now. If you want to do so later, 
+  you can do, at $ACSROOT
+  #{sendcommand}
+  and
+  #{extractcommand}
+  END
+  print "(y/n)?"
+  ans = STDIN.gets().chomp
+  if ans == "y"
+    system sendcommand
+    system extractcommand
+  end
 end

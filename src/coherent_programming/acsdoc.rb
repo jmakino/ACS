@@ -1234,6 +1234,22 @@ END
     }
   end
 
+  def process_css
+    cssbackupfilename = "doc/rdoc-style.css.orig"
+    cssfilename = "doc/rdoc-style.css"
+    File.rename(cssfilename,cssbackupfilename)
+    f=open(cssbackupfilename,"r")
+    fout=open(cssfilename,"w")
+    while s=f.gets
+      if s =~ /^\s*(pre|tt)\s*\{.*\}/
+	print "line #{s} removed from CSS file"
+      else
+	fout.print s
+      end
+    end
+    f.close
+    fout.close
+  end
 end
 
 
@@ -1294,6 +1310,9 @@ end
 system("rdoc #{coptions} #{ARGV.join(" ")}") unless tolatex_flag
 
 add_toc
+process_css
+
+
 create_navigations_for_cp_files(ARGV)
 if del_flag
   del_file_list.each do |f|
