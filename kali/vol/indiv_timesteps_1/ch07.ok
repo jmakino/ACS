@@ -148,7 +148,7 @@ shared time step case, we update the step counter by one.  Shouldn't
 that be updating by N, for N particles?  Ah, no, the update happens
 within the loop, and we pass through the loop N times.  Fine.
 
-== Back to the Beginning
+== Finishing the Loop
 
 *Alice*: let's get back to the beginning of our +while+ loop.  We have
 not yet looked at the conditional statement there.  The code tells us
@@ -242,7 +242,7 @@ do think I have a more complete overview of the whole picture now.
 Whether or not it will turn out to be useful, has to be seen, but
 it is fun to see an old idea in a new light.
 
-== xxx
+== Back to the Beginning
 
 *Alice*: Let's move to the beginning of the +WorldEra+ class, to
 see what other methods we have here.  The method +initialize+,
@@ -250,3 +250,37 @@ which is called when we order a <tt>WorldEra.new</tt> sets up an
 empty array <tt>@worldline</tt>, ready to accept a bunch of world
 lines.
 
+The methods <tt>acc_and_jerk</tt> and <tt>timescale</tt> appear
+here only as a way to pass them on to a snapshot.  When the request
+comes, from a lower level, to provide acceleration and jerk, or a time
+scale value, then first a snapshot is taken, and then the snapshot is
+asked to care care of the requests.
+
+The method <tt>startup_and_report_energy</tt> is almost a tautology:
+it hands on the request to start things up down to the +WorldLine+
+level, and it takes a snapshot in order to ask that snapshot to
+provide the total energy value.  This value is then returned to the
+calling function in +World+, one level higher.  I must say, I still
+have to remind myself that in Ruby you don't have to write something
+like <tt>return energy</tt>: you can leave out the +return+ part,
+and the value that is automatically returned is the value that the
+last method evaluated provides, in this case the method <tt>total_energy</tt>.
+
+*Bob*: But once you get used to it, Ruby does provide a nicely compact
+notation.  It allows you to pack a lot of information on one page, and
+still in such a way that it is pretty clear what is being done.
+
+The next two methods, <tt>shortest_extrapolated_worldline</tt> and
+<tt>shortest_interpolated_worldline</tt> speak for themselves: they
+do just what you think they should do.
+
+*Alice*: At least when you understand the concepts they are pointing too;
+but we've just gone over that.  +evolve+ we've analyzed already.  The
+method <tt>next_era</tt> creates a new instance of the class +WorldEra+.
+This method is invoked, whenever we have evolved a complete era, and
+we are ready for another one.  Now where does this method gets called
+again?
+
+*Bob*: At the end of +evolve+.  It is part of what is handed back to the
++World+ level, together with the value of the counter of the number of steps
+that have been taken.
