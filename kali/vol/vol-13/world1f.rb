@@ -2,10 +2,8 @@ require "acs.rb"
 
 class Worldpoint
 
-  TAG = "worldpoint"
-
   attr_accessor :mass, :pos, :vel, :acc, :jerk, :time, :next_time, :nsteps,
-                :minstep, :maxstep, :type
+                :minstep, :maxstep
 
   def initialize
     @nsteps = 0
@@ -13,15 +11,8 @@ class Worldpoint
     @maxstep = 0
   end
 
-  def start_step(wl)
-    wl.take_point(@next_time)
-  end
-
-  def admin(old_time)
-    dt = @time - old_time
-    @maxstep = dt if @maxstep < dt
-    @minstep = dt if @minstep > dt
-    @nsteps = @nsteps + 1
+  def start_step(worldline)
+    worldline.take_snapshot(@next_time)
   end
 
   def finish_step(old_point, snapshot, dt_param, dt_max)
@@ -30,10 +21,9 @@ class Worldpoint
     admin(old_point.time)
   end
 
-  def set_next_time(snapshot, dt_param, dt_max)
-    dt = collision_time_scale(snapshot) * dt_param
-    dt = dt_max if dt > dt_max
-    @next_time = @time + dt
+  def set_acc_and_jerk_and_next_time(snapshot, dt_param, dt_max)
+    get_acc_and_jerk(snapshot)
+    set_next_time(snapshot, dt_param, dt_max)
   end
 
   def correct(old_point)
@@ -44,9 +34,11 @@ class Worldpoint
                            (1/12.0)*(old_point.acc - @acc)*dt**2
   end
 
-  def set_acc_and_jerk_and_next_time(snapshot, dt_param, dt_max)
-    get_acc_and_jerk(snapshot)
-    set_next_time(snapshot, dt_param, dt_max)
+  def admin(old_time)
+    dt = @time - old_time
+    @maxstep = dt if @maxstep < dt
+    @minstep = dt if @minstep > dt
+    @nsteps = @nsteps + 1
   end
 
   def get_acc_and_jerk(snapshot)
@@ -60,6 +52,12 @@ class Worldpoint
       @jerk += b.mass*(v-3*(r*v/r2)*r)/r3
     end
   end    
+
+  def set_next_time(snapshot, dt_param, dt_max)
+    dt = collision_time_scale(snapshot) * dt_param
+    dt = dt_max if dt > dt_max
+    @next_time = @time + dt
+  end
 
   def collision_time_scale(snapshot)
     time_scale_sq = VERY_LARGE_NUMBER              # square of time scale value
@@ -81,11 +79,45 @@ class Worldpoint
     sqrt(time_scale_sq)                  # time scale value
   end
 
-  def ekin                               # kinetic energy
+  def extrapolate(t)
+    if t > @next_time
+      raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
+    end
+    wp = Worldpoint.new
+    wp.minstep = @minstep
+    wp.maxstep = @maxstep
+    wp.nsteps = @nsteps
+    wp.mass = @mass
+    wp.time = t
+    dt = t - @time
+    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3
+    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2
+    wp
+  end
+
+  def interpolate(other, t)
+    wp = Worldpoint.new
+    wp.minstep = @minstep
+    wp.maxstep = @maxstep
+    wp.nsteps = @nsteps
+    wp.mass = @mass
+    wp.time = t
+    dt = other.time - @time
+    snap = (-6*(@acc - other.acc) - 2*(2*@jerk + other.jerk)*dt)/dt**2
+    crackle = (12*(@acc - other.acc) + 6*(@jerk + other.jerk)*dt)/dt**3
+    dt = t - @time
+    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
+             (1/24.0)*snap*dt**4 + (1/120.0)*crackle*dt**5
+    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*snap*dt**3 + 
+             (1/24.0)*crackle*dt**4
+    wp
+  end
+
+  def kinetic_energy
     0.5*@mass*@vel*@vel
   end
 
-  def epot(body_array)                   # potential energy
+  def potential_energy(body_array)
     p = 0
     body_array.each do |b|
       unless b == self
@@ -131,58 +163,6 @@ class Worldpoint
 #    @vel.each{|x| printf("%24.16e", x)}; print "\n"
 #  end
 
-  def extrapolate(t)
-    if t > @next_time
-      raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
-    end
-    wp = Worldpoint.new
-    wp.minstep = @minstep
-    wp.maxstep = @maxstep
-    wp.nsteps = @nsteps
-    wp.mass = @mass
-    wp.time = t
-    dt = t - @time
-    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3
-    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2
-    wp
-  end
-
-  def interpolate(other, t)
-    wp = Worldpoint.new
-    wp.minstep = @minstep
-    wp.maxstep = @maxstep
-    wp.nsteps = @nsteps
-    wp.mass = @mass
-    wp.time = t
-    dt = other.time - @time
-    snap = (-6*(@acc - other.acc) - 2*(2*@jerk + other.jerk)*dt)/dt**2
-    crackle = (12*(@acc - other.acc) + 6*(@jerk + other.jerk)*dt)/dt**3
-    dt = t - @time
-    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
-             (1/24.0)*snap*dt**4 + (1/120.0)*crackle*dt**5
-    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*snap*dt**3 + 
-             (1/24.0)*crackle*dt**4
-    wp
-  end
-
-  def to_acs(precision = 16, base_indentation = 0, additional_indentation = 2)
-    subtag = if @type then " "+@type else "" end
-    indent = base_indentation + additional_indentation
-    return " " * base_indentation + "begin " + TAG + subtag + "\n" +
-      nsteps.to_acs("nsteps", precision, indent) + "\n" +
-      minstep.to_acs("min. stepsize", precision, indent) + "\n" +
-      maxstep.to_acs("max. stepsize", precision, indent) + "\n" +
-      mass.to_acs("mass", precision, indent) + "\n" +
-      pos.to_acs("position", precision, indent) + "\n" +
-      vel.to_acs("velocity", precision, indent) + "\n" +
-      " " * base_indentation + "end"
-  end
-
-  def write(file = $stdout, precision = 16,
-            base_indentation = 0, additional_indentation = 2)
-    file.print to_acs(precision, base_indentation, additional_indentation)+"\n"
-  end
-
 end
 
 class Worldline
@@ -196,14 +176,14 @@ class Worldline
   end
 
   def startup(era, dt_param, dt_max)
-    wp = @worldpoint[0]
-    ss = era.take_snapshot(self, wp.time)
-    wp.set_acc_and_jerk_and_next_time(ss, dt_param, dt_max)
+    ss = era.take_snapshot_except(self, @worldpoint[0].time)
+    @worldpoint[0].set_acc_and_jerk_and_next_time(ss, dt_param, dt_max)
   end
 
-  def extend(snapshot, dt_param, dt_max)
+  def extend(era, dt_param, dt_max)
     old_point = @worldpoint.last
     new_point = old_point.start_step(self)
+    snapshot = era.take_snapshot_except(self, worldpoint.last.next_time)
     new_point.finish_step(old_point, snapshot, dt_param, dt_max)
     @worldpoint.push(new_point)
   end
@@ -223,7 +203,7 @@ class Worldline
       time <= @worldpoint.last.next_time
   end
 
-  def take_point(time)
+  def take_snapshot(time)
     if time >= @worldpoint.last.time
       valid_extrapolation?(time)
       @worldpoint.last.extrapolate(time)
@@ -252,6 +232,19 @@ class Worldline
     wl
   end
 
+  def next_worldline(time)
+    valid_interpolation?(time)
+    i = @worldpoint.size
+    loop do
+      i -= 1
+      if @worldpoint[i].time <= time
+        wl = Worldline.new
+        wl.worldpoint = @worldpoint[i...@worldpoint.size]
+        return wl
+      end
+    end
+  end
+
 #  def read                               # for self-documenting data
 #  end
 
@@ -261,10 +254,6 @@ class Worldline
     wp.time = wp.next_time = time
     wp.acc = wp.pos*0
     wp.jerk = wp.pos*0
-  end
-
-  def to_acs
-    "Worldline: to_acs not yet implemented"
   end
 
 end
@@ -280,12 +269,11 @@ class Worldera
     @worldline = []
   end
 
-  def startup(dt_param, dt_max)
+  def startup_and_report_energy(dt_param, dt_max)
     worldline.each do |wl|
       wl.startup(self, dt_param, dt_max)
     end
-    ss = take_snapshot(nil, @start_time)
-    ss.ekin + ss.epot
+    take_snapshot(@start_time).total_energy
   end
 
   def shortest_extrapolated_worldline
@@ -314,45 +302,42 @@ class Worldera
 
   def evolve(dt_era, dt_param, dt_max, shared_flag)
     nsteps = 0
-    @end_time = @start_time + dt_era
     while shortest_interpolated_worldline.worldpoint.last.time < @end_time
-      wl = shortest_extrapolated_worldline
-      wp = wl.worldpoint.last
       unless shared_flag
-        ss = take_snapshot(wl, wp.next_time)
-        wl.extend(ss, dt_param, dt_max)
+        shortest_extrapolated_worldline.extend(self, dt_param, dt_max)
         nsteps += 1
       else
-        t = wp.next_time
+        t = shortest_extrapolated_worldline.worldpoint.last.next_time
         @worldline.each do |w|
           w.worldpoint.last.next_time = t
-          ss = take_snapshot(w, t)
-          w.extend(ss, dt_param, dt_era)
+          w.extend(self, dt_param, dt_era)
           nsteps += 1
         end
       end
     end
-    [next_era, nsteps]
+    [next_era(dt_era), nsteps]
   end
 
-  def next_era
+  def next_era(dt_era)
     e = Worldera.new
     e.start_time = @end_time
+    e.end_time = @end_time + dt_era
     @worldline.each do |wl|
       e.worldline.push(wl.next_worldline(e.start_time))
     end
     e
   end
 
-  def take_snapshot(wl, time)
+  def take_snapshot(time)
+    take_snapshot_except(nil, time)
+  end
+
+  def take_snapshot_except(wl, time)
     ws = Worldsnapshot.new
+    ws.time = time
     @worldline.each do |w|
-      s = w.take_point(time)
-      if w == wl
-        ws.camera_body = s
-      else
-        ws.body.push(s)
-      end
+      s = w.take_snapshot(time)
+      ws.body.push(s) unless w == wl
     end
     ws
   end
@@ -370,7 +355,7 @@ class Worldera
     else
       STDERR.print "to time #{sprintf("%g", @end_time)}):\n"
     end
-    take_snapshot(nil, t).write_diagnostics(initial_energy, x_flag)
+    take_snapshot(t).write_diagnostics(initial_energy, x_flag)
   end
 
 #  def read          # for self-documenting data, either Worldera or Snapshot
@@ -390,24 +375,7 @@ class Worldera
     raise if not valid_time?(t)
     print @worldline.size, "\n"
     printf("%24.16e\n", t)
-    take_snapshot(nil, t).write
-  end
-
-  def to_acs(precision = 16, base_indentation = 0, add_indentation = 2)
-    raise if not valid_time?(@snap_time)
-    subtag = if @type then " "+@type else "" end
-    indent = base_indentation + add_indentation
-    return " " * base_indentation + "begin " + TAG + subtag + "\n" +
-      @start_time.to_acs("t_start", precision, indent) + "\n" +
-      @end_time.to_acs("t_end", precision, indent) + "\n" +
-      @snap_time.to_acs("t", precision, indent) + "\n" +
-      take_snapshot(nil, @snap_time).to_acs(precision,indent,add_indentation) +
-      "\n"+ " " * base_indentation + "end"
-  end
-
-  def write(time, file = $stdout, precision = 16, additional_indentation = 2)
-    ACS_Wrapper.new("ACS", ACS_Wrapper.new("DSS",
-                  to_acs(time))).write(file, precision, additional_indentation)
+    take_snapshot(t).write
   end
 
 end
@@ -418,7 +386,7 @@ class World
 
   def evolve(c)
     dt_max = c.dt_era * c.dt_max_param
-    initial_energy = @era.startup(c.dt_param, dt_max)
+    initial_energy = @era.startup_and_report_energy(c.dt_param, dt_max)
     time = @era.start_time
     nsteps = 0
     @era.write_diagnostics(time, nsteps, initial_energy, c.x_flag, true)
@@ -436,8 +404,10 @@ class World
       end
       while t_out <= @era.end_time and t_out <= t_end
 #        @era.write_snapshot(t_out)
-        @snap_time = @era.snap_time = t_out               # KLUDGE !!!
-        write($stdout, c.precision, c.add_indent)
+#        @snap_time = @era.snap_time = t_out               # KLUDGE !!!
+#        write($stdout, c.precision, c.add_indent)
+##        @era.acs_write("era", $stdout, c.precision, 0, c.add_indent)
+        @era.take_snapshot(t_out).acs_write("")
         t_out += c.dt_out
       end
       @old_era = @era
@@ -454,47 +424,38 @@ class World
     @era.write_snapshot(time)
   end
 
-  def to_acs(precision = 16, base_indentation = 0, add_indentation = 2)
-    subtag = if @type then " "+@type else "" end
-    indent = base_indentation + add_indentation
-    return " " * base_indentation + "begin " + TAG + subtag + "\n" +
-      @era.to_acs(precision,indent,add_indentation) +
-      "\n"+ " " * base_indentation + "end"
-  end
-
-  def write(file = $stdout, precision = 16, additional_indentation = 2)
-    ACS_Wrapper.new("ACS", ACS_Wrapper.new("DSS",
-                    self)).write(file, precision, 0, additional_indentation)
-  end
-
 end
 
 class Worldsnapshot
 
   TAG = "worldsnapshot"
 
-  attr_accessor :camera_body, :body, :type
+  attr_accessor :body, :time
 
   def initialize
     @body = []
   end
 
-  def ekin                        # kinetic energy
+  def kinetic_energy
     e = 0
-    @body.each{|b| e += b.ekin}
+    @body.each{|b| e += b.kinetic_energy}
     e
   end
 
-  def epot                        # potential energy
+  def potential_energy
     e = 0
-    @body.each{|b| e += b.epot(@body)}
-    e/2                           # pairwise potentials were counted twice
+    @body.each{|b| e += b.potential_energy(@body)}
+    e/2                                # pairwise potentials were counted twice
+  end
+
+  def total_energy
+    kinetic_energy + potential_energy
   end
 
   def write_diagnostics(initial_energy, x_flag)
     e0 = initial_energy
-    ek = ekin
-    ep = epot
+    ek = kinetic_energy
+    ep = potential_energy
     etot = ek + ep
     STDERR.print <<-END
     E_kin = #{sprintf("%.3g", ek)} ,\
@@ -520,23 +481,6 @@ class Worldsnapshot
 #      b.write
 #    end
 #  end
-
-  def to_acs(precision = 16, base_indentation = 0, add_indentation = 2)
-    nsteps = 0
-    @body.each{|b| nsteps += b.nsteps}
-    subtag = if @type then " "+@type else "" end
-    indent = base_indentation + add_indentation
-    return " " * base_indentation + "begin " + TAG + subtag + "\n" +
-      @body.size.to_acs("N", precision, indent) + "\n" +
-      nsteps.to_acs("nsteps", precision, indent) + "\n" +
-      @body.map{|b| b.to_acs(precision,indent,add_indentation)}.join("\n") +
-      "\n"+ " " * base_indentation + "end"
-  end
-
-  def write(file = $stdout, precision = 16,
-            base_indentation = 0, additional_indentation = 2)
-    file.print to_acs(precision, base_indentation, additional_indentation)+"\n"
-  end
 
 end
 
