@@ -17,7 +17,7 @@ also help us to solve the first task: while specifying the interfaces
 in precise detail, we can simultaneously document the movitation and
 considerations that went into the decisions made.
 
-1.1.1 Two options
+1.1.1. Two options
 
 We thought about two options for specifying the interface between two
 modules:
@@ -174,7 +174,7 @@ Within each session, we present the history of what we did in that
 session and why.  In addition, we will create separate boxes for ideas
 that popped up during that session.
 
-\fig{labnote.eps, 15 cm}
+\fig{labnote-031111.eps, 15 cm}
 
 2.4.3. Generation of Lab Notes
 
