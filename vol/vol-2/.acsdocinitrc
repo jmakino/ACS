@@ -2,6 +2,7 @@
 \\parindent  0 pt
 \\parskip 5 pt
 \\input def
-
 END
-
+@@additional_commands_for_inline_tex = <<END
+\\input def
+END
