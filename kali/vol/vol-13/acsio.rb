@@ -70,37 +70,11 @@ class Array
   def Array.acs_parse(a, base_indent)
     ar = []
     loop do
-      first_line = a.shift
-      return ar unless first_line
-      indent = count_initial_blanks(first_line)
-      if indent <= base_indent
-        a.unshift(first_line)
-        return ar
-      end      
-      first_line_word = first_line.split
-      class_name = first_line_word[0]
-      variable_name = first_line_word[1]
-      if class_name == "Float"
-        eval("ar.push(Float.acs_parse(a.shift, indent))")
-      elsif class_name == "Fixnum"
-        eval("ar.push(Fixnum.acs_parse(a.shift, indent))")
-      elsif class_name == "Bignum"
-        eval("ar.push(Bignum.acs_parse(a.shift, indent))")
-      elsif class_name == "Vector"
-        eval("ar.push(Vector.acs_parse(a.shift, indent))")
-      elsif class_name == "Array"
-        eval("ar.push(Array.acs_parse(a.shift, indent))")
-      elsif class_name == "String"
-        add_indent = first_line_word[2].to_i
-        eval("ar.push(String.acs_parse(a, indent + add_indent))")
+      result = acs_parse_manager(a, base_indent)
+      if result
+        ar.push(result)
       else
-        begin
-          eval("x = #{class_name}.new")
-        rescue NameError
-          define_class(class_name)
-          retry
-        end
-        eval("ar.push(x.acs_parse(a, indent))")
+        return ar
       end
     end
   end
@@ -127,12 +101,12 @@ module ACS_IO
       return s + instance_variables_to_acs_s(precision, indent, add_indent)
     end
     case self.class.to_s
-      when "String"
-        return s.chomp + self.to_acs_special_s(indent, add_indent)
-      when "Array"
-        return s + self.to_acs_special_s(name, precision, indent, add_indent)
-      when /^(Float|Vector)$/
-        return s + self.to_acs_special_s(precision, indent)
+    when "String"
+      return s.chomp + self.to_acs_special_s(indent, add_indent)
+    when "Array"
+      return s + self.to_acs_special_s(name, precision, indent, add_indent)
+    when /^(Float|Vector)$/
+      return s + self.to_acs_special_s(precision, indent)
     end
     s += " " * indent + self.to_s + "\n"
   end
@@ -199,46 +173,58 @@ module ACS_IO
     end
   end
 
+  def acs_parse(a, base_indent)
+    loop do
+      return self unless a[0]
+      variable_name = a[0].split[1]
+      result = acs_parse_manager(a, base_indent)
+      if result
+        eval("@#{variable_name} = result")
+      else
+        return self
+      end
+    end
+  end
+
+  def acs_parse_manager(a, base_indent)
+    first_line = acs_parse_terminate?(a, base_indent)
+    return nil unless first_line
+    indent = count_initial_blanks(first_line)
+    word = first_line.split
+    class_name = word[0]
+    case class_name
+    when "String"
+      add_indent = word[2].to_i
+      return String.acs_parse(a, indent + add_indent)
+    when "Array"
+      return Array.acs_parse(a, indent)
+    when /^(Fixnum|Bignum|Float|Vector)$/
+      return eval("#{class_name}.acs_parse(a.shift, indent)")
+    else
+      begin
+        x = eval("#{class_name}.new")
+      rescue NameError
+        define_class(class_name)
+        retry
+      end
+      return x.acs_parse(a, indent)
+    end
+  end
+
+  def acs_parse_terminate?(a, base_indent)
+    first_line = a.shift
+    return nil unless first_line
+    indent = count_initial_blanks(first_line)
+    if indent <= base_indent
+      a.unshift(first_line)
+      return nil
+    end      
+    first_line
+  end
+
   def count_initial_blanks(s)
     s =~ /^ */
     $&.size
-  end
-
-  def acs_parse(a, base_indent)
-    loop do
-      first_line = a.shift
-      return self unless first_line
-      indent = count_initial_blanks(first_line)
-      if indent <= base_indent
-        a.unshift(first_line)
-        return self
-      end      
-      first_line_word = first_line.split
-      class_name = first_line_word[0]
-      variable_name = first_line_word[1]
-      if class_name == "Float"
-        eval("@#{variable_name} = Float.acs_parse(a.shift, indent)")
-      elsif class_name == "Fixnum"
-        eval("@#{variable_name} = Fixnum.acs_parse(a.shift, indent)")
-      elsif class_name == "Bignum"
-        eval("@#{variable_name} = Bignum.acs_parse(a.shift, indent)")
-      elsif class_name == "Vector"
-        eval("@#{variable_name} = Vector.acs_parse(a.shift, indent)")
-      elsif class_name == "Array"
-        eval("@#{variable_name} = Array.acs_parse(a, indent)")
-      elsif class_name == "String"
-        add_indent = first_line_word[2].to_i
-        eval("@#{variable_name} = String.acs_parse(a, indent + add_indent)")
-      else
-        begin
-          eval("@#{variable_name} = #{class_name}.new")
-        rescue NameError
-          define_class(class_name)
-          retry
-        end
-        eval("@#{variable_name}.acs_parse(a, indent)")
-      end
-    end
   end
 
 end
