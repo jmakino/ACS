@@ -421,7 +421,7 @@ v_0\left(f_r\right)^2 + f_rf_t +
 
 :equation:
 c_0 \,=\, v_0\left(f_r\right)^2 + f_rf_t + 3v_0f_0f_{rr} + 3f_0f_{rt} 
-+ v_0^3f_{rrr} + 3v_0^2f_{rrt}+ 3v_0f_{rtt} + f_{ttt}
++ v_0^3f_{rrr} + 3v_0^2f_{rrt}+ 3v_0f_{rtt} + f_{ttt} \ \ \ \ \,
 
 *Alice*: Yes, and we can also see that indeed the velocity, Eq. (ref(v1)),
 is the time derivative of the position, Eq. (ref(r1)), up to the order given

@@ -1,4 +1,4 @@
-require "rk6body.rb"
+require "yo6body.rb"
 
 include Math
 
@@ -7,7 +7,7 @@ dt = 0.04          # time step
 dt_dia = 10          # diagnostics printing interval
 dt_out = 10         # output interval
 dt_end = 10         # duration of the integration
-method = "rk6"       # integration method
+method = "yo6"       # integration method
 #:segment end:
 
 STDERR.print "dt = ", dt, "\n",

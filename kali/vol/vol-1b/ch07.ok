@@ -1,3 +1,51 @@
 = Yoshida's Algorithm
 
 == xxx
+
+ :commandoutput: ruby integrator_driver3j.rb < euler.in
+
+Significantly worse for the same time step than the sixth order case.
+
+However, no reason it should be better.  Let's take a smaller time
+step, while sticking with five integration steps:
+
+ :commandoutput: ruby integrator_driver3k.rb < euler.in
+
+Now make the time step half as long:
+
+ :commandoutput: ruby integrator_driver3l.rb < euler.in
+
+Very good, close to a factor 256, as behooves a proper eight-order
+integrator.  We can try one more factor two, before we run out of
+digits in machine accuracy:
+
+ :commandoutput: ruby integrator_driver3m.rb < euler.in
+
+Again close to 256 times more accurate.  Good!
+
+== xxx
+
+Now fourth-order.
+
+Explicit expression for the coefficient:
+
+
+:equation:
+<tt>d[0]</tt> = {1\over 2 - 2^{1/3}}
+
+:equation:
+<tt>d[1]</tt> = 1 - 2<tt>d[0]</tt> = -\, {2^{1/3}\over 2 - 2^{1/3}}
+
+Compare with rk4:
+
+ :commandoutput: ruby integrator_driver2i.rb < euler.in
+
+ :commandoutput: ruby integrator_driver3n.rb < euler.in
+
+Somewhat less accurate, but the important thing is the scaling.
+
+Ten times smaller time step:
+
+ :commandoutput: ruby integrator_driver3o.rb < euler.in
+
+Perfect!  Yoshida was right, once again.

@@ -2,7 +2,7 @@
 
 == xxx
 
-Start with <tt>rk6body.rb</tt>
+Start with <tt>yo6body.rb</tt>
 
 First replace +nsteps+ by an instance variable <tt>@nsteps</tt>,
 since it will be used for starting up the multistep method.

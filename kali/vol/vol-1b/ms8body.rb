@@ -70,12 +70,21 @@ class Body
     @vel = vel + (a0+a1*4+a2)*(1/6.0)*dt                                    #1
   end
 
-  def rk6(dt)
+  def yo6(dt)
     d = [0.784513610477560e0, 0.235573213359357e0, -1.17767998417887e0,
          1.31518632068391e0]
     for i in 0..2 do leapfrog(dt*d[i]) end
     leapfrog(dt*d[3])
     for i in 0..2 do leapfrog(dt*d[2-i]) end
+  end
+
+  def yo8(dt)
+    d = [0.104242620869991e1, 0.182020630970714e1, 0.157739928123617e0, 
+         0.244002732616735e1, -0.716989419708120e-2, -0.244699182370524e1, 
+         -0.161582374150097e1, -0.17808286265894516e1]
+    for i in 0..6 do leapfrog(dt*d[i]) end
+    leapfrog(dt*d[7])
+    for i in 0..6 do leapfrog(dt*d[6-i]) end
   end
 
   def ms2(dt)
@@ -117,19 +126,19 @@ class Body
   def ms6(dt)
     if @nsteps == 0
       @a5 = acc
-      rk6(dt)
+      yo6(dt)
     elsif @nsteps == 1
       @a4 = acc
-      rk6(dt)
+      yo6(dt)
     elsif @nsteps == 2
       @a3 = acc
-      rk6(dt)
+      yo6(dt)
     elsif @nsteps == 3
       @a2 = acc
-      rk6(dt)
+      yo6(dt)
     elsif @nsteps == 4
       @a1 = acc
-      rk6(dt)
+      yo6(dt)
     else
       a0 = acc
       j = (a0*137 - @a1*300 + @a2*300 - @a3*200 + @a4*75 - @a5*12)/60
@@ -150,25 +159,25 @@ class Body
   def ms8(dt)
     if @nsteps == 0
       @a7 = acc
-      rk6(dt)
+      yo8(dt)
     elsif @nsteps == 1
       @a6 = acc
-      rk6(dt)
+      yo8(dt)
     elsif @nsteps == 2
       @a5 = acc
-      rk6(dt)
+      yo8(dt)
     elsif @nsteps == 3
       @a4 = acc
-      rk6(dt)
+      yo8(dt)
     elsif @nsteps == 4
       @a3 = acc
-      rk6(dt)
+      yo8(dt)
     elsif @nsteps == 5
       @a2 = acc
-      rk6(dt)
+      yo8(dt)
     elsif @nsteps == 6
       @a1 = acc
-      rk6(dt)
+      yo8(dt)
     else
       a0 = acc
       j = (a0*1089 - @a1*2940 + @a2*4410 - @a3*4900 + @a4*3675 - @a5*1764 + 

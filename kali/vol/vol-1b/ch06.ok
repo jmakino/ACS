@@ -35,11 +35,13 @@ is as long as the second-order Runge-Kutta?
 
 *Bob*: Seeing is believing.  Here it is:
 
- :inccode: .rk6body.rb+rk6
+ :inccode: .yo6body.rb+yo6
 
 *Alice*: Seven leapfrog calls?  And that does it?
 
-*Bob*: Yes, that does it, or so is the claim.  I haven't gotten the time to
+*Bob*: Yes, that does it, or so is the claim.  It was invented by Yoshida,
+a Japanese astronomer, around 1990, that's why I called it <tt>yo6</tt>
+instead of <tt>rk6</tt>.  I haven't gotten the time to
 test it out yet.  I just finished it when you came in.
 
 == Great!
@@ -94,7 +96,7 @@ something in between 0.1 and 0.01.  I'll take 0.04:
 
 *Alice*: Ah, good, less than a percent error in relative total energy
 conservations.  We're getting somewhere in our testing.  Let's halve
-the time step.  If your <tt>rk6</tt> method is really sixth-order,
+the time step.  If your <tt>yo6</tt> method is really sixth-order,
 halving the time step should make the result 64 times more accurate.
 
 *Bob*: Here we go:
@@ -172,7 +174,7 @@ we get a ratio of 3.69.
 
 *Alice*: Not bad at all!  Just three percent short of what we had expected
 for a sixth-order integration scheme.  I think we can now officially declare
-your <tt>rk6</tt> to be worthy of the <tt>6</tt> in it's name!
+your <tt>yo6</tt> to be worthy of the <tt>6</tt> in it's name!
 
 But I must say, I'm still deeply puzzled and surprised that seven leapfrog
 calls, involving four rather funny numbers, can suddenly emulate a Runge-Kutta.

@@ -1,4 +1,4 @@
-require "rk6nbody9.rb"
+require "yo6nbody9.rb"
 
 include Math
 
@@ -13,7 +13,7 @@ x_flag = false       # extra diagnostics requested ?
 ##method = "leapfrog" # integration method
 ##method = "rk2"      # integration method
 ##method = "rk4"      # integration method
-method = "rk6"      # integration method
+method = "yo6"      # integration method
 
 STDERR.print "eps = ", eps, "\n",
       "dt = ", dt, "\n",

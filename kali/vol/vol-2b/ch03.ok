@@ -11,10 +11,10 @@ as a series of call to the leapfrg method.
 *Bob*: Indeed.  I first implemented it for the version of our N-body code
 in file <tt>rknbody6.rb</tt> that incorporated a +calc+ method on the
 +Body+ level, but not yet on the +Nbody+ level.  I put the extended
-version that has an <tt>rk6</tt> method in file <tt>rk6nbody6.rb</tt>.  Here
-is the sixth-order <tt>rk6</tt> method:
+version that has an <tt>yo6</tt> method in file <tt>yo6nbody6.rb</tt>.  Here
+is the sixth-order <tt>yo6</tt> method:
 
- :inccode: .rk6nbody6.rb+rk6
+ :inccode: .yo6nbody6.rb+yo6
 
 I have taken it <i>verbatim</i> from the two-body code in
 <tt>rknbody6.rb</tt>.
@@ -24,10 +24,10 @@ you use enough care to set things up correctly, you can plug and play
 with modules, with minimal changes -- in this case, no change at all.
 
 *Bob*: Well, it depends.  I also wrote a sixth-order version for our softened
-code, in file <tt>rk6nbody9.rb</tt>, but there the <tt>rk6</tt> method
+code, in file <tt>yo6nbody9.rb</tt>, but there the <tt>yo6</tt> method
 grew considerably:
 
- :inccode: .rk6nbody9.rb+rk6
+ :inccode: .yo6nbody9.rb+yo6
 
 The reason was that this code did not hand a +dt+ argument to its
 integrators, since we had a +calc+ on the level of the +Nbody+ class
@@ -45,14 +45,14 @@ swapping of modules, while others have other advantages, such as more brevity.
 
  :commandoutput: ruby rknbody6b_driver.rb < figure8.in
 
-Now let us try the <tt>rk6</tt> version:
+Now let us try the <tt>yo6</tt> version:
 
- :commandoutput: ruby rk6nbody6a_driver.rb < figure8.in
+ :commandoutput: ruby yo6nbody6a_driver.rb < figure8.in
 
 *Alice*: Wonderful.  Much more accurate.
 
 *Bob*: Yes, but for a much larger amount of computing time.  The method
-<tt>rk6</tt> involves seven calls to
+<tt>yo6</tt> involves seven calls to
 the +leapfrog+ method, which itself is implemented in a rather inefficient
 method, with two calles to +acc+ where one would suffice.
 
@@ -66,7 +66,7 @@ applications.
 of our N-body codes that includes a softened potential.  Let me test things
 first for zero softening, for the figure 8 input:
 
- :commandoutput: ruby rk6nbody9a_driver.rb < figure8.in
+ :commandoutput: ruby yo6nbody9a_driver.rb < figure8.in
 
 *Alice*: The exact same result as what you got with the previous version.
 Good!
@@ -88,14 +88,14 @@ the same parameter values.
 
 *Bob*: Here you are:
 
- :commandoutput: ruby rk6nbody9b_driver.rb < cube1.in
+ :commandoutput: ruby yo6nbody9b_driver.rb < cube1.in
 
 As we would have expected, the energy conservation is a lot better.
 I wonder how quickly it will degrade when we make the time step larger.
 Since a sixth-order scheme is so sensitive to time step size, let me
 only double the time step:
 
- :commandoutput: ruby rk6nbody9c_driver.rb < cube1.in
+ :commandoutput: ruby yo6nbody9c_driver.rb < cube1.in
 
 *Alice*: Hmmm, the degradation is faster than I would have expected.
 This may be related to the fact that this particular integrator,

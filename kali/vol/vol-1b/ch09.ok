@@ -167,13 +167,15 @@ Let's be bold and try:
 
 Hey, that is _very_ strange!  Errors are getting better?!?
 
+CHECK THIS AGAIN!  I CHANGED <tt>yo6.rk</tt> to <tt>yo8.rk</tt> !!!!
+
 A factor two larger time step:
 
  :commandoutput: ruby integrator_driver4i.rb < euler.in
 
 A factor of about 60: hence really 6th order
 
-Hey, wait!  We've only tested rk6, so far!  We have to do many more steps.
+Hey, wait!  We've only tested yo6, so far!  We have to do many more steps.
 
  :commandoutput: ruby integrator_driver4j.rb < euler.in
 
@@ -191,11 +193,8 @@ Great!  Close to factor 64, and now really with the multi-step integrator.
 
 Now for eigth order:
 
-We don't have a start-up 8th-order.   But shall we hope that Yoshida's
-integrator is good enough?  Anyway, close to machine accuracy!!
-
-May as well try.  If we don't get beyond 6th, we'll have to extend Yoshida??
-Or go to quadruple precision?
+Fortunately, we do have Yoshida's 8th-order integrator, to start our code
+up with.
 
  :commandoutput: ruby integrator_driver4m.rb < euler.in
 
@@ -211,4 +210,4 @@ two times smaller time step:
 
 Closer!  Certainly closer to 256 than 128.  I think we can declare victory.
 
-Yes, but it would be nice to have a rk8 to start it up.
+

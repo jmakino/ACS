@@ -2,7 +2,7 @@
 
 == xx
 
-Take <tt>rk6nbody9.rb</tt> and add hermite:
+Take <tt>yo6nbody9.rb</tt> and add hermite:
 
  :commandoutput: ruby rknbody6b_driver.rb < figure8.in
 
