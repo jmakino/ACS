@@ -11,18 +11,18 @@ students, I'm sure we'll learn from it ourselves.
 *Bob*: I don't doubt it.  For one thing, you'll see how hard it is to
 then mature the code into a real research tool.
 
-*A*: I'm not so sure.  Given that there is a great demand for such a
+*Alice*: I'm not so sure.  Given that there is a great demand for such a
 code, and precious little supply so far, I wouldn't be surprized if
 even a toy model would turn out to be useful already, if we do a good
 job.
 
-*B*: I would be very surprized, but as we already concluded, no sense
+*Bob*: I would be very surprized, but as we already concluded, no sense
 in arguing.  We'll see soon for ourselves.  And it will be interesting
 to get feedback from my students.  By now I've been working in this
 field for so long that it is difficult for me to guess what is and
 what isn't doable for a student, without much guidance.
 
-*A*: I remember very well how difficult it was to get started with
+*Alice*: I remember very well how difficult it was to get started with
 N-body codes.  There was little practical material available to tell
 you how to set up and run and analyze experiments.  Plenty of articles
 about algorithms and about programming, but very little about how to
@@ -30,104 +30,104 @@ put it all together.  I basically learned by knocking on doors here
 and there, working with fellow students who were further along than I,
 and asking my thesis advisor.
 
-*B*: Yeah, it would be nice to have a more detailed hands-on introduction
+*Bob*: Yeah, it would be nice to have a more detailed hands-on introduction
 available.  Well, I was planning to make my course notes available on the
 web in any case, so why not put our toy model on the web as well.  Who
 knows, students at other places might find it useful as well.
 
-*A*: And researchers who are not yet specialists in this area.  And perhaps
+*Alice*: And researchers who are not yet specialists in this area.  And perhaps
 amateur astronomers, who may have a good background in programming,
 but don't have the information available about how to get started in
 modeling a star cluster.
 
-*B*: Good point.  You know, it so often happens, when I hear someone talk
+*Bob*: Good point.  You know, it so often happens, when I hear someone talk
 about the first computer programs they wrote by themselves, that they
 mention two standard examples: calculating the digits of pi and
 writing a quick and dirty N-body code, often just a simple
 forward-Euler implementation.
 
-*A*: I calculated prime numbers, as my first application, and indeed, my
+*Alice*: I calculated prime numbers, as my first application, and indeed, my
 second one was an 3-body code.  I wanted to model sending a spacecraft
 from an orbit around Earth to Mars.  Was I surprised to learn how tricky
 it was to deal with Kepler singularities and large scale factors!
 Writing a simple code wasn't that hard, but I never got it to work
 properly, the few days that I tried.  Not surprising, in retrospect.
 
-*B*: Indeed.  It may seem simple, but handling such an Earth-Mars orbit
+*Bob*: Indeed.  It may seem simple, but handling such an Earth-Mars orbit
 is a rather tricky 4-body calculation, much more difficult numerically
 than, say computing the orbits of a few planets or even asteroids or
 comets around the Sun.
 
-*A*: What was your first N-body calculation?
+*Alice*: What was your first N-body calculation?
 
-*B*: I wrote a simple video game for myself, inspired by what I had seen
+*Bob*: I wrote a simple video game for myself, inspired by what I had seen
 in officially packaged games.  It seemed natural to me to put in real
 gravitational forces.  It was fun to see how much space ships speed up
 all of a sudden when they pass close to a star.
 
-*A*: Glad to hear you were more successful than I was in your first venture!
+*Alice*: Glad to hear you were more successful than I was in your first venture!
 
-*B*: In any case, it is likely that there is a universal interest in
+*Bob*: In any case, it is likely that there is a universal interest in
 playing with stars on a computer.  So let's put our toy model on the
 web, and see what reactions we get.
 
 === Free and Open
 
-*A*: If we do that, I suggest that we make it freely available, without
+*Alice*: If we do that, I suggest that we make it freely available, without
 restrictions.
 
-*B*: I agree.  That seems the most natural thing to do.  I have benefitted
+*Bob*: I agree.  That seems the most natural thing to do.  I have benefitted
 so much from all kind of tools that are freely available on the web
 that it only seems fair to contribute my own tools in return.
 Besides, it offers a great form of quality control: when we write
 something which is unclear or has bugs, changes are that we will soon
 hear about it from others.
 
-*A*: I feel the same.  I have been using Unix as long as I have been
+*Alice*: I feel the same.  I have been using Unix as long as I have been
 working with computers, and I was delighted when the Linux operating
 system became available.
 
-*B*: Same here.  And without all its GNU tools, Linux wouldn't exist.
+*Bob*: Same here.  And without all its GNU tools, Linux wouldn't exist.
 Take the gcc compiler for example.  And I certainly wouldn't want to
 live without emacs.
 
-*A*: I wonder how we should present our toy model.  Call it `open
+*Alice*: I wonder how we should present our toy model.  Call it `open
 source' or `free software' or something like that?
 
-*B*: Both terms are in wide use, and there are huge political
+*Bob*: Both terms are in wide use, and there are huge political
 discussions about what exactly is and is not open or free in what
 way.  I'm not sure whether we want to get into all that.
 
-*A*: But if we don't write anything along those lines, there may be
+*Alice*: But if we don't write anything along those lines, there may be
 drawbacks as well.  What if someone uses our integrator to design a
 bridge, and then the bridge falls down because there was a bug in our
 code, and we will be held liable for damages?
 
-*B*: Are you serious?
+*Bob*: Are you serious?
 
-*A*: Not really.  I mean, us introducing a bug?
+*Alice*: Not really.  I mean, us introducing a bug?
 
-*B*: Very funny.  But I guess in this world you never know who will
+*Bob*: Very funny.  But I guess in this world you never know who will
 knock on your cyber door and copies your software.  Do you have a
 suggestion as to how to prevent liability?
 
-*A*: The easiest way would be to use a type of open source licence,
+*Alice*: The easiest way would be to use a type of open source licence,
 preferably a rather simple one, which at least includes the usual
 disclaimers.
 
-*B*: Perhaps it is time to have a look at the web, and do a search
+*Bob*: Perhaps it is time to have a look at the web, and do a search
 for `open source.'
 
-*A*: Here is something: "http://www.opensource.org" with a long list
+*Alice*: Here is something: "http://www.opensource.org" with a long list
 of open source licences.
 
-*B*: That was quick!  Let's see what they say.  Hmmmm.  Most of them
+*Bob*: That was quick!  Let's see what they say.  Hmmmm.  Most of them
 are far too long to read, let alone figure out, for my taste.  Isn't
 there a simple one?
 
 === Open Source Licence
 
-*A*: I remember someone mentioning the X window system as having a
+*Alice*: I remember someone mentioning the X window system as having a
 straightforward licence.  Here, that is probably the MIT licence.
 It is short and sweet:
 
@@ -159,7 +159,7 @@ It is short and sweet:
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-*B*: Great! We have our disclaimers, at the end in capitals,
+*Bob*: Great! We have our disclaimers, at the end in capitals,
 and the first paragraph sounds reasonable too.  But does it really
 cover enough ground?  I don't mind if someone else would sell our
 software, unlikely as that may be, but I sure would be unhappy if
@@ -170,45 +170,50 @@ find it?  They would even be allowed to change the name of the
 package, so it may then become impossible for a user to find our
 web site.  Hmm.
 
-*A*: Yes, that wouldn't be much fun.  Hmm indeed.  But if the X
+*Alice*: Yes, that wouldn't be much fun.  Hmm indeed.  But if the X
 window people have lived with this licence for all that time, there
 is perhaps not too much danger involved.
 
-*B*: Not if our toy model will become as famous as X, but I doubt
+*Bob*: Not if our toy model will become as famous as X, but I doubt
 that we will see the day of an N-body model for each man, woman and
 child.
 
-*A*: Maybe the best solution for now is to start with the MIT
+*Alice*: Maybe the best solution for now is to start with the MIT
 licence.  I presume that we can always later replace it with a more
 elaborate and more restrictive version.  What do you think?
 
-*B*: Fine with me.
+*Bob*: Fine with me.
 
 == A Minimal Vision
 
-=== Applications
+=== Stellar Evolution and Hydrodynamics
 
-*A*: It's time to decide what to put into our toy model.  We'll
-have some simple stellar dynamics as a backbone, but we should
-at least include some stellar dynamics and hydrodynamics.
+*Alice*: It's time to decide what to put into our toy model.  It would
+be good to have a clear vision of what we want to accomplish, before
+we get started.  At the same time, it should be a minimal vision, to
+keep the software simple enough to serve as a toy model.  We can have
+some simple stellar dynamics as a backbone, but we should at least
+include some stellar dynamics and hydrodynamics.
 
-*B*: That's asking a lot.  The simplest stellar evolution code
+*Bob*: That's asking a lot.  The simplest stellar evolution code
 will be huge, much larger than a small N-body program.  For
 hydrodynamics we can use SPH, that won't be much that large.  But in
 both cases we'll have a lot of explaining to do, if we really want to
 describe to the students what is going on in those codes.
 
-*A*: No, that would be hitting a safety pin with a sledge hammer.
-All that we need to do is to implement the correct interfaces for a
-real evolution code and a real hydro code.  But for our toy model, we
-can then finish the job by adding something very simple at the other
-side of the interface.  In other words, we can write a very very
-simple toy model for stellar evolution, a minimal skeleton version
-really; and similarly for stellar dynamics.
+*Alice*: I'm not sure that a stellar evolution code would have to be
+that large.  It may be possible to write a code that is not longer
+than the stellar dynamics code.  However, we really don't have to be
+that fancy.  All that we need to do is to implement the correct
+interfaces for a real evolution code and a real hydro code.  Having
+done that, for our toy model we can then finish the job by adding
+something very simple at the other side of the interface.  In other
+words, we can write a minimal skeleton version for stellar evolution;
+and similarly for stellar hydrodynamics.
 
-*B*: A look-up table for stellar evolution, for a few simple tracks?
+*Bob*: A look-up table for stellar evolution, for a few simple tracks?
 
-*A*: Even simpler.  For example, we could let the evolution program
+*Alice*: Even simpler.  For example, we could let the evolution program
 determine everything just by giving it a mass.  It will then compute
 the ZAMS radius, as well as the lifetime, by a simple power law formula.
 It can keep the radius constant for the first 90% of its lifetime,
@@ -217,96 +222,397 @@ during the giant face.  After that, the radius will go to zero, and
 the mass becomes that of a typical white dwarf.  This is all at least
 qualitatively correct for relatively low-mass stars.
 
-*B*: Simple indeed.  But it will give at least some numbers through
-the interface that are not altogether unreasonable, so that we can test
-how everything hangs together.  Now what would be the equivalent for
+*Bob*: Simple indeed.  Now what would be the equivalent for
 hydrodynamics?  Obviously something simpler than SPH.  Well, how about
 giving each star a radius, according to a recipe what you just outlined,
 and then stipulating that two stars stick and merge when they pass to
 within the some of their radii?
 
-*A*: Good idea.
+*Alice*: Good idea.  That is the right level of approximation: almost
+trivially simple, but still it will allow you to study the effect of
+collisions.  And it can even produce run-away mergers of many stars if
+the stars are crowded together sufficiently.
 
-*B*: 
+*Bob*: Yes, especially if we let the radius grow with mass in an
+appropriate way.  For starters, we could just take a radius that is
+simply proportional to mass, which is not a bad approximation for low
+mass stars anyway.  We might even use this toy model to mimic the
+formation of intermediate mass black holes!
 
-*A*: xx
+*Alice*: What is an intermediate mass black hole?
 
-*B*: xx
+*Bob*: A black hole that is significantly heavier than stellar remnants,
+but still a lot lighter than the supermassive black holes in the
+nuclei of galaxies.  There is some observational evidence, suggesting
+that these types of black holes may be present in young dense star
+clusters, and perhaps also in older clusters.  One possible
+explanation involves repeated mergers of stars.  If you start with a
+young and very dense star cluster, where collisions occur frequently
+in the core already within the first million years, it is possible to
+get a run-away merger going before even the most massive stars undergo
+a supernova, something which takes a few million years.  The most
+massive stars are most likely to merge, since they provide more
+gravitational focusing, and the more massive a merger product becomes,
+the more likely it is that it will eat yet another stars, more and
+more rapidly, as a snowball effect.
 
-=== Individual Time Steps
+*Alice*: Eating snow?  I'm not sure about your mixed metaphors, and it
+sounds like a rather speculative scenario.  But you make an interesting
+point, that students will already be able to start playing with such
+scenarios right away, even with our simple toy model, right on their
+own laptops.
 
-*A*: xx
+*Bob*: Good.  So now we have specified the nongravitational astrophysics
+part of the code.  That was easy!  Of course we'll have to implement it,
+but these simple approximations shouldn't be too difficult.
 
-*B*: xx
+*Alice*: Wait a minute, we haven't done our specifications yet.
 
-*A*: Minimal complexity: individual time steps, so that you can follow a
-100-body system, say, without getting too much bogged down in binaries.
+=== Interface Specification
 
-*B*: xx
+*Bob*: What more would you like to specify?
 
-*A*: Let's pick a name.  How about Kali?  This means `dark' in Sanskrit.
-As in the `kali yuga', the dark ages we are currently in according to
-Hindu mythology.  Or as in Kali, the Goddess who is depicted as black.
+*Alice*: The main reason to write a toy model was to show the importance
+of modular programming, with interface specifications between each module,
+remember?
 
-*B*: I have no strong preference.  As least the name is conveniently short.
-And since the universe is by and large a rather dark place, the name
-is not inappropriate.  We probably should include the option of
-modeling black holes too, with this name.  Do you know the Sanskrit
-for `hole'?
+*Bob*: Sure I remember.  But we have decided upon the stellar evolution
+and hydro approaches, and as soon as we decide how to do the stellar
+dynamics, we can start coding.  It will become clear pretty quickly
+how to call the stellar evolution from the stellar dynamics module,
+for example.  As soon as we see how that works, we make a precise list
+of all the parameters in the subroutine that calls the stellar evolution,
+and voila, there we have your formal specification.  Wasn't that the idea?
 
-*A*: Beats me.  But then again, we wouldn't want to only model holes.
+*Alice*: No, no, no.  That is a completely bottom-up approach.  Yes,
+that is the way most programs are written in theoretical astrophysics.
+But no, that is not what is meant by an interface specification, which
+is a top-down approach.  The main reason to have an interface
+specification is that the different parts of the program can be
+written by different people, in different styles, in different
+languages, and at different times.  You cannot expect them to wait for
+each other, or to know the details of each other's codes.  The whole
+point is that one module is like a complete black box, as seen from
+the other module.  This can only be accomplished if you specify
+exactly what is being passed through the interface in what way.
+
+*Bob*: That sounds unnatural, and quite a bit of overkill.  But since
+you are so serious about all this, and it is only a toy model, I don't
+mind trying it.  Once it works, I'd be more than happy to point out to
+you how inefficient such an approach will be.  But first I have to get
+a better idea of what you have in mind.  What so said so far sounds
+just too abstract.
+
+*Alice*: Okay, let us do the exercise.  Let us leave out the hydro for now,
+and just discuss the interface between SD and SE.  The first question is:
+who is knocking on the door from which side, in order to request data to
+be passed through the interface.  There are several ways to decide this.
+In the SD case, we will have individual time steps, so different stars
+will be updated at different times.  In the SE case, in general each star
+will have its own natural internal time step as well.  Given all this
+diversity, it may be complicated to give either module the responsability
+to trigger the other module to advance in time, at the right time.  It may
+be better to introduce a separate scheduler module, that takes care of
+all the timing management.
+
+So the scheduler will inform the SD module which stars have to be updated
+next.  In this case, this will involve taking one integration time
+step forwards.  At the same time, the scheduler will inform the SE module
+which stars need to update their internal state.
+
+*Bob*: I should have known it!  In your able hands we have a quick
+proliferation of modules.  I wonder how many more you will introduce.
+But let me just follow your logic.  Right here I can immediately see
+all kind of exceptions to this nice little rule you are specifying
+here `from above'.  For example, as soon as the SD module gives the
+green light to one star to step forward, there is a chance that it
+will run into another star immediately, on a time scale that can be
+arbitrarily much shorter than the time step you thought it would take.
+This means that all the other stars that happily stepped forward are
+now ahead of their time, and we should call them back to their previous
+position, to make sure that they were not affected by the collision.
+
+*Alice*: That is true if your time step criterion does not include the
+possibility of a collision.  Normally the time step in an N-body code
+is determined by a concern for the accuracy of the numerical orbit
+integrator, but it is perfectly possible to include an extra criterion.
+There are many options.  For example, if you use a predictor-corrector
+integration scheme, the predictor pass of the integration will notice
+that there is a collision, and therefore you can decide to return all
+stars that were scheduled to their previous position, and determine
+the new smaller timestep for the whole group.  Another solution would
+be to postpone the 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=== Stellar Dynamics
+
+*Bob*: As for the stellar dynamics, how fancy shall we make our code?
+
+*Alice*: at least we should be able to handle core collapse for a small
+number of particles, say a few hundred or so, so that we can model a
+small cluster, and see the inner parts shrink gravothermally.
+
+*Bob*: In that case, it would be nice to be able to deal with close
+binaries as well.  Otherwise we have to stop the simulation before
+core collapse is completed.  In addition, we may want to study the
+effect of primordial binaries.
+
+*Alice*: But I would prefer not to get into regularization and all that.
+
+*Bob*: Yes, we'll have to make a number of decisions.  As for the global
+dynamics, we are pretty much forced to introduce an individual time step
+scheme.  That will require quite a bit of explaining to the students,
+since it goes way beyond what they can find in the standard text books
+on numerically solving differential equations, but we have little choice.
+If all particles would share the same time step size, the whole system
+would get down on its knees when somewhere two stars would come close
+together, or worse, would form a tight binary.
+
+*Alice*: Fair enough.  And for the local dynamics, do you see any need
+for a special treatment of binaries, without going all the way to a
+mapping of the three-dimensional Kepler problem onto a four-dimensional
+harmonic oscilator?
+
+*Bob*: You mean the Kustaanheimo-Stiefel transformation?
+
+*Alice*: Yes, or the more elegant version based directly on quaternions.
+I love that stuff, it is so elegant to use a Hopf map and all that, but
+I'm afraid it will just be too complex for a first course in dense
+stellar systems.
+
+*Bob*: Well, that is a difficult point.  If we don't do anything, and
+just let binaries form and harden, several problems may appear quite
+soon: there is the question of loss of accuracy, from subtracting the
+position vectors of stars in eccentric hard binaries; and there is the
+large amount of computer time that goes into following hard binaries,
+even after switching to individual time steps.  But I can think of
+various tricks that go partway toward full regularization.
+
+One option would be to `collapse' a binary to a point mass, effectively,
+when there are no other stars nearby, letting it move internally in an
+unperturbed way.  That allows us to use a form of analytic regularization,
+using an analytic solution in terms of elliptic Kepler orbits.  Another
+option would be to use separate coordinate patches for two or more
+stars that come close together.  But that will rapidly get too complicated.
+It would be fun though, and it would students give a more realistic sense
+of the complexities that a real code has to deal with.  Who knows,
+when we really get going, we might even want to give that a try.
+
+*Alice*: Aha, do I detect the possibility of a smooth evolution from a
+toy model to an actual production code?
+
+*Bob*: No no, that would be far more complex.  But it would be a stap in
+the right direction, for sure.
+
+*Alice*: If the main problem would be a loss of accuracy, how about use
+multiple precision?  Instead of 64-bit word length for floating point
+numbers, using 128-bit word length?
+
+*Bob*: You mean quadruple precision?  Yes, that would be an option, but
+it will slow you down.  Depending on the machine you use, it could slow
+you down anywhere from a factor of a few to a factor of a hundred or so,
+if you can do it at all: not every compiler has a quadruple precision
+option, and you don't want to write all the routines by hand for computing
+multiplication and division and square roots and all that.
+
+In any case, yes, there are plenty of options.  Right now, I wouldn't
+be able to guess what would and would not work well, under which
+conditions.  So I'll be learning quite a bit from this exercise, I
+think, even though it's only a toy model.  The more I think about it,
+the more it seems like a fun project.
+
+=== The Kali code
+
+*Alice*: As long as we put all this wonderful stuff soon-to-come on
+the internet, it would be good to give it a name.  I wouldn't want
+to refer to it as `our kitchen sink toy model' all the time.  Let's
+pick a name.  How about using a Greek term?  The word astrophysics
+comes from the Greek after all.
+
+*Bob*: I'm not very strong on languages.  Do you have a specific
+suggestion?
+
+*Alice*: A while ago I asked a Greek astronomer what the word for
+star cluster research would be.  You know, geology is the study of
+the Earth, astronomy is the study of the stars, so what kind of
+something-logy or something-nomy would be the study of star clusters?
+After some thought, he suggested `smenology'.  I believe that `smenos'
+means something like a swarm, like a swarm of bees.
+
+*Bob*: I am often enough stung by bugs in N-body codes, so that would
+be quite appropriate, I'm afraid, although when I hear the word bug,
+I think of small little critters, not as big or ferocious as bees.
+But how do you turn that into a name?
+
+*Alice*: We could call it the Smenology Code?
+
+*Bob*: Too long, too difficult to pronounce, and besides, the logic
+doesn't work.  You wouldn't want to call a code the Astrophysics Code,
+would you -- as if there would be only one such thing.
+
+*Alice*: Good point, I hadn't thought about that.  That would be like
+calling your specific window programs Windows, or your word processing
+program Word.
+
+*Bob*: No way!
+
+*Alice*: And no comment.  Okay, well, what else.  You want a short
+name, I take it?
+
+*Bob*: The shorter the better.
+
+*Alice*: The A code?
+
+*Bob*: Unless you will do all the writing, it should at least be the
+AB code, for both of our initials.  But seriously, it doesn't have to
+be quite that short.  Hey, you like languages; it doesn't have to come
+from Greek -- why not pick something from Chinese or Sanskrit or
+some other side street.
+
+*Alice*: Sanskrit, now that's an idea.  How about Kali?  That means
+`dark' in Sanskrit.  As in the `kali yuga', the dark ages we are
+currently in according to Hindu mythology.  Or as in Kali, the Goddess
+who is depicted as black.
+
+*Bob*: As least the name is conveniently short.  And since the universe
+is by and large a rather dark place, the name is not inappropriate.
+We probably should include the option of modeling black holes too,
+with this name.  Do you know the Sanskrit for `hole'?
+
+*Alice*: Beats me.  But then again, we wouldn't want to only model holes.
 And yes, it would be nice if our code would be so robust, simple as it
 may otherwise be, that it could handle mass ratios of one to a billion,
 like in a brown dwarf circling around one of the most supermassive
 black holes in the nucleus of a central galaxy in a rich cluster of
 galaxies.
 
-*B*: Okay, the Kali code it will be named then.
-
-*A*: xx
-
-*B*: xx
+*Bob*: Okay, the Kali code it will be.
 
 === Starting Simple
 
-*A*: xx
+*Alice*: So we have a name for our toy model, and we have decided
+how we will model the stellar dynamics, the stellar evolution and the
+stellar hydrodynamics: as simple as possible, but not simpler.
+Shall we get started?
 
-*B*: xx
+*Bob*: Just a moment, we haven't yet decided what to do with the stellar
+dynamics.
 
-*A*: To make it really accessible for students, with no prior background
-in numerical methods, we should really start with a first-order scheme
-such as forward-Euler?
+*Alice*: Shared timesteps, didn't we say?
 
-*B*: Really, not with the Hermite scheme?
+*Bob*: Yes, but we haven't specified the integration scheme.  You can
+do shared timesteps using a leapfrog integrator, or more reasonably a
+fourth-order integrator of one type or another.
 
-*A*: What is a Hermite scheme?
+*Alice*: Ah, of course.  And yes, plenty of choices.  Well, to make it
+really accessible for students, with no prior background in numerical
+methods, we should really start with a first-order scheme such as
+forward-Euler, shouldn't we?
 
-*B*: Hmm, maybe not start with a Hermite scheme then.  This is the
-workhorse of N-body methods in which close encounters can occur.
+*Bob*: Really, not with the Hermite scheme?
 
-*A*: I admit that it is a long time ago since I looked at such an
+*Alice*: What is a Hermite scheme?
+
+*Bob*: This is the current workhorse of N-body methods in which close
+encounters can occur.
+
+*Alice*: I admit that it is a long time ago since I looked at such an
 N-body code.  My recollection was that a rather complicated
 predictor-corrector method was used, where the force calculation from
 various previous time steps was remembered.  The book keeping was
 complicated.
 
-*B*: xx
+*Bob*: That must have been a long time ago indeed!  For the first thirty
+years or so, this was indeed the method of choice, until in the late
+eighties Makino came up with a simpler self-starting scheme, which he
+called the Hermite integrator, since it uses some ideas put forward
+first by mister Hermite, a couple centuries ago, I think.  This is what
+is now being used almost exclusively in stellar dynamics of dense
+stellar systems.  And it's not that difficult to code.  You can write
+it in such a way that it looks like an almost obvious generalization
+of a leepfrog integrator, apart from a few coefficients which would be
+hard to guess off-hand.
 
-*A*: xx
+*Alice*: In that case, it would be good to incorporate that scheme in
+Kali code.  Even so, I like to start simple.  I don't want to scare
+the students by presenting complex integration schemes until they have
+gotten a sense of what the notion of integration means.
 
-*B*: xx
+*Bob*: Wouldn't that be too much hand-holding?  Why not let them jump
+in right away?
+
+*Alice*: The drawback of giving them a fancy working tool right away
+would be that they would immediately run with it and move on to fun
+applications.  Chances are they would never bother to think about how
+and why it can work in the first place.  These days, students are all
+too much focused on learning how to use a package, rather than writing
+it and getting a feel for what is under the hood.
+
+*Bob*: I'm afraid you're right.  When I did my first programming, it
+was in basic, and soon afterwards in C.  Nowadays, when students talk
+about programming, they mean tweaking the parameters of a packages,
+while using GUIs.
+
+*Alice*: Perhaps we begin to sound like old folks, shaking our heads
+about the behavior of youngsters nowadays.  But in any case, I really
+think it is best to start with the simplest possible integration
+scheme, forward Euler.  That way they can get a feel of what it means
+to follow the tangent of a curve in literally the most straightforward
+way.
+
+*Bob*: A clumsy way to start, for sure, but at least they will then
+learn to appreciate the power of higher-order integration schemes.
+Okay, let's do that.
 
 == Environment
 
+=== A Toolbox
+
+*Alice*: Now that we know what we want to model, we have to address
+the question of the environment in which we want to work.
+
+*Bob*: You mean what type of computer hardware, or operating system,
+or computer language?
+
+*Alice*: All of these questions need to be addressed, and they are
+general concerns for any software projects.  However, in our particular
+case there is also the question of how to make our codes work together.
+
+*Bob*: But we already discussed that: we specify interfaces, then
+compile each part of the code, link it into one executable, and we are
+ready to run.  Of course, you have to produce some initial conditions,
+and you want to look at the results, but basically we are dealing with
+one big program, no matter how modular you would like to make it.
+
+*Alice*: That has been the traditional approach for a long time, but
+it is far from optimal.  What I would prefer, certainly for a student
+demonstration project, is to provide something that is more like a
+toolbox.
+
 === Operating System
 
-*A*:
+*Alice*: 
 
-*B*:
+*Bob*: 
 
 === Choosing a Language
 
-*B*: Before we get started, we have to pick a particular language.
+*Bob*: Before we get started, we have to pick a particular language.
 I have no strong preference among Fortran, C, or C++.  They all have
 their strengths and weaknesses.  C is nice and fast and straightforward.
 Fortran has by now caught up with C quite well, after lagging behind for
@@ -317,29 +623,29 @@ that stuff, it's a good tool; it's fast enough, and you don't look at
 the unreadable stuff the compiler produces.  Your choice: which of the
 three?
 
-*A*: Perhaps none of the above?
+*Alice*: Perhaps none of the above?
 
-*B*: Huh?  Do you want to use Cobol?  Or Lisp?  Too late for Pascal,
+*Bob*: Huh?  Do you want to use Cobol?  Or Lisp?  Too late for Pascal,
 I'm afraid.
 
-*A*: Frankly, I'd love to use Lisp, or the dialect Scheme to be more
+*Alice*: Frankly, I'd love to use Lisp, or the dialect Scheme to be more
 precise, but don't worry; I know that most non-Lispers have an aversion
 to too many parentheses.  While I love the language, I don't have the
 illusion that I can single-handedly convert a critical mass fraction
 of the astrophysics community to start writing and thinking in terms
 of lambda calculus.
 
-*B*: What calculus?
+*Bob*: What calculus?
 
-*A*: Forget I said that.  No, I'm not thinking about Lisp or other
+*Alice*: Forget I said that.  No, I'm not thinking about Lisp or other
 more traditional languages.  Rather, I have been considering using a
 scripting language.
 
-*B*: You mean Perl?
+*Bob*: You mean Perl?
 
-*A*: Perl is one example of a scripting language, but there are others.
+*Alice*: Perl is one example of a scripting language, but there are others.
 
-*B*: I've heard many good things about Perl.  I've never used it myself,
+*Bob*: I've heard many good things about Perl.  I've never used it myself,
 but I, too, have been thinking more and more about learning it.  There
 are just too many times that I feel hampered by the limitations of C
 shell scripts, or whatever similar shells you can use in Unix.  A
@@ -348,26 +654,26 @@ powerful, to analyze the output from N-body codes, for example.  But
 still, I could easily be convinced to use Perl instead.  I know several
 colleagues who swear by it.
 
-*A*: I wasn't thinking about Perl.  Nor Python.
+*Alice*: I wasn't thinking about Perl.  Nor Python.
 
-*B*: Ah yes, Python, I couldn't remember the name, just now.  What's
+*Bob*: Ah yes, Python, I couldn't remember the name, just now.  What's
 the difference with Perl?
 
-*A*: It's object oriented, like C++ but less unwieldy.
+*Alice*: It's object oriented, like C++ but less unwieldy.
 
-*B*: Hmm, that I like.  I've grown quite fond of using classes in C++,
+*Bob*: Hmm, that I like.  I've grown quite fond of using classes in C++,
 for the types of problems where I know what I want to do.  It would be
 nice to have a more playful language in which to prototype classes,
 and throw them away if you don't like them, without having to redeclare
 everything all over the place to make the gods of the C++ compiler happy.
 
-*A*: Exactly, that was my thought.  So given the two, I would prefer
+*Alice*: Exactly, that was my thought.  So given the two, I would prefer
 Python.  But in fact, there is another choice, even better in my eyes.
 It is called Ruby.
 
-*B*: Never heard of it.  What's the difference with Perl and Python.
+*Bob*: Never heard of it.  What's the difference with Perl and Python.
 
-*A*: Since it was developed after Perl and Python had already come
+*Alice*: Since it was developed after Perl and Python had already come
 into being, the author of the language, Yukihiro Matsumoto, had the
 advantage of being able to learn from his experience with those other
 two languages.  It is in fact more fully object oriented than Python.
@@ -379,38 +685,38 @@ what a given expression will do.  That sounds like a strong claim, but
 I know several computer science friends who have told me that this is
 really the case.
 
-*B*: Well, since I have never yet learned any scripting language, I
+*Bob*: Well, since I have never yet learned any scripting language, I
 don't care which one I will learn.  You choose.
 
-*A*: Same for me, it will be my first one too.  Okay, let's take Ruby.
+*Alice*: Same for me, it will be my first one too.  Okay, let's take Ruby.
 It is freely available on the web, all fully open source, and there
 are already a number of good books available.  The fist book to
 introduced it in the English language is in fact fully available on the
 web, so we can get started immediately.
 
-*B*: Okay, Ruby it will be.
+*Bob*: Okay, Ruby it will be.
 
-*A*: I'll have to warn you, though: a scripting language is slower
+*Alice*: I'll have to warn you, though: a scripting language is slower
 than a compiled language.  Ruby especially: besides being an interpreted
 language, almost everything goes through two layers of indirection, which
 makes for a marvelous flexibility, but a large penalty in
 performance.
 
-*B*: There you go again, choosing flexibility over performance.  But
+*Bob*: There you go again, choosing flexibility over performance.  But
 this time I don't care, as long as we have agreed to write only a toy
 model.  My students will be slower in understanding stellar dynamics
 than the computer will be in running their programs, even if they are
 ten times slower.
 
-*A*: Hmm, would you settle for a hundred times slower?
+*Alice*: Hmm, would you settle for a hundred times slower?
 
-*B*: What?!?  Surely you're joking!
+*Bob*: What?!?  Surely you're joking!
 
-*A*: I'm not joking.  But the good news is: Ruby defines a way to
+*Alice*: I'm not joking.  But the good news is: Ruby defines a way to
 interface with C code.  So you can write the most time-critical part
 of a code directly in C, if you want to make your code run faster.
 
-*B*: That sounds much better already.  But as long as we want students
+*Bob*: That sounds much better already.  But as long as we want students
 to study the cold collapse of, say, a 25-body system, we can even live
 with a factor of 100.  What do I care?  People ran 25-body systems
 back in the sixties, when computers where much more than a million
@@ -418,33 +724,33 @@ times slower than they are now, so we can loose a couple zeroes in
 factors of speed.  And it will prevent you from ever claiming that
 your toy model have much to do with the reality of production runs!
 
-*A*: We'll see about that.
+*Alice*: We'll see about that.
 
 === Graphics
 
-*A*:
+*Alice*:
 
-*B*:
+*Bob*:
 
 == Style
 
 === Literate Programming
 
-*A*:
+*Alice*:
 
-*B*:
+*Bob*:
 
 === Coherent Programming
 
-*A*:
+*Alice*:
 
-*B*:
+*Bob*:
 
 === A Lab Note Mechanism
 
-*A*:
+*Alice*:
 
-*B*:
+*Bob*:
 
 = old stuff (040120)
 
