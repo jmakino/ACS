@@ -162,9 +162,11 @@ options_text= <<-END
     This program evolves an N-body code with a fourth-order Hermite Scheme,
     using individual time steps.  The only allowed time steps are powers of
     two, with a maximum value for the time steps of unity.  In other words,
-    dt = 2^(-k) with k >= 0.
-    The only difference with the previous version is that we now have split
-    off some basic functions into the file "basic_nbody.rb"
+    dt = 2^(-k) with k >= 0.  This time, we also require lineup of smaller
+    time steps at the boundaries of larger time steps.  This means that for
+    each particle k is only allowed to increase when the total time t is an
+    even multiple of the time step dt, i.e. t/2^(k) is even, or t/2^(1-k)
+    is an integer.
 
     (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
 

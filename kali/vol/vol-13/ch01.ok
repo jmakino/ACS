@@ -18,3 +18,7 @@ on and before September 16 (see also murat4.summary):
    introduce on N-body level two methods: autonomous vs. forced steps
    try to split evaluate, then decide it is better not to (see murat4a.rb)
 
+ discussion of remaining problems:
+   what to do with high-velocity stars
+   how to combine and speed up calculations of acc, jerk, collision time scale
+
