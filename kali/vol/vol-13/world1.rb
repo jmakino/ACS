@@ -392,10 +392,10 @@ class World
   end
 
   def setup_from_world(c)
-    @dt_max = c.dt_era * c.dt_max_param
+    init_output(c)
     @t_out += c.dt_out
     @t_end += c.dt_end
-    init_output(c)
+    @dt_max = c.dt_era * c.dt_max_param
     @new_era = @era.next_era(c.dt_era)
     @old_era = @era
     @era = @new_era
@@ -408,10 +408,13 @@ class World
     @dt_max = c.dt_era * c.dt_max_param
     @initial_energy = @era.startup_and_report_energy(c.dt_param, @dt_max)
     @time = @era.start_time
-    @t_out = @time + c.dt_out
-    @t_dia = @time + c.dt_dia
-    @t_end = @time + c.dt_end
+    @t_out = @time
+    @t_dia = @time
+    @t_end = @time
     init_output(c)
+    @t_out += c.dt_out
+    @t_dia += c.dt_dia
+    @t_end += c.dt_end
   end
 
   def init_output(c)
