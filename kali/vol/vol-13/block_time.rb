@@ -22,6 +22,10 @@ class Block_time
     contract
   end
 
+  def get_time
+    # should return a floating point value of the time
+  end
+
   def contract
     while @time_array[@time_array.size - 1] == 0
       break unless @time_array.pop
@@ -93,6 +97,10 @@ class Block_time
       sum.time_int = @time_int + a.time_int + carry
       sum.contract
       return sum
+    end
+    if a.class == Float or a.class == Fixnum
+      a_block = Block_time.new(a)
+      return self + a_block
     end
   end
 
