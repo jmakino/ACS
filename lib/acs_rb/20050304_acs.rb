@@ -4,7 +4,7 @@ require "acsrequire"
 
 include_files.each do |f|
   file = f + ".rb"
-  acsreq f if $0 != file
+  acsrequire f if $0 != file
 end
 
 include Math
