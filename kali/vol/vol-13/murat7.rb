@@ -91,6 +91,8 @@ end
 
 class Nbody
 
+  attr_accessor :time
+
   def startup(dt_param)
     @e0 = ekin + epot                      # initial total energy
     @body.each do |b|

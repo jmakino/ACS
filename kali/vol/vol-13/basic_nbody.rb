@@ -84,7 +84,7 @@ end
 
 class Nbody
 
-  attr_accessor :time, :body
+  attr_accessor :body
 
   def initialize
     @body = []
