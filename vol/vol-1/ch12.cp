@@ -162,7 +162,7 @@ instead of +a+ for ASCII, Ruby uses the more appropriate +s+ for string,
 in naming it +to_s+.
 
 *Alice*: With generic, you really mean that <tt>to_s</tt> can convert
- _any_ object to a string?
+_any_ object to a string?
 
 *Bob*: Yes, but only if you provide the appropriate <tt>to_s</tt> method
 to the class that defines that object, since Ruby has no way of
@@ -237,8 +237,8 @@ isn't this an impressive list of methods?
 You mentioned that +join+ is an _instance_ method.  What would be an example
 of a _class_ method?
 
-*Bob*: Here they are listed, under the heading <tt>class Array</tt>.
-There are only two: <tt>[]</tt> and +new+.
+*Bob*: Here they are listed, in the Ruby documentation pages, under the
+heading <tt>class Array</tt>.  There are only two: <tt>[]</tt> and +new+.
 
 *Alice*: We have seen +new+; you told me that that is a generic method for
 any class.  But what is <tt>[]</tt>?

@@ -247,9 +247,9 @@ returns a new array that contains the values resulting from the
 operations.  Be careful here: the bang sign "!" is _not_ an operator
 in itself, it is only an allowed character for the last part of the
 name of a command.  It is up to the code writer to choose sensible
-names such that +do_something+ and +do_something!+ do the same thing,
-the first one producing a new array, and the second one changing the
-elements of the array that it was called by.
+names such that +do_something+ and <tt>do_something!</tt> do the same
+thing, the first one producing a new array, and the second one
+changing the elements of the array that it was called by.
 
 == A Surprise
 
@@ -292,11 +292,3 @@ it works?
 *Alice*: Hmmm.  Perhaps not in detail yet.  Since I was going to look
 at the manual tonight, this will give me my own challenge, to figure
 this one out.
-
-
-
-
-
-
-
-

@@ -49,7 +49,7 @@ Newton's equations of motion for a gravitational many-body system:
 \def\br{{\bf r}}
 \begin{equation}
 \frac{d^2}{dt^2}\br_i =  G \sum_{j=1 \atop j \neq i}^N M_j
-\frac{\br_j - \br_i}{\,|\br_j - \br_i|^3}
+\frac{\br_j - \br_i}{\,|\br_j - \br_i|^3}            
 \end{equation}
 </tex>
 
@@ -69,6 +69,8 @@ gravitational acceleration on particle <tex>$i$</tex> then becomes:
 \end{equation}
 </tex>
 
+== Relative Motion
+
 For a 2-body system, everything simplifies a lot.  Instead of dealing
 with position <tex>${\bf r}_1$</tex> for the first particle and
 <tex>${\bf r}_2$</tex> for the second particle, we can write the
@@ -77,7 +79,7 @@ terms of the relative position, defined as:
 
 <tex>
 \begin{equation}
-{\bf r} = {\bf r}_2 - {\bf r}_1
+{\bf r} = {\bf r}_2 - {\bf r}_1                      
 \end{equation}
 </tex>
 
@@ -89,9 +91,58 @@ tail at the position of particle 1.  Introducing
 <tex>
 \begin{eqnarray}
 \frac{d^2}{dt^2}{\bf r} & = &
-\frac{d^2}{dt^2}{\bf r}_2 - \frac{d^2}{dt^2}{\bf r}_2                   \\
+\frac{d^2}{dt^2}{\bf r}_2 - \frac{d^2}{dt^2}{\bf r}_1              \nonumber \\
 & = & G M_1 \frac{{\bf r}_1 - {\bf r}_2}{\,|{\bf r}_1 - {\bf r}_2|^3}
-- G M_2 \frac{{\bf r}_2 - {\bf r}_1}{\,|{\bf r}_2 - {\bf r}_1|^3}       \\
- & = & - G \frac{M_1 + M_2}{r^3}{\bf r}
+- G M_2 \frac{{\bf r}_2 - {\bf r}_1}{\,|{\bf r}_2 - {\bf r}_1|^3}  \nonumber \\
+ & = & - G \frac{M_1 + M_2}{r^3}{\bf r}                            \nonumber
 \end{eqnarray}
 </tex>
+
+We can choose physical units for mass, length, and time in such a way
+that <tex>$G=1$</tex>.  With the shorter notation <tex>$M=M_1+M_2$</tex>,
+we then get 
+
+<tex>
+\begin{equation}
+\frac{d^2}{dt^2}{\bf r} = - \frac{M}{r^3}{\bf r}
+\end{equation}
+</tex>
+
+You often see an even more abbreviated `dot' notion for time derivatives.
+If we place a dot on top of a variable for each time derivative we take,
+we wind up with
+
+<tex>
+\begin{equation}
+\ddot{\bf r} = - \frac{M}{r^3}{\bf r}
+\end{equation}
+</tex>
+
+*Bob*: End of lecture.  Yes, let's start solving that last equation.
+Here is how the forward Euler integration scheme works:
+
+<tex>
+\begin{eqnarray}
+{\bf r}_{i+1} & = & {\bf r}_i + {\bf v}_i dt \label{forward-euler-step1} \\
+{\bf v}_{i+1} & = & {\bf v}_i + {\bf a}_i dt \label{forward-euler-step2}
+\end{eqnarray}
+</tex>
+
+for the position <tex>${\bf r}$</tex>, the velocity <tex>${\bf v}$</tex>, and
+the acceleration <tex>${\bf a}$</tex> of our single particle, that now
+stands in for the relative motion between two particles.  The index
+<tex>$i$</tex> indicates the values for time <tex>$t_i$</tex> and
+<tex>$i+1$</tex> for the time <tex>$t_{i+1}$</tex> after one more time
+step has been taken: <tex>$dt = t_{i+1} - t_i$</tex>.  So, all we have
+to do now is to code it up.
+
+*Alice*: That was an even shorter lecture.  Shall we type the code in
+the same file <tt>test.rb</tt> where we put the +Body+ class?  We can
+still use the +Body+ format for our `relative' particle, as long as we
+remember that the mass of that partice corresponds to the sum of the
+masses of the original particle.
+
+*Bob*: What about this?
+
+ :inccode: euler1.rb
+
