@@ -1,25 +1,16 @@
 #
-# report3.rb          2004-9-1          Piet Hut and Michele Trenti
+# report4.rb          2004-9-1          Piet Hut and Michele Trenti
 #
 # In addition to what we have done for report2.rb, we now determine
-# information about the potential.  We start with the central potential,
-# using Dehnen K_0 softening.
+# information about the potential.  We managed to print out the run
+# of the potential, where each particle is replaced by a spherical
+# shell.  So far we have not yet applied softening, i.e. the central
+# potential will diverge for particle positions close to the center,
+# i.e. shell radii going to zero.
 #
 # example:
 #
-# ruby mkplummer3.rb -n100 | ruby report3.rb
-#
-# Note: defining sigma as the variance for the central potential, over many
-#       repeated runs, we found the following values for Phi(0) +- sigma:
-#
-#         N     Phi(0)    sigma
-#
-#        25     -1.702     0.26    (over 400 realizations)
-#       100     -1.703     0.16    (over 400 realizations)
-#       400     -1.700     0.08    (over 400 realizations)
-#      1600     -1.692     0.04    (over 100 realizations)
-#
-# The theoretical value is Phi(0) = 1.69765
+# ruby mkplummer4.rb -n100 | ruby report4.rb
 #
 
 require "vector.rb"
@@ -126,6 +117,91 @@ class Nbody
     location = @body[0].pos*0               # null vector of the correct length
     eps = 1.0 / @body.size**(1.0/3.0)
     soft_potential(location, eps)
+  end
+
+  # produce an indirect addressing array ind_add[] which will allow traversing 
+  # the array a[] in monotonically increasing order of the values of a[], i.e.:
+  # for i < j, a[ind_add[i]] <= a[ind_add[j]] ; in other words, the new array
+  # ordered_a[i] = a[ind_add[i]] is an ordered version of the array a[]
+  #
+  def make_indirect_address_array(a)     
+    aux_a = []              
+    a.each_index{|i| aux_a[i] = [i,a[i]] }
+    aux_a.sort!{|x,y| x[1] <=> y[1]}
+    ind_add = []
+    aux_a.each_index{|i| ind_add[i] = aux_a[i][0]}
+    ind_add
+  end
+
+  def make_index
+    radius            # computes the radius for each particle
+    r = []
+    @body.each_index do |i|
+      r[i] = @body[i].radius
+    end
+    @index = make_indirect_address_array(r)
+  end
+
+  def cumulative_mass                   # using the ordered index
+    cum_mass = []
+    cum_mass[0] = @body[@index[0]].mass
+    for i in 1...@index.size
+      cum_mass[i] = cum_mass[i-1] + @body[@index[i]].mass
+    end
+    cum_mass
+  end
+
+  # potential_offset[i] is the contribution to the potential at the position
+  # of the ith particle (ordered in radius) stemming from all particles with
+  # a distance to the center larger than the ith particle.
+  # In other words, it is the difference between the potential at that point
+  # and the energy per unit mass needed to escape from the gravitational
+  # influence of only the cumulative mass at that point.
+  #
+  def potential_offset                          # unsmoothed for now
+    r_pot_offset = []
+    r_index = @index.reverse
+    r_pot_offset[0] = -@body[r_index[0]].mass / @body[r_index[0]].radius
+    for i in 1...r_index.size
+      r_pot_offset[i] =
+        r_pot_offset[i-1] - @body[r_index[i]].mass / @body[r_index[i]].radius
+    end
+    r_pot_offset.reverse
+  end
+
+  # the N shells representing the 3D-isotropized positions of the N particles,
+  # are indexed from the inside out by index 0, 1, 2, . . . N-2, N-1.
+  # The following method returns the index of the closest shell just outside
+  # the radial position r.  If r is larger than the radius of the outermost
+  # shell, the method returns the value N.
+  # To sum up: there are N+1 possible return values, in the range
+  # 0, 1, 2, . . . , N-1, N
+  #
+  def next_outer_shell_index(r)
+    k = @body.size
+    @index.each_index do |i|
+      if r < @body[index[i]].radius
+        k = i
+        break
+      end
+    end
+    k
+  end
+
+  def phi(r)                          # unsmoothed for now
+    make_index             # this is necessary before anything else can be done
+    k = next_outer_shell_index(r)
+    if k == 0
+      kepler_part = 0 
+    else
+      kepler_part = - cumulative_mass[k-1] / r
+    end
+    if k == @body.size
+      offset_part = 0
+    else
+      offset_part = potential_offset[k]
+    end
+    kepler_part + offset_part
   end
 
   def find_density(k)                        # based on k-th nearest neighbor
@@ -293,8 +369,16 @@ include Math
 
 nb = Nbody.new
 nb.simple_read
-nb.write_report
-k = 5
-nb.find_escapers(k)
-nb.report_com_cod_etc_pos_distances(k)
-print "Phi(0) = ", nb.central_potential, "\n"
+#nb.write_report
+#k = 5
+#nb.find_escapers(k)
+#nb.report_com_cod_etc_pos_distances(k)
+#p nb.central_potential
+  r = 0.0001
+  pot = nb.phi(r)
+  print r, "  ", pot, "\n"
+for i in 1..30
+  r = i/10.0
+  pot = nb.phi(r)
+  print r, "  ", pot, "\n"
+end
