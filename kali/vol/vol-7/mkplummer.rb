@@ -240,7 +240,7 @@ options_text= <<-END
   Default value:	                # nothing, leading to output on $stdout
   Global variable:	output_file_name
   Print name:	 	                       # no name, hence name suppressed
-  Description:		Name of the outputfile
+  Description:		Name of the output file
   Long description:
     Name of the snapshot output file, containing a Plummer's model realization.
     The snapshot contains the mass, position, and velocity values for all
