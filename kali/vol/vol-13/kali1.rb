@@ -17,6 +17,32 @@ module Integrator_forward
   end
 
   def correct(old, dt)
+    @pos, @vel = predict(dt)
+  end
+
+  def interpolate_pos_vel(wp, dt)
+    predict(dt)
+  end
+
+end
+
+module Integrator_forwardplus
+
+  def clear_force
+    @acc = @pos*0
+  end
+
+  def force(wl, era)
+    @acc = era.acc(wl, @pos, @time)
+  end
+
+  def predict(dt)
+    pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2
+    vel = @vel + @acc*dt
+    [pos, vel]
+  end
+
+  def correct(old, dt)
   end
 
   def interpolate_pos_vel(wp, dt)
@@ -100,7 +126,6 @@ module Integrator_hermite
 
   def predict(dt)
     pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3
-                                 
     vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2
     [pos, vel]
   end
@@ -117,7 +142,7 @@ module Integrator_hermite
     snap = (-6*(@acc - wp.acc) - 2*(2*@jerk + wp.jerk)*tau)/tau**2
     crackle = (12*(@acc - wp.acc) + 6*(@jerk + wp.jerk)*tau)/tau**3
     pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
-                           (1/24.0)*snap*dt**4 + (1/120.0)*crackle*dt**5
+                           (1/24.0)*snap*dt**4 + (1/144.0)*crackle*dt**5
     vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*snap*dt**3 +
                            (1/24.0)*crackle*dt**4
     [pos, vel]
