@@ -483,7 +483,7 @@ module Acsdoc
     output += `cat #{dirname}/#{tmpname}`  if  showout
     output.each{|x| ostring = ostring +  " "*indent + x}
     ostring = ostring +  "---\n"
-    ostring
+    if showout then ostring else "" end
   end
 
   def set_prompt(s)
