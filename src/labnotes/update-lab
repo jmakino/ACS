@@ -33,6 +33,6 @@ if ( $success == 1) then
 endif
 svn add Mail
 svn add `ls -1 -d [A-Z]*/*/*/*[^~] [A-Z]*/*/*/.[0-9,a-z,A-Z]*[^~] [A-Z]*/*/*/*/*[^~] | grep -v \.svn`
-rdoc $coptions combined/*
+rdoc $coptions TODO combined/*
 
 
