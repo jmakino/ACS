@@ -16,8 +16,8 @@ all:
 	$(MAKE) -C polytropes
 	$(MAKE) -C shared_timesteps
 	$(MAKE) -C speedup
-	$(MAKE) -C two_body_problem
-	$(MAKE) -C two_body_problem_b
+	$(MAKE) -C two_body_problem_1
+	$(MAKE) -C two_body_problem_2
 	$(MAKE) -C runge_kutta
 	$(MAKE) -C vision
 	$(MAKE) -C documentation
@@ -40,8 +40,8 @@ clean:
 	$(MAKE) -C polytropes clean
 	$(MAKE) -C shared_timesteps clean
 	$(MAKE) -C speedup clean
-	$(MAKE) -C two_body_problem clean
-	$(MAKE) -C two_body_problem_b clean
+	$(MAKE) -C two_body_problem_1 clean
+	$(MAKE) -C two_body_problem_2 clean
 	$(MAKE) -C runge_kutta clean
 	$(MAKE) -C vision clean
 	$(MAKE) -C documentation clean
