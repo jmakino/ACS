@@ -138,6 +138,16 @@ module Rdoctotex
   end
 
 
+
+  def latex_process_tex_mathmarkup(instring)
+    ostring=[]
+    while s = instring.shift
+      ostring.push(s.gsub(/<\$(.+)\$>/){"<tex>$"+$1+"$</tex>"})
+    end
+    ostring
+  end
+
+
   def latex_copy_figure_file(figurefilename,dirname, figure_number)
     imgbase =".imgs/"
     imgdir =  imgbase 
@@ -449,6 +459,7 @@ END
   
   def convert_to_latex(instring,dirname)
     s=process_include(instring)
+    s=latex_process_tex_mathmarkup(s)
     s=latex_process_tex_equations(s)
     s=latex_find_and_process_figures(s,dirname)
     s=process_single_paragraphs_lists_etc(s,0,0,1,0)
@@ -992,7 +1003,8 @@ module Acsdoc
     if tolatex_flag
       tmp2= Rdoctotex::convert_to_latex(tmpstring,dirname);
     else
-      tmp2= find_and_process_tex_inlines(tmpstring,dirname);
+      tmp2= Rdoctotex::latex_process_tex_mathmarkup(tmpstring)
+      tmp2= find_and_process_tex_inlines(tmp2,dirname);
       tmp2= find_and_process_tex_equations(tmp2,dirname);
       tmp2= find_and_process_figures(tmp2,dirname);
       tmp2= find_and_process_generic_tag(tmp2,dirname,"nosectionnumber",
