@@ -1,0 +1,80 @@
+Date: Tue Oct 19 23:03:11 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Jun,
+
+ > Very nice that we have something working, but I must say the current
+ > way Binary class is implemented, well, shows some need for refactoring
+ > or modification.
+ > 
+ > Currently, Binary class inherits the Worldpoint class, and has things
+ > like reduced mass and relative position vector as instance
+ > variable. So internal state of the binary and its external state
+ > (c.o.m. position etc) are in the same level.
+ > 
+ > I think it is necessary, even just to make development easier, to
+ > separete internal state and external state. So instead of having a
+ > Binary class which inherits the Worldpoit, I think we should have
+ > something like Binary_Internal_State class, whose instance a
+ > Worldpoint instance can have as an instance variable. In this way, you
+ > can isolate the internal state, and define the way internal state
+ > talks to the rest of the world.
+
+Ah, yes, that would be much better, of course, I agree.
+
+I just wanted to whip something together quickly, so that I could
+start doing automatic 8-body runs.  I would like to automatize
+Casertano's 1985 paper, that would be a lot of fun, so I did not
+think very deeply about what to do.  In fact, I thought I could
+put it together in a few hours -- but it took me about two days
+instead, and I'm still finding some bugs.
+
+I guess I will make this really work first, hopefully today, so that
+I can start production runs on a few computers here, to gather N=8
+statistics.  But yes, after that I will try to clean things up,
+along the lines you mentioned.
+
+ > I think it is perhaps better to give any worldpoint to become
+ > non-point, by having its internal state encapsulated in something like
+ > a single variable @internal_state, which can keep whatever thing
+ > necessary, like a binary orbital elements for two stars, or more
+ > complex things for more complex clumps.
+
+Yes, very good idea.
+
+ > I think we need to move the decision making to worldline level, so
+ > that each worldline can decide what it want to do at any time. At
+ > present I guess you can hide a binary only at era boundary.
+
+It may be better to do this at the worldline level, I'm not sure yet.
+The main point is: we would like to make local decisions, but not so
+local that they involve only one worldline: they should involve a
+small bunch of worldlines -- a Worldlinebundle may be a good concept.
+
+So the main question is: what are the interrelationships between the
+following classes:
+
+  Worldline
+  Worldbundle
+  Worldsnapshot  and also some form of  Worldbundle-snapshot
+  Worldera
+
+The role of era could be to guarantee to a wordbundle that it is
+isolated.  So era is invoked to make a global snapshot, and then,
+when it is clear that a clump (intersection of bundle and snapshot)
+is isolated, then the Worldbundle does the rest, without any need
+for era to step in.  Does that sound reasonable?
+
+ > Well, problem is that these things we can do much faster while we are
+ > at the same place...
+
+Yes, indeed.  Let us see how far we get with a few email messages.
+I will forward the previous email messages to not, and this one as well.
+Perhaps in a few days we can have a phone discussion, if it gets too
+complicated for email.
+
+Are you back in Tokyo now?
+
+Piet
+

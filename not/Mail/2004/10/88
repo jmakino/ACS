@@ -1,0 +1,65 @@
+Date: Tue Oct 19 23:03:46 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+------- Start of forwarded message -------
+X-SNS: School of Natural Sciences
+Date: Mon, 18 Oct 2004 12:02:39 -0400
+From: Piet Hut <piet@ias.edu>
+To: makino@astron.s.u-tokyo.ac.jp
+CC: makino@astron.s.u-tokyo.ac.jp
+In-reply-to: <20041019.003440.59655597.makino@astron.s.u-tokyo.ac.jp> (message
+	from Jun Makino on Tue, 19 Oct 2004 00:34:40 +0900 (JST))
+Subject: Re: Sanjo Kaikan
+X-Scanned-By: MIMEDefang 2.43
+X-Spam-DCC: : 
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on morpheus.sns.ias.edu
+X-Spam-Level: 
+X-Spam-Status: No, hits=-267.0 required=5.0 tests=AWL,BAYES_00,SENT_FROM_SNS,
+	USER_IN_WHITELIST autolearn=no version=2.63
+X-Spam-Pyzor: Reported 0 times.
+
+Jun,
+
+ > > I talked with Eiko, and we prefer that we would both stay in Komaba.
+ > > So could you please reserve a two-person room for us there?
+ > 
+ > Okay, are the dates unchanged? What I sent to Keiko originally was Jan
+ > 3 to 27.
+
+Actually, it would be great if we could arrive on January 2.
+Indeed, I will depart on January 27.
+
+ > Hmm, could you tell me rough idea how the binary freezing changes the
+ > data structure? Do you create a new class (world bundle) or you just
+ > add sub-worldlines to center-of-mass worldlines, or ...
+
+For now, I have a new class Binary < Worldpoint .
+Obviously, it would be better to have a more general class, something
+like class Clump < Worldpoint (hopefully with a better name: Group
+perhaps?).  However, for now I just wanted to get something ready
+quickly.  See "kali/vol/vol-13/world1c.rb" .
+
+One option would be to introduce Worldregion (Worldclump, Worldgroup)
+as a subclass of Worldpoint, with Binary perhaps still as a special case,
+or not; I have no strong preferences.  Alternatively, we could call it
+all just Worldpoint, and add extra variables.  I would prefer, however,
+to use a special name for non-point-like Worldpoints, given that we
+now have a nice acsio mechanism to deal with those.
+
+In my implementation, the decision to hide two stars in a binary,
+and to dissolve a binary, is made on the Worldera level.
+Besides "take_snapshot", which does not open binaries, I have a
+"take_full_snapshot", mostly for output, which does translate the
+relative motions inside binaries back to single particles.
+
+By the way, I would like to make an automatic script now to study the
+statistical properties of the full decay history of 8-body systems;
+automating Casertano (1985).  Any thoughts about that would be welcome!
+I haven't really thought it through very deeply.  I'll probably try to
+catch some statistics about binary hardening and escaper production
+and half-mass radii.
+
+Piet
+------- End of forwarded message -------
+

@@ -1,0 +1,79 @@
+Date: Tue Oct 19 23:03:58 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+------- Start of forwarded message -------
+Date: Tue, 19 Oct 2004 12:06:49 +0900 (JST)
+To: piet@ias.edu
+Cc: makino@astron.s.u-tokyo.ac.jp
+Subject: Re: Sanjo Kaikan
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+Reply-To: makino@astron.s.u-tokyo.ac.jp
+In-Reply-To: <200410181602.i9IG2dZQ003489@hera.sns.ias.edu>
+X-Scanned-By: MIMEDefang 2.43
+X-Scanned-By: MIMEDefang 2.42
+X-Spam-DCC: : 
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on morpheus.sns.ias.edu
+X-Spam-Level: 
+X-Spam-Status: No, hits=-100.0 required=5.0 tests=BAYES_00 autolearn=ham 
+	version=2.63
+X-Spam-Pyzor: Reported 0 times.
+
+Piet,
+
+ > > Hmm, could you tell me rough idea how the binary freezing changes the
+ > > data structure? Do you create a new class (world bundle) or you just
+ > > add sub-worldlines to center-of-mass worldlines, or ...
+ > 
+ > For now, I have a new class Binary < Worldpoint .
+ > Obviously, it would be better to have a more general class, something
+ > like class Clump < Worldpoint (hopefully with a better name: Group
+ > perhaps?).  However, for now I just wanted to get something ready
+ > quickly.  See "kali/vol/vol-13/world1c.rb" .
+
+Very nice that we have something working, but I must say the current
+way Binary class is implemented, well, shows some need for refactoring
+or modification.
+
+Currently, Binary class inherits the Worldpoint class, and has things
+like reduced mass and relative position vector as instance
+variable. So internal state of the binary and its external state
+(c.o.m. position etc) are in the same level.
+
+I think it is necessary, even just to make development easier, to
+separete internal state and external state. So instead of having a
+Binary class which inherits the Worldpoit, I think we should have
+something like Binary_Internal_State class, whose instance a
+Worldpoint instance can have as an instance variable. In this way, you
+can isolate the internal state, and define the way internal state
+talks to the rest of the world.
+
+ > One option would be to introduce Worldregion (Worldclump, Worldgroup)
+ > as a subclass of Worldpoint, with Binary perhaps still as a special case,
+ > or not; I have no strong preferences.  Alternatively, we could call it
+ > all just Worldpoint, and add extra variables.  I would prefer, however,
+ > to use a special name for non-point-like Worldpoints, given that we
+ > now have a nice acsio mechanism to deal with those.
+
+I think it is perhaps better to give any worldpoint to become
+non-point, by having its internal state encapsulated in something like
+a single variable @internal_state, which can keep whatever thing
+necessary, like a binary orbital elements for two stars, or more
+complex things for more complex clumps.
+
+ > In my implementation, the decision to hide two stars in a binary,
+ > and to dissolve a binary, is made on the Worldera level.
+ > Besides "take_snapshot", which does not open binaries, I have a
+ > "take_full_snapshot", mostly for output, which does translate the
+ > relative motions inside binaries back to single particles.
+
+I think we need to move the decision making to worldline level, so
+that each worldline can decide what it want to do at any time. At
+present I guess you can hide a binary only at era boundary.
+
+Well, problem is that these things we can do much faster while we are
+at the same place...
+
+Jun
+------- End of forwarded message -------
+
