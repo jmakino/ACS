@@ -1,3 +1,67 @@
-= Introduction
+= The New Nbody Driver
 
-== xxx
+== Code Listing
+
+*Alice*: With our new command line options parser in hand, it is time
+we see it at work for our N-body code.
+
+*Bob*: That will be easy.  Remember that I have already replaced my first
+attempt at parsing the command line, in <tt>rkn1.rb</tt>, by a new driver
+version, in <tt>rkn2.rb</tt>.
+
+*Alice*: Yes, you showed me that it contained mainly the `here document',
+which we specified before you even started writing the +Clop+ class.
+Apart from them, it contained only a few lines of code, just enough
+to create an N-body system, read it in, and start the integrator.
+
+*Bob*: Indeed.  Let me list it again:
+
+ :inccode: .rkn2.rb
+
+== Testing
+
+*Alice*: Let's try to get some simple help:
+
+ :commandoutput: ruby rkn2.rb -h
+
+*Bob*: As it should be.  Why don't you try some of the long options?
+
+*Alice*: I'll ask it about step size, since we've talked about that so
+much, and, let's see, how about a boolean variable?  That one should
+not show any default values:
+
+ :commandoutput: ruby rkn2.rb --help --step_size -x
+
+*Bob*: Indeed, only the time step size gives a default value.
+Let's try some wrong options, to see whether we get helpful error
+messages:
+
+ :commandoutput: ruby rkn2.rb -q
+
+*Alice*: That's pretty clear.  How about leaving out a value:
+
+ :commandoutput: ruby rkn2.rb -d
+
+*Bob*: Clear too.  It seems that we have a working product!
+
+== Checking
+
+*Alice*: Let's make a final check to see whether we get we still get
+our expected output for the figure three orbit:
+
+ :commandoutput: ruby rkn1.rb -o 2.1088 -e 2.1088 -t 2.1088 < figure8.in
+
+Good, all is well.  What is the next step, now that we can run our N-body
+integrator in a more convenient way, directly from the command line?
+
+*Bob*: It is high time to run our code with more particles.  So far we
+have only used a maximum of eight particles.
+
+*Alice*: Ah, yes, you put eight particles on a cube.
+
+*Bob*: It was a quick and dirty way to throw some particles in space,
+but it would be nicer to have a somewhat more meaningful way to generate
+initial conditions.
+
+*Alice*: I agree.  Let's see whether we can come up with a more
+astrophysically motivated initial state for a star cluster.

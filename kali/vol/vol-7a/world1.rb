@@ -442,7 +442,7 @@ options_text= <<-END
     This program evolves an N-body code with a fourth-order Hermite Scheme,
     using individual time steps.  Note that the program can be forced to let
     all particles share the same (variable) time step with the option -a.
-    (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
+    (c) 2004, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
     example:
     ruby mkplummer3.rb -n 5 | ruby #{$0} -t 1
