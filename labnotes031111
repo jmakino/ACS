@@ -1,0 +1,201 @@
+2003, November 11, Kyoto: Jun and Piet
+
+1. Kali Code
+
+We met in Tokyo, took the shinkansen to Kyoto, and spent the afternoon
+there at the Yukawa Institute.  Before meeting, we had already decided
+to work on the Kali code.  In June, we had spent two weeks drawing up
+rough specifications for the major modules of the Kali code and their
+interfaces.  However, we did not have the time then to describe the
+detailed considerations that led to our decisions, and we also did not
+specify the interfaces in detail, on the byte level.
+
+1.1. Interface Specifications
+
+We decided to start with the latter task, since solving that would
+also help us to solve the first task: while specifying the interfaces
+in precise detail, we can simultaneously document the movitation and
+considerations that went into the decisions made.
+
+1.1.1. A Toy Model
+
+The next question was where to start.  Rather than jumping in to
+describe the whole Kali structure, we decided to start with a toy
+model, based on the "nbody_sh1.C" code, the shared timestep Hermite
+code introduced in our book "Moving Stars Around".  First we will
+generalize it to include individual time steps, "nbody_ind1.C", and
+then we will separate the code into different modules, the integrator,
+the force calculator, and the scheduler, as well as modules for I/O
+and such.  For this toy model, we will define the interfaces between
+these modules in a precise way.  Next we will implement versions of
+each module in C++, Fortran, and Ruby.  We can then test the
+interfaces by combining different modules, written in different
+languages, into one code, to see whether the various combinations
+behave in the same way (the detailed results may be different because
+of different roundoff, when numerical operations are done in different
+order).
+
+2. File structure
+
+Before beginning to work on our toy model, we had to decide how we
+wanted to structure the files that contain the source for our book
+series.  So far, we have produced a single volume, "Moving Stars
+Around", by writing the text in LaTeX, keep each C++ program in a
+separate file, and managing everything under CVS in a directory
+structure in which each chapter had a separate directory with the C++
+code corresponding to that chapter.
+
+2.1. Problems with the Existing Approach
+
+We had created a mechanism to automatically include the programs and
+program fragments into the right places in our book. This was
+important, to guarantee that the latest version of each program would
+actually appear in the latest version of the book.  However, we
+found that there were still several unsatisfactory aspects to this
+system:
+
+1) it was easy to make a change in a program, while forgetting to
+   update all the places in the text that referred to that program;
+
+2) although we tried to document what we did from day to day in a
+   separate lab notes file, we often neglected to update that file,
+   which made it almost impossible to reconstruct what we did and why
+   we did it, a few months later.
+
+3) while working on our book, we often came up with all kind of
+   interesting ideas, for which we sometimes made notes here and
+   there, but we did not have a good mechanism to store those ideas in
+   a consistent format.  As a result, most of those ideas were lost again.
+
+In addition, we had stumbled on a different type of problem as well:
+
+4) having written our book text in LaTeX, it turned out to be far from
+   trivial to produce HTML files, besides the standard postcript and
+   pdf files.
+
+After some discussion, we decided to try a completely new approach,
+for writing our subsequent volumes.  And since we had just decided to
+work on a toy model to test interfaces, we concluded that we might as
+well use that toy model also as a test case for this new approach of
+better integrating the various files that contain book, code, and lab
+notes.
+
+2.2. Two Files, Four Functions
+
+So we have four functions, for the material that we want to produce
+while writing our books: the book text, the computer programs, the log
+with a description of the day-to-day history, and a mechanism to
+collect ideas.  The first two, book and programs, grow like an animal,
+where different parts transform internally during the growth.  The
+second two, log and ideas, grow more like a plant, with more and more
+stuff added as we go along.
+
+We call the collection of text files for the book and the computer
+programs together the `source', while we call the collection of log
+notes and ideas the `lab notes'.
+
+2.3. Source
+
+In order to prevent problem 1) listed above, we decided to try what
+Donald Knuth has called "literate programming", in which book text and
+code text are written together, interspersed in the same source file.
+Special programs are used to extract the book text and the computer
+codes from this common source.  Only the source is meant to be edited.
+In this way, the chance for a mismatch between code and text is
+minimized.
+
+In order to address problem 4) we decided to switch from LaTeX to XML,
+using docbook to make it easy to produce both postscript and HTML pages.
+Unfortunately, mathematical equations are not very well supported yet
+under XML.  While MathML exists, it is still not very well developed.
+So we decided to continue using LaTeX for our equations, and to write
+some automatic mechanism to create individual postscript files for the
+individual equations.
+
+We are not yet sure how to merge text and code into one source file.
+Perhaps we will write our own system, using Ruby.  Before before
+making a decision, we would like to hear what others have to say.
+We will ask Erik Ray and Norm Walsh for advice.
+
+2.4. Lab Notes
+
+2.4.1. Open Source
+
+It would be good to make our lab notes openly available, in the spirit
+of open source, so that anyone interested can not only read our books
+and run our programs, but also inspect the whole process that led to
+the writing of books and programs, as well as the ideas that popped up
+as part of the process.  In a way, all of this is a collection of
+different layers of documentation for the source code.
+
+You start with the source code.  There are inline comments to explain
+some statements in a microscopic ways.  There are blocks of comments
+included in the code to give more macroscopic descriptions of how the
+code hangs together.  All three, code statements, shorter and longer
+comments can be found in the code source files.
+
+The fourth level of documentation is the book text.  The fifth level
+is given by the lab notes that in turn document the process of writing
+the book text, as a history of what happened.  The sixth level is
+given by a description of the ideas that drove the history of the
+writing, when they popped up and where they were eventually used.
+
+2.4.2. Presentation
+
+In order to make our lab notes publicly available, we will create a
+top HTML page with a one-line entry for each month, which you can
+click on in order to access a lower-level HTML page that lists all
+sessions that took place during that month.  Clicking on that session
+will then direct you to the actual lab notes for that session.  The
+reader will have a choice, to view separate sessions in separate HTML
+files, or to browse through a longer HTML file containing all sessions
+for a given month.
+
+Within each session, we present the history of what we did in that
+session and why.  In addition, we will create separate boxes for ideas
+that popped up during that session.
+
+2.4.3. Generation of Lab Notes
+
+In order for us to make it easy to write the lab notes for a new
+session and add them to the existing HTML files, we will automatize
+the process of lab note generation.  Rather than writing a separate
+HTML file, which is rather cumbersome, we will introduce a special
+file format, indicated by a file name ending with ".not" (for notes),
+with a set of rules for how to indicate breaks between paragraphs,
+sections and subsections, etc.
+
+For example, two blank lines will be translated into paragraph breaks,
+and a single line starting with a number will be interpreted as a
+header for a section or subsection.  If you really want to write a
+paragraph containing only one short sentence starting with a number,
+you will have to add a backslash: "\8" at the start of a one-line
+paragraph will be interpreted as "8", while "\\8" will be interpreted
+as "\8", for those rare one-line paragraphs that really want to start
+with a backslash followed by a character 8.
+
+Each time one of us submits a session, our new software will
+automatically add that session to the growing list of sessions,
+updating the various levels of HTML files as described above.
+
+Before submitting your session, you may want to view it in HTML mode,
+to check whether things really come out as you intended.  For that
+purpose, the software will have a "local" mode, to create a single
+stand-alone HTML file for your session.  The "global" mode, in
+contrast, will add your session once and for all to the growing
+repository of sessions.  If you later want to make changes, you have
+to describes those in a later session, and point to the older session.
+
+Note that we will allow errata to point back to a previous session,
+which will then automatically add a pointer to the previous session,
+pointing to the erratum text.  However, that last pointer will not
+appear inside the text of that previous session, which can no longer
+be changed, but rather at the top or bottom of that session, as a form
+of metadata.
+
+Finally, we will allow the inclusion of figures and LaTeX equations.
+The images for the figures will be automatically copied to the proper
+place so that they can be accessed by the HTML files that will include
+them.  For the specific case of LaTeX equations that will be turned
+into figures, we will create a special file "notdefs.tex"
+
