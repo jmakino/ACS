@@ -1,0 +1,15 @@
+Date: Wed Dec 31 16:13:20 JST 2003
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Well, now it *should* work. By sending mail to either
+not@artcompsci.org (Cced to Piet and Jun) or notonly@..., you can add
+notes automatically to the svn repository at grape (after 1 munutes or
+so). So, by svn update, you get files in Mail/200x/x. update-lab is
+changed to look at Mail/xxxx/xx as well. Also, not/TODO is now
+included in update-lab.
+
+We'll see if this file will appear in the right place or not.
+
+Jun
+
