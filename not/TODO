@@ -1,34 +1,62 @@
 = TODO for acs
 
-Time-stamp: <2004-04-09 12:15:37 piet>
+Time-stamp: <2004-06-17 10:30:03 piet>
 
-* in our labnotes and elsewhere, how/when shall we implement reference
-  pointers?
+* in volume 2
 
-* specifically, we need references (and a mechanics to keep them up-to-date
+  -- explain Yoshida integrators
+
+  -- explain Hermite integrators
+
+  -- implement and explain multiple step methods
+
+* in volume 3
+
+  -- explain Hermite integrators
+
+  -- implement and explain multiple step methods
+
+* in volume 4 (user interface)
+
+  -- write text about clop.rb
+
+  -- manual version for clop.rb ?
+
+* in volume 5 (speed-up)
+
+  -- write fast versions of rknbody.rb
+
+  -- write text about those versions
+
+* in volume 7 (data format)
+
+  -- implement acs-read and subread, and error handling
+
+  -- add f_to_s to Float class, and f_v_to_s to Vector class
+
+  -- a hash table for "density = 0.1", etc.?
+
+  -- implement XML I/O version
+
+  -- write text
+
+* in ok/vol-0
+
+  -- history and prehistory; what else?
+
+* in ok/vol-1
+
+  -- document/discuss acsdoc
+
+* expand \t properly in :inccode:
+
+* reference pointers: how to implement, from one volume to another?
+
+  Here is an old "todo" text about this topic:
+
+  specifically, we need references (and a mechanics to keep them up-to-date
   in both directions!) for the following notion: we may want to give
   guided tours and explanations of short-cuts as a separate track of
   text in the book, apart from the dialogues.  This could be as
   preface, appendices, and comments at the end of each chapter
 
-* how about replacing
-
-  <tt>segment start: <i>name</i></tt>
-
-  by 
-
-  <tt>segment: <i>name</i></tt>
-
-  ?
-
-* a cleanup mechanism for all the <tt>.something</tt> files?
-
-* there is something wrong with the numbering in <tt>labnotes031112</tt>:
-  the top level sections are always 1.
-
-* in our book, we may want to say a few more words about the notion of
-  the `order' of a differential equation?  This was the main point of
-  criticism that Bob Vanderbei mentioned.
-
-* are <tt>!name!</tt> and <something> useful, as mentioned
-  in <tt>rdoc-0.9.0acs1/README.local</tt> ?
