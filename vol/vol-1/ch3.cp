@@ -1,4 +1,4 @@
-= Chapter 2.  A Leapfrog in Ruby
+= Chapter 3.  A Leapfrog in Ruby
 
 *A*: So here we are, with no prior experience in writing in Ruby, and
 ready to learn the language by implementing a leapfrog code.  Where
@@ -18,7 +18,7 @@ with reading and writing the data for a single particle.  For an
 object oriented language like Ruby, that suggests that we create a
 class +Body+ for a particle in an N-body system.
 
-=== 2.1. A Body Class
+=== 3.1. A Body Class
 
 *B*: How about:
 
@@ -160,7 +160,7 @@ they say that Ruby is based on the principle of minimum surprise.
 
 <b>[This is how far I got with my rewrite, 2004/1/19 -- Piet]</b>
 
-== 2.2. Improving the Output
+== 3.2. Improving the Output
 
 *A*: So far we've only use the general dump command "+p+".  Certainly
 useful when we run a script, since otherwise we would get no output at
@@ -210,7 +210,7 @@ give it a hint.  For example, if we would be dealing with an array of
 characters, then we might well want to get the all strung together;
 that's were the word "string" comes from, after all.
 
-== 2.3. Pretty Printing
+== 3.3. Pretty Printing
 
 *B*: Good point.  So we should define our own field separator.  I saw
 something to do that.  Here it is: the method +join+ converts an array
@@ -254,7 +254,7 @@ do something different.
 *A*: I guess it depends on your taste, whether you find it easier to
 make many small edits or to use an interpreter.
 
-== 2.4. Full Accuracy I/O
+== 3.4. Full Accuracy I/O
 
 *B*: So where are we?  We have successfully defined a class +Body+,
 and have learned to give it an initial value and to print it out.
@@ -339,7 +339,7 @@ mapping initial conditions onto final conditions.
 particle physics.  Well, I guess that our point particles are about as
 elementary as they come, so it does make sense ;>).
 
-== 2.5. Looking Back
+== 3.5. Looking Back
 
 *A*: That was great, to be able to do such rapid prototyping in a
 language we hardly knew.  I can see the advantages of an interpreted
@@ -352,7 +352,7 @@ letting it chain, all that is a nontrivial beginning.  This is
 encouraging!  Let's move on, to see how much we have to add before we
 can let the integrator integrate.
 
-== 2.4. Moving right along [I'll change these titles/sections soon -- Piet]
+== 3.4. Moving right along [I'll change these titles/sections soon -- Piet]
 
 <i>[I'm only putting in a few words for now; when we agree upon the
 story, I will flesh it out and provide a complete dialogue --
