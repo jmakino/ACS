@@ -1,4 +1,4 @@
-= A Data Format
+= A Hierarchical Data Format
 
 == Thinking Ahead
 
