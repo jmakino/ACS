@@ -28,6 +28,12 @@ class Vector < Array
     end
     quotient
   end
+
+  def to_s
+    s = ""
+    self.each{|x| s += sprintf("%24.16e", x)}
+    s
+  end
 end
 
 class Array
