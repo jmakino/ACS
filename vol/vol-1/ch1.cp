@@ -20,7 +20,7 @@ accumulating, but now I have a clean desk, and I'm ready to start up.
 *Bob*: The previous time I felt like this was when I had handed in my
 thesis.  I was surprised to find myself suddenly in a pleasant vacuum,
 after rushing so much to get everything finished in time.  It was soon
-afterwards that I started to get involved in various parallel projects,
+afterward that I started to get involved in various parallel projects,
 which never seemed to come to an end.  That was eight years ago.
 
 *Alice*: I heard you just got tenure.  I guess that has something to do
@@ -734,7 +734,7 @@ a brave step was taken by introducing the concept of convective scale
 length _h_.  And while there really was no reason to believe that this notion
 had much physical meaning beyond an order of magnitude characterization,
 it did provide us with a quantitative handle, a number _h_ that could be
-determined afterwards, by comparing theory and observation.
+determined afterward, by comparing theory and observation.
 
 It was altogether possible that no single good value for _h_ would
 have reproduced the observed structure and evolution of stars.

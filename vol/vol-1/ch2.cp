@@ -5,18 +5,18 @@
 === A Toy Model on the Web
 
 *Alice*: I really like your idea of writing a toy model for a code to
-similate dense stellar systems.  While it will be useful for your
+simulate dense stellar systems.  While it will be useful for your
 students, I'm sure we'll learn from it ourselves.
 
 *Bob*: I don't doubt it.  For one thing, you'll see how hard it is to
 then mature the code into a real research tool.
 
 *Alice*: I'm not so sure.  Given that there is a great demand for such a
-code, and precious little supply so far, I wouldn't be surprized if
+code, and precious little supply so far, I wouldn't be surprised if
 even a toy model would turn out to be useful already, if we do a good
 job.
 
-*Bob*: I would be very surprized, but as we already concluded, no sense
+*Bob*: I would be very surprised, but as we already concluded, no sense
 in arguing.  We'll see soon for ourselves.  And it will be interesting
 to get feedback from my students.  By now I've been working in this
 field for so long that it is difficult for me to guess what is and
@@ -28,7 +28,7 @@ you how to set up and run and analyze experiments.  Plenty of articles
 about algorithms and about programming, but very little about how to
 put it all together.  I basically learned by knocking on doors here
 and there, working with fellow students who were further along than I,
-and asking my thesis advisor.
+and asking my thesis adviser.
 
 *Bob*: Yeah, it would be nice to have a more detailed hands-on introduction
 available.  Well, I was planning to make my course notes available on the
@@ -76,7 +76,7 @@ web, and see what reactions we get.
 *Alice*: If we do that, I suggest that we make it freely available, without
 restrictions.
 
-*Bob*: I agree.  That seems the most natural thing to do.  I have benefitted
+*Bob*: I agree.  That seems the most natural thing to do.  I have benefited
 so much from all kind of tools that are freely available on the web
 that it only seems fair to contribute my own tools in return.
 Besides, it offers a great form of quality control: when we write
@@ -111,7 +111,7 @@ code, and we will be held liable for damages?
 knock on your cyber door and copies your software.  Do you have a
 suggestion as to how to prevent liability?
 
-*Alice*: The easiest way would be to use a type of open source licence,
+*Alice*: The easiest way would be to use a type of open source license,
 preferably a rather simple one, which at least includes the usual
 disclaimers.
 
@@ -119,16 +119,16 @@ disclaimers.
 for `open source.'
 
 *Alice*: Here is something: "http://www.opensource.org" with a long list
-of open source licences.
+of open source licenses.
 
 *Bob*: That was quick!  Let's see what they say.  Hmmmm.  Most of them
 are far too long to read, let alone figure out, for my taste.  Isn't
 there a simple one?
 
-=== Open Source Licence
+=== Open Source License
 
 *Alice*: I remember someone mentioning the X window system as having a
-straightforward licence.  Here, that is probably the MIT licence.
+straightforward license.  Here, that is probably the MIT license.
 It is short and sweet:
 
     The MIT License
@@ -171,7 +171,7 @@ package, so it may then become impossible for a user to find our
 web site.  Hmm.
 
 *Alice*: Yes, that wouldn't be much fun.  Hmm indeed.  But if the X
-window people have lived with this licence for all that time, there
+window people have lived with this license for all that time, there
 is perhaps not too much danger involved.
 
 *Bob*: Not if our toy model will become as famous as X, but I doubt
@@ -179,7 +179,7 @@ that we will see the day of an N-body model for each man, woman and
 child.
 
 *Alice*: Maybe the best solution for now is to start with the MIT
-licence.  I presume that we can always later replace it with a more
+license.  I presume that we can always later replace it with a more
 elaborate and more restrictive version.  What do you think?
 
 *Bob*: Fine with me.
@@ -328,13 +328,13 @@ this.  In the SD case, we will have individual time steps, so
 different stars will be updated at different times.  In the SE case,
 in general each star will have its own natural internal time step as
 well.  Given all this diversity, it may be complicated to give either
-module the responsability to trigger the other module to advance in
+module the responsibility to trigger the other module to advance in
 time, at the right time.  It may be better to introduce a separate
 scheduler module, that takes care of all the timing management.
 
 So the scheduler will inform the SD module which stars have to be updated
 next.  In this case, this will involve taking one integration time
-step forwards.  At the same time, the scheduler will inform the SE module
+step forward.  At the same time, the scheduler will inform the SE module
 which stars need to update their internal state.
 
 *Bob*: I should have known it!  In your able hands we have a quick
@@ -358,7 +358,7 @@ options.  For example, you could decide to postpone the actual collision
 treatment until the next time step.  After all, two stars will not
 suddenly jump on top of each other.  They may approach each other in
 such a way that their mutual distance decreases at a rate of a few
-percent per timestep.  And given other approximations, you might decide
+percent per time step.  And given other approximations, you might decide
 that starting the collision treatment a few percent nearer or further
 does not make much of a difference.
 
@@ -528,7 +528,7 @@ dependent.  So yes, it is almost unavoidable to pick a particular
 language.  Which language shall we choose?  Why do you prefer Fortran;
 wouldn't C be more natural, and closer to the machine architecture?
 
-*Alice*: The choice of language deserves a seperate discussion; let's
+*Alice*: The choice of language deserves a separate discussion; let's
 do that in a moment, for our toy model.  For now, just to give you a
 concrete example of an interface specification, let's take Fortran.
 Starting with the first function on our list, here is how we can
@@ -625,7 +625,7 @@ And what is worse, the integration of such a binary could lead to an
 unacceptable build-up of roundoff errors.
 
 Here is an example.  It can easily happen that two stars form a hard
-binary, with a semimajor axis that is a thousand times smaller than
+binary, with a semi-major axis that is a thousand times smaller than
 the size of the system.  The eccentricity _e_ will fluctuate, due to
 the perturbing forces from encounters with other stars, and
 occasionally, _e_ can get close to unity.  If, say, _e_ = 0.999, then
@@ -677,7 +677,7 @@ when we really get going, we might even want to give that a try.
 *Alice*: Aha, do I detect the possibility of a smooth evolution from a
 toy model to an actual production code?
 
-*Bob*: No no, that would be far more complex.  But it would be a stap in
+*Bob*: No no, that would be far more complex.  But it would be a step in
 the right direction, for sure.
 
 *Alice*: If the main problem would be a loss of accuracy, how about use
@@ -713,7 +713,7 @@ that you have a lot of freedom!  You can replace each module, rewrite
 it, experiment with it, all without affecting anything in any of the
 other modules.  But lets not repeat our arguments.  After we finish
 our first toy code, we can take up this discussion again, and by that
-time we'll have a lot of actual code to work with, to strenghten our
+time we'll have a lot of actual code to work with, to strengthen our
 arguments.
 
 *Bob*: Fair enough.  But now I'm puzzled.  Passing information between
@@ -875,13 +875,13 @@ Shall we get started?
 *Bob*: Just a moment, we haven't yet decided what to do with the stellar
 dynamics.
 
-*Alice*: You suggested an individual timestep scheme, and I think that
-is fine.  Actually, we may want to start with shared timesteps, but
+*Alice*: You suggested an individual time step scheme, and I think that
+is fine.  Actually, we may want to start with shared time steps, but
 that is a matter of presentation.
 
 *Bob*: Yes, but the choice of time step is only one choice we have to
-make.  We haven't choosen an integration scheme yet.  If you want to
-start with shared timesteps, you can do that using a leapfrog
+make.  We haven't chosen an integration scheme yet.  If you want to
+start with shared time steps, you can do that using a leapfrog
 integrator, or more reasonably a fourth-order integrator of one type
 or another.
 
@@ -911,7 +911,7 @@ first by mister Hermite, a couple centuries ago, I think.  This is what
 is now being used almost exclusively in stellar dynamics of dense
 stellar systems.  And it's not that difficult to code.  You can write
 it in such a way that it looks like an almost obvious generalization
-of a leepfrog integrator, apart from a few coefficients which would be
+of a leapfrog integrator, apart from a few coefficients which would be
 hard to guess off-hand.
 
 *Alice*: In that case, it would be good to incorporate that scheme in
@@ -930,7 +930,7 @@ too much focused on learning how to use a package, rather than writing
 it and getting a feel for what is under the hood.
 
 *Bob*: I'm afraid you're right.  When I did my first programming, it
-was in basic, and soon afterwards in C.  Nowadays, when students talk
+was in basic, and soon afterward in C.  Nowadays, when students talk
 about programming, they mean tweaking the parameters of a packages,
 while using GUIs.
 
@@ -958,7 +958,7 @@ or computer language?
 *Alice*: All of these questions need to be addressed, and they are
 general concerns for any software projects.  However, in our particular
 case there is also the question of how to get data in and out of our
-integrator, and how to analyse the results.
+integrator, and how to analyze the results.
 
 *Bob*: Of course, you have to produce some initial conditions,
 and you want to look at the results, but basically we are dealing with
@@ -1043,7 +1043,7 @@ under cygwin?
 *Bob*: Yes, emacs is there, as well as all the standard Unix commands
 and programs.
 
-*Alice*: Does that mean that when we develop our toymodel under Linux,
+*Alice*: Does that mean that when we develop our toy model under Linux,
 we can make a tar ball, copy that to a machine running Windows and
 cygwin, untar it, and expect everything to work right away?
 
@@ -1199,7 +1199,7 @@ proprietary packages.  So pgplot would be a reasonable choice.
 However, I'm not hundred percent sure that it is open source.
 
 *Alice*: No?  I was convinced it was open source.  I've never paid
-for it, or signed any licence.
+for it, or signed any license.
 
 *Bob*: I know.  But when I checked on their web site, it was not really
 clear to me what their status was.  Yes, they are open source in the
@@ -1244,7 +1244,7 @@ to be far more convenient for scientific plotting.
 
 *Alice*: I have tried Gnuplot too, and I agree.  So let's at least get
 started with pgplot.  But here is an idea.  Since we may want to switch
-to a differen graphics package in the future, it would be very unpleasant
+to a different graphics package in the future, it would be very unpleasant
 if we then had to translate all pgplot commands into the equivalent
 commands in that other package.  We could instead define our own
 virtual plotting commands, and write a simple wrapper to translate them
@@ -1292,141 +1292,293 @@ of software somewhere.  So now we can finally get started?
 
 == Style
 
-=== Literate Programming
+=== Documentation
 
 *Alice*: Not quite.  We have talked about writing programs and providing
 an environment, but we haven't said anything yet about documentation.
 
-*Bob*: Well, my class notes will be the documentation, I thought.
+*Bob*: Well, my class notes will be the documentation, I thought.  I will
+give them enough hints to get them started, and when they go through the
+code, it will become obvious what we intended.  Of course, we'll put in
+enough comments to clarify our methods.
 
-*Alice*: 
+*Alice*: I would prefer a rather different approach.  Comments in a code
+are only the first level of documentation.  A good code needs to have
+manual pages, at the very least, and even better a form of introduction,
+a primer or that sort of thing.  When you want to work with a new program,
+don't you look at the manual pages?
 
-=== Coherent Programming
+*Bob*: Not often.  I prefer to just try things out.  And if it is an
+important enough program, I am happy to go look at the source code
+directly.  And while I agree that good manual pages can be of some
+help for a commercial product, I don't see why we have to be so fancy
+for an educational project.
 
-*Alice*:
+*Alice*: There are several reasons why.  For one thing, I like to make
+it attractive and easy for others to use my code.  Once I spend a lot
+of time writing a good piece of code, I'm happy to spend a bit more time
+to polish it and make it available in a more userfriendly way.  And if
+more people will be using it, I will get more feedback which in turn
+can improve the product.  Also, others are more likely to write
+extensions or complementary programs, and there is a better chance
+that a project will take off around what I initially wrote, which can
+then serve as the nucleus for something larger.
 
-*Bob*:
+*Bob*: If you insist on more documentation than code comments, a good
+addition would be to include a help mechanism in each program.  Typing
+<tt>density --help</tt> could give you some help about the various
+command line arguments available for the program <tt>density</tt>, for
+example.
+
+*Alice*: Yes, that would be a good addition, but it does not address
+the issue of a really comprehensive explanation of not only what a code
+does, but why it was written that way: the motivation for the overall
+approach and the choice of algorithm used, as well as the particular
+organization of the program itself.
+
+You see, the most important reason to write good documentation is
+long-term efficiency.  If you force yourself to reason out loud why
+you are doing what you just did, you will quickly find that there are
+many aspects you haven't thought through deeply enough.  While writing,
+you will get new insights that will improve your program significantly.
+So writing detailed documentation is not only a good idea, it is
+especially a good idea of doing it right away, while you are writing
+your code.  If you are doing it later, you may also discover better
+alternatives, but you are unlikely to implement those, because by then
+you have already invested so much time into the older approach.
+
+*Bob*: that all sounds nice on paper, but in practice, when you deal
+with any complicated program, there always comes a time that you have
+to beat the thing into shape.  You can start in a nice clean way,
+following this paradigm or that, but then when the program gets going,
+you find that this is missing or that, and that such and such is
+slowing down the execution much to much.  You start throwing in this
+and that, and taking short cuts here and there to get significant
+speedup.  How are you going to document that?  Spend a few hours every
+day rewriting the documentation, each time you have tinkered with the
+code?  That seems hardly efficient!
+
+*Alice*: What you just described is a sledge hammer approach.  If you
+have only two weeks left before a conference where you have to present
+your latest results, I can imagine that you take that approach.  But
+unless there is a serious emergency, I cannot see how that will gain
+you in the long run.  But I don't think we can convince each other by
+arguing.  We clearly have a very different style.  Let us agree that
+we at least will be careful to write clear comments and a good help
+mechanism for each code.  For myself I will keep track of what major
+and minor decisions we make while working on our project, so that I
+can document what happened, and why, and how we learned from initially
+wrong assumptions.  We can later see what we do with that material.
+
+*Bob*: I'm glad we agree to disagree.  It's time to get our hands dirty
+doing some real programming.  Hey, I see that you have a copy of Knuth'
+book `The Art of Programming'.  He is one of my heroes.  Those books
+are great.  And without TeX and LaTeX, where would we be in writing
+articles?  That he singlehandedly invented TeX in the late seventies
+was very impressive.  I bet he didn't let himself be side tracked by
+documentation.
+
+=== Literate Programming and Coherent Programming
+
+*Alice*: Wrong!  Knuth was very keen on documentation.  Have you heard
+of Literate Programming?
+
+*Bob*: Literary Programming??
+
+*Alice*: No, Literate Programming.  This is a term that Knuth invented,
+for the process in which he wrote TeX.
+
+*Bob*: Process?  I presume he just wrote TeX, just like you write any
+programs.  He just happens to be a lot better in programming than most
+of us.  What do you mean with process?
+
+*Alice*: He did not `just write programs.'  On the contrary, he put a
+lot of thought into the process of designing programs, coming up with
+a view first, then with a way to map out the various pieces needed,
+and so on.  And most importantly, he came up with the idea that
+computer code should first of all be human readable, and only machine
+readable as an afterthought.  You should read one of his bundles of
+collected essays on algorithms and programming.  Since he is one of
+your heroes, perhaps he will convince you more than I can, about the
+value of documentation.
+
+*Bob*: You haven't told me yet what he meant with Literature Programming.
+
+*Alice*: <i>Literate</i> Programming.  The idea is that code and
+documentation are interwoven in one book.  You write a piece of code,
+and at the same time you write a page of text explaining your
+motivation for writing that piece of code, what it is supposed to do,
+what were the reasons going into the decisions of writing this part in
+this way and that part in that way.  So the code parts and text parts
+are literally interwoven in one long manuscript.
+
+*Bob*: But how can you run the code if it is spread through the text
+of a manuscript?
+
+*Alice*: He wrote special programs to extract both the book part and
+the code part of what he wrote.  He called those +weave+ and +tangle+.
+The program +weave+ went through the original, and produced the book
+text.  The program +tangle+ also went through the same original,
+extracting the bits and pieces of code, putting it all together as one
+large code, the source code for TeX, that then could be compiled in
+order to produce the TeX executable.
+
+*Bob*: Why did he call the second one +tangle+?
+
+*Alice*: He literally wrote +tangle+ in such a way as to entangled the
+source code, in such a way that it was no longer human readable.
+
+*Bob*: Why would he do that??
+
+*Alice*: He wanted to force himself and others not to make quick changes
+in the source code alone, without touching the book.  For him documentation
+was so essential that he forced himself to change the code only within the
+context of the original manuscript, where code and text were living together.
+In that way, the threshold was lowered to explaining in the text part what
+you just changed in the source code part, and thus the two could grow
+together harmoniously.
+
+So this answers directly your objection that when you want to get something
+done, you reach a stage where you drop documentation and just beat things
+into shape.  It seems that Knuth more or less tied his hand on his
+back, to prevent himself for using a sledge hammer approach -- or so
+it must have seemed to many people.  But I can easily believe that in
+the long run, or even in the medium run, his approach was more efficient.
+
+*Bob*: I did not know that.  I'm really surprised.  And now that you caught
+me with a story about Knuth that I didn't know about, are you going to force
+me to use literate programming?
+
+*Alice*: No, don't worry.  I don't think that literature programming is
+still the right answer, in this day and age.  It was a good thing at the
+time, a visionary move really.  But it was developed in the early days
+of line editors, even before screen editors came into being, let alone
+window systems.  Nowadays it is easy to keep an eye on several files
+at once, but in those days the best you could hope for is to see a few
+dozen lines on a screen at the same time.  And therefore the only way
+to achieve a close coupling between text and code was to literally
+weave them together.
+
+*Bob*: What would be a more modern equivalent?
+
+*Alice*: I have been thinking about that, off and on.  I think that
+the most important aspect of Knuth' idea, an aspect that will survive
+his particular implementation, was the notion of coherence.  With his
+trick, he could keep source code and documentation text coherent.
+Everything was updated in step, and he leaned way over backward to
+guarantee that the two remained in lockstep.  That part I would like
+to preserve, the notion of coherence.  My proposal is to introduce
+what I would call <i>coherent programming</i>.
+
+The idea would be to allow different files for source code and for
+documentation.  However, the two are linked through frequent pointers,
+in a hypertext kind of way, perhaps as it is done on web pages.  I
+must say, I do not yet have very clear notions of how to implement
+this, and what to choose, but the main two points will be to, a), make
+it very natural to update code and text in unison, and b), provide
+some sort of penalty against violating that simultaneous type of update.
+I'm not sure whether I would go to the extreme that Knuth went, of
+making his source code unreadable, even to himself, but perhaps even
+that might not be a bad idea.  I'll let you know if and when I get
+more inspiration in that direction.
+
+*Bob*: I'm glad you let me off the hook so easily, without converting
+me into a coherent programmer!  We can talk about those ideas later,
+over a drink, whenever you like, and yes, I'll probably have a look at
+those essays by Knuth.  I must say that you have peeked my curiosity.
+But for now, let's get started doing some programming ourselves!
 
 === A Lab Note Mechanism
 
-*Alice*:
+*Alice*: One more thing.
 
-*Bob*:
+*Bob*: I was afraid you would say that.  What is it now?  Don't we have
+all the pieces we need to get started, and more?
 
-= old stuff (040120)
+*Alice*: This will be the last ingredient, I promise.  I won't insist on
+documentation, literate or coherent or otherwise.  But what I do insist
+on is a systematic way of keeping lab notes.
 
-#In this context Alice mentions one extreme: the Sussman/Wisdom book,
-#which appeals to them in many ways.  Bob vaguely has heard about Lisp,
-#never about Scheme.  When Alison takes the book from her bookshelf,
-#Bob is shocked by the parentheses.  Is this computer code, he asks.
-#Alice talks a bit about it, but agrees that the isolation of Scheme
-#may be too much.  They discuss Perl and Python as more practical
-#compromises, better than C and C++ and Fortran, which Bob and Alice
-#both have experience with, but which Alice has grown frustrated with.
-#Bob doesn't mind either C++ or Fortran, but he does like the
-#flexibility and power of quick expression of Perl and Python.
-#
-#Alison mentions a bold idea: would it be possible to write a N-body
-#code in such a more flexible language?  Bob: anything is possible, you
-#can do it in Basic or Awk if you want.  Alison presses her point, and
-#Bob, more out of politeness than anything else, listens.  For the sake
-#of curiosity, he asks her what she has in mind, mostly to show her how
-#wrong she is.  After some more discussion he has to admit that the idea,
-#while impractical, may not be as ridiculous as he first thought.
-#Seeing it still as a game, he starts thinking out loud with Alice how
-#they would do such a strange thing.
-#
-#Oscillating between Perl and Python, as the most realistic
-#compromises, they are also afraid that a compromise may have the
-#disadvantages of both sides, and they both feel that it would be
-#better to have a single coherent vision that they can agree with.
-#Coherence is better than committee decisions.  In short, they want a
-#pragmatic approach.
-#
-#Just for fun, since they are sitting behind a terminal, they decide to
-#type in "pragmatic programming", in the hope to find something there,
-#more as a joke.  To their surprise they find the two books of two
-#characters that call themselves the Pragmatic Programmers.  They
-#browse through a few pages of their first book and like it a lot,
-#since it really reflects their own experience.  Like Kernighan and
-#Pike, but addressing more broadly the whole of software development,
-#says Bob.  Like Knuth, very sensible, but a generation later, says
-#Alice.
-#
-#Then they look at the second book, about Ruby.  Since they already
-#thought about Perl and Python, they give it a closer look, and become
-#convinced that this may be better than just a comprise.  They decide
-#to give it a try.  After all, 90% of an N-body code takes less than 1%
-#of the compute, so who cares about the speed of an interpreted language.
-#It is flexibility and clarity and rapid prototyping and recycling that
-#counts.  What to do first?  Get familiar with the language, and write
-#something simple but actually useful, in order to see how it works out
-#in practice; in other words, a pragmatic program.
-#
-#Alice suggests to write a constant time step leapfrog.  Bob laughs and
-#says that he recognizes that Alice has also worked in cosmology.
-#Alice counters that Bob's SPH experience must make him feel happy with
-#leapfrog.  Bob says that, yes, for problems with softening that might
-#not be too bad, but now they want to do stellar dynamics of stellar
-#systems, and they should be able to handle point particles.  At the
-#very least they need variable time steps, and much better even
-#individual time steps.  He quotes the classic paper by Makino and Hut
-#(1988), Performance Analysis of Direct N-Body Calculations, to make
-#his point.  And by the way, when you get close encounters, the
-#leapfrog sucks.  Fourth-order schemes are a must, and Hermite is the
-#most elegant scheme.
-#
-#Alice agrees that something like NBODY1h would be a good idea, but she
-#laughs at the idea of learning a whole new computer language by starting
-#to write such a complicated code from scratch.  Shouldn't you first learn
-#to do I/O and to write a simple class for individual particles and for
-#the whole system?  Sure, says Bob, a bit annoyed that Alice seems to use
-#her longer experience and seniority to push for what he thinks is an
-#overly indirect and long-winded approach.  He is still not completely
-#used to have tenure, and he automatically feels the tension between
-#what he thinks is best and the need to be respectful to more senior
-#professors.  But, Bob tries once more, once you write a leapfrog, it
-#wouldn't take many more lines to write a Hermite code, right?  And
-#to go from equal to variable time steps is also only a few more lines,
-#basically having a time step criterion, which in an interpreted language
-#is rather simple to add.  And even block time steps isn't that big of
-#a deal, once you figure out what to do, something you pick up from
-#other codes anyway.
-#
-#Alice has to admit that an equal-timestep leapfrog code will probably
-#be more than half as long as an individual time step block time step
-#code with Hermite.  But there is another argument, she adds.  The main
-#reason to use an interpreted object-oriented language like ruby is to
-#be able to rapidly switch between classes and methods, changing
-#inheritance and mixins; all so much more easily than in C++.  So by
-#providing both a leapfrog and a Hermite code, they can get valuable
-#experience in switching between methods.  If they really get serious
-#in writing a full-fledged dense stellar systems code, they surely will
-#need to be able to switch methods, at some point.  And to get experience
-#doing so early on will help them, first of all, to decide whether ruby
-#is really the right language for the job, and secondly, if they go
-#with ruby, they will then have the necessary experience to use ruby in
-#a way that makes such method switching natural.
-#
-#Meanwhile, although defending her point of view eloquently, Alice is
-#having her doubts too.  She knows how easy it is to waste time when
-#trying to do something that is too elegant.  However, before she can
-#say that, to her surprise Bob brings up a point in favor of starting
-#with a leapfrog.  If they would start with a complete NBODY1h type
-#code, he says, they would probably just translate such a code line by
-#line into ruby.  That will probably work, but they run the risk that
-#in that way they never really get a flavor of the language, and so
-#will not be able to tap the real power of ruby.  That, for him, is a
-#more important argument to start with the leapfrog.
-#
-#Alice has to laugh again, and tells Bob that she was just about to
-#agree with him that starting with NBODY1h would not be such a bad
-#idea after all, but that she must say that Bob's latest argument is
-#certainly convincing too.  What she doesn't tell Bob is that she
-#thinks it is funny that he could agree to her idea only after he
-#came up with a different argument for it; even so, she appreciates his
-#independence and critical attitude.  Bob, meanwhile, has to smile too,
-#realizing that Alice is not as inflexible as he had thought, and
-#reminding himself at the same time that he now has tenure, after all,
-#and that there really is no reason not to push his own agenda and use
-#his own judgement.
+*Bob*: Lab notes?  For which lab?  What notes?
+
+*Alice*: Our toy model and its environment will form a kind of lab for
+your students.  They can perform experiments, by setting up initial
+conditions, running a simulation, and analyzing the results.  It is
+all virtual of course, but apart from that, the procedures and the
+skills needed are not that different from doing a lab experiment.
+
+*Bob*: I remember burning my fingers while learning how to blow glass
+during my freshman physics glass.  After glass stops to glow, it is
+still incredibly hot.  I sure wished that I had infrared eyesight then.
+But okay, if you want to stretch metaphors, I've burned myself with
+hasty programming as well.  And there are parallels between lab work
+and working with software.  Or in astronomical terms, between working
+with a simulation or with a telescope.  If you walk into an astronomer's
+office, and see a pretty picture on his or her screen, you have no way
+of knowing, <i>a priori</i>, whether you're looking at an observation
+or a simulation.  So I grant you that a lab is not such a bad metaphor,
+after all.  But what about your notes?
+
+*Alice*: I suggest that each time we get together to work on our toy
+model software, we keep some notes about the main decisions we make,
+and the reasons behind them.  That will not take much time, and it
+will help us writing documentation later on.  What is more, it will
+enable us to go back and trace down why we did what we did, when we
+come back to a piece of code a few weeks later, trying to debug it,
+and wondering why we ever wrote this or that.
+
+*Bob*: Now that sounds easy.  We can just scribble down some notes
+while we go along.  Probably better to write that in a file somewhere,
+rather than on scraps of paper.
+
+*Alice*: Ideally, we should do better than that.  As part of a coherent
+programming approach, it would be good to combine computer code AND
+documentation text AND lab notes, all in one environment, with many
+pointers from each of the two to the third element in the triangle.
+But again, I won't try to convince you.  All I'm asking for is that we
+both keep notes, together when we are working jointly, and individually
+when one of us extends something in our toy model environment.
+
+*Bob*: I have no trouble with that.  How shall we send each other the
+notes we write down?  In the form of emails?
+
+*Alice*: The best way would be to use a form of source code control.
+The standard package to do this would be CVS, but an even better
+alternative would be to use subversion.
+
+*Bob*: Yeah, I've heard about that approach, from people who use it
+when they work with big teams on forever-running projects.  But for
+the two of us, for a toy project?  You accused me of a sledgehammer
+approach, but I'm afraid you've just taken up quite a sledgehammer
+yourself!
+
+*Alice*: I bet you will like it, once you get used to it.  I started
+to use it a few years ago, and now I use it even for things I'm working
+on myself, like when I write a lengthy review article, and I want to
+make sure I have all the information at hand, from previous revisions
+of chapters.  But not to worry.  It's easy to set up a source code
+control system, so I'll do it for us.  I'll show you a few commands
+you can use to commit changes from your side, and to update your side,
+to get the changes I have made.  These two commands are the most
+important, in fact.  We should put everything under this source code
+control system: the codes we write, whatever documentation I will add,
+and the lab notes we will both keep writing regularly.
+
+*Bob*: Is this really your last requirement, as you have promised,
+before we can start to do some <i>real</i> programming?
+
+*Alice*: Yes, this is it!  We can get started now.
+
+*Bob*: I thought I never would see the day.  Well, as long as you take
+care of this code control business -- what did you call it?
+
+*Alice*: Source code control.
+
+*Bob*: As long as you take care of it, and it really is as simple as you
+said, I'm willing to try it.  Anything to get to the point of starting
+our programming!
+
+
+
+
+
