@@ -1,0 +1,34 @@
+Date: Mon Jul 12 22:59:47 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Jun,
+
+ > > 1) long web names run off the page now in TeX, and since some web
+ > >    names can be veeeeery long, this may be a problem.
+ > 
+ > Ya. One possibility is to put URL into footnote, but even with this
+ > very long name can still cause problem. However, if we put this to
+ > footnote, it is relatively easy to cut long URLs to several parts.
+
+Good idea!
+
+ > > 2) under rdoc, the "next" and "previous" tabs in the 
+ > > 
+ > >       kali/vol/vol-0/doc/files/_/_litt_ok.html
+ > > 
+ > >    file somehow don't work.
+ > 
+ > Hmmm, I could not reproduce it... "next" points to nowhere, since I
+ > have not implemented the way to point to next volume (question here is
+ > again how to tell what is the next volume is). "previous" seems to
+ > working fine.
+
+With me, only the "Up" is clickable, none of the others; this is the
+case both on top and on the bottom.  The normal chapters work fine;
+there all eight are clickable (four on top; four on the bottom).
+I wonder whether my systems is set up different from yours, in some
+way, with respect to acsdoc?
+
+Piet
+
