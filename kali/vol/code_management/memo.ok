@@ -1,0 +1,85 @@
+= Memo for code management book
+
+I wrote:
+
+Okay, well, so we should have, for each volume directory
+ 
+  * some way to specify which files are commnds
+  * some way to specify which files are libraries
+ 
+And, we need a way to specify
+ 
+  * directory to install commands
+  * directory to install libraries
+  * (checking stuff I wrote above)
+ 
+Hmm, well, this means that we need some startup or initialization
+script (sourced in .cshrc), which add things like environmental
+variables and command search path.
+ 
+Shall I implement some prototype?
+
+Piet wrote:
+
+Yes, please!  And in our volumes, we can describe this either
+in volume 3b (user interface) or in volume 4 (ACS data format).
+That way, I can then start writing volumes 3b,4,5,etc, using this
+new convention.  We could also write a new volume about it.
+
+What do you think is best: put it in volume 3b (user interface) or
+in volume 4 (ACS data format), or in a new volume (libraries and
+code management)?
+
+We need to add: some more in makefile. Current makefile has:
+
+
+ SRC =  title.ok pref.ok  ch01.ok  ch02.ok  ch03.ok  ch04.ok \
+        ch05.ok  ch06.ok  ch07.ok  ch08.ok  ch09.ok  ch10.ok litt.ok
+
+ TARGET = volume1c
+
+ include ../etc/Makefile.inc
+
+One question is if it is better to use rake, but perhaps better to
+start with something we are used to.
+
+I guess what is necessary is:
+
+  RUBYLIBS = ...
+  RUBYCOMMANDS = ...
+
+This means we need to specify the directories to copy these.
+
+First, library:
+
+The standard is what is in $LOAD_PATH. I think, however, it is better
+to add the ACS specific location to this $LOAD_PATH, than to
+the contaminate standard place with ACS-specific stuff.
+
+So, the simplest solution is $ACSROOT/rubylib.
+
+The name RUBYxxx is not ideal (some things may be csh/bash script or
+something completely different). Better to have something like
+
+   LIBSRCS = ...
+   SCRIPTSRCS = ...
+   
+For the time being, I'd just put things at
+
+  $ACSROOT/lib (referred to as ASCSCRIPTS)
+  $ACSROOT/bin (referred to as ASCLIBS)
+
+One question: Where to put the files which are used to keep the
+makefiles and others working. If Makefile.inc uses some Ruby scripts,
+the scripts themselves should live in some volume directory. On the
+other hand, it seems better to have them in the above ACSSCRIPTS
+directory, to keep thing simple.
+
+If both files are under svn, this may be a bit inconvenient, since svn
+would think the files are updated each time source file is copied to
+the target directory. To avoid this, I simply run "diff" before
+actually updating file.
+
+
+  
+  

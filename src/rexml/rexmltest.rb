@@ -64,8 +64,6 @@ def convert_particle_array_to_xml(pa,doc)
   doc
 end
 
-print "args = "
-p ARGV
 infile = ARGV[0]
 doc = nil
 if File.exist? infile
@@ -75,6 +73,8 @@ else
   doc << REXML::XMLDecl.new
   doc.xml_decl.encoding = 'euc-jp'
   p = Particle.new(0,0,[1,1,1],[2,2,2]);
+  doc.root.add_element(p.to_xml)
+  p = Particle.new(0,0,[3,3,3],[4,4,4]);
   doc.root.add_element(p.to_xml)
 end
 
