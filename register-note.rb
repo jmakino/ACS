@@ -44,7 +44,7 @@ preceeding_zeros="0" * (sequence_string_length - sequence_string.length);
 short_sequence_string=  preceeding_zeros + sequence_string;
 long_sequence_string= dirname + "-" + short_sequence_string;
 
-header = "HEADER " + header.to_s + " "+ realname+ " Seq. No = "+ long_sequence_string;
+header = "\\header " + header.to_s + " "+ realname+ " Session No. = "+ long_sequence_string;
 
 
 sequence_lab_file_name = seqname = dirname + "/"  + short_sequence_string;
@@ -64,4 +64,5 @@ while gets
    all_file.print 
    sequence_file.print 
 end
+all_file.print "\n\n";
 
