@@ -643,43 +643,23 @@ end
 
 class World
 
-  def evolve(c)
-    while @era.start_time < @t_end
-      @new_era, dn = @era.evolve(c.dt_era, @dt_max, c.shared_flag)
-      @nsteps += dn
-      @time = @era.end_time
-      while @t_dia <= @era.end_time and @t_dia <= @t_end
-        @era.write_diagnostics(@t_dia, @nsteps, @initial_energy)
-        @t_dia += c.dt_dia
-      end
-      k = c.async_output_interval
-      if k > 0
-        @era.clone.prune(k).acs_write($stdout, false, c.precision,
-                                      c.add_indent)
-      elsif c.dump_flag
-        @era.acs_write($stdout, false, c.precision, c.add_indent)
-      else
-        while @t_out <= @era.end_time and @t_out <= @t_end
-          output(c)
-          @t_out += c.dt_out
-        end
-      end
-      @old_era = @era
-      @era = @new_era
-    end
-  end
-
-  def output(c)
-    if c.world_output_flag
-      acs_write($stdout, false, c.precision, c.add_indent)
+  def World.admit(file, c)
+    object = acs_read([self, Worldsnapshot], file)
+    if object.class == self
+      object.continue_from_world(c)
+      return object
+    elsif object.class == Worldsnapshot
+      w = World.new
+      w.setup(object, c)
+      w.startup(c)
+      return w
     else
-      @era.take_snapshot(@t_out).acs_write($stdout, true,
-                                           c.precision, c.add_indent)
+      raise "#{object.class} not recognized"
     end
   end
 
   def continue_from_world(c)
-    init_output(c)
+    diagnostics_and_output(c, true)
     @t_out += c.dt_out
     @t_end += c.dt_end
     @dt_max = c.dt_era * c.dt_max_param
@@ -694,44 +674,58 @@ class World
     @nsteps = 0
     @dt_max = c.dt_era * c.dt_max_param
     @time = @era.start_time
-    @t_out = @time
     @t_dia = @time
-    @t_end = @time
-    @t_out += c.dt_out
-    @t_dia += c.dt_dia
-    @t_end += c.dt_end
+    @t_out = @time
+    @t_end = @time + c.dt_end
   end
 
   def startup(c)
     @era.startup(@dt_max, c.init_timescale_factor)
     @initial_energy = @era.report_energy
-    init_output(c)
+    diagnostics_and_output(c, true)
   end
 
-  def init_output(c)
-    @era.write_diagnostics(@time, @nsteps, @initial_energy, true)
-    if c.init_out_flag and not c.dump_flag and c.async_output_interval == 0
-      if c.world_output_flag
-        acs_write($stdout, false, c.precision, c.add_indent)
-      else
-        @era.take_snapshot(@time).acs_write($stdout, true,
-                                            c.precision, c.add_indent)
+  def evolve(c)
+    while @era.start_time < @t_end
+      @new_era, dn = @era.evolve(c.dt_era, @dt_max, c.shared_flag)
+      @nsteps += dn
+      @time = @era.end_time
+      diagnostics_and_output(c)
+      @old_era = @era
+      @era = @new_era
+    end
+  end
+
+  def diagnostics_and_output(c, initial_output = false)
+    if initial_output
+      t_target = @time
+    elsif @t_end < @era.end_time
+      t_target = @t_end
+    else
+      t_target = @era.end_time
+    end
+    while @t_dia <= t_target
+      @era.write_diagnostics(@t_dia, @nsteps, @initial_energy, initial_output)
+      @t_dia += c.dt_dia
+    end
+    if (k = c.async_output_interval) > 0 and not initial_output
+      @era.clone.prune(k).acs_write($stdout, false, c.precision, c.add_indent)
+    elsif c.dump_flag and not initial_output
+      @era.acs_write($stdout, false, c.precision, c.add_indent)
+    else
+      while @t_out <= t_target
+        output(c) if not initial_output or c.init_out_flag
+        @t_out += c.dt_out
       end
     end
   end
 
-  def World.admit(file, c)
-    object = acs_read([self, Worldsnapshot], file)
-    if object.class == self
-      object.continue_from_world(c)
-      return object
-    elsif object.class == Worldsnapshot
-      w = World.new
-      w.setup(object, c)
-      w.startup(c)
-      return w
+  def output(c)
+    if c.world_output_flag
+      acs_write($stdout, false, c.precision, c.add_indent)
     else
-      raise "#{object.class} not recognized"
+      @era.take_snapshot(@t_out).acs_write($stdout, true,
+                                           c.precision, c.add_indent)
     end
   end
 end
