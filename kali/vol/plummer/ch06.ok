@@ -310,8 +310,8 @@ terse in your derivations, not writing out every change in variables
 explicitly anymore.
 
 *Alice*: Yeah, only a wee bit.  So.  Now we have to substitute our nice
-result, <tex>$\pi$</tex>, for the inner integral in ex. (ref(ht3)).
-Remembering the original definition of <tex>$h(t)$</tex> in ex. (ref(ht2)),
+result, <tex>$\pi$</tex>, for the inner integral in eq. (ref(ht3)).
+Remembering the original definition of <tex>$h(t)$</tex> in eq. (ref(ht2)),
 we can use both of these equations to write, for our <tex>$\alpha=\half$</tex>:
 
 :eqnarray:

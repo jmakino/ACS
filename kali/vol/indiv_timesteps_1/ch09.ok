@@ -306,15 +306,76 @@ and
 
 :eqnarray:
 \label{interpol2}
-\br_1 \,&=&\, \br_0 + \bv_0\tau + (1/2.0)*\ba_0\tau^2 
-+ (1/6.0)*\bj_0\tau^3 + (1/24.0)*\bs_0\tau^4 
-+ (1/144.0)*\bc_0\tau^5                                        \nonumber\\
-\bv_1 \,&=&\, \bv_0 + \ba_0\tau + (1/2.0)*\bj_0\tau^2 
-+ (1/6.0)*\bs_0\tau^3 + (1/24.0)*\bc_0\tau^4
+\br_1 \,&=&\, \br_0 + \bv_0\tau + \one{2}\ba_0\tau^2 
++ \one{6}\bj_0\tau^3 + \one{24}\bs_0\tau^4 
++ \one{144}\bc_0\tau^5                                        \nonumber\\
+\bv_1 \,&=&\, \bv_0 + \ba_0\tau + \one{2}\bj_0\tau^2 
++ \one{6}\bs_0\tau^3 + \one{24}\bc_0\tau^4
 
-xx
+I will start by substituting the expressions in eq. (ref(interpol1))
+into the second line of eq. (ref(interpol2)).  This gives:
 
 :eqnarray:
 \label{interpol3}
-\bv_1 \,&=&\, \bv_0 + \ba_0\tau + (1/2.0)*\bj_0\tau^2 
-+ (1/6.0)*\bs_0\tau^3 + (1/24.0)*\bc_0\tau^4                   \nonumber\\
+\bv_1 \,&=&\, \bv_0 + \ba_0\tau + \one{2}\bj_0\tau^2 
++ \one{6}
+\left\{
+(-6\ba_0+6\ba_1)\tau \ + \  (-4\bj_0-2\bj_1)\tau^2
+\right\}                                                   \nonumber\\
+&& \qquad\qquad\qquad\qquad + \one{24}
+\left\{
+(12\ba_0-12\ba_1)\tau \ + \  (6\bj_0+6\bj_1)\tau^2
+\right\}                                                   \nonumber\\
+&=&\, \bv_0 + \ba_0\tau + \one{2}\bj_0\tau^2 
++ 
+\left\{
+(-\ba_0+\ba_1)\tau \ + \  (-{\textstyle\frac{2}{3}}\bj_0
+-{\textstyle\frac{1}{3}}\bj_1)\tau^2
+\right\}                                                   \nonumber\\
+&& \qquad\qquad\qquad\qquad +
+\left\{
+(\hhalf\ba_0-\hhalf\ba_1)\tau \ + \  (\one{4}\bj_0+\one{4}\bj_1)\tau^2
+\right\}                                                   \nonumber\\
+&=&\, \bv_0 + \hhalf(\ba_0+\ba_1)\tau \ + \  \one{12}(\bj_0-\bj_1)\tau^2
+
+And this is exactly what our corrector <tt>correct</tt> tells us that
+the new velocity should be:
+
+ :inccode:.world1.rb-2
+
+So far so good!  Time to look at the first
+line of eq. (ref(interpol2)), again substituting eq. (ref(interpol1)):
+
+:eqnarray:
+\label{interpol4}
+\br_1 \,&=&\, \br_0 + \bv_0\tau + \one{2}\ba_0\tau^2 
++ \one{6}\bj_0\tau^3 + \one{24}
+\left\{
+(-6\ba_0+6\ba_1)\tau^2 \ + \  (-4\bj_0-2\bj_1)\tau^3
+\right\}                                                   \nonumber\\
+&& \qquad\qquad\qquad\qquad\qquad\qquad + \one{144}
+\left\{
+(12\ba_0-12\ba_1)\tau^2 \ + \  (6\bj_0+6\bj_1)\tau^3
+\right\}                                                   \nonumber\\
+&=&\, \br_0 + \bv_0\tau + \one{2}\ba_0\tau^2 + \one{6}\bj_0\tau^3
++ 
+\left\{
+(-\one{4}\ba_0+\one{4}\ba_1)\tau^2 \ + \  (-\one{6}\bj_0
+-\one{12}\bj_1)\tau^3
+\right\}                                                   \nonumber\\
+&& \qquad\qquad\qquad\qquad\qquad\qquad +
+\left\{
+(\one{12}\ba_0-\one{12}\ba_1)\tau^2 \ + \  (\one{24}\bj_0+\one{24}\bj_1)\tau^3
+\right\}                                                   \nonumber\\
+&=&\, \br_0 + \bv_0\tau + \one{6}(2\ba_0+\ba_1)\tau^2 \ 
++ \  \one{24}(\bj_0-\bj_1)\tau^3
+
+This expression cannot be directly compared yet with the equivalent
+expression in our corrector, since there we used the difference between
+the old and the new velocity.
+
+ :inccode:.world1.rb-3
+
+It is probably easiest to translate that expression directly into our
+notation, as follows:
+

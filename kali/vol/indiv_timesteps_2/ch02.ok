@@ -4,9 +4,9 @@
 
  :inccode:.world2.rb+ms4_setup+WorldPoint
 
- :inccode:.world2.rb+ms4_init_first_round
+ :inccode:.world2.rb+ms4_startup_first_round
 
- :inccode:.world2.rb+ms4_init_second_round
+ :inccode:.world2.rb+ms4_startup_second_round
 
  :inccode:.world2.rb+ms4_correct
 

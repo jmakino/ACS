@@ -11,19 +11,19 @@
 \bigskip
 {\sl The Kali Code}\\
 \bigskip
-{\sl vol. 96}\\
+{\sl vol. 4}\\
 \bigskip
 \bigskip
 \bigskip
 \bigskip
 \bigskip
-\bf Individual Time Steps:\\
+\bf Code Management:\\
 \medskip
 \medskip
-Arbitrary Order Integrators
+Libraries, Versions, and Compatibility
 \bigskip
 }
-\author{\bf Piet Hut and Jun Makino}
+\author{\bf Piet Hut, Jun Makino}
 
 
 \maketitle

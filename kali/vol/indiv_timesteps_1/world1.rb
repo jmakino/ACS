@@ -34,10 +34,10 @@ class WorldPoint < Body
     dt = dt_max if dt > dt_max
     @next_time = @time + dt
     dt = @time - old_point.time
-    @vel = old_point.vel + (1/2.0)*(old_point.acc + @acc)*dt +
-                           (1/12.0)*(old_point.jerk - @jerk)*dt**2
-    @pos = old_point.pos + (1/2.0)*(old_point.vel + @vel)*dt +
-                           (1/12.0)*(old_point.acc - @acc)*dt**2
+    @vel = old_point.vel + (1/2.0)*(old_point.acc + @acc)*dt +               #2
+                           (1/12.0)*(old_point.jerk - @jerk)*dt**2           #2
+    @pos = old_point.pos + (1/2.0)*(old_point.vel + @vel)*dt +               #3
+                           (1/12.0)*(old_point.acc - @acc)*dt**2             #3
     admin(old_point.time)
     self
   end

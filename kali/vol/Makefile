@@ -1,42 +1,47 @@
 all:
-	$(MAKE) -C vol-0a
-	$(MAKE) -C vol-0b
-	$(MAKE) -C vol-1a
-	$(MAKE) -C vol-1b
-	$(MAKE) -C vol-1c
-	$(MAKE) -C vol-2
-	$(MAKE) -C vol-3a
-	$(MAKE) -C vol-3b
-	$(MAKE) -C vol-4
-	$(MAKE) -C vol-5
-	$(MAKE) -C vol-6a
-	$(MAKE) -C vol-6b
-	$(MAKE) -C vol-7a
-	$(MAKE) -C vol-7b
-	$(MAKE) -C vol-8
-	$(MAKE) -C vol-9
-	$(MAKE) -C vol-10
-	$(MAKE) -C vol-11a
-	$(MAKE) -C vol-11b
+	$(MAKE) -C acs_data_format
+	$(MAKE) -C binary_trees
+	$(MAKE) -C binary_trees_b
+	$(MAKE) -C code_management
+	$(MAKE) -C command_line
+	$(MAKE) -C command_line_b
+	$(MAKE) -C graphics
+	$(MAKE) -C indiv_timesteps_1
+	$(MAKE) -C indiv_timesteps_2
+	$(MAKE) -C indiv_timesteps_3
+	$(MAKE) -C lab_assistant
+	$(MAKE) -C lab_tools
+	$(MAKE) -C n_body_problem
+	$(MAKE) -C plummer
+	$(MAKE) -C plummer_b
+	$(MAKE) -C shared_timesteps
+	$(MAKE) -C speedup
+	$(MAKE) -C two_body_problem
+	$(MAKE) -C two_body_problem_b
+	$(MAKE) -C two_body_problem_c
+	$(MAKE) -C vision
+	$(MAKE) -C vision_b
 
 clean:
-	$(MAKE) -C vol-0a clean
-	$(MAKE) -C vol-0b clean
-	$(MAKE) -C vol-1a clean
-	$(MAKE) -C vol-1b clean
-	$(MAKE) -C vol-1c clean
-	$(MAKE) -C vol-2 clean
-	$(MAKE) -C vol-3a clean
-	$(MAKE) -C vol-3b clean
-	$(MAKE) -C vol-4 clean
-	$(MAKE) -C vol-5 clean
-	$(MAKE) -C vol-6 clean
-	$(MAKE) -C vol-7a clean
-	$(MAKE) -C vol-7b clean
-	$(MAKE) -C vol-8 clean
-	$(MAKE) -C vol-9a clean
-	$(MAKE) -C vol-9b clean
-	$(MAKE) -C vol-10 clean
-	$(MAKE) -C vol-11 clean
-	$(MAKE) -C vol-12a clean
-	$(MAKE) -C vol-12b clean
+	$(MAKE) -C acs_data_format clean
+	$(MAKE) -C binary_trees clean
+	$(MAKE) -C binary_trees_b clean
+	$(MAKE) -C code_management clean
+	$(MAKE) -C command_line clean
+	$(MAKE) -C command_line_b clean
+	$(MAKE) -C graphics clean
+	$(MAKE) -C indiv_timesteps_1 clean
+	$(MAKE) -C indiv_timesteps_2 clean
+	$(MAKE) -C indiv_timesteps_3 clean
+	$(MAKE) -C lab_assistant clean
+	$(MAKE) -C lab_tools clean
+	$(MAKE) -C n_body_problem clean
+	$(MAKE) -C plummer clean
+	$(MAKE) -C plummer_b clean
+	$(MAKE) -C shared_timesteps clean
+	$(MAKE) -C speedup clean
+	$(MAKE) -C two_body_problem clean
+	$(MAKE) -C two_body_problem_b clean
+	$(MAKE) -C two_body_problem_c clean
+	$(MAKE) -C vision clean
+	$(MAKE) -C vision_b clean
