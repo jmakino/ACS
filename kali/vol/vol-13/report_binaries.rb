@@ -1,4 +1,4 @@
-require "nbody.rb"
+require "binary.rb"
 
 class Nbody
 
@@ -8,7 +8,7 @@ class Nbody
       @body.each_index do |j|
         if j > i
           b = Binary.new(@body[i], @body[j])
-          if b.energy < 0 and b.semi_major_axis <= max_semi_major_axis
+          if b.rel_energy < 0 and b.semi_major_axis <= max_semi_major_axis
             if @time
               if print_time_flag
                 STDERR.printf("  time = %8.3f :", @time)   # to be improved <==
@@ -20,52 +20,13 @@ class Nbody
             STDERR.print "  [", i, ",", j, "] :  a = "
             STDERR.printf("%.#{precision}f", b.semi_major_axis)
             STDERR.print " ; e = "
-            STDERR.printf("%.#{precision}f\n", b.eccentricity)
+            STDERR.printf("%.#{precision}f", b.eccentricity)
+            STDERR.print " ; T = "
+            STDERR.printf("%.#{precision}f\n", b.period)
           end
         end
       end
     end
-  end
-
-end
-
-class Binary
-
-  def initialize(body1, body2)
-    @b1 = body1
-    @b2 = body2
-    @total_mass = @b1.mass + @b2.mass
-    @reduced_mass = ( @b1.mass * @b2.mass ) / ( @b1.mass + @b2.mass )
-    @pos = @b2.pos - @b1.pos
-    @vel = @b2.vel - @b1.vel
-  end
-
-  def kinetic_energy
-    0.5 * @reduced_mass * @vel * @vel
-  end
-
-  def potential_energy
-    -( @b1.mass * @b2.mass / sqrt( @pos * @pos ) )
-  end
-
-  def energy
-    kinetic_energy + potential_energy
-  end
-
-  def angular_momentum_squared
-    r_cross_v = @pos.cross(@vel)
-    @reduced_mass**2 * r_cross_v * r_cross_v
-  end
-
-  def semi_major_axis
-    -( @b1.mass * @b2.mass ) / ( 2 * energy )
-  end
-
-  def eccentricity
-    e_sq = 1 - angular_momentum_squared /
-                 ( @reduced_mass * @b1.mass * @b2.mass * semi_major_axis )
-    e_sq = 0.0 if e_sq < 0.0  # to avoid round-off to slightly negative numbers
-    sqrt(e_sq)
   end
 
 end

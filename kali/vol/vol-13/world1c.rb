@@ -1,10 +1,12 @@
 require "nbody.rb"
+require "binary.rb"
 
 class Worldpoint < Body
 
   attr_accessor :mass, :pos, :vel, :acc, :jerk, :snap, :crackle,
                 :time, :next_time, :nsteps,
-                :minstep, :maxstep
+                :minstep, :maxstep,
+                :nearest_neighbor, :second_nearest_neighbor
 
   def initialize
     @nsteps = 0
@@ -331,7 +333,7 @@ end
 
 class Worldline
 
-  attr_accessor  :worldpoint, :method
+  attr_accessor  :worldpoint, :method, :dt_param
 
   def initialize
     @worldpoint = []
@@ -339,6 +341,7 @@ class Worldline
 
   def setup(time)
     eval("#{@method}_setup(time)")
+    self
   end
 
   def startup_done?(era, dt_max)
@@ -496,6 +499,58 @@ class Worldline
     end
   end
 
+  def next_worldpoint_after(time)
+    @worldpoint.each do |wp|
+      if wp.time > time
+        return wp
+      end
+    end
+  end
+
+  def next_worldpoint_at_or_after(time)
+    @worldpoint.each do |wp|
+      if wp.time >= time
+        return wp
+      end
+    end
+  end
+
+  def last_worldpoint_before(time)
+    @worldpoint.reverse.each do |wp|
+      if wp.time < time
+        return wp
+      end
+    end
+  end
+
+  def last_worldpoint_at_or_before(time)
+    @worldpoint.reverse.each do |wp|
+      if wp.time <= time
+        return wp
+      end
+    end
+  end
+
+  def interpolate_between(wp1, wp2, time)
+    wp1.interpolate(wp2, time, @method)
+  end
+
+  def cap_at(time)
+    valid_interpolation?(time)
+    @worldpoint.each_index do |i|
+      wp = @worldpoint[i]
+      if wp.time == time
+        worldpoint.slice!(i+1...worldpoint.size)
+        return
+      elsif wp.time > time
+        worldpoint.slice!(i+1...worldpoint.size)
+        wp = interpolate_between(worldpoint[i-1], worldpoint[i], time)
+        worldpoint[i] = wp
+        return
+      end
+    end
+  end
+
   def next_worldline(time)
     valid_interpolation?(time)
     i = @worldpoint.size
@@ -588,20 +643,22 @@ class Worldera
     wl
   end
 
-  def evolve(dt_era, dt_max, shared_flag)
+Safety_hysteris_factor = 1.5
+
+  def evolve(dt_era, dt_max, isolation_factor)
+    hide_binaries(@start_time, Safety_hysteris_factor*isolation_factor, dt_max)
     nsteps = 0
     while shortest_interpolated_worldline.worldpoint.last.time < @end_time
-      unless shared_flag
-        shortest_extrapolated_worldline.extend(self, dt_max)
-        nsteps += 1
-      else
-        t = shortest_extrapolated_worldline.worldpoint.last.next_time
-        @worldline.each do |w|
-          w.worldpoint.last.next_time = t
-          w.extend(self, dt_era)
-          nsteps += 1
+      wl = shortest_extrapolated_worldline
+      if wl.worldpoint.last.class == Binary
+        ss = take_snapshot_except(wl, wl.worldpoint.last.time)
+        unless ss.isolated?(wl.worldpoint.last, isolation_factor)
+          show_binary(wl)
+          wl = shortest_extrapolated_worldline
         end
       end
+      wl.extend(self, dt_max)
+      nsteps += 1
     end
     [next_era(dt_era), nsteps]
   end
@@ -628,6 +685,75 @@ class Worldera
       ws.body.push(s) unless w == wl
     end
     ws
+  end
+
+  def show_binary(w)
+STDERR.print "entering show_binary\n"
+    wp = w.worldpoint.last
+    t = wp.most_recent_return_time(wp.time)
+STDERR.print "show_binary:  t = #{t} ; wp.time = #{wp.time}\n"
+    w.cap_at(t)
+    b1, b2 = w.worldpoint.last.dissolve
+    w1 = Worldline.new
+    w1.setup_from_single_worldpoint(b1.to_worldpoint, w.method, w.dt_param, t)
+    w2 = Worldline.new
+    w2.setup_from_single_worldpoint(b2.to_worldpoint, w.method, w.dt_param, t)
+    loop do
+      break if w1.startup_done?(self, dt_max)
+    end
+    loop do
+      break if w2.startup_done?(self, dt_max)
+    end
+    @worldline.each_index do |i|
+      if @worldline[i] == w
+        @worldline[i] = nil
+      end
+    end
+    @worldline.compact!
+    @worldline.push(w1)
+    @worldline.push(w2)
+  end
+
+  def hide_binaries(time, factor, dt_max)
+    ss = take_snapshot(time)
+    ar = ss.find_isolated_binaries(factor)
+    list = []
+    ar.each do |a|
+      list.push([ @worldline[ a[0] ], @worldline[ a[1] ] ])
+    end
+    list.each do |pair|
+      merge_worldlines(pair[0], pair[1], dt_max)
+    end  
+  end
+
+  def merge_worldlines(w1, w2, dt_max)
+STDERR.print "entering merge_worldlines\n"
+    t1 = w1.next_worldpoint_after(@start_time).time
+    t2 = w2.next_worldpoint_after(@start_time).time
+    t = max(t1, t2)
+    w1.cap_at(t)
+    w2.cap_at(t)
+    b = Binary.new(w1.worldpoint.last, w2.worldpoint.last, t)
+    method = w1.method
+    if w2.method != method
+      raise "w1.method = #{1.method} != w2.method = #{w2.method}"
+    end
+    dt_param = w1.dt_param
+    if w2.dt_param != dt_param
+      raise "w1.dt_param = #{1.dt_param} != w2.dt_param = #{w2.dt_param}"
+    end
+    @worldline.each_index do |i|
+      if @worldline[i] == w1 or @worldline[i] == w2
+        @worldline[i] = nil
+      end
+    end
+    @worldline.compact!
+    w = Worldline.new
+    w.setup_from_single_worldpoint(b, method, dt_param, t)
+    loop do
+      break if w.startup_done?(self, dt_max)
+    end    
+    @worldline.push(w)
   end
 
   def write_diagnostics(t, nsteps, initial_energy, init_flag = false)
@@ -657,7 +783,7 @@ class World
 
   def evolve(c)
     while @era.start_time < @t_end
-      @new_era, dn = @era.evolve(c.dt_era, @dt_max, c.shared_flag)
+      @new_era, dn = @era.evolve(c.dt_era, @dt_max, c.isolation_factor)
       @nsteps += dn
       @time = @era.end_time
       while @t_dia <= @era.end_time and @t_dia <= @t_end
@@ -811,6 +937,70 @@ class Worldsnapshot < Nbody
     sqrt(time_scale_sq)                  # time scale value
   end
 
+  def find_first_and_second_nearest_neighbors
+    @body.each_index do |i|
+      d1sq = d2sq = VERY_LARGE_NUMBER
+      @body.each_index do |j|
+        if j != i
+          r = @body[j].pos - @body[i].pos
+          r2 = r*r
+          if d1sq > r2
+            d1sq = r2
+            @body[i].second_nearest_neighbor = @body[i].nearest_neighbor
+            @body[i].nearest_neighbor = j
+          elsif d2sq > r2
+            d2sq = r2
+            @body[i].second_nearest_neighbor = j
+          end
+        end
+      end
+    end
+  end
+
+  def nearest_neighbor_distance(wp)
+    dsq = VERY_LARGE_NUMBER
+    @body.each do |b|
+      r = b.pos - wp.pos
+      r2 = r*r
+      dsq = r2 if dsq > r2
+    end
+    sqrt(dsq)
+  end
+
+  def isolated?(binary, factor)
+    if nearest_neighbor_distance(binary) > factor * binary.semi_major_axis
+      true
+    else
+      false
+    end
+  end
+
+  def find_isolated_binaries(factor)
+    find_first_and_second_nearest_neighbors
+    list = []
+    @body.each_index do |i|
+      @body.each_index do |j|
+        if j > i
+          if @body[i].nearest_neighbor == j and @body[j].nearest_neighbor == i
+            b = Binary.new(@body[i], @body[j])
+            if b.rel_energy < 0
+              r = @body[i].pos - @body[@body[i].second_nearest_neighbor].pos
+              ri2 = r*r
+              r = @body[j].pos - @body[@body[j].second_nearest_neighbor].pos
+              rj2 = r*r
+              r2 = ri2
+              r2 = rj2 if rj2 < ri2
+              if sqrt(r2) > factor * b.semi_major_axis
+                list.push([i, j])
+              end
+            end
+          end
+        end
+      end
+    end
+    list
+  end
+
   def kinetic_energy
     e = 0
     @body.each{|b| e += b.kinetic_energy}
@@ -851,7 +1041,7 @@ class Body
   end
 
 end
-
+
 options_text= <<-END
 
   Description: Individual Time Step, Individual Integration Scheme Code
@@ -920,6 +1110,20 @@ options_text= <<-END
     This option sets an upper limit to the size dt of a time step,
     as the product of the duration of an era and this parameter:
     dt <= dt_max = dt_era * dt_max_param .
+
+
+  Short name: 		-f
+  Long name:		--isolation_factor
+  Value type:		float
+  Default value:	100
+  Variable name:	isolation_factor
+  Description:		Hiding criterion for binaries
+  Long description:
+    This option sets the isolation factor, required for a binary to hide
+    its members from its neighbors.  When the nearest neighbor of a binary
+    is separated from each of the binary members by more than this factor,
+    in units of the binary semimajor axis, the binary is considered to be
+    sufficiently isolated to replace it dynamically by a single mass point.
 
 
   Short name: 		-d
@@ -999,16 +1203,6 @@ options_text= <<-END
     such an world again will allow an fully accurate restart of the
     integration,  since no information is lost in the process of writing
     out and reading in in terms of world format.
-
-
-  Short name:		-a
-  Long name:  		--shared_timesteps
-  Value type:  		bool
-  Variable name:	shared_flag
-  Description:		All particles share the same time step
-  Long description:
-    If this flag is set to true, all particles will march in lock step,
-    all sharing the same time step.
 
 
   Short name:           -p

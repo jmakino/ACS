@@ -8,3 +8,19 @@ end
 include Math
 
 VERY_LARGE_NUMBER = 1e30
+
+def min(a, b)
+  if a > b
+    return b
+  else
+    return a
+  end
+end
+
+def max(a, b)
+  if a < b
+    return b
+  else
+    return a
+  end
+end

@@ -975,8 +975,8 @@ options_text= <<-END
     This option sets the step size control parameter dt_param << 1.  Before
     each new time step, we first calculate the time scale t_scale on which
     changes are expected to happen, such as close encounters or significant
-    changes in velocity.  The new shared time step is then given as the
-    product t_scale * dt_param << t_scale.
+    changes in velocity.  The new time step is then given as the product
+    t_scale * dt_param << t_scale.
 
 
   Short name: 		-e
