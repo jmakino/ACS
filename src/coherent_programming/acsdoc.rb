@@ -39,7 +39,8 @@ module Acsdoc
 #    $stderr = cerrcopy
     outfile.close
     ofile.print prompt + commandline, "\n"
-    ofile.print `cat #{dirname}/#{tmpname}`.each{|x| x = " "*indent + x}
+    output = `cat #{dirname}/#{tmpname}`
+    output.each{|x| ofile.print " "*indent + x}
     ofile.print "---\n"
   end
 
