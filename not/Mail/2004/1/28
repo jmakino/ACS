@@ -1,0 +1,12 @@
+Date: Sun Jan 04 17:14:34 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+ > > Something like utils or utilities may be what is usually used.
+ > 
+ > Okay, I made "src/utilities" and put svn_local_list.rb there, under svn.
+
+Great. Thanks.
+
+Jun
+
