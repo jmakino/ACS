@@ -5,7 +5,7 @@ class Vector < Array
     sum
   end
   def *(a)
-    if a.class == Vector              # inner product
+    if a.class == yVector              # inner product
       product=0
       self.each_index{|k| product += self[k]*a[k]}
     else
