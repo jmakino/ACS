@@ -1,4 +1,4 @@
-= A Special Second-Order Differential Equation
+= Partitioned Runge-Kutta Algorithms
 
 It turns out that we can do a lot better, in the case of our special
 second-order differential equation

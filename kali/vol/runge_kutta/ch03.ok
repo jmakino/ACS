@@ -1,6 +1,8 @@
 = Second-Order Differential Equations
 
-Now that we know how to solve a first-order differential equation, we
+== Formulating the Problem
+
+*Alice*: Now that we know how to solve a first-order differential equation, we
 can extend our methods immediately to treat the case of a general
 second-order differential equation
 
@@ -18,6 +20,14 @@ be the force that is felt by an electron moving in an electromagnetic
 field (where <tex>$x$</tex> would have be interpreted as a three-dimensional
 vector, a point we will come back to later in this chapter).
 
+*Bob*: Wouldn't it be simpler to restrict ourselves immediately to
+the type of equations we are dealing with in stellar dynamics, without
+any velocity dependence in the forces?
+
+*Alice*: I would prefer to hold off just a bit, because the simplest way
+to treat second-order equations is by following the same recipe as we did
+before.  In that case, velocity dependence does not pose any problems.
+
 The second-order equation above can be rewritten as a system of two
 first-order differential equations:
 
@@ -28,7 +38,19 @@ first-order differential equations:
 \dot v &=& f(x, v)
 \end{array} \right.
 
-It is convenient to introduce vector notation, defining
+In principle we can look at this as a single first-order differential
+equation for a two-component vector.
+
+*Bob*: Ah, that is a nice short-cut.  Let's do that, and then we should
+be able to use all the results from the previous chapters immediately!
+
+== Vector Notation
+
+*Alice*: We'll think have to put in some thought, since not all scalar
+equations generalize in an obvious way to the vectorial case, but I agree
+that it would probably be a good guide line.
+
+Okay, to introduce vector notation, let us define:
 
 :equation:
 \vec s \ \equiv {x \choose v}
@@ -54,7 +76,7 @@ When written out, this leads to the two equations implicit in:
 :equation:
 {\dot x \choose \dot v} = {v \choose f(x, v)}
 
-In our case of interest, classical mechanics, we will drop the
+*Bob*: In our case of interest, classical mechanics, we will drop the
 velocity dependence, and study instead the simpler equation:
 
 :equation:
@@ -65,17 +87,20 @@ or, equivalently
 :equation:
 {\dot x \choose \dot v} = {v \choose f(x)}
 
-As we will see in the next chapter, we can exploit the simple form of
+*Alice*: As we will see in the next chapter, we can exploit the simple form of
 these two equations to get an extra order of accuracy, seemingly for
-free.  However, in order to put that clever trick in a clear context,
+free, using what is called a partitioned Runge-Kutta algorithm.
+However, in order to put that clever trick in a clear context,
 in the current section we will be less clever.  Rather, we will simply
-apply the same treatment that we have developed in the previous chapters,
-and our results in this chapter will be valid for a general
-<tex>$f(x,v)$</tex>.
+apply the same treatment that we have developed in the previous chapters.
+
+*Bob*: Fine, but let's not linger too long!  And please, let us drop the
+velocity dependence in the forces.  Life is complicated enough as it is.
 
 == One Force Evaluation per Step
 
-Everything we have done so far carries over directly to the
+*Alice*: Okay, okay, we'll work with <tex>$f(x)$</tex> then.  Now,
+everything we have done so far carries over directly to the
 case of two coupled differential equations.  To show this, let us
 repeat the same derivation, but now in vector form.  At the start of a
 time step, we evaluate the right-hand side of the differential
@@ -121,7 +146,32 @@ In order to compute
 \ddot{\vec s}_0 = {d\over dt}\vec g_0
 
 we will need to determine the time derivative of <tex>$\vec g$</tex>.
-To do so, note that a small variation in <tex>$\vec g$</tex> can be
+
+== Not So Fast
+
+*Bob*: presumably that is simply
+
+:equation:
+{d\over dt}\vec g_0 = \vec g_0\vec g_0'
+
+in analogy to what we did in the first chapter, where we used
+<tex>${d\over dt} f(x_0) = f_0f_0'$</tex>.
+
+*Alice*: Not so fast!  You have not specified what you mean with
+that notation.  The left-hand side is a vector, while the right-hand
+side suggests the product of two vectors.  What does it mean?
+
+*Bob*: Hmm.  I hadn't thought about that.  Good question.
+
+*Alice*: If it would be an inner product, the left hand side should
+be a scalar.  If, however, it is a tensor product, the left hand side
+should be a tensor.  In neither case does it produce a vector.
+
+*Bob*: Again, good point.  Wel, in case of doubt, write it out!
+What does it look like in components?
+
+*Alice*: Let us check.  The most intuitive approach would be to start
+with a small variation in <tex>$\vec g$</tex>, which can be
 expressed as
 
 :equation:
@@ -130,10 +180,36 @@ d\vec g = d{v \choose f(x)} = {dv \choose f'(x)dx}
 This implies:
 
 :equation:
+\label{fovervfprime}
 {d\over dt}\vec g = {f \choose vf'}
 
-Let us introduce the symbol <tex>$\vec h_0$</tex> for the right-hand
-side, at time 0:
+*Bob*: Good!  So we do get a vector, after all.
+
+*Alice*: Yes.  And even if you would have allowed me to retain a velocity
+dependence in the force, we would still have wound up with a vector, but
+in this case we would have:
+
+:equation:
+d\vec g = d{v \choose f(x)} = {dv \choose f_x(x)dx + f_v(x)dv}
+
+where now <tex>$f_x = f' = \partial f/\partial x$</tex> and
+<tex>$f_v = \partial f/\partial v$</tex>.  This would give us
+
+:equation:
+{d\over dt}\vec g = {f \choose vf_x + ff_v}
+
+*Bob*: Nice to know, but no thanks, let's stick with position-dependent
+forces only.
+
+*Alice*: If you insist.  At least the notation above will point the way for
+further generalizations, whenever we want to go that route.
+
+*Bob*: Thanks!
+
+== Forward Euler in Vector Form
+
+*Alice*: Let us introduce the symbol <tex>$\vec h_0$</tex> for the right-hand
+side of Eq. (ref(fovervfprime)), at time 0:
 
 :equation:
 \vec h_0 \ \equiv {f_0 \choose v_0f_0'}
@@ -202,7 +278,13 @@ We thus recover the forward-Euler algorithm.  As before,
 this scheme is only first-order accurate, since it cannot possibly
 reproduce the <tex>$O(\tau^2)$</tex> term in Eq. (ref(taylor1vec)).
 
+*Bob*: Quite a bit of work to regain Forward Euler!
+
 == Two Force Evaluations per Step
+
+*Alice*: Yes, and we might have guessed the result, but when we move
+on to using two force evaluations per step, things will undoubtedly
+get messier.
 
 As before, after a first evaluation of the
 right-hand side of the differential equation, we can perform a
@@ -270,7 +352,11 @@ where we use again the notation
 :equation:
 \vec h_0 \ \equiv {f_0 \choose v_0f_0'}
 
-To sum up: developing <tex>$\vec k_2$</tex>
+*Bob*: A useful function, obviously.
+
+== Putting Everything Together
+
+*Alice*: To sum up: developing <tex>$\vec k_2$</tex>
 in a Taylor series around <tex>$\tau = 0$</tex> gives:
 
 :equation:
@@ -333,6 +419,12 @@ $\displaystyle{
 We conclude that when we allow two force evaluations, we again are
 left with one free parameter <tex>$\alpha$</tex>.
 
+*Bob*: So, now we're done, and we can move on!
+
+== Summary
+
+*Alice*: Yes, but let us put all our results on the table first.
+
 To summarize, we can write:
 
 :equation:
@@ -355,7 +447,10 @@ k_1 &=& f(x_0)  \\
 k_2 &=& f(x_0 + {1\over 2 \alpha} k_1 \tau)
 \end{array} \right.
 
-Let us write out our vector expressions in components.  Starting with
+*Bob*: I'd like to see our vector expressions written out in components.
+That way it will be easier to make contact with the previous chapters.
+
+*Alice*: My pleasure!  Starting with
 
 :equation:
 \vec k_1 = \vec g(\vec s_0) = 
@@ -391,7 +486,11 @@ k_1 &=& f(x_0) \\
 k_2 &=& f(x_0 + {\textstyle\frac{1}{2\alpha}} v_0 \tau)
 \end{array} \right.
 
-In particular, for <tex>$\alpha = 1$</tex> we find
+== Two Examples
+
+*Bob*: I find this a lot more understandable that the vector notation.
+And for practical application, let's look at a couple special case.
+For <tex>$\alpha = 1$</tex> we find
 
 :equation:
 \left\{ \begin{array}{lcl}
@@ -413,4 +512,31 @@ k_1 &=& f(x_0) \\
 k_2 &=& f(x_0 + v_0 \tau)
 \end{array} \right.
 
-can be improved to leapfrog, if we allow a partitioned scheme.
+*Alice*: Ah, that is interesting!  This is almost our leapfrog scheme.
+
+*Bob*: How so?
+
+*Alice*: The expression for <tex>$x_1$</tex> is exactly the same as what
+we have used when we implemented the leapfrog.
+
+*Bob*: And so is the expression for <tex>$v_1$</tex>.  The whole idea of
+leapfrogging is to advance the velocity with an acceleration that is the
+exact average of the force calculation at the beginning and at the end
+of the step.
+
+*Alice*: Ah, the word _exact_ is important here!  While it is true that
+<tex>$k_1$</tex> is the force evaluation at the beginning of the step,
+the _exact_ force calculation at the end of the step would be
+<tex>$f(x_1) = x_0 + v_0 \tau + \half k_1\tau^2$</tex>.  However, in
+our scheme above, <tex>$k_2 = x_0 + v_0 \tau$</tex>, and the last term
+is missing.
+
+*Bob*: Tricky!  So we are dealing with an almost-leapfrog scheme, where
+the last force calculation is based on a predicted value for the new
+position, instead of the corrected value.
+
+*Alice*: Yes, that's a good way of putting it.  And all this can serve
+as an invitation to go beyond the straightforward generalizations of the
+Runge-Kutta schemes for first-order differential equations.  It is time
+to look at more imaginative schemes, that treat position and velocity in
+different ways!
