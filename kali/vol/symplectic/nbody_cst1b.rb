@@ -33,7 +33,7 @@ class Body
         r = b.pos - @pos
         r2 = r*r + eps*eps
         r3 = r2*sqrt(r2)
-        a = ba -sa
+        a = ba - sa
         ga += 2*(b.mass/r3)*(a - 3*((r*a)/r2)*r)
       end
     end

@@ -155,7 +155,7 @@ N-body problem:
 \tilde \ba = \ba + {1\over 48} \tau^2 \bb
 
 :equation:
-U(\br_i) = \sum_j M_j a_j^2
+U(\br_i) = {1\over M_i}\sum_j M_j^2 a_j^2
 
 where, as usual, <tex>$a_j = |\ba_j|$</tex>, which implies
 

@@ -1,0 +1,11 @@
+= Code Listing
+
+== The Whole Code
+
+*Alice*: Now that we are happy with our shared time step code,
+it would be nice to get a view of the whole layout.
+
+*Bob*: I'll make a printout of the file <tt>nbody_sh1.rb</tt>.
+Here it is:
+
+ :inccode: .nbody_sh1.rb
