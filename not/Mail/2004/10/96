@@ -1,0 +1,72 @@
+Date: Thu Oct 21 23:17:12 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > > It is important to make these conceptual clarification. But whether or
+ > > not we need all these options or not is another question. If (iii)
+ > > includes (ii), (i) and snapshot, we could argue that (iii) should be
+ > > fine for every need.
+ > 
+ > The main question is size of data storage.  i) and ss use only one
+ > worldpoint per particle; ii) uses two wp per particle; while iii) can
+ > use arbitrarily many.  At least we should have the option to output
+ > ii) instead of iii), which can probably compress data by a factor of
+ > ten or more.  And I think also the ss option should be kept, as we have
+ > it now: for many analysis programs, that is the right format, and it
+ > would be nice to present the data in the right format, for example if
+ > you pipe them into another program.  So at least, I think, we need
+ > ss, ii), and iii).
+
+Something very close to (ii) is currently implemented as the method
+next_era.
+
+ > > Sorry, for what purpose do we take snapshot? I'm not sure if we are in
+ > > the right level... 
+ > 
+ > We haven't decided yet, but there are various possibilities.
+ > Currently we use it for force calculations, and if we continue to do
+ > so, we probably want to be able to make both local and global snapshots.
+
+For the calculation of the force from a clump to outside, snapshot is
+clearly a *bad* interface concept, since what you might want could be
+something like time-averaged multipole moment, with high-order time
+derivative or something like that. I think it is more natural to let
+the individual worldlines and clumps decide how to calculate its
+gravitational force to a given point (or whatever).
+
+ > Also, if we want to make a movie of the dynamics of a clump of stars,
+ > it would be nice to be able to output closely spaced frames for the
+ > dynamics of a clump -- although you could argue that you could produce
+ > such a movie by a special program, from a long stream of closely spaced
+ > era outputs.  That would be cleaner, but a stream of global eras might
+ > require orders of magnitude more storage (and I/O time) than a stream
+ > of local snapshots, so it will be a question of what is most practical.
+
+There are many other possibilities, like making output of worldlines
+for selected particles.
+
+Adding snapshot functions is easy. So I think we should not add too
+many features before they are absolutely necessary.
+
+ > Perhaps I misunderstand what you wrote, but I do think you need to
+ > keep that information in memory, at least for a period >> era duration.
+ > If a worldsegment starts and stops within just one era, it will never
+ > be visible if you do not output all eras.  But in most cases that would
+ > be FAR too much output, for every run, even for a small-N system.  I do
+ > think that it would be nice to be able to keep track of the topology and
+ > structure of the 4-D tree, with all the switches that were made.  It
+ > seems overkill to store every era, only to make sure that an occasional
+ > vertex (tree switching) information of a few bytes (node 33 splits into
+ > particles 13 and 56) appears in the output.  Either that information
+ > should be output as soon as it happens, in just one diagnostics line,
+ > or it should be kept in memory, and listed at the time of the next
+ > diagnostics output.  Perhaps you meant the latter?
+
+Anything which records individual tree changes would serve that
+purpose, no matter whether or not it keeps in memory.
+
+Jun
+
+
