@@ -357,8 +357,8 @@ class Binary < Worldpoint
     @m2 = body2.mass
     @mass = @m1 + @m2
     @reduced_mass = ( @m1 * @m2 ) / ( @mass )
-    @pos = (body1.pos + body2.pos)/@mass
-    @vel = (body1.vel + body2.vel)/@mass
+    @pos = (@m1*body1.pos + @m2*body2.pos)/@mass
+    @vel = (@m1*body1.vel + @m2*body2.vel)/@mass
     @rel_pos = body2.pos - body1.pos
     @rel_vel = body2.vel - body1.vel
   end
@@ -408,10 +408,10 @@ class Binary < Worldpoint
     b2 = Body.new
     b1.mass = @m1
     b2.mass = @m2
-    b1.pos = -(@m2/@mass)*@rel_pos
-    b2.pos = (@m1/@mass)*@rel_pos
-    b1.vel = -(@m2/@mass)*@rel_vel
-    b2.vel = (@m1/@mass)*@rel_vel
+    b1.pos = @pos - (@m2/@mass)*@rel_pos
+    b2.pos = @pos + (@m1/@mass)*@rel_pos
+    b1.vel = @vel - (@m2/@mass)*@rel_vel
+    b2.vel = @vel + (@m1/@mass)*@rel_vel
     [b1, b2]
   end
 
@@ -573,7 +573,7 @@ class Worldline
 
   def valid_interpolation?(time)
     unless @worldpoint[0].time <= time and time <= @worldpoint.last.time
-      raise "#{time} not in [#{@worldpoint[0].time}, #{@worldpoint.last.time}]"
+      raise "\n#{time} not in [#{@worldpoint[0].time}, #{@worldpoint.last.time}]\n"
     end
   end
 
@@ -746,7 +746,8 @@ class Worldera
 Safety_hysteris_factor = 1.5
 
   def evolve(dt_era, dt_max, isolation_factor)
-    STDERR.print "at time #{@start_time} : #{@worldline.size} particles\n"
+#STDERR.printf("at time %.3g : #{@worldline.size} particles\n", @start_time) if
+#  @start_time - @start_time.floor < 0.01
     hide_binaries(@start_time, Safety_hysteris_factor*isolation_factor, dt_max)
     nsteps = 0
     while shortest_interpolated_worldline.worldpoint.last.time < @end_time
@@ -813,9 +814,14 @@ Safety_hysteris_factor = 1.5
     wp = w.worldpoint.last
     t = wp.most_recent_return_time(wp.time)
     return if t < w.worldpoint[0].time
-STDERR.print "entering show_binary for time t = #{t}\n"
+    return if t < @start_time
+STDERR.printf("**entering show_binary for time t = %.3g\n", t)
     w.cap_at(t)
     b1, b2 = w.worldpoint.last.dissolve
+#b1.acs_write($stderr)
+#b2.acs_write($stderr)
+#STDERR.print "t = #{t}\n"
+#STDERR.print "@start_time = #{@start_time}\n"
     w1 = Worldline.new
     w1.setup_from_single_worldpoint(b1.to_worldpoint, w.method, w.dt_param, t)
     w2 = Worldline.new
@@ -834,8 +840,8 @@ STDERR.print "entering show_binary for time t = #{t}\n"
     @worldline.compact!
     @worldline.push(w1)
     @worldline.push(w2)
-w1.acs_write($stderr)
-w2.acs_write($stderr)
+#w1.acs_write($stderr)
+#w2.acs_write($stderr)
   end
 
   def hide_binaries(time, factor, dt_max)
@@ -851,10 +857,17 @@ w2.acs_write($stderr)
   end
 
   def merge_worldlines(w1, w2, dt_max)
+    if w1.worldpoint.last.class == Binary or w2.worldpoint.last.class == Binary
+      return   # no hierarchical merging yet
+    end
     t1 = w1.next_worldpoint_at_or_after(@start_time).time
     t2 = w2.next_worldpoint_at_or_after(@start_time).time
     t = min(t1, t2)
-STDERR.print "entering merge_worldlines for time t = #{t} and "
+#take_snapshot(t).acs_write($stderr)
+#take_snapshot(t).write_diagnostics(1.0)
+#take_full_snapshot(t).acs_write($stderr)
+#take_full_snapshot(t).write_diagnostics(1.0)
+STDERR.printf("*entering merge_worldlines for time t = %.3g and ", t)
     w1.cap_at(t)
     w2.cap_at(t)
     b = Binary.new(w1.worldpoint.last, w2.worldpoint.last, t)
@@ -873,13 +886,19 @@ STDERR.print "#{i} "
       end
     end
 STDERR.print "\n"
-    @worldline.compact!
+#STDERR.print "w1.wordline.last.class = ", w1.worldpoint.last.class, "\n"
+#STDERR.print "w2.wordline.last.class = ", w2.worldpoint.last.class, "\n"
+   @worldline.compact!
     w = Worldline.new
     w.setup_from_single_worldpoint(b, method, dt_param, t)
     loop do
       break if w.startup_done?(self, dt_max)
     end    
     @worldline.push(w)
+#take_snapshot(t).acs_write($stderr)
+#take_snapshot(t).write_diagnostics(1.0)
+#take_full_snapshot(t).acs_write($stderr)
+#take_full_snapshot(t).write_diagnostics(1.0)
   end
 
   def write_diagnostics(t, nsteps, initial_energy, init_flag = false)
