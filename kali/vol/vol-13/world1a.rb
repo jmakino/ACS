@@ -11,11 +11,21 @@ class Worldpoint < Body
     @maxstep = 0
   end
 
-  def setup(time)
+  def leapfrog_setup(time)
     @time = @next_time = time
     @acc = @pos*0
+  end
+
+  def hermite_setup(time)
+    leapfrog_setup(time)
     @jerk = @pos*0
-    self
+  end
+
+  def ms4_setup(time)
+    hermite_setup(time)
+    @snap = @pos*0
+    @crackle = @pos*0
+    @pop = @pos*0
   end
 
   def leapfrog_init(acc, timescale, dt_param, dt_max)
@@ -31,6 +41,29 @@ class Worldpoint < Body
     dt = timescale * dt_param
     dt = dt_max if dt > dt_max
     @next_time = @time + dt
+  end    
+
+  def ms4_init_first_round(acc, jerk, timescale, dt_param, dt_max)
+    @acc = acc
+    @jerk = jerk
+    dt = timescale * dt_param
+    dt = dt_max if dt > dt_max
+    @next_time = @time + dt
+  end    
+
+  def ms4_init_second_round(old_point_1, old_point_2, old_point_3,
+                            snap, crackle)
+    dt = @next_time - @time
+    old_point_1.time = @time - dt
+    old_point_2.time = @time - 2*dt
+    old_point_3.time = @time - 3*dt
+    t1 = dt
+    t2 = 2*dt
+    @divided_diff_1 = ((1/6.0)*crackle*t1 - (1/2.0)*snap)*t1 + jerk
+    @divided_diff_2 = -(1/6.0)*crackle*(t1+t2) + (1/2.0)*snap
+    @divided_diff_3 = (1/6.0)*crackle
+    @snap = snap
+    @crackle = crackle
   end    
 
   def forward_correct(old_point, acc, timescale, dt_param, dt_max)
@@ -70,6 +103,30 @@ class Worldpoint < Body
                            (1/12.0)*(old_point.acc - @acc)*dt**2
     admin(old_point.time)
     self
+  end
+
+  def ms4_correct(old_point_0, old_point_1, old_point_2, old_point_3,
+                  acc, timescale, dt_param, dt_max)
+    t1 = old_point_0.time - old_point_1.time
+    t2 = old_point_0.time - old_point_2.time
+    t3 = old_point_0.time - old_point_3.time
+    new_t1 = @time - old_point_0.time
+    new_t2 = @time - old_point_1.time
+    new_t3 = @time - old_point_2.time
+    new_t4 = @time - old_point_3.time
+    @divided_diff_1 = (@acc - old_point_0.acc) / new_t1
+    @divided_diff_2 = (@divided_diff_1 - old_point_0.divided_diff_1) / new_t2
+    @divided_diff_3 = (@divided_diff_2 - old_point_0.divided_diff_2) / new_t3
+    @divided_diff_4 = (@divided_diff_3 - old_point_0.divided_diff_3) / new_t4
+    @jerk += @divided_diff_4 * t1 * t2 * t3
+    @snap += 2 * @divided_diff_4 * (t1*t2 + t2*t3 + t3*t1)
+    @crackle += 6 * @divided_diff_4 * (t1 + t2 + t3)
+    @pop = 24 * @divided_diff_4
+    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
+             (1/24.0)*@snap*dt**4 + (1/120.0)*@crackle*dt**5 +
+             (1/720.0)*@pop*dt**6
+    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*@snap*dt**3 +
+             (1/24.0)*@crackle*dt**4 + (1/120.0)*@pop*dt**5
   end
 
   def admin(old_time)
@@ -135,6 +192,24 @@ class Worldpoint < Body
     wp
   end
 
+  def ms4_extrapolate(t)
+    if t > @next_time
+      raise "t = " + t.to_s + " > @next_time = " + @next_time.to_s + "\n"
+    end
+    wp = Worldpoint.new
+    wp.minstep = @minstep
+    wp.maxstep = @maxstep
+    wp.nsteps = @nsteps
+    wp.mass = @mass
+    wp.time = t
+    dt = t - @time
+    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
+             (1/24.0)*@snap*dt**4 + (1/120.0)*@crackle*dt**5
+    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*@snap*dt**3 +
+             (1/24.0)*@crackle*dt**4
+    wp
+  end
+
   def forward_interpolate(other, t)
     wp = Worldpoint.new
     wp.minstep = @minstep
@@ -182,6 +257,23 @@ class Worldpoint < Body
     wp
   end
 
+  def ms4_interpolate(other, t)
+    wp = Worldpoint.new
+    wp.minstep = @minstep
+    wp.maxstep = @maxstep
+    wp.nsteps = @nsteps
+    wp.mass = @mass
+    wp.time = t
+    dt = other.time - @time
+    dt = t - @time
+    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
+             (1/24.0)*@snap*dt**4 + (1/120.0)*@crackle*dt**5 +
+             (1/720.0)*@pop*dt**6
+    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*@snap*dt**3 + 
+             (1/24.0)*@crackle*dt**4 + (1/120.0)*@pop*dt**5
+    wp
+  end
+
   def kinetic_energy
     0.5*@mass*@vel*@vel
   end
@@ -205,14 +297,20 @@ class Worldline
 
   attr_accessor  :worldpoint, :method
 
-  def initialize(wp = nil, time = 0.0)
+  def initialize(method, wp = nil, time = 0.0)
+    @method = method
     @worldpoint = []
     return unless wp
-    @worldpoint[0] = wp.setup(time)
+    @worldpoint[0] = wp
+    setup(time)
   end
 
-  def startup(era, dt_param, dt_max)
-    eval("#{@method}_startup(era, dt_param, dt_max)")
+  def setup(time)
+    eval("#{@method}_setup(time)")
+  end
+
+  def startup(era, dt_param, dt_max, round)
+    eval("#{@method}_startup(era, dt_param, dt_max, round)")
   end
 
   def extend(era, dt_param, dt_max)
@@ -220,22 +318,56 @@ class Worldline
     @worldpoint.push(new_point)
   end
 
-  def forward_startup(era, dt_param, dt_max)
+  def forward_setup(time)
+    @worldpoint[0].leapfrog_setup(time)
+  end
+
+  def leapfrog_setup(time)
+    @worldpoint[0].leapfrog_setup(time)
+  end
+
+  def hermite_setup(time)
+    @worldpoint[0].hermite_setup(time)
+  end
+
+  def ms4_setup(time)
+    @worldpoint[0].ms4_setup(time)
+  end
+
+  def forward_startup(era, dt_param, dt_max, round)
     leapfrog_startup(era, dt_param, dt_max)
   end
 
-  def leapfrog_startup(era, dt_param, dt_max)
+  def leapfrog_startup(era, dt_param, dt_max, round)
     wp = @worldpoint[0]
     acc = era.acc(self, wp)
     timescale = era.timescale(self, wp)
     wp.leapfrog_init(acc, timescale, dt_param, dt_max)
+    false                                                   #nothing left to do
   end
 
-  def hermite_startup(era, dt_param, dt_max)
+  def hermite_startup(era, dt_param, dt_max, round)
     wp = @worldpoint[0]
     acc, jerk = era.acc_and_jerk(self, wp)
     timescale = era.timescale(self, wp)
     wp.hermite_init(acc, jerk, timescale, dt_param, dt_max)
+    false                                                   #nothing left to do
+  end
+
+  def ms4_startup(era, dt_param, dt_max, round)
+    wp = @worldpoint[0]
+    if round == 1
+      acc, jerk = era.acc_and_jerk(self, wp)
+      timescale = era.timescale(self, wp)
+      wp.ms4_init_first_round(acc, jerk, timescale, dt_param, dt_max)
+      return true                                        # something left to do
+    elsif round == 2
+      3.times{|i| @worldpoint.unshift(Worldpoint.new)}
+      snap, crackle = era.snap_and_crackle(self, wp)
+      wp.ms4_init_second_round(@worldpoint[2], @worldpoint[1], @worldpoint[0],
+                               snap, crackle)
+      return false                                         # nothing left to do
+    end
   end
 
   def take_forward_step(era, dt_param, dt_max)
@@ -262,6 +394,15 @@ class Worldline
                               timescale, dt_param, dt_max)
   end
 
+  def take_ms4_step(era, dt_param, dt_max)
+    new_point = ms4_predict
+    acc = era.acc(self, new_point)
+    timescale = era.timescale(self, new_point)
+    k = @worldpoint.size
+    new_point.ms4_correct(@worldpoint[k-1], @worldpoint[k-2], @worldpoint[k-3],
+                          @worldpoint[k-4], acc, timescale, dt_param, dt_max)
+  end
+
   def forward_predict
     wp = @worldpoint.last
     wp.forward_extrapolate(wp.next_time)
@@ -275,6 +416,11 @@ class Worldline
   def hermite_predict
     wp = @worldpoint.last
     wp.hermite_extrapolate(wp.next_time)
+  end
+
+  def ms4_predict
+    wp = @worldpoint.last
+    wp.ms4_extrapolate(wp.next_time)
   end
 
   def valid_extrapolation?(time)
@@ -341,17 +487,25 @@ class Worldera
     take_snapshot_except(wl, wp.time).get_acc_and_jerk(wp.pos, wp.vel)
   end
 
+  def snap_and_crackle(wl, wp)
+    take_snapshot_except(wl, wp.time).get_snap_and_crackle(wp.pos, wp.vel,
+                                                           wp.acc, wp.jerk)
+  end
+
   def timescale(wl, wp)
     take_snapshot_except(wl, wp.time).collision_time_scale(wp.mass,
                                                            wp.pos, wp.vel)
   end
 
-  def startup_and_report_energy(method, dt_param, dt_max)
-    worldline.each do |wl|
-      wl.method = method
-    end
-    worldline.each do |wl|
-      wl.startup(self, dt_param, dt_max)
+  def startup_and_report_energy(dt_param, dt_max)
+    round = 1
+    not_yet_done = true
+    while not_yet_done == true
+      not_yet_done = false
+      worldline.each do |wl|
+        not_yet_done = true if wl.startup(self, dt_param, dt_max, round)
+      end
+      round += 1
     end
     take_snapshot(@start_time).total_energy
   end
@@ -438,10 +592,12 @@ class Worldera
     take_snapshot(t).write_diagnostics(initial_energy)
   end
 
-  def setup_from_snapshot(ss, dt_era)
+  def setup_from_snapshot(ss, method, dt_era)
     @start_time = ss.time
     @end_time = @start_time + dt_era
-    ss.body.each{|b| @worldline.push(Worldline.new(b.to_worldpoint, ss.time))}
+    ss.body.each do |b|
+      @worldline.push(Worldline.new(method, b.to_worldpoint, ss.time))
+    end
   end
 
 end
@@ -489,11 +645,10 @@ class World
 
   def setup_from_snapshot(ss, c)
     @era = Worldera.new
-    @era.setup_from_snapshot(ss, c.dt_era)
+    @era.setup_from_snapshot(ss, c.integration_method, c.dt_era)
     @nsteps = 0
     @dt_max = c.dt_era * c.dt_max_param
-    @initial_energy = @era.startup_and_report_energy(c.integration_method,
-                                                     c.dt_param, @dt_max)
+    @initial_energy = @era.startup_and_report_energy(c.dt_param, @dt_max)
     @time = @era.start_time
     @t_out = @time
     @t_dia = @time
@@ -563,6 +718,34 @@ class Worldsnapshot < Nbody
       jerk += b.mass*(v-3*(r*v/r2)*r)/r3
     end
     [acc, jerk]
+  end    
+
+  def get_snap_and_crackle(pos, vel, acc, jerk)
+    snap = crackle = pos*0                 # null vectors of the correct length
+    @body.each do |b|
+      r = b.pos - pos
+      r2 = r*r
+p "he"
+      r3 = r2*sqrt(r2)
+      v = b.vel - vel
+p "hi:"
+p b.acc
+p acc
+p b
+      a = b.acc - acc
+      j = b.jerk - jerk
+      c1 = r*v/r2
+p "hehe"
+      c2 = (v*v + r*a)/r2 + c1*c1
+      c3 = (3*v*a + r*j)/r2 + c1*(3*c2 - 4*c1*c1)
+      d_acc = b.mass*r/r3
+      d_jerk = b.mass*v/r3 - 3*c1*d_acc
+      d_snap = b.mass*a/r3 - 6*c1*d_jerk - 3*c2*d_acc
+      d_crackle = b.mass*j/r3 - 9*c1*d_snap - 9*c2*d_jerk - 3*c3*d_acc
+      snap += d_snap
+      crackle += d_crackle
+    end
+    [snap, crackle]
   end    
 
   def collision_time_scale(mass, pos, vel)
