@@ -954,6 +954,7 @@ module Acsdoc
       elsif s.split[0]== "def"
 	method_name = s.gsub(/\(/," ").split[1]
 	print method_name if $DEBUG
+	method_name = "_divide_" if method_name == "/"
 	outfile = File.dirname(infile)+"/."+File.basename(infile) +
 	  "+" + method_name
 	outfilelong=outfile+ "+" +classname
