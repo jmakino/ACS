@@ -11,7 +11,7 @@
 # If acsdoc.rb is invoked with the option "--keep-dot-files", these temporary
 # files are not removed
 #    s
-# usage:  ruby acsdoc.rb [--keep-dot-files] [rdoc option]... [file]...
+# usage:  ruby acsdoc.rb [--keep-dot-files] [--tolatex]  [rdoc option]... [file]...
 #
 # 2004/3/22 Major rewrite to make it more easily extensible.
 #
@@ -38,7 +38,7 @@ module Rdoctotex
   ]
   
   @@header=[
-    "part","chapter","section","subsection","subsubsetion",
+    "part","chapter","section","subsection","subsubsection",
     "subsubsubsection"]
 
   @@listtypes=[
@@ -53,6 +53,7 @@ module Rdoctotex
 
   @@charstoescape =/(#)|(\{)|(\})|(\_)|(\{)|(\\)/
 
+  @@basic_preambles_for_tex = "\\documentclass{book}\n\\usepackage{graphicx}"
   @@additional_preambles_for_tex = ""
   @@additional_commands_for_tex = ""
 
@@ -132,7 +133,7 @@ module Rdoctotex
     Dir.mkdir(imgdir) unless File.exist?(imgdir)
     imgname = imgbase + figure_number.to_s + "_" +
       File.basename(figurefilename) + ".eps"
-    p imgname
+    p imgname  if $DEBUG
     if figurefilename =~ /eps$/ 
       system "/bin/cp -p #{dirname}/#{figurefilename} #{imgname}"
     else
@@ -175,7 +176,7 @@ END
   def latex_find_and_process_figures(instring,dirname)
     ostring=[]
     while s = instring.shift
-      p s
+      p s  if $DEBUG
       if s =~ /^\s*:figure:\s*/
 	ostring.push(latex_process_figures(s,instring,dirname))
       else
@@ -379,8 +380,7 @@ END
     s=process_headers(s)
     s = process_tagmarkup(s,dirname).join("\n")
     s= <<-END_TEXSOURCE
-    \\documentclass{book}
-    \\usepackage{graphicx}
+    #{@@basic_preambles_for_tex}
     #{@@additional_preambles_for_tex}
     \\begin{document}
        #{@@additional_commands_for_tex}
@@ -577,6 +577,7 @@ module Acsdoc
        \\thispagestyle{empty}
        #{@@additional_commands_for_inline_tex}
        #{texcode}
+       \\thispagestyle{empty}
     \\end{document}
     END_TEXSOURCE
     texsource.close
@@ -653,9 +654,8 @@ module Acsdoc
       end
     end
     texcode += "\\end{#{eqtype}}\n"
-
-
-    namelabel + process_texcode(texcode,dirname)+"\n\n"
+    pp = process_texcode(texcode,dirname)
+    namelabel = namelabel + pp+"\n\n"
   end
 
 
@@ -663,7 +663,7 @@ module Acsdoc
     is = instring.split("\n");
     ostring=""
     while s = is.shift
-      p s
+      p s  if $DEBUG
       if s =~ /^\s*:(equation|eqnarray):\s*$/
 	r = process_tex_equations($1,is,dirname)
 	ostring +=r
@@ -680,7 +680,7 @@ module Acsdoc
     Dir.mkdir(imgdir) unless File.exist?(imgdir)
     imgname = imgbase + figure_number.to_s + "_" +
       File.basename(figurefilename) + ".jpeg"
-    p imgname
+    p imgname  if $DEBUG
     system "convert #{dirname}/#{figurefilename} #{imgname}"
     system "mv -f #{imgname}.0 #{imgname}"if File.exist?(imgname + ".0")
     "../"+imgname
@@ -711,7 +711,7 @@ module Acsdoc
     is = instring.split("\n");
     ostring=""
     while s = is.shift
-      p s
+      p s  if $DEBUG
       if s =~ /^\s*:figure:\s*/
 	r = process_figures(s,is,dirname)
 	ostring +=r
@@ -752,7 +752,6 @@ module Acsdoc
       tmp2= find_and_process_tex_equations(tmp2,dirname);
       tmp2= find_and_process_figures(tmp2,dirname);
       tmp2= process_tex_labels(tmp2,dirname);
-      p tmp2
     end
     ofile.print tmp2
     ofile.close
@@ -862,6 +861,64 @@ module Acsdoc
       print "No config file found\n"
     end
   end
+  
+  def navigation_string(prev,nex)
+    prevtext = ""
+    nexttext = ""
+    prevtext = "<a href=#{File.basename(prev)}>Previous</a>" if prev    
+    nexttext = "<a href=#{File.basename(nex)}>Next</a>" if nex
+
+
+    s = <<END
+<table border="0" width="70%">
+<tr>
+  <td>
+      #{prevtext}
+  </td>
+  <td>
+      #{nexttext}
+  </td>
+</tr>
+</table>
+END
+  end
+
+  def add_links(filename,prev,nex)
+    navi = navigation_string(prev,nex)
+    instring = open(filename,"r"){|f| f.gets(nil)}.split("\n")
+    ostring=""
+    while s = instring.shift
+      if s =~ /^<body/
+	ostring += s + "\n" + navi+ "\n"
+      elsif s =~ /^<\/body>/
+	ostring +=   navi + "\n" + s + "\n"
+      else
+	ostring +=     s + "\n"
+      end
+    end
+    open(filename,"w"){|f| f.puts(ostring)}
+  end
+  def add_navigation_links(rdochtmls)
+    n=rdochtmls.size
+    rdochtmls.each_index{|i|
+      if i == 0 then
+	prev = nil
+      else
+	prev = rdochtmls[i-1]
+      end
+      nex = rdochtmls[i+1]
+      add_links(rdochtmls[i],prev,nex)
+    }
+  end
+  def convert_cpfilename_to_rdoc_htmlfilename(name)
+    'doc/files/'+name.gsub(/\./, '_')+ '.html'
+  end
+  def create_navigations_for_cp_files(args)
+    cpfiles = args.select{|x| x =~/\.cp$/}
+    cpfiles.collect!{|x|convert_cpfilename_to_rdoc_htmlfilename(x)}
+    add_navigation_links(cpfiles)
+  end
+
 end  
 
 # :segment start: acsdoc
@@ -895,15 +952,14 @@ ARGV.collect! do |a|
   end
   a
 end
-
 if  (ENV["LANG"] == "ja_JP.eucJP") or ($KCODE == "EUC") 
   coptions = "--charset=EUC-JP"
 else
   coptions = " "
 end
-
 system("rdoc #{coptions} #{ARGV.join(" ")}") unless tolatex_flag
 
+create_navigations_for_cp_files(ARGV)
 if del_flag
   del_file_list.each do |f|
     File.delete(f)

@@ -1,3 +1,16 @@
+<tex>
+\title{The Art of Computational Science\\
+~\\
+Sample texts for ACSDOC.RB\\
+~\\
+ Sample 2: Graphics
+}
+\author{Piet Hut and Jun Makino}
+\maketitle
+%\newpage
+%\tableofcontents
+</tex>
+
 = Coherent Programming
 
 This is the text for the first heading
