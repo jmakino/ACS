@@ -17,17 +17,18 @@
 
 module Acsdoc
 
-  def add_output(s, ofile)
+  def add_output(s, ofile, dirname)
     ofile.print "---\n"
     a = s.split
     indent = s.index(":output:") 
     tmpname = ".acsdoc.command-out"
     prompt = " "* indent + ">"
     commandline = a[1..a.size].join(" ").chomp
-    print "command to run = ", commandline, "\n"
-    system(commandline + " >& " + tmpname)
+    fullcommand = "cd #{dirname}; "+commandline + " >& " + tmpname
+    print "command to run = ", fullcommand, "\n"
+    system(fullcommand)
     ofile.print prompt + commandline, "\n"
-    ofile.print `cat #{tmpname}`.each{|x| x = " "*indent + x}
+    ofile.print `cat #{dirname}/#{tmpname}`.each{|x| x = " "*indent + x}
     ofile.print "---\n"
   end
 
@@ -37,6 +38,7 @@ module Acsdoc
     rescue
       raise "#{infile} does not exist"
     end
+    dirname = File.dirname(infile)
     ofile = open(outfile, "w+")
     while s = ifile.gets
       s.gsub!(/<p>/, '<i>[Jun: ')
@@ -49,7 +51,7 @@ module Acsdoc
 	ofile.print s
 	ofile.print "---\n"
       elsif loc = s.index(":output:")  and s.index("\":output:\"")==nil
-	add_output(s, ofile)
+	add_output(s, ofile, dirname)
       else
 	ofile.print s
       end
