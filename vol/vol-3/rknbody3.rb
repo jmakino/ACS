@@ -1,4 +1,4 @@
-require "rknvector.rb"
+require "vector.rb"
 
 class Body
 
