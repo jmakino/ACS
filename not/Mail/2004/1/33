@@ -1,0 +1,34 @@
+Date: Mon Jan 05 15:06:56 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+ > > > No. I think TODO list must be short. It may be a good exercise to move
+ > > > the entries of TODO list to lab notes, presumablly manually.
+ > > 
+ > > Sorry, what do you mea with "move"?  Copy them and delete them after
+ > > they are done, or copy them to lab notes to remind ourselves what
+ > > still needs to be done, or something else?
+ > 
+ > What I had in mind was something like the following: Imagine that we
+ > have
+ > 
+ > * make kali
+ > 
+ > as an entry for TODO file at certain point. At day 200x/yy/zz, we
+ > completed kali. So we want to remove this entry from TODO file. So we
+ > can just remove it from TODO file. For the record, however, it may be
+ > useful to keep it in labnote, at the date 200x/yy/zz, as, for example,
+ > 
+ > * Work done: removed from TODO
+ >    * make kali
+
+Ah, yes, now I see.  That is a nice idea.
+
+ > To have a specific format here may be useful, but not absolutely
+ > necessary, since we record the trace of TODO file in svn anyway.
+
+I agree that it is nice to have a specific format.  We can discuss
+that later -- tomorrow perhaps?
+
+Piet
+
