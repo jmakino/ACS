@@ -1,0 +1,16 @@
+Date: Fri Jan 02 10:51:04 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+ > > Yes, that is reasonable, to put all source code under "src".
+ > > But which subdirectory would be best for a very general script, such
+ > > as the one that lists files committed (locally) under svn?
+ > > Is there a traditional name, like "src/general"?  Something like
+ > > "src/svn" does not seem right, that is probably too specific?
+ > 
+ > Something like utils or utilities may be what is usually used.
+
+Okay, I made "src/utilities" and put svn_local_list.rb there, under svn.
+
+Piet
+
