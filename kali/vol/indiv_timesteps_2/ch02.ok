@@ -2,4 +2,27 @@
 
 == xxx
 
- :inccode:.world2.rb
+ :inccode:.world2.rb+ms4_setup+WorldPoint
+
+ :inccode:.world2.rb+ms4_init_first_round
+
+ :inccode:.world2.rb+ms4_init_second_round
+
+ :inccode:.world2.rb+ms4_correct
+
+ :inccode:.world2.rb+ms4_full_extrapolate
+
+ :inccode:.world2.rb+ms4_extrapolate
+
+ :inccode:.world2.rb+ms4_interpolate
+
+ :inccode:.world2.rb+ms4_setup+WorldLine
+
+ :inccode:.world2.rb+ms4_number_of_steps
+
+ :inccode:.world2.rb+ms4_startup_done?
+
+ :inccode:.world2.rb+take_ms4_step
+
+ :inccode:.world2.rb+ms4_predict
+
