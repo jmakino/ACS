@@ -71,7 +71,7 @@ class Clop_Option
       when /^float\s*vector$/
         @valuestring.gsub(/[\[,\]]/," ").split.map{|x| x.to_f}.to_v
       else
-        raise "\n  type \"#{@type}\" is not recognized"
+        raise "\n  type \"#{@type}\" is not recognized\n"
     end
   end
 
@@ -140,6 +140,9 @@ class Clop
         exit
       elsif s == "--help"
         parse_help(s1, true)
+        exit
+      elsif s == "---help"
+        print_help(true, 0)
         exit
       end
     end
