@@ -293,6 +293,92 @@ module Integrator_rk4n                  # not partitioned
   end
 end
 
+module Integrator_rk2n                        # not partitioned
+
+  include Integrator_force_default
+
+  attr_reader :acc
+  attr_writer :time
+
+  def setup_integrator
+    @acc = @pos*0
+  end
+
+  def force_on_pos_at_time(pos,time,wl, era)
+    era.acc(wl, pos, time)
+  end
+
+  def derivative(pos,vel,time,wl,era)
+    [ vel, force_on_pos_at_time(pos,time,wl, era) ]
+  end
+
+  def integrator_step(wl, era)
+    dt = @next_time - @time
+    k1 = derivative(@pos,@vel,@time,wl,era)
+    k2 = derivative(@pos+dt*k1[0],@vel+dt*k1[1],@time+dt,wl,era)
+    new_point = deep_copy
+    new_point.pos += (k1[0]+k2[0])*dt/2
+    new_point.vel += (k1[1]+k2[1])*dt/2
+    new_point.time=@next_time
+    new_point.force(wl,era)
+    new_point
+  end
+
+  def predict_pos_vel(dt)
+    [ @pos + @vel*dt,
+      @vel           ]
+  end
+
+  def interpolate_pos_vel(wp, dt)
+    tau = wp.time - @time
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2,
+      @vel + @acc*dt                      ]
+  end
+end
+
+module Integrator_rk2n_fsal                  # not partitioned
+
+  include Integrator_force_default
+
+  attr_accessor :acc
+  attr_writer :time
+
+  def setup_integrator
+    @acc = @pos*0
+  end
+
+  def force_on_pos_at_time(pos,time,wl, era)
+    era.acc(wl, pos, time)
+  end
+
+  def derivative(pos,vel,time,wl,era)
+    [ vel, force_on_pos_at_time(pos,time,wl, era) ]
+  end
+
+  def integrator_step(wl, era)
+    dt = @next_time - @time
+    k1 = [ @vel, @acc ]
+    k2 = derivative(@pos+dt*k1[0],@vel+dt*k1[1],@time+dt,wl,era)
+    new_point = deep_copy
+    new_point.pos += (k1[0]+k2[0])*dt/2
+    new_point.vel += (k1[1]+k2[1])*dt/2
+    new_point.time=@next_time
+    new_point.acc = k2[1]
+    new_point
+  end
+
+  def predict_pos_vel(dt)
+    [ @pos + @vel*dt,
+      @vel           ]
+  end
+
+  def interpolate_pos_vel(wp, dt)
+    tau = wp.time - @time
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2,
+      @vel + @acc*dt                      ]
+  end
+end
+
 module Integrator_rk4                  # Abramowitz and Stegun's eq. 25.5.22
 
   include Integrator_force_default

@@ -123,6 +123,20 @@ class NBody
     leapfrog
   end
 
+  def su4
+    d = [0.414490771794376, -0.657963087177503]
+    old_dt = @dt
+    @dt = old_dt * d[0]
+    leapfrog
+    leapfrog
+    @dt = old_dt * d[1]
+    leapfrog
+    @dt = old_dt * d[0]
+    leapfrog
+    leapfrog
+    @dt = old_dt
+  end
+
   def yo4
     d = [1.351207191959657, -1.702414383919315]
     old_dt = @dt
