@@ -13,7 +13,7 @@ endif
 ACSDOC = ruby ../../../src/coherent_programming/acsdoc.rb $(ACSDOCOPTIONS)
 GZIP = gzip --force
 
-all:  $(alldepends)
+all:  $(alldepends) scripts libs
 $(TARGET).ps.gz: $(TARGET).dvi
 	dvips -o $(TARGET).ps $(TARGET)
 	$(GZIP) $(TARGET).ps 
@@ -27,8 +27,14 @@ $(TARGET).tex: doc $(SRC) .acsdocinitrc
 	cat $(SRC) > $(TARGET).cp
 	$(ACSDOC) --tolatex $(TARGET).cp
 doc : $(SRC) .acsdocinitrc 
-	$(ACSDOC)  $(SRC) *.rb
+	$(ACSDOC)  $(SRC) [a-z,A-Z]*.rb
 	touch doc
+
+scripts : $(SCRIPTSRCS)
+	ruby -S check_and_install.rb ACSSCRIPTS $(SCRIPTSRCS)
+	
+libs : $(LIBSRCS)
+	ruby -S check_and_install.rb ACSLIBS $(LIBSRCS)
 
 clean : 
 	-rm -r doc .imgs .acsdoc.commandoutdir
