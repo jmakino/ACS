@@ -1,6 +1,6 @@
- class Vector < Array
+class Vector < Array
   def +(a)
-    sum = []
+    sum = Vector.new
     self.each_index{|k| sum[k] = self[k]+a[k]}
     sum
   end
@@ -9,7 +9,7 @@
       product = 0
       self.each_index{|k| product += self[k]*a[k]}
     else
-      product = []                   # scalar product
+      product = Vector.new           # scalar product
       self.each_index{|k| product[k] = self[k]*a}
     end
     product
