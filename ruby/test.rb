@@ -207,7 +207,7 @@ p x.acc
 
 x.clear_acc_and_jerk
 y.clear_acc_and_jerk
-p x.acc
+
 x.cbody.set_pos_vel_and_mass(x);
 y.cbody.set_pos_vel_and_mass(y);
 
@@ -222,6 +222,19 @@ x.cbody.get_acc_jerk(x);
 y.cbody.get_acc_jerk(y);
 
 p x.acc
+y=x
 p y.acc
+x.clear_acc_and_jerk
+p y.acc
+cb = x.cbody
+cb.set_acc_jerk(x);
+x.acc=[1,2,3]
+p x.acc
+x.cbody.get_acc_jerk(x);
+p x.cbody
+p cb
+
+
+
 
 
