@@ -1,4 +1,4 @@
-= Getting Started
+= Setting the Stage
 
 == Ruby
 
@@ -147,8 +147,8 @@ can introduce a minimal class for a single particle:
  :inccode: body1.rb
 
 *Alice*: That is remarkably short and simple!  In fact, it seems too
-simple.  However, I am surprised that we do not have to declare the
-internal variables.  In other languages that I am familiar with, it is
+simple.  I am surprised that we do not have to declare the internal
+variables.  In other languages that I am familiar with, it is
 essential that you tell the computer which memory places to set aside
 before naming them.
 
@@ -160,34 +160,78 @@ variable.
 *Alice*: And you can change the type of that value, whenever you want?
 Can we try that?  I'd like to see the syntax of how you do that.
 
+*Bob*: Before we do that, just one thing: staring at this amazingly
+simple class definition makes me realize both how similar it is to
+what you would write in <tt>C++</tt>, and how different.
+
+*Alice*: Indeed, the logical structure of <tt>C++</tt> class definitions
+is very similar.
+
+*Bob*: But the big difference is that a <tt>C++</tt> class definition
+is quite a bit longer.
+
+*Alice*: I'm curious how much longer.  Do you remember how to write a
+similar particle class in <tt>C++</tt>?
+
+*Bob*: That shouldn't be too hard.  Always easiest to look at an
+existing code.  Ah, here I have another C++ code that I wrote a while
+ago.  Okay, now I remember.  Of course.  Here is how you do it in
+<tt>C++</tt>:
+
+ :inccode: body1.C
+
 == The irb Interpreter
 
-*Bob*: The easiest way is to use the Ruby interpreter +irb+.  The
-acronym stands for <i>interactive Ruby</i>.  You invoke it 
-by simply typing +irb+ on the command line.
+*Alice*: That is quite an impressive difference, between Ruby and C++!
+But aren't you cheating a bit?  That last part, with the +main+ function
+down below, does not occur in your short and sweet Ruby class definition.
 
-*Alice*: I'll try.  I will introduce an identifier +id+.  I will
-first give it a numerical value, and then I will assign to it a
-string of characters, to give it a name.
-Since Ruby is friendly enough not to insist on declaring my variables
-beforehand, I presume I can just go ahead and use +id+ right away.
+*Bob*: It doesn't occur there, because you don't need it.  All that
++main+ does for you is creating an object and then printing its internal
+values.  You can let Ruby do that for you without even asking for it.
+
+Here is what you do.  The easiest way to work with Ruby is to use the
+shell +irb+.  The acronym stands for <i>interactive Ruby</i>.  You
+invoke it by simply typing +irb+ on the command line.  Now As soon as
+you create an instance of a class in Ruby, the interpreter echoes the
+content to you, for free!
+
+*Alice*: I'll try it out.  But rather than wrestling with a whole
+particle, I prefer to start with a single variable, to see how Ruby
+functions at its most basic level.  Also, remember that I asked you
+whether you can change the type of the value of a variable, whenever
+you want?  I want to see that for myself.  One thing at a time!
+
+Let me introduce an identifier +id+.  I will first give it a numerical
+value, and then I will assign to it a string of characters, to give it
+a name.  Since Ruby is friendly enough not to insist on declaring my
+variables beforehand, I presume I can just go ahead and use +id+ right
+away.
 
     |gravity> irb
     irb(main):001:0> id = 12
     => 12
 
-Why does it echo the value?
+And as you predicted, a value gets produced magically.  But where does
+that come from?
 
-*Bob*: Just like in C, every expression has a value.  And +irb+
-makes life more clear by echoing the value of each line as soon as you
-type it in.
+*Bob*: Just like in C, variables are not the only things that have values.
+In fact, every expression has a value.  And +irb+ makes life more
+clear by echoing the value of each line as soon as you type it in.
 
 *Alice*: I like that.  It will make debugging a lot easier.  Okay, let
 me try to change the type of +id+.
 
     irb(main):002:0> id = cat
-    NameError: undefined local variable or method `cat' for main:Object
+    NameError: undefined local variable or method `cat' for m
+     ain
+      :Object
     	from (irb):2
+
+<i>[Note to the reader: because of limited page width, the characters
+that overflow from a line are here printed on the next line (+ain+ in
+this case); on a computer screen those characters all appear on the
+original line]</i>
 
 *Bob*: Ah, Ruby treats your +cat+ in an equally friendly way as
 your +id+, assuming it is itself a name of a variable (or a method),
@@ -233,16 +277,12 @@ Let's see what happens when I type in the text of the +Body+ class
 declaration above.
 
     irb(main):007:0> class Body
-    irb(main):008:1>   def initialize(mass = 0, pos = [0,0,0], v
-      el = [0,0,0])
+    irb(main):008:1>   def initialize(mass = 0, pos = [0,0,0]
+      , vel = [0,0,0])
     irb(main):009:2>     @mass, @pos, @vel = mass, pos, vel
     irb(main):010:2>   end
     irb(main):011:1> end
     => nil
-
-<i>[Note to the reader: because of limited page width, the characters
-that overflow from a line are here printed on the next line; on a
-computer screen those characters all appear on the original line]</i>
 
 I see another nice feature.  I had been wondering about the meaning of
 the <tt>:0</tt> after each line number.  That must have been the level
@@ -263,158 +303,3 @@ letter.  The names of normal variables, in contrast, start with a
 lower case letters: we have three such variables, +mass+, +pos+, and
 +vel+.  All three are given here as possible parameters to the
 initialization function +initialize+.
-
-== Creating a Body
-
-*Alice*: So how do you create a particle?
-
-*Bob*: According to the book I read, you can simply type
-<tt>b = Body.new</tt>, to get a new particle with the default values,
-all zero in this case.
-
-*Alice*: Wait a minute.  According to the rules you just told me, it
-should be <tt>b = Body.initialize</tt>, since <tt>initialize</tt> is
-the name of the one method that we have defined in our +Body+ class.
-
-*Bob*: All I can tell you is what I read in the manual.  Let's try it
-both!
-
-    irb(main):012:0> b = Body.new
-    => #<Body:0x4008a1b0 @mass=0, @vel=[0, 0, 0], @pos=[0, 0, 0]>
-    irb(main):013:0> c = Body.initialize
-    NoMethodError: private method `initialize' called for Body:Class
-            from (irb):13
-
-*Alice*: I guess the writer of Ruby decided that typing +new+ is both
-shorter and more natural than typing +initialize+.
-
-*Bob*: It is more subtle than that.  I think that the built-in
-method +new+, that is publicly available for each and any class,
-invokes the private method +initialize+ that can be specified when you
-define a new class.
-
-*Alice*: So we'll use <tt>Body.new</tt> then.  The value that was echoed
-upon creation of an actual body looks quite complex.  I recognize the
-values of the mass, and the components of position and velocity, which
-are all zero by default.  But what is that hexidecimal number doing
-there on the left?
-
-*Bob*: After giving the class name of the object, it prints the id of
-the object, a unique integer that is associated with the specific object.
-Useful for debugging perhaps, but for now we can ignore that.
-
-*Alice*: You said that +mass+, +pos+, and +vel+ are possible parameters.
-What do you mean with `possible'?
-
-*Bob*: When you type <tt>b = Body.new(1)</tt> you
-give the particle mass an intial value 1, rather than the default
-value 0, while keeping the other values 0.  And so on.
-
-*Alice*: And so on?  How do you give a value to a vector?
-
-*Bob*: That I'm not sure yet.  We should experiment and try it out.
-
-*Alice*: Before doing that, what are the funny <tt>@</tt> signs?
-
-*Bob*: Those indicate the internal variables associated with a particle.
-In Ruby such variables are called <i>instance variables</i>.  The name
-+Body+ applies to a class, namely the one defined above.  As we have
-seen, the command <tt>b = Body.new</tt> creates an instance of this
-class, a specific object, for which we use the name +b+.  That is the
-reason that the variables <tt>@mass</tt>, <tt>@pos</tt> and
-<tt>@vel</tt> are called instance variables.  The notation
-<tt>some_class.some_function</tt> means that <tt>some_function</tt> is
-a function or method that is part of the contents of
-<tt>some_class</tt>.
-
-You see that the only thing the initializer does, besides creating a
-new instance of the class, is to copy the values of the parameters of
-the class initialization to the instance variables.
-
-*Alice*: All this reminds me of <tt>C++</tt>.
-
-*Bob*: Indeed, the logical structure of <tt>C++</tt> class definitions
-is very similar.
-
-*Alice*: The main difference is that a <tt>C++</tt> class definition is
-quite a bit longer.  I'm curious how much longer.  Do you remember how
-to write a similar particle class in <tt>C++</tt>?
-
-*Bob*: That shouldn't be too hard.  Always easiest to look at an
-existing code.  Ah, here I have another C++ code that I wrote a while
-ago.  Okay, now I remember.  Of course.  Here is how you do it in
-<tt>C++</tt>:
-
- :inccode: body1.C
-
-== Initializing a Body
-
-*Alice*: That is quite an impressive difference, between Ruby and C++!
-But aren't you cheating a bit?  That last part, with the +main+ function
-down below, does not occur in your short and sweat Ruby class definition.
-
-*Bob*: It doesn't occur there, because you don't need it.  As soon as
-you create an instance of a class in Ruby, the interpreter echoes the
-content to you, for free!  Here is what you do.  You use the
-interactive Ruby shell +irb+, and we can start it up with the
-<tt>-r</tt> option that specifies a file to be loaded.  All you need
-to do then is to create an instance, by typing <tt>b = Body.new</tt>:
-
-    |gravity> irb -r body01.rb
-    irb(main):001:0> b = Body.new
-     => #<Body:0x401c7e7c @mass=0, @vel=[0, 0, 0], @pos=[0, 0, 0]>
-    irb(main):002:0>
-
-*A*: So far so good.  The interpreter echoes the value of the object
-+b+ that is created.  The first number +0x401c7e7c+ must be the id or
-identifier, the unique name of that particular object for Ruby.  Let
-me try to assign values other than the default zeroes:
-
-    irb(main):002:0> c = Body.new(1, 0.5, 0, 0, 0, 0.7, 0)
-    ArgumentError: wrong # of arguments(7 for 3)</tt>
-	    from (irb):2:in `initialize'
-	    from (irb):2:in `new'
-	    from (irb):2
-    irb(main):003:0> 
-
-*B*: How nice to get such clear instructions!  Quite a bit more helpful
-than <i>segmentation fault</i> or something cryptic like that.
-
-*A*: Indeed.  And yes, I should have presented the positions and velocities
-as arrays, making three arguments in total.
-
-    irb(main):003:0> c = Body.new(1, [0.5, 0, 0], [0, 0.7, 0])
-    => #<Body:0x4023b31c @mass=1, @vel=[0, 0.7, 0], @pos=[0.5, 0, 0]>
-    irb(main):004:0> 
-
-*B*: Let's try to getter and setter commands.
-
-    irb(main):004:0> c.mass
-    => 1
-    irb(main):005:0> c.pos[0]
-    => 0.5
-    irb(main):006:0> c.vel[1] = 0.8
-    => 0.8
-    irb(main):007:0> c.vel
-    => [0, 0.8, 0]
-    irb(main):008:0> 
-
-*A*: Well, that's simple and straightforward.  You can even use array
-notation, and everything works just like you would hope it would.
-
-*B*: I saw you hesitating when you typed line 6.  I would have
-thought you would type something like:
-
-    irb(main):006:0> c.vel = [0, 0.8, 0]
-    => [0, 0.8, 0]
-
-which would have given the same effect.
-
-*A*: Yes, you read my mind.  I had understood that "<tt>c.vel =</tt>"
-is parsed by Ruby as an assignment operator "<tt>vel=</tt>"
-associated with +c+ and frankly I did not expect that I could throw in
-the component selector "<tt>[1]</tt>" without complaints from the
-interpreter.
-
-*B*: but it did the right thing!  This must be what they mean when
-they say that Ruby is based on the principle of minimum surprise.
