@@ -5,70 +5,104 @@ include Math
 
 options_definition_string = <<-END
 
+  Description:		The simplest ACS N-body code
+  Long description:
+    This is the simplest N-body code provided in the ACS environment
+    (ACS: Art of Computational Science; cf. "http://www.ArtCompSci.org").
+    It offers a choice of integrators, for constant shared time steps.
+
+
   Short name: 		-m
   Long name:		--integration_method
   Value type:		string
   Default value:	rk4
-  Global variable:	int_method
-  Print name:		
+  Global variable:	method
+  Print name:		                    # blank: suppresses glob. var. name
   Description:		Integration method
   Long description:
-    x
-    x
+    There are a variety of integration methods available, including:
+
+      Forward Euler:		forward
+      Leapfrog:			leapfrog
+      2nd-order Runge Kutta:	rk2
+      4th-order Runge Kutta:	rk4
 
 
-  Short name: 		-
-  Long name:		--
+  Short name: 		-d
+  Long name:		--step_size
+  Value type:		float
+  Default value:	0.001
+  Global variable:	dt
+  Description:		Integration time step
+  Long description:
+    In this code, the integration time step is held constant,
+    and shared among all particles in the N-body system.
+
+
+  Short name: 		-e
+  Long name:		--diagnostics_interval
   Value type:		float
   Default value:	1
-  Global variable:	x
-  Print name:		x
-  Description:		xx
+  Global variable:	dt_dia
+  Description:		Diagnostics output interval
   Long description:
-    x
-    x
+    The time interval between successive diagnostics output.
+    The diagnostics include the kinetic and potential energy,
+    and the absolute and relative drift of total energy, since
+    the beginning of the integration.
+        These diagnostics appear on the standard error stream.
+    For more diagnostics, try option "-x" or "--extra_diagnostics".
 
 
-  Short name: 		-
-  Long name:		--
+  Short name: 		-o
+  Long name:		--output_interval
   Value type:		float
   Default value:	1
-  Global variable:	x
-  Print name:		x
-  Description:		xx
+  Global variable:	dt_out
+  Description:		Snapshot output interval
   Long description:
-    x
-    x
+    The time interval between output of a complete snapshot
+    A snapshot of an N-body system contains the values of the
+    mass, position, and velocity for each of the N particles.
 
+        These diagnostics appear on the standard output stream,
+    currently in the following simple format (only numbers):
 
-  Short name: 		-
-  Long name:		--
-  Value type:		float
-  Default value:	1
-  Global variable:	x
-  Print name:		x
-  Description:		xx
-  Long description:
-    x
-    x
+      N:            number of particles
+      time:         time 
+      mass:         mass of particle #1
+      position:     x y z : vector components of position of particle #1
+      velocity:     vx vy vz : vector components of velocity of particle #1
+      mass:         mass of particle #2
+      ...:          ...
 
+    Example:
 
+       2
+       0
+       0.5
+      7.3406783488452532e-02  2.1167291484119417e+00 -1.4097856092768946e+00
+      3.1815484836541341e-02  2.7360312082526089e-01  2.4960049959942499e-02
+       0.5
+     -7.3406783488452421e-02 -2.1167291484119413e+00  1.4097856092768946e+00
+     -3.1815484836541369e-02 -2.7360312082526095e-01 -2.4960049959942499e-02
 
 
   Short name: 		-t
-  Long name:		--end_time
+  Long name:		--total_duration
   Value type:		float
   Default value:	10
-  Global variable:	tend
-  Description:		Time to stop integration
+  Global variable:	dt_end
+  Description:		Duration of the integration
   Long description:
-    This option gives the time to stop integration.
+    This option allows specification of the time interval, after which
+    integration will be halted.
 
 
   Short name: 		-s
   Long name:		--softening_length
   Value type:		float
-  Default value: 	0.0
+  Default value: 	0
   Global variable: 	eps
   Description:		Softening length
   Long description:
@@ -77,10 +111,22 @@ options_definition_string = <<-END
     Plummer softening, where rs2=r**2+eps**2 is used in place of r**2.
 
 
+  Short name:		-i
+  Long name:  		--initial_output
+  Value type:  		bool
+  Global variable:	init_out
+  Description:		Extra diagnostics
+  Long description:
+    The following extra diagnostics will be printed:
+
+      acceleration (for all integrators)
+      jerk (for the Hermite integrator)
+
+
   Short name:		-x
   Long name:  		--extra_diagnostics
   Value type:  		bool
-  Global variable:	xdiag
+  Global variable:	x_flag
   Description:		Extra diagnostics
   Long description:
     The following extra diagnostics will be printed:

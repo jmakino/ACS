@@ -250,21 +250,18 @@ class Clop
   def check_required_options
     options_missing = 0
     @options.each do |x|
-      if x.valuestring =~ /^\s*none(\s|#|$)/    # e.g. none.rb would be okay !
+      if x.valuestring == "none"                 # e.g. none.rb would be okay !
         options_missing += 1
-        if x.shortname
-          STDERR.print "option #{x.shortname} or #{x.longname} required.  "
-        else
-          STDERR.print "option #{x.longname} required.  "
-        end
+        STDERR.print "option "
+        STDERR.print "\"#{x.shortname}\" or " if x.shortname
+        STDERR.print "\"#{x.longname}\" required.  "
         STDERR.print "Description:\n#{x.longdescription}\n"
       end
     end
-    if options_missing > 1
-      STDERR.print("Please provide the required command line options.\n")
-      exit(1)
-    elsif options_missing == 1
-      STDERR.print("Please provide the required command line option.\n")
+    if options_missing > 0
+      STDERR.print "Please provide the required command line option"
+      STDERR.print "s" if options_missing > 1
+      STDERR.print ".\n"
       exit(1)
     end
   end
@@ -309,10 +306,21 @@ if __FILE__ == $0
   Value type:		float
   Default value:	10
   Global variable:	t_end
-  Print name:	t
+  Print name:		t
   Description:		Time to stop integration
   Long description:
     This option gives the time to stop integration.
+
+
+  Short name: 		-n
+  Long name:		--number_of_particles
+  Value type:		int
+  Default value:	none
+  Global variable:	n_particles
+  Print name:		N
+  Description:		Number of particles
+  Long description:
+    Number of particles in an N-body snapshot.
 
 
   Short name:		-x
