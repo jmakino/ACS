@@ -85,7 +85,7 @@ In addition, we present reports of bug-tracing sessions, with a degree
 of realistic detail seldom encountered in the literature.  It is our
 belief that the essential art of debugging code can only be learned
 through practice.  And to the extent that books can help one to get
-exposed to this type of practice, examples have come directly from
+exposed to this type of practice, examples have to come directly from
 applications, or else they will be, at best, only of theoretical value.
 Chapter 7, _Debugging_, is devoted in its entirety to this topic.
 
@@ -101,7 +101,7 @@ Ninomiya.  In addition, we thank the Observatory of Strasbourg, where
 the kind invitation of Professor Christian Boily allowed us to make a
 rapid beginning with the current volume.
 
-Finally, it is our pleasure to thank Douglas Heggie and
+Finally, it is our pleasure to thank Douglas Heggie, Bill Paxton, and
 Michele Trenti for their comments on the manuscript.
 
 Piet Hut and Jun Makino

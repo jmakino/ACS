@@ -210,7 +210,7 @@ those cases where you do an output, you immediately schedule the next
 output, by increasing the future output time by the corresponding output
 interval.
 
-*Bob*: Indeed.  And that's it!  Then next method we have seen before:
+*Bob*: Indeed.  And that's it!  The next method we have seen before:
 
  :inccode: .body.rb+evolve_step
 
@@ -232,8 +232,19 @@ the kinetic and potential energy for the relative motion:
 potential energy proportional to inverse distance.  Wonderful.  One-liners
 are great.
 
-*Bob*: Note that both +ekin+ and +epot+ are methods, not variables, just
-like the method we already saw earlier, <tt>e_init</tt>:
+*Bob*: But before you sometimes called them ugly!
+
+*Alice*: Ah, _clear_ one-liners are great, I meant to say.  And if a one-liner
+can be as clear as multi-liners, then I prefer a one-liner.  What I like
+about Ruby is that I feel that I'm talking to a colleague about science,
+rather than that I'm talking to a compiler, about types and pointers and
+various declarations.  Without all that clutter, brevity = clarity.  But
+never forced brevity, for its own sake.
+
+*Bob*: You see, that's why I don't like principles: as soon as you confront
+people with them, they come up with exceptions.  Anyway, note that
+both +ekin+ and +epot+ are methods, not variables, just like the method
+we already saw earlier, <tt>e_init</tt>:
 
  :inccode: .body.rb+e_init
 
@@ -348,7 +359,7 @@ everything it see until it comes across the magic word +END+ and then it
 stops.
 
 *Bob*: Effectively, yes, but more precisely speaking the print command
-itself doesn't know about here documents.  The symbol <tt><<END</tt>
+itself doesn't know about "here documents".  The symbol <tt><<END</tt>
 is what causes the rest up to +END+ to be formed into a string.  Then
 that string, once formed, is what the print command sees.  Here, let
 me show you.  Ruby invites you not to take anything on faith, since it

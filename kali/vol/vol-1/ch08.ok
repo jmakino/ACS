@@ -4,7 +4,7 @@
 
 *Bob*: Okay, here is the next step.  We first have to tell our +Body+
 class that the positions and velocities are no longer arrays, but
-vectors.  Let me create a new file +vbody.rb+ for this modified class.
+vectors.  Let me create a new file <tt>vbody.rb</tt> for this modified class.
 I will call the modified class +Body+ as well.  If we are happy with
 it, we can discard the previous +Body+ class definition.
 
@@ -44,9 +44,9 @@ rename it <tt>euler2.rb</tt>.
  :inccode: euler1.rb
 
 All we have to do is to change the first +require+ line to require
-+vbody.rb+ to be loaded instead of +body.rb+, and then we are free
-to purge the +do+ loop from the obnoxious +k+ component notation.
-Are you ready for this?
+<tt>vbody.rb</tt> to be loaded instead of <tt>body.rb</tt>, and then
+we are free to purge the +do+ loop from the obnoxious +k+ component
+notation.  Are you ready for this?
 
 *Alice*: Sure thing!
 
@@ -110,7 +110,7 @@ with Ruby we can really do what they always advertise as rapid prototyping.
 *Bob*: But before congratulating ourselves too much, let us first see
 whether this now runs.  I've grown a bit more cautious after those
 surprises we got earlier.  Ruby is certainly powerful, but as we have
-seen, we'd better now what we are doing, in order to use all that power
+seen, we'd better know what we are doing, in order to use all that power
 wisely.
 
 *Alice*: Well said, Bob!  Let's run the new version of the integrator
@@ -240,7 +240,7 @@ list of its elements.
 *Alice*: Ah, and then you feed that list into the initializer of a new
 +Vector+ object.  Very clever, if not devious!
 
-*Bob*: So I'll just cloth the right hand side of the <tt>@pos</tt> and 
+*Bob*: So I'll just clothe the right hand side of the <tt>@pos</tt> and 
 <tt>@vel</tt> assignments in <tt>Vector[* ]</tt> garb.  Let me call
 this file <tt>euler2b.rb</tt> with +b+ for beta version.  I think
 we're getting closer now:

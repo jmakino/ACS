@@ -52,7 +52,7 @@ the whole system.
 particle its position and velocity?
 
 *Alice*: I was thinking about the alternative way of picturing the whole
-system as one point in a <tex>$6N$</tex>-dimensional system.  The
+system as one point in a <tex>$6N$</tex> -dimensional system.  The
 evolution of an N-body system can then be viewed as the
 complex motion of this one point through this huge space.  Now in this
 space you can define layer of subspaces, on each of which the total
@@ -102,7 +102,7 @@ are.
 
 *Alice*: They are a lot of fun, from a mathematical point of view.
 How useful they may be for real 6N-body simulations,
-that is not too clear.  They are more accurately, for sure, but they
+that is not too clear.  They are more accurate, for sure, but they
 are hard to generalize to individual time steps.  And for our game,
 we have no choice to go to individual time steps.  Perhaps we can
 come back to this topic, some day, but not any time soon.  But just to
@@ -117,7 +117,7 @@ forward Euler code?
 
 == A Driver
 
-*Bob*: Well, I have a surprise for you.  Yesterday night I continued
+*Bob*: Well, I have a surprise for you.  Last night I continued
 to tinker with Ruby, and I had so much fun doing so that I stayed
 at it long enough to wind up with a version of our code that produces
 energy conservation diagnostics.
@@ -149,7 +149,7 @@ those four parameters you just mentioned.
 *Bob*: Exactly.  Ruby is _very_ economical!  And just as a courtesy, I
 decided to let the program print out the values of the four parameters.
 We can then change those parameters in the current file to our hearts
-content, and we always check from earlier outputs what parameters were
+content, and we can always check from earlier outputs what parameters were
 used for a given integration.
 
 *Alice*: Good idea.  Clean and careful.  Of course, some day soon we will

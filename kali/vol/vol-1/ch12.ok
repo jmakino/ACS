@@ -67,7 +67,7 @@ were so happy with the clarity of the statements like
 
 *Alice*: Let's do an independent check.  This is like debugging, but
 now on the level of the physics, rather than the numerics.  Let me just
-pen and paper to determine the initial total energy.  Here are the
+use pen and paper to determine the initial total energy.  Here are the
 equations:
 
 <tex>$$
@@ -243,7 +243,7 @@ of attraction.
 kinetic and potential energy per unit reduced mass.  And I remember now
 why I have done that before, several years ago: there I had chosen units
 in which the total mass of the two-body system was unity.  In that case
-it would have been correct what I did.  But now I should go back and
+what I did would have been correct.  But now I should go back and
 include the <tex>${M_1+M_2}$</tex> factor to my potential energy.
 If in the future we or someone else will use our code for a case where
 the sum of the masses is not unity, the code as it is will give a wrong
@@ -321,7 +321,11 @@ dozen lines?
 
 *Bob*: You are either joking or you have an unreasonably high opinion
 of my programming skills.  I don't want to promise anything, since I
-think one dozen lines is plainly unrealistic.  But perhaps I can stay
-under two dozen.
+think one dozen lines is plainly unrealistic.
 
-*Alice*: We'll see tomorrow!
+*Alice*: I _was_ joking.  Clarity over brevity, definitely.  But seeing
+how you were glowing over brevity, I just couldn't help myself.
+
+*Bob*: But perhaps I can stay under two dozen.
+
+*Alice*: I shouldn't have said anything.  Anywa, we'll see tomorrow!

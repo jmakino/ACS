@@ -6,7 +6,7 @@
 language we hardly knew.  I can see the advantages of an interpreted
 dynamically typed computer language.  If we had tried to do this in C++,
 it would have taken quite a bit more time, and we would have had to write
-much more lines of code.
+many more lines of code.
 
 *Bob*: Yes.  Defining a class, getting it to behave, providing I/O, and
 chaining it together by piping data from one program to another, all
@@ -297,8 +297,13 @@ type you can still find!
 *Alice*: That is because most scientists have never been taught how to
 include levels of data abstraction in their program, right from the
 beginning in the conceptual view of the architecture of a program.
+One of the main principles of data abstraction is: no constants except
+0 and 1 are allowed in the body of the code.  Everything else should
+be given a symbolic name.
 
-*Bob*: But at least they all use subroutines.
+*Bob*: I'm in principle against principles, but I like the content of what
+you just said.  As for those many scientists, at least they all use
+subroutines.
 
 *Alice*: Not all!  There are still legacy codes being used widely that
 jump around through many pages of programs using do loops between blocks
@@ -360,7 +365,7 @@ wizened up.
 
 *Alice*: Talking about the +do+ loop, I presume it is being traversed
 +ns+ times, almost as if you read Ruby like English.  How can that
-possible work?
+possibly work?
 
 *Bob*: The period means that +times+ is a method associated with the
 class of which the variable +ns+ points to an instance.  Since +ns+

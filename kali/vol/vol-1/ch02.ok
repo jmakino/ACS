@@ -263,13 +263,14 @@ the third line, but I just wanted to be sure that everything was
 consistent.  However, I still don't like the syntax of <tt>=()</tt>.
 
 *Bob*: Ah, but here is where Ruby's freedom of expression helps out:
-those parentheses are optionally.  You needed them in the method
+those parentheses are optional.  You needed them in the method
 definition, to tell the Ruby interpreter that you were dealing with a
 parameter that was an argument of a method.  But once defined, you can
 leave them out when you give a command.  And you can even introduce a
 space between <tt>mass</tt> and <tt>=</tt> if you like.  In general,
-of course you can introduce spaces in the middle of a name, but in the
-case of a method name ending on <tt>=</tt>, this is allowed.  This is
+of course you cannot introduce spaces in the middle of a name, but in the
+case of a method name ending on <tt>=</tt>, this is allowed, but only
+just before the equal sign.  This is
 one of the many places where Ruby caters to the pleasure of the user,
 and not to the pleasure of someone with a rigid logical bend.  Here
 are a couple examples.
