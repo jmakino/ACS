@@ -1,0 +1,148 @@
+== More on make
+
+I made a hierarchy of makefiles, currently the structure is:
+
+  $ACSROOT---ok---vol---vol-0
+           |          |-vol-1
+           |
+           |
+           |-kari---vol---vol-0
+                        |-vol-1
+                        |-vol-2
+                           :
+                           :
+                        |-vol-10
+
+
+== Command line argument
+
+The following is what Piet wrote for the command line argument par
+
+
+   def print_help
+     print "usage: ", $0,
+       " [-h (for help)] [-s softening_length] [-d step_size]\n",
+       "         [-e diagnostics_interval] [-o output_interval]\n",
+       "         [-t total_duration] [-i (start output at t = 0)]\n",
+       "         [-x (extra debugging diagnostics)]\n", 
+       "         [-m integration_method]\n"
+   end
+   
+   require "getoptlong"
+   
+   parser = GetoptLong.new
+   parser.set_options(
+     ["-d", "--step_size", GetoptLong::REQUIRED_ARGUMENT],
+     ["-e", "--diagnostics_interval", GetoptLong::REQUIRED_ARGUMENT],
+     ["-h", "--help", GetoptLong::NO_ARGUMENT],
+     ["-i", "--initial_output", GetoptLong::NO_ARGUMENT],
+     ["-m", "--integration_method", GetoptLong::REQUIRED_ARGUMENT],
+     ["-o", "--output_interval", GetoptLong::REQUIRED_ARGUMENT],
+     ["-s", "--softening_length", GetoptLong::REQUIRED_ARGUMENT],
+     ["-t", "--total_duration", GetoptLong::REQUIRED_ARGUMENT],
+     ["-x", "--extra_diagnostics", GetoptLong::NO_ARGUMENT])
+   
+   def read_options(parser)
+     dt = 0.001
+     dt_dia = 1
+     dt_out = 1
+     dt_end = 10
+     eps = 0
+     init_out = false
+     x_flag = false
+     method = "rk4"
+   
+     loop do
+       begin
+         opt, arg = parser.get
+         break if not opt
+   
+         case opt
+         when "-d"
+   	dt = arg.to_f
+         when "-e"
+   	dt_dia = arg.to_f
+         when "-h"
+   	print_help
+           exit         # exit after providing help
+         when "-i"
+   	init_out = true
+         when "-m"
+   	method = arg
+         when "-o"
+   	dt_out = arg.to_f
+         when "-s"
+   	eps = arg.to_f
+         when "-t"
+   	dt_end = arg.to_f
+         when "-x"
+   	x_flag = true
+         end
+   
+       rescue => err
+         print_help
+         exit           # exit if option unknown
+       end
+   
+     end
+   
+     return eps, dt, dt_dia, dt_out, dt_end, init_out, x_flag, method
+   end
+   						
+One can clearly see that this is hard to write and maintain, since the
+information on one option appears in three different places, in rather
+redundant ways. For example, <tt>-s</tt> shows up at:
+
+   print_help:
+   
+   [-s softening_length]
+
+   parser.set_options:
+   ["-s", "--softening_length", GetoptLong::REQUIRED_ARGUMENT],
+
+   read_options:
+     eps = 0 (default setting)
+         when "-s"
+   	eps = arg.to_f (loop to interpret options)
+
+     return eps ... (return statement)
+
+One possibility is to write a string which describe options, like
+
+    Short name: -s
+    Long name:  --softening_length
+    Value type:  float (double/real...)
+    Default value: 0.0 (none to cause error)
+    Description: softening length
+    Long description:
+    This option set the softening length used to calculate the force
+    between two particles. The calculation scheme is the standard
+    Plummer softening, where rs2=r**2+eps**2 is used in place of r**2.
+
+Several design considerations:
+
+* How the values should be returned?
+  * associative array (pairs of option names and values)
+  * global valiables
+  * both?
+
+* What to do if one wants to give, for example, array of values
+  instead of single scalar value?
+
+Concerning the return values, it is probably the easiest to return
+both an associative array and global variables. The name of the global
+variable ned to be supplied as:
+
+    Global variable: eps
+
+In this case, global valiable $eps will be created and the option
+value stored.
+
+    
+    
+
+    
+	
+     
+
+   

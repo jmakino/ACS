@@ -25,6 +25,21 @@ installhost="grape.astron.s.u-tokyo.ac.jp"
 installuname="acs"
 installdir="WWW/tmp/artcompsci"
 
+#
+# filenames will be acs_(version).tgz acs_lite_(version).tgz
+# 
+# They will be placed at versions directory
+#
+#
+#
+# release file format:
+#
+# Date: XXX
+# person: YYY
+# release: ZZZ
+storedir = "rel"
+releaselog = "RELEASES"
+
 
 
 load "src/utilities/svn-recursive-print-files.rb"
@@ -113,20 +128,6 @@ open("tmp.tarfilelist3","w"){
 }
 STDERR.print "file list  finished\n"
 
-#
-# filenames will be acs_(version).tgz acs_lite_(version).tgz
-# 
-# They will be placed at versions directory
-#
-#
-#
-# release file format:
-#
-# Date: XXX
-# person: YYY
-# release: ZZZ
-storedir = "versions"
-releaselog = "RELEASES"
 
 releasefile=storedir+"/"+releaselog
 if File.exist?(releasefile)
