@@ -421,13 +421,13 @@ v_0\left(f_r\right)^2 + f_rf_t +
 
 :equation:
 c_0 \,=\, v_0\left(f_r\right)^2 + f_rf_t + 3v_0f_0f_{rr} + 3f_0f_{rt} 
-+ v_0^3f_{rrr} + 3v_0^2f_{rrt}+ 3v_0f_{rtt} + f_{ttt} \ \ \ \ \,
++ v_0^3f_{rrr} + 3v_0^2f_{rrt}+ 3v_0f_{rtt} + f_{ttt} \ \ \ 
 
 *Alice*: Yes, and we can also see that indeed the velocity, Eq. (ref(v1)),
 is the time derivative of the position, Eq. (ref(r1)), up to the order given
 there.  So everything is consistent.
 
-== Orbit -- Interaction Correspondence
+== Everything Falls into Place
 
 *Bob*: So where do we stand now?  This was all nice and fine, but I must
 admit, I'm beginning to lose the forest for the trees.
@@ -445,46 +445,70 @@ just after we translated the expressions from Abramowitz and Stegun:
 :equation:
 a(t) = \ddot r(t)\,=\,f(r(t), t)
 
-We can differentiate this expression, to find the jerk:
+For time zero this gives:
+
+:equation:
+a_0 = f_0
+
+We can differentiate the equation for <tex>$a(t)$</tex>, to find the jerk:
 
 :equation:
 j(t) \,=\, {d\over dt}f(r(t), t) \,=\, f_r {dr\over dt} + f_t 
 \,=\, v(t)f_r + f_t
 
-If we differentiate this again, we find the snap:
+which gives us at the starting time:
+
+:equation:
+j_0 \,=\, v_0 f_r + f_t
+
+When we differentiate the equation for <tex>$j(t)$</tex>, we find the snap:
 
 :equation:
 s(t) \,=\, {d\over dt}j(t) \,=\, a(t)f_r + \left(v(t)\right)^2f_{rr}
 + 2v(t)f_{rt} + f_{tt}
 
-Next, 
+or at time <tex>$t=0$</tex> :
 
+:equation:
+s_0 \,=\, f_0f_r + v_0^2f_{rr} +2v_0f_{rt}+ f_{tt}
 
+Next, with one more differentiation of the equation for <tex>$s(t)$</tex>,
+we can derive the crackle:
 
+:equation:
+c(t) \,=\, {d\over dt}s(t) \,=\, j(t)f_r + 3v(t)a(t)f_{rr} + 3a(t)f_{rt} 
++ \left(v(t)\right)^3f_{rrr} + 3\left(v(t)\right)^2f_{rrt}
++ 3v(r)f_{rtt} + f_{ttt}
 
+Using the expression for the jerk, that we found above, we find for
+time zero:
 
+:equation:
+c_0 \,=\, v_0\left(f_r\right)^2 + f_rf_t + 3v_0f_0f_{rr} + 3f_0f_{rt} 
++ v_0^3f_{rrr} + 3v_0^2f_{rrt}+ 3v_0f_{rtt} + f_{ttt} \ \ \ \ 
 
+*Bob*: I see, now the clouds are clearing, and the sun is shining through!
+When you substitute these values back into the equation for the new position,
+Eq. (ref(r1)), we find:
 
+:equation:
+r_1 \,=\, r_0 +\, v_0\tau + \hhalf a_0\tau^2 + \one{6}j_0\tau^3
++ \one{24}s_0\tau^4
 
+and similarly, for Eq. (ref(v1)), we find:
 
+:equation:
+v_1 \,=\, v_0 +\, a_0\tau + \hhalf j_0\tau^2 + \one{6}s_0\tau^3
++ \one{24}c_0\tau^4
 
+Both are nothing else but the Taylor series for their orbits.
 
+*Alice*: And now we have derived them in a fully space-time dependent
+way.
 
-
-
-
-
-
-
-And this proves that the Runge-Kutta scheme listed in Abramowitz and Stegun
-is fourth-order accurate: given that the acceleration is the derivative
-of the velocity, we must have an error term in the velocity of
-<tex>$O(\tau^5)$</tex>.
-And since position and velocity are both calculated to the same power in
-<tex>$\tau$</tex>, the same must be true for the position.
-
-*Bob*: I wonder whether this conclusion would satisfy a mathematician working
-in numerical analysis.
+*Bob*: Congratulations!  I'm certainly happy with this result.  But I must
+admit, I do wonder whether this conclusion would satisfy a
+mathematician working in numerical analysis.
 
 *Alice*: Probably not.  Actually, I hope not.  I'm glad some people are more
 careful than we are, to make sure that our algorithms really do what
