@@ -3,6 +3,8 @@
   acsmaildoc.rb
 =end
 
+require "time.rb"
+
 $docroot = "/usr2/acs/acs/not/Mail"
 $maildir = "/home/not/Mail/inbox"
 $seqfile = $docroot + "/seq"
@@ -34,14 +36,14 @@ module Acsmaildoc
 
   # :segment start: prep_rb
   def process_mailfile(seqnum)
-    infile = open(seqname = $maildir + "/" + seqnum.to_a, "r")
+    infile = open(seqname = $maildir + "/" + seqnum.to_s, "r")
     inheader = 1
     while s=infile.gets
       if inheader == 1
 	s.chomp!
 	if s =~ /^Date:/
 	  time = Time.parse(s[5,s.length])
-	  print "time for file ", seqnum = $seq, time
+	  print "time for file ", seqnum, " = ",  time, "\n"
 	end
 	if s =~ /^From:/ 
 	  from = s
