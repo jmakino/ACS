@@ -3,7 +3,7 @@ require "clop.rb"
 
 class Body
 
-@@coll_time = 0
+  @@coll_time = 0
 
   attr_accessor :mass, :pos, :vel
 
@@ -19,42 +19,42 @@ class Body
   end
 
   def new_dt(body_array,time_st)
-	  @@coll_time_sq=1e30
+    @@coll_time_sq=1e30
     body_array.each do |b|
       unless b == self
         r = b.pos - @pos
 	v = b.vel - @vel
 	r2 = r*r
 	v2 = v*v
-	  coll_est_q=(r2*r2)/(v2*v2)
+        coll_est_q=(r2*r2)/(v2*v2)
 	if @@coll_time_sq > coll_est_q
-		@@coll_time_sq = coll_est_q
+          @@coll_time_sq = coll_est_q
 	end
 	r3 = r2 *sqrt(r2)
 	rv = r*v/r2
 	da = r/r3
 	da2 = da*da*b.mass*b.mass
-	  coll_est_q=r2/da2
+        coll_est_q=r2/da2
 	if @@coll_time_sq > coll_est_q
-		@@coll_time_sq = coll_est_q
+          @@coll_time_sq = coll_est_q
 	end
-	end
+      end
     end
-	#@@dtn = time_st*@@dtn
-	@@coll_time = sqrt(sqrt(@@coll_time_sq))
-	@@coll_time
-   end
-#	printf("r2 = %.3g \n",r2)
-#	printf("v2 = %.3g \n",v2)
-	#coll_time = sqrt(coll_time_sq)
-	#printf("dt ilk = %.3g \n",sqrt(coll_time_sq))
-#	b.dtn = dt*b.dtn
-#	printf("coll_est_sq= %.3g \n",coll_est_sq)
+    #@@dtn = time_st*@@dtn
+    @@coll_time = sqrt(sqrt(@@coll_time_sq))
+    @@coll_time
+  end
+  #	printf("r2 = %.3g \n",r2)
+  #	printf("v2 = %.3g \n",v2)
+  #coll_time = sqrt(coll_time_sq)
+  #printf("dt ilk = %.3g \n",sqrt(coll_time_sq))
+  #	b.dtn = dt*b.dtn
+  #	printf("coll_est_sq= %.3g \n",coll_est_sq)
   def get_time
     @@coll_time
   end
-      
- def acc(body_array)
+  
+  def acc(body_array)
     a = @pos*0                              # null vector of the correct length
     body_array.each do |b|
       unless b == self
@@ -98,8 +98,8 @@ class Body
 
   def to_s
     "  mass = " + @mass.to_s + "\n" +
-    "   pos = " + @pos.join(", ") + "\n" +
-    "   vel = " + @vel.join(", ") + "\n"
+              "   pos = " + @pos.join(", ") + "\n" +
+  "   vel = " + @vel.join(", ") + "\n"
   end
 
   def pp                           # pretty print
