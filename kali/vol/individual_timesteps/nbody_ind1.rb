@@ -1,10 +1,10 @@
 #!/usr/local/bin/ruby -w
 
-require "acs.rb"
+require "nbody.rb"
 
 class Body
 
-  attr_accessor :mass, :pos, :vel, :acc, :jerk,
+  attr_accessor :acc, :jerk, 
                 :pred_pos, :pred_vel,
                 :time, :next_time
 

@@ -223,3 +223,39 @@ hypersurface at a constant time.
 *Bob*: Good idea: with all this talking about spacetime, we forgot the
 time.  It's getting late.
 
+*Alice*: Ah, but before we forget, did you test your individual time step
+scheme, to make sure it worked?
+
+*Bob*: I did, but just to check, and to show you it's in good shape, let's
+do a quick run.
+
+== Verification
+
+*Alice*: Let's take all three codes we have now, for constant, shared,
+and individual time steps.  And let's give them a really good workout,
+pushing toward machine accuracy.
+
+*Bob*: We may as well.  Let's start with the same initial conditions:
+
+ :commandoutput: mkplummer.rb -n 5 -s 1 | acsnumber.rb > test.in
+
+I will repeat the two previous runs, with a ten times shorter time step,
+and then treat the new code in the same way:
+
+ :commandoutput: nbody_cst1.rb -d 0.0001 -t 1 < test.in > tmpc.out
+
+ :commandoutput: nbody_sh1.rb -t 1 -d 0.001 --exact_time < test.in > tmps.out
+
+ :commandoutput: nbody_ind1.rb -t 1 -d 0.001 < test.in > tmpi.out
+
+*Alice*: And now let's check whether the results are really similar:
+
+ :commandoutput: cat tmpc.out tmps.out | acsdiff.rb
+
+ :commandoutput: cat tmps.out tmpi.out | acsdiff.rb
+
+*Bob*: I'd say so!  Hard to get better within double precision accuracy.
+
+*Alice*: Yes: I think we can declare success.
+
+
