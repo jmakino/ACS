@@ -5,117 +5,117 @@
 #
 require "vector.rb"
 
-  class Clop_Option
+#:segment start: helperclass
+class Clop_Option
 
-    attr_reader :shortname, :longname, :type,
-                :description, :longdescription, :printname, :defaultvalue
-    attr_accessor :valuestring
+  attr_reader :shortname, :longname, :type,
+              :description, :longdescription, :printname, :defaultvalue
+  attr_accessor :valuestring
 
-    def initialize(def_str)
-      parse_definition(def_str)
-    end
-
-    def parse_definition(def_str)
-      while s = def_str.shift
-        break if parse_single_lines_done?(s)
-      end
-      while s = def_str.shift
-        break if s =~ /^\s*$/ and  def_str[0] =~ /^\s*$/
-        @longdescription += s + "\n"
-      end
-    end
-
-    def parse_single_lines_done?(s)
-      if s !~ /\s*(\w.*?)\:/                  # non-greedy: stops after 1st ":"
-        raise "option definition line has wrong format:\n==> #{s} <==\n"
-      end
-      name = $1
-      content = $'
-      case name
-        when /Short\s+(N|n)ame/
-          @shortname = content.split[0]
-        when /Long\s+(N|n)ame/
-          @longname = content.split[0]
-        when /Value\s+(T|t)ype/
-          @type = content.sub(/^\s+/,"").sub(/\s*(#.*|$)/,"")
-          @valuestring = "false" if @type == "bool"
-        when /Default\s+(V|v)alue/
-          @defaultvalue = content.sub(/^\s+/,"").sub(/\s*(#.*|$)/,"")
-          @valuestring = @defaultvalue
-        when /Global\s+(V|v)ariable/
-          @globalname = content.split[0]
-        when /Print\s+(N|n)ame/
-          @printname = content.sub(/^\s+/,"").sub(/\s*(#.*|$)/,"")
-        when /Description/
-          @description = content.sub(/^\s+/,"").sub(/\s*(#.*|$)/,"")
-        when /Long\s+(D|d)escription/
-          @longdescription = ""
-          return true
-        else
-          raise "option definition line unrecognized:\n==> #{s} <==\n"
-      end
-      return false
-    end
-
-    def initialize_global_variable
-      eval("$#{@globalname} = eval_value") if @globalname
-    end
-
-    def eval_value
-      case @type
-        when "bool"
-          eval(@valuestring)
-        when "string"
-          @valuestring
-        when "int"
-          @valuestring.to_i
-        when "float"
-          @valuestring.to_f
-        when /^float\s*vector$/
-          @valuestring.gsub(/[\[,\]]/," ").split.map{|x| x.to_f}.to_v
-        else
-          raise ": type \"#{@type}\" is not recognized"
-      end
-    end
-
-    def to_s
-      if @type == nil                    # top level description of the program
-        s = @description + "\n"
-      elsif @type == "bool"
-        if eval(@valuestring)
-          s = @description + "\n"
-        else
-          s = ""
-        end
-      else
-        s = @description
-        s += "\t" if @description.size < 8
-        s += "\t" if @description.size < 16
-        s += "\t" if @description.size < 24
-        s += "\t" if @description.size < 32
-        s += ": "
-        if @printname
-          s += @printname
-        else
-          s += @globalname
-        end
-        s += " = " unless @printname == ""
-        s += "\n  " if @type =~ /^float\s*vector$/
-        s += "#{eval("$#{@globalname}")}\n"
-      end
-      s
-    end
-
-    def print_value
-      STDERR.print to_s
-    end
-
+  def initialize(def_str)
+    parse_option_definition(def_str)
   end
+
+  def parse_option_definition(def_str)
+    while s = def_str.shift
+      break if parse_single_lines_done?(s)
+    end
+    while s = def_str.shift                                                  #9
+      break if s =~ /^\s*$/ and  def_str[0] =~ /^\s*$/                       #9
+      @longdescription += s + "\n"                                           #9
+    end                                                                      #9
+  end
+
+  def parse_single_lines_done?(s)
+    if s !~ /\s*(\w.*?)\s*\:/                                               #10
+      raise "option definition line has wrong format:\n==> #{s} <==\n"
+    end
+    name = $1
+    content = $'
+    case name
+      when /Short\s+(N|n)ame/
+        @shortname = content.split[0]
+      when /Long\s+(N|n)ame/
+        @longname = content.split[0]
+      when /Value\s+(T|t)ype/
+        @type = content.sub(/^\s+/,"").sub(/\s*(#.*|$)/,"")                 #11
+        @valuestring = "false" if @type == "bool"                           #12
+      when /Default\s+(V|v)alue/
+        @defaultvalue = content.sub(/^\s+/,"").sub(/\s*(#.*|$)/,"")
+        @valuestring = @defaultvalue
+      when /Global\s+(V|v)ariable/
+        @globalname = content.split[0]
+      when /Print\s+(N|n)ame/
+        @printname = content.sub(/^\s+/,"").sub(/\s*(#.*|$)/,"")
+      when /Description/
+        @description = content.sub(/^\s+/,"").sub(/\s*(#.*|$)/,"")
+      when /Long\s+(D|d)escription/
+        @longdescription = ""                                               #13
+        return true                                                         #13
+      else
+        raise "option definition line unrecognized:\n==> #{s} <==\n"
+    end
+    return false
+  end
+
+  def initialize_global_variable
+    eval("$#{@globalname} = eval_value") if @globalname
+  end
+
+  def eval_value
+    case @type
+      when "bool"
+        eval(@valuestring)
+      when "string"
+        @valuestring
+      when "int"
+        @valuestring.to_i
+      when "float"
+        @valuestring.to_f
+      when /^float\s*vector$/
+        @valuestring.gsub(/[\[,\]]/," ").split.map{|x| x.to_f}.to_v
+      else
+        raise ": type \"#{@type}\" is not recognized"
+    end
+  end
+
+  def add_tabs(s, reference_size, n)
+    (1..n).each{|i| s += "\t" if reference_size < 8*i}
+    return s
+  end
+
+  def to_s
+    if @type == nil                                                         #14
+      s = @description + "\n"                                               #14
+    elsif @type == "bool"                                                   #15
+      if eval(@valuestring)                                                 #15
+        s = @description + "\n"                                             #15
+      else                                                                  #15
+        s = ""                                                              #15
+      end                                                                   #15
+    else
+      s = @description                                                      #16
+      s = add_tabs(s, s.size, 4)                                            #16
+      s += ": "                                                             #16
+      if @printname                                                         #16
+        s += @printname                                                     #16
+      else                                                                  #16
+        s += @globalname                                                    #16
+      end                                                                   #16
+      s += " = " unless @printname == ""                                    #17
+      s += "\n  " if @type =~ /^float\s*vector$/                            #18
+      s += "#{eval("$#{@globalname}")}\n"                                   #19
+    end
+    return s
+  end
+
+end
+#:segment end:
 
 class Clop
 
   def initialize(def_str, argv_array = nil)
-    parse_option_definitions(def_str)
+    parse_option_definitions(def_str)                                        #8
     if argv_array
       parse_command_line_options(argv_array)
     end
@@ -151,15 +151,19 @@ class Clop
     initialize_global_variables
   end
 
-  def parse_help(argv_array, long)
-    all = true
-    while s = argv_array.shift
-      if i = find_option(s)
-        all = false
-        print_help(long, i)
+  def print_values
+    @options.each{|x| STDERR.print x.to_s}
+  end
+
+  def find_option(s)
+    i = nil
+    @options.each_index do |x|
+      i = x if s == @options[x].longname
+      if @options[x].shortname
+        i = x if s =~ Regexp.new(@options[x].shortname) and $` == ""         #4
       end
     end
-    print_help(long) if all
+    return i
   end
 
   def parse_option(i, s, argv_array)
@@ -174,72 +178,11 @@ class Clop
         raise "option \"#{s}\" requires a value, but no value given"         #5
       end
     end
-    if @options[i].type =~ /^float\s*vector$/
-      while (@options[i].valuestring !~ /\]/)
-        @options[i].valuestring += " " + argv_array.shift    # " " for -v [3 4]
+    if @options[i].type =~ /^float\s*vector$/                                #7
+      while (@options[i].valuestring !~ /\]/)                                #7
+        @options[i].valuestring += " " + argv_array.shift     # for -v [3 4] #7
       end
     end
-  end
-
-  def print_help(long, i = nil)
-    if i
-      STDERR.print help_string(@options[i], long)
-    else
-      @options.each{|x| STDERR.print help_string(x, long)}
-    end
-  end
-
-  def help_string(option, long_flag)
-    s = ""
-    if option.type                   # not top level description of the program
-      s += option_name_string(option)
-    end
-    if option.type or not long_flag
-      s += "#{option.description}"
-      s += default_value_string(option)
-      s += "\n"
-    end
-    if long_flag
-      s += "\n#{option.longdescription}\n"
-    end
-    return s
-  end
-
-  def option_name_string(option)
-    s = ""
-    if option.shortname
-      s += "#{option.shortname}  "
-    end
-    s += "#{option.longname}"
-    s += "\t" if s.size < 8
-    s += "\t" if s.size < 16
-    s += "\t" if s.size < 24
-    s += ": "
-    return s
-  end
-
-  def default_value_string(option)
-    s = ""
-    if option.type and option.type != "bool"
-      descr_size = "#{option.description}".size + 2
-      s += "\t" if descr_size < 8
-      s += "\t" if descr_size < 16
-      s += "\t" if descr_size < 24
-      s += "\t" if descr_size < 32
-      s += " [default: #{option.defaultvalue}]"
-    end
-    return s
-  end
-
-  def find_option(s)
-    i = nil
-    @options.each_index do |x|
-      i = x if s == @options[x].longname
-      if @options[x].shortname
-        i = x if s =~ Regexp.new(@options[x].shortname) and $` == ""         #4
-      end
-    end
-    return i
   end
 
   def initialize_global_variables
@@ -266,8 +209,60 @@ class Clop
     end
   end
 
-  def print_values
-    @options.each{|x| x.print_value}
+  def parse_help(argv_array, long)
+    all = true
+    while s = argv_array.shift
+      if i = find_option(s)
+        all = false
+        print_help(long, i)
+      end
+    end
+    print_help(long) if all
+  end
+
+  def print_help(long, i = nil)
+    if i
+      STDERR.print help_string(@options[i], long)
+    else
+      @options.each{|x| STDERR.print help_string(x, long)}
+    end
+  end
+
+  def help_string(option, long_flag)
+    s = ""
+    if option.type                   # not top level description of the program
+      s += option_name_string(option)
+    end
+    if option.type or not long_flag                                         #20
+      s += "#{option.description}"                                          #20
+      s += default_value_string(option)                                     #20
+      s += "\n"                                                             #20
+    end                                                                     #20
+    if long_flag                                                            #21
+      s += "\n#{option.longdescription}\n"                                  #21
+    end                                                                     #21
+    return s
+  end
+
+  def option_name_string(option)
+    s = ""
+    if option.shortname
+      s += "#{option.shortname}  "
+    end
+    s += "#{option.longname}"
+    s = option.add_tabs(s, s.size, 3)
+    s += ": "
+    return s
+  end
+
+  def default_value_string(option)
+    s = ""
+    if option.type and option.type != "bool"
+      reference_size = "#{option.description}".size + 2
+      s = option.add_tabs(s, reference_size, 4)
+      s += " [default: #{option.defaultvalue}]"                             #22
+    end
+    return s
   end
 
 end

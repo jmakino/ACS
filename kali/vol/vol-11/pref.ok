@@ -2,54 +2,7 @@
 	
 = Preface
 
-This whole volume is dedicated to a detailed study of Plummer's model.
-In line with a current fad, we could have called it `Plummer for
-dummies,' because the explanations and derivations given here are far
-more extensive than is usually the case in text books.  Even so, the
-prefered type of `dummies' are those that are happy to learn about
-Abel integral equations and stuff like that.
-
-We present all results in such an easy-going style, that you don't
-even need pen and paper to follow the argument.  The main reason for
-this approach is that we want to be realistic in presenting the
-discussion as a dialogue.  Whereas text books often state that `it can
-be easily seen that', in practice it may well take quite a while, and
-a number of pages of paper, before the reader finally has seen what
-was supposed to be easy.  In contrast, when two people talk in front
-of a blackboard, or bend over a note pad, they don't follow such a
-clinical approach.  They are more likely to write things out in
-long-hand, and that is exactly what our main characters do in this
-volume.
-
-The main purpose for treating Plummer's model with such respect is
-that it forms a convenient example for showing how to construct models
-in phase space.  Building a structure in six dimensions, rather than three,
-is something that you have to get used to.  By the time you are really
-experienced doing so, it is easy to forget how counter-intuitive it
-probably looked, the first time you gave it a try.  Our approach here
-is to present much of the theoretical argumentation that goes into
-model building not in an abstract way, but rather with the concrete
-example of Plummer's model, and specifically with the even more
-concrete question: here is a computer screen, and here is the key board,
-now sit down and create a star cluster.
-
-It is this hands-on approach that Alice and Bob continue to pursue, as
-they have done in all previous volumes.  In future volumes, they will
-no doubt come back to construct King models, as well as anisotropic
-and multi-mass generalizations.  They will be able to move along much
-faster in those cases, having mastered the main principles while
-juggling Plummer's model.  We hope you will enjoy the beauty and
-elegance of what is the most venerable star cluster model, with a
-history spanning now more than 120 years.
-
-== Acknowledgments
-
-Besides thanking our home institutes, the Institute for Advanced Study
-in Princeton and the University of Tokyo, we want to convey our
-special gratitude to the Yukawa Institute of Theoretical Physics in
-Kyoto, where this volume was written, during a visit in June 2004, made
-possible by the kind invitations to both of us by Professor Masao
-Ninomiya.
+== xxx
 
 We thank xxx, xxx, and xxx for their comments on the
 manuscript.

@@ -1,3 +1,28 @@
 = The Code
 
+*Alice*: I'm really happy with the command line option parser.  We'll use
+it from now on.  And your demonstration of the help facility was impressive,
+I must say.
+
+*Bob*: You mean _your_ demonstration.
+
+*Alice*: I guess so; you were letting me struggle all by myself!  But
+somehow there was just enough information delivered to let me figure
+it out.  And I must say, I like the idea of having each class include
+its own test driver, at the end of the file that holds the class.  Your
+trick of including the line
+
+  if __FILE__ == $0
+
+was a great idea.  I think we should do that from now on for any file
+that contains class definitions that will be used by other files.
+
+*Bob*: Yes, I'm planning to do that.
+
+*Alice*: Can you show me what you wrote, in <tt>clop.rb</tt>, as the
+test driver?
+
+*Bob*: Here is the whole content of <tt>clop.rb</tt>, with the test
+driver at the end.
+
  :inccode: .clop.rb

@@ -57,7 +57,7 @@ Here is the first one:
 *Alice*: The top part is clear.  You hand it a string that contains
 something like <tt>"-d"</tt> or <tt>"--step_size"</tt>.  I presume
 that the option class <tt>Clop_option</tt> has a method +longname+
-that returns exactly the string <tt>"--step_size"</tt> and a methodo
+that returns exactly the string <tt>"--step_size"</tt> and a method
 +shortname+ that similarly returns <tt>"-d"</tt>.
 
 *Bob*: Well presumed!
@@ -132,7 +132,7 @@ there is only a confusion between the two ways of writing the _same_ option.
 But what if there is a possible confusion between two different options?
 
 Here is an example.  Let there be another option with a long form called
-<tt>--neutronstar_type</tt>.  Now that option, too, matches <tt>-n</tt>.
+<tt>--neutron_star_type</tt>.  Now that option, too, matches <tt>-n</tt>.
 So we have to protect different options from each other, and we cannot
 assume safety just by shadowing the short option check by the long option
 check.
@@ -146,7 +146,7 @@ character of a successful match?
 
         i = x if (s =~ Regexp.new(@options[x].shortname)) == 0
 
-However, I prefered to use the <tt>$`</tt> variable.  After every
+However, I preferred to use the <tt>$`</tt> variable.  After every
 successful match, the matched part of the string is assigned to the
 variable <tt>$&</tt>, while the part of the string before the match
 is assigned to <tt>$`</tt> and the part of the string following the
@@ -221,7 +221,7 @@ by continuing the travel through the method <tt>parse_option</tt>.
 *Alice*: Ah, I see, if the type of the option is _not_ boolean, you have
 to extract the value from the next little bit of command line information,
 by accessing <tt>arg_array</tt>.  But wait a minute, I see two lines
-where you assing something to <tt>@options[i].valuestring</tt>, no, three
+where you assign something to <tt>@options[i].valuestring</tt>, no, three
 lines; one at the very bottom too.
 
 Ah, that last one deals with vectors, and you already explained that vectors
@@ -263,15 +263,15 @@ I have to conclude that _nobody_ fits the criterion of being `reasonably
 intelligent'.  But okay, for now let's move on.  I'd probably want to
 come back to this point later, though.
 
-== Extracting the Value: Spaceless Case
+== Extracting the Value: Compact Case
 
 *Bob*: Now if you look just above the two lines I quoted above, you find:
 
  :include: .clop.rb-6
 
 This addresses the case where a one-character option is used, without
-any space separating the option and the value, as in <tt>-n3</tt>,
-which we discussed before.
+any space separating the option and the value, as in <tt>-n3</tt>, a very
+compact notation which we already discussed before.
 
 *Alice*: What is the meaning of this funny looking repetition of the
 symbols <tt>^-</tt>?  They occur twice, with a square bracket in between,
@@ -287,7 +287,7 @@ expression:
 
 The first <tt>^</tt> specifies the beginning of the string.  The presence
 of <tt>-</tt> immediately following means that the string has to start with
-a <tt>-</tt> sign.  Now the quare brackets are normally used to give
+a <tt>-</tt> sign.  Now the square brackets are normally used to give
 you a choice, as in <tt>[aei]</tt> or <tt>[a-f]</tt>.  In <tt>[aei]</tt>
 it is understood that any of the three letters +a+ or +e+ or +i+ could be
 present and still form a match.  And in <tt>[a-f]</tt>, any letter in the
@@ -305,7 +305,7 @@ In other words, by writing
     if s =~ /^-[^-]/
 
 we ask whether it is true that the string +s+ begins with a hyphen,
-but does not begin with two consequtive hyphens.  Let me show you:
+but does not begin with two consecutive hyphens.  Let me show you:
 
   |gravity> irb
   irb(main):001:0> "-n" =~ /^-[^-]/
@@ -359,20 +359,176 @@ to +n+ ?
   irb(main):006:0> $'
   => "3"
 
+Somehow the +n+ gets eaten up and disappears without a trace, but the
+<tt>3</tt> survives.
 
+*Bob*: What happened is that the matching attempt <tt>s =~ /^-[^-]/</tt>
+involves _two_ characters: first the hyphen and then the next character,
+for which it is checked that it is not a hyphen.
 
+*Alice*: Ah, although in plain English we can describe this match as
+`a check that there is one and only one hyphen', in fact it is a match
+where the first two characters are being checked as being an ordered
+pair `hyphen followed by non-hyphen.'
 
+Now I see what happened.  And since this all happens in the case of a
+one-character option, the non-hyphen that gets eaten is the option
+character, so that what is left is exactly the value that needs to be
+assigned to the variable corresponding to the option.
 
-Alice: why not s =~ /^-\w/
+So what you do at the end of this complicated line, is that you check
+whether the remainder, stored in <tt>$'</tt> contains at least one
+alphanumeric character or underscore, which is what the <tt>\w</tt>
+stands for.
 
-Bob: looks less interesting
+*Bob*: Exactly.
 
-Alice: you mean: Bob: looks less confusing.
+*Alice*: Okay, I see now what happens.  But I think you could have written
+this in a simpler way.
 
+*Bob*: How?
+
+*Alice*: Instead of 
+
+    if s =~ /^-[^-]/ and (value = $') =~ /\w/
+
+you could have used
+
+    if s =~ /^-\w/ and (value = $') =~ /\w/
+
+*Bob*: Ah, I had not thought about that.  I guess I was just to fixated
+on hyphenation!  But, now that I figured out how to do it, I find my
+double hat trick, or double up arrow if you like, quite elegant.  Or
+at least interesting.
+
+*Alice*: I just find it confusing, rather than interesting, but to each
+his own taste!  Let's move on to the last case, at the end.
 
 == Extracting the Value: Vector Case
 
-xx
+*Bob*: This is a lot simpler.  Here we are dealing with the case that
+the option type is that of a <tt>float vector</tt>, a vector of the type
+we have defined before, with components that are all floating point numbers.
+As I already mentioned, a vector on the command line should be given in
+Ruby array notation, with the numbers enclosed between square brackets,
+<tt>[]</tt>.
 
+There is a lot of freedom for the user: the vector can be
+written as a string, like <tt>"[3, 5]"</tt>, or without those double
+quotes directly as <tt>[3, 5]</tt>.  The numbers can be comma separated,
+but they can also just be space separated, as in <tt>[3 5]</tt>.  Spaces
+are allowed next to the brackets: <tt>[ 3 5]</tt> and <tt>[3 5 ]</tt> and
+<tt>[ 3 5 ]</tt> are all equally fine.
+
+There is one catch to be aware of, when you leave of the double
+quotes: on the command line <tt>[ 3,5]</tt> and <tt>[3, 5]</tt> and
+<tt>[3,5 ]</tt> are all fine, but <tt>[3,5]</tt> is likely to give you
+an error message.
+
+*Alice*: Why?
+
+*Bob*: It depends on the Unix shell you use, but chances are that the shell
+tries to interpret this as an attempt to address files in the current
+directory.  Unless you happen to have a file with the name <tt>3</tt> or
+a file with the name <tt>5</tt>, and expression on the command line
+containing <tt>[3,5]</tt> will probably generated a short dry message
+<tt>No match.</tt>
+
+*Alice*: That's good: short and simple, and it makes it clear that there
+is no subtle Ruby bug involved.
+
+As for your implementation, let me look at what you wrote for vector
+parsing:
+
+ :include: .clop.rb-7
+
+You allow some flexibility in writing the type: it could be
+<tt>float vector</tt> or <tt>float  vector</tt> or even
+<tt>float      vector</tt>.
+
+*Bob*: Sure, it would seem to restricted to insist on one literal way
+of writing it.  I can easily see someone adding an extra space between
+the two words, and perhaps a tab or whatever would strike them as looking
+better.  I have consistently given the users that freedom, also in parsing
+the lines within the <tt>Clop_Option</tt> class, as we will see in our
+next journey.
+
+*Alice*: And then you keep shifting new content from the +ARGV+ array
+until you finally encounter a string that contains a closing square
+bracket <tt>]</tt>.  During that whole process, you keep adding what
+you find to the +valuestring+ of the option you are working with, so
+that you build up the whole vector again, from the bits and pieces
+from the command line that were stored in successive elements of the
++ARGV+ array, here called <tt>argv_array</tt>.
+
+One last question: why don't you just string those strings together?
+What is the need for adding a " " between the bits and pieces?
+
+*Bob*: If all the vector elements were comma separated, as in
+<tt>[2,3,4]</tt>, there would be no need to do so.  However, I give
+the user the flexibility to use a space separated notation as well.
+Take the example of a vector written as <tt>[2 3]</tt>.  In the +ARGV+
+array, this will be distributed over two elements, the first being
+<tt>"[2"</tt> and the second one <tt>"3]"</tt>.  Now if you would just
+string those two strings together, as you suggested, you would get
+<tt>"[23]"</tt>, a one-dimensional vector with one element, <tt>23</tt>.
+Not what you wanted.
+
+*Alice*: I see.  Good!  Now I believe there is one station left on our
+first journey?
 
 == Inspecting <tt>initialize_global_variables</tt>
+
+*Bob*: Indeed.  Here is the last method:
+
+ :inccode: .clop.rb+initialize_global_variables
+
+I am asking each option to do its own work, initializing the internal
+variables that contain the external information presented on the command
+line.  For example, the time step value may have been presented on the
+command line as <tt>-d 0.001</tt>, and in order to give that value to
+the method +evolve+ that we have used to integrate an N-body system, we
+have to store it somewhere in a variable, which we would normally
+called +dt+ or something like that.
+
+As we have seen in our new driver, for convenience we chose to use
+global variables, which means the name actually has to be something
+like <tt>$dt</tt>.  Now the conversion from the string <tt>-d
+0.001</tt> to the actual floating point numerical value <tt>$dt =
+0.001</tt> is being done within the <tt>Clop_Option</tt> class, by its
+method <tt>initialize_global_variable</tt>.
+
+*Alice*: And then you check something about the options.  What do you
+mean with `required'?
+
+*Bob*: For many options, a default value is specified, in the original
+definition string.  However, for some options there is no natural default.
+For example, you may not want to specify a default value for an output
+file.  Not only is there no obviously appropriate name for such a file,
+you don't want to risk overwriting another file that the user may have
+added to the current directory.  In that case, you could start the
+entry for the output file option in the original here document with:
+
+  Short name:           -o
+  Long name:            --output_file_name
+  Value type:           string
+  Default value:        none
+
+The convention used here is that an error message will be generated if
+the user does not provide a specific name for the output file on the
+command line.  And the method <tt>check_required_options</tt> checks
+that all the original +none+ specifications have indeed been overwritten
+by values provided on the command line.
+
+*Alice*: Instead of
+<tt>check_whether_all_required_options_have_been_provided</tt>, you
+abbreviated the method name.  Even for me an eight-word name would
+have been too long.  Can you show me the code?
+
+*Bob*: Here it is, all very straightforward.
+
+ :inccode: .clop.rb+check_required_options
+
+*Alice*: All clear!  I think this finishes our first journey?
+
+*Bob*: Yes, time to finally descend into the <tt>Clop_Option</tt> class.

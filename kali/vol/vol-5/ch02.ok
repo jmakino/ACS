@@ -1,0 +1,315 @@
+= A Minimal Code
+
+== A Classic Recipe
+
+*Alice*: Did you start building a star cluster, using Plummer's model as a
+blueprint?
+
+*Bob*: Yes, here is a quick and dirty version that I cobbled together.
+It was a lot easier than I expected, since I stumbled upon a nice
+recipe, which must be a classic in stellar dynamics.  I followed it
+line by line, in my implementation.  It was published in the paper
+<i>A comparison of Numerical Methods for the Study of Star Cluster
+Dynamics</i>, by Sverre Aarseth, Michel Henon, and Roland Wielen,
+which appeared ages ago, in 1974, in Astron. Astroph.  <b>37</b>, 183.
+
+*Alice*: I remember reading that paper as a student.
+
+*Bob*: You are _that_ ancient?
+
+*Alice*: Not quite.  I must have just started high school at that time.
+I mean that I read it as an undergraduate when I wanted to do a small
+N-body project for my final thesis.  My adviser recommended it.  And
+indeed, it was an influential paper by some of the masters in the
+field, around that time.
+
+I remember it well: the paper made the first detailed quantitative comparison
+between the Monte-Carlo Fokker-Plank method and direct N-body integration.
+They even showed the results for runs with a few hundred particles.
+Hard to believe that they got so much compute done, given the slow speed
+of computers at that time.
+
+*Bob*: That is impressive, given that computers have increased their speed
+by a factor ten every five years or so.  That means that in 2004 computers
+are a million times faster than what they had available.  I bet that my
+camera is a lot more powerful than the computers in their university centers.
+
+*Alice*: And I'm sure your camera has way more storage as well.  But
+what was actually most impressive was how much information they were
+able to squeeze out of their calculations, given their limited
+resources.  Anyway, why did you bring up this paper?
+
+*Bob*: Because it contains a nifty recipe for constructing a Plummer's model.
+
+*Alice*: Hey, I didn't remember that.  Really?
+
+*Bob*: They wrote it as an appendix.  Everything was done analytically, except
+for the fact that they used a rejection technique at the last step, to
+get the velocities.
+
+*Alice*: I must not have looked at the appendix.  Well, that is convenient.
+Can you show me your code?
+
+== Classes
+
+*Bob*: Here it is, and I warned you, I haven't commented it or cleaned it up:
+I just translated their recipe straight from the appendix into Ruby.
+
+There are three parts to the file <tt>mkplummer1.rb</tt>.  The first part
+contains the class definitions.  It is rather short, since I realized I
+could do everything with stripped-down versions of the +Body+ class and the
++Nbody+ class:
+
+ :inccode: .mkplummer1.rb-classes
+
+*Alice*: That all looks familiar.  So you only need to create an N-body
+system, and then print it out.
+
+== Where the Work is Done
+
+*Bob*: Indeed.  The actual work is done here:
+
+ :inccode: .mkplummer1.rb-worker
+
+The +mkplummer+ method takes two arguments: +n+, which is the number
+of stars in our star cluster, and +seed+, which is the seed for the
+random number generator.
+
+If you want to create a different model, each time you invoke
++mkplummer+, you can choose <tt>seed = 0</tt>.  That will invoke
++srand+ without any argument, as you can see from the first two lines.
+Ruby guarantees that such a call to +srand+ will return a different
+seed each time.
+
+However, if you do want to reproduce the same result, you can give a
+specific seed by choosing <tt>seed = k</tt>, where +k+ is a positive
+integer.  Calling +srand+ with that number will actually use that
+seed.  This will be useful when you are debugging the +mkplummer+ code
+itself, or when you are debugging another code, that takes the +mkplummer+
+results as input.
+
+I'm a bit puzzled about one thing, though: the manual tells me that
+the call <tt>srand 0</tt> would have the same effect as calling +srand+
+with nu arguments.  This would suggest that I could replace the first
+four lines of +mkplummer+ by
+
+   srand seed
+
+without having to include the <tt>if...else...</tt> statements.  However,
+when I did that, I got the same result each time.  Well, perhaps my manual
+is outdated.  In any case, with this construction, it worked.
+
+After seeding the random number generator, I create a new N-body system
+with +n+ particles, and then I enter a loop, in which I initialize each
+of those particles in turn.
+
+*Alice*: Let's look at that loop later.  I would like to see the overall
+structure of the code first.
+
+*Bob*: Okay: after the loop finishes for the last particle, I print out
+the random number seed that was used, as a check to make sure that we can
+later recreate the same model realization.
+
+*Alice*: Why would you do that?  You already gave the seed value as an
+argument.
+
+*Bob*: If I give a positive value, then indeed this is superfluous.  But
+if I give a seed value of zero, the system chooses a pseudo-random seed
+for me.  And if I would not echo the seed, I would not be able to reproduce
+the run later on.
+
+*Alice*: I see.  But why do you call +srand+ again in the print statement?
+
+*Bob*: Because Ruby tells me that the value that +srand+ returns is the
+value of the _previous_ seed.  Don't ask why.  It is defined that way.
+So by calling +srand+ again, I get the value of the seed that I have
+to give the next time, in order to reproduce the previous run, even if
+at that time I gave a value zero for the second argument of +mkplummer+.
+It works: I tested it out.
+
+*Alice*: I take your word for it.  Can you show me how you invoke +mkplummer+?
+
+== The Driver
+
+*Bob*: Here it is: 
+
+ :inccode: .mkplummer1.rb-driver
+
+It is mostly command line argument parser.  Then at the end I print the
+seed that was given, because it can be different from the seed that was
+used, if the given seed was zero.  If the given seed is non-zero, this
+is just a check, to make sure that what was given and what was used was
+indeed the same.
+
+Finally, all that is left to do is just the one line function call to
+the +mkplummer+ method.
+
+== The Basic Idea
+
+*Alice*: Let us now look at the inner loop of +mkplummer+, where each
+particle is given its initial values for its mass, position, and velocity.
+The first line is simple:
+
+ :include: .mkplummer1.rb-3
+
+Each particle acquires a mass that is <tex>$1/n$</tex>: you are creating
+an equal-mass system, where the total mass is normalized to be unity.
+
+*Bob*: Indeed.  It would be possible to give a mass spectrum, of course,
+but that can be done later, when we are ready for that.  For now, I
+just wanted to construct a minimal model.
+
+*Alice*: Fair enough.  Then you pick values for position and velocity
+components.  What is the basic idea here?
+
+*Bob*: The idea is to proceed in two steps.  You start by sprinkling
+particles in space, as a random realization of the mass density
+distribution of Plummer's model.  This means that you have to be
+careful to determine the radial position of the particles with the
+right statistical weight.  Because of spherical symmetry, the angles
+can be randomly chosen from a two-dimensional spherical surface.
+
+The second step is to give each particle a velocity with a random
+direction and a magnitude that is also random, but drawn from the
+appropriate velocity distribution at that point in space.
+
+*Alice*: In order words, you really are sprinkling particles into
+phase space, the six-dimensional space that is the direct product
+of configuration space and velocity space.
+
+*Bob*: Yes, but even though you can look at phase space as a single
+six-dimensional space, that still leaves the fact that there is the
+three-by-three structure left for the two quite different subspaces.
+
+What I mean is: you have to start by picking an appropriately random
+point in what you call configuration space, and what is normally just
+called `space', containing all possible positions in three dimensions.
+Only after you know the position of a particle in that subspace, can
+you determine the potential energy of that particle.  And only when
+you know the potential energy, can you know what type of velocities
+are admissible, in order to keep the particle bound and to give each
+velocity the correct statistical weight.
+
+In order words, the order of picking a point in configuration space,
+and then picking a point in velocity space, is important: you couldn't
+do it the other way around.
+
+*Alice*: Ah, that must correspond to what mathematicians mean when they
+call the velocity space the tangent bundle to the configuration space.
+Each point in configuration space has its own tangent space, and it is
+only because we work in Newtonian flat space that we can pretend that
+phase space is a single six-dimensional space, shared by all particles.
+
+*Bob*: Whatever.  Enough mathematical terms!  Let me show you how the
+particles get sprinkled into normal space first, and how we then
+populate the velocity space.  In practice, rather than doing all the
+configuration space sprinkling first, followed by a second loop in
+which we populate velocity space, I find it easier to do everything in
+one loop.  For each particle I determine the three position coordinates,
+and with that information I can then immediately give the three velocity
+coordinates.
+
+== Sprinkling Particles in Space
+
+*Alice*: Okay, lets look at configuration space first.  I see that you
+invoke some magical expression to determine the value of the radius:
+
+ :include: .mkplummer1.rb-4
+
+*Bob*: Yes, this is part of the recipe provided by Aarseth <i>et al.</i>,
+for choosing a correctly randomized +radius+, the distance of the star
+from the center of the star cluster.
+
+*Alice*: Let's look at that in a moment, after we've gone through the body
+of the loop first.  Given the value for +radius+, I see that you assign
+the three Cartesian coordinates of the star in the usual way from spherical
+coordinates +radius+, +theta+, and +phi+:
+
+ :include: .mkplummer1.rb-7
+
+*Bob*: Yes, and randomizing the two angular coordinates was relatively simple.
+The value for <tex>$\phi$</tex>, for example, is a random number
+between <tex>$0$</tex> and <tex>$2\pi$</tex>, since every azimuthal angle
+is equally likely:
+
+ :include: .mkplummer1.rb-6
+
+By the way, here I have adapted the Ruby defined random number call
++rand+ in the following way, by defining a general floating point
+version +frand+:
+
+ :inccode: .mkplummer1.rb+frand
+
+Since +rand+ returns a value uniformly distributed throughout the
+range <tex>$\{0, 1\}$</tex>, <tt>frand(a,b)</tt> returns a value
+uniformly distributed throughout the range <tex>$\{a, b\}$</tex>.
+
+*Alice*: And this is how you initialize the angle +theta+ between the
+positive +z+ axis and the position vector of your star:
+
+ :include: .mkplummer1.rb-5
+
+*Bob*: To pick a random value for <tex>$\theta$</tex>, we have to make
+sure that the spherical integration element <tex>$\sin\theta d\theta$</tex>
+gets an equal weight for any <tex>$\theta$</tex> value.  In other words,
+any value for <tex>$d\left(\cos\theta\right)$</tex> should be equally likely.
+
+Now the highest and lowest values occur for <tex>$\theta=0$</tex>,
+along the positive _z_ axis, and for <tex>$\theta=\pi$</tex>, along
+the negative _z_ axis.  So <tex>$\cos\theta$</tex> runs from <tex>$+1$</tex>
+to <tex>$-1$</tex>.
+
+All we have to do is to pick a floating point number at random,
+somewhere in the interval <tex>$\{-1, +1\}$</tex>.  Let's call the number
+<tex>$x$</tex>.  This determines a number <tex>$y$</tex> defined as
+<tex>$y = {\rm arccos}\,x$</tex>.  By construction, the value of
+<tex>$\cos y = \cos({\rm arccos}\,x) = x$</tex> is uniformly random,
+as was desired for <tex>$\theta$</tex>.  Hence <tex>$y$</tex> has the
+right distribution of values for <tex>$\theta$</tex>, and we can
+simply take <tex>$\theta=y$</tex>.
+
+*Alice*: It sounds complicated when you say it in words, but I see what
+you mean.  Indeed, that must be correct.
+
+*Bob*: I sometimes think that anything to do with probability gets more
+confusing when you try to talk about it.  Easy to fool others, and to
+fool yourself for that matter.  No wonder people talk about lies, damn
+lies, and statistics!
+
+== Populating Velocity Space
+
+*Alice*: Moving right along, we now come across something really mysterious:
+
+ :include: .mkplummer1.rb-8
+
+*Bob*: Yeah, and fun too.  But since you postponed a discussion of the
+proper weighting function for choosing the radial position, we should
+also postpone a discussion of what goes on here.  Briefly, I am using
+a rejection technique, following Aarseth <i>et al.</i> in order to
+determine the magnitude +velocity+ of the velocity vector, in the last
+line above.
+
+*Alice*: Okay, I'm happy to wait till later.  Now in the next lines you
+repeat the same spherical distribution trick you applied in order to
+find the position coordinates.
+
+*Bob*: Indeed, and this gives me the velocity coordinates.
+
+*Alice*: You could have put those five lines into a separate method.
+Remember the DRY principle: don't repeat yourself.
+
+*Bob*: Good point.  Let me do that in the next version of this code.
+This is a rather minimal one, and I can think already of several
+improvements.  For example, we may want to recenter the center of mass
+of the star cluster we have created onto the center of the coordinates.
+We can also dampen some of the fluctuations we are introducing by
+layering the particles more evenly in radial bins, rather than
+sprinkling every particle in space, independently of any other particle.
+
+*Alice*: That's fine: I also like to start with a minimal script, so that
+we can really test and understand its behavior, before we start adding
+bells and whistles.  Testing the first version of a new code is half the
+work.  Once you have one well-tested version, you can use that as
+comparison material, to check with each new addition whether that still
+reproduces the old result.  The hardest work is to get an initial result,
+and to make sure that it is correct.

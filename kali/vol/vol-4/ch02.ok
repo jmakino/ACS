@@ -57,7 +57,7 @@ of the <tt>read_options</tt> method, in the lines:
 What I had not realized yesterday was the fact that at the end, you echo
 all the values that are set, before you start the integration.  That is
 certainly a good thing to do, since it allows the user to see explicitly
-what parameter values were used by the integrater, including default values
+what parameter values were used by the integrator, including default values
 that were not set by the user.  But you see, again the time step shows up,
 this time not through a mention of <tt>-d</tt>, but through the second
 line in the initial print statement:
@@ -79,7 +79,7 @@ which she is using a time step <tt>evolution_dt</tt>.
 Now she has to realize that she has to change the appropriate line in
 the inner loop of the <tt>read_options</tt> method, and in the second
 line of the <tt>STDERR.print</tt> command.  In those two places, +dt+
-occurse _three_ times, and she has to realize that she has to change
+occurs _three_ times, and she has to realize that she has to change
 two of the three as follows: in the <tt>read_options</tt> place she
 has to write:
 
@@ -358,7 +358,3 @@ dance.
 
 *Bob*: Okay, let me give it a shot.  Next time we meet I should have
 at least something workable.
-
-
-
-

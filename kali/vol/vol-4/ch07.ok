@@ -1,0 +1,320 @@
+= Initial State Output
+
+== The <tt>to_s</tt> Method
+
+*Bob*: We are approaching the end of the second journey.  There is only
+one method left, <tt>to_s</tt>, apart from a little helper method,
+<tt>add_tabs</tt>, that acts as a little accountant, keeping care of
+how many tabs to add to make the output pretty.  Let me first show the
+little helper:
+
+ :inccode: .clop.rb+add_tabs
+
+*Alice*: That last one is keeping tabs on tabs, right?  Well, I'm happy
+to skip that one for now.  I can easily judge from the output whether you
+did a good job there or not.  Can you show me the <tt>to_s</tt> method?
+Judging from the name, it converts the result of an option block into a
+string.  But what kind of string?  As if we haven't dealt with enough
+strings already!
+
+*Bob*: It prepares the string that the program will print out at the start,
+as an echo of its initial state.  In our example case of a time step, it
+will print something like:
+
+    dt = 0.001
+
+*Alice*: And that is the only thing the user needs to know, after having
+used an option -- or after having left its value to be the default value,
+as the case may be.  Fine.  That method should be quite short, no?
+
+*Bob*: No, not really.  It started off short and sweet, but it grew and
+grew while I was improving the code.  There is quite a bit of bookkeeping
+that needs to be done here.  Here is the code:
+
+ :inccode: .clop.rb+to_s
+
+== The Header Option
+
+*Alice*: It _is_ longer than I thought.  And it is not just a matter of
+many +when+ options in a +case+ statement: there seems to be some genuine
+complexity here.
+
+*Bob*: Let me run you through the various switches.  The first +if+ statement
+concerns the description of the program as a whole.  We have decided that
+the here document that contains this one long list of all options will start
+off with information about the program as a whole.  This could take the
+form of:
+
+  Description:          A code doing such-and-such
+  Long description:
+    This is a code doing such-and-such for the purpose of so-and-so.
+    This code may come in handy if you want to do this-and-that.
+    Be warned that it may not always work.  And beware of the dog.
+
+This is an unusual option block, as option blocks go.  Parsing so far
+has posed no problem, since we could parse the +Description+ and
+<tt>Long Description</tt> like we parsed any other option.  Also, when
+we talked about the <tt>eval_value</tt> method, we could forget about
+this header option that is a not-an-option option.
+
+*Alice*: Could we, really?  Now that I look at <tt>eval_value</tt> again,
+I see that it raises an error if <tt>@type</tt> is not one of the known
+values.  But this header option has no type at all!  So it surely will
+raise an error.
+
+*Bob*: It _will_ raise an error when it is invoked for the header option.
+But the key here is that it will never be invoked!  I now realize that
+we forgot to talk about that.  We were so distracted by what you called
+the comic book sequence, <tt>("$#{@</tt>, that we did not really
+finish looking at that line till the end.  It came from the one-line
+method <tt>initialize_global_variable</tt>:
+
+ :inccode: .clop.rb+initialize_global_variable
+
+Note that it _only_ invokes the <tt>eval_value</tt> method _if_ the
+variable <tt>@globalname</tt> exists.  And that variable springs into
+existence only when <tt>parse_single_lines_done?</tt> encounters a
+line in the definition string that starts with <tt>Global Variable</tt>
+or <tt>Global variable</tt>.  And since the header option block contains
+no such line, the <tt>eval_value</tt> method will never be called for
+that option.
+
+*Alice*: All is well then.  I had completely forgotten about the header
+option.  And I now see the meaning of the +if+ statement at the top of
+<tt>to_s</tt>:
+
+ :include .clop.rb-14
+
+The header option is the only one that does not carry a type, so at the
+start of the program, the one-line short description will be echoed.
+
+*Bob*: Indeed.  What will happen is:
+
+  |gravity> ruby some_code.rb
+  A code doing such-and-such
+  Time to stop integration        : 
+  First interesting variable      : x  =  1.0
+  Second interesting variable     : y  =  3.14
+  . . .
+
+After the one-line summary of what the code is about, it will start listing
+the values of the global variables.
+
+*Alice*: But using their print name.
+
+== A Boolean Option
+
+*Bob*: Exactly.  We'll get to that in a moment.  We're done with the case
+of the header option.  Let us have a look at what needs to happen for an
+option of type boolean:
+
+ :include: .clop.rb-15
+
+If the value is true, in other words if <tt>@valuestring == "true"</tt>,
+that means that the user has invoked this option on the command line.
+In that case, a short message should be printed out.  Ah, I see that the
+example I just gave only contained a header option and specific values
+of non-boolean type.  Let me throw in a boolean option:
+
+  |gravity> ruby some_code.rb
+  A code doing such-and-such
+  First interesting variable      : x  =  1.0
+  Extra diagnostics will be provided
+  Second interesting variable     : y  =  3.14
+  . . .
+
+This `Extra diagnostics' line would be the result of the user providing
+a <tt>-x</tt> option, for example, on the command line.  Now if the user
+chooses not to provide that option, there is nothing to report.  Also,
+in that case, the option will retain its default value, which for a boolean
+variable is always +false+.  In that case, the +else+ part of the
+<tt>if...else</tt> statement will kick in, and only the empty string will
+be added to the string +s+ that will be returned by <tt>to_s</tt>: nothing
+will be added at all.
+
+*Alice*: Continuing down the <tt>to_s</tt> function, we have dealt with
+the cases of the header option and of boolean options.  All other options
+are dealt with in the final +else+ clause of the initial +if+ statement.
+
+*Bob*: Yes, because all other options have genuine values that need to
+be reported as such.
+
+== A Hack
+
+*Alice*: The following lines:
+
+ :include: .clop.rb-16
+
+must result in producing the example line
+
+  First interesting variable      : x
+
+Right?
+
+*Bob*: Right indeed.  The description of the variable is followed by some
+white space counting magic followed by a colon, and then we get the proper
+print name, if it is provide.  If not, we just use the internal name for
+the global variable associated with this option.
+
+*Alice*: But I'm puzzled about what follows next:
+
+ :include: .clop.rb-17
+
+What is the meaning of the +unless+ here?
+
+*Bob*: Ah, this is another `feature' that I built in.  I was thinking about
+running an N-body code . . .
+
+*Alice*: . . .  which is how we got into all this . . . 
+
+*Bob*: . . . yes, hard to believe, I feel like I'm turning into a software
+engineer.  But just like an observer needs a telescope, which requires quite
+a bit of hardware engineering, a theorist interested in simulations needs a
+software environment, which requires quite a bit of software engineering.
+
+*Alice*: Hear, hear!
+
+*Bob*: So, thinking about running an N-body code, I realized that I would
+like to see the time step echoed, as well as the other physical parameters,
+in the form of <tt>description : name = value</tt>, as in
+
+  Integration time step         : dt = 0.001
+
+but for the case of an option <tt>-o output_file</tt>, it would look a bit
+strange to have in the initial state list the line:
+
+  Name of the outputfile        : output_file = run.out
+
+It would be much more natural to have:
+
+  Name of the outputfile        : run.out
+
+since there is no reason in this case to echo the global variable name
+used to hold the output file name, nor is there any appropriate print
+name I could think of.  In this case, the description says it all!
+
+So I decided to build in a way to block the appearance of "<tt>name = </tt>"
+for such a case.
+
+*Alice*: How did you do that?
+
+*Bob*: I did not feel like adding yet another variable, like
+<tt>@no_name_requested</tt>.  So I made an inventory of possible cases.
+If an option _does_ have a print name, that name will be used.  If it
+does _not_ have a print name, the global variable name will be used.
+And then I realized the solution: if an option has a print name of length
+zero, just the empty string <tt>""</tt>, that could be interpreted as a
+request to remain silent and not print anything, neither the name, which
+is already nothing, nor the equal sign normally following it.
+
+I admit, it is a bit of a hack, but it works.  So if <tt>@printname == ""</tt>
+there is no need to put an <tt>=</tt> sign after the description, and that
+what is expressed in the line with the +unless+ in it that you asked about:
+
+ :include: .clop.rb-17
+
+== A Vector Option
+
+*Alice*: Yes, it is a hack alright, but if it works, it works.
+
+*Bob*: It works.
+
+*Alice*: Good!  But now I'm puzzled by the next line in the <tt>to_s</tt>
+code:
+
+ :include: .clop.rb-18
+
+What does that do?
+
+*Bob*: I again had in mind our experience with an N-body code.  When we
+print out a vector, we may want to have full machine accuracy, double
+precision.  And if we do a three-dimensional simulation, which is normally
+the case, we need to print three numbers, each of which will take a space
+of two dozen characters.  That together will already span a normal output
+line.  Therefore, if we start a line with a description, the <tt>float
+vector</tt> will run off the page.  To prevent that, I added a new line,
+just after the colon, for these kind of vectors.
+
+As an example for an N-body code, where you could specify choosing three
+particles, and a shift in the center of mass position as follows:
+
+  ruby some_N_body_code.rb -n 3 -v [ 3, 4, 5 ]
+
+You will then have the following initial state print-out:
+
+  Number of particles           : N = 3
+  Shifts center of mass by      : rcom = 
+    3.0000000000000000e+00  4.0000000000000000e+00  5.0000000000000000e+00
+
+*Alice*: That does look much better than running off the page, I agree.
+
+*Bob*: Somehow we are still under the influence of the original 80 column
+limitation of Fortran, it seems.
+
+*Alice*: I admit that I always try to keep my output fitting within 80
+columns.  For of habit, I guess.  And I don't like people sending me email
+that runs over 80 columns either.
+
+== A Pyramid of Evaluations
+
+*Bob*: All a matter of taste.  
+Well, one more line to go, at the end of <tt>to_s</tt> :
+
+ :include: .clop.rb-18
+
+This must finally produce the actual value, that what appears to the right
+of the equal sign in the initial state output.
+
+*Bob*: Yes, and it does so by a three-stage evaluation, all bundled in one
+statement line.
+
+*Alice*: Wow, that looks impressive.  This will be my final test to see
+whether I now really understand what is going on.  A concrete example will
+help.  In the case of a time step size option, we have
+
+  @globalname = "dt"
+
+The first evaluation produces the string
+
+  "$#{@globalname}" = "$dt"
+
+which is a string holding the name of the global variable <tt>$dt</tt>.
+
+The second evaluation is a call to +eval+ and it produces:
+
+  eval("$#{@globalname}") = eval("$dt") = $dt
+
+the global variable itself.
+
+Then the third evaluation produces a string that contains the _value_ of
+this global variable:
+
+  "#{eval("$#{@globalname}")}\n" = "#{eval("$dt")}\n" = "#{$dt}\n" = "0.01\n"
+
+with a new line character at the end, to finish of the line.
+
+*Bob*: Congratulations!  You passed the exam.
+
+*Alice*: And I also realize that, if we wanted to actually use the value
+of the time step here, we would have to do a fourth evaluation, to go from
+the string <tt>"0.01"</tt> to the value <tt>0.01</tt>.  Let me just write
+it down, to see what it looks like.  And I can forget about the new line
+here.  The value should be:
+
+  eval("#{eval("$#{@globalname}")}") = 0.01
+
+*Bob*: That looks right to me.
+
+*Alice*: So you go from a variable to a string to a variable to a string to a
+variable.  Well, well, and you told me the whole thing works?
+
+*Bob*: Yes, it works.  I'll give you a demonstration after we have completed
+our three journeys.  This, by the way, is the end of the second
+journey, which is by far the longest one.
+
+*Alice*: Not too surprising, since it is a journey into the kitchen, so to
+speak, to sea what is actually cooking in the various pots and pans.  The
+other two journeys take place in the restaurant, where you're dealing with
+the food and the menu, but not the details of the preparation.
+
+*Bob*: Indeed, the third journey will be shorter.

@@ -1,0 +1,306 @@
+= Quartile Checks
+
+== Quartiles
+
+*Bob*: Hi Alice, what's next?  I can think of a few further improvements
+to my Plummer code, but do you have something specific, you'd like to add?
+
+*Alice*: I'm happy that we have done this energy checking, which seems to
+indicate that your code probably does produce Plummer's model correctly.
+However, I'd like to be even more sure, since it would really be terrible
+if we somehow would start our future simulations with the wrong initial
+conditions.  That would make debugging our evolution codes quite confusing,
+to say the least.
+
+*Bob*: There are many ways to check things.  The question is, what would
+be the simplest way.  Ah, how about just looking at mass shells,
+shells with a certain mass fraction, and check that they have the
+correct radius?  After all, we computed the cumulative mass <tex>$m(r)$</tex>
+as a function of the radius already.
+
+*Alice*: That is a good idea.  For one thing, the half-mass radius should
+come out with the correct value.  And for good measure, we may as well
+compute the quarter-mass radius and the three-quarter-mass radius.  In
+other words: the radii of the three quartiles, within which 1/4, 1/2,
+and 3/4 of the total mass are enclosed.
+
+*Bob*: That we should be able to do from scratch.  We can start again with
+minimal versions of the +Body+ and +Nbody+ classes, just enough to
+read a snapshot in, and initialize anything properly.  The only thing to
+do is to add a method +quartiles+ that prints out the three quartiles.
+
+Fortunately, Ruby has a handy +sort+ method, that comes with the +Array+
+class.  As usual, it has an associated <tt>sort!</tt> method that affects
+the array itself, unlike +sort+ that returns a new array.  Let's see.
+We have to sort the particles in radial order, using <tex>$r=|\br|$</tex>,
+the distance from the center.  It will be easier to use the square instead,
+<tex>$r^2=\br\cdot\br$</tex>.  This can be done in three lines:
+
+ :inccode: .quartiles1.rb+order_squared_radii
+
+The first line defines +a+ to be an empty array.  The second line fills
+the array with the squares of the radial positions of all particles.
+Then the third line sorts that array.  Couldn't be simpler!
+
+== Coding
+
+*Alice*: Can I write the +quartiles+ method?  I'd like to get some more
+experience with Ruby.
+
+*Bob*: Here is the keyboard!
+
+*Alice*: Since you have defined <tt>order_squared_radii</tt> as a
+member function, we may as well define +quartiles+ as a member function
+too.  We can then immediately invoke <tt>order_squared_radii</tt> to
+create our order list of particle positions.  All we have to do then
+is to cut the list in four equal parts, and document the places where
+we cut the list.  Hey, that is too simple to learn much about Ruby!
+This should do the job:
+
+ :inccode: .quartiles1.rb+quartiles
+
+*Bob*: I bet it does.  I saw you looking up +round+: indeed, that is
+a predefined method that rounds a floating point number to an integer.
+In case of a number exactly in between, such as 2.5, it rounds up, to 3.0.
+
+*Alice*: We could quibble about exactly where to choose the boundaries
+for the quartiles.  For example, for a four-particle system, things come
+out just right, but for a five particle system, the half mass radius
+encloses 3/5 of the mass.  We could have take the average of the
+two-particle and three-particle distance, but that would have been
+overkill, in my opinion.  Anyway, the fluctuations in the positions of
+the particles, in an N-body system will be of order
+<tex>$\sqrt{N} \gg 1$</tex>, so we don't have to worry about enclosing
+one particle more or less, at least for <tex>$N \gg 1$</tex>.
+
+== Code
+
+*Bob*: Let me print out the whole program, and write it out to a file called
+<tt>quartiles1.rb</tt>:
+
+ :inccode: .quartiles1.rb
+
+== Testing
+
+*Alice*: Let's try it out:
+
+ :commandoutput: ruby mkplummer2.rb -n 100 | ruby quartiles1.rb
+
+ :commandoutput: ruby mkplummer2.rb -n 100 | ruby quartiles1.rb
+
+ :commandoutput: ruby mkplummer2.rb -n 100 | ruby quartiles1.rb
+
+Quite noisy.  Not too surprising: for the inner quartile we are
+dealing with only 25 particles, so we should expect
+<tex>$1/\sqrt{25}$</tex> noise.  Indeed, there are fluctuations of
+about twenty percent in the first quartile.
+
+*Bob*: Let's try 10,000 particles instead:
+
+ :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles1.rb
+
+ :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles1.rb
+
+ :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles1.rb
+
+Not bad!  Fluctuations of a few percent, at most, as it should be.
+Encouraging.
+
+== Checking the Math
+
+*Alice*: Now let's check the numbers.
+We have used already a few times eq. (ref(mr)):
+
+:equation:
+\label{something0}
+m(r) \, = \, M\left(1+{a^2\over r^2}\right)^{-3/2}
+
+Or in our units, with <tex>$M=a=1$</tex>:
+
+:equation:
+\label{something1}
+m(r) \, = \, r^3\left(1+r^2\right)^{-3/2}
+
+While we walked through your code, we reproduced the inverted form,
+expressing <tex>$r(m)$</tex>, in eq. (ref(rmahw)) as:
+
+:equation:
+\label{something2}
+r(m) \, = \, \left(m^{-2/3}-1\right)^{-1/2}
+
+*Bob*: I have one problem with this kind of testing.  First we write
+a code, using the above equation.  Then we test the code, using the
+same equation.  This will catch implementation bugs alright, but it
+won't catch any mistake we might have made in the above equation.
+In this case the equation is simple, but as a general procedure, I'm
+not sure how much this really buys us.
+
+*Alice*: Excellent point!  And there is an easy check:  Let us insert
+eq. (ref(something2)) into the right-hand side of eq. (ref(something1)),
+to check whether we get the original amount of mass back.  Let us call
+the left-hand side of eq. (ref(something1)) <tex>$\tilde m$</tex>,
+so that we can distinguish it from the mass <tex>$m$</tex> we start with,
+in eq. (ref(something2)):
+
+:eqnarray:
+\tilde m(r) \, &=& \, r^3\left(1+r^2\right)^{-3/2}                  \nonumber\\
+&=& \, \left(m^{-2/3}-1\right)^{-3/2}
+\left(1+\left(m^{-2/3}-1\right)^{-1}\right)^{-3/2}                  \nonumber\\
+&=& \, \left(m^{-2/3}-1\right)^{-3/2}
+\left({\left(m^{-2/3}-1\right)+1\over m^{-2/3}-1}\right)^{-3/2}     \nonumber\\
+&=& \, \left(m^{-2/3}-1\right)^{-3/2}\,
+\left(m^{-2/3}\right)^{-3/2}\,
+\left(m^{-2/3}-1\right)^{3/2}                                       \nonumber\\
+&=& \, m
+
+This was an almost trivial exercise.  But I'm glad we checked.
+
+*Bob*: Yes, many bugs turn out to be `almost trivial' as well, and yet
+the can waste many hours of your time while you're chasing them.
+By the way, wouldn't it have been much faster to substitute
+eq. (ref(something2)) into the right-hand side of eq. (ref(something0))?
+Calling the <tex>$m(r)$</tex> used in eq. (ref(something0))
+<tex>$\hat m(r)$</tex>, we would have gotten:
+
+:eqnarray:
+\hat m(r) \, &=& \, \left(1+{1\over r^2}\right)^{-3/2}              \nonumber\\
+&=& \, \left(1+\left(m^{-2/3}-1\right)\right)^{-3/2}                \nonumber\\
+&=& \, \left(m^{-2/3})\right)^{-3/2}                                \nonumber\\
+&=& \, m
+
+*Alice*: You're right, that is faster.  And if we were to write a text book,
+we would certainly hide the fact that we did it first the hard way around.
+But in practice, who cares?  The important thing is to check that things are
+correct.  And they are, we now know.
+
+== Checking the Code
+
+*Bob*: Let's compute the expected quartile radii, from eq. (ref(something2)):
+
+:equation:
+\label{firstquartile}
+r(1/4) \, = \, \left(2^{4/3}-1\right)^{-1/2} \approx 0.8111
+
+:equation:
+\label{halfmassradius}
+r(1/2) \, = \, \left(2^{2/3}-1\right)^{-1/2} \approx 1.305
+
+:equation:
+\label{thirdquartile}
+r(3/4) \, = \, \left(2^{4/3}3^{-2/3}-1\right)^{-1/2} \approx 2.175
+
+*Alice*: Those numbers look _completely_ different from what we got before!
+Let's do a single run with 100,000 particles.  More like a real globular
+cluster, in fact.  That should give us a statistical noise of less
+then one percent:
+
+ :commandoutput: ruby mkplummer2.rb -n 100000 | ruby quartiles1.rb
+
+*Bob*: The strange thing is, the first number comes out too small, while
+the next ones are too large, especially the last one.  So it is not a
+matter of having overlooked a scale factor, or something like that.
+
+What a pity!  I was more or less convinced that my Plummer code was
+correct.  Obviously there is something seriously wrong with the way
+particles are sprinkled into space.
+
+*Alice*: What is really strange is the fact that we got the energy correct.
+First of all, the virial theorem did hold, something that is typically
+violated if you make a random mistake in the energies, since it is unlikely
+that you will make the same mistake in the kinetic as in the potential energy.
+But secondly, we actually computed the energy, and we found that you code
+produced it correctly.
+
+*Bob*: Yes, that is puzzling.  Unless . . .
+
+*Alice*: . . . unless my quartile code is wrong.
+But that is also very unlikely.
+How much can there be wrong in just a few lines of code?
+
+*Bob*: It wouldn't be the first time, to find a nasty bug in a small codes.
+I guess that's why they are called bugs!  Bugs are small, and can hide even
+in a code of a single line.  Let's have a look.
+
+*Alice*: Yes, the good thing of a small code is that it makes sense to go
+through the lines one by one.  And there less than ten lines here where actual
+calculations are done.
+
+== Checking the Code-Checking Code
+
+*Bob*: Let's be systematic.  The driver part calls +quartiles+, and that
+method in turn starts by calling <tt>order_squared_radii</tt>.  You like
+long names, do you?  You could have called it
+<tt>place_an_order_to_order_squared_radii</tt>.
+
+*Alice*: Yes, I do like long names, since that way I will remember later
+what was doing what.  I hate that old style in which it probably would
+have been called +srtrsq+ for `sorting r squared'.  Forty years ago there
+was a reason, when single memory locations were expensive, but that excuse
+has long since gone.
+
+*Bob*: Well, I can't for the life of me see anything wrong with
+<tt>order_squared_radii</tt>.  Back to +quartiles+.  In the second line
+you find the number of particles.  Nothing wrong with that either.
+In the third line you cut the list at the place of the first quarter.
+Indeed, in that way you are bound to find the mass shell that contains
+one quarter of the mass, and precisely the inner quarter.
+
+*Alice*: Iron logic, and I, too, cannot see anything wrong with that.
+
+*Bob*: So we both agree that <tt>a[(n/4.0).round - 1]</tt> returns
+what you have ordered: the squared radius of the inner quarter of . . .
+
+*Alice*: . . . the <i>squared</i> radius!!
+
+*Bob*: Ah, yes, that's the problem!  You had forgotten that you ordered
+the <i>squares</i> of the radial distances, for convenience.  Instead,
+you just assigned the values to the quartile radii themselves.
+
+*Alice*: That must have been the problem.  And that immediately explains
+why the errors grew bigger for larger values of _r_.  Okay, that is easy
+to fix.  Let us rewrite these three lines, and put the result in a file
+called <tt>quartiles.rb</tt>:
+
+ :inccode: .quartiles.rb-1
+
+And let's test it right away:
+
+ :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles.rb
+
+ :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles.rb
+
+ :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles.rb
+
+*Bob*: Wonderful!  So my Plummer code was correct after all.  But I'm
+glad we checked so thoroughly.
+
+*Alice*: You may laugh, and perhaps I'm getting to much addicted to
+testing, but let me do one final little check.  Having just made a
+really silly mistake with the determining the quartile radii, I feel
+I cannot take anything for granted.  Let me see whether the quartile
+radii are _really_ quartile radii.  Starting with:
+
+<tex>$$
+m(r) \, = \, \left(1 + r^{-2}\right)^{-3/2}
+$$</tex>
+
+We have
+
+<tex>$$
+m(r(1/4)) \, = \, \left(1 +
+\left(\left(2^{4/3}-1\right)^{-1/2}\right)^{-2}\right)^{-3/2}
+ \, = \, 
+\left(1+ 2^{4/3} - 1\right)^{-3/2} \, = \, 2^{-2} \, = \, 1/4
+$$</tex>
+
+Similarly with the half-mass radius <tex>$m(r(1/2)) = 1/2$</tex>, and:
+
+<tex>$$
+m(r(3/4)) \, = \, \left(1+ 3^{-2/3}2^{4/3} - 1\right)^{-3/2} \, = \, 
+  3.2^{-2} \, = \, 3/4
+$$</tex>
+
+*Bob*: Now that is what I would call overkill.  But you're right, it doesn't
+hurt, and better safe than sorry.
+
+*Alice*: Indeed!

@@ -1,4 +1,4 @@
-= Implementation
+= Implementation: Entry Points
 
 == A New Driver
 
@@ -8,7 +8,7 @@ option block idea?
 *Bob*: Well, it took me quite a bit longer than I thought, but that was mainly
 because I got more and more ideas for further improvements, while I was
 writing the parser.  And now I'm really hooked to the use of a scripting
-language!  It was wonderful to see how easy it was to add functonality,
+language!  It was wonderful to see how easy it was to add functionality,
 and to change prototype behavior on the fly, just to try out various options.
 
 *Alice*: Ah, I can see that your parsing code grew as a result.
@@ -73,6 +73,12 @@ have been to turn each variable into a method that interrogates the class
 +Clop+ that is hiding inside <tt>clop.rb</tt>.  Instead of using the
 global variable <tt>$dt</tt>, we could define an instance
 <tt>my_clop.dt</tt>, and so on.
+
+You might argue that these variables are what the user is providing
+for a particular run, and while the run is running, these variables
+contain the only information to the program available from the outside
+world; all other information is local to the program.  So to use
+global variables may even be natural.
 
 *Alice*: I agree that this is one of the few places where global variables
 seem like a reasonable solution.  Although I don't like them in general,
@@ -281,7 +287,7 @@ stands for any type of white space, such as a single space or a tab.  The
 symbol <tt>^</tt> at the beginning of a regular expression <tt>/^.../</tt>
 means the beginning of a line, while the symbol <tt>$</tt> means the end
 of a line.  The symbol <tt>*</tt> as usual means zero or more instances
-of the previous symbel, so <tt>\s*</tt> means any number of spaces or tabs,
+of the previous symbol, so <tt>\s*</tt> means any number of spaces or tabs,
 possibly zero.
 
 Taken together, the regular expression <tt>/^\s*$/</tt> corresponds to any
@@ -409,8 +415,8 @@ with option <tt>@options[i]</tt>.
 However, knowing which option we have just encountered is not enough to
 completely parse the information for that option.  In general, the next
 element in the +ARGV+ array will contain the new value for that option.
-And as I just mentioned, in the case of a vector value, thta value may
-be distributed over an unknown number of further +ARGV+ array alements.
+And as I just mentioned, in the case of a vector value, that value may
+be distributed over an unknown number of further +ARGV+ array elements.
 Therefore the call to <tt>parse_option</tt> needs to receive both +i+
 and <tt>argv_array</tt>.
 

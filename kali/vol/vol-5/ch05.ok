@@ -1,0 +1,413 @@
+= Getting the Physics Right
+
+== An Analytic Recipe
+
+*Alice*: Hi Bob!  Well, are you ready to derive the distribution function
+of Plummer's model from first principles?
+
+*Bob*: If we're really going to the bottom of this, I _insist_ on using
+<tex>$G=M=a=1$</tex>.  Let's roll up our sleeves then.  Here is the,
+by now very familiar, potential-density pair for our Plummer's model:
+
+:equation:
+\left\{ \begin{array}{lcl}
+\Psi(r)\,&=&\, -\,\Phi(r) \,=\,
+{\displaystyle \left(1+r^2\right)^{-1/2}} \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\rho(r)\,&=&\,
+{\displaystyle {3 \over 4\pi } \left(1+r^2\right)^{-5/2}}
+\end{array} \right.
+
+Substituting the right-hand side of the first equation in the second
+equation, we find:
+
+:equation:
+\label{rhopsi}
+\rho(\Psi)\,=\,{3\over 4\pi}\,\Psi^5
+
+Now we have a choice: we can use this expression either in
+eq. (ref(fcurlyEa)) or in eq. (ref(fcurlyEb)).  If I were to guess,
+the sheer fact that Binney and Tremaine have added the second equation
+would suggest that that one is the easiest to work with; otherwise they
+would have limited themselves to the first one.  They don't seem to add
+anything more than necessary.
+
+*Alice*: Unlike our style of writing.
+
+*Bob*: I'd say!  It's a good thing that we are writing this for our
+students . . .
+
+*Alice*: . . . and for ourselves . . .
+
+*Bob*: . . . and for ourselves, yes, but not for our colleagues.
+I certainly wouldn't want to show to them how many small steps it takes
+me to derive these types of equations.
+
+*Alice*: But don't forget, we are planning to put this up on the web.
+
+*Bob*: Ah, yes, I'd forgotten about that already.  Oh, well, we can just
+call each page `class notes', and that will chase our colleagues away.
+
+*Alice*: I'm not so sure, but I don't want to discourage you.  Let's move
+on!
+
+*Bob*: Yes, let's.  As I was saying, my bet is on eq. (ref(fcurlyEb)).
+Let's write it down again here, and then substitute <tex>$\rho(\Psi)$</tex>
+with eq. (ref(rhopsi)):
+
+:eqnarray:
+f(\E)\,&=&\,{1\over\sqrt8\pi^2}\,\left[
+\int_0^\E {d^2\rho\over d\Psi^2} {d\Psi\over\sqrt{\E-\Psi}}
++{1\over\sqrt\E}\left({d\rho\over d\Psi}\right)_{\Psi=0}\right]     \nonumber\\
+&=&\, {1\over\sqrt8\pi^2}\,{3\over4\pi}\,\left[
+\int_0^\E \left({d^2\over d\Psi^2}\left(\Psi^5\right)\right)
+{d\Psi\over\sqrt{\E-\Psi}}
++{1\over\sqrt\E}\left({d\over d\Psi}
+\left(\Psi^5\right)\right)_{\Psi=0}\right]                          \nonumber\\
+&=&\, {3\over8\sqrt2\pi^3}\,\left[
+\int_0^\E 20{\Psi^3d\Psi\over\sqrt{\E-\Psi}}
++{5\over\sqrt\E}\left(\Psi^4\right)_{\Psi=0}\right]                 \nonumber
+
+The second term is zero, and the expression in the denominator invites us
+to introduce the following change of variables:
+
+<tex>$$
+x = \E-\Psi \,\,\,\,\,\, \Rightarrow\,\,\,\,\,\, 
+\Psi = \E-x \,\,\,\,\,\, \Rightarrow \,\,\,\,\,\,
+d\Psi = -dx \,\,\,\,\,\, \Rightarrow 
+$$</tex>
+
+:eqnarray:
+f(\E)\,&=&\, {3\times20\over8\sqrt2\pi^3}\,
+\int_\E^0 (\E-x)^3{(-dx)\over\sqrt{x}}                              \nonumber\\
+&=&\, {15\sqrt2\over4\pi^3}\,\int_0^\E \left\{
+-x^{5/2}+3\E x^{3/2}-3\E^2x^{1/2}+\E^3x^{-1/2}\right\}\,dx          \nonumber\\
+&=&\, {15\sqrt2\over4\pi^3}\,\left.\left\{
+-{2\over7}x^{7/2}+{6\over5}\E x^{5/2}-2\E^2x^{3/2}+2\E^3x^{1/2}\right\}
+\right|_0^\E                                                        \nonumber\\
+&=&\, {15\sqrt2\over4\pi^3}\,\left\{
+-{2\over7}+{6\over5}-2+2\right\}\E^{7/2}                            \nonumber\\
+&=&\, {15\sqrt2\over4\pi^3}\,{32\over35}\,\E^{7/2}                  \nonumber\\
+&=&\, {24\sqrt2\over7\pi^3}\,\E^{7/2}
+
+== The Full Form
+
+Well, I guess I was not as rusty in these kind of manipulations as I had
+thought I was.
+
+*Alice*: You shouldn't, since you did your undergraduate studies a lot more
+recently than I did!
+
+*Bob*: Yet it seems so long ago!  I guess everything is relative.
+
+*Alice*: At least the power <tex>$7/2$</tex> came out correctly, as expected
+for a polytrope of index <tex>$5$</tex>.  A while ago you wrote down an
+expression you got from some book, where was that, ah,
+eq. (ref(distributionfunction)).  Let's write it here again:
+
+:equation:
+f(E(r,v)\,4\pi r^2 dr\,4\pi v^2dv \, = \,
+       {384\sqrt(2)\over7\pi m}(-E)^{7/2}r^2v^2dr\,dv
+
+*Bob*: Since <tex>$384/16=24$</tex>, we got exactly what was ordered.
+It was a bit of work, but I must admit, it is fun to derive things from
+scratch.  But wait, what is that factor <tex>$m$</tex> doing there?
+That one is missing from what I just derived.
+
+*Alice*: It was the mass of a single star, in our star cluster in which
+all masses are the same.  The book you picked your expression for the
+distribution function from, must have defined <tex>$f(E)$</tex> as the
+_number_ density of the stars.  If you multiply both sides with
+<tex>$m$</tex>, you get on the right-hand side what you found.  This
+then must be the _mass_ density of the stars in phase space, namely
+the number density multiplied by the mass of a single star.
+
+*Bob*: That must be the answer.
+
+*Alice*: You may remember that I did not protest when you decided to do your
+derivation purely in dimensionless units.  As a reward, I insist on
+you writing the final answer with all the <tex>$G$</tex>'s, <tex>$M$</tex>'s,
+and <tex>$a$</tex>'s put back in.
+
+*Bob*: That's easy.  Here it is:
+
+:equation:
+\label{thatseasy}
+f(\E)\,=\, {24\sqrt2\over7\pi^3}\,{a^2\over G^5 M^4}\,\E^{7/2}
+
+But don't ask me to prove it to you with hats or tildes or a
+substantial part of the Greek alphabet!
+
+*Alice*: I won't.  But since that is how I would do it, I'm curious to know
+what you just did.  How did you figure this out?
+
+== Dimensional Analysis
+
+*Bob*: Well, I used dimensional analysis, but not in a very systematic way,
+just substituting what seems to work in the quickest way.  If we denote
+the unknown combination of <tex>$G,M,a$</tex> factors by <tex>$A$</tex>,
+we can start by writing
+
+<tex>$$
+f(\E)\,=\, A\,\E^{7/2}
+$$</tex>
+
+where I have dropped all numerical factors, since they won't make any
+difference as far as dimensional analysis is concerned.  Since you just
+pointed out that we have computed the _mass_ density in phase space, we
+know that the expression
+
+<tex>$$
+f(\E)d\br d\bv
+$$</tex>
+
+has the dimension of mass, something we can write as
+
+<tex>$$
+\left[f(\E)d\br d\bv\right] \,=\,\left[ {\rm mass} \right]
+$$</tex>
+
+Therefore
+
+<tex>$$
+\left[f\right] \,=\,\left[ {\rm mass} \right]\,\left[ {\rm length} \right]^{-3}
+\,\left[ {\rm velocity} \right]^{-3}
+$$</tex>
+
+Since energy is proportional to mass times velocity squared,
+think <tex>$mc^2$</tex>, our <tex>$\E$</tex>, the energy per unit mass,
+has a dimension of velocity squared, so
+
+<tex>$$
+\left[\E^{7/2}\right] \,=\,\left[ {\rm velocity} \right]^7
+$$</tex>
+
+Before you protest that I should use only physical dimensions of [mass],
+[length] and [time] . . . 
+
+*Alice*: . . . which is what I would have done . . .
+
+*Bob*: . . . I want to point out that I have a freedom of choice, as
+long as my three units are not degenerate.  I find it more convenient to
+work with  [mass], [length] and [velocity].
+
+*Alice*: Come to think of it, that makes sense, since the last two reflect
+the two different spaces of which phase space is the product, and mass is
+what we have been sprinkling into phase space.
+
+*Bob*: I guess.  You always find a way to suggest more abstract reasons for
+what I am doing intuitively.  It just has been my experience that velocity
+is a more useful quantity than time in this kind of dimensional analysis.
+
+*Alice*: I think I'll follow your suggestion, from now on.  Learn something
+new every day!
+
+== Getting The Details Right
+
+*Bob*: Where was I?  Ah, yes, I started with 
+
+<tex>$$
+f(\E)\,=\, A\,\E^{7/2}
+$$</tex>
+
+and using the last two expression above, I can find that <tex>$A$</tex>
+has the following dimension:
+
+:eqnarray:
+[A] \,&=&\,[f]\,\left[\E^{-7/2}\right]	                            \nonumber\\
+&=&\, \left[ {\rm mass} \right]\,\left[ {\rm length} \right]^{-3}
+\,\left[ {\rm velocity} \right]^{-3}\,
+\left[ {\rm velocity} \right]^{-7}                                  \nonumber\\
+&=&\, \left[ {\rm mass} \right]\,\left[ {\rm length} \right]^{-3}
+\,\left[ {\rm velocity} \right]^{-10}\,                             \nonumber
+
+Now the crucial point is that only <tex>$G$</tex> can help us in
+giving us a velocity dimension.  Velocity involves time, since its
+dimension is length over time, and neither <tex>$M$</tex> nor <tex>$a$</tex>
+have a time component.
+
+The dimension of <tex>$G$</tex> follows from the fact that potential energy
+must have the same dimension as kinetic energy:
+
+<tex>$$
+\left[{GMm\over r}\right] \,=\, \left[{\half m v^2}\right]
+$$</tex>
+
+for whatever <tex>$M$</tex>'s, <tex>$m$</tex>'s, <tex>$r$</tex>'s, <i>etc.</i>
+you care to use.  This implies:
+
+<tex>$$
+\left[v^2\right] \,=\, \left[{GM\over r}\right] \,=\,
+[G] \, \left[ {\rm mass} \right]\,\left[ {\rm length} \right]^{-1}
+$$</tex>
+
+So this tells us that we can factor out <tex>$G$</tex> as follows:
+
+:eqnarray:
+[A] \,&=&\, \left[ {\rm mass} \right]\,\left[ {\rm length} \right]^{-3}
+\, \left[ G^{-5} \right]
+\, \left[ {\rm mass} \right]^{-5}\,\left[ {\rm length} \right]^5    \nonumber\\
+&=&\, \left[ G^{-5} \right]
+\, \left[ {\rm mass} \right]^{-4}\,\left[ {\rm length} \right]^2    \nonumber
+
+Since the only mass we have is <tex>$M$</tex>, and the only length we have
+is <tex>$a$</tex>, we have to conclude that
+
+<tex>$$
+A \, \propto \, G^{-5} M^{-4} a^2
+$$</tex>
+
+This then means that our dimensionless expression, that we derived
+with the help of Binney and Tremaine:
+
+<tex>$$
+f(\E)\,=\, {24\sqrt2\over7\pi^3}\,\E^{7/2}
+$$</tex>
+
+has to be expanded in the following way, to make it again dimensionally
+correct:
+
+<tex>$$
+f(\E)\,=\, {24\sqrt2\over7\pi^3}\,{a^2\over G^5 M^4}\,\,\E^{7/2}
+$$</tex>
+
+== From Implicit to Explicit
+
+*Alice*: This is indeed what you wrote down before, eq. (ref(thatseasy)).
+
+*Bob*: I must say, I'm surprised at how many words and lines of equations
+I have to write down to make it all explicit.  I did it mostly in my head,
+with a few scribbles here and there to provide some help.
+
+*Alice*: That's because you've grown so familiar by now with these kinds
+of manipulations.  But I definitely think it is a good idea to show your
+students how you do this, if only once.
+
+*Bob*: Don't you think they will figure it out for themselves, sooner or
+later.
+
+*Alice*: Probably later.  I like the idea of being a catalyst, speeding
+up the process of letting them discover things.  And by making your
+implicit stream of thoughts explicit, tedious as it may seem, we may
+be doing them a real favor.
+
+Besides, to be really honest, I think we can still learn a lot as well.
+I had no idea that your approach would be so different from mine, and I
+can see the advantage of your way of thinking, at least in some cases
+such as these.  It would definitely have taken me longer to derive your
+result in my way.
+
+*Bob*: It is interesting, isn't it, that normally we don't talk very much
+about how we do these kind of little, or not so little, derivations.  And
+I must admit, I too have learned quite a bit from the way you approach these
+problems.  Besides, it is more fun to struggle with all this together.
+
+Well, I think we've struggled enough now.  Let's call it a day.
+
+*Alice*: call it a day?  But we haven't yet checked the truth behind the
+Abel integral transform, whether that way of inverting the equation was
+correct.  We have just taken Binney and Tremaine's word for it!
+
+*Bob*: I'd forgotten all about that.  Well, hmm.  Do you really insist
+on checking it all the way?
+
+*Alice*: I do.
+
+*Bob*: Okay, okay.  Let's get it over with.  Can I look at that page,
+where they talk about Mr. Abel and his transforms?  You would at least
+expect them to give us a hint.
+
+*Alice*: They do give a hint: go read appendix 1.B.4.
+
+== Abel Integral Transforms
+
+*Bob*: So they do.  Here it is.  They start with the following two lines.
+
+Let
+
+:equation:
+\label{fx}
+f(x) = \int_0^x {g(t)dt \over (x-t)^\alpha}
+\quad\quad\quad\quad  0<\alpha<1
+
+Then
+
+:eqnarray:
+\label{gt}
+g(t) \,&=&\, {\sin \pi \alpha \over \pi}\,{d\over dt} \,
+       \int_0^t {f(x)dx \over (t-x)^{1-\alpha}}                     \nonumber\\
+&=&\, {\sin \pi \alpha \over \pi}\,\left[
+\int_0^t{df\over dt}\,{dx \over (t-x)^{1-\alpha}}+
+{f(0)\over t^{1-\alpha}}\right]
+
+I like that terse style: only "Let . . then . .", what a difference with
+our constant chattering!
+
+*Alice*: It is a good move of them to reduce the more complex equations
+(ref(fcurlyEa)) and (ref(fcurlyEb)) to these simplified forms.  But as
+always, let us first check whether the "Let . . then . ." claim, if true,
+will solve our problem.  Let us start with eq. (ref(fx)).  For this to be
+equal to our previous equation (ref(drhodpsifrompsi)):
+
+<tex>$$
+{1\over\sqrt8\pi}\,{d\rho\over d\Psi} \,=\,
+\int_0^\Psi f(\E)\,{d\E\over\sqrt{\Psi-\E}}
+$$</tex>
+
+We have to use the following dictionary, with their appendix notation on
+the left and their main text notation on the right:
+
+:equation:
+\left\{ \begin{array}{lcl}
+f(x) \,& \rightarrow &\, 
+{\displaystyle {1\over\sqrt8\pi}\,{d\rho\over d\Psi}} \\
+\phantom{1}&\phantom{1}&\phantom{1}                   \\
+x\,& \rightarrow &\,\Psi                              \\
+\phantom{1}&\phantom{1}&\phantom{1}                   \\
+g(t)\,& \rightarrow &\,f(\E)                          \\
+\phantom{1}&\phantom{1}&\phantom{1}                   \\
+t\,& \rightarrow &\,\E                                \\
+\phantom{1}&\phantom{1}&\phantom{1}                   \\
+\alpha\,& \rightarrow &\,{\displaystyle \half}        \\
+\end{array} \right.
+
+*Bob*: Now that's what I call confusing.  They use <tex>$f$</tex> symbols
+for two very different functions, in their two languages.  We'll have
+to be careful with this dictionary.
+
+*Alice*: But I thought you didn't like hats and tildes, and preferred to use
+the same symbol for different things?
+
+*Bob*: Only if they have the same physical meaning.  Here we're talking
+mathematics.  I would have prefered that they would have used
+<tex>$k(x)$</tex> instead of <tex>$f(x)$</tex> in the appendix.  Oh well,
+small point, as long as we're careful.
+
+*Alice*: Now let us assume that their eq. (ref(gt)) indeed provides the
+solution for eq. (ref(fx)).  We then have to translate eq. (ref(fx)) back
+into main text quantities, using the dictionary in the other
+direction.  Here we go:
+
+:eqnarray:
+\label{gt}
+g(t) \,&=&\, {\sin \pi \alpha \over \pi}\,{d\over dt} \,
+       \int_0^t {f(x)dx \over (t-x)^{1-\alpha}}                     \nonumber\\
+&=&\, {\sin \pi \alpha \over \pi}\,\left[
+\int_0^t{df\over dt}\,{dx \over (t-x)^{1-\alpha}}+
+{f(0)\over t^{1-\alpha}}\right]  \,\,\,\,\,\Rightarrow              \nonumber
+
+:eqnarray:
+f(\E)\,&=&\,{\sin\left({\pi\over2}\right)\over\pi}\,{d\over d\E}\,
+\int_0^\E {1\over\sqrt8\pi^2}\,{d\rho\over d\Psi}
+{d\Psi\over\sqrt{\E-\Psi}}                                         \nonumber\\
+&=&\,{\sin\left({\pi\over2}\right)\over\pi}\,\left[
+\int_0^\E{1\over\sqrt8\pi^2}\,{d^2\rho\over d\Psi^2} {d\Psi\over\sqrt{\E-\Psi}}
+\,+\,{1\over\sqrt8\pi^2}\,
+{1\over\sqrt\E}\left({d\rho\over d\Psi}\right)_{\Psi=0}\right]        \nonumber
+
+*Bob*: Indeed, these are exactly the eqs. (ref(fcurlyEa)) and (ref(fcurlyEb))
+that we set out to prove.  Great!  Now can we start testing my code?
+
+*Alice*: Ho!  Not so quick.  All we have done is verify that Binney and
+Tremaine's claim in the appendix leads to their claim in the main text.
+Now we have to prove the claim they make in their appendix.

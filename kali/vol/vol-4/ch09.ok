@@ -1,0 +1,312 @@
+= A Built-In Test Facility
+
+== Testing Without a Driver
+
+*Alice*: Have you tested the whole parsing mechanism that you have written?
+
+*Bob*: Yes, and as far as I can see, it all works as advertised.  At first,
+while I was writing the +Clop+ class, I put the definition of the clas,
+as well as the definition of the helper class <tt>Clop_Option</tt>, in the
+file <tt>clop.rb</tt>, and I used a different file to test the whole
+thing.  That other file contained a driver with a long `here document',
+and a call to <tt>parse_command_line</tt>, the only method that is used
+to let +Clop+ do its work.
+
+But after a while, it occurred to me that that I might as well add the
+driver to the end of the <tt>clop.rb</tt> file, in a clever way.  You see,
+the reason I did not do it right away, is that I did not want to prevent
+another program from including the <tt>clop.rb</tt> file.  A typical
+application program, such as an N-body code, can include a line at the
+top that reads:
+
+  require "clop.rb"
+
+And if the file <tt>clop.rb</tt> includes a test driver at the end, that
+driver will be included in the application file, which is not what we want.
+
+*Alice*: And you found a solution, to have your cake and eat it, that is
+to include the driver part and yet make it invisible for the application
+program?
+
+*Bob*: How did you guess!  That is exactly what I did.  The trick was to
+add the following statement, after the definition of the classes and
+everything else that has to be included in the application program,
+and before the start of the driver block:
+
+  if __FILE__ == $0
+
+Here the global variable <tt>$0</tt> contains the name of the program
+that you are running.  If you run the <tt>clop.rb</tt> file directly,
+by typing:
+
+ |gravity> ruby clop.rb
+
+then Ruby will give the string <tt>"clop.rb"</tt> to the variable <tt>$0</tt>.
+However, if you include the line
+
+  require "clop.rb"
+
+in a file called <tt>some_other_program.rb</tt>, the value of <tt>$0</tt>
+will be the string <tt>"some_other_program.rb"</tt>.
+
+The key here is that the variable <tt>__FILE__</tt> _always_ gets the
+value of the file in which it occurs.  So the variable <tt>__FILE__</tt>
+in the file <tt>clop.rb</tt> will _always_ get the content <tt>"clop.rb"</tt>,
+independently of whether you run <tt>clop.rb</tt> directly, or whether you
+run another program that includes a +require+ statement for <tt>clop.rb</tt>.
+
+*Alice*: Therefore, only when you run <tt>clop.rb</tt> directly, with the
+explicit command <tt>ruby clop.rb</tt>, is the equality guaranteed.  Clever
+indeed!  So if that is what you did, can I try it?
+
+*Bob*: Please do!
+
+== Required Options
+
+*Alice*: I will start without any options, to see what happens:
+
+ :commandoutput: ruby clop.rb
+
+Wow, that's a lot more than I expected.  Where did that all come from?
+
+*Bob*: In defining the option blocks, you can specificy the default value
++none+, which means that no default is given, which in turn means that the
+user should provide one.  I included various options in the here
+document of my test driver, and two of them I gave the the default value
++none+.
+
+The fact that you see so much output is a result of the action of the method
+<tt>check_required_options</tt>, which prints out the whole long description,
+to tell you in detail what type of options you should minimally provide.
+
+*Alice*: Let me see what happens if I provide the first option:
+
+ :commandoutput: ruby clop.rb -n3
+
+It still complains about the other option, as it should.  And it even knows
+about English grammar.  Look: it talks at the end about the missing `option'
+rather than the missing `options', as it did when two options were missing.
+Nice touch.
+
+*Bob*: Thanks!  I like to get such details straight.  A matter of craftmanship,
+as they used to call it.  Why don't you add the second option too?  No output
+file will be created here; it is just a test.
+
+*Alice*: Okay, this should stop the complaints:
+
+ :commandoutput: ruby clop.rb -n3 -o tmp.out
+
+Ah, the whole list of default options, and on top a one liner that describes
+what this program is doing.  And everything is lined up perfectly.
+Indeed a matter of craftmanship, I would say.
+
+== A Boolean Option
+
+*Bob*: Glad you like it!  How about trying out a boolean value?
+
+*Alice*: Sure.  Let's see.  But, wait a minute.  All boolean values by default
+are set to +false+.  And boolean options are only reported in the initial state
+printout if they are +true+.  So we have a catch 22 here: if I don't
+give the boolean options, they will never appear, so how do I know
+how to ask for those options.  How do I find out what their command
+line names are?
+
+*Bob*: Ahem.
+
+*Alice*: You're not going to help me and give me a hint at least?
+
+*Bob*: Going to _help_ you?
+
+*Alice*: Ah, of course, the _help_ facility.  I can ask the program itself.
+Okay:
+
+ :commandoutput: ruby clop.rb -h
+
+Ah, there it is: our good friend <tt>--extra_diagnostics</tt>, or simply
+<tt>-x</tt>.  That must be a boolean option.
+
+*Bob*: Try it!
+
+*Alice*: By just adding <tt>-x</tt> at the end, yes?  That's easy,
+as long as I keep remembering to add the required <tt>-n</tt> and <tt>-o</tt>
+options as well.
+
+*Bob*: Don't worry, the program will remind you if you don't.
+
+*Alice*: Let there be boolean initital state output:
+
+ :commandoutput: ruby clop.rb -n3 -o tmp.out -x
+
+And so there is!  This is fun.
+
+== A Vector Option
+
+*Bob*: How about shifting the velocity of the center of mass?
+
+*Alice*: With <tt>-v</tt> or <tt>--shift_velocity</tt>, I see from the
+short help output.  Let me try the longer form.  I see that the default
+value for this vector has three components.  Am I allowed to work
+in two dimensions as well, for a three-body scattering experiment in a
+plane, say, or do you insist on working in three dimensions, in which
+case I could set the third component equal to zero?
+
+*Bob*: Why don't you ask the program?
+
+*Alice*: You're getting mischievous.  Ask the program?  Ah, with the
+_long_ version of help perhaps?  Will that tell me?
+
+*Bob*: Remember, if you type <tt>--help --some_option</tt>, you will
+get a long form of help for that option.
+
+*Alice*: Let me try:
+
+ :commandoutput: ruby clop.rb --help --shift_velocity
+
+Now _that_ is impressive.  It answers all that I wanted to know and more!
+
+*Bob*: I can't guarantee that all my programs will be _that_ helpful, but
+at least I made a start here.
+
+*Alice*: Here is my attempt at a two-dimensional shift:
+
+ :commandoutput: ruby clop.rb -o tmp.out -n 3 --shift_velocity [2, 3]
+
+And it behaves as I exptected it to.
+
+== A Star Type Option
+
+*Bob*: Why don't you try to play with the type I introduced for classifying
+stars.  I added that as another test for the whole concept of a general
+parser.
+
+*Alice*: Classifying stars?  Okay, I got it now: I won't ask you any questions
+anymore, I'll just ask the program.  First I have to find which option
+I should be dealing with:
+
+ :commandoutput: ruby clop.rb -h
+
+I see: <tt>star_type</tt>.  And this happens to be an example of an option
+that does not have a short name.  After all, both <tt>-s</tt> and <tt>-t</tt>
+are taken already, and rather than inventing an unmemorable name like
+<tt>-q</tt> for the star type, it makes more sense to stick to a longer
+name that has a clearer meaning.  I completely agree.
+
+The next step is to find out more about this particular option:
+
+ :commandoutput: ruby clop.rb --help --star_type
+
+And here we have an example of allowing extra colons in the content of the
+definition of an option, as you discussed when you introduced the concept
+of a non-greedy operator in a regular expression.  Let me try one of the
+examples:
+
+ :commandoutput: ruby clop.rb -o tmp.out -n 3 --star_type star : MS : ZAMS
+
+== No Comment
+
+Hey, what happened?  Your long help facility must have given me the wrong
+answer!  I tried one of the examples given there.
+
+*Bob*: Not quite.
+
+*Alice*: What do you mean?  I did not make any spelling mistake: here it is:
+<tt>star_type</tt> is spelled correctly, and so is +star+.  And I
+thought I had a freedom in choosing whatever else would follow.
+
+*Bob*: Why don't you look at what the error message is telling you.
+
+*Alice*: You really want the program to help me, and I must admit, it would
+be an accomplishment if your error messages would tell me what went wrong,
+without you doing the hand holding.  Let's see.  The program complains that
+the option <tt>:</tt> is not recognized.  But you told me that the non-greedy
+operator would take care of any and all extra colons!
+
+*Bob*: No comment.
+
+*Alice*: Okay, okay, I'll struggle on.  The first <tt>:</tt> I gave was the
+one following the word +star+.  I have a space between +star+ and <tt>:</tt>,
+but that space also occurred in the example suggested by the long help output.
+
+Still, I have to do something, wiggle some wires somewhere, to learn
+more, so let me write the same thing without a space, just to see whether
+that makes a difference.
+
+ :commandoutput: ruby clop.rb -o tmp.out -n 3 --star_type star: MS : ZAMS
+
+Now it complains that option +MS+ is not recognized.  Hmmm.  What would
+happen if I don't give any spaces at all?
+
+ :commandoutput: ruby clop.rb -o tmp.out -n 3 --star_type star:MS:ZAMS
+
+Hey, now it works!  And the star type is being assigned correctly.
+It seems that adding a space somewhere triggers a protest, and the
+specific protest is that whatever comes after the first space is not
+recognized.
+
+I'm still in the dark.  Let me look again at the error message.  I can just
+add a space somewhere, and I'm sure the program will complain again:
+
+ :commandoutput: ruby clop.rb -o tmp.out -n 3 --star_type star:MS :ZAMS
+
+Hmmmm.  <tt>option ":ZAMS" not recognized</tt>.  AAH!!  It is an
+_option_ that is not recognized.  The command line parser receives the
+command line in a form that is already cut up wherever there is white space.
+So only the <tt>star:MS</tt> is considered to be the _value_ of the option
+<tt>--star_type</tt> and whatever comes next would normally be a new _option_,
+starting with a hyphen, and more than that, an option that can be recognized
+by the program.  And <tt>:ZAMS</tt> is not even an option.
+
+== The Answer
+
+*Bob*: See: you got it under your own steam.  I'm glad to see that
+combination of the help facility and the error messages were enough
+to let you figure it out.
+
+*Alice*: But I still have a question.  There is something wrong with your
+long help form, since the example you provided contained blank spaces!
+
+*Bob*: Why don't you check it again, to make sure.
+
+*Alice*: I _am_ sure.  Here it is, this is how we got started:
+
+ :commandoutput: ruby clop.rb --help --star_type
+
+You see, a space between +star+ and <tt>:</tt> and between . . .
+
+*Bob*: Yes?
+
+*Alice*: . . . the whole argument is enclosed between double quotes,
+making it a _single_ element in the array +ARGV+ of command line options.
+
+*Bob*: Yes!
+
+*Alice*: Here we go again:
+
+ :commandoutput: ruby clop.rb -o tmp.out -n 3 --star_type "star : MS : ZAMS"
+
+That's much better.  You were right, I was wrong.  I guess I was
+misled by the vector example.
+
+*Bob*: That is an exception, and it only works because the parser keeps
+parsing until it encounters a closing square bracket <tt>]</tt>.  With
+the <tt>--star_type</tt> option there would be no way to know when to
+stop parsing.
+
+*Alice*: You _could_ make the parser more fancy, by letting it continue
+to parse until it encounters a new option, or the end of the string.
+
+*Bob*: And how would it recognize a new option?
+
+*Alice*: A leading hyphen would do the trick, wouldn't it?
+
+*Bob*: And how about a number like <tt>-1</tt> ?
+
+*Alice*: Ah yes, it is more complicated than I thought.  That would look
+like an option, but actually would be a legal value.
+
+*Bob*: I think I _could_ indeed do something, but it would not be so simple.
+For example, insisting that an option would start with a letter, not a number,
+would take care of the negative number problem.  But there may be
+other problems as well.  It just seems simpler to insist on using double
+quotes.  My attempt to make life easier for vectors was perhaps
+already too much of a concession.

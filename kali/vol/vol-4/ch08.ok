@@ -1,0 +1,339 @@
+= The Third Journey: +Clop+, the Help Part
+
+== Two forms of Help
+
+*Alice*: Hi Bob!  Time for our third and last journey.
+
+*Bob*: Hi Alice!  Yes, we covered everything as far as parsing the options
+is concerned: both the definitions of the options by the writer of a program,
+and the way the options are set on the command line by the user of a program.
+
+The only thing left to do is to see how the help mechanism is implemented.
+This is all done on the top level, within the +Clop+ class that we visited
+in our first journey.  Do you remember the flow of control?  The initializer
+of the +Clop+ class did three things, by invoking the following three methods:
+<tt>parse_option_definitions</tt>, <tt>parse_command_line_options</tt>, and
+<tt>print_values</tt>.
+
+Of these three methods, all the work for the first and third one is done
+in the lower-level class <tt>Clop_Option</tt> that we visited at
+length in our second journey.  Only the middle one,
+<tt>parse_command_line_options</tt>, required more work on the top-level,
+as we saw in the first journey, where we skipped the `help' part.  Let
+me print out this method again:
+
+ :inccode: .clop.rb+parse_command_line_options
+
+There is only one method that we have to inspect, <tt>parse_help</tt>.
+The first argument is the array +ARGV+ that contains the pieces of the
+command line, a bunch of little strings that have been extracted from
+the command line by cutting it wherever blank space appeared.  The second
+argument is a flag that determines whether we want to have extensive help
+information.  The <tt>-h</tt> option asks for a minimal amount of help
+information, in short form, whereas the <tt>--help</tt> option asks
+for the long form of help.
+
+*Alice*: No surprises here: all very clear.
+
+== Help for Selected Options
+
+*Bob*: Before inspecting the <tt>parse_help</tt> method, let me first describe
+the idea behind the help facility as I have implemented it.  If you type:
+
+  |gravity> ruby some_program.rb -h
+
+you will get a one-line help message about each possible option.  However,
+if you prefer to have less output, and you are only interested in one option,
+you can type:
+
+  |gravity> ruby some_program.rb -h -o
+
+and this will give you only one line of output, a short descriptin of the
+<tt>-o</tt> option.  This is especially useful for the case of long help,
+since the command:
+
+  |gravity> ruby some_program.rb --help
+
+may well generate a few pages of help, if you have a well documented program
+with many options.  In that case it will be much easier to find what
+you want if you only order help for the options you are interested in.
+
+*Alice*: Can you get help for, say, three options?
+
+*Bob*: Yes: if you type:
+
+  |gravity> ruby some_program.rb --help -a -b --some_other_option
+
+you will get get long help for all three options, but not for the
+other options that are not mentioned.  Note that you can mix short and
+long descriptions of options.  How you name an option, long or short,
+has no influence on the help output.  If you use <tt>-h</tt> you only
+get one-liners, and if you use <tt>--help</tt> you get long information,
+several lines per option, independent of whether you use long or short
+names for the options themselves.
+
+*Alice*: What will happen if you type:
+
+  |gravity> ruby some_program.rb -o -h
+
+*Bob*: In that case, it is treated as if you would have typed:
+
+  |gravity> ruby some_program.rb -h
+
+which means that you get one-line help for all options.  The reason is
+that such a line as you just gave can naturally be generated through
+the use of a Unix <tt>!!</tt> command, as we already discussed, and the
+presence of the <tt>-o</tt> is likely to be a matter of lazyness, rather
+than significance.  If your previous command has been
+
+  |gravity> ruby some_program.rb -o
+
+and if you then decide you wnat short help for that particular option,
+you have to type:
+
+  |gravity> !! -h -o
+
+which the Unix shell translates into:
+
+  |gravity> ruby some_program.rb -o -h -o 
+
+and is then interpreted by the +Clop+ help parser as if you had typed:
+
+  |gravity> ruby some_program.rb -h -o 
+
+== Parsing Help
+
+*Alice*: That is clear and reasonable.  Can I see the actual help parser?
+
+*Bob*: Here is the <tt>parse_help</tt> method:
+
+ :inccode: .clop.rb+parse_help
+
+The variable +all+ is a boolean flag.  If it is +true+, we will print help
+information for all options.  If help is requested only for selected
+options, this flag will be set to the +false+ value.  We start off with
+<tt>all = true</tt>.  Then we inspect the +ARGV+ array, and if we find
+one or more options present on the command line following the help request,
+then we offer selected help for each option encountered, through a call
+to <tt>print_help</tt>, while setting the +all+ flag to be +false+.
+
+The first argument of <tt>print_help</tt> passes on the flag which we
+received earlier, specifying whether we want to have the long form of
+help.  The second, optional argument of <tt>print_help</tt> contains
+the number +i+, specifying the selected option.  If we invoke the method
+<tt>print_help</tt> without a second argument, it is assumed that we want
+to have help for all options.  Here is the method:
+
+ :inccode: .clop.rb+print_help
+
+*Alice*: I see what you mean with the optional second argument: if you
+leave that one out, it will be set to +nil+, the +if+ test will fail,
+and so the +else+ branch will be taken, and all options are printed out.
+However, if you specify an option +i+, the +if+ test is successful, and
+only that option will be printed.  In both cases you use the same
+procedure: you print a string on the standard error stream, provided
+by the method <tt>help_string</tt>.
+
+== Printing Help: the Idea
+
+*Bob*: Yes, and before showing you how that method is implemented, let
+me sketch the idea behind it.  Let us start with the short help form,
+invoked by <tt>-h</tt>.  There are three types of options, that have
+to be treated differently.
+
+First, there are the run-of-the-mill options, such as the time step
+size.  I decided to give it a short help string as follows:
+
+  -d  --step_size         : Integration time step    [default: 0.001]
+
+Both forms of the command-line version of the options are shown, followed
+by the short description of the option, and then between square brackets the
+default value is shown.
+
+Second, there are the boolean options, such as the request for extra
+diagnostics.  I decided to let that generate the following short help string:
+
+  -x  --extra_diagnostics : Extra diagnostics
+
+For a boolean option, the default value is always +false+, so there is no
+need to list that.
+
+Third, there is the header option, which does not have any value, and
+therefore also not a default value; in fact it does not have a way of
+writing it as a command line option.  It really is a not-an-option option,
+since it only contains short and long description strings.  Therefore,
+this is the only thing that will be printed.  In short form, it could
+be just:
+
+  A code doing such-and-such
+
+To summarize, a code that has only these two options, together with this
+header option, will provide the following short help:
+
+  |gravity> ruby some_program.rb -h
+    A code doing such-and-such
+    -d  --step_size         : Integration time step    [default: 0.001]
+    -x  --extra_diagnostics : Extra diagnostics
+
+*Alice*: I like the layout.  Great!  How did you implement it?
+
+== Printing Help: the Method
+
+*Bob*: Here is the method:
+
+ :inccode: .clop.rb+help_string
+
+I start with a null string +s+.  If we are dealing with a header option,
+there is no type, and there are also no command line option names,
+such as <tt>-d</tt> or <tt>--step_size</tt>.  So only if there is a type,
+we add those command line option names; this is taken care of by the 
+following method:
+
+ :inccode: .clop.rb+option_name_string
+
+My assumption is that every option has a long way to call it, as in
+<tt>--step_size</tt>, but it may or may not have a short way <tt>-d</tt>.
+After all, some people don't like one-letter options.
+
+*Alice*: People like me.
+
+*Bob*: And others, like me, who do like short options, may literally
+run out of options if they write a program with more than 26 options.
+
+*Alice*: If you really write such a program, I suggest that you cut it
+up into smaller pieces: 26 options strikes me as too much of a good thing.
+
+*Bob*: Don't be so sure: there are plenty of programs that you use every
+day that have loads of options.  Most of them you'll never use, but
+occasionally there you may hit upon a need for an arcane option, and
+then you'll be happy if it is provided.  In any case, this is what I
+decided: short options are optional, pun not intended, while long options
+are not optional, but required.
+
+*Alice*: With the exception of the header option, which never will invoke
+the <tt>option_name_string</tt> since the first +if+ statement in
+<tt>help_string</tt> prevents it from doing so.  Good!  And finally,
+you add however many tabs are needed, through your <tt>add_tabs</tt>
+helper method in the <tt>Clop_Option</tt> class, and then a colon.
+So that is what produces the left-hand side of each normal option help
+output, for the short help version at least.
+
+*Bob*: And for the long help version as well.  We have not used the
+information from the <tt>long_flag</tt>, so far.  So in both cases,
+for short and long help, the first +if+ statement in <tt>help_string</tt>
+will provide the left hand side, up to the colon, of a line such as:
+
+    -d  --step_size         : Integration time step    [default: 0.001]
+
+== What is Needed When
+
+*Alice*: What is the meaning of the second +if+ statement in
+<tt>help_string</tt>:
+
+ :include: .clop.rb-20
+
+*Bob*: If the +if+ statement tests +true+, the following three lines are
+executed, which do what they say they do: they print the description of
+the option, to the right hand side of the colon, followed by the default
+value.  This then finishes the one-line short help version.
+
+Now the +if+ test requires some explanation.  For all options, except the
+header file, there is a type associated with the option, so the +if+ test
+returns +true+ and the three lines are executed.  The only possible exception
+is the case where the option is the header option.  In that case we have
+to discriminate between two possibilities.
+
+If we request short help, we _do_ want a short description of what the
+program is all about.  So in that case we _do_ want to execute the three
+lines following the +if+ statement.  Or more precisely, we want the first
+and the last line to be executed; there is no default value, so the
+method that is invoked in the second line, <tt>default_value_string</tt>
+has the responsibility to do nothing in the case of a header option.
+
+However, if we request long help, there is no point in presenting both
+the short and the long description of what the program is doing, so we
+skip the short description, and move on directly to the long description.
+This is the reason for the complex looking +if+ statement.  It only tests
+false if <tt>option.type == false</tt> _and_ <tt>long_flag == true</tt>,
+that is when the option is a header option, with the request for long help.
+
+*Alice*: For all other options, when you ask for long help, you provide
+short help as well, for good measure?
+
+*Bob*: Yes, I decided to do that.  One reason is that gives us a quick way
+to get the default value information right at the top.  Another reason is
+that the short information then acts as a type of title line for the longer
+help paragraph that follows.  Here is an example of what you could expect
+for, say, the time step information, first for short help:
+
+  |gravity> ruby some_program.rb -h -d
+    -d  --step_size         : Integration time step    [default: 0.001]
+
+and then for long help:
+
+  |gravity> ruby some_program.rb --help --step_size
+    -d  --step_size         : Integration time step    [default: 0.001]
+
+    In this code, the integration time step is held constant,
+    and shared among all particles in the N-body system.
+
+Notice that I include a blank line between the short information part
+and the actual long information part, as answer to a long help call.
+This makes everything a bit more structured, and therefore easier to
+read, when you are faced with a whole bunch of options.
+
+*Alice*: And the last part is what is printed out as a result of testing
+the third +if+ statement in <tt>help_string</tt>:
+
+ :include: .clop.rb-21
+
+== The Finishing Touch
+
+*Bob*: Yes.  And the only thing I haven't shown you yet is the method
+that prints the last part of the right-hand side of a short help line,
+where the default value is given:
+
+ :inccode: .clop.rb+default_value_string
+
+If we are dealing with a header option, or an option with a boolean type,
+no default should be printed.  The actual value is evaluated in the line
+
+ :include: .clop.rb-22
+
+and the rest is just bookkeeping stuff to get the blank lines and tabs
+all positioned correctly.
+
+*Alice*: Congratulations again, Bob!  This is a great tool that you have
+created.  It will be so nice to have a common user interface for all the
+programs that we are going to write from now on.  For each program, we
+will now what to expect: how to specify the options, and how to get
+information about the options through the fancy help mechanism you
+have developed here.
+
+Most importantly, it will invite us to provide the right type of a
+help descriptions right away in the same file as where we write a
+piece of code.  Rather then trying to write a separate manual, and
+then forgetting to update it, we can now provide the important
+information in a `here document' as part of the same file in which we
+store the code lines that do the work.  Excellent!
+
+*Bob*: Well, you shouldn't give me all the credit.  We developed the
+idea to provide option blocks together.  And in fact, it was your
+criticism that prevented me from being happy with my original form
+of a command line parser, so you were the one who started it all!
+
+*Alice*: Thanks, but I think I played the easier role.  You implemented
+it all.
+
+*Bob*: It depends on what you're good at, I guess.  I find it easier to
+code something up, once I get the basic idea.  What I find much harder
+is to get out of an accepted mind set, and to look at a problem with
+fresh eyes.
+
+*Alice*: Watch out, Bob!  This is the second time that you sound out of
+character.  Everyone would have expected that you would not be that much
+interested in thinking about accepted mind sets, let alone trying to
+get out of one.  As I noticed earlier, if someone were writing a book
+about our discussion, they would have put such a line in my mouth.
+
+*Bob*: Well, it's good that nobody will be doing such a silly thing!

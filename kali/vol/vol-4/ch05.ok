@@ -1,6 +1,340 @@
 = The Second Journey: <tt>Clop_option</tt>
 
-== xxx
+== Code Listing
 
+*Alice*: Time to open the black box that contains the helper class that
+does all the work behind the scenes, for each individual option.  Can you
+show me the whole class definition, so that I get an idea of what it looks
+like, before we inspect each method?
 
+*Bob*: Here you are:
 
+ :inccode: .clop.rb-helperclass
+
+== Parsing An Option Definition
+
+*Alice*: That's not as long as I thought it would be.
+
+*Bob*: One of the great things of Ruby: because the notation is so compact,
+and because you don't have to worry about types and declarations and all
+that sort of stuff, you can write quite powerful codes in just a few pages.
+
+*Alice*: Let's step through the <tt>Clop_option</tt> class.  The initializer
+starts off just like it did on the higher <tt>Clop</tt> class level.  In
+that case, the first line was:
+
+ :include: .clop.rb-8
+
+while here we have only one line, the same apart from the final "s":
+
+ :include: .clop.rb+initialize+Clop_Option
+
+And that makes sense, since by definition this helper class takes care
+of only one option at a time.
+
+*Bob*: The next method shows how the parsing gets started:
+
+ :include: .clop.rb+parse_option_definition
+
+Remember how we wrote the definition of an option block: first we write
+one line for each piece of information, such as
+
+  Short name:           -o
+
+or
+
+  Value type:           string
+
+Only at the end do we allow an arbitrarily long multi-line description
+of what the option is all about.  That was the line called <tt>Long
+Description</tt>.  It contains the information that will be echoed when
+we ask for <tt>--help</tt> on the command line.
+
+This means that the parsing process is somewhat different from the
+single-line instructions and for the last multi-line block.  The method
+<tt>parse_single_lines_done?</tt> takes care of the single lines, while
+the last few lines of the <tt>parse_option_definition</tt> method take
+care of the multi-line block.
+
+Of course, I could have written a separated <tt>parse_multiple_lines</tt>
+method, but that seemed to be a bit of overkill, given that the work can
+be specified in just a few lines:
+
+ :include: .clop.rb-9
+
+You just keep taking lines off from the <tt>def_str</tt> that contained
+the whole here document, and when you encounter two successive blank
+lines, you stop.  Remember, we had agreed that two blank lines would
+signal the start of a new option block.
+
+== Are we Done Yet?
+
+*Alice*: So all the rest of the parsing is done in the method
+<tt>parse_single_lines_done?</tt>.  Why the question mark at the end
+of the name?
+
+*Bob*: This is a nice feature of Ruby, that it allows you to add a
+question mark or exclamation mark at the end of the name.  You can't
+use it as a general character in the middle of a name; it can only
+appear at the end.  Its use is to communicate to the human reader
+something of the intention of the program: in this case, you might
+guess that a boolean value is being returned by this method.  If the
+value is true, then indeed we are done parsing the single lines.  If
+the value is false, we aren't done yet.
+
+*Alice*: I like that, that does make the intention clearer.
+
+*Bob*: Here is the method:
+
+ :include: .clop.rb+parse_single_lines_done?
+
+== A Non-Greedy Wild Card
+
+*Alice*: I see that you start off with another exercise in regular
+expressions, but this one puzzles me:
+
+ :include: .clop.rb-10
+
+Why do you add a <tt>?</tt> after an <tt>*</tt> ?  That seems to be
+redundant.  The <tt>*</tt> tells you to expect zero or more instances
+of the previous character, while the <tt>?</tt> tells you to expect
+just zero or one instances.  No, I take that back, it is not even
+redundant, it seems wrong, since <tt>?</tt> would be expected to follow
+the previous character, and here the <tt>*</tt> is in the way.
+
+*Bob*: You should consider the combination of the two characters as
+one unit: <tt>*?</tt> is defined as a `non-greedy' version of the
+<tt>*</tt> wild-card character.
+
+*Alice*: Non-greedy?
+
+*Bob*: Yes.  Normally, the wild card notation is interpreted in a `greedy'
+way: it gobbles up as much as it can.
+
+*Alice*: I would call it a `hungry' way in that case.  Can you give me a
+simple example of the difference?
+
+*Bob*: Sure.  Let's use our friend +irb+ again:
+
+  |gravity> irb
+  irb(main):001:0> s = "abc:def:xyz"
+  => "abc:def:xyz"
+  irb(main):002:0> s =~ /.*:/ ; $'
+  => "xyz"
+  irb(main):003:0> s =~ /.*?:/ ; $'
+  => "def:xyz"
+
+In the first regular expression, I ask for a match with an arbitrary number
+of characters of any type, followed by a colon.  The period can stand
+for any character except a new line.  As you can see, after the match, what
+is left over is <tt>"xyz"</tt> so the match went all the way to the
+second colon.
+
+Now in the second regular expression I have added the question mark to make
+the match non-greedy.  In this case, the string <tt>"def:xyz"</tt> remains,
+which means that the match only included <tt>"abc:"</tt>.  This was
+the first match that satisfied the minimal requirement of having an
+arbitrary number of characters ending with a colon.  Our non-greedy operator
+<tt>*?</tt> was satisfied at this point, while its greedy colleague <tt>*</tt>
+kept looking for a longer match, and indeed found one.
+
+*Alice*: Very nice to have the option to stop early.  And in our case, this
+means that you are allowed to include colons in the definitions, without
+confusing the parser, right?
+
+*Bob*: Indeed.  Every line among the single-line definitions has the
+structure:
+
+  <name>    : <content>
+
+I do not allow a colon "<tt>:</tt>" to appear in the `name' part of
+the line, but I do allow colons to appear in the `content' part.  This is
+yet another example of trying not to limit the user unnecessarily.  An
+example I thought about is where someone might want to define a classification
+for stars, and for some reason decides that it is convenient to use colons.
+Options to assign stars of different classes could take on the form:
+
+    --star_type "star : MS"
+
+for a main sequence star, or
+
+    --star_type "star : MS : ZAMS"
+
+as a further specialization, to indicate a zero-age-main-sequence
+star.  A giant on the asymptotic giant branch could be specified as:
+
+    --star_type "star: giant: AGB"
+
+In all these cases, the non-greedy parser instruction will extract the content
+part of the line correctly.
+
+*Alice*: I like the idea of keeping maximum flexibility for option
+specifications, rather than excluding characters like a colon.  Good!
+And I see in the next line that you raise an error if you find no
+colon at all.
+
+== Extracting the Name from a Definition
+
+*Bob*: Yes.  And if a colon is found, everything before the first colon
+is assigned to the variable +name+ and everything after that colon to
+the variable +content+.
+
+*Alice*: I understand how +content+ gets its content, so to speak, since
+<tt>$'</tt> is by definition what is left over after the match.  And I also
+understand that <tt>$&</tt> would not have been a good choice for +name+,
+since it would have included the colon.  I probably would have started
+with <tt>$&</tt> and stripped off the last character.
+
+*Bob*: That would still not be right, since in most cases you would have
+wound up with a name that contained trailing spaces.  You could have taken
+those off too, of course, but I found a quicker way to do everything
+at once.  They key is given in the use of the parenthesis in the first
+line:
+
+ :include: .clop.rb-10
+
+*Alice*: That one line is a rich line indeed!  What does <tt>(\w.*?)</tt>
+mean?
+
+*Bob*: in general, parentheses in a regular expression can be used for two
+purposes: they allow you to group characters together and they also allow
+you to collect particular parts of the match results that you might be
+interested.  An example of the first use is to write <tt>/(na)*/</tt>.
+This specifies that the group of letters +na+ is to be repeated an arbitrary
+number of times.  In a word like <tt>banana</tt>, it matches against the
++nana+ part.  An example of the second use is what we see here in the code.
+
+When parts of a regular expression are put within parentheses, the
+variable <tt>$1</tt> will be given the string that matches the content
+of the first set of parentheses, the variable <tt>$2</tt> will receive
+a string containing the content of the second parentheses delimited match,
+and so on.  Here there is only one set of parentheses, enclosing whatever
+appears after initial white spaces, and before the first colon.
+
+To be specific, a match against the <tt>(\w.*?)</tt> part requires there
+to be at least one alphanumeric character or underscore, corresponding to
+<tt>\w</tt>, followed by arbitrary characters.  Since the <tt>:</tt>
+in the regular expression <tt>/\s*(\w.*?)\:/</tt> is placed outside the
+parentheses, the colon does not appear in the value of the variable
+<tt>$1</tt>, but everything else up to the colon does appear, apart from
+possible white space before the colon.  Therefore, <tt>$1</tt> will
+contain the complete name, with any leading or trailing white space removed.
+
+Actually, removing those leading and trailing white space characters was
+not really necessary, as you will see below, since we're only matching the
+`name' part of the definitions against various possibilities, and those
+matches would work fine with blank space left in place.  I just decided
+to be extra neat, for a change.
+
+== Extracting the Content from a Definition
+
+*Alice*: Let me summarize the idea.  Each option definition, apart from
+the exceptional Long Description lines, has the one-line structure:
+
+  <name>    : <content>
+
+You have now successfully extracted the name from an individual line,
+and now you enter a +case+ switch, in which you are going to check which
+name it is you have extracted, and depending on the name, you're going to
+do something with the corresponding content.
+
+*Bob*: Precisely.  Let us walk through the different possibilities.  It helps
+to remind ourselves of the structure of a typical option block.  Here
+is what we could have written for the step size specification:
+
+  Short name:           -d
+  Long name:            --step_size
+  Value type:           float
+  Default value:        0.001
+  Global variable:      dt
+  Print name:           delta t
+  Description:          Integration time step
+  Long description:
+    In this code, the integration time step is held constant,
+    and shared among all particles in the N-body system.
+
+You can see in the listing of the method <tt>parse_single_lines_done?</tt>
+above that each of the one-line definitions is being treated in the correct
+way.
+
+*Alice*: Let me check.  For the long and short name, you allow both spellings,
+"name" and "Name", in the `name' part of the definition.  And since there are
+no blanks allowed in the name of the option, it is safest to split off
+only the first contiguous non-blank character set from the content string.
+That makes sense.  And then you assign the actual name, in this case
+either <tt>-d</tt> or <tt>--step_size</tt> to an instance variable of the
+class <tt>Clop_Option</tt>: <tt>@shortname</tt> or <tt>@longname</tt>,
+respectively.
+
+*Bob*: Yes.  And I could have done a better job in checking for errors,
+but you have to stop somewhere.  If someone would write a definition as:
+
+  Long name:            --step size
+
+the results would be <tt>@longname = --step</tt>, and the string
+<tt>"size"</tt> would be discarded.
+
+== Two Types of Mistakes
+
+*Alice*: I agree that there is no point to make things completely robust
+in an iron clad way at this point.  Perhaps in a year or so, when we decide
+to use this program indefinitely, we can come back and make things
+more sturdy.
+
+But wait a minute.  Is that really correct what you just said?  If someone
+would have typed <tt>"--step size"</tt> on the command line, then only
+the string <tt>"--step"</tt> would have been handed to our helper class
+<tt>Clop_Option</tt>, by the parser in class <tt>Clop</tt>, and there still
+would be no need to use the +split+ method here since in this case the
+variable +content+ would contain only the string <tt>"--step"</tt>, and
++split+ would not change anything.
+
+*Bob*: All true, but I think you are confusing two different things.  First
+we talked about the _writer_ of a program writing an option block that
+contains a mistake, in the form of <tt>--step size</tt> as the choice of
+long name for an option.  The mistake here is to leave a space between the
+two words, rather than an underscore.  An underscore would have had
+the same effect of making things more readable, as compared to the simplest
+choice of <tt>--stepsize</tt>, but an underscore counts as a non-blank,
+so for Ruby <tt>"step_size"</tt> is still a single word, while 
+<tt>"step size"</tt> would be considered to be two words.
+
+Now there is a separate mistake that you brought up, where the _user_
+of a program would give a command line that includes, for example,
+<tt>"--step size 0.01"</tt>.  Perhaps the user saw the option description
+of the writer, and followed it blindly, not realizing that it was faulty.
+Or perhaps the program would have a correct option definition, given as
+<tt>"step_size"</tt>, but the user overlooked the underscore.  In either
+case, what will happen is that an instance of the class <tt>Clop_Option</tt>
+will be created, with a long option name <tt>"step"</tt>.  Next, the string
+<tt>"size"</tt> will be parsed, as the next element in the +ARGV+ array,
+and an attempt will be made to convert that to a floating point number.
+
+*Alice*: And that will fail.
+
+*Bob*: Not necessarily.  Again, I could have checked whether a string has
+the correct format for a floating point number, but I don't think I've been
+quite so meticulous.  However, the next step will definitely go wrong: even
+if somehow <tt>"size"</tt> is converted to some kind of number, and assigned
+to a variable associated with the option <tt>"--step"</tt>, then the parser
+of the +Clop+ class will read in <tt>"0.01"</tt>, trying to make sense of
+that as an option.  And of course, this is not a valid option.  It does
+not even contain a hyphen.
+
+*Alice*: What will go wrong in that case?
+
+*Bob*: The method <tt>find_option</tt>, which we looked at in our first
+journey, would not find a match with any known option, and so it would
+return +nil+.  As a result, the method <tt>parse_command_line_options</tt>
+would raise an error, and halt the program after printing the string
+
+  "option "0.01" not recognized"
+
+*Alice*: Good to know that such mistakes would be caught, and what is more,
+would lead to understandable error messages.
+
+By now, I think I need a break.  Something tells me this will be a long
+journey!
+
+*Bob*: I'm afraid it will be, so perhaps we should split it up into
+subjourneys.

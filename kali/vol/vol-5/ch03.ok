@@ -1,0 +1,417 @@
+= Sprinkling Particles in Space
+
+== Choosing a Distance
+
+*Alice*: Now I understand what your code is doing, except for a few crucial
+lines.  First there is the one-liner about choosing the distance
+between a new star and the center of the star cluster:
+
+ :include: .mkplummer1.rb-4
+
+Can you tell me what this expression means, and how it is derived?
+It must somehow be related to the density distribution
+<tex>$\rho(r)$</tex>, which you have already derived from the potential.
+How exactly do Aarseth, Henon and Wielen use the density for particle
+sprinkling?
+
+*Bob*: They describe their technique in a few words, and I had to read
+those words carefully, and do some head scratching, to figure out what
+it meant.  But as always, once you see it, it is really easy.  Let me
+try to summarize it in my own words.
+
+First we introduce the cumulative mass distribution
+
+:equation:
+\label{mrsymb}
+m(r) \, = \, \int_0^r 4 \pi r^2 \rho(r) dr
+
+which is the amount of mass that is included within the star cluster
+inside a distance <tex>$r$</tex> from the center.  When we create a
+new star, and place it at radius <tex>$r$</tex>, that star will have
+<tex>$m(r)$</tex> of the mass of the cluster at positions closer to
+the center, and <tex>$M-m(r)$</tex> of the mass at positions further
+from the center.
+
+In other words, it will see a fraction <tex>$m(r)/M$</tex> of the
+total mass inside its radial position.  Now that fraction could be
+anything between 0 and 1.  It will be 0 if the particle is placed
+exactly in the center, and it will approach 1 if the particle is
+placed very far away, reaching 1 when the particle is placed at
+infinity.
+
+The ranking of each particle, in terms of the enclosed mass, is random
+and uniform in the mass fraction.  In other words, <tex>$m(r)/M$</tex>
+will be a random value between 0 and 1, with each value equally likely.
+
+So here is the idea: spin a random number generator in order to obtain
+a a random number <tex>$m_i$</tex>, with <tex>$0 \le m_i \le M$</tex>,
+and we consider that to be the fractional mass contained within the
+radius <tex>$r_i$</tex> of particle <tex>$i$</tex>.  So all we know is
+that <tex>$m(r_i)=m_i$</tex>, but what we need to know is
+<tex>$r_i$</tex> itself.  So the procedure is to invert (ref(mrsymb))
+to obtain a function <tex>$r(m)$</tex>, and then life is simple:
+<tex>$r_i=r(m_i)$</tex>.
+
+== Following the Recipe
+
+*Alice*: That sounds straightforward.  Can you show me the expressions
+you found for <tex>$m(r)$</tex> and <tex>$r(m)$</tex> ?
+
+*Bob*: I simply took their expressions.  They use a system of units in which
+the total mass _M_, the gravitational constant _G_ and the structural length
+scale _a_ that we used above are all unity.  The mass enclosed within
+a radius _r_ then becomes:
+
+:equation:
+\label{mrahw}
+m(r) \, = \, r^3\left(r^2 + 1\right)^{-3/2}
+
+and the radius that corresponds to a mass fraction becomes:
+
+:equation:
+\label{rmahw}
+r(m) \, = \, \left(m^{-2/3}-1\right)^{-1/2}
+
+As you can see in the second line of the inner loop in my +mkplummer+
+method, this is how I determine the radial position of each particle,
+using Ruby's random number generator +rand+:
+
+ :include: .mkplummer1.rb-4
+
+*Alice*: Hmm.  You didn't check whether they had done their math
+correctly?
+
+*Bob*: No need to.  This is a paper by Aarseth, Henon, Wielen.
+Besides, it is thirty years old and has been cited zillions of times
+by others.  I'm sure this is a result that can be trusted.
+
+*Alice*: I don't like to accept things on trust, no matter what the
+authority may be behind it.  Not that I expect them to be wrong,
+I agree that that would be highly improbable.  Still, I would feel
+much better to derive the results ourselves.  Besides, if we work
+it out now, we can both use those notes when we have to teach it in
+class to the student.  Better still, we just put it into the material
+we prepare for them on the web.
+
+*Bob*: Okay, if you like.  Your turn, though, I already derived the
+density.  Do you want to use a package from symbolic integration?
+Differentiation is easy enough by hand, but I must admit, I'm a bit
+rusty in my integration.
+
+== Cumulative Mass
+ 
+*Alice*: So am I, and that is exactly a reason to do it with pen and
+paper, tempting as it is to use a symbolic package.  Okay.  I'll start
+with the density you derived:
+
+:equation:
+\rho(r) \, = \, {M \over 4\pi } {3a^2 \over \,\left(r^2 + a^2\right)^{5/2}}
+
+By definition, this gives us for the cumulative mass, as a function of radius:
+
+:eqnarray:
+m(r) \, &=& \, \int_0^r 4 \pi r^2 \rho(r) dr                       \nonumber\\
+  &=& \, 
+\int_0^r {3M\over a^3}r^2\left(1+{r^2\over a^2}\right)^{-5/2}dr
+
+The variable <tex>$r$</tex> appears in the integrand only in terms of
+the combination <tex>$r^2/a^2$</tex>, so a natural change of variables is:
+
+<tex>$$
+x = {r^2\over a^2} \,\,\,\,\,\, \Rightarrow\,\,\,\,\,\, 
+r = a\sqrt{x} \,\,\,\,\,\, \Rightarrow \,\,\,\,\,\, 
+dr = {a\over2}\,{dx\over\sqrt{x}} \,\,\,\,\,\, \Rightarrow 
+$$</tex>
+
+which gives us:
+
+:eqnarray:
+m(r) \, &=& \, {3M\over a^3}
+\int_0^{r^2/a^2} (a^2x)(1+x)^{-5/2}{a\over2}\,{dx\over\sqrt{x}}     \nonumber\\
+&=& \, {3M\over 2}
+\int_0^{r^2/a^2} x^{1/2}(1+x)^{-5/2}dx                              \nonumber
+
+It is easier to bring the total mass to the other side, as an expression
+for the fractional cumulative mass.  I don't like the high power
+$</tex>5/2$</tex> in the integrand.  I'll use integration by parts to
+lower the power:
+
+:eqnarray:
+{m(r)\over M} \, &=& \, 
+-\int_0^{r^2/a^2} x^{1/2}{d\over dx}\left\{(1+x)^{-3/2}\right\}dx  \nonumber\\
+\, &=& \, -\int_0^{r^2/a^2} d\left\{x^{1/2}(1+x)^{-3/2}\right\}
+\,+\half\int_0^{r^2/a^2}(1+x)^{-3/2}
+{d\over dx}\left\{x^{1/2}\right\}dx                             \nonumber\\
+&=& \, -\left. x^{1/2}(1+x)^{-3/2}\right|_0^{r^2/a^2}
+\quad\quad\quad+\half\int_0^{r^2/a^2} x^{-1/2}(1+x)^{-3/2}dx         \nonumber
+
+That looks a bit better already.  How about another change of variables:
+
+<tex>$$
+y = {1\over x} \,\,\,\,\,\, \Rightarrow\,\,\,\,\,\, 
+x = {1\over y} \,\,\,\,\,\, \Rightarrow \,\,\,\,\,\,
+dx = -{1\over y^2}\,dy \,\,\,\,\,\, \Rightarrow 
+$$</tex>
+
+This gives us:
+
+:eqnarray:
+{m(r)\over M} \, &=& \, 
+-{r \over a}\left(1+{r^2\over a^2}\right)^{-3/2}\quad\quad\quad\,\,\,
++\half\int_\infty^{a^2/r^2} y^{1/2}\left(1+{1\over y}\right)^{-3/2}
+\left\{-{1\over y^2}\,dy\right\}                                   \nonumber\\
+ &=& \, 
+-{r \over a}\left(1+{r^2\over a^2}\right)^{-3/2}\quad\quad\quad\,\,\,
+-\half\int_\infty^{a^2/r^2} y^{-3/2}\left(1+{1\over y}\right)^{-3/2}dy   \nonumber\\
+ &=& \, 
+-{r \over a}\left({r^2\over a^2}\left({a^2\over r^2}
++1\right)\right)^{-3/2}\,\,\,
+-\half\int_\infty^{a^2/r^2} (y+1)^{-3/2}dy   \nonumber\\
+ &=& \, 
+-{r \over a}\,\left({r \over a}\right)^{-3}
+\left({a^2\over r^2}+1\right)^{-3/2}\,
++\left. (y+1)^{-1/2}\right|_\infty^{a^2/r^2}   \nonumber\\
+ &=& \, 
+-{a^2 \over r^2}\left(1+{a^2\over r^2}\right)^{-3/2}\quad\quad\quad
++\left(1+{a^2\over r^2}\right)^{-1/2}            \nonumber\\
+ &=& \, \quad\quad\,\,
+\left(1+{a^2\over r^2}\right)^{-3/2}\left\{-{a^2 \over r^2}
++\left(1+{a^2\over r^2}\right)\right\}                    \nonumber\\
+ &=& \, \quad\quad\,\,
+\left(1+{a^2\over r^2}\right)^{-3/2}
+
+So here is what we were looking for:
+
+:equation:
+\label{mr}
+m(r) \, = \, M\left(1+{a^2\over r^2}\right)^{-3/2}
+
+Indeed eq. (ref(mrahw)), with their choice of units.
+
+== Physical Intuition
+
+*Bob*: Well, if you are rusty in your integrations, then I don't know what
+to call myself.  Nice job!  It is always surprising to me how the result
+of that type of calculation can come out in such a simple form.
+
+*Alice*: There probably is a good physical reason for it to be this simple.
+Let's think.  I started with density, something that you had found by
+differentiation, and then I integrated the product of the density and
+the geometric opening angle factor of <tex>$4\pi r^2$</tex>.  Apart from
+that factor, integration and differentiation would have canceled.  Pity.
+
+*Bob*: Hey, wait a minute.  I found the density by integrating alright, but
+in the following way, using Poisson's equation:
+
+:equation:
+{1\over r^2}{d\over dr}\left( r^2{d\over dr}\Phi(r)\right) \,=\, 4\pi G\rho(r)
+
+Doesn't that have exactly the factor <tex>$r^2$</tex> you were looking for?
+
+*Alice*: It does . . .  Hey, I could have started there!  I could have written:
+
+:eqnarray:
+m(r) \, &=& \, \int_0^r 4 \pi r^2 \rho(r) dr                       \nonumber\\
+  &=& \, 
+{1\over G}\,
+\int_0^r {d\over dr}\left( r^2{d\over dr}\Phi(r)\right)            \nonumber\\
+  &=& \, 
+{1\over G}\,
+\left. {d\over dr}\left( r^2{d\over dr}\Phi(r)\right)\right|_0^r    \nonumber\\
+  &=& \, 
+{1\over G}\, r^2{d\Phi \over dr}                                    \nonumber
+
+*Bob*: Ah, I remember telling you that it might come in handy to have the
+derivatives of the potential at hand.
+
+*Alice*: Not only that, here is the physical meaning we were looking for!
+You also mentioned that the gradient of the potential is the gravitational
+force, apart from a minus sign.  So what this equation is telling us, is
+simply that the physical force is proportional to mass and inverse
+proportional to the radius squared: Newton's gravity!  We could have
+started that way.  The magnitude of the force on a particle with mass
+<tex>$m_p$</tex> at distance <tex>$r$</tex> from the center is of course:
+
+<tex>$$
+F \, = \, G \, {m_p m(r) \over r^2}
+$$</tex>
+
+and also equal to:
+
+<tex>$$
+F \, = \, \left|-\,m_p\,{d\Phi \over dr}\right| \, = \, m_p\,{d\Phi \over dr}
+$$</tex>
+
+since <tex>$d\Phi/dr\ge0$</tex> everywhere.
+
+*Bob*: You're right.  If we would have started with those two lines, we
+could have written
+
+<tex>$$
+m(r) \, = \, {1\over G}\, r^2{d\Phi \over dr}
+$$</tex>
+
+right away.  And with the expression I wrote down yesterday,
+
+<tex>$$
+\frac{d}{dr}\Phi(r) \,= \, GM {r \over \,\left(r^2 + a^2\right)^{3/2}}
+$$</tex>
+
+this would have given us:
+
+<tex>$$
+m(r) \, = \, {1\over G}\, r^2{d\Phi \over dr}
+\, = \, M\, {r^3 \over \,\left(r^2 + a^2\right)^{3/2}} \, = \,
+M\left(1+{a^2\over r^2}\right)^{-3/2}
+$$</tex>
+
+*Alice*: Quite a bit faster than my juggling of integrals!  We could have
+used a healthy dose of physical intuition, before embarking on that lengthy
+computation.
+
+== An Intuitive Derivation
+
+*Bob*: Now that we have found the radius dependence of the cumulative mass,
+we only have to invert that relationship, to get the dependence of cumulative
+mass on radius.  That shouldn't be too hard.  However, I'm getting tired of
+carrying along the factors <tex>$M$</tex> and <tex>$a$</tex> which we
+may as well consider to be the physical units used for measuring
+<tex>$m$</tex> and <tex>$r$</tex>, so that the latter are used as
+dimensionless parameters.  Setting <tex>$M=a=1$</tex>, we can write:
+
+<tex>$$
+m(r) \, = \, r^3\left(r^2 + 1\right)^{-3/2} \, \Rightarrow \,
+$$</tex>
+
+<tex>$$
+m^{-2/3} \, = \, r^{-2}\left(r^2 + 1\right) \, \Rightarrow \,
+$$</tex>
+
+<tex>$$
+r^2 m^{-2/3} \, = \, \left(r^2 + 1\right) \, \Rightarrow \,
+$$</tex>
+
+<tex>$$
+r^2\left(m^{-2/3}-1\right) \, = \, 1  \, \Rightarrow \,
+$$</tex>
+
+:equation:
+r(m) \, = \, \left(m^{-2/3}-1\right)^{-1/2}
+
+which is indeed eq. (ref(rmahw) that you asked me to derive.  No need to
+trust anybody anymore!  We have derived it from first principles.
+
+*Alice*: But you'd better explain your students how you can restore the
+correct factors of <tex>$M$</tex> and <tex>$a$</tex>, otherwise they
+will think that you were cutting corners.
+
+*Bob*: Good point.  It takes a while to learn to think in terms of
+dimensionless quantities, and to transform easily and confidently
+between those and the corresponding physical quantities.  In this
+case, I can just point out that the dimensionless quantity
+<tex>$r$</tex> has to be replaced by <tex>$r/a$</tex>, and the
+dimensionless quantity <tex>$m$</tex> has to be replaced by
+<tex>$m/M$</tex>.  We then get:
+
+:equation:
+r(m) \, = \, {a \over \sqrt{\left({M\over m}\right)^{2/3}-1}}
+
+*Alice*: That is correct, but if I were your student, I would be rather
+surprised.  I would argue that a piece of wood with a length of 1 foot
+has also a length of 12 inches.  So you have to multiply the unit of
+length with the dimensionless number 1 or 12, as the case may be, to get
+the physical length.  So I would ask: why are you _dividing_ <tex>$r$</tex>
+by the length scale <tex>$a$</tex> ?
+
+*Bob*: Yes, students do indeed ask such questions!  It just means that they
+have to practice more with simple examples, until it comes to them naturally.
+
+*Alice*: Well, that is not really answering the question.  My answer would be
+to introduce two different sets of symbols, to remove the confusion between the
+physical quantities and the dimensionless quantities.
+
+*Bob*: I won't stop you!
+
+== A Formal Derivation
+
+*Alice*: If you define
+
+:equation:
+\left\{ \begin{array}{lcl}
+r \, &=& \, \xi a \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+m \, &=& \, \mu M
+\end{array} \right.
+
+you can point out that <tex>$r$</tex> and <tex>$a$</tex> are physical
+quantities, while <tex>$\xi$</tex> is the dimensionless quantity
+connecting them.  Similarly, <tex>$m$</tex> and <tex>$M$</tex> are
+physical quantities, while <tex>$\mu$</tex> is the dimensionless quantity
+giving the variable quantity <tex>$m$</tex> in terms of the mass unit
+<tex>$m$</tex>.  We can then write:
+
+:equation:
+\left\{ \begin{array}{lcl}
+\xi \, &=& \, {\displaystyle {r\over a}} \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\mu \, &=& \, {\displaystyle {m\over M}}
+\end{array} \right.
+
+This makes is possible to write your derivation without any shortcuts,
+in a mathematical precise way.
+
+<tex>$$
+m \, = \, M r^3\left(r^2 + a^2\right)^{-3/2} \, \Rightarrow \,
+$$</tex>
+
+<tex>$$
+\mu M \,=\, M (\xi a)^3\left((\xi a)^2 + a^2\right)^{-3/2} \,\Rightarrow \,
+$$</tex>
+
+<tex>$$
+\mu \, = \, \xi^3\left(\xi^2 + 1\right)^{-3/2} \, \Rightarrow \,
+$$</tex>
+
+<tex>$$
+\mu^{-2/3} \, = \, \xi^{-2}\left(\xi^2 + 1\right) \, \Rightarrow \,
+$$</tex>
+
+<tex>$$
+\xi^2 \mu^{-2/3} \, = \, \left(\xi^2 + 1\right) \, \Rightarrow \,
+$$</tex>
+
+<tex>$$
+\xi^2\left(\mu^{-2/3}-1\right) \, = \, 1  \, \Rightarrow \,
+$$</tex>
+
+<tex>$$
+\xi(\mu) \, = \, \left(\mu^{-2/3}-1\right)^{-1/2} \, \Rightarrow \,
+$$</tex>
+
+<tex>$$
+{r(m)\over a} \, = \, \left(\left({M\over m}\right)^{2/3}-1\right)^{-1/2}
+\, \Rightarrow \,
+$$</tex>
+
+<tex>$$
+r(m) \, = \, {a \over \sqrt{\left({M\over m}\right)^{2/3}-1}}
+$$</tex>
+
+*Bob*: Yes, that is full mathematical rigor.  But of course, in practice,
+you wouldn't go to such extravagance.  This is like what you were pushing
+for earlier, with your request of putting hats on all kind of variables,
+just because their mathematical functional form changed.  Since I'm a
+physicist, I prefer to change notation only if the physical meaning
+of the variables change.
+
+*Alice*: I must admit, I often do use this type of switching of variables,
+along the lines of what I just illustrated.  I can see that you're comfortable
+with omitting that step, and that is mostly a matter of taste, I guess.
+Still, you can't insist or wish that your students have the same quirks or
+abilities as you.  So I suggest we at least add my derivation as well.
+
+*Bob*: In that case I insist that we leave my derivation in too, for those
+younger versions of me who already got the physics, and don't want to accrete
+unnecessary mathematical niceties.
+
+*Alice*: So be it.

@@ -1,4 +1,562 @@
-= The Third Journey: +Clop+, the Help Part
+= More Parsing of Single Lines
 
-== xxx
+== Recognizing the Type
 
+*Alice*: I'm ready to continue our exploration of the
+<tt>parse_single_lines_done?</tt>.  So far we have only looked at the 
+way it deals with short and long names.
+
+*Bob*: Yes, let us continue our +case+ study.  Before getting into the
+third +when+ statement, first a bit of background.  So far we have
+extracted the essential part of the +content+ string by splitting off
+its first word, using <tt>content.split[0]</tt>, but now we will encounter
+several cases where we have to be more careful than that.
+
+If the `name' part of a definition has the form
+<tt>"Value Type"</tt> or <tt>"Value type"</tt>, we have to do more
+than splitting off the first blank-separated substring, since some
+types can legally contain more than one word.  A physical vector is
+represented in our programs as an object of class +Vector+ with
+floating point numbers as elements.  I reserved the expression
+<tt>"float vector"</tt> for this type, since in the future we might
+also want to deal with <tt>"int vector"</tt> or perhaps <tt>"complex
+vector"</tt> or even <tt>"quaternion vector"</tt> once we implement
+regularization techniques.
+
+*Alice*: Let me try to understand the regular expression soup that
+is supposed to extract the multi-word type information here, in the
+line
+
+ :include: .clop.rb-11
+
+You take the string +content+, and apply two substitutions to it.
+First you take one or more white spaces at the very beginning of
+the string, if you find them there, and replace them by the null
+string; in other words, you take off all leading white space.
+
+But why did you write <tt>/^\s+/</tt> instead of <tt>/^\s*/</tt> ?
+If there would be no white space at all, you could still replace
+it by the null string.  Replacing nothing by nothing would not hurt
+anyone, would it?
+
+*Bob*: I suppose you are right.  Yes, that must be true; either way
+would work.
+
+*Alice*: Now for the second substitution, there you use parentheses
+again.  You talked about two different uses, but this seems to be
+yet another use.
+
+*Bob*: You are right, I probably should have mentioned this as a third way
+of using parenthesis.  Here the vertical line indicates a choice: it
+is a type of logical `or' operator.  This regular expression matches
+in two different cases: when the expression in parentheses is replaced
+by what is written to the left of the vertical line, or when it is
+replaced by what is written to the right of that line.
+
+Let us first look at the left side.  This substitution would be equivalent
+to <tt>sub(/\s*#.*/,"")</tt>.
+
+*Alice*: Ah, you strip off a Ruby comment, something that starts with
+a <tt>#</tt> sign, and is followed by whatever: an arbitrary number of
+arbitrary characters, indicated by "<tt>.*</tt>".  In addition, you
+remove blank space leading up to the comment.
+
+*Bob*: Indeed.  Now the second possibility for a match is that the right
+side of the vertical bar springs into action, in which case the substitution
+would be equivalent to <tt>sub(/\s*$/,"")</tt>.
+
+*Alice*: And that would only remove whatever blank space there may be
+just before the end of the string, indicated by <tt>$</tt>.  Okay, got it!
+
+*Bob*: Note that this third +when+ statement does something more than assigning
+the content of the definition line to the instance variable <tt>@type</tt>.
+If the type happens to be +bool+, the following action is undertaken:
+
+ :include: .clop.rb-12
+
+The variable <tt>@valuestring</tt> will be given the string <tt>"false"</tt>.
+This guarantees that any logical flag will always be set to be false, unless
+the user specifically mentions the flag as an option, in which case
+the corresponding variable <tt>@valuestring</tt> will be set to be
+<tt>"true"</tt>, as we will see later.
+
+*Alice*: So this frees the writer of the option block from having to add
+the line
+
+  Default value:        false
+
+In the definition of an option block with a boolean value.
+
+*Bob*: Exactly.  The writer can still add this, but it is not necessary.
+And since a flag as a command line option does not take a value on the
+command line, it would be easy to forget to include this line in the 
+definition.  Therefore I have automated the process here.
+
+*Alice*: What do you mean with ``a flag does not take a value on the
+command line''?
+
+*Bob*: Remember the example where the user can ask for extra diagnostics,
+by adding <tt>-x</tt> to the command line?  If we really wanted to treat
+it on the same level as the time step choice, say, where you would write
+<tt>-d 0.001</tt>, we should ask the user to write <tt>-x true</tt>.
+But that would be unnecessarily wordy.  By mentioning <tt>-x</tt> the user
+already requests something extra to be done.  Not mentioning this
+option would leave the value false, mentioning it would make it true.
+The advantage of a boolean variable is that there is no third option, so
+no need to specify anything!
+
+*Alice*: Okay, that is clear, and yes, I am all for automatization, whenever
+a situation is unambiguous.
+
+== Default Values
+
+*Bob*: Now we can quickly walk through the remaining +when+ statements.
+When we encounter a <tt>Default Value</tt> or <tt>Default value</tt>,
+written before the first colon, we assign the content corresponding
+to that name to the varialbe <tt>@defaultvalue</tt>, and then we
+immediately give that same value to <tt>@valuestring</tt>.
+
+*Alice*: In that way, if no command line option for that variable is specified,
+the program will run with the default value.
+
+*Bob*: Exactly.  If the default time step would be <tt>0.01</tt>, and someone
+would give the command line option <tt>0.001</tt>, then the
+<tt>@valuestring</tt> would be changed from <tt>"0.01"</tt> to
+<tt>"0.001"</tt>.  We will see below how that happens.
+
+*Alice*: But why do you keep two instance variables here, both
+<tt>@defaultvalue</tt> and <tt>@valuestring</tt> ?  You could just
+have used only one, <tt>@valuestring</tt>.  If you give that string
+the default value at first, and then you allow it to be overridden,
+it will always have the intended value.  What need is there to remember
+the original default value separately, in a variable called
+<tt>@defaultvalue</tt> ?
+
+*Bob*: Originally I had only one value, just as you suggested, but then
+I realized that it would be nice to let the help facility tell you what
+the default values are.
+
+*Alice*: But if you ask for help, by typing <tt>ruby some_program.rb -h</tt>,
+or by typing <tt>ruby some_program.rb --help</tt>, you don't change
+any of the default values, so you could ask the help facility to echo
+whatever is stored in the <tt>@valuestring</tt>, can't you?  I still don't
+see the need for a separate <tt>@defaultvalue</tt> variable.
+
+*Bob*: You're reproducing my stream of thoughts, when I wrote this.  I
+had the same idea, initially, but then I realized that someone could type
+
+  |gravity> ruby some_program.rb -d 0.1 --help
+
+The option parser would first encounter <tt>-d 0.1</tt> and set the
+<tt>@valuestring</tt> for the time step option to <tt>"0.1"</tt>,
+overriding the default value <tt>"0.01"</tt>.
+
+*Alice*: But why would anybody want to do that?
+
+*Bob*: Two answers.  First, if something like this can happen, it will,
+and a good attitude in defensive programming is to be prepared for such
+eventualities.
+
+*Alice*: If someone would be writing a book about our dialogues, that
+line would be put into my mouth!  Since when are you relying on principles,
+such as defensive programming?
+
+*Bob*: I just wanted to make sure you were still listening.  Well, let me
+give you the more important second reason: it is the use of the `bang bang'
+command in Unix.
+
+*Alice*: You mean typing <tt>!!</tt> in order to repeat the previous command?
+
+*Bob*: Yes.  It is quite natural for someone to run a program first, and then
+to become curious about one of the options.  The easiest thing to get help
+is then to a help request to the previous command.  What I mean is:
+
+  |gravity> ruby some_program.rb -d 0.1 -q
+  clop.rb:148:in `parse_command_line_options':
+    option "-q" not recognized (RuntimeError)
+  |gravity> !! -h
+
+This is a much quicker way to get help than to retype the whole line:
+
+  |gravity> ruby some_program.rb -h
+
+*Alice*: I see what you mean.  In that case, the time step would have
+been reset already, from the default value to <tt>0.1</tt>.  So therefore
+you want to store the default value in a separate memory place.  That makes
+sense.
+
+== A Matter of Principles
+
+*Bob*: Moving right along, assigning a global variable name to the option
+is what happens next.
+
+*Alice*: So the variable <tt>@globalname</tt> will contain the name
+of the actual variable that will in turn contain the value of whatever
+quantity will be associated with the option.
+
+*Bob*: Yes, I guess this is an example of what the redirection principle
+you like so much.  It was quite natural to write it this way.  After all,
+the option definitions we are dealing with here form a type of template.
+And here we are parsing the contents of the template.  Everything is just
+one step further removed.  Instead of a pair {variable, value}, we here
+have a triple {variable-name-holder, variable, value}.  We'll come back
+to this when we will see how the variables get their values.
+
+The need for this extra meta level can also be seen from the fact that
+we are not only dealing with a code user, giving command line options,
+and a code writer, giving the option definitions, but with a third person,
+me in fact, a kind of meta writer.  What I just the writer of a code that
+incorporates this new option mechanism is a writer with respect to the
+user of that code, but is at the same time a user of this parsing code.
+A meta user if I am the meta writer.
+
+Anyway, this gets too complicated.  All I wanted to say is that it is
+unavoidable to have three levels instead of the usual variable-value.
+And three levels allow at least two such pairings, and therefore we
+need a form of redirection these pairings.  So while I'm not a man of
+many principles, I do see the need for your redirection principle here.
+
+*Alice*: You mean the _indirection_ principle, as in indirect addressing.
+But you could call it the redirection principle I guess, since you are
+redirecting the flow of control from one name to another.  But since I
+have never heard anyone talk about `redirect addressing', I'll stick
+with indirection.
+
+*Bob*: Sounds too close to indigestion.  What would be the best
+name?  Instead of giving fixed directions as to where to find the value
+of a variable, we are giving indirect directions in order to redirect
+the computer to look in a different place.  But we are still giving
+directions, neither indirections nor redirections.
+
+*Alice*: Enough of that -- you are convincing me not to mention principles
+too often!  But wait, this time you started it, talking about principles.
+
+*Bob*: Okay, we'll move on.  As we discussed before, every option has
+a special `print name', that determines how the information will appear
+on the output.  We gave the example of an N-body system, where you expect
+the particle number to be printed as <tt>N = 100</tt>, not as
+<tt>n_part = 100</tt> or something cryptic like that.  In this case, +N+
+is the print name.  And since it could have more than one word, as in
+<tt> particle number</tt>, we have to use the same substitution tricks
+as we have used before.
+
+*Alice*: That double substitution line occurs four times, wouldn't it be
+nicer to write a one-line method for that?
+
+*Bob*: That occurred to me, but I decided against it.  I could have written
+
+  def read_content(str)
+    str.sub(/^\s+/,"").sub(/\s*(#.*|$)/,"")
+  end
+
+and then the print name, for example, would be extracted as
+
+        @printname = read_content(content)
+
+But I concluded that the improvement in readibility did not outweigh the
+extra complexity of introducing yet another method.  Having to let your
+eyes jump around to too many places also decreases readability.
+
+*Alice*: I agree, this is a tough call, either way would have been fine.
+
+== Descriptions
+
+*Bob*: Finally, we read in the one-line short description, if the name
+field contains the word +Description+, and we start reading in the long
+description if the word field contains the words <tt>Long Description</tt>,
+or <tt>Long description</tt>.
+
+*Alice*: Wait a minute, the beginning of a long description _also_ contains
+the word +Description+, after the word +Long+.  Would that not confuse your
+parser, who could mistakenly interpret it as a short description?
+
+*Bob*: No, since a long description is only allowed at the end of an option
+block.  This has to be the case, since the only way to find the end of
+a multi-line long description is to look for two consequtive blank lines.
+And when those lines are found, you are by definition at the end of
+the option.  Therefore, the method <tt>parse_single_lines_done?</tt>
+will always first encounter the short one-line +Description+ before it
+finds the multi-line <tt>Long Description</tt>.
+
+*Alice*: If there is a short description, that is.  If there would only
+be a long description, then <tt>parse_single_lines_done?</tt> would
+read the first line of it, and consider it to be a short description.
+
+*Bob*: And then it would not recognize the next lines, which would form
+the actual long description itself, and it would raise an error, printing
+<tt>option definition line unrecognized:\n==> (next line) <==\n</tt>.
+So it would be clear that there would be something wrong.
+
+However, there would be no point in writing _any_ option block without
+a short description.  An important part of our whole approach is to
+provide a good help facility.  If you want to cut corners, you could
+imagine leaving out the long description, and only giving a short
+one-line description.  But it wouldn't make sense to be lazy and not
+write a short description, and yet to go out of your way to write a
+long description.
+
+*Alice*: Logically, yes, but I can easily imagine myself to make a mistake,
+and to just forget to include a short description.
+
+*Bob*: Well, in that case you would get an error message, which would remind
+you to mend the error of your way.
+
+*Alice*: Fair enough.  Talking about the long description, if you find
+the words <tt>Long description</tt>, you just set the <tt>@longdescription</tt>
+variable to contain an empty string?  Here is the action that follows the
+recognition of a <tt>Long description</tt> :
+
+ :include: .clop.rb-11
+
+*Bob*: Yes, I create the empty string in order to have a place to start 
+adding the multi-line actual description to, line by line.  This
+happens in the previous method, <tt>parse_option_definition</tt>,
+remember?  Here it is again:
+
+ :inccode: .clop.rb+parse_option_definition
+
+Note that the value +true+ is being returned when a <tt>Long description</tt>
+is detected.  This causes the first +while+ loop in
+<tt>parse_option_definition</tt> to end, with the +break+ statement.
+As a result, the second +while+ loop is entered, which reads the lines
+of the long description, one by one, until two blank lines following
+each other are found.
+
+== Reflections on Ruby
+
+*Alice*: I think I now understand how you parse the single lines.  That was
+quite an adventure!  Still, now that I have gone through it, I must
+say that it all looks quite straightforward.
+
+*Bob*: It is the longest method in the file.  If there would have been a
+natural way to split it up into smaller methods, I would have done so.
+But since we are naturally dealing with a long +case+ statement, I did
+not see a good way to break this up.
+
+*Alice*: Since when are you concerned with writing short and concise
+pieces of code?  I thought you didn't particularly like the notion of
+trying to be modular.  And now you talk like Mr. Modularity himself!
+
+*Bob*: I know, I'm a bit surprized too, I must admit.  But in Ruby,
+I somehow find myself writing methods that are much shorter than the
+subroutines I would write in Fortran, or functions in C.  I wonder why
+that is.
+
+*Alice*: I think the language invites you to think in a more structured
+way.  In contrast, Fortran and C try to please the compiler, not the user,
+and as a result you get used to rather more complex ways of expressing
+yourself.  In the process writing can easily run away to cover many
+dozens of lines.
+
+*Bob*: And in addition, when you start a new subroutine or function, you
+have to be careful about type declarations and all that, which make you
+think twice whether you want to jump through those extra hoops.  In Ruby,
+in contrast, it is the easiest thing in the world to split off a few lines
+and call it a method.
+
+*Alice*: Yes, I've noticed that.  And it helps not only the writer, but also
+the reader: if the names of those short methods are well chosen, they
+effectively serve as comments.  You've done very well here, in
+choosing your names!
+
+*Bob*: I must admit, it took me a while.  When I first started writing all
+this, I had introduced different names, but half-way I found that I
+got quite confused myself about what was doing what, exactly.  I found
+that by changing the names to something closer to what was being done
+in each method, the whole logic became much clearer.
+
+*Alice*: Another way in which Ruby naturally invites better code writing.
+It would be impossible to know beforehand how each method should be named
+since you don't know what it is going to do until you are well underway
+with the prototyping process.  By inviting you to write many small methods,
+Ruby also invites you to rename them appropriately.
+
+In contrast, when everything is done within three of four humongous
+subroutines, you can get used to names like <tt>firstblock</tt> and
+<tt>secondblock</tt> and not even think about changing those later.
+
+*Bob*: You mean <tt>fstblk</tt> and <tt>scdblk</tt>, if you really want
+to convey the flavor.  Okay, enough meta-talk.  Let's continue our second
+journey: we are well past half-way now, so let's finish the journey.
+
+== A Comic Book Code Line
+
+*Alice*: Now the next method, short as it is, puzzles me a bit:
+
+ :inccode: .clop.rb+initialize_global_variable
+
+If this would be the first line I would ever see of Ruby, I would
+think it would be someone swearing, in a comic strip.  Just to see
+a succession of these six characters, <tt>("$#{@</tt>, is quite
+something to behold!
+
+*Bob*: I hadn't thought about that, but yes, that does like a bit
+funny, doesn't it?  If there is ever going to be a contest for piling
+non-alphanumeric symbols on top of each other, this one may have a
+chance, though I bet that clever programmers would be able to come up
+with something much longer.  Anyway, this method does what I have
+advertized: it goes from variable-name-holder to variable to value.  Let
+us take it apart, and translate what we find.
+
+If an option wants to initialize its global variable, say +dt+ for the
+time step size, it first looks at the variable <tt>@globalname</tt>
+that contains the string with the name of the global variable, as
+extracted from the option block in the definition string.  In this case,
+the string will hold <tt>"dt"</tt>.  Note that this is a string, and not
+yet a variable.  It is what we called the variable-name-holder before.
+
+As usual, <tt>#{@globalname}</tt> evaluates <tt>@globalname</tt> and
+substitutes the result back into the string that it is part of.  But
+in this case, there is a <tt>$</tt> in front of the result of the
+evaluation.  In our example, <tt>#{@globalname}</tt> would give just
+the two characters <tt>dt</tt>, while <tt>$#{@globalname}</tt> results
+in <tt>$dt</tt>.
+
+So this is the first step in our double evaluation program: we have
+gone from the variable-name-holder <tt>@globalname</tt>, containing
+the string <tt>"dt"</tt> to _naming_ the actual variable <tt>$dt</tt>.
+We have not yet _created_ that variable.  We have only prepared its
+name, <tt>$dt</tt>, as part of a longer string.  But look at the beginning
+of the program line: <tt>eval</tt> is a method that takes a string, and
+then executes its content as if it were a normal line in a program.
+
+In our example, this line will thus begin with:
+
+    eval("$dt = eval_value")
+
+This is equivalent to the following program line:
+
+    $dt = eval_value
+
+Now in _this_ form, you see that we have actually created a new global
+variable <tt>$dt</tt>.
+
+*Alice*: I am beginning to understand the process.  It is quite amazing
+what is going on here, as a result of just one line of Ruby code.  There are
+not just two evaluations implied, but _three_.  First the value of the
+variable <tt>@globalname</tt> is extracted, through <tt>#{@globalname}</tt>.
+Then the string, which it is part of, is evaluated with the +eval+ command.
+But as part of this second evaluation, you execute the method
+<tt>eval_value</tt>.  Something tells me that this method does a third
+evaluation.
+
+*Bob*: You are right.  This method takes the variable that is called
+<tt>@valuestring</tt>, which as the name indicates is a string that contains
+the value associated with the option -- either the default value, or
+the value that the user has supplied through the command line.  What
+the method does is evaluating that string, once again using the +eval+
+command.
+
+Let us forget for a moment about changes coming from the command line,
+and focus on default initialization of the global variable associated
+with an option.  Then the logic is that the option block specifies the
+sentences:
+
+  Default value:        0.001
+  Global variable:      dt
+
+The value <tt>"0.001"</tt> and the name <tt>"dt"</tt>, both of them strings,
+are read in as the values of the variables <tt>@valuestring</tt> and
+<tt>@globalname</tt>, respectively.
+
+*Alice*: And what I called the three evaluations are the evaluation of those
+last two variables, to recover the two strings, then an evaluation of the
+string that says <tt>"$dt = 0.001"</tt> to the actual command
+<tt>$dt = 0.001</tt>.  Yes, I think I now see the logic clearly.
+
+And now that I see it, I also realize why things have to be so
+complex.  Since this command line option parser cannot have any
+knowledge about any of the variables and values, it has to pass
+both the variables and values around in meta-variables, one meta-variable
+containing the variable name and one meta-variable containing the value
+of the value, so to speak, the string that contains the value.  And since
+we are dealing with the value of a value, we have to evaluate that in order
+to get the actual value back.
+
+== Evaluating Values
+
+*Bob*: Yes, that is a good summary.  And that is exactly why I choose the
+name <tt>eval_value</tt> for the next method: it is evaluation the
+_value_ of the value string that contains the actual value.  Hard to
+say all this in words.  You did quite well!  Even so, you must admit
+that the Ruby one-line summary is a lot shorter than the English
+summary you just gave.
+
+*Alice*: And unambiguous, unlike the English sentence.  Good!  Time to
+look at how you implemented the method <tt>eval_value</tt>.  If all it
+does is use the +eval+ method to go from a string to its value, why then
+did you write a separate method for it?  It seems that you are really
+getting addicted to writing short methods!
+
+*Bob*: Not _so_ short, actually: you forget here that we have to use
+a third piece of information: we cannot evaluate the value of the global
+variable unless we know its type, knoweldge of which is encoded in the
+string <tt>@type</tt>, as we have seen while parsing the single lines.
+
+*Alice*: Ah, of course, yes.  And different types lead to different actions.
+
+*Bob*: Indeed.  Here is the method:
+
+ :inccode: .clop.rb+eval_value
+
+In the case of a boolean variable, we can indeed apply +eval+.  If the
+value is true, for example, this will just lead to:
+
+        eval("true") = true
+
+In the case of a variable that is a string, nothing needs to be done,
+since a string is already a string.  In the case of a number, the
+value string is converted using the <tt>to_i</tt> method if we are
+dealing with an integer, or <tt>to_f</tt> if we have a floating point
+number.
+
+Things are a wee bit more complicated when we have a vector with floating
+point values.  In that case we have to do three operations.
+
+First we remove the square brackets and commas, if present.  The simplest
+way to get rid of them is to replace each of those with a blank space
+<tt>" "</tt>.  Just deleting them would be dangerous, since then
+<tt>1,2</tt>, for example, would become <tt>12</tt>; <tt>1 2</tt> on
+the other hand preserves the meaning that we are dealing with two
+separate components.
+
+The second step involves converting each component from a piece of string
+to a floating point number, after having cut up the string using the +split+
+method, to create an array of little strings, and the +map+ method to apply
+the <tt>to_f</tt> conversion to each of the elements of the array.
+
+Finally, the third step consists in converting the array to a proper vector,
+an instance of our +Vector+ class, using our <tt>to_v</tt> converter.
+
+*Alice*: And the impressive thing is that all three steps are done in just
+one line of code.
+
+*Bob*: Yes, one line that contains no less than five methods that are
+applied in turn!  What is even more impressive is that the whole thing
+is still quite readable.
+
+*Alice*: Yes, let me try to `read' it: you start with a string, and after
+substituting some things, you split it into pieces, map the float converter
+to each piece, and then apply the vector converter.
+
+*Bob*: And in that way you naturally evaluate a string to create a value
+of type `float vector.'  It all makes sense!
+
+*Alice*: It's hard to believe that I have been writing code for so many
+years using more low-level languages like C++ and Fortran.
+
+*Bob*: And hard to go back, although we'll have to, probably, to get a
+reasonable speed.
+
+*Alice*: We may be pleasantly surprised.  This whole parsing program, for
+example, is executed only once, at the beginning of running a program.
+There is absolutely no need to speed this up.  Whether it takes a
+microsecond to run or a millisecond, who cares!  Factors of a hundred
+or more of potential speed-up are only important in the domain of
+minutes and more.  It is nice to change a minute of run time into a second,
+for sure, but to change a second into a few milliseconds is useless.
+
+*Bob*: I hope you're right.  We really should look into this speedup
+business soon, though.
+
+*Alice*: I agree.
