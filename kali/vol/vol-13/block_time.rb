@@ -21,7 +21,7 @@ class Block_time
     end
   end
 
-  def get_time
+  def to_f
     rest = 1.0
     number = @time_int
     for i in 0...@time_array.size
@@ -100,12 +100,12 @@ class Block_time
 #    end
 #  end    
 
+  def copy                               # this is a deep copy (or deep clone)
+    Marshal.load(Marshal.dump(self))
+  end
+
   def -@
-    minus_self = Block_time.new
-    minus_self.time_int = @time_int
-    @time_array.each_index do |i|
-      minus_self.time_array[i] = @time_array[i]
-    end
+    minus_self = self.copy
     minus_self.contract
     arr = minus_self.time_array
     for i in 0..(arr.size-2)
@@ -138,6 +138,46 @@ class Block_time
     end
   end
 
+#
+# t = t.int + t.block + t.rest  :  integer part, leading binary part, rest
+#
+
+  def int
+    t = self.copy
+    t.time_array = []
+    t.expand
+    t
+  end
+
+  def block
+    t = self.copy
+    t.time_int = 0
+    n = t.time_array.size
+    for i in 0...n
+      if t.time_array[i] == 1
+        t.time_array[(i+1)...n] = nil
+        t.expand
+        return t
+      end
+    end
+    t.time_array = []
+    t.expand
+    return t
+  end
+
+  def rest
+    t = self.copy
+    t.time_int = 0
+    n = t.time_array.size
+    for i in 0...n
+      if t.time_array[i] == 1
+        t.time_array[i] = 0
+        return t
+      end
+    end
+    return t
+  end
+
   def to_s
     contract
     s = "{" + @time_int.to_s + ", [" + @time_array.join(", ") + "]}\n"
@@ -147,12 +187,42 @@ class Block_time
 
 end
 
+class Float
+
+  def to_b
+    Block_time.new(self)
+  end
+
+end
+
+class Fixnum
+
+  def to_b
+    Block_time.new(self)
+  end
+
+end
+
+class String
+
+  def to_b
+    Block_time.new(self.to_f)
+  end
+
+end
+
+if __FILE__ == $0
+
 a = Block_time.new
 b = Block_time.new
 a.set_time(3.14)
 b.set_time(2.04)
-p (a+b).get_time
-p (-a).get_time
-p (-b).get_time
-p (a-b).get_time
-p -(a-b).get_time
+p (a+b).to_f
+p (-a).to_f
+p (-b).to_f
+p (a-b).to_f
+p -(a-b).to_f
+p -((a-b).to_f)
+p (-(a-b)).to_f
+
+end
