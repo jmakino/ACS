@@ -1,0 +1,39 @@
+Date: Fri Jul 02 11:44:43 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Hi Jun:
+
+Two questions for acsdoc extensions:
+
+1)
+
+If I write something in a chapter to come out under html as:
+
+<i>Programming Ruby -- The Pragmatic Programmer's Guide</i>, by
+David Thomas and Andrew Hunt, 2001 [Addison Wesley].  This is a
+great introduction to Ruby.  There is a complete <a href="xxx">online
+version</a> available for this book.
+
+It would be nice if it would get under LaTeX as follows:
+
+There is a complete <i>online
+version</i>(xxx) available for this book.
+
+Could you design a form in which this information can be given,
+perhaps as "<acswebref>xxx,online version</acswebref>",
+which then will be translated in the above two ways for the
+html and ps/pdf versions?  Since there are never commas in
+URLs, I think, the first comma will signify the end of the URL.
+
+2)
+
+Could you replace tabs in code text (Ruby and C) with the right
+number of spaces?  Right now, I belive the tabs don't appear correctly
+in code mode under acsdoc.  I've been taking out tabs by hand, but
+whenever I make a modification, emacs tend to put some tabs back
+in again, with automatic identation.  It is better to automatize
+this.
+
+Piet
+
