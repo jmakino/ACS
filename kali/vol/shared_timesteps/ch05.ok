@@ -1,6 +1,6 @@
 = Reproducibility
 
-== xxx
+== Making Sure
 
 *Alice*: Now that everything seems to work, I would like to get back to
 this question of reproducibility.  We have argued that we can integrate
@@ -36,6 +36,8 @@ Now I'll run it for another time unit, till time 2:
 Hey, that is strange, it ran all the way to time 3, even though I gave it
 the option <tt>-t 2</tt>.
 
+== The Danger of Short Options
+
 *Alice*: That shows the danger of using short options.  I bet we defined
 the argument for this option to be the time _difference_, not the target
 time of the integration.  Let's check:
@@ -55,6 +57,8 @@ Now _if_ everything behaves as I expect it will, we should get zero
 distance in phase space:
 
  :commandoutput: cat test12.out test02.out | acsdiff.rb
+
+== Know Your Output File
 
 *Alice*: Not quite.
 
@@ -90,8 +94,54 @@ Wanna bet we'll get zero now?
 *Bob*: You could have held your breath, and you wouldn't have suffered!
 Good, so we have reproducibility, at least for the constant time step scheme.
 
+== Synchronization
 
+*Alice*: Let's do a similar thing for shared time steps, first with our
+<tt>exact_time</tt> option.
 
+ :commandoutput: nbody_sh1.rb -t 1 --exact_time < test.in > test01e.out
 
+ :commandoutput: nbody_sh1.rb -t 1 --exact_time < test01e.out > test12e.out
 
+ :commandoutput: nbody_sh1.rb -t 2 -o 2 --exact_time < test.in > test02e.out
 
+== The Toll it Takes
+
+*Bob*: According to our predictions, the composition of the first two shorter
+runs should _not_ give exactly the same result as the longer runs.  Let's
+check:
+
+ :commandoutput: cat test12e.out test02e.out | acsdiff.rb
+
+Indeed, the difference is slight, but clearly noticeable.
+
+*Alice*: Let's make sure that it's not a matter of having a different ending
+time:
+
+ :commandoutput: cat test12.out test02.out
+
+*Bob*: No, they both end nicely at time 2.  So the difference is really a
+difference between the orbits.  This is the toll that synchronisation takes!
+
+== Asynchronicity
+
+*Alice*: Time to check whether asynchronicity leaves things undisturbed.
+
+ :commandoutput: nbody_sh1.rb -t 1 < test.in > test01n.out
+
+ :commandoutput: nbody_sh1.rb -t 1 < test01n.out > test12n.out
+
+ :commandoutput: nbody_sh1.rb -t 2 -o 2 < test.in > test02n.out
+
+*Bob*: So you think we'll get a smaller distance now?
+
+*Alice*: As close to zero as we can!  I already see an encouraging sign
+in the diagnostics output of the runs above.  Did you notice that the
+total number of steps in the long run exactly equals the sum of the
+number of steps of the two shorter runs?
+
+*Bob*: Right you are!  Well, let's hope for the best.
+
+ :commandoutput: cat test12n.out test02n.out | acsdiff.rb
+
+*Alice*: And the best came true.  Very nice.
