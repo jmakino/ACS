@@ -186,7 +186,8 @@ Before explaining what all this means, let us first see whether it works.
 multiplication of a vector, but the inner product of two vectors
 didn't work.
 
-*Bob*: 
+*Bob*: That is puzzling.  Hmmm.  Cannot convert Vector into Integer.
+And all that somewhere in the definition of *.  
 
 
 
