@@ -9,14 +9,10 @@
 #
 
 while s = gets
-  if s == "\n"
-    print " \n"
-  else
-    print s
-  end
+  s = " " + s if s == "\n"
   if s =~ /^\\header/
-    s = gets until s != "\n"
-    print "\n"
-    print "* ", s
+    s = "* " + s 
+    print "\n"       # to suppress blank line before header line in folded mode
   end
+  print s
 end
