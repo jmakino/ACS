@@ -1,5 +1,5 @@
 /* File : testclass.i */
-%module testclass
+%module xxx
 
 %{
 #include "testclass.h"
