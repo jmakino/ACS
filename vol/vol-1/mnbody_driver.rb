@@ -6,7 +6,7 @@ require "mnbody.rb"
 
 include Math
 
-eta = 0.001          # accuracy parameter
+eta = 0.01          # accuracy parameter
 #dt_dia = 1           # diagnostics printing interval
 #dt_out = 1           # output interval
 t_end = 1.1         # time of termination of the integration
