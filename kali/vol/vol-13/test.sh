@@ -13,7 +13,7 @@ ruby world1.rb -p 16 -t 3 -o 3 -q < tmp0 | ruby acstail.rb > tmp3w
 echo "diff tmp2w tmp2ww | wc:"
 diff tmp2w tmp2ww | wc
 echo "diff tmp2ws tmp2s | wc:"
-diff tmp2w tmp2ww | wc
+diff tmp2ws tmp2s | wc
 echo "diff tmp3w tmp3ww | wc:"
 diff tmp3w tmp3ww | wc
 echo "diff tmp3w tmp3www | wc:"

@@ -158,12 +158,6 @@ class Worldpoint < Body
     STDERR.print "   jerk = " + j.join(", ") + "\n"
   end
 
-  def read
-    @mass = gets.to_f
-    @pos = gets.split.map{|x| x.to_f}.to_v
-    @vel = gets.split.map{|x| x.to_f}.to_v
-  end
-
 end
 
 class Worldline
@@ -192,13 +186,15 @@ class Worldline
   end
 
   def valid_extrapolation?(time)
-    raise unless @worldpoint.last.time <= time and
-      time <= @worldpoint.last.next_time
+    unless @worldpoint.last.time <= time and time <= @worldpoint.last.next_time
+      raise "#{time} not in [#{@worldpoint.last.time}, #{@worldpoint.last.next_time}]"
+    end
   end
 
   def valid_interpolation?(time)
-    raise unless @worldpoint[0].time <= time and
-      time <= @worldpoint.last.time
+    unless @worldpoint[0].time <= time and time <= @worldpoint.last.time
+      raise "#{time} not in [#{@worldpoint[0].time}, #{@worldpoint.last.time}]"
+    end
   end
 
   def valid_time?(time)
@@ -248,22 +244,13 @@ class Worldline
     end
   end
 
-  def read_initial_worldpoint(time)
-    wp = @worldpoint[0] = Worldpoint.new
-    wp.read
-    wp.time = wp.next_time = time
-    wp.acc = wp.pos*0
-    wp.jerk = wp.pos*0
-  end
-
 end
 
 class Worldera
 
   TAG = "worldera"
 
-  attr_accessor  :start_time, :end_time,
-                 :worldline, :snap_time
+  attr_accessor  :start_time, :end_time, :worldline
 
   def initialize
     @worldline = []
@@ -417,6 +404,9 @@ class World
         if c.world_output_flag
           acs_write($stdout, false, c.precision, c.add_indent)
         else
+#p @t_out
+#p @era.start_time
+#p @era.end_time
           @era.take_snapshot(@t_out).acs_write($stdout, true,
                                                c.precision, c.add_indent)
         end
@@ -487,12 +477,6 @@ class Worldsnapshot < Nbody
     @body.each{|b| b.ppx(@body)}
   end
 
-#  def write
-#    @body.each do |b|
-#      b.write
-#    end
-#  end
-
 end
 
 class Body
@@ -517,7 +501,7 @@ options_text= <<-END
     (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
 
     example:
-    ruby mkplummer3.rb -n 5 | ruby #{$0} -t 1
+    ruby mkplummer.rb -n 5 | ruby #{$0} -t 1
 
 
   Short name: 		-c
@@ -525,7 +509,7 @@ options_text= <<-END
   Value type:		float
   Default value:	0.01
   Variable name:	dt_param
-  Description:		Parameter to determine time step size
+  Description:		Determines the time step size
   Long description:
     This option sets the step size control parameter dt_param << 1.  Before
     each new time step, we first calculate the time scale t_scale on which
@@ -555,7 +539,7 @@ options_text= <<-END
   Value type:		float
   Default value:	1
   Variable name:	dt_max_param
-  Description:		Maximum time step in units of dt_era
+  Description:		Maximum time step (units dt_era)
   Long description:
     This option sets an upper limit to the size dt of a time step,
     as the product of the duration of an era and this parameter:
@@ -567,7 +551,7 @@ options_text= <<-END
   Value type:		float
   Default value:	1
   Variable name:	dt_dia
-  Description:		Interval between diagnostics output
+  Description:		Diagnostics output interval
   Long description:
     This option sets the time interval between diagnostics output,
     which will appear on the standard error channel.
@@ -578,7 +562,7 @@ options_text= <<-END
   Value type:		float
   Default value:	1
   Variable name:	dt_out
-  Description:		Time interval between snapshot output
+  Description:		Snapshot output interval
   Long description:
     This option sets the time interval between output of a snapshot
     of the whole N-body system, which which will appear on the

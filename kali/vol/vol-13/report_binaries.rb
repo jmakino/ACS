@@ -29,18 +29,16 @@ class Nbody
           if b.energy < 0 and b.semi_major_axis <= max_semi_major_axis
             if @time
               if print_time_flag
-                STDERR.print "  time = ", @time, " :"
+                STDERR.printf("  time = %8.3f :", @time)   # to be improved <==
                 print_time_flag = false
               else
-                STDERR.print "          :"
+                STDERR.print "                   "
               end
             end
             STDERR.print "  [", i, ",", j, "] :  a = "
             STDERR.printf("%.#{precision}f", b.semi_major_axis)
             STDERR.print " ; e = "
             STDERR.printf("%.#{precision}f\n", b.eccentricity)
-#p @body[i]
-#p @body[j]
           end
         end
       end
@@ -94,9 +92,10 @@ options_text= <<-END
 
   Description: Find and report gravitationally bound pairs of stars
   Long description:
-    This program accepts an Nbody snapshot, and returns information about the
+    This program accepts Nbody snapshots, and returns information about the
     binaries stars (gravitationally bound pairs of stars) on the stderr output
-    channel.
+    channel.  It also echoes each original snapshot on the stdout output
+    channel, so that it will be available for another diagnostics program.
 
     (c) 2004, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
@@ -135,5 +134,6 @@ nb = ACS_IO.acs_read
 while nb
   raise "class #{nb.class} is not Nbody" unless nb.class == Nbody
   nb.report_binaries(clop.max_semi_major_axis, clop.precision)
+  nb.acs_write
   nb = ACS_IO.acs_read
 end

@@ -150,6 +150,7 @@ class Clop
   end
 
   def print_values
+    STDERR.print "==> ", @options[0].description, " <==\n"
     for i in 1...@options.size - 2   # exclude header & help (first & last two)
       STDERR.print @options[i].to_s
     end
