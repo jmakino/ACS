@@ -1,0 +1,25 @@
+Date: Fri Jan 02 10:43:30 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+ > In http://www.artima.com/intv/plain.html Hunt and Thomas discuss why
+ > not to use XML. -- Jun
+
+Indeed very similar to our experiences!  And rdoc is far easier to use
+than XML, for sure.  It is interesting, though, that Dave Thomas at
+the end mentions that he does like XML for book writing:
+
+  Dave Thomas: If you're talking about using XML in certain domains,
+  it's fine. XSLT, for example, lets you do some really fun things with
+  XML. When we had our book online, for example, we went from LaTeX, to
+  XML, and then to the output format, simply because XSLT gave us some
+  really powerful ways for manipulating the document's content. XML is
+  useful in appropriate contexts, but it is being grossly abused in most
+  of the ways it is being used today.
+
+We, too, will have to decide later what to do.  And of course, for I/O
+it will be good to use XML format, at the very least, and either our
+own I/O interpreter or more likely an existing Ruby-XML parser.
+
+Piet
+
