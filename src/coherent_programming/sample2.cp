@@ -62,10 +62,10 @@ gravity, we can define
 gravitational acceleration on particle <tex>$i$</tex> then becomes:
 
 <tex>
-\begin{equation}
+$$
 {\bf a}_i = G \sum_{j=1 \atop j \neq i}^N
-\frac{M_j}{r_{ji}^2} \,\hat{\bf r}_{ji}\label{newton}
-\end{equation}
+\frac{M_j}{r_{ji}^2} \,\hat{\bf r}_{ji}
+$$
 </tex>
 
 The following is the same as the above formula, but using : equation : 
