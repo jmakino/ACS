@@ -1,0 +1,18 @@
+= Quiet Start
+
+== xx
+
+layered particle positions:
+
+ :commandoutput: ruby mkplummer4.rb -n 100 | ruby quartiles.rb
+
+ :commandoutput: ruby mkplummer4.rb -n 100 | ruby quartiles.rb
+
+ :commandoutput: ruby mkplummer4.rb -n 100 | ruby quartiles.rb
+
+and of course even more so for:
+
+ :commandoutput: ruby mkplummer4.rb -n 10000 | ruby quartiles.rb
+
+
+

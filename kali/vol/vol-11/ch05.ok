@@ -1,82 +1,709 @@
-= Checks
+= A Derivation from First Principles
 
-== extra method
+== An Analytic Recipe
 
-First Simplify mkplummer1.rb to mkplummer2.rb
+*Alice*: Hi Bob!  Well, are you ready to derive the distribution function
+of Plummer's model from first principles?
 
-== xxx
+*Bob*: If we're really going to the bottom of this, I _insist_ on using
+<tex>$G=M=a=1$</tex>.  Let's roll up our sleeves then.  Here is the,
+by now very familiar, potential-density pair for our Plummer's model:
 
-== Energy
+:equation:
+\left\{ \begin{array}{lcl}
+\Psi(r)\,&=&\, -\,\Phi(r) \,=\,
+{\displaystyle \left(1+r^2\right)^{-1/2}} \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\rho(r)\,&=&\,
+{\displaystyle {3 \over 4\pi } \left(1+r^2\right)^{-5/2}}
+\end{array} \right.
 
-== Quartiles
+Substituting the right-hand side of the first equation in the second
+equation, we find:
 
-round off, but in case of half-way, round up.
+:equation:
+\label{rhopsi}
+\rho(\Psi)\,=\,{3\over 4\pi}\,\Psi^5
 
-Let Bob and Alice bicker about that.
+Now we have a choice: we can use this expression either in
+eq. (ref(fcurlyEa)) or in eq. (ref(fcurlyEb)).  If I were to guess,
+the sheer fact that Binney and Tremaine have added the second equation
+would suggest that that one is the easiest to work with; otherwise they
+would have limited themselves to the first one.  They don't seem to add
+anything more than necessary.
 
- :commandoutput: ruby mkplummer2.rb -n 100 | ruby quartiles1.rb
+*Alice*: Unlike our style of writing.
 
- :commandoutput: ruby mkplummer2.rb -n 100 | ruby quartiles1.rb
+*Bob*: I'd say!  It's a good thing that we are writing this for our
+students . . .
 
- :commandoutput: ruby mkplummer2.rb -n 100 | ruby quartiles1.rb
+*Alice*: . . . and for ourselves . . .
 
-xxxxx
+*Bob*: . . . and for ourselves, yes, but not for our colleagues.
+I certainly wouldn't want to show to them how many small steps it takes
+me to derive these types of equations.
 
- :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles1.rb
+*Alice*: But don't forget, we are planning to put this up on the web.
 
- :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles1.rb
+*Bob*: Ah, yes, I'd forgotten about that already.  Oh, well, we can just
+call each page `class notes', and that will chase our colleagues away.
 
- :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles1.rb
+*Alice*: I'm not so sure, but I don't want to discourage you.  Let's move
+on!
 
-With
+*Bob*: Yes, let's.  As I was saying, my bet is on eq. (ref(fcurlyEb)).
+Let's write it down again here, and then substitute <tex>$\rho(\Psi)$</tex>
+with eq. (ref(rhopsi)):
 
-<tex>$$
-r(m) \, = \, \left(m^{-2/3}-1\right)^{-1/2}
-$$</tex>
+:eqnarray:
+f(\E)\,&=&\,{1\over\sqrt8\pi^2}\,\left[
+\int_0^\E {d^2\rho\over d\Psi^2} {d\Psi\over\sqrt{\E-\Psi}}
++{1\over\sqrt\E}\left({d\rho\over d\Psi}\right)_{\Psi=0}\right]     \nonumber\\
+&=&\, {1\over\sqrt8\pi^2}\,{3\over4\pi}\,\left[
+\int_0^\E \left({d^2\over d\Psi^2}\left(\Psi^5\right)\right)
+{d\Psi\over\sqrt{\E-\Psi}}
++{1\over\sqrt\E}\left({d\over d\Psi}
+\left(\Psi^5\right)\right)_{\Psi=0}\right]                          \nonumber\\
+&=&\, {3\over8\sqrt2\pi^3}\,\left[
+\int_0^\E 20{\Psi^3d\Psi\over\sqrt{\E-\Psi}}
++{5\over\sqrt\E}\left(\Psi^4\right)_{\Psi=0}\right]                 \nonumber
 
-we have
-
-<tex>$$
-r(1/4) \, = \, \left(2^{4/3}-1\right)^{-1/2} \approx 0.8111
-$$</tex>
-
-<tex>$$
-r(1/2) \, = \, \left(2^{2/3}-1\right)^{-1/2} \approx 1.305
-$$</tex>
-
-<tex>$$
-r(3/4) \, = \, \left(2^{4/3}3^{-2/3}-1\right)^{-1/2} \approx 2.175
-$$</tex>
-
-mkplummer wrong?
-Hmm, but how can energy be so correct then?
-Aha, quartiles: forget sqrt.
-Now with quartiles1.rb:
-
- :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles.rb
-
- :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles.rb
-
- :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles.rb
-
-*Alice*: Still, we could have made the same mistake in coding and testing,
-converting <tex>$m(r)$</tex> to <tex>$r(m)$</tex>.  Let us do one final
-explicit check.  We have
-
-<tex>$$
-m(r) \, = \, \left(1 + r^{-2}\right)^{-3/2}
-$$</tex>
-
-So this means:
-
-<tex>$$
-m(r(1/4)) \, = \, \left(1+ 2^{4/3} - 1\right)^{-3/2} \, = \, 2^{-2} \, = \, 1/4
-$$</tex>
-
-Similarly with the half-mass radius <tex>$m(r(1/2)) = 1/2$</tex>, and:
+The second term is zero, and the expression in the denominator invites us
+to introduce the following change of variables:
 
 <tex>$$
-m(r(3/4)) \, = \, \left(1+ 3^{-2/3}2^{4/3} - 1\right)^{-3/2} \, = \, 
-  3.2^{-2} \, = \, 3/4
+x = \E-\Psi \,\,\,\,\,\, \Rightarrow\,\,\,\,\,\, 
+\Psi = \E-x \,\,\,\,\,\, \Rightarrow \,\,\,\,\,\,
+d\Psi = -dx \,\,\,\,\,\, \Rightarrow 
 $$</tex>
+
+:eqnarray:
+f(\E)\,&=&\, {3\times20\over8\sqrt2\pi^3}\,
+\int_\E^0 (\E-x)^3{(-dx)\over\sqrt{x}}                              \nonumber\\
+&=&\, {15\sqrt2\over4\pi^3}\,\int_0^\E \left\{
+-x^{5/2}+3\E x^{3/2}-3\E^2x^{1/2}+\E^3x^{-1/2}\right\}\,dx          \nonumber\\
+&=&\, {15\sqrt2\over4\pi^3}\,\left.\left\{
+-{2\over7}x^{7/2}+{6\over5}\E x^{5/2}-2\E^2x^{3/2}+2\E^3x^{1/2}\right\}
+\right|_0^\E                                                        \nonumber\\
+&=&\, {15\sqrt2\over4\pi^3}\,\left\{
+-{2\over7}+{6\over5}-2+2\right\}\E^{7/2}                            \nonumber\\
+&=&\, {15\sqrt2\over4\pi^3}\,{32\over35}\,\E^{7/2}                  \nonumber\\
+&=&\, {24\sqrt2\over7\pi^3}\,\E^{7/2}
+
+== The Full Form
+
+Well, I guess I was not as rusty in these kind of manupilations as I had
+thought I was.
+
+*Alice*: You shouldn't, since you did your undergraduate studies a lot more
+recently than I did!
+
+*Bob*: Yet it seems so long ago!  I guess everything is relative.
+
+*Alice*: At least the power <tex>$7/2$</tex> came out correctly, as expected
+for a polytrope of index <tex>$5$</tex>.  A while ago you wrote down an
+expression you got from some book, where was that, ah,
+eq. (ref(distributionfunction)).  Let's write it here again:
+
+:equation:
+f(E(r,v)\,4\pi r^2 dr\,4\pi v^2dv \, = \,
+       {384\sqrt(2)\over7\pi m}(-E)^{7/2}r^2v^2dr\,dv
+
+*Bob*: Since <tex>$384/16=24$</tex>, we got exactly what was ordered.
+It was a bit of work, but I must admit, it is fun to derive things from
+scratch.  But wait, what is that factor <tex>$m$</tex> doing there?
+That one is missing from what I just derived.
+
+*Alice*: It was the mass of a single star, in our star cluster in which
+all masses are the same.  The book you picked your expression for the
+distribution function from, must have defined <tex>$f(E)$</tex> as the
+_number_ density of the stars.  If you multiply both sides with
+<tex>$m$</tex>, you get on the right-hand side what you found.  This
+then must be the _mass_ density of the stars in phase space, namely
+the number density multiplied by the mass of a single star.
+
+*Bob*: That must be the answer.
+
+*Alice*: You may remember that I did not protest when you decided to do your
+derivation purely in dimensionless units.  As a reward, I insist on
+you writing the final answer with all the <tex>$G$</tex>'s, <tex>$M$</tex>'s,
+and <tex>$a$</tex>'s put back in.
+
+*Bob*: That's easy.  Here it is:
+
+:equation:
+\label{thatseasy}
+f(\E)\,=\, {24\sqrt2\over7\pi^3}\,{a^2\over G^5 M^4}\,\E^{7/2}
+
+But don't ask me to prove it to you with hats or tildes or a
+substantial part of the Greek alphabet!
+
+*Alice*: I won't.  But since that is how I would do it, I'm curious to know
+what you just did.  How did you figure this out?
+
+== Dimensional Analysis
+
+*Bob*: Well, I used dimensional analysis, but not in a very systematic way,
+just substituting what seems to work in the quickest way.  If we denote
+the unknown combination of <tex>$G,M,a$</tex> factors by <tex>$A$</tex>,
+we can start by writing
+
+<tex>$$
+f(\E)\,=\, A\,\E^{7/2}
+$$</tex>
+
+where I have dropped all numerical factors, since they won't make any
+difference as far as dimensional analysis is concerned.  Since you just
+pointed out that we have computed the _mass_ density in phase space, we
+know that the expression
+
+<tex>$$
+f(\E)d\br d\bv
+$$</tex>
+
+has the dimension of mass, something we can write as
+
+<tex>$$
+\left[f(\E)d\br d\bv\right] \,=\,\left[ {\rm mass} \right]
+$$</tex>
+
+Therefore
+
+<tex>$$
+\left[f\right] \,=\,\left[ {\rm mass} \right]\,\left[ {\rm length} \right]^{-3}
+\,\left[ {\rm velocity} \right]^{-3}
+$$</tex>
+
+Since energy is proportional to mass times velocity squared,
+think <tex>$mc^2$</tex>, our <tex>$\E$</tex>, the energy per unit mass,
+has a dimension of velocity squared, so
+
+<tex>$$
+\left[\E^{7/2}\right] \,=\,\left[ {\rm velocity} \right]^7
+$$</tex>
+
+Before you protest that I should use only physical dimensions of [mass],
+[length] and [time] . . . 
+
+*Alice*: . . . which is what I would have done . . .
+
+*Bob*: . . . I want to point out that I have a freedom of choice, as
+long as my three units are not degenerate.  I find it more convenient to
+work with  [mass], [length] and [velocity].
+
+*Alice*: Come to think of it, that makes sense, since the last two reflect
+the two different spaces of which phase space is the product, and mass is
+what we have been sprinkling into phase space.
+
+*Bob*: I guess.  You always find a way to suggest more abstract reasons for
+what I am doing intuitively.  It just has been my experience that velocity
+is a more useful quantity than time in this kind of dimensional analysis.
+
+*Alice*: I think I'll follow your suggestion, from now on.  Learn something
+new every day!
+
+== Getting The Details Right
+
+*Bob*: Where was I?  Ah, yes, I started with 
+
+<tex>$$
+f(\E)\,=\, A\,\E^{7/2}
+$$</tex>
+
+and using the last two expression above, I can find that <tex>$A$</tex>
+has the following dimension:
+
+:eqnarray:
+[A] \,&=&\,[f]\,\left[\E^{-7/2}\right]	                            \nonumber\\
+&=&\, \left[ {\rm mass} \right]\,\left[ {\rm length} \right]^{-3}
+\,\left[ {\rm velocity} \right]^{-3}\,
+\left[ {\rm velocity} \right]^{-7}                                  \nonumber\\
+&=&\, \left[ {\rm mass} \right]\,\left[ {\rm length} \right]^{-3}
+\,\left[ {\rm velocity} \right]^{-10}\,                             \nonumber
+
+Now the crucial point is that only <tex>$G$</tex> can help us in
+giving us a velocity dimension.  Velocity involves time, since its
+dimension is lenght over time, and neither <tex>$M$</tex> nor <tex>$a$</tex>
+have a time component.
+
+The dimension of <tex>$G$</tex> follows from the fact that potential energy
+must have the same dimension as kinetic energy:
+
+<tex>$$
+\left[{GMm\over r}\right] \,=\, \left[{\half m v^2}\right]
+$$</tex>
+
+for whatever <tex>$M$</tex>'s, <tex>$m$</tex>'s, <tex>$r$</tex>'s, <i>etc.</i>
+you care to use.  This implies:
+
+<tex>$$
+\left[v^2\right] \,=\, \left[{GM\over r}\right] \,=\,
+[G] \, \left[ {\rm mass} \right]\,\left[ {\rm length} \right]^{-1}
+$$</tex>
+
+So this tells us that we can factor out <tex>$G$</tex> as follows:
+
+:eqnarray:
+[A] \,&=&\, \left[ {\rm mass} \right]\,\left[ {\rm length} \right]^{-3}
+\, \left[ G^{-5} \right]
+\, \left[ {\rm mass} \right]^{-5}\,\left[ {\rm length} \right]^5    \nonumber\\
+&=&\, \left[ G^{-5} \right]
+\, \left[ {\rm mass} \right]^{-4}\,\left[ {\rm length} \right]^2    \nonumber
+
+Since the only mass we have is <tex>$M$</tex>, and the only length we have
+is <tex>$a$</tex>, we have to conclude that
+
+<tex>$$
+A \, \propto \, G^{-5} M^{-4} a^2
+$$</tex>
+
+This then means that our dimensionless expression, that we derived
+with the help of Binney and Tremaine:
+
+<tex>$$
+f(\E)\,=\, {24\sqrt2\over7\pi^3}\,\E^{7/2}
+$$</tex>
+
+has to be expanded in the following way, to make it again dimensionally
+correct:
+
+<tex>$$
+f(\E)\,=\, {24\sqrt2\over7\pi^3}\,{a^2\over G^5 M^4}\,\,\E^{7/2}
+$$</tex>
+
+== From Implicit to Explicit
+
+*Alice*: This is indeed what you wrote down before, eq. (ref(thatseasy)).
+
+*Bob*: I must say, I'm surprised at how many words and lines of equations
+I have to write down to make it all explicit.  I did it mostly in my head,
+with a few scribbles here and there to provide some help.
+
+*Alice*: That's because you've grown so familiar by now with these kinds
+of manipulations.  But I definitely think it is a good idea to show your
+students how you do this, if only once.
+
+*Bob*: Don't you think they will figure it out for themselves, sooner or
+later.
+
+*Alice*: Probably later.  I like the idea of being a catalyst, speeding
+up the process of letting them discover things.  And by making your
+implicit stream of thoughts explicit, tedious as it may seem, we may
+be doing them a real favor.
+
+Besides, to be really honest, I think we can still learn a lot as well.
+I had no idea that your approach would be so different from mine, and I
+can see the advantage of your way of thinking, at least in some cases
+such as these.  It would definitely have taken me longer to derive your
+result in my way.
+
+*Bob*: It is interesting, isn't it, that normally we don't talk very much
+about how we do these kind of little, or not so little, derivations.  And
+I must admit, I too have learned quite a bit from the way you approach these
+problems.  Besides, it is more fun to struggle with all this together.
+
+Well, I think we've struggled enough now.  Let's call it a day.
+
+*Alice*: call it a day?  But we haven't yet checked the truth behind the
+Abel integral transform, whether that way of inverting the equation was
+correct.  We have just taken Binney and Tremaine's word for it!
+
+*Bob*: I'd forgotten all about that.  Well, hmm.  Do you really insist
+on checking it all the way?
+
+*Alice*: I do.
+
+*Bob*: Okay, okay.  Let's get it over with.  Can I look at that page,
+where they talk about Mr. Abel and his transforms?  You would at least
+expect them to give us a hint.
+
+*Alice*: They do give a hint: go read appendix 1.B.4.
+
+== Abel Integral Transforms
+
+*Bob*: So they do.  Here it is.  They start with the following two lines.
+
+Let
+
+:equation:
+\label{fx}
+f(x) = \int_0^x {g(t)dt \over (x-t)^\alpha}
+\quad\quad\quad\quad  0<\alpha<1
+
+Then
+
+:eqnarray:
+\label{gt}
+g(t) \,&=&\, {\sin \pi \alpha \over \pi}\,{d\over dt} \,
+       \int_0^t {f(x)dx \over (t-x)^{1-\alpha}}                     \nonumber\\
+&=&\, {\sin \pi \alpha \over \pi}\,\left[
+\int_0^t{df\over dt}\,{dx \over (t-x)^{1-\alpha}}+
+{f(0)/over t^{1-\alpha}}\right]
+
+I like that terse style: only "Let . . then . .", what a difference with
+our constant chattering!
+
+*Alice*: It is a good move of them to reduce the more complex equations
+(ref(fcurlyEa)) and (ref(fcurlyEb)) to these simplified forms.  But as
+always, let us first check whether the "Let . . then . ." claim, if true,
+will solve our problem.  Let us start with eq. (ref(fx)).  For this to be
+equal to our previous equation (ref(drhodpsifrompsi)):
+
+<tex>$$
+{1\over\sqrt8\pi}\,{d\rho\over d\Psi} \,=\,
+\int_0^\Psi f(\E)\,{d\E\over\sqrt{\Psi-\E}}
+$$</tex>
+
+We have to use the following dictionary, with their appendix notation on
+the left and their main text notation on the right:
+
+:equation:
+\left\{ \begin{array}{lcl}
+f(x) \,& \rightarrow &\, 
+{\displaystyle {1\over\sqrt8\pi}\,{d\rho\over d\Psi}} \\
+\phantom{1}&\phantom{1}&\phantom{1}                   \\
+x\,& \rightarrow &\,\Psi                              \\
+\phantom{1}&\phantom{1}&\phantom{1}                   \\
+g(t)\,& \rightarrow &\,f(\E)                          \\
+\phantom{1}&\phantom{1}&\phantom{1}                   \\
+t\,& \rightarrow &\,\E                                \\
+\phantom{1}&\phantom{1}&\phantom{1}                   \\
+\alpha\,& \rightarrow &\,{\displaystyle \half}        \\
+\end{array} \right.
+
+*Bob*: Now that's what I call confusing.  They use <tex>$f$</tex> symbols
+for two very different functions, in their two languages.  We'll have
+to be careful with this dictionary.
+
+*Alice*: But I thought you didn't like hats and tildes, and prefered to use
+the same symbol for different things?
+
+*Bob*: Only if they have the same physical meaning.  Here we're talking
+mathematics.  I would have prefered that they would have used
+<tex>$k(x)$</tex> instead of <tex>$f(x)$</tex> in the appendix.  Oh well,
+small point, as long as we're careful.
+
+*Alice*: Now let us assume that their eq. (ref(gt)) indeed provides the
+solution for eq. (ref(fx)).  We then have to translate eq. (ref(fx)) back
+into main text quantities, using the dictionary in the other
+direction.  Here we go:
+
+:eqnarray:
+\label{gt}
+g(t) \,&=&\, {\sin \pi \alpha \over \pi}\,{d\over dt} \,
+       \int_0^t {f(x)dx \over (t-x)^{1-\alpha}}                     \nonumber\\
+&=&\, {\sin \pi \alpha \over \pi}\,\left[
+\int_0^t{df\over dt}\,{dx \over (t-x)^{1-\alpha}}+
+{f(0)\over t^{1-\alpha}}\right]  \,\,\,\,\,\Rightarrow              \nonumber
+
+:eqnarray:
+f(\E)\,&=&\,{\sin\left({\pi\over2}\right)\over\pi}\,{d\over d\E}\,
+\int_0^\E {1\over\sqrt8\pi^2}\,{d\rho\over d\Psi}
+{d\Psi\over\sqrt{\E-\Psi}}                                         \nonumber\\
+&=&\,{\sin\left({\pi\over2}\right)\over\pi}\,\left[
+\int_0^\E{1\over\sqrt8\pi^2}\,{d^2\rho\over d\Psi^2} {d\Psi\over\sqrt{\E-\Psi}}
+\,+\,{1\over\sqrt8\pi^2}\,
+{1\over\sqrt\E}\left({d\rho\over d\Psi}\right)_{\Psi=0}\right]        \nonumber
+
+*Bob*: Indeed, these are exactly the eqs. (ref(fcurlyEa)) and (ref(fcurlyEb))
+that we set out to prove.  Great!  Now can we start testing my code?
+
+== A Mathematical Proof
+
+*Alice*: Ho!  Not so quick.  All we have done is verify that Binney and
+Tremaine's claim in the appendix leads to their claim in the main text.
+Now we have to prove the claim in their appendix.
+
+*Bob*: But that is mathematics!  Look, there is no physics in the relation
+between eqs. (ref(fx)) and (ref(gt)).  It's just a matter of some kind
+of mathematical transformation, like Fourier transforms or Laplace
+transforms.
+
+*Alice*: Even so, we set out to prove things from first principles, and I
+certainly would feel more comfortable to do exactly that.  And I don't feel
+I can call Abel transforms first principles.  Besides, they may well
+come in handy when we will start constructing more complicated models, and
+I wouldn't mind getting some more practice in these type of manipulations.
+
+Come on, let's just do it.
+
+*Bob*: Okay, but not a bit more than is really necessary.  Look, they
+introduce <tex>$\alpha$</tex> where we only needed the number
+<tex>$1/2$</tex>.
+
+*Alice*: I'll do it for <tex>$\alpha$</tex>, why not.  You can just watch.
+So how is the problem posed exactly?  In the "if . . then . . " sentence
+in their appendix . . . 
+
+*Bob*: . . . their "Let . . then . . " sentence . . . 
+
+*Alice*: . . . yes, of course, they are mathematical physicists, not
+computer scientists.  Okay, in the "Let . . then . . " sentence
+in their appendix, Binney and Tremaine actually assert two results.
+Let me start trying to prove the first one, which is:
+
+Let
+
+:equation:
+\label{fx2}
+f(x) = \int_0^x {g(t)dt \over (x-t)^\alpha}
+\quad\quad\quad\quad  0<\alpha<1
+
+Then
+
+:equation:
+\label{gt2}
+g(t) \,=\, {\sin \pi \alpha \over \pi}\,{d\over dt} \,
+       \int_0^t {f(x)dx \over (t-x)^{1-\alpha}}
+
+Now how shall we prove this?
+
+== The Problem
+
+*Bob*: They give a terse hint about substituting the first equation in the
+second and interchanging the order of the integration.  Now why would you
+want to substitute the first equation in the second?  I like brevity, but
+this is a bit too brief for me.
+
+*Alice*: Well, given that their book as it is runs already well over
+700 pages, they probably thought they couldn't afford more room for
+explanations.
+
+*Bob*: Good thing we don't suffer from that constraint.  The world wide web
+is wide enough for our meanderings.
+
+*Alice*: But let's not meander too far.  I want to crack this nut.  Let's
+see.  Ah, they must mean that they take the right hand side of eq. (ref(gt2)),
+and work that out, in order to see whether they really get <tex>$g(t)$</tex>
+back in the end.
+
+*Bob*: What do you mean?  They have already called it <tex>$g(t)$</tex>.
+
+*Alice*: Well, they have _asserted_ that the right hand side is the answer
+to the question of what <tex>$g(t)$</tex> is.  We now have to prove it.
+
+*Bob*: I find that confusing.
+
+*Alice*: It is a bit confusing.  Here, let's be more precise and explicit,
+without confusing name spaces.  Forget about eq. (ref(gt2)) . . .
+
+*Bob*: . . . with pleasure and glee.  I'd just as soon forget about this
+whole derivation . . .
+
+*Alice*: Patience, please.  Forget about eq. (ref(gt2)), and write instead
+
+:equation:
+\label{ht2}
+h(t) \,=\, {\sin \pi \alpha \over \pi}\,{d\over dt} \,
+       \int_0^t {f(x)dx \over (t-x)^{1-\alpha}}
+
+*Bob*: Exactly the same, but now you're calling it <tex>$h(t)$</tex>.
+
+*Alice*: Exactly.  Exactly exactly, I mean.  The point is that now we
+don't make any claim about what <tex>$h(t)$</tex> is supposed to mean,
+it is just a function we happen to define this way, right?  Now, this
+new function <tex>$h(t)$</tex> also happens to have this factor
+<tex>$f(x)$</tex> in the integrand, and nothing stops us from substituting
+the expression for <tex>$f(x)$</tex>, given in eq. (ref(fx2)) into eq.
+(ref(ht2)).
+
+*Bob*: Yes, and yes.  I agree.  That is much clearer, since there are only
+one <tex>$f(x)$</tex> and one <tex>$g(t)$</tex> and one <tex>$h(t)$</tex>
+in the game, rather than two different <tex>$g(t)$</tex>'s with different
+status.  And ah, now I see why you would want to substitute
+eq. (ref(fx2)) into eq. (ref(ht2)).  Is that what they meant?
+
+*Alice*: I guess it is.
+
+*Bob*: Okay, now I see why.  Boy, they _are_ terse!
+
+*Alice*: In math, more than half the work is often to find out exactly
+_what_ to do.  Actually doing it is typically the least of the problem.
+
+*Bob*: But let's do it, and get it over with.
+
+== The Answer
+
+*Alice*: Yes, let's.  Here is the result of substituting
+eq. (ref(fx2)) into eq. (ref(ht2)):
+
+:eqnarray:
+h(t) &=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
+   \int_0^t {dx \over (t-x)^{1-\alpha}}\,
+   \int_0^x {g(t')dt' \over (x-t')^\alpha}                        \nonumber\\
+&=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
+\int_0^t dx \int_0^x dt'{g(t')\over (t-x)^{1-\alpha}(x-t')^\alpha}  \nonumber\\
+&=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
+\int_0^tdt'\int_{t'}^t dx{g(t')\over(t-x)^{1-\alpha}(x-t')^\alpha}  \nonumber\\
+&=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
+\int_0^tdt'g(t')\int_{t'}^t {dx\over(t-x)^{1-\alpha}(x-t')^\alpha}
+
+*Bob*: What did you do exactly when you went from the second to the third
+line?
+
+*Alice*: I followed Binney and Tremaine's advice, to interchange the order
+of integration.
+
+*Bob*: But how did you get the new limits for the two integral signs in the
+third line so quickly?
+
+*Alice*: If you draw a picture, you can see what is going on here.
+Instead of <tex>$t'$</tex> use <tex>$y$</tex> instead.  We then have
+a double integral over the <tex>$\{x,y\}$</tex> plane.  The area over
+which we take the integral is a triangle bounded on top by the diagonal
+<tex>$x=y$</tex>, on the bottom by the positive <tex>$x$</tex> axis,
+and on the right by the line <tex>$x=t$</tex>.  Now in the second line
+the inner integral runs over vertical lines, and in the third integral,
+integration runs over horizontal lines.
+
+<b>[We should probably draw a picture here]</b>
+
+*Bob*: Ah, yes, I see now.  It has been a while since I interchanged the
+order of integrations, I must admit.  But your picture makes it clear.
+Onward!
+
+*Alice*: Let us focus on the inner integral, and let us call it
+
+:equation:
+I(t,t') \,=\, \int_{t'}^t {dx\over(t-x)^{1-\alpha}(x-t')^\alpha}
+
+It is natural to introduce:
+
+:equation:
+y = x - t' \,\,\,\,\Rightarrow\,\,\,\, x = y + t'  \,\,\,\,\Rightarrow
+
+:equation:
+I(t,t') \, = \,\int_0^{t-t'} {dy\over(t-t'-y)^{1-\alpha}y^\alpha}
+
+This in turn invites a second change of variables:
+
+:equation:
+z \,=\, {y \over t -t'} \, \,\,\Rightarrow\,\, \, y = (t-t')z\, \,\,\Rightarrow
+
+:equation:
+t-t'-y \,=\, (t-t')(1-z)\, \,\,\Rightarrow
+
+:eqnarray:
+I(t,t') \, &=&\, \int_0^1 {(t-t')dz\over(t-t')^{1-\alpha}(1-z)^{1-\alpha}
+(t-t')^\alpha z^\alpha}                       \nonumber\\
+&=&\, \int_0^1 {dz\over(1-z)^{1-\alpha} z^\alpha}
+
+That is nice: both the <tex>$t$</tex> and the <tex>$t'$</tex> dependences
+have dropped out, and we are left with a definite integral that only has
+one parameter, <tex>$\alpha$</tex>.
+
+*Bob*: And the answer is:
+
+:equation:
+I(t,t') \, =\, \int_0^1 {dz\over(1-z)^{1-\alpha} z^\alpha}
+\,=\, {\pi \over \sin \pi \alpha}
+
+== All the Way
+
+*Alice*: How did you get that so quickly?  Did you use a symbolic integrator?
+That is cheating?
+
+*Bob*: No, I used Binney and Tremaine again, their appendix eq. (1B-58).
+You see, they give you just the minimal amount of information needed
+to get this all worked out.
+
+*Alice*: But we haven't worked out the integral yet.
+
+*Bob*: Are you kidding?  Perhaps I should call up a symbolic integrator!
+
+*Alice*: Look, Bob, we're nearly there, a few feet from the finish line,
+and you want to give up now?  Let's just work it out, and then we can tell
+all of our friends and family that we have just derived the
+distribution function corresponding to a softened potential, really from
+first principles.
+
+*Bob*: My mom will be thrilled to hear that.  I can't get you out of this
+room until you've proved everything, right?  Well, I'll play along
+under one condition: this time we really will use only
+<tex>$\alpha=\half$</tex>.  That is all that we needed to prove Binney
+and Tremaine's main text results, eqs.  (ref(fcurlyEa)) and
+(ref(fcurlyEb)).  Anything more would be masochism.
+
+*Alice*: Okay, okay, <tex>$\alpha=\half$</tex> it will be.  I'll take a deep
+breath, and take off:
+
+<tex>$$
+\int_0^1 {dz\over(1-z)^{1/2} z^{1/2}} \,=\,
+\int_0^1 {dz\over(z-z^2)^{1/2}} \,=\,
+\int_0^1 {dz\over\sqrt{{1\over4}-\left(z-{1\over2}\right)^2}} \,=
+$$</tex>
+
+<tex>$$
+\int_{-\half}^\half {dx\over\sqrt{{1\over4}-x^2}} \,=
+\int_{-1}^1 {{1\over2}dy\over\sqrt{{1\over4}-\left({y^2\over4}\right)}} \,=
+\int_{-1}^1 {dy\over\sqrt{1-y^2}}
+$$</tex>
+
+Aha!  Now we're getting there.  And rather than looking _this_ one up,
+I do remember now how it went.  It is all coming back to me now from my
+freshman years.  You start with the following tautology, given that arcsin
+function is the inverse of the sin function:
+
+<tex>$$
+\sin({\rm asin}x) = x
+$$</tex>
+
+When you differentiate this with respect to <tex>$x$</tex>, you get
+
+<tex>$$
+{d\over dx}\,\sin({\rm asin}x) \,=\,
+\cos({\rm asin}x)\,{d\over dx}\,{\rm asin}x \,=\,1
+$$</tex>
+
+This implies:
+
+<tex>$$
+{d\over dx}\,{\rm asin}x \,=\,
+{1\over\sqrt{1-[\sin({\rm asin}x)]^2}}\,=\,{1\over\sqrt{1-x^2}}
+$$</tex>
+
+This means that the solution of our integral is:
+
+<tex>$$
+\int_0^1 {dz\over(1-z)^{1/2} z^{1/2}} \,=\, \int_{-1}^1 {dy\over\sqrt{1-y^2}}
+\,=\,\left.\{{\rm asin}x\}\right|_{-1}^1 \,=\, {\pi\over2}+{\pi\over2}\,=\, \pi
+$$</tex>
+
+xxx
+
+
+
+== xx
+
+and therefore
+
+:equation:
+h(t) = {d\over dt} \int_0^t g(t')dt' = g(t)
+
+We can work out the expression for <tex>$g(t)$</tex> by taking the
+time derivative of the integral, by substituting
+
+:equation:
+w = t - x \, \,\,\Rightarrow\,\, \, x = t -w  \, \,\,\Rightarrow
+
+x
+
+x
+
+x
+
+:eqnarray:
+g(t) &=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
+       \int_0^t {f(x)dx \over (t-x)^{1-\alpha}}                    \nonumber\\
+&=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
+\int_0^t {f(t-w)dw \over w^{1-\alpha}}                             \nonumber\\
+&=& {\sin \pi \alpha \over \pi}\, \left[
+\left.{f(t-w) \over w^{1-\alpha}}\right|_{w=t}+\int_0^t \left({d\over dt}f(t-w)\right)
+{dw \over w^{1-\alpha}} \right]                                    \nonumber\\
+&=& {\sin \pi \alpha \over \pi}\, \left[
+{f(0)\over t^{1-\alpha}} + \int_0^t \left({d\over dx}f(x)\right)
+{dx \over (t-x)^{1-\alpha}} \right]                                \nonumber\\
+&=& {\sin \pi \alpha \over \pi}\, \left[
+{f(0)\over t^{1-\alpha}} + \int_0^t {df\over dx}
+{dx \over (t-x)^{1-\alpha}} \right]                               
 

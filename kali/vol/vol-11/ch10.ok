@@ -1,0 +1,95 @@
+= xx
+
+== Jun's sample:
+
+Here <tex>$M_j$</tex> and <tex>${\bf r}_j$</tex> are the mass and
+position vector of particle <tex>$j$</tex>, and <tex>$G$</tex> is the
+gravitational constant.  To bring out the inverse square nature of
+gravity, we can define
+<tex>${\bf r}_{ji} = {\bf r}_j - {\bf r}_i$</tex>, with
+<tex>$r_{ji} = |{\bf r}_{ji}|$</tex>, and unit vector
+<tex>$\hat {\bf r}_{ji} = {\bf r}_{ji} / r_{ji}$</tex>.  The
+gravitational acceleration on particle <tex>$i$</tex> then becomes:
+
+<tex>
+$$
+{\bf a}_i = G \sum_{j=1 \atop j \neq i}^N
+\frac{M_j}{r_{ji}^2} \,\hat{\bf r}_{ji}
+$$
+</tex>
+
+The following is the same as the above formula, but using : equation : 
+
+:equation:
+{\bf a}_i = G \sum_{j=1 \atop j \neq i}^N
+\frac{M_j}{r_{ji}^2} \,\hat{\bf r}_{ji}
+\label{newton}
+
+The following is an equation array
+
+:eqnarray:
+\label{samplearray}
+a &=& b\nonumber\\
+b &=& c
+
+Equation (ref(newton)) is the equation of motion for <i>N</i>-body
+problem. Equations (ref(samplearray)) just show two equations. Note
+that curently equation (or equnarray) can have only one number. So
+with eqnarray, all but one fomula must be used as "nonumber", as in
+the above example.
+
+== xxx
+
+
+
+Integrate density:
+
+:eqnarray:
+m(r) \, &=& \, \int_0^r 4 \pi r^2 \rho(r) dr                   \nonumber\\
+  &=& \, \int_0^r {3M\over a^3}r^2\left(1+{r^2\over a^2}\right)^{-5/2}
+
+:equation:
+m(r) \, = \, M\left(1+{a^2\over r^2}\right)^{-3/2}
+
+Then this, as the energy distribution function
+
+:equation:
+f(E) = {3.2^{7/2}\over7\pi^3}{a^2\over G^5M^4}(-E)^{7/2}
+
+Integrate potential energy:
+
+:equation:
+E_{pot} \, = \, -\,{3\pi\over32}{GM^2\over a}
+
+Use virial theorem:
+
+:equation:
+E_{tot} \, = \, -\, E_{kin} \, = \, -\, {3\pi\over64}{GM^2\over a}
+
+By definition:
+
+:equation:
+E_{tot} \, = \, -\, {GM^2\over R_v}
+
+Hence:
+
+:equation:
+R_v \, = \, {16\over3\pi}a
+
+and:
+
+:equation:
+\sigma^2 = {GM\over 6a}\left(1+{r^2\over a^2}\right)^{-1/2}
+
+:equation:
+E_{pot} = -{3\pi\over32}{GM^2\over a}
+
+:equation:
+E_{kin} = {3\pi\over64}{GM^2\over a}
+
+:equation:
+E_{tot} = -{3\pi\over64}{GM^2\over a}
+
+:equation:
+t_{rh} = {0.206Na^{3/2}\over\sqrt{GM}\ln\Lambda}	
+

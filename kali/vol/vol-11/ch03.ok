@@ -114,8 +114,8 @@ m(r) \, &=& \, \int_0^r 4 \pi r^2 \rho(r) dr                       \nonumber\\
   &=& \, 
 \int_0^r {3M\over a^3}r^2\left(1+{r^2\over a^2}\right)^{-5/2}dr
 
-The variable <tex>$x$</tex> appears in the integrand only in terms of
-the combination <tex>$x^2/a^2$</tex>, so a natural change of variables is:
+The variable <tex>$r$</tex> appears in the integrand only in terms of
+the combination <tex>$r^2/a^2$</tex>, so a natural change of variables is:
 
 <tex>$$
 x = {r^2\over a^2} \,\,\,\,\,\, \Rightarrow\,\,\,\,\,\, 

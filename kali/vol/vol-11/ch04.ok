@@ -73,7 +73,7 @@ particles:
 
 :equation:
 \label{distributionfunction}
-f(\br,\bv)d\br\bv \, = \, f(E(r,v)\,4\pi r^2 dr\,4\pi v^2dv \, = \,
+f(\br,\bv)d\br d\bv \, = \, f(E(r,v)\,4\pi r^2 dr\,4\pi v^2dv \, = \,
        {384\sqrt(2)\over7\pi m}(-E)^{7/2}r^2v^2dr\,dv
 
 *Alice*: Where did you get this expression from?
@@ -403,7 +403,7 @@ So we get for the density:
 \rho(r) &=& 4\pi \int_0^{v_{esc}} f(E)\, v^2dv                \nonumber\\
 &=&  4\pi \int_0^{v_{esc}} f(E)\, 2(E-\Phi)\,
                    2^{-1/2}(E-\Phi)^{-1/2}\,dE                \nonumber\\
-&=& 2^{5/2}\pi\int_\Phi^0(E-\Phi)^{1/2}f(E)dE
+&=& 2^{5/2}\pi\int_\Phi^0f(E)(E-\Phi)^{1/2}dE
 
 Here both <tex>$\Phi$</tex> and <tex>$E$</tex> are negative.
 It is easier to introduce quantities that are positive.  Following the
@@ -422,7 +422,7 @@ is a projection down from phase space, through an integration over
 
 :equation:
 \label{rhofromcurlyE}
-\rho(r) \,=\, 2^{5/2}\pi\int_0^\Psi (\Psi-\E)^{1/2}f(\E)d\E
+\rho(r) \,=\, 2^{5/2}\pi\int_0^\Psi f(\E)(\Psi-\E)^{1/2}d\E
 
 Strictly speaking I should have changed the symbol for <tex>$f$</tex>
 again since the functional form is different: <tex>$\hat f(\E)=f(E)$</tex>.
@@ -494,7 +494,7 @@ often enough myself.
 *Bob*: So eq. (ref(rhofromcurlyE)) becomes simply:
 
 <tex>$$
-\rho(\Psi) \,=\, 2^{5/2} \pi\int_0^\Psi (\Psi-\E)^{1/2}f(\E)d\E
+\rho(\Psi) \,=\, 2^{5/2} \pi\int_0^\Psi f(\E)(\Psi-\E)^{1/2}d\E
 $$</tex>
 
 *Alice*: Indeed.  If we divide both sides of the equation by
@@ -502,7 +502,7 @@ $$</tex>
 
 :equation:
 \label{rhofrompsi}
-{1\over\sqrt8\pi}\,\rho(\Psi) \,=\, 2 \int_0^\Psi (\Psi-\E)^{1/2}f(\E)d\E
+{1\over\sqrt8\pi}\,\rho(\Psi) \,=\, 2 \int_0^\Psi f(\E)(\Psi-\E)^{1/2}d\E
 
 *Bob*: Why would they divide by that funny factor?
 
@@ -570,116 +570,16 @@ results with codes, rather than students who can solve this inversion equation
 
 *Alice*: Such a silly pun would work better if you had an accent.  Come,
 let's take our usual approach: first let's assume that
-eqs. (ref(fcurlyEa,fcurlyEb)) are indeed correct, and let us check whether
-we can then derive the correct distribution function for Plummer's model.
-Having done that, we will come back, and check for ourselves whether we
-can prove this Abel integral equation inversion.
+eqs. (ref(fcurlyEa)) and (ref(fcurlyEb)) are indeed correct, and let
+us check whether we can then derive the correct distribution function
+for Plummer's model.  Having done that, we will come back, and check
+for ourselves whether we can prove this Abel integral equation
+inversion.
 
 *Bob*: Something tells me it will be a long day.
 
-==
+*Alice*: Perhaps.  Whatever it takes!  But I agree with you, this may
+well take longer than we thought.  Let's continue tomorrow.
 
-
-
-
-
-
-
-
-== xxx
-
-
-*Alice*: By insisting that we have the same amount of mass in a thin shell,
-whether we label the shell through its <tex>$r$</tex> or its <tex>$\Psi$</tex>
-coordinate:
-
-== xxx
-
-== xxx
-
-If we start with:
-
-:equation:
-f(x) = \int_0^x {g(t)dt \over (x-t)^\alpha}
-\quad\quad\quad\quad  0<\alpha<1
-
-then the inverse solution is:
-
-:equation:
-g(t) = {\sin \pi \alpha \over \pi}\,{d\over dt} \,
-       \int_0^t {f(x)dx \over (t-x)^{1-\alpha}}
-
-To prove this, let us call the right hand side <tex>$h(t)$</tex>,
-and work it out, to see whether we really get back <tex>$g(t)$</tex>
-in the end.
-
-:eqnarray:
-h(t) &=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
-   \int_0^t {dx \over (t-x)^{1-\alpha}}\,
-   \int_0^x {g(t')dt' \over (x-t')^\alpha}                        \nonumber\\
-&=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
-\int_0^t dx \int_0^x dt'{g(t')\over (t-x)^{1-\alpha}(x-t')^\alpha}  \nonumber\\
-&=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
-\int_0^tdt'\int_{t'}^t dx{g(t')\over(t-x)^{1-\alpha}(x-t')^\alpha}  \nonumber\\
-&=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
-\int_0^tdt'g(t')\int_{t'}^t {dx\over(t-x)^{1-\alpha}(x-t')^\alpha}
-
-Let us look at the  second integral:
-
-:equation:
-I_2 = \int_{t'}^t {dx\over(t-x)^{1-\alpha}(x-t')^\alpha}
-
-We can rewrite this by introducing
-
-:equation:
-y = x - t' \, \,\,\Rightarrow\,\, \, x = y + t'  \, \,\,\Rightarrow
-
-:equation:
-I_2 = \int_0^{t-t'} {dy\over(t-t'-y)^{1-\alpha}y^\alpha}
-
-We can then rewrite this in terms of
-
-:equation:
-z = {y \over t -t'} \, \,\,\Rightarrow\,\, \, y = (t-t')z\, \,\,\Rightarrow
-
-:equation:
-t-t'-y = (t-t')(1-z)\, \,\,\Rightarrow
-
-:eqnarray:
-I_2 &=& \int_0^1 {(t-t')dz\over(t-t')^{1-\alpha}(1-z)^{1-\alpha}
-(t-t')^\alpha z^\alpha}                       \nonumber\\
-&=& \int_0^1 {dz\over(1-z)^{1-\alpha} z^\alpha}     \nonumber\\
-&=& {\pi \over \sin \pi \alpha}
-
-and therefore
-
-:equation:
-h(t) = {d\over dt} \int_0^t g(t')dt' = g(t)
-
-We can work out the expression for <tex>$g(t)$</tex> by taking the
-time derivative of the integral, by substituting
-
-:equation:
-w = t - x \, \,\,\Rightarrow\,\, \, x = t -w  \, \,\,\Rightarrow
-
-x
-
-x
-
-x
-
-:eqnarray:
-g(t) &=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
-       \int_0^t {f(x)dx \over (t-x)^{1-\alpha}}                    \nonumber\\
-&=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
-\int_0^t {f(t-w)dw \over w^{1-\alpha}}                             \nonumber\\
-&=& {\sin \pi \alpha \over \pi}\, \left[
-\left.{f(t-w) \over w^{1-\alpha}}\right|_{w=t}+\int_0^t \left({d\over dt}f(t-w)\right)
-{dw \over w^{1-\alpha}} \right]                                    \nonumber\\
-&=& {\sin \pi \alpha \over \pi}\, \left[
-{f(0)\over t^{1-\alpha}} + \int_0^t \left({d\over dx}f(x)\right)
-{dx \over (t-x)^{1-\alpha}} \right]                                \nonumber\\
-&=& {\sin \pi \alpha \over \pi}\, \left[
-{f(0)\over t^{1-\alpha}} + \int_0^t {df\over dx}
-{dx \over (t-x)^{1-\alpha}} \right]                               
+*Bob*: That sounds better already.  See you then!
 
