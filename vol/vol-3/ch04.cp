@@ -16,9 +16,6 @@ I don't think we should put any <i>a priori</i> limitations on
 what such lines could contain.  Obvious choices are lines like
 
     acceleration = 0.1 -0.3
-
-or
-
     density = 345.18
 
 for physical quantities, or something like
@@ -347,7 +344,7 @@ I've seen that happening.
 *Alice*: I agree.  Where were we?  We decided to create a scratch pad
 named +rest+ for all the rest of the lines that +Body+ could not understand.
 
-*Bob*: How about this: an instance variable <tt>@rest</tt>
+*Bob*: How about this: we can add an instance variable <tt>@rest</tt>
 for the +Body+ class, in the form of one big string.  Initially
 each +Body+ will be created with an empty string:
 
@@ -363,6 +360,10 @@ in <tt>iobody2.rb</tt> by
  :inccode: .iobody3.rb-1
 
 in our new <tt>iobody3.rb</tt>
+
+The first line tests whether the unknown line has an equal sign in it.
+If so, the whole line is appended to the <tt>@rest</tt> string.  If
+not, it really is an error.
 
 *Alice*: Simple indeed!  But we have to make a change in our output
 mechanism as well.
@@ -432,7 +433,4 @@ And here is the result:
     end
 END
 
-
-
-
-
+TODO: HIGHER LEVEL ACS READ-IN, HASH TABLE.

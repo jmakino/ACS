@@ -1,11 +1,12 @@
 SRC = title.cp pref.cp ch01.cp  ch02.cp  ch03.cp  ch04.cp  ch05.cp \
               ch06.cp  ch07.cp  ch08.cp  ch09.cp ch10.cp
 
-vol0.tex: $(SRC) .acsdocinitrc
-	cat $(SRC) > vol0.cp
-	ruby ../../src/coherent_programming/acsdoc.rb --tolatex vol0.cp
+volume0.tex: $(SRC) .acsdocinitrc
+	cat $(SRC) > volume0.cp
+	ruby ../../src/coherent_programming/acsdoc.rb --tolatex volume0.cp
 doc : $(SRC) .acsdocinitrc 
 	ruby ../../src/coherent_programming/acsdoc.rb  $(SRC) 
 
 clean :
-	rm vol0.tex vol0.aux vol0.cp vol0.dvi vol0.log vol0.ps vol0.toc
+	rm volume0.tex volume0.aux volume0.cp volume0.dvi volume0.log \
+	volume0.ps volume0.toc

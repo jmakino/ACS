@@ -4,7 +4,7 @@
 ~\\
 The Kali code for Dense Stellar Systems\\
 ~\\
- Volume 3: Structured Input/Output
+ Volume 4: User Interface
 }
 \author{Piet Hut and Jun Makino}
 \maketitle

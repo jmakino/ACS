@@ -1,10 +1,9 @@
 SRC =  title.cp ch01.cp  ch02.cp  ch03.cp  ch04.cp  ch05.cp  ch06.cp  ch07.cp  ch08.cp \
-       ch09.cp  ch10.cp  ch11.cp  ch12.cp  ch13.cp  ch14.cp  ch15.cp  ch16.cp
-#SRC =  ch15.cp
+       ch09.cp  ch10.cp  ch11.cp  ch12.cp
 
-vol1.tex: $(SRC) .acsdocinitrc 
-	cat $(SRC) > vol1.cp
-	ruby ../../src/coherent_programming/acsdoc.rb --tolatex vol1.cp
+volume1.tex: $(SRC) .acsdocinitrc 
+	cat $(SRC) > volume1.cp
+	ruby ../../src/coherent_programming/acsdoc.rb --tolatex volume1.cp
 
 doc : $(SRC) .acsdocinitrc 
 	ruby ../../src/coherent_programming/acsdoc.rb $(SRC) *.rb
@@ -17,4 +16,5 @@ twopfig2.gif: twopfig2.eps
 	convert twopfig2.eps twopfig2.gif
 
 clean : 
-	rm vol1.tex vol1.aux vol1.cp vol1.dvi vol1.log vol1.ps vol1.toc
+	rm volume1.tex volume1.aux volume1.cp volume1.dvi volume1.log \
+	volume1.ps volume1.toc
