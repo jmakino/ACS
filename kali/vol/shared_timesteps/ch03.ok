@@ -29,7 +29,7 @@ our clop function to provide them:
 
 Aha, now I remember.  Okay, how about this?
 
- :commandoutput: ruby nbody_cst1.rb -g yo6 -t 1 < test.in > yo6cst.out
+ :commandoutput: ruby nbody_cst1.rb -g yo6 -t 1 -c 0.01 < test.in > yo6cst.out
 
 Now let's make the time step twice as small:
 
@@ -47,9 +47,10 @@ in phase space also scales like the sixth power in the time step.
 truly accurate integration would give us an energy error of zero, but when
 we compare the two outputs we just got, we need to compare them to an even
 more accurate soluation.  Well, we can run our code with a much smaller
-time step, and declare that the result should be close to `true':
+time step, such as the default choice, and declare that the result
+should be close to `true':
 
- :commandoutput: ruby nbody_cst1.rb -g yo6 -t 1 -c 0.001 < test.in > yo6cst_tenth.out
+ :commandoutput: ruby nbody_cst1.rb -g yo6 -t 1 < test.in > yo6cst_tenth.out
 
 First we'll compare the first run with the `true' run:
 

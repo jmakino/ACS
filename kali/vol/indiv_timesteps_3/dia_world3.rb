@@ -831,7 +831,7 @@ class Body
   end
 end
 
-options_text= <<-END
+options_text = <<-END
 
   Description: Individual Time Step, Individual Integration Scheme Code
   Long description:
@@ -922,11 +922,11 @@ options_text= <<-END
   Variable name:	dt_dia
   Description:		Diagnostics output interval
   Long description:
-    This option sets the time interval between diagnostics output,
-    which will appear on the standard error channel.
-
-    Note: this is a preliminary test implementation.  This option only starts
-    to do its work after a whole era has passed without diagnostics output.
+    The time interval between successive diagnostics output.
+    The diagnostics include the kinetic and potential energy,
+    and the absolute and relative drift of total energy, since
+    the beginning of the integration.
+        These diagnostics appear on the standard error stream.
 
 
   Short name: 		-n
@@ -938,6 +938,9 @@ options_text= <<-END
   Long description:
     This option sets the maximum interval between diagnostics output,
     as the maximum number of time steps since the last diagnostics output.
+
+    Note: this is a preliminary test implementation.  This option only starts
+    to do its work after a whole era has passed without diagnostics output.
 
 
   Short name: 		-o

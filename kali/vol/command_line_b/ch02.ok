@@ -1,0 +1,12 @@
+= XXX
+
+== xxx
+
+first introduce the series <tt>rkn1.rb</tt> through <tt>rkn4.rb</tt>,
+the first two of which were already introduced in the previous volume,
+and all of which still depend on <tt>clop.rb</tt> as introduced in the
+previous volume.
+
+Then start improving the <tt>clop.rb</tt> function.
+
+Finally move from <tt>rkn4.rb</tt> to <tt>nbody_cst0.rb</tt>,

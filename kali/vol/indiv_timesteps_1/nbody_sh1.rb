@@ -242,7 +242,7 @@ END
 
 end
 
-options_text= <<-END
+options_text = <<-END
 
   Description: Shared Time Step Code
   Long description:
@@ -289,8 +289,11 @@ options_text= <<-END
   Variable name:	dt_dia
   Description:		Interval between diagnostics output
   Long description:
-    This option sets the time interval between diagnostics output,
-    which will appear on the standard error channel.
+    The time interval between successive diagnostics output.
+    The diagnostics include the kinetic and potential energy,
+    and the absolute and relative drift of total energy, since
+    the beginning of the integration.
+        These diagnostics appear on the standard error stream.
 
 
   Short name: 		-o

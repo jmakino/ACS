@@ -44,11 +44,11 @@ as we did before.
 
 *Bob*: Here is the shared time step version:
 
- :commandoutput: ruby nbody_cst1.rb -c 0.001 -t 1 -o 2 < test.in
+ :commandoutput: ruby nbody_sh1.rb -t 1 -c 0.01 --exact_time -o 2 < test.in
 
 And here is the constant time step version:
 
- :commandoutput: ruby nbody_sh1.rb -t 1 -c 0.01 --exact_time -o 2 < test.in
+ :commandoutput: ruby nbody_cst1.rb -c 0.001 -t 1 -o 2 < test.in
 
 *Alice*: Well, the constant time step version seems to do a somewhat better
 job!  I suggest you increase the timestep a bit, to bring out the difference

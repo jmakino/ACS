@@ -1,6 +1,11 @@
-$acsdate="20050303"
-require "acsrequire"
-acsrequire "clop"
+require "../command_line/clop.rb"
+
+# This does not work, since there is a new "clop.rb" in this same directory
+# that will be loaded anyway
+#
+# $acsdate="20050303"
+# require "acsrequire"
+# acsrequire "clop"
 
 require "rknbody.rb"
 
@@ -18,7 +23,7 @@ options_definition_string = <<-END
   Value type:		string
   Default value:	rk4
   Global variable:	method
-  Print name:		                    # blank: suppresses glob. var. name
+  Print name:
   Description:		Integration method
   Long description:
     There are a variety of integration methods available, including:
@@ -113,15 +118,13 @@ options_definition_string = <<-END
 
 
   Short name:		-i
-  Long name:  		--initial_output
+  Long name:  		--init_out
   Value type:  		bool
-  Global variable:	init_out
-  Description:		Extra diagnostics
+  Variable name:	init_out
+  Description:		Output the initial snapshot
   Long description:
-    The following extra diagnostics will be printed:
-
-      acceleration (for all integrators)
-      jerk (for the Hermite integrator)
+    If this flag is set to true, the initial snapshot will be output
+    on the standard output channel, before integration is started.
 
 
   Short name:		-x

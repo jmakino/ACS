@@ -27,11 +27,11 @@ measuring rod.
 We may as well take the same case we tested before, starting from the
 file <tt>test.in</tt>, containing a Plummer model with five particles:
 
- :commandoutput: ruby nbody_cst1.rb -c 0.001 -t 1 < test.in > test01.out
+ :commandoutput: ruby nbody_cst1.rb -t 1 < test.in > test01.out
 
 Now I'll run it for another time unit, till time 2:
 
- :commandoutput: ruby nbody_cst1.rb -c 0.001 -t 2 < test01.out > test12.out
+ :commandoutput: ruby nbody_cst1.rb -t 2 < test01.out > test12.out
 
 Hey, that is strange, it ran all the way to time 3, even though I gave it
 the option <tt>-t 2</tt>.
@@ -47,11 +47,11 @@ time of the integration.  Let's check:
 *Bob*: I really like our help facility.  Helpful for sure!  Okay, I'll
 try again:
 
- :commandoutput: ruby nbody_cst1.rb -c 0.001 -t 1 < test01.out > test12.out
+ :commandoutput: ruby nbody_cst1.rb -t 1 < test01.out > test12.out
 
 And now I'll run the whole show right through from the beginning:
 
- :commandoutput: ruby nbody_cst1.rb -c 0.001 -t 2 < test.in > test02.out
+ :commandoutput: ruby nbody_cst1.rb -t 2 < test.in > test02.out
 
 Now _if_ everything behaves as I expect it will, we should get zero
 distance in phase space:
@@ -83,7 +83,7 @@ with the first shorter run:
 *Bob*: And yes, that's obviously the correct explanation.  Well, let me
 repeat the longer run, but this time with only one output at the end.
 
- :commandoutput: ruby nbody_cst1.rb -c 0.001 -t 2 -o 2 < test.in > test02.out
+ :commandoutput: ruby nbody_cst1.rb -t 2 -o 2 < test.in > test02.out
 
 Wanna bet we'll get zero now?
 
@@ -179,18 +179,18 @@ instead?
 *Bob*: Good idea!  Here you go.  Let's be systematic.  We know that this
 works:
 
- :commandoutput: ruby nbody_cst1.rb -c 0.001 -t 2 -o 2 < test.in > test02.out
+ :commandoutput: ruby nbody_cst1.rb -t 2 -o 2 < test.in > test02.out
  :commandoutput: cat test12.out test02.out | ruby nbody_diff.rb
 
 and we also know that this doesn't work:
 
- :commandoutput: ruby nbody_cst1.rb -c 0.001 -t 2 < test.in > test02.out
+ :commandoutput: ruby nbody_cst1.rb -t 2 < test.in > test02.out
  :commandoutput: cat test12.out test02.out | ruby nbody_diff.rb
 
 And if all is well, our new tool should be able to repair the last
 problem, as follows:
 
- :commandoutput: ruby nbody_cst1.rb -c 0.001 -t 2 < test.in | ruby acstail.rb > test02.out
+ :commandoutput: ruby nbody_cst1.rb -t 2 < test.in | ruby acstail.rb > test02.out
  :commandoutput: cat test12.out test02.out | ruby nbody_diff.rb
 
 *Alice*: Well done!

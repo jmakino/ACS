@@ -113,15 +113,13 @@ options_definition_string = <<-END
 
 
   Short name:		-i
-  Long name:  		--initial_output
+  Long name:  		--init_out
   Value type:  		bool
-  Global variable:	init_out
-  Description:		Extra diagnostics
+  Variable name:	init_out
+  Description:		Output the initial snapshot
   Long description:
-    The following extra diagnostics will be printed:
-
-      acceleration (for all integrators)
-      jerk (for the Hermite integrator)
+    If this flag is set to true, the initial snapshot will be output
+    on the standard output channel, before integration is started.
 
 
   Short name:		-x
