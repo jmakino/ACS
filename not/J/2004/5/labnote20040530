@@ -15,6 +15,11 @@ Anything else?
 Now it accepts two extentions (.cp and .ok) as the file name for the
 text files.
 
+== Make memo
+
+Currently, Make requires environment variable DVIPDF to has the value
+of a command to create PDF file, if PDF files are to be generated. If
+DVIPDF is not set, make does not create PDF files.
 
 
   

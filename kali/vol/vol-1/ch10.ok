@@ -333,7 +333,7 @@ that is here, in between <tt><<END</tt> and <tt>END</tt> is interpreted
 as one long string, and that string is the taken as the argument for the
 <tt>STDERR.print</tt> command.
 
-*Alice*: What are the backslash symbols <tt>\\</tt> doing there at the end
+*Alice*: What are the backslash symbols <tt>"\"</tt> doing there at the end
 of the second and third line?
 
 *Bob*: They indicate that the next line should continue after the previous
