@@ -1,16 +1,24 @@
 = TODO for acs
 
-Time-stamp: <2005-02-18 11:00:17 piet>
+Time-stamp: <2005-03-21 16:11:29 piet>
 
 * code management
 
-  -- Jun's new start at implementation (Jun's mail, 15 Feb '05)
+  -- "acs" and "kali" instead of "ruby" to determine the appropriate path
 
   -- shall we install a systematic set of test suites everywhere?
 
 * links between volumes
 
   -- implement Jun's suggestion (Jun's mail, 07 Feb '05)
+
+  -- automatic volume numbering from kali/index.html
+
+  -- automatic creation of kali/vol/Makefile and "TARGET = volume??" 
+
+  -- automatic creation of ?? in "TARGET = volume??" in kali/vol/xxx/Makefile
+
+  -- automatic creation of figure showing dependencies of volumes on each other
 
 * History mechanism
 
@@ -48,7 +56,7 @@ Time-stamp: <2005-02-18 11:00:17 piet>
 
 * new volumes
 
-  -- how about the start of the new volume 0b ?
+  -- how about the start of the new volume 5?
 
   -- how to present the Runge-Kutta survey in volume 1c?
 

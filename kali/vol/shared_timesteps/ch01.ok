@@ -59,7 +59,7 @@ integration accurate, all we had to do was to make sure that the time
 step we used was a small fraction _f_ of _T_.
 
 *Alice*: But even in that case, we could have run into trouble.  If any
-particle were to move with a velocity large than the typical velocity
+particle were to move with a velocity larger than the typical velocity
 by a factor of more than 1/_f_, such a particle could cross a distance
 more than the softening length within one time step.  Since the
 gravitational potential, and hence the gravitational force, could

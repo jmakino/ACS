@@ -3,6 +3,6 @@ SRC =  title.ok pref.ok  ch01.ok  ch02.ok  ch03.ok  ch04.ok \
 
 LOCALSCRIPTSRCS = nbody_cst1.rb nbody_sh1.rb nbody_set_id.rb nbody_diff.rb
 
-TARGET = volume10
+TARGET = volume11
 
 include ../etc/Makefile.inc
