@@ -1,6 +1,6 @@
 #<i>wrong addition of +to_s+ method in Body class, for educational purpose</i>
 
-include "body.rb"
+require "body.rb"
 
 class Body
 

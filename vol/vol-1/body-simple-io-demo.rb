@@ -1,6 +1,6 @@
 #<i>Demo for +simple_read+ and +simple_print+ methods</i>
 
-include "body.rb"
+require "body.rb"
 
 #:segment start: demo
 b = Body.new()
