@@ -1,0 +1,60 @@
+Date: Fri Feb 25 21:00:31 JST 2005
+
+From: Piet Hut <piet@ias.edu>
+
+Jun,
+
+I agree.  That is a very clear analysis.  Okay, I will let Alice argue
+for something like that.
+
+Piet
+
+------- Start of forwarded message -------
+Date: Fri, 25 Feb 2005 17:52:59 +0900 (JST)
+To: piet@ias.edu
+Subject: Re: Nbody vs. NBody
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > > I guess NO. My point is not to retro-fit new NBody to *any* existing
+ > > volume, whatever number/name it has.
+ > 
+ > I understand your strategy, and I agree that it is the most safe and simple.
+ > 
+ > The only problem is that we are writing several volumes out of order now.
+ > If I would suddenly change notation in everything I would be writing
+ > from today on, that would result in a strange mix of usage in the volumes.
+
+Practically speaking, I do not think there is any other choice. In
+general, at any time in future, we will be adding volumes in the
+middle of the series. If we have N previous volumes, I think the
+probability that some inconsistency occurs between the new volume and
+old one is proportional to N (or something like 1-exp(-cN)). The
+amount of work to make everything consistemt is at least O(N) (for
+checking the consistency). So the cost of adding one volume would be
+O(N^2), and total cost of N volumes would become O(N^3), if we try to
+keep all volumes always consistent. In other words, we cannot go any
+further than, say, 10 volumes, which is almost exactly where we are
+now.
+
+ > Well, I could start with NBody in volume 7a, which I'm working on now,
+ > and when I will write earlier volume (during the next month(s)), I
+ > will have to go back to Nbody again.
+
+Well, only if you assume a fixed linear ordering between volumes. If
+that is lost, there is really no way to make volumes consistent other
+than full O(N^3) correction.
+
+ > Hmm.  I could make this discussion part of the dialogue between Alice
+ > and Bob.  I guess Bob will argue for retrofitting, and Alice will
+ > disagree?  Or the other way around?  This part of the characters
+ > hasn't become very clear yet, since the issue hasn't arisen so far.
+ > What do you think?
+
+Well, one way would be Alice starts to argue for the complete
+consistency, but while talking finds that it's next to impossible...
+
+Jun
+------- End of forwarded message -------
+
