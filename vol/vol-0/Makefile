@@ -7,4 +7,5 @@ vol0.tex: $(SRC) .acsdocinitrc
 doc : $(SRC) .acsdocinitrc 
 	ruby ../../src/coherent_programming/acsdoc.rb  $(SRC) 
 
-clean : vol0.tex vol0.aux vol0.cp vol0.dvi vol0.log vol0.ps vol0.toc
+clean :
+	rm vol0.tex vol0.aux vol0.cp vol0.dvi vol0.log vol0.ps vol0.toc

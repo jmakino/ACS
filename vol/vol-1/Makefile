@@ -16,4 +16,5 @@ twopfig.gif: twopfig.eps
 twopfig2.gif: twopfig2.eps
 	convert twopfig2.eps twopfig2.gif
 
-clean : vol1.tex vol1.aux vol1.cp vol1.dvi vol1.log vol1.ps vol1.toc
+clean : 
+	rm vol1.tex vol1.aux vol1.cp vol1.dvi vol1.log vol1.ps vol1.toc
