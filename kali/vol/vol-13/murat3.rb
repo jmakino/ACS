@@ -184,8 +184,7 @@ class Nbody
     @time = t
   end
 
-  def evolve(integration_method, dt_param, delta_dia, delta_out,
-             delta_end, init_out, x_flag)
+  def evolve(dt_param, delta_dia, delta_out, delta_end, init_out, x_flag)
     nsteps = 0
     e_init
     write_diagnostics(nsteps, x_flag)
@@ -286,17 +285,6 @@ options_text= <<-END
     This program evolves an N-body code with a fourth-order Hermite Scheme,
     using individual time steps.
     (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
-
-
-  Short name:		-m
-  Long name:  		--integration_method
-  Value type:  		string
-  Default value:	hermite
-  Global variable:	method
-  Description:		Integration method
-  Long description:
-    This option receives a string, containing the name of the integration
-    method that will be used.  Example: "-m hermite" .
 
 
   Short name: 		-d
@@ -400,4 +388,4 @@ include Math
 
 nb = Nbody.new
 nb.simple_read
-nb.evolve($method, $dt_param, $dt_dia, $dt_out, $dt_end, $init_out, $x_flag)
+nb.evolve($dt_param, $dt_dia, $dt_out, $dt_end, $init_out, $x_flag)
