@@ -12,19 +12,6 @@ class Body
     eval(s)
   end
 
-  def accruby(body_array, eps)
-    a = @pos*0                              # null vector of the correct length
-    body_array.each do |b|
-      unless b == self
-        r = b.pos - @pos
-        r2 = r*r + eps*eps
-        r3 = r2*sqrt(r2)
-        a += r*(b.mass/r3)
-      end
-    end
-    a
-  end    
-
   def acc(body_array, eps)
     @acctmp = @pos*0                       # null vector of the correct length
     body_array.each do |b|
@@ -33,20 +20,6 @@ class Body
       end
     end
     @acctmp
-  end    
-
-  def jerkruby(body_array, eps)
-    j = @pos*0                              # null vector of the correct length
-    body_array.each do |b|
-      unless b == self
-        r = b.pos - @pos
-        r2 = r*r + eps*eps
-        r3 = r2*sqrt(r2)
-        v = b.vel - @vel
-        j += (v-r*(3*(r*v)/r2))*(b.mass/r3)
-      end
-    end
-    j
   end    
 
   def jerk(body_array, eps)

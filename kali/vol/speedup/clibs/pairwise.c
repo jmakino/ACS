@@ -50,8 +50,6 @@ static void pairwise_acc_jerk(real massi, real massj,
     
 }
 
-
-
 static void get_pos_vel_and_mass(VALUE p,
 				 double * pos,
 				 double * vel,
@@ -70,22 +68,6 @@ static void get_pos_vel_and_mass(VALUE p,
     *mass = NUM2DBL(rb_iv_get(p, "@mass"));
 }
 
-
-static void inc_acc_jerk(VALUE p,
-			 double * da,
-			 double * dj)
-{
-    int k;
-    VALUE local, element;
-    local = rb_iv_get(p, "@acc");
-    for(k=0;k<3;k++){
-	rb_ary_store(local,k,rb_float_new(NUM2DBL(rb_ary_entry(local,k))+da[k]));
-    }
-    local = rb_iv_get(p, "@jerk");
-    for(k=0;k<3;k++){
-	rb_ary_store(local,k,rb_float_new(NUM2DBL(rb_ary_entry(local,k))+dj[k]));
-    }
-}
 static void inc_acc(VALUE p,   double * da)
 {
     int k;
