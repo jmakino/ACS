@@ -166,8 +166,6 @@ static VALUE pairwize_force(VALUE self, VALUE pi, VALUE pj, VALUE c)
 
     epot = NUM2DBL(rb_cv_get(c, "@@epot"));
     coll_time_q = NUM2DBL(rb_cv_get(c, "@@coll_time_q"));
-    fprintf(stderr, "epot = %g\n", epot);
-    fprintf(stderr, "collq = %g\n", coll_time_q);
     pairwise_acc_jerk_pot_coll(massi, massj, posi, posj, veli, velj,
 				acci, accj, jerki, jerkj,
 			       &epot, &coll_time_q);
@@ -177,8 +175,6 @@ static VALUE pairwize_force(VALUE self, VALUE pi, VALUE pj, VALUE c)
     
     rb_cv_set(c, "@@epot",rb_float_new(epot));
     rb_cv_set(c, "@@coll_time_q",rb_float_new(coll_time_q));
-    fprintf(stderr, "epot = %g\n", epot);
-    fprintf(stderr, "collq = %g\n", coll_time_q);
 
     return Qnil;
 }
