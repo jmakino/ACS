@@ -22,11 +22,22 @@ module Acsdoc
     a = s.split
     indent = s.index(":output:") 
     tmpname = ".acsdoc.command-out"
+    tmpcommand = ".acsdoc.command-file"
     prompt = " "* indent + ">"
     commandline = a[1..a.size].join(" ").chomp
-    fullcommand = "cd #{dirname}; "+commandline + " >& " + tmpname
+    coutcopy = STDOUT.dup
+    cerrcopy = STDERR.dup
+    outfile = open(tmpname, "w+")
+    fullcommand = "cd #{dirname}; "+commandline + ">& " + tmpname
     print "command to run = ", fullcommand, "\n"
-    system(fullcommand)
+    open(tmpcommand,"w+"){ |f|  f.print fullcommand + "\n"}
+#    $stdout = outfile
+#    $stderr = outfile
+  system("cat  #{tmpcommand}");
+  system("csh -f #{tmpcommand}");
+#    $stdout = coutcopy
+#    $stderr = cerrcopy
+    outfile.close
     ofile.print prompt + commandline, "\n"
     ofile.print `cat #{dirname}/#{tmpname}`.each{|x| x = " "*indent + x}
     ofile.print "---\n"
