@@ -146,3 +146,108 @@ masses of the original particle.
 
  :inccode: euler1.rb
 
+*Bob*: We have to provide an input file, let's call it <tt>euler1.in</tt>:
+
+ :inccode: euler1.in
+
+*Bob*: Here is a minimal version, let's call it <tt>euler2.rb</tt>
+
+ :inccode: euler2.rb
+
+*Bob*: Let's test it:
+
+ :command: cp -f euler1.rb test.rb
+ :commandoutput: ruby test.rb < euler1.in
+ :command: rm -f test.rb
+
+*Bob*: ten times smaller step size:
+
+ :inccode: .euler3.rb-barebones
+
+and run it:
+
+ :command: cp -f euler3.rb test.rb
+ :commandoutput: ruby test.rb < euler1.in
+ :command: rm -f test.rb
+
+*Bob*: ten times smaller step size:
+
+ :inccode: .euler4.rb-barebones
+
+and run it:
+
+ :command: cp -f euler4.rb test.rb
+ :commandoutput: ruby test.rb < euler1.in
+ :command: rm -f test.rb
+
+*Bob*: ten times smaller step size:
+
+ :inccode: .euler5.rb-barebones
+
+and run it:
+
+ :command: cp -f euler5.rb test.rb
+ :commandoutput: ruby test.rb < euler1.in
+ :command: rm -f test.rb
+
+#*Bob*: ten times smaller step size:
+#
+# :inccode: .euler6.rb-barebones
+#
+#and run it:
+#
+# :command: cp -f euler6.rb test.rb
+# :commandoutput: ruby test.rb < euler1.in
+# :command: rm -f test.rb
+#
+#*Bob*: ten times smaller step size:
+#
+# :inccode: .euler7.rb-barebones
+#
+#and run it:
+#
+# :command: cp -f euler7.rb test.rb
+# :commandoutput: ruby test.rb < euler1.in
+# :command: rm -f test.rb
+
+*Alice*: Now let's look at a picture of the
+orbit.  I suggest using gnuplot, present on any Linux running
+system, and something that can be easily installed on many other Unix
+systems as well.  To use it is quite simple, with only one command
+needed to plot a graph.  In our case, however, I'll start with the
+command <tt>set size ratio -1</tt>.  A positive value for the size ratio
+scales the aspect ratio of the vertical and horizontal edge of the box
+in which a figure appears.  However, in our case we want to set the
+scales so that the unit has the same length on both the x and y axes.
+Gnuplot can be instructed to do so by specifying the ratio to be {\st -1}.
+In fact, let me write the line <tt>set size ratio -1</tt> in a file called
+<tt>.gnuplot</tt> in my home directory.  That way we don't have to type it
+each time we use gnuplot.  Okay, done.  Now let's have our picture:
+
+ \begin{small}
+ \begin{verbatim}
+ |gravity> gnuplot
+ gnuplot> set size ratio -1
+ gnuplot> plot "forward.out"
+ gnuplot> quit
+ |gravity> 
+ \end{verbatim}
+ \end{small}
+
+ \begin{figure}[ht]
+ \begin{center}
+ \epsfxsize = 4.5in
+ \epsffile{chap3/forward1.ps}
+ \caption[Two-body orbit with a forward-Euler integrator, time step $dt = 0.01$]
+ {Relative orbit for the first attempt to integrate a two-body system with a
+ forward-Euler integrator, with time step $dt = 0.01$}
+ \label{fig:forward1}
+ \end{center}
+ \end{figure}
+
+
+
+
+
+
+
