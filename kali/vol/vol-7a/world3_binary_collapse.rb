@@ -1206,7 +1206,7 @@ options_text= <<-END
 
     This is a test version, for the ACS data format
 
-    (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
+    (c) 2004, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
     example:
     ruby mkplummer.rb -n 5 -s 1 | ruby #{$0} -t 1
