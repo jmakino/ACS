@@ -11,12 +11,17 @@ typedef struct{
     real vel[NDIM];
     real acc[NDIM];
     real jerk[NDIM];
+    real old_pos[NDIM];
+    real old_vel[NDIM];
+    real old_acc[NDIM];
+    real old_jerk[NDIM];
 }Cbody, *Cbody_ptr;
 
 static VALUE RCbody;
 
 static real epot;
 static real coll_time_q;
+static real dt;
 
 static void pairwise_acc_jerk_pot_coll(real massi, real massj,
 				real posi[], real posj[],
@@ -147,6 +152,7 @@ static void get_pos_vel_and_mass(VALUE p,
     *mass = NUM2DBL(rb_iv_get(p, "@mass"));
 }
 
+
 static void inc_acc_jerk(VALUE p,
 			 double * da,
 			 double * dj)
@@ -164,6 +170,21 @@ static void inc_acc_jerk(VALUE p,
 }
 
 
+static void copy_from_ruby_array(double * v, VALUE p)
+{
+    int k;
+    for(k=0;k<NDIM;k++){
+	v[k] = NUM2DBL(rb_ary_entry(p,k));
+    }
+}
+static void copy_to_ruby_array(double * v, VALUE p)
+{
+    int k;
+    for(k=0;k<NDIM;k++){
+	rb_ary_store(p,k,rb_float_new(v[k]));
+    }
+}
+    
 
 static VALUE pairwize_force(VALUE self, VALUE pi, VALUE pj, VALUE c)
 {
@@ -252,14 +273,8 @@ static VALUE RCbody_get_acc_jerk(VALUE self, VALUE rp)
     real * acci;
     Cbody_ptr p;
     Data_Get_Struct(self, Cbody, p);
-    local = rb_iv_get(rp, "@acc");
-    for(k=0;k<3;k++){
-	rb_ary_store(local,k,rb_float_new(p->acc[k]));
-    }
-    local = rb_iv_get(rp, "@jerk");
-    for(k=0;k<3;k++){
-	rb_ary_store(local,k,rb_float_new(p->jerk[k]));
-    }
+    copy_to_ruby_array(p->acc,rb_iv_get(rp, "@acc"));
+    copy_to_ruby_array(p->jerk,rb_iv_get(rp, "@jerk"));
 }
 
 static VALUE RCbody_set_acc_jerk(VALUE self, VALUE rp)
@@ -269,18 +284,12 @@ static VALUE RCbody_set_acc_jerk(VALUE self, VALUE rp)
     VALUE local, element;
     Cbody_ptr p;
     Data_Get_Struct(self, Cbody, p);
-    local = rb_iv_get(rp, "@acc");
-    for(k=0;k<3;k++){
-	p->acc[k]=NUM2DBL(rb_ary_entry(local,k));
-    }
-    local = rb_iv_get(rp, "@jerk");
-    for(k=0;k<3;k++){
-	p->jerk[k]=NUM2DBL(rb_ary_entry(local,k));
-    }
+    copy_from_ruby_array(p->acc,rb_iv_get(rp, "@acc"));
+    copy_from_ruby_array(p->jerk,rb_iv_get(rp, "@jerk"));
 
 }
 
-static VALUE RCbody_clear_acc_jerk(VALUE self)
+static VALUE RCbody_clear_acc_and_jerk(VALUE self)
 
 {
     int k;
@@ -338,8 +347,72 @@ static VALUE RCbody_pairwize_force(VALUE rp1, VALUE rp2)
     return Qnil;
 }
 
-		    
+static VALUE RCbody_copy_to_C(VALUE self, VALUE rp)
+{
+    int k;
+    VALUE local, element;
+    Cbody_ptr p;
+    Data_Get_Struct(self, Cbody, p);
+    copy_from_ruby_array(p->pos,rb_iv_get(rp, "@pos"));
+    copy_from_ruby_array(p->vel,rb_iv_get(rp, "@vel"));
+    copy_from_ruby_array(p->acc,rb_iv_get(rp, "@acc"));
+    copy_from_ruby_array(p->jerk,rb_iv_get(rp, "@jerk"));
+    p->mass = NUM2DBL(rb_iv_get(rp, "@mass"));
+    for (k=0;k<NDIM;k++){
+	p->old_pos[k] = p->pos[k];
+	p->old_vel[k] = p->vel[k];
+	p->old_acc[k] = p->acc[k];
+	p->old_jerk[k]= p->jerk[k];
+    }
+}
     
+static VALUE RCbody_copy_from_C(VALUE self, VALUE rp)
+{
+    int k;
+    Cbody_ptr p;
+    Data_Get_Struct(self, Cbody, p);
+    copy_to_ruby_array(p->pos,rb_iv_get(rp, "@pos"));
+    copy_to_ruby_array(p->vel,rb_iv_get(rp, "@vel"));
+    copy_to_ruby_array(p->acc,rb_iv_get(rp, "@acc"));
+    copy_to_ruby_array(p->jerk,rb_iv_get(rp, "@jerk"));
+}
+    
+static VALUE set_dt(VALUE self, VALUE rdt)
+{
+    dt = NUM2DBL(rdt);
+    return Qnil;
+}
+
+static VALUE predict(VALUE self)
+{
+    int k;
+    Cbody_ptr p;
+    Data_Get_Struct(self, Cbody, p);
+    for(k=0;k<NDIM;k++){
+	p->pos[k] = p->pos[k] + p->vel[k]*dt +
+	    p->acc[k]*dt*dt/2 + p->jerk[k]*dt*dt*dt/6;
+	p->vel[k] = p->vel[k] + p->acc[k]*dt +
+	    p->jerk[k]*dt*dt/2;
+    }
+    return Qnil;
+}
+static VALUE correct(VALUE self)
+{
+    int k;
+    Cbody_ptr p;
+    Data_Get_Struct(self, Cbody, p);
+    for(k=0;k<NDIM;k++){
+	p->vel[k] = p->old_vel[k] +
+	    (p->old_acc[k] + p->acc[k])*dt/2 +
+	    (p->old_jerk[k] - p->jerk[k])*dt*dt/12;
+	p->pos[k] = p->old_pos[k] + 
+	    (p->old_vel[k] + p->vel[k])*dt/2 +
+	    (p->old_acc[k] - p->acc[k])*dt*dt/12;
+    }
+    return Qnil;
+}
+
+	
 
 void Init_pairwize()
 {
@@ -363,6 +436,15 @@ void Init_pairwize()
 		     Cbody_get_epot_and_collq, 1);
     rb_define_method(RCbody, "pairwize_force",
 		     RCbody_pairwize_force, 1);
+    rb_define_method(RCbody, "copy_to_c",
+		     RCbody_copy_to_C, 1);
+    rb_define_method(RCbody, "copy_from_c",
+		     RCbody_copy_from_C, 1);
+    rb_define_method(RCbody, "clear_acc_and_jerk",
+		     RCbody_clear_acc_and_jerk, 0);
+    rb_define_method(RCbody, "set_dt", set_dt, 1);
+    rb_define_method(RCbody, "predict", predict, 0);
+    rb_define_method(RCbody, "correct", correct, 0);
 
 }
 
