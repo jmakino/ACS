@@ -1,0 +1,58 @@
+Date: Tue Jun 08 07:45:05 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+ > >    0. A Vision
+ > >    1. The Two-Body Problem
+ > >    2. Integration Algorithms
+ > >    3. The N-Body Problem
+ > >    4. User Interface  
+ > >    5. Open Knowledge  
+ > >    6. Speeding up Ruby  
+ > >    7. Self-Describing Data Files
+ > >    8. Graphics  
+ > >    9. Variable Time Steps  
+ > >    10. Individual Time Steps  
+ > >    11. Plummer's Model  
+ > >    12. Core Collapse
+ > >    13. Binary Formation
+ > >    14. Kepler Regularization
+ > >    15. Beyond Core Collapse
+ > > 
+ > > This will allow me to start writing text for some of the
+ > > future volumes, when I have time, just like I am doing now
+ > > for Plummer's model.
+ > > 
+ > > Let me know whether you like these titles, or have another
+ > > preference.
+ > 
+ > Hmmmm, up to 12 is okay, but 14 and 15 may extend to several
+ > volumes...
+
+May well be.  However, I was thinking to stick to:
+
+-- in 13: the observation that binaries form, experimentally;
+-- in 14: replacing tight binaries by unperturbed Kepler orbits,
+          as a simple but perhaps necessary trick to do a core
+          collapse and beyond for a few-hundred body system
+-- in 15: to simply show that you can get beyond core collapse.
+
+I think it would be nice to aim at this overall physical picture,
+and then, from 16 onward, go into more detail; probably first a
+toy stellar evolution model.
+
+Anyway, that's all a bit aways, late 2005 at the earliest.
+For now, we can just keep these titles as place holders,
+unless you prefer otherwise.
+
+Meanwhile, I've spent hours going through a few lines of
+Binney & Tremaine.  I had forgotten how dense some of the
+text is.  I produce at least one page of explanation for
+a typical line that I borrow from their book . . . just
+now working out Abel transformations . . . yareyare, I've
+gotten rusty in working with integrals . . . but it will
+be great to have all this written down, for my own future
+reference as well!
+
+Piet
+
