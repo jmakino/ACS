@@ -14,14 +14,15 @@ method = "forward"   # integration method
 #method = "leapfrog"  # integration method
 #method = "rk2"       # integration method
 #method = "rk4"       # integration method
+history_depth = 5    # number of previous {pos,vel,acc,...} remembered
 
 STDERR.print "eta = ", eta, "\n",
       "dt_end = ", t_end, "\n",
       "method = ", method, "\n"
 
-nb = Nbody.new(method, eta)
+nb = Nbody.new(method, eta, history_depth)
 nb.read
 nb.write(t_end)
 
 print "\n"
-nb.dump_history
+nb.print_history

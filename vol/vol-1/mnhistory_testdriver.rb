@@ -1,10 +1,10 @@
 require "mnhistory.rb"
 
 h = History.new(2)
-h.set_last_rndot(0,3)
-h.set_last_rndot(1,1)
-h.set_last_rndot(2,1)
-h.extend(3)
+h.set_last_rndot(0,Vector.new([3]))
+h.set_last_rndot(1,Vector.new([1]))
+h.set_last_rndot(2,Vector.new([1]))
+h.extend(3,10)
 p h
 print "\n"
 print h.rndot(0,0.99), "\n"

@@ -78,11 +78,15 @@ class History
   def set_first_time(t)
     @history[0][0] = t
   end
-  def extend(t)
+  def extend(t, history_depth)
     new_index = @history.size
     @history[new_index] = Array.new
     @history[new_index][0] = t
     @history[new_index][1] = Array.new
+    while @history.size > history_depth    # prune
+      @history[0] = nil
+      @history.compact!
+    end
   end
   def set_last_rndot(n, rndot)             # rndot = d^n r / dt^n
     @history.last[1][n] = rndot
@@ -187,5 +191,24 @@ class History
         extrapolate(n, i, t - @history[i][0])
       end
     end
+  end
+  def pp                               # pretty print
+    print "  ["
+    init_flag = true
+    @history.each do |x|
+      if init_flag
+        print "["
+        init_flag = false
+      else
+        print "   ["
+      end
+      p x[0]
+      x[1].each do |y|
+        print "                   "
+        p y
+      end
+      print "   ]\n"
+    end
+    print "  ]\n"
   end
 end

@@ -59,7 +59,7 @@ class Body
     if @hist.arrived?
       time = @hist.latest
       @hist.set_last_rndot(2, calculate_acc(time))
-      @hist.extend(time + calculate_timestep(time))
+      @hist.extend(time + calculate_timestep(time), @nb.history_depth)
     else
       STDERR.print "error: integrate: history structure is `incomplete'\n"
       exit
@@ -156,8 +156,8 @@ class Body
     @vel = @vel + (a0+a1*4+a2)*(1/6.0)*dt
   end
 
-  def dump_history
-    p @hist
+  def print_history
+    @hist.pp
   end
 
   def to_s
@@ -190,15 +190,17 @@ end
 
 class Nbody
 
-  attr_accessor :integration_method, :eta, :time, :body
+  attr_accessor :integration_method, :eta, :history_depth, :time, :body
 
   def n
     @body.size
   end
 
-  def initialize(integration_method = "rk2", eta = 0.01, n=0, time = 0.0)
+  def initialize(integration_method = "rk2", eta = 0.01,
+                 history_depth = 10, n=0, time = 0.0)
     @integration_method = integration_method
     @eta = eta
+    @history_depth = history_depth
     @body = [Body.new]
     for i in 0...n
       @body[i] = Body.new
@@ -213,10 +215,10 @@ class Nbody
     @body.each do |b| b.pp end
   end
 
-  def dump_history
+  def print_history
     @body.each do |b|
-      print "Full history for body ", b.id, " : \n"
-      b.dump_history
+      print "history for body ", b.id, " : \n"
+      b.print_history
     end
   end
 
