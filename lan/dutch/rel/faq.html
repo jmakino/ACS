@@ -1,0 +1,289 @@
+<html>
+
+<HEAD>
+<TITLE>The Art of Computational Science FAQ Page: Dutch version</TITLE>
+<meta NAME="Keywords"
+CONTENT="N-body code, N-body problem, N-body simulations,
+amateur astronomy, open source, science, star clusters,
+Ruby, Ruby code">
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#EEFFEE" BACKGROUND=""
+      LINK="#0000CC" ALINK="#CCCCCC" VLINK="#000099">
+
+
+<table CELLSPACING=2 CELLPADDING=5 WIDTH="100%" NOSAVE >
+<tr VALIGN=TOP NOSAVE>
+
+
+<td ALIGN=CENTER  NOSAVE>
+      <IMG src=../img/acstitle-s2.gif> 
+</font>
+</td>
+
+<td NOSAVE>
+
+<center><h1>
+De Kunst van het Wetenschappelijk Rekenen
+</h1></center>
+
+<hr>
+<center><h3>
+Veel Voorkomende Vragen
+</h3></center>
+<hr>
+<br>
+
+</td>
+<td ALIGN=CENTER  NOSAVE>
+      <IMG src=../img/acstitle-s2rot.gif> 
+</td>
+</tr>
+
+</table>
+
+<table cellpadding=5 width="100%">
+<tr>
+<td align=left> 
+&#169;  2003-2004 <a href=http://www.ids.ias.edu/~piet/>Piet Hut</a> and
+<a href=http://jun.artcompsci.org>Jun Makino</a>
+</td>
+<td>
+</td>
+<td align=right>
+Terug naar <a href="../index.html">ACS home page</A>.
+</td>
+</tr>
+</table>
+
+<hr>
+
+Enkele veel voorkomende vragen:
+
+<ul>
+<li>
+<a href=#goal>Wat is het doel van het ACS project?</a>
+<li>
+<a href=#play>Hoe kan ik met een N-lichamen code gaan spelen?</a>
+<li>
+<a href=#use>Waarom gebruiken we Ruby?</a>
+<li>
+<a href=#fast>Is Ruby snel genoeg?</a>
+<li>
+<a href=#many>Waarom schrijven we zoveel delen?</a>
+<li>
+<a href=#name>Waar komt de naam Kali vandaan?</a>
+<li>
+<a href=#student>Ik ben een sterrenkunde student.  Is dit iets voor mij?</a>
+<li>
+<a href=#astro>Ik ben een sterrenkundige, en al gepromoveerd.  Is dit
+iets voor mij?</a>
+<li>
+<a href=#amateur>Ik ben een amateur sterrenkundige.  Is dit iets voor mij?</a>
+<li>
+<a href=#help>Hoe kan ik meehelpen?</a>
+</ul>
+
+<hr>
+<a name="goal"></a>
+<b> Wat is het doel van het ACS project?</b>
+<p>
+Ons doel, op langere termijn, is om een brug te slaan tussen
+deskundigen en amateurs met een gemeenschappelijk interesse in het
+toegankelijk maken van wetenschappelijke methoden op een praktische
+manier.  Onze aanpak heeft veel gemeen met dat van de open-source
+bewegingen, waarvan het Linux project een bekend voorbeeld vormt.
+<p>
+Natuurwetenschap is allicht het oudste en grootste open-source project
+dat er ooit opgezet is.  Vanaf de tijd van Galileo hebben meer dan
+twaalf generaties van wetenschappers samengewerkt om een schat aan
+nauwkeurige kennis te vergaren dat voor iedereen toegankelijk is, en
+traditionele grenzen tussen culturen en geloofsopvattingen te boven
+gaat.
+<p>
+Het ACS project is er op gericht om ons erfgoed van de achtiende
+eeuwse verlichtigsbeweging weer nieuw leven in te blazen.  In die tijd
+werden ontwikkelde leken met open armen ontvangen in wetenschappelijke
+kringen, en werden zij aangemoedigd om wetenschappers te asissteren in
+hun onderzoekingen.  Wat toen plaatsvond in salons met demonstratieve
+experimenten kan nu via het internet en op draagbare computers gebeuren.
+
+<hr>
+<a name="play"></a>
+<b> Hoe kan ik met een N-lichamen code gaan spelen?</b>
+<p>
+Een snelle manier om de smaak te pakken te krijgen is om ons oudere
+boek te lezen, <a href="../msa/web/index.html">Sterren Laten Bewegen</a>.
+Dit boek vormt een volledige inleiding in 250 paginas, toegelicht met
+computer codes in C++.  Het begint met eenvoudige integratieschemas, en
+leidt vandaar tot het Hermite schema.  De lezers van het boek worden
+aangemoedigd om al snel zelf te gaan experimenteren met situaties zoals
+het ineenstorten van een oorspronkelijk koud systeem en de vorming van
+dubbelsterren.  De lezers kunnen daarbij de codes vrijelijk aanpassen
+aan hun eigen interesse.
+<p>
+Een veel meer gedetailleerde behandeling van het N-lichamen probleem
+kunt u aantreffen in onze serie, de <a href="../kali/index.html">Kali code</a>
+geheten, die tot vele tientallen delen zal uitgroeien.  In deze serie
+boeken ontwikkelen we een professioneel software systeem voor simulaties
+van dichtbevolkte sterrenstelsels.  Ook hier beginnen we helemaal aan
+het begin, met eenvoudige integrators voor het twee-lichamen probleem,
+voordat we een grote verscheidenheid aan integrators voor het algemene
+N-lichamen probleem aanbieden en verkennen.
+<p>
+Omdat veel van onze lezers allicht niet vertrouwd zijn met
+onze voorkeurstaal <a href="http://www.ruby-lang.org/en/">Ruby</a>
+allicht niet 
+, may not be familiar to
+our readers, the Kali series introduces the language together
+with the math, physics, and computer science needed for studying the
+N-body problem.
+
+<hr>
+<a name="use"></a>
+<b> Waarom gebruiken we Ruby?</b>
+<p>
+Ruby combines the flexibility of a scripting language with the power
+of a fully object-oriented programming language.  For a large-scale
+software project, such as the development of the
+<a href="../kali/index.html">Kali code</a>, it is essential to use data
+encapsulation, such as offered by C++.  However, when developing new
+code, it is impossible to know beforehand what the best data structures
+will look like.  Rapid prototyping, all but impossible in C++, is equally
+essential for developing code that is well-thought-out and easy to read,
+not stuck in a legacy of historical data design decisions.
+
+<hr>
+<a name="fast"></a>
+<b> Is Ruby snel genoeg?</b>
+<p>
+No, Ruby by itself is too slow for serious scientific simulations.
+However, it is straightforward to replace a few time-critical lines of
+Ruby code with C code, thereby speeding up the original Ruby code to a
+speed that can approximate that of C code without much trouble.  See
+<a href="../kali/vol/vol-6/doc/files/_/_title_ok.html">Vol. 6: Speedup</a> for
+detailed examples.
+
+<hr>
+<a name="many"></a>
+<b> Waarom schrijven we zoveel delen?</b>
+<p>
+Most scientific text books summarize the state of the art of a field
+`after the dust has settled.'  Students are presented with a clean
+path of logic that bears little resemblance to the historical process
+of trial and error that underlies any scientific discovery, large or
+small.  In comparison, there is not much information available that
+teaches students how to make mistakes and learn from them.  In
+contrast, our aim is to present much of the tacit knowledge that is
+essential for starting a research project in computational science.
+<p>
+Initially, we expected to be able to present our series in ten volumes.
+However, when we completed our first volume, <i>Moving Stars Around</i>, and
+published it on the web in October 2003, we learned two important lessons:
+1) until you start making implicit knowledge explicit, you have no idea
+how much you know; 2) when you start this process, you learn an awful lot,
+adding to the store of your knowledge at roughly the same pace as you are
+writing it up.  We now consider several tens of volumes to be a more
+realistic estimate, even just for the <i>Kali</i> series.
+<hr>
+<a name="name"></a>
+<b> Waar komt de naam Kali vandaan?</b>
+<p>
+We borrowed the name from the Sanskrit <i>kali</i>, meaning
+<i>dark</i>, as in the <i>kali yuga</i>, the dark ages we are currently in
+according to Hindu mythology.  The same word also occurs in the name
+<i>Kali</i>, for the Hindu Goddess who is depicted as black.  The term
+<i>dark</i> seemed appropriate for our project of focusing on forms of
+tacit knowledge that have not been brought to light, so far, and
+perhaps cannot be presented in a bright, logical series of statements.
+Instead, we expect our dialogues to carry the many less formal and
+less bright shades of meaning, that pervade any craft.
+
+<hr>
+<a name="student"></a>
+<b> Ik ben een sterrenkunde student.  Is dit iets voor mij?</b>
+<p>
+Yes, indeed: you are our main target.  In fact, we have written these
+on-line books with younger versions of ourselves in mind.  We hope that
+the books and codes presented here will be useful for your own research.
+Beyond that, we hope that you will contribute your own additions and
+variations, beyond the material presented here: feel free to
+<a href="mailto:comments@artcompsci.org">contact us</a>, and insofar
+as time permits, we'll try to answer each of you.
+In addition, you will be able
+to find announcements of summer schools and other ACS-related activities,
+on our <a href="whatsnew.html">"What's New?"</a> page.
+<p>
+We also encourage you to form your own support groups, in which you
+share your experiences of working with the ACS material.  You will
+have far more time to discuss common questions and suggestion among
+each other, compared to the time we can make available to you
+individually.  And the more serious your collaborations will become,
+the more we will be motivated to help you implement the many great
+suggestions you undoubtedly will come up with.
+
+<hr>
+<a name="astro"></a>
+<b> Ik ben een sterrenkundige, en al gepromoveerd.  Is dit iets voor mij?</b>
+<p>
+Yes, if you have any interest in dense stellar systems.  Whether you
+are an observer or theorist, from 2005 onward, the <i>Kali</i> project
+will give you the tools to run simulations in a friendly environment.
+Our presentation is designed to be self-contained, without assuming a
+background knowledge beyond basic astrophysics.  If it turns out that
+you find anything lacking in this respect, please
+<a href="mailto:comments@artcompsci.org">contact us</a>.
+
+<hr>
+<a name="amateur"></a>
+<b> Ik ben een amateur sterrenkundige.  Is dit iets voor mij?</b>
+<p>
+Absolutely!  We very much hope that you will download our software,
+and explore the virtual heavens on your computer, just as you explore
+the actual heavens with your telescope.  We have tried to make our
+presentation self-contained.  In addition, we will continue to add
+explanations and provide more pointers to background information, as
+needed.
+<p>
+If you find that there are key points that are not yet clearly explained,
+or missing altogether, please feel free to
+<a href="mailto:comments@artcompsci.org">let us know</a>.  We may not
+find the time to respond and thank each of you individually, but rest
+assured that your comments will be greatly appreciated.
+
+<hr>
+<a name="help"></a>
+<b>Hoe kan ik meehelpen?</b>
+<p>
+Since we are still in the initial phase of setting up the ACS project,
+most of our attention is currently focused on writing enough volumes
+to present a full working environment for N-body simulations.  We
+expect to finish this initial phase some time in 2005.  From then on,
+there will be increasingly many opportunities to join us in our attempt
+to produce a virtual astronomy laboratory.
+<p>
+Opportunities for software development will range from specialized
+areas in computational astrophysics and numerical methods to more
+general areas in graphics and user interfaces, and parallelizing codes.
+In addition, we will need much help in getting our environment ported
+to a range of different platforms and operating systems.
+<p>
+As our project will grow larger, and our user base will increase, we
+will need volunteers to answer routine inquiries, and to help
+beginners to get started.  In addition, it would be wonderful to make
+translations of our material available to a wide audience fluent in
+other languages than English.
+<p>
+If you would like to make a serious contribution in any of these
+areas, please <a href="mailto:comments@artcompsci.org">contact us</a>.
+
+<hr>
+
+Terug naar de<a href="../index.html">ACS home page</A>.
+
+<hr>
+<hr>
+
+</BODY>
+
+</html>
+
