@@ -59,7 +59,7 @@ the conservation of the total energy of a few in a billion.
 Presumably the sixth-order method should do significantly better, for
 the same time step value:
 
- :commandoutput: ruby integrator_driver2k.rb < euler.in
+ :commandoutput: ruby integrator_driver3a.rb < euler.in
 
 == Too Good?
 
@@ -69,7 +69,7 @@ but we can always make it smaller again.
 
 *Bob*: My pleasure!
 
- :commandoutput: ruby integrator_driver2l.rb < euler.in
+ :commandoutput: ruby integrator_driver3b.rb < euler.in
 
 *Alice*: No!  This is too good to be true.  Still essentially machine
 accuracy, for only a thousand steps, while <tt>rk2</tt> with ten-thousand steps
@@ -79,7 +79,7 @@ really push it: can you make the time step yet again ten times larger?
 *Bob*: Going around a rather eccentric Kepler orbits a few times, with only
 a hundred steps in total?  Well, we can always try.
 
- :commandoutput: ruby integrator_driver2m.rb < euler.in
+ :commandoutput: ruby integrator_driver3c.rb < euler.in
 
 == Spooky
 
@@ -90,7 +90,7 @@ hasn't really exploded numerically yet.
 *Bob*: Let's change time step values a bit more carefully.  How about
 something in between 0.1 and 0.01.  I'll take 0.04:
 
- :commandoutput: ruby integrator_driver2n.rb < euler.in
+ :commandoutput: ruby integrator_driver3d.rb < euler.in
 
 *Alice*: Ah, good, less than a percent error in relative total energy
 conservations.  We're getting somewhere in our testing.  Let's halve
@@ -99,14 +99,14 @@ halving the time step should make the result 64 times more accurate.
 
 *Bob*: Here we go:
 
- :commandoutput: ruby integrator_driver2o.rb < euler.in
+ :commandoutput: ruby integrator_driver3e.rb < euler.in
 
 *Alice*: Hmm, that's much much more improvement than a factor 64.
 I guess the run with a time step of 0.04 was not yet in the linear regime.
 
 *Bob*: I'll halve the time step again, too 0.01:
 
- :commandoutput: ruby integrator_driver2l.rb < euler.in
+ :commandoutput: ruby integrator_driver3b.rb < euler.in
 
 *Alice*: Again an improvement of far far more than a factor of 64.  What
 is going on?
@@ -129,12 +129,12 @@ and compare a few large time step choices.  Unless we make those steps pretty
 large, we will just get machine accuracy back, and we won't learn anything.
 Let's take a time step of 0.1 first:
 
- :commandoutput: ruby integrator_driver2p.rb < euler.in
+ :commandoutput: ruby integrator_driver3f.rb < euler.in
 
 And then twice as long a time step, of 0.2.  Perhaps we will finally
 get a factor of 64 in degradation of energy conservation:
 
- :commandoutput: ruby integrator_driver2q.rb < euler.in
+ :commandoutput: ruby integrator_driver3g.rb < euler.in
 
 *Alice*: Much better this time.  A factor of 47, in between 32 and 64.
 This by itself would suggest that your new method is somewhere in
@@ -158,14 +158,14 @@ total time of 0.5 units, while giving our particles the choice to cross
 this sea of time in either four or five time steps.  We can start with
 a time step of 0.1:
 
- :commandoutput: ruby integrator_driver2r.rb < euler.in
+ :commandoutput: ruby integrator_driver3h.rb < euler.in
 
 And then repeat the procedure for a time step of 0.125.
 
 *Alice*: Ah, before you start the run, let's make a prediction: the energy
 conservation degradation should be <tex>$(5/4)^6=3.81$</tex>.
 
- :commandoutput: ruby integrator_driver2s.rb < euler.in
+ :commandoutput: ruby integrator_driver3i.rb < euler.in
 
 *Bob*: And by dividing the total energy errors of the last two runs
 we get a ratio of 3.69.
