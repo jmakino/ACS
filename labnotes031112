@@ -1,0 +1,284 @@
+2003, November 12, Wednesday, Kyoto: Jun and Piet
+
+1. Source
+
+Piet wrote the following email to Erik Raymond, asking him some more
+questions about the use of XML, and also asking him for an introduction
+to Norm Walsh:
+
+\begincode
+
+Date: Tue, 11 Nov 2003 20:20:03 -0500
+From: Piet Hut <piet@ias.edu>
+To: eray@ravelgrane.com
+CC: makino@astron.s.u-tokyo.ac.jp
+Subject: Re: XML and moving stars around
+
+Hi Erik:
+
+Greetings from Japan, where I just arrived, for a two-months stay in Kyoto.
+Part of this time I'll be working with my collaborator, Jun Makino, so now
+we're in a position to take up where we left off, at the end of September.
+
+> I converted chapter one into DocBook-XML as a test before tackling 
+> chapter 3. Here's the result so far:
+> 
+>    http://www.ravelgrane.com/ER/doc/ex/
+
+Thank you again!  Jun and I decided to go for the docbook approach
+that you showed us in this example.
+
+> I am running an XSLT transform on the XML file "book.xml" which is in 
+> that directory. This file sources in ch01.xml using an external entity 
+> (an XML mechanism for importing files). I wrote the XSLT stylesheet and 
+> it is easy to modify the appearance in HTML.
+> 
+> I have another XSLT stylesheet somewhere for creating PDF. Later I will 
+> dig it up and show you how you can generate PDF from the same XML files 
+> using a tool called "fop".
+
+Did you get a chance to dig this up?  Sounds like a nice tool!
+
+> No equations in this chapter, so it was pretty easy. The next step is 
+> to integrate MathML. I don't have support for it in my stylesheets yet. 
+> If they are very complex, we may need to think about turning them into 
+> graphics, because there is not very good support for MathML in 
+> browsers. For PDF, it will be easier, because there are MathML 
+> stylesheets available and XSL is a much richer formatting language than 
+> HTML.
+
+For now, indeed it strikes us as the best approach to go for graphics.
+This probably means doing a LaTeX pass and then produce little ps files
+for each equation, right?  As long as MathML remains in its currently
+unsupported state, we might just as well write the equations directly
+into LaTeX, with which we are already familiar.
+
+By the way, Jun and I have also been thinking more about the so-called
+"literate programming" approach, writing book text and computer code
+together in one file, which makes it much less likely that the two get
+out of sinc during revisions.  This then needs some automatic process
+to get the book and the code extracted from the common source.  As I
+mentioned a while ago, we were fascinated by the description given by
+Norm Walsh, on his web site:
+
+   "http://nwalsh.com/docs/articles/xml2002/lp/paper.html"
+
+You responded to my previous mentioning of this:
+
+> THis is funny, because I have worked with Norm before and he is the 
+> worst at documenting his code. Love him dearly though.
+
+We would like to send him an email to see whether he may be interested
+in giving some advice (and on the off chance that he, too, might be
+curious about the gravitational N-body problem).  Would you mind sending
+him a short email with CC to us, to introduce us to him, so that he
+knows we are serious (and basically good folks ;>) ?
+
+Thanks a lot!
+
+Piet
+
+\endcode
+
+2. Version Control
+
+Yesterday we outlined a plan to maintain two places where we
+accumulate files, `source' and `lab notes'.  The source files will be
+written in a literate programming style, while the lab notes will form
+a type of journal or diary.  For the lab notes, the notes from each new
+session will be added to the end.  The software we need to automate
+that process will be written by us later this week.  For the source,
+we need some form of version control.
+
+2.1. Subversion
+
+Our first thought was to use CVS, the version control program that is
+most widely in use.  But then Jun remembered having heard about a new
+system, Subversion, that has an interface similar to that of CVS, but
+has eliminated many annoying limitations of CVS.  We looked at the
+documentation and decided to try it out for our toy project.
+
+In fact, our toy project now serves many functions: 1) originally,
+i.e. yesterday morning, we proposed it in order to try out our new
+style of interface specification; 2) then, yesterday afternoon, we
+proposed using it to try out our new lab note writing system; 3)
+finally, today we decided to use it to also test our new version
+control system.
+
+2.2. Setting up a Repository
+
+Jun spent a couple hours to understand and install subversion on both
+of our computers.  We then set up a subversion repository on his
+computer in Tokyo, and we both checked out a version, even though the
+repository at that moment was still empty.  As our first file, we
+began to write the labnotes for the previous day, named "labnotes031111".
+
+That previous day, we had decided to write automated software that
+will convert the lab notes for a session to the HTML version.
+However, at that time we had not yet thought through what exactly we
+wanted to translate automatically in what way.  As a consequence, we
+had only a vague idea of what the such lab session notes would look
+like.  This was the main reason that we did not take notes that day,
+and postponed the note taking to today.
+
+3. Lab Notes File Format
+
+3.1. Headers and Paragraphs
+
+Having our new subversion system in place, we thus started to write
+"labnotes031111".  We began by writing text, but quickly we found that
+it would be nice to add a fine grained level of sections, subsections,
+etc.  This in turn gave us the idea to define a specific file format,
+starting with a one line header containing time, place, and persons,
+followed by a ([sub]*)section tree.  A blank line indicates a new
+paragraph, as in LaTeX.
+
+3.2. Suffix
+
+We gave this format a name: a file in this format will end with the
+suffix ".not", short for "notes" as in "lab notes".
+
+3.3. Including Figures
+
+We decided to copy the figure that we had drawn on the blackboard, and
+Jun redrew it, using the program {\tt tgif}.  In order to include that
+figure in our lab notes for yesterday's session, we had to define a
+syntax for figure inclusion.  We decided that it would be of the type
+"\\fig{filename, size}", written on a separate line, with blank lines
+before and after.  For example, yesterday's figure was included using
+the following line:
+
+\\fig{labnote.eps, 15 cm}
+
+4. Lab Notes File Types
+
+4.1. Different .html Options
+
+Yesterday we decided to concatenate all lab sessions' notes, after
+translating them into HTML, into one long separate file for each month.
+Today, however, we realized that it would be better to give the user
+the choice to either create long files, one for each months, or short
+files, one for each session.
+
+4.2. From .html to .pdf Files
+
+Yesterday, we thought about an automated translation process from our
+own session note taking format to HTML.  Our idea was to make web
+pages the designated output format for our notes.  Today, however, we
+realized that it would be nice to produce pdf files as well.  For one
+thing, it would make it much easier to print out individual sessions.
+
+4.3. Preserving the Original .not Files
+
+Then we thought about possible future extensions.  Who knows what
+other files types we would like to use as targets.  This prompted us
+to make sure to keep copies of our session notes in their original form.
+
+4.4. Uploading .not Sessions
+
+One allowed option would be for each of us to write a new .not file
+for each session.  The automated software would then simply append
+that session's file to the mother .not file.  Another option would be
+for each of us to keep a complete copy of the mother file, and write
+the new session's lab notes at the end of the file.  The automated
+software would then recognize which part to take from the end, and to
+append that to the mother file.  And finally, it should also be okay
+to take an intermediary approach, to keep for example a file with the
+last few dozen sessions, and write the new session's note at the end
+of that file.
+
+4.5. Warnings and Errors
+
+When uploading a new lab session, the automated software will flag
+differences between older sessions in one of our personal copies of
+the lab notes and the lab note mother file.  In that case, a warning
+will be issued, as long as the new session can be cleanly appended to
+the end of the mother file.  Seeing such a warning will inform the
+person doing the update that there is something corrupted in his own
+copy of the lab notes.  However, if the latest lab session does not
+appear at the very end of the personal copy of the lab notes, an error
+will be issued, since in that case it is not possible to decide what
+went wrong and how it could possible be corrected automatically.
+
+
+
+\begintt tgif \endtt
+<tt> tgif </tt>
+
+
+
+
+5. Stepping Back
+
+
+
+
+You start with the source code.  There are inline comments to explain
+some statements in a microscopic ways.  There are blocks of comments
+included in the code to give more macroscopic descriptions of how the
+code hangs together.  All three, code statements, shorter and longer
+comments can be found in the code source files.
+
+The fourth level of documentation is the book text.  The fifth level
+is given by the lab notes that in turn document the process of writing
+the book text, as a history of what happened.  The sixth level is
+given by a description of the ideas that drove the history of the
+writing, when they popped up and where they were eventually used.
+
+No, sixth level is different
+
+
+
+
+
+2.4.3. Generation of Lab Notes
+
+In order for us to make it easy to write the lab notes for a new
+session and add them to the existing HTML files, we will automatize
+the process of lab note generation.  Rather than writing a separate
+HTML file, which is rather cumbersome, we will introduce a special
+file format, indicated by a file name ending with ".not" (for notes),
+with a set of rules for how to indicate breaks between paragraphs,
+sections and subsections, etc.
+
+For example, two blank lines will be translated into paragraph breaks,
+and a single line starting with a number will be interpreted as a
+header for a section or subsection.  If you really want to write a
+paragraph containing only one short sentence starting with a number,
+you will have to add a backslash: "\8" at the start of a one-line
+paragraph will be interpreted as "8", while "\\8" will be interpreted
+as "\8", for those rare one-line paragraphs that really want to start
+with a backslash followed by a character 8.
+
+Each time one of us submits a session, our new software will
+automatically add that session to the growing list of sessions,
+updating the various levels of HTML files as described above.
+
+Before submitting your session, you may want to view it in HTML mode,
+to check whether things really come out as you intended.  For that
+purpose, the software will have a "local" mode, to create a single
+stand-alone HTML file for your session.  The "global" mode, in
+contrast, will add your session once and for all to the growing
+repository of sessions.  If you later want to make changes, you have
+to describes those in a later session, and point to the older session.
+
+Note that we will allow errata to point back to a previous session,
+which will then automatically add a pointer to the previous session,
+pointing to the erratum text.  However, that last pointer will not
+appear inside the text of that previous session, which can no longer
+be changed, but rather at the top or bottom of that session, as a form
+of metadata.
+
+Finally, we will allow the inclusion of figures and LaTeX equations.
+The images for the figures will be automatically copied to the proper
+place so that they can be accessed by the HTML files that will include
+them.  For the specific case of LaTeX equations that will be turned
+into figures, we will create a special file "notdefs.tex".
+
+The syntax for including a figure will be of the type "\\fig{filename, size}",
+written on a separate line, with blank lines before and after.  For example,
+the figure above was included by adding the following line to the
+text:
+
+\\fig{labnote-031111.eps, 15 cm}
+
