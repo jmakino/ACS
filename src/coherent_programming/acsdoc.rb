@@ -369,6 +369,7 @@ END
     s=latex_process_tex_equations(s)
     s=latex_find_and_process_figures(s,dirname)
     s=process_single_paragraphs_lists_etc(s,0,0,1)
+    s=post_process_verbatim(s)
     s=process_link(s)
     s=process_wordmarkup(s,dirname)
     s=process_refmarkup(s)
