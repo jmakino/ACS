@@ -15,6 +15,12 @@ The changes we made are
   way as the normal ":include:", but adds horizontal lines before and
   after the included files.
 
+  note: any other format starting with ":in" and ending with "code:"
+        is fine too; for example ":include code:" also works, with
+        the added advantage that the file does not become an illegal
+        rdoc document, in rdoc does not recognize ":xxx:" if xxx
+        includes white spaces.
+
   One can do inline image by saying 'link: filename' (no space allowed
   between link: and filename). Note that the
   link is relative to the place the index.html file is put, which is
