@@ -1,118 +1,18 @@
-= xx
+= Quiet Start
 
-== xxx
+== xx
 
-:equation:
-\Phi(r) \, = \, -\,GM {1\over \,\left(r^2 + a^2\right)^{1/2}}
+layered particle positions:
 
-Let <tex>$\tilde f(\br, \bv)$</tex> be the density in phase space.
+ :commandoutput: ruby mkplummer3.rb -n 100 | ruby quartiles.rb
 
-In a six-dimensional volume element <tex>$d\br d\bv$</tex>, you will find an
-amount of mass equal to <tex>$\tilde f(\br, \bv)d\br d\bv$</tex>.
+ :commandoutput: ruby mkplummer3.rb -n 100 | ruby quartiles.rb
 
-In general, <tex>$\tilde f$</tex> will be time dependent, <i>i.e.</i>
-of the form <tex>$\tilde f(\br, \bv)$</tex>, but here we will restrict
-ourselves to dynamical equilibrium situations, where <tex>$\tilde f$</tex>
-is constant, at least on a dynamical time scale, of order the crossing
-time, the time it will take for a typical particle to cross the system.
+ :commandoutput: ruby mkplummer3.rb -n 100 | ruby quartiles.rb
 
-The energy per unit mass <tex>$E$</tex> is given as:
+and of course even more so for:
 
-:equation:
-E = \Phi(r) + \half v^2
+ :commandoutput: ruby mkplummer3.rb -n 10000 | ruby quartiles.rb
 
-In the case of spherical symmetry and isotropy, we have
-<tex>$\tilde f(\br, \bv) = f(E)$</tex>  where the energy
-<tex>$E(\br, \bv)$</tex> is the sum of the kinetic and potential energy
-per unit mass of the particles that reside in the volume element
-<tex>$d\br d\bv$</tex>.
 
-Note that we dropped the tilde, since the functional form of
-<tex>$\tilde f$</tex> and <tex>$f$</tex> are different.  For one
-thing, <tex>$\tilde f$</tex> has as argument two three-dimensional
-vectors <tex>$\br,\bv$</tex> or equivalently one six-dimensional
-vector in phase space, while <tex>$f$</tex> has as argument one scalar
-value <tex>$E$</tex>, the energy per unit mass.
 
-Note that within this volume element you will still find an amount of
-mass <tex>$f(E)d\br d\bv$</tex>.  It may be tempting to write
-<tex>$f(E)dE$</tex> instead, but that would be wrong: the element
-<tex>$dE$</tex> would include all particles with energy between
-<tex>$E$</tex> and <tex>$E+dE$</tex>, globally in the system, which
-will amount to far more mass than is present in the local volume 
-element <tex>$\br,\bv$</tex>.
-
-If we pick a specific point in the star cluster, we can determine the
-mass density in stars at that point as follows.  Let the distance from
-that point to the center be <tex>$r$</tex>, then:
-
-:equation:
-\rho(r) = \int_0^\infty f(E) \, d\bv
-
-where the integral is over all of velocity space.
-Isotropy tell us that there is no direction dependence in <tex>$\bv$</tex>,
-and therefore  only the magnitude <tex>$v=|\bv|$</tex> can come into play.
-We can thus substitute:
-
-:equation:
-d\bv \, = \, 4\pi \, v^2 dv
-
-Also, we know that the distribution function has to be zero for positive
-energies, since unbound particles can escape; in a time-independent solution
-the presence of such escapers within the cluster would imply the
-presence of such escapers everywhere outside the cluster as well, leading
-to an infinite total mass.  We thus impose the condition:
-
-:equation:
-f(E) \, = \, 0  \,\,\,\,\, (E \ge 0)
-
-For a given radial distance <tex>$r$</tex>, the escape velocity is given
-by definition as the velocity for which a particle can just reach infinity,
-which means that the total energy is zero for that particle, and therefore
-also the energy per unit mass:
-
-:equation:
-E = \Phi(r) + \half v_{esc}^2 = 0 \, \Rightarrow \, v_{esc}(r) = 
-\left(-2\Phi(r)\right)^{1/2}
-
-Therefore
-
-:equation:
-\rho(r) = 4\pi \int_0^{v_{esc}} f(E)\, v^2dv
-
-Now
-
-:equation:
-E = \Phi + \half v^2 \Rightarrow v^2 = 2(E-\Phi) \Rightarrow 
-
-:equation:
-v = 2^{1/2}(E-\Phi)^{1/2} \Rightarrow
-
-:equation:
-dv = 2^{-1/2}(E-\Phi)^{-1/2}\,dE
-
-So we get for the density:
-
-:eqnarray:
-\rho(r) &=& 4\pi \int_0^{v_{esc}} f(E)\, v^2dv                \nonumber\\
-&=&  4\pi \int_0^{v_{esc}} f(E)\, 2(E-\Phi)\,
-                   2^{-1/2}(E-\Phi)^{-1/2}\,dE                \nonumber\\
-&=& 2^{5/2}\pi\int_\Phi^0(E-\Phi)^{1/2}f(E)dE
-
-Here both <tex>$\Phi$</tex> and <tex>$E$</tex> are negative.
-Easier to introduce quantities that are positive:
-
-:equation:
-\Psi \, = \, - \, \Phi
-
-:equation:
-\E \, = \, - \, E
-
-Then:
-
-:equation:
-\rho(r) = 2^{5/2}\pi\int_0^\Psi (\Psi-\E)^{1/2}f(\E)d\E
-
-Strictly speaking we would have to change the symbol for <tex>$f$</tex>
-again since the functional form is different: <tex>$\hat f(\E)=f(E)$</tex>
-but we will leave off the hat.

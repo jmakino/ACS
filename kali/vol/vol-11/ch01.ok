@@ -1,92 +1,422 @@
-= xxx
+= A Simple Equilibrium Model
 
-== xxx
+== Time Scales
 
-Start with softened potential:
+*Alice*: Hi Bob, I guess we are now getting close to do some real stellar
+dynamics of star clusters!
+
+*Bob*: I just had the same thought.  We now have a individual time step
+code, and it is high time that we use it for what it is designed to do:
+to follow the evolution of a collisional star system.
+
+*Alice*: I prefer to avoid the term `collisional,' it is just too misleading.
+Students will think that it implies real physical collisions between stars.
+
+*Bob*: But it is an old and established term.  It won't be easy to avoid it.
+But I agree, it is misleading.  It only means that two-body encounters are
+important.  In other words, two-body relaxation plays an important role in
+collisional systems, whereas you can neglect such relaxation effects in
+collionless systems.  In yet other words, in collisional systems, there is
+a significant heat flow through the system.
+
+*Alice*: Yes.  In stellar evolution they talk about a thermal time scale,
+like the Kelvin-Helmholtz time scale, a hundred million years or so
+for a star like the sun.  This is the time scale at which a star will
+lose most of its energy from its surface, if the energy would not be
+replenished by nuclear reactions in the core of the star.  In contrast,
+the dynamical time scale for a star like the sun is only a couple hours.
+This is the time it takes a star to `ring', like a drum: the time to
+cross the star at the speed of sound.
+
+*Bob*: That is a nice analogy.  For a star cluster the dynamical time is
+called the crossing time.  The speed of sound in a star cluster, like
+in a gas of molecules, is of the order of the speed of the constituent
+particles.
+
+For a typical globular cluster, with half-mass radius of
+the order of 10 parsec, and a velocity dispersion of order 10 km/sec,
+the crossing time is of order a million years -- more than a billion
+times larger than the dynamical time scale for a typical star.
+
+But the thermal time scale for a globular cluster, the time to
+redistribute the energy through the collective effects of the
+diffusion caused by two-body relaxation, is not that much larger than
+that of the sun: typical values for globular clusters are a billion
+years, only a factor ten larger than the Sun's Kelvin-Helmholtz time
+scale.
+
+*Alice*: Coming back to the term `collisional stellar dynamics', I wonder
+why gravitational encounters were called `collisions.'  One reason may be
+the analogy with molecular diffusion, where the van der Waals forces
+between molecules drop off so fast with distance that the only
+significant encounters are the ones where the molecules practically
+touch.  Also,  many of the early simulations of star cluster evolution
+were Monte Carlo simulations, and there the effects of two-body
+relaxation are modeled as discrete scattering events, with each star
+going its own merry way until scattered into a different orbits -- like
+molecules in a gas.
+
+*Bob*: Another reason may have been the fact that there was no competition
+for the term `collisions': it was only in the nineteen-nineties that
+people had enough computer power to begin to treat collisions between
+stars in a serious and quantitative way.  Back in the sixties, when
+they talked about collisional stellar dynamics, stars were not supposed
+to collide, because computers were not up to it yet.
+
+*Alice*: You may have a point there.  In any case, I prefer the term
+`dense stellar systems' for star systems where encounters are important.
+Whether the encounters are merely gravitational or also involve
+occasional physical collisions is less important a distinction.
+
+*Bob*: Someone else could argue that having collisions or not is the most
+fundamental distinction.  Certainly someone specializing in hydrodynamics
+is likely to think so.  I guess you just betrayed your bias to stellar
+dynamics.  Oh well, classification will also cause heated debates.
+
+*Alice*: Which I'd rather avoid.  Anyway, we're getting to do simulating
+dense stellar systems, and we know that they have the tendency to show
+the effects of two-body relaxation: mass segregation, escapers, core
+collapse, all that good stuff.
+
+*Bob*: Now that we have an individual time step code, let's put up a good
+show!
+
+== Initial Conditions
+
+*Alice*: But every show needs a stage that needs to be set up first.
+What shall we choose for the initial conditions.
+
+*Bob*: There are many options.  Basically, we can just sprinkle particles
+into a more or less localized region, an in a few corssing times the
+initial transients will die down.  The remaining system, after the
+fast particles have escaped, will then slowly undergo core collapse.
+
+So we could start with a homogeneous sphere, with a constant density
+out to a certain radius, and zero density outside that radius.  We could
+give the particles velocities in accord with the virial theorem, or we
+could even give each star zero velocity: from such a cold collapse, too,
+you quickly will get a damped remnant, and you will loose less than
+half of the particles.
+
+*Alice*: True, but all those solutions ar not very elegant.  Besides,
+there is no good reason to pick one over the other.  But what is worse,
+I don't like to mix the transient dynamical effects with the longer-lasting
+thermal effects.  Remember, for a star cluster with a hundred thousand
+stars there is not much more than a factor of a thousand diference between
+the crossing time and the two-body relaxation time.  And if we want to
+play with small simulations of only a few hundred stars, the ratio
+goes down to ten or less.  I much prefer to start with a system that
+is already in dynamic equilibrium to start with.
+
+*Bob*: Well, we could start with a King model.
+
+*Alice*: That would be much better, yes, but still we would have to pick a
+number, such as the central concentration or the depth of the
+potential well in dimensionless units, in order to settle upon a particular
+King model, given that there is a one-dimensional family of models.
+
+*Bob*: What would you prefer?
+
+*Alice*: How about good old Plummer's model?
+
+*Bob*: That one?  But that's not very realistic!
+
+*Alice*: At this point I don't care too much about how realistic our
+simulations will be, if you mean with realistic that the distribution
+of stars will resemble that of a globular cluster.  First of all,
+Plummer's model does do a reasonable job of fitting some of the more
+loose clusters, those with a large core radius.
+
+After all, Plummer got his name attached to the Schuster model, in
+1911, because he showed that it could be used well to fit the observed
+cluster data available at that time.  While he specifically refered to
+Schuster's 1883 publication, in which the model was first derived, it
+is called Plummer's model because of the astrophysical relevance.
+Sure, we can do better now, but in 1911 Ivan King wasn't even born
+yet.  And you could still travel around in Europe without the need of
+a passport.
+
+*Bob*: Those were the days, I suppose.  But your choice of N-body simulations
+were limited to <tex>$N=2$</tex>.  I'm glad I'm alive now.
+
+*Alice*: What I like about Plummer's model, in comparison to King Models,
+is that: 1) it is one well-defined model, rather than a whole family
+of models, so that if two people simulate Plummer's model, they know
+that they talk about the exact same model; 2) it is a simple model,
+where everything can be expressed in terms of analytic expressions,
+which is not the case for King models; 3) most of the venerable early
+investigations of star cluster dynamics started with Plummer's Model
+for the initial conditions, so it is easy to make a connection with
+the literature.
+
+*Bob*: From an educational point of view, yes, all three aspects carry some
+weight.  But on the other hand, I always like to introduce students quickly
+to the more dirty nitty-gritty of actual research.  And certainly nowadays
+you will find far more star cluster simulations starting from King Models
+than from Plummer's model.
+
+*Alice*: Okay, let's do both.  But if so, it really does make sense to start
+with Plummer's model.  Since everything can be done analytically, the students
+will get more of a direct insight into what is going on.  After that,
+we can move on to King models, and whatever else we will find time for.
+
+*Bob*: Fine with me, since I don't feel as strongly about it as you seem
+to do.  Where shall we start?  It would be good to give the students a
+brief handout with some of the basic facts of Plummer's model.  All that
+I remember about it is that a particle that acquires softening morphs
+from a point particle with a delta function mass distribution to that
+of Plummer's model.
+
+*Alice*: Ah, Great!  I knew there was a fourth point I could have mentioned
+to argue for Plummer's model as a favorite starting point: students
+are likely to already have encountered it without reflecting on it,
+when they have implemented, or at least used, particles with a
+softened potential.  Thank you!
+
+*Bob*: You're welcome, even though you didn't need a point 4), since I had
+already given in.  Okay, let me write down what I remember and what I can
+easily derive.  You, as a champion of Plummer's model, can then add whatever
+analytic elegance you like.
+
+*Alice*: Go right ahead!
+
+== A Potential-Density pair
+
+*Bob*: Okay.  A model that is in dynamical equilibrium is defined by a
+potential-density pair that corresponds to a distribution function in
+phase space that is time-independent.  I would have to scratch my head
+a bit, in fact quite a bit more than a bit, to remember how you derive
+the distribution function for a given potential-density pair, to show
+that an equilibrium solution exists.
+
+*Alice*: We definitely have to prove that, but let's leave that for later.
+
+*Bob*: Good!  There is only so much I can do from scratch.  So here is the
+softened potential:
 
 :equation:
-U(r) \, = \, -\,GM {1\over \,\left(r^2 + a^2\right)^{1/2}}
+\Phi(r) \, = \, -\,GM {1\over \,\left(r^2 + a^2\right)^{1/2}}
 
-Apply Poisson's equation in spherical coordinates, under the
-assumption of spherical symmetry for the potential:
+Dr. Schuster's softened star system, for short, as you just told us,
+aka Dr. Plummer's patented potential.  And now we have to call upon
+Dr. Poisson to provide us with the density that corresponds to this
+potential.
+
+*Alice*: But first you have to remind the students of the symmetry
+assumptions that go into this type of construction.
+
+*Bob*: Ah yes.  We assume spherical symmetry in space, in other words,
+both potential <tex>$\Phi(\br)$</tex> and density <tex>$\rho(\br)$</tex>
+only depend on the distance to the center <tex>$r$</tex>, independent
+of the spherical angles <tex>$\theta, \phi$</tex>:
 
 :equation:
-{1\over r^2}{d\over dr}\left( r^2{d\over dr}U(r)\right) \,=\, 4\pi G\rho(r)
-
-or:
+\Phi(\br) = \Phi(r)\,;
 
 :equation:
-\frac{d^2}{dr^2}U(r) \,+\, {2 \over r}\frac{d}{dr}U(r)
+\rho(\br) = \rho(r).
+
+In addition, we assume that the velocity dispersion is isotropic.  In
+general, spherical symmetry in configuration space (or position space)
+still allows cylindrical symmetry in velocity space: the distribution
+function must be a function of energy per unit mass <tex>$E$</tex> and
+angular momentum per unit mass <tex>$J$</tex>.  However, by insisting
+on isotropy we assert spherical symmetry in velocity space as well,
+which implies:
+
+:equation:
+f(E, J) = f(E).
+
+By the way, the potential <tex>$\Phi(r)$</tex> is also the potential
+energy per unit mass -- just like the potential in an electrostatic
+field, where it is the binding energy per unit charge.  To be really
+specific, take a star with mass <tex>$m$</tex> at a a position in a
+star cluster at a distance <tex>$r$</tex> from the center.  In order
+to let that star escape from the cluster, you have to give it a
+kinetic energy <tex>$E_{kin}=\half m v^2$</tex> that is exactly equal
+to the binding energy of that star with respect to the cluster, namely
+the potential energy of that star corresponding to its position in the
+gravitational well of the cluster: <tex>$E_{pot} = m\Phi(r)$</tex>.
+
+So this means that the escape velocity for a star at radial distance
+<tex>$r$</tex> from the center of the cluster can be derived as
+follows:
+
+:equation:
+\half m v_{esc}^2 = -m\Phi(r) \, \Rightarrow \, v_{esc}(r) = \sqrt{-2\Phi(r)}
+
+*Alice*: Good idea to make that very clear, since when you talk about
+potential and potential energy, it is at first quite easy to get confused
+between the potential energy of the cluster as a whole and between that
+of individual particles with respect to the rest of the cluster.
+
+*Bob*: Well, we don't want to get confused, do we.
+
+*Alice*: Aha, if you put it that way, I can't resist pointing out another
+possible confusion.  When you wrote down the condition for isotropy,
+you were right, speaking as a physicist, although a mathematician
+looking over your shoulder would be greatly confused.  Using the same
+symbol for two expressions that have a different functional form, and what
+is worse, even have a different number of parameters is definitely a no-no
+in mathematics.
+
+*Bob*: But what else could I have written but <tex>$f(E, J) = f(E)$</tex>?
+
+*Alice*: A proper mathematical expression would have been
+<tex>$\hat f(E, J) = f(E)$</tex>, for example.  This would imply that
+<tex>$\hat f$</tex> as a function is very different from the function
+<tex>$f$</tex>.  The only connection is that for any choice of a particular
+value for <tex>$E$</tex> and a particular value for <tex>$J$</tex>, the
+relationship <tex>$\hat f(E, J) = f(E)$</tex> would hold, independently
+of the value of <tex>$J$</tex>.
+
+*Bob*: Hmm.  I prefer to say <tex>$f(E, J) = f(E)$</tex>.  That makes sense
+and it feels good.  As Janis Joplin would have said `feeling good is
+good enough for me.'
+
+*Alice*: It shows you're a physicist.  Just be gentle with the occasional
+student who may think deeper about these issues that you; she or he may
+actually have a very good reason to be bothered by the usual glossing over
+of these questions.  After all, it is easy to make mistakes -- for example,
+mistakes in normalization, if you're not careful about what depends in which
+way on what.
+
+*Bob*: I suppose you would have wanted me to put hats on the first two
+equations as well: <tex>$\hat\rho(\br) = \rho(r)$</tex> and
+<tex>$\hat\Phi(\br) = \Phi(r)$</tex>.
+
+*Alice*: Strictly speaking, yes, but once you have made that point, I
+prefer to then drop the hats, for simplicity.
+
+*Bob*: Is that called having you cake and eating it, first confusing me
+by first putting a hat on, and then dropping your hat?
+
+*Alice*: Maybe that's where the expression `I'll eat my hat' comes from.
+
+== Density
+
+*Bob*: No comment.  Let me go on, and derive the density, given the potential.
+
+To find the density needed to generate a potential, all we have to do is
+to solve Poisson's equation, which in spherical coordinates, under the
+assumption of spherical symmetry for the potential, takes the relatively
+simple form
+
+:equation:
+{1\over r^2}{d\over dr}\left( r^2{d\over dr}\Phi(r)\right) \,=\, 4\pi G\rho(r)
+
+Working out the derivatives, this boils down to:
+
+<tex>$$
+\frac{d^2}{dr^2}\Phi(r) \,+\, {2 \over r}\frac{d}{dr}\Phi(r)
                         \,=\, 4\pi G\rho(r)
+$$</tex>
 
+It is straightforward to work out the first derivative
 
-With
+<tex>$$
+\frac{d}{dr}\Phi(r) \,= \, GM {r \over \,\left(r^2 + a^2\right)^{3/2}}
+$$</tex>
 
-:equation:
-\frac{d}{dr}U(r) \,= \, GM {r \over \,\left(r^2 + a^2\right)^{3/2}}
+and the second derivative of the potential
 
-and 
-
-:equation:
-\frac{d^2}{dr^2}U(r) \, = \, GM \left\{
+:eqnarray:
+\frac{d^2}{dr^2}\Phi(r) \, &=& \, GM \left\{
   {1 \over \,\left(r^2 + a^2\right)^{3/2}}
-  - {3r^2 \over \,\left(r^2 + a^2\right)^{5/2}}
-\right\} \, = \, GM {-2r^2 +a^2 \over \,\left(r^2 + a^2\right)^{5/2}}
+  - {3r^2 \over \,\left(r^2 + a^2\right)^{5/2}} \right\}            \nonumber\\
+\, &=& \, GM {-2r^2 +a^2 \over \,\left(r^2 + a^2\right)^{5/2}}      \nonumber
 
-So:
+Putting it all together we get:
 
 :eqnarray:
 \rho(r) \, &=& \, {1 \over 4\pi G}
    \left\{
-   \frac{d^2}{dr^2}U(r) 
-   \,+\, {2 \over r}\frac{d}{dr}U(r)
+   \frac{d^2}{dr^2}\Phi(r) 
+   \,+\, {2 \over r}\frac{d}{dr}\Phi(r)
    \right\}                                                 \nonumber\\
 &=& \, {M \over 4\pi } \left\{
    {-2r^2 +a^2 \over \,\left(r^2 + a^2\right)^{5/2}}
    + {2 \over \,\left(r^2 + a^2\right)^{3/2}}
    \right\}                                                 \nonumber\\
-&=& \, {M \over 4\pi } {3a^2 \over \,\left(r^2 + a^2\right)^{5/2}}    \nonumber
+&=& \, {M \over 4\pi } {3a^2 \over \,\left(r^2 + a^2\right)^{5/2}}
 
 
-We can also write:
 
-:equation:
-U(r) \, = \, -\,{GM\over a}\left(1+{r^2\over a^2}\right)^{-1/2}
+xxxx
 
 :equation:
-\rho(r) \, = \, {3M\over4\pi a^3}\left(1+{r^2\over a^2}\right)^{-5/2}
+\left\{ \begin{array}{lcl}
+\Phi(r)\,&=&\,
+ -\,GM {\displaystyle {1\over \,\left(r^2 + a^2\right)^{1/2}}} \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\rho(r)\,&=&\,
+{\displaystyle {M \over 4\pi } {3a^2 \over \,\left(r^2 + a^2\right)^{5/2}}}
+\end{array} \right.
 
-Integrate density:
-
-:eqnarray:
-m(r) \, &=& \, \int_0^r 4 \pi r^2 \rho(r) dr                   \nonumber\\
-  &=& \, \int_0^r {3M\over a^3}r^2\left(1+{r^2\over a^2}\right)^{-5/2}
-
-:equation:
-m(r) \, = \, M\left(1+{a^2\over r^2}\right)^{-3/2}
-
-Then this, as the energy distribution function
+xxx
 
 :equation:
-f(E) = {3.2^{7/2}\over7\pi^3}{a^2\over G^5M^4}(-E)^{7/2}
+\left\{ \begin{array}{lcl}
+\Phi(r) \, &=& \,
+{\displaystyle -\,{GM\over a}\left(1+{r^2\over a^2}\right)^{-1/2}} \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\rho(r) \, &=& \,
+{\displaystyle {3M\over4\pi a^3}\left(1+{r^2\over a^2}\right)^{-5/2}}
+\end{array} \right.
 
-Integrate potential energy:
-
-:equation:
-E_{pot} \, = \, -\,{3\pi\over32}{GM^2\over a}
-
-Use virial theorem:
-
-:equation:
-E_{tot} \, = \, -\, E_{kin} \, = \, -\, {3\pi\over64}{GM^2\over a}
-
-By definition:
+xxx
 
 :equation:
-E_{tot} \, = \, -\, {GM^2\over R_v}
+\left\{ \begin{array}{lcl}
+\Phi(r) \, &=& \,
+{\displaystyle -\,{GM\over r}\left(1+{a^2\over r^2}\right)^{-1/2}} \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\rho(r) \, &=& \,
+{\displaystyle {3Ma^2\over4\pi r^5}\left(1+{a^2\over r^2}\right)^{-5/2}}
+\end{array} \right.
 
-Hence:
+xxx
 
 :equation:
-R_v \, = \, {16\over3\pi}a
+\left\{ \begin{array}{lcl}
+\Phi(r) \, &=& \,
+{\displaystyle -\,\Phi_o\left(1+{r^2\over a^2}\right)^{-1/2}} \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\rho(r) \, &=& \,
+{\displaystyle \rho_o\left(1+{r^2\over a^2}\right)^{-5/2}}
+\end{array} \right.
 
+xxx
+
+:equation:
+\left\{ \begin{array}{lcl}
+\Phi_o  \, &=& \,
+{\displaystyle {GM\over a}} \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\rho_o  \, &=& \,
+{\displaystyle {3M\over4\pi a^3}}
+\end{array} \right.
+
+xxx
+
+:equation:
+\left\{ \begin{array}{lcl}
+\Phi(r) \, &=& \,
+{\displaystyle -\,\Phi_\infty(r)\left(1+{a^2\over r^2}\right)^{-1/2}} \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\rho(r) \, &=& \,
+{\displaystyle \rho_\infty(r)\left(1+{a^2\over r^2}\right)^{-5/2}}
+\end{array} \right.
+
+xxx
+
+:equation:
+\left\{ \begin{array}{lcl}
+\Phi_\infty(r)  \, &=& \,
+{\displaystyle {GM\over r}} \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\rho_\infty(r)  \, &=& \,
+{\displaystyle {3Ma^2\over4\pi r^5}}
+\end{array} \right.
+
+xxx

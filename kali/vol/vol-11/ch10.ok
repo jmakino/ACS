@@ -1,0 +1,40 @@
+= xx
+
+== xxx
+
+
+
+Integrate density:
+
+:eqnarray:
+m(r) \, &=& \, \int_0^r 4 \pi r^2 \rho(r) dr                   \nonumber\\
+  &=& \, \int_0^r {3M\over a^3}r^2\left(1+{r^2\over a^2}\right)^{-5/2}
+
+:equation:
+m(r) \, = \, M\left(1+{a^2\over r^2}\right)^{-3/2}
+
+Then this, as the energy distribution function
+
+:equation:
+f(E) = {3.2^{7/2}\over7\pi^3}{a^2\over G^5M^4}(-E)^{7/2}
+
+Integrate potential energy:
+
+:equation:
+E_{pot} \, = \, -\,{3\pi\over32}{GM^2\over a}
+
+Use virial theorem:
+
+:equation:
+E_{tot} \, = \, -\, E_{kin} \, = \, -\, {3\pi\over64}{GM^2\over a}
+
+By definition:
+
+:equation:
+E_{tot} \, = \, -\, {GM^2\over R_v}
+
+Hence:
+
+:equation:
+R_v \, = \, {16\over3\pi}a
+
