@@ -1,3 +1,4 @@
+require "acs.rb"
 require "vector.rb"
 
 class Clop_Option
@@ -104,6 +105,7 @@ class Clop_Option
   end
 
 end
+#:segment end:
 
 class Clop
 
@@ -112,10 +114,12 @@ class Clop
     if argv_array
       parse_command_line_options(argv_array)
     end
+    initialize_global_variables
     print_values
   end
 
   def parse_option_definitions(def_str)
+    def_str += HELP_DEFINITION_STRING
     a = def_str.split("\n")
     @options=[]
     while a[0]
@@ -128,20 +132,26 @@ class Clop
   end
 
   def parse_command_line_options(argv_array)
-    while s = argv_array.shift
+    s1 = argv_array.one_level_deep_copy
+    while s = s1.shift
       if s == "-h"
-        parse_help(argv_array, false)
+        parse_help(s1, false)
         exit
       elsif s == "--help"
-        parse_help(argv_array, true)
+        parse_help(s1, true)
         exit
-      elsif i = find_option(s)
+      elsif s == "---help"
+        print_help(true, 0)
+        exit
+      end
+    end
+    while s = argv_array.shift
+      if i = find_option(s)
         parse_option(i, s, argv_array)
       else
         raise "\n  option \"#{s}\" not recognized; try \"-h\" or \"--help\"\n"
       end
     end
-    initialize_global_variables
   end
 
   def print_values
@@ -206,9 +216,11 @@ class Clop
   def parse_help(argv_array, long)
     all = true
     while s = argv_array.shift
+      all = false
       if i = find_option(s)
-        all = false
         print_help(long, i)
+      else
+        print_help_warning(s)
       end
     end
     print_help(long) if all
@@ -222,12 +234,16 @@ class Clop
     end
   end
 
+  def print_help_warning(s)
+    STDERR.print "WARNING : ", s, " : ==> this option is not recognized <==\n"
+  end
+
   def help_string(option, long_flag)
     s = ""
-    if option.type
+    if option.type or option.shortname == "-h"
       s += option_name_string(option)
     end
-    if option.type or not long_flag
+    if option.type or option.shortname == "-h" or not long_flag
       s += "#{option.description}"
       s += default_value_string(option)
       s += "\n"
@@ -259,6 +275,35 @@ class Clop
     return s
   end
 
+  HELP_DEFINITION_STRING = <<-END
+
+
+  Short name: 		-h
+  Long name:		--help
+  Description:		Help facility
+  Long description:
+    When providing the command line option -h, followed by one or more
+    options, a one-line summary of each of the options will be printed.
+
+    These options can be specified in either short or long form, i.e
+    typing "some_command -h -x" or "some_command -h --extra" will produce
+    the same output, if "-x" and "--extra" invoke the same option.
+
+    When providing the command line option -h, with nothing else following,
+    a one-line summary of all options will be printed.
+
+    When providing the command line option --help, instead of -h, the same
+    actions occur, the only difference being that instead of a one-liner,
+    a longer description will be printed.
+
+    Anything that appears on the command line between the name of the
+    program and "-h" or "--help" will be ignored.  For example, typing
+    "some_command gobbledygook -h -x" will produce the same output as
+    typing "some_command -h -x"
+
+
+  END
+
 end
 
 def parse_command_line(def_str)
@@ -269,7 +314,7 @@ if __FILE__ == $0
 
   options_definition_string = <<-END
 
-  Description: Command line option parser, (c) 2004, Piet Hut & Jun Makino, ACS
+  Description: Command line option parser
   Long description:
     Test program for the class Clop (Command line option parser),
     (c) 2004, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
