@@ -259,11 +259,11 @@ we can check later.  At least now we are pushing machine accuracy for
 64-bit floating point with our second-order integrator; a while ago
 it took forever to get the errors in position down to one percent.
 I can't wait to show you my fourth-order integrator.  That will go a
-lot faster.
+lot faster.  But first let's see what we get here.
 
 . . . . .
 
-==
+== Reaching the Round-Off Barrier
 
 *Alice*: It has been a few hours now.  Surely the code must have run
 now.
