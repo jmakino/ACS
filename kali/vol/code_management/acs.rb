@@ -16,3 +16,8 @@ class Object
     Marshal.load(Marshal.dump(self))
   end
 end
+
+def acsp(x, b)
+  x = x.to_s
+  print x, "=", eval(x,b), "\n"
+end
