@@ -1235,8 +1235,8 @@ module Acsdoc
 	end
 	typedefstring += s
 	open(outfilenamebase+name,"w"){|f|f.print typedefstring}
-      elsif s =~ /^\w\S*\s+(\S+)\(/
-	name = $1
+      elsif s =~ /^(\w\S*\s+)+(\S+)\(/
+	name = $2
 	print "#{infile}: #{s.chomp} : #{name}\n"
 	functionstring = s
 	while s !~ /(^\{)|(\);)/
