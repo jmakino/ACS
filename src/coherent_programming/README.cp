@@ -84,12 +84,11 @@ END
   :command: rm aho
   
 
-#
-# Here I try usual ruby comment
-#
+* In  .cp files, lines start with "#" (only at the begining of the
+  line. No white space or whatever before "#" would suppress this
+  function) are ignored by acsdoc.rb (not passed to rdoc).
 
---
+# This line is not shown
 
-What this do?
-
-++
+ # This line is shown
+ 

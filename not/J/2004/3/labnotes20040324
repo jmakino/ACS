@@ -1,0 +1,25 @@
+== More on acsdoc
+
+Actually,  it may be better to use RDtools, instead of RDOC, at least
+to make a printable version of the book, since there is at least *some* support
+for Latex generation.
+
+One problem clearly is not all macros which are available in RDOC are
+not available in RD, and macros to do the same things are not exactly
+the same.
+
+From what we know, headers by "=" etc are okay. Practically speaking
+all markups (_italic_, *bold*, +typewriter+, by \_italic_, \*bold*, or
+\+typewriter+) do not work, because RD markup is
+different. ((*bold*)), (({typewriter})),  ((|itaric?|)), ((%another
+typewriter%)), ((:Some other font:)). (('no format')), ((<Identity or
+URL.)), ((-Footnote-)).
+
+Also, the formats for include and link are different. Rdoc uses
+\:include:. while RD uses '<<<' for include. RD uses link: to directly
+embed images. 
+
+
+
+
+

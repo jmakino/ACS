@@ -1,0 +1,13 @@
+== More on acsdoc
+
+Probably we need some mechanism to break up lines, which are handled
+by rdoc as preformatted, since we can have looooong lines from
+automatic command output and things like that.
+
+I (JM) will implement it at some point, as the second pass in the
+preprocessing of the .cp files in acsdoc.rb. It is not necessarily the
+preprocessing, but maybe cleaner that way than postprocess the
+generated HTML file.
+
+Also, it is quite likely that at some point we want to generate TeX
+directly from rdoc or our .cp format file. 

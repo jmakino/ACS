@@ -1,0 +1,30 @@
+== Updating svn
+
+.... turned out to be *very* complicated and cumbersome, but seemingly
+not impossible. The following are what I actually installed:
+
+ -rw-------    1 makino   makino    7245193 Mar 15 17:51 subversion-1.0.1.tar.gz
+ -rw-------    1 makino   makino    8491380 Mar 15 20:36 Python-2.3.3.tgz
+ -rw-------    1 makino   makino   14269432 Mar 15 21:03 binutils-2.14.tar.gz
+ -rw-------    1 makino   makino   12321026 Mar 16 00:03 binutils-2.12.tar.gz
+ -rw-------    1 makino   makino    9934295 Mar 16 00:07 binutils-2.11.2.tar.gz
+ drwxr-xr-x   15 makino   makino       4096 Mar 16 00:10 binutils-2.11.2/
+ drwxr-xr-x   15 makino   makino       4096 Mar 16 00:18 binutils-2.14/
+ drwxr-xr-x   18 makino   makino       4096 Mar 16 00:23 Python-2.3.3/
+ -rw-------    1 makino   makino    4032692 Mar 16 00:38 db-4.2.52.NC.tar.gz
+ -rw-------    1 makino   makino    1236359 Mar 16 01:16 autoconf-2.59.tar.gz
+ drwxr-xr-x    8 makino   makino       4096 Mar 16 01:16 autoconf-2.59/
+ -rw-------    1 makino   makino    2653072 Mar 16 01:18 libtool-1.5.2.tar.gz
+ drwxr-xr-x   13 makino   makino       4096 Mar 16 01:19 libtool-1.5.2/
+ drwxr-xr-x   54 makino   makino       4096 Mar 16 01:31 db-4.2.52.NC/
+ drwxr-xr-x   14 makino   makino       4096 Mar 16 02:25 subversion-1.0.1/
+
+First, you need to get the ld version right. What I had was 2.11.x,
+which fails to make various things. I then tried to make
+binutils-2.14, but ld failed(!). So I first made 2.11.2, then 2.12,
+and then 2.14, all using gcc 2.95.3.
+
+After that, things are reasonablly smooth. You need to make sure that
+the configure script of subversion actually sees the python directory
+(if you made a new one) and Berkeley DB.
+

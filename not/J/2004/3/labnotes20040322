@@ -1,0 +1,17 @@
+== Thoughts on implementing TeX maths into cp system
+
+=== Command syntax
+
+Possible examples are:
+
+":tex: $x=a$ :tex:"
+
+This is rather long. Extreme possibility is to have direct thing like
+$x=x$ embedded in the text, which then requires some escaping back
+sequence.
+
+I made changes to acsdoc.rb so that the base function to process .cp
+file now takes an array of string as input and returns (currently
+somewhat inconvenient) large single string with newlines enbedded.
+
+
