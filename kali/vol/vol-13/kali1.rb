@@ -125,11 +125,14 @@ module Integrator_hermite
 
 end
 
-class Worldpoint < Body
+class Worldpoint
 
-  attr_reader :mass, :pos, :vel, :acc,
-              :time, :next_time, :nsteps,
-              :minstep, :maxstep
+  ACS_OUTPUT_NAME = "Body"
+
+  attr_accessor :pos, :vel
+
+  attr_reader :mass, :acc, :time, :next_time,
+              :nsteps, :minstep, :maxstep
 
   def setup(dt_param, time)
     @dt_param = dt_param
@@ -444,21 +447,24 @@ class World
     @era = @new_era
   end
 
-  def startup(ss, c)
+  def setup(ss, c)
     @era = Worldera.new
     @era.setup(ss, c.integration_method, c.dt_param, c.dt_era)
     @nsteps = 0
     @dt_max = c.dt_era * c.dt_max_param
-    @era.startup(@dt_max)
-    @initial_energy = @era.report_energy
     @time = @era.start_time
     @t_out = @time
     @t_dia = @time
     @t_end = @time
-    init_output(c)
     @t_out += c.dt_out
     @t_dia += c.dt_dia
     @t_end += c.dt_end
+  end
+
+  def startup(c)
+    @era.startup(@dt_max)
+    @initial_energy = @era.report_energy
+    init_output(c)
   end
 
   def init_output(c)
@@ -480,7 +486,8 @@ class World
       return object
     elsif object.class == Worldsnapshot
       w = World.new
-      w.startup(object, c) if object.class == Worldsnapshot
+      w.setup(object, c)
+      w.startup(c)
       return w
     else
       raise "#{object.class} not recognized"

@@ -2,15 +2,13 @@ require "acs.rb"
 
 class Body
 
-  ACS_OUTPUT_NAME = self.to_s
-
-  attr_accessor :mass, :pos, :vel, :number
-
-  def initialize
-    @mass = 0.0
-    @pos = Vector.new
-    @vel = Vector.new
-  end
+# naming convention for instance variables in class Body:
+#
+# @mass    : mass 
+# @pos     : position
+# @vel     : velocity
+# @idn     : identification number of a body, typically used when
+#            numbering the bodies consecutively within an N-body system
 
 end
 
@@ -18,7 +16,7 @@ class Nbody
 
   ACS_OUTPUT_NAME = self.to_s
 
-  attr_accessor :body
+  attr_accessor :body               # an array with elements of class Body
 
   def initialize
     @body = []

@@ -1,5 +1,11 @@
 require "nbody.rb"
 
+class Body
+
+  attr_writer :mass, :pos, :vel
+
+end
+
 include Math
 
 def frand(low, high)
