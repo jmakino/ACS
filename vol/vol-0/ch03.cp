@@ -1,4 +1,4 @@
-= Chapter 3.  A Kitchen Sink Approach
+= A Kitchen Sink Approach
 
 == The Need for Combining Codes
 

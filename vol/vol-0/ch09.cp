@@ -1,4 +1,4 @@
-= Chapter 9.  Style
+=  Style
 
 == Documentation
 

@@ -1,4 +1,4 @@
-= Chapter 1.  Introduction
+= Introduction
 
 == A Chat between Two Astronomers
 
@@ -127,7 +127,7 @@ picture help me to get my work done?
 *Alice*: There are many examples.  Just to name one in stellar dynamics:
 the introduction of tree codes in the mid eighties made it possible to
 do the type of cosmological simulations that we are all familiar with.
-Until then, there was a huge gap between P^3M codes and direct summation
+Until then, there was a huge gap between <tex>$\rm P^3M$</tex> codes and direct summation
 codes.  The breakthrough came not by improving details in a particular
 piece of work in a given project, but by stepping back and rethinking
 the whole approach to large-scale simulations in stellar dynamics.

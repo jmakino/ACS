@@ -1,4 +1,4 @@
-= Chapter 5.  An Educational Project
+=  An Educational Project
 
 == A Toy Model on the Web
 

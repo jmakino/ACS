@@ -1,6 +1,6 @@
-== Preface
+= Preface
 
-=== A New Book Series
+== A New Book Series
 
 This book is the first in a series of books titled <i>The Art of
 Computational Science.</i> The aim of the series is to provide
@@ -59,7 +59,7 @@ for finding general solutions to those equations.  Here, too, we
 welcome others to join us with similar educational approaches, applied
 to other topics.
 
-=== A Narrative in Dialogue Form
+== A Narrative in Dialogue Form
 
 The format we have chosen for our book series, at least for the first
 several volumes, is sufficiently unusual that it deserves some
@@ -123,7 +123,7 @@ would be much more fun to use composite characters, mixing in some of
 the styles and personalities of the few dozen colleagues we have
 interacted with intensively over the years.
 
-=== ACS versions
+== ACS versions
 
 We use the name <i>The Art of Computational Science</i> not only for
 our book series, but more generally for the software environment for
@@ -191,7 +191,7 @@ the text in one or more volumes in our current series.
 However, until we find the time to do so, we will keep <i>Moving Stars
 Around</i> around on our web site, as introductory material.
 
-=== Acknowledgments
+== Acknowledgments
 
 Besides thanking our home institutes, the Institute for Advanced Study
 in Princeton and the University of Tokyo, we want to convey our
@@ -206,4 +206,4 @@ rapid beginning with the current volume.
 We thank Douglas Heggie, xxx, and xxx for their comments on the
 manuscript.
 
-[ ]  Piet Hut & Jun Makino
+[ ]  Piet Hut and Jun Makino

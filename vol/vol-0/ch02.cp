@@ -1,4 +1,4 @@
-= Chapter 2.  Stellar Evolution
+= Stellar Evolution
 
 == The Role of Stellar Evolution
 

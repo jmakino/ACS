@@ -1,4 +1,4 @@
-= Chapter 4.  Software Architecture
+= Software Architecture
 
 == Legacy Codes
 

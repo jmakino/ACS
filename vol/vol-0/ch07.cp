@@ -1,4 +1,4 @@
-= Chapter 7.  Stellar Dynamics
+=  Stellar Dynamics
 
 == Regularization
 

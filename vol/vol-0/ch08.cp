@@ -1,4 +1,4 @@
-= Chapter 8.  Environment
+=  Environment
 
 == A Toolbox
 

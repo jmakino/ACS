@@ -1,4 +1,4 @@
-= Chapter 6.  Stellar Evolution and Hydrodynamics
+=  Stellar Evolution and Hydrodynamics
 
 == A Minimal Vision
 
