@@ -1,6 +1,6 @@
 = Distance Measures
 
-== Testing
+== Phase Space
 
 *Bob*: Now that we have a shared time step code <tt>nbody_sh1.rb</tt>,
 I'd like to make sure that it really gives the same results as the
@@ -55,35 +55,91 @@ corresponds to which particle in the other system.
 *Alice*: I guess we have to number them, by giving each body a unique
 identifier.
 
+== Counting Sheep, and other Bodies
+
 *Bob*: Given that every object in Ruby already has an identifier called
 <tt>object_id</tt>, a natural name for such an ID would be <tt>body_id</tt>.
-Now that is easy to implement.  How about this:
-
-
-
-
+Now that is easy to implement.  How about writing a nifty tool like this:
 
  :inccode:acsnumber.rb
 
+== A Test Count
+
+You see, I even allowed for taste: the default is to start numbering at
+one, but you can start at zero as well, or at any other place you like.
+Let's test it with our Plummer Model:
+
+ :commandoutput: acsnumber.rb -h
+
+ :commandoutput: mkplummer.rb -n 2 -p 5 | acsnumber.rb 
+
+ :commandoutput: mkplummer.rb -n 2 -p 5 | acsnumber.rb -n 42
+
+== A Test Count
+
+*Bob*: Now, with identifiers in place, we can extend our <tt>nbody.rb</tt> file
+by adding a subtraction operator:
+
  :inccode:.nbody.rb+-
+
+This includes proper testing of particle identities.  Given this, it
+now becomes really trivial to check for the actual size of the
+difference between two N-body systems, by defining the absolute value
+method:
 
  :inccode:.nbody.rb+abs
 
+*Alice*: Sometimes we may want to look only at the positions, restricting
+ourselves to configuration space, rather than to phase space.
+
+*Bob*: That's easy.  Here is a position-only version of +abs+:
+
  :inccode:.nbody.rb+abs_pos
+
+*Alice*: Let me try to implement the module that gives the difference
+between two N-body systems, as the 6N-dimensional distance in phase space,
+or the 2DN-dimensional distance for the general case of D spatial dimensions.
+It's time to practice my Ruby skills again.
 
  :inccode:acsdiff.rb
 
+How about this?
+
+*Bob*: Looks fine, as far as I can see.  You put in options to allow for more
+precision, without burdening the reader with all those extra digits in
+the general case.  And you also gave an option for positions-only
+comparisons.
+
+Time to test it!  We still have the initial conditions lying around
+for a circular binary, I believe.  Ah yes, here it is, in
+<tt>circular_binary.in</tt>:
+
  :inccode:circular_binary.in
+
+To start with, let's see whether two identical systems are assigned a
+distance of zero correctly:
+
+ :commandoutput: acsnumber.rb < circular_binary.in > tmp0.in
+ :commandoutput: cat tmp0.in tmp0.in | acsdiff.rb
+
+*Alice*: Good!  Let's perturb our binary slightly.  If we use the most
+popular Pythagorean triangle, we can immediately check whether our
+Cartesian distances in phase space come out correctly.  Here is a file
+<tt>pert_circ_binary.in</tt>:
 
  :inccode:pert_circ_binary.in
 
- :commandoutput: acsnumber.rb < circular_binary.in > tmp0.in
+And here is our first real result:
+
  :commandoutput: acsnumber.rb < pert_circ_binary.in > tmp1.in
- :commandoutput: cat tmp0.in tmp0.in | acsdiff.rb
  :commandoutput: cat tmp0.in tmp1.in | acsdiff.rb
+
+Just what it should be!  Now for positions only, and a higher precision:
+
  :commandoutput: cat tmp0.in tmp1.in | acsdiff.rb -r -p 5
  :command: rm -f tmp0.in tmp1.in
 
+Perfect.  I think we're ready to move on.
 
 
 
