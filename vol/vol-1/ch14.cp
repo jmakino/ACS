@@ -192,9 +192,9 @@ a notation like that might well come in handy.  But not right now.
 *Alice*: Okay, I like your two integrator methods, while seperating
 out the acceleration, but where is the magic that enables you to call
 the shots, when you call +evolve+.  How does evolve know that a first
-argument of the string +"forward"+ directs it to execute the method
+argument of the string <tt>"forward"</tt> directs it to execute the method
 +forward+, and similarly that a first argument of the string
-+"leapfrog"+ directs it to execute the method +leapfrog+?
+<tt>"leapfrog"</tt> directs it to execute the method +leapfrog+?
 
 *Bob*: That happens through the +send+ method.
 
@@ -220,9 +220,9 @@ knows how to create a clean yet powerful language.
 
 *Bob*: He does.
 
-*Alice*: Well, there are many astronomy conferences in Japan, so I'm
-sure I'll get a chance, some day.  Especially if we really get to build
-a nice toy model in Ruby, he may enjoy playing with stars.
+*Alice*: Well, there are many astronomy conferences in Japan, so I hope
+I'll get a chance, some day.  And if we really get to build a nice toy
+model in Ruby, he may enjoy playing with stars.
 
 *Bob*: Now that you see he I have extended our +Body+ class with a menu
 of integrators, would you like to see it all in action?

@@ -4,7 +4,7 @@
 
 *Bob*: So far we've gotten output as a side effect, with the interpreter
 echoing the value of everything it evaluates.  Let's see whether we
-can get specific output.  Ruby seems to have a general command "+p+"
+can get specific output.  Ruby seems to have a general command +p+
 for printing the contents of any object.  Let's see what that gives us:
 
     |gravity> irb -r body2.rb
@@ -67,7 +67,7 @@ out.  It looks impressive.  But does it work?
 *Alice*: Oh yeah?  Then let's make _everything_ modular.
 
 *Bob*: Not that wish; don't push it!  Where were we?  Oh yes, Ruby seems
-to have a general command "+p+" for printing the contents of any object.
+to have a general command +p+ for printing the contents of any object.
 Let's see what that gives us:
 
     001:0> b1 = Body.new(0.1, [1.3, 0, 0], [0, 0.5, 0])

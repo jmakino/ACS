@@ -19,10 +19,10 @@ class Body
     t_end = dt_end - 0.5*dt
 
     while time < t_end
-      self.send(integration_method,dt)
+      send(integration_method,dt)
       time += dt
       nsteps += 1
-      if time >= t_dia 
+      if time >= t_dia
 	write_diagnostics(nsteps, time)
 	t_dia += dt_dia
       end
@@ -32,6 +32,12 @@ class Body
       end
     end
   end
+
+  def acc
+    r2 = @pos*@pos
+    r3 = r2*sqrt(r2)
+    @pos*(-@mass/r3)
+  end    
 
   def forward(dt)
     @pos += @vel*dt
@@ -45,29 +51,23 @@ class Body
   end
 
   def rk2(dt)
-    old_pos = @pos
-    half_vel = @vel + acc*0.5*dt
+    old_pos = pos
+    half_vel = vel + acc*0.5*dt
     @pos += vel*0.5*dt
     @vel += acc*dt
     @pos = old_pos + half_vel*dt
   end
 
   def rk4(dt)
-    old_pos = @pos
+    old_pos = pos
     a0 = acc
-    @pos = old_pos + @vel*0.5*dt + a0*0.125*dt*dt
+    @pos = old_pos + vel*0.5*dt + a0*0.125*dt*dt
     a1 = acc
-    @pos = old_pos + @vel*dt + a1*0.5*dt*dt
+    @pos = old_pos + vel*dt + a1*0.5*dt*dt
     a2 = acc
-    @pos = old_pos + @vel*dt + (a0+a1*2)*(1/6.0)*dt*dt
+    @pos = old_pos + vel*dt + (a0+a1*2)*(1/6.0)*dt*dt
     @vel = vel + (a0+a1*4+a2)*(1/6.0)*dt
   end
-
-  def acc
-    r2 = @pos*@pos
-    r3 = r2*sqrt(r2)
-    @pos*(-@mass/r3)
-  end    
 
   def ekin                        # kinetic energy
     @ek = 0.5*(@vel*@vel)         # per unit of reduced mass

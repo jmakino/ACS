@@ -1,6 +1,200 @@
 = Runge-Kutta
 
-== xxx
+== Two New Integrators
+
+*Alice*: Good morning, Bob!  Any luck with extending your menu of
+integrators?
+
+*Bob*: Yes, I added two Runge-Kutta integrators, one second-order
+and one fourth-order in accuracy.  The changes are again minimal.
+
+For the driver program there is no change at all.  The only difference
+is that you can now call +evolve+ with <tt>method = "rk2"</tt> to
+invoke the second-order Runge-Kutta integrator, or <tt>"rk4"</tt> for
+the fourth-order integrator.
+
+Here are the additions to the +Body+ class:
+
+ :inccode:.rkbody.rb+rk2
+
+ :inccode:.rkbody.rb+rk4
+
+*Alice*: Even the fourth-order method is quite short.  But let me first
+have a look at your second-order Runge-Kutta.  I see you used an +old_pos+
+just like I used an +old_acc+ in my version of the leapfrog.
+
+*Bob*: Yes, I saw no other way but to remember some variables before they
+were overwritten.
+
+*Alice*: My numerical methods knowledge is quite rusty.  Can you remind me
+of the idea behind the Runge-Kutta algorithms?
+
+== A Leapcat Method
+
+*Bob*: The Runge-Kutta method does not leap, as the leapfrog does.  It is
+more careful.  It feels its way forward by a half-step, sniffs out the
+situation, then returns, and only then it makes a full step, using the
+information gained in the half-step.
+
+*Alice*: Like a cat?
+
+*Bob*: Do cats move that way?
+
+*Alice*: Sometimes, when they are trying to catch a mouse, they behave
+as if they have haven't seen the bird at all.  They just meander a bit,
+and then return, so that the mouse thinks that it is safe now.  But then,
+when the mouse comes out of hiding, the cat pounces.
+
+*Bob*: So we should call the Runge-Kutta method the leapcat method?
+
+*Alice*: Why not?
+
+*Bob*: I'm not sure.  For one thing, my code doesn't meander.  You can tell
+your students what you like, I think I'll be conservative and stick to Runge
+Kutta.
+
+Here are the equations that incorporate the idea of making a half-step
+first as a feeler:
+
+<tex>\begin{eqnarray}
+{\bf r}_{i+1/2} & = & {\bf r_i}_i + {\bf v}_{i} dt/2     \nonumber \\
+{\bf v}_{i+1/2} & = & {\bf v_i}_i + {\bf a}_{i} dt/2     \nonumber \\
+{\bf r}_{i} & = & {\bf r_i}_i + {\bf v}_{i+1/2} dt       \nonumber \\
+{\bf v}_{i} & = & {\bf v_i}_i + {\bf a}_{i+1/2} dt       \nonumber
+\end{eqnarray}</tex>
+
+*Alice*: Ah yes, now it is very clear how you use the information from the
+half-step, in the form of the velocity and acceleration there, to improve
+the accuracy of the full step you take at the end.
+
+*Bob*: Wait a minute.  Looking again at the equations that I got from a
+book yesterday, I begin to wonder.  Is this really different from the
+leapfrog method?  We have seen that you can write the leapfrog in at
+least two quite different ways.  Perhaps this is a third way to write it?
+
+*Alice*: I think it is different, otherwise it would not have a different
+name, but it is a good idea to check for ourselves.  Let us write out the
+effect of the equations above, by writing the half-step values in
+terms of the original values.  First, let's do it for the position:
+
+<tex>\begin{eqnarray}
+{\bf r}_{i+1} & = & {\bf r_i}_i + {\bf v}_{i+1/2} dt       \nonumber \\
+& = & {\bf r_i}_i + ({\bf v}_{i} + {\bf a}_{i} dt/2)dt       \nonumber \\
+& = & {\bf r}_i + {\bf v}_{i} dt + {\bf a}_{i} (dt)^2/2   \nonumber
+\end{eqnarray}</tex>
+
+*Bob*: Hey, that is the exact same equation as we had for the leapfrog.
+Now I'm curious what the velocity equation will tell us.
+
+<tex>\begin{eqnarray}
+{\bf v}_{i} & = & {\bf v_i}_i + {\bf a}_{i+1/2} dt       \nonumber \\
+& = & {\bf v_i}_i + . . . .       \nonumber
+\end{eqnarray}</tex>
+
+Ah, that doesn't work, we cannot write <tex>${\bf a}_{i+1/2}$</tex>
+in terms of quantities at times <tex>$i$</tex> and <tex>$i+1$</tex>.
+It really is a new result, computed halfway.
+
+*Alice*: You are right.  So the two methods are really different then.
+Good to know.  Still, let us see _how_ different they are.  The
+corresponding equation for the leapfrog is:
+
+<tex>$$
+{\bf v}_{i+1}  =  {\bf v}_i + ({\bf a}_i + {\bf a}_{i+1})dt / 2
+$$</tex>
+
+*Bob*: Ah, that is neat.  The Leapfrog velocity jump uses the average
+acceleration, averaged between the values at the beginning and at the
+end of the leap.  The Runge-Kutta method approximates this average
+by taking the midpoint value.
+
+*Alice*: Or putting it the other way around, the leapfrog approximates
+the midpoint value by taking the average of the two accelerations.
+
+*Bob*: Yes, you can look at it both ways.  In fact, if you take your view,
+you can see that the leapfrog is twice as efficient as Runge-Kutta, in that
+it calculates only the accelerations at the integer time points.  In
+contrast, the Runge-Kutta method also calculates the accelerattions at the
+half-integer points in time.  So it requires twice as many acceleration
+calculations.
+
+Of course, in my current code that is not obvious, since I am calculating
+the acceleration twice in the leapfrog as well.  However, it would be easy
+to rewrite it in such a way that it needs only once acceleration calculation.
+And in the Runge-Kutta method you cannot do that.
+
+
+
+
+
+
+
+  def rk2(dt)
+    old_pos = pos
+    old_vel = vel
+    half_pos = pos + vel*0.5*dt
+    half_vel = vel + acc*0.5*dt
+    @pos = half_pos
+    half_acc = acc
+    @vel = old_vel + half_acc*dt
+    @pos = old_pos + half_vel*dt
+  end
+
+
+
+
+*Alice*: Since we know now that the two methods are different, it seems
+likely that the energy conservation in the Runge-Kutta method is a
+better indicator for the magnitude of the positional errors than it
+was in the leapfrog case.  Shall we try the same values as we used
+before, but now for the Runge-Kutta method?
+
+*Bob*: Good idea.  
+
+ :inccode: .integrator_driver2a.rb-barebones
+
+ :command: cp -f integrator_driver2a.rb test.rb
+ :commandoutput: ruby test.rb < euler.in
+ :command: rm -f test.rb
+
+*Alice*: An energy error of order several time <tex>$10^{-5}$</tex>,
+that is more than a hundred times worse than we saw for the leapfrog,
+where we had an error of a few times <tex>$10^{-7}$</tex>, for the
+same time step value.  Let's try a ten times smaller time step:
+
+ :command: cp -f integrator_driver2b.rb test.rb
+ :commandoutput: ruby test.rb < euler.in
+ :command: rm -f test.rb
+
+*Bob*: That is a surprise: the energy error has become a thousand times
+smaller, instead of a hundred.  The Runge-Kutta seems to behave as if
+it is a third-order method, rather than a second order method.
+
+*Alice*: That is interesting.  I guess you could say that the errors of a
+second-order integrator are only guaranteed to be smaller than something
+that scales like the square of the time step, but still, this is a bit
+mysterious.  Shall we shrink the time step by another factor ten?
+
+*Bob*: Sure.  But before doing that, note that the position error in our
+first run is about <tex>$10^{-3}$</tex>, where we had <tex>$10^{-4}$</tex>
+for the leapfrog.  So the Runge-Kutta, for a time step of 0.001, is a
+hundred times worse in energy conservation and ten times worse in the
+accuracy of the positions, compared with the leapfrog.  Then, at a
+time step of 0.0001, the energy error lags only a factor ten behind
+the leapfrog.  Okay, let's go to a time step of 0.00001:
+
+ :command: cp -f integrator_driver2c.rb test.rb
+ :commandoutput: ruby test.rb < euler.in
+ :command: rm -f test.rb
+
+*Alice*: The third-order style behavior continues!  The energy error again
+shrunk by a factor a thousand.  Now the leapfrog and Runge-Kutta comparable
+in energy error, to within a factor of two or so.
+
+*Bob*: The position error of our second run was <tex>$10^{-5}$</tex>,
+as we can now see by comparison with the third run.  That is strange.
+The positional accuracy increases by a factor 100, yet the energy accuracy
+increases by a factor 1000.
 
 
 

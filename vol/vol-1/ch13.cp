@@ -42,7 +42,7 @@ we take the first term in the Taylor series expansion to compute the
 first leap value for <tex>${\bf v}$</tex>:
 
 <tex>$$
-{\bf v}_{1/2} = {\bf v}_0 + {\bf a}_0 dt / 2.
+{\bf v}_{i+1/2} = {\bf v}_i + {\bf a}_i dt / 2.
 $$</tex>
 
 We are then ready to apply the first equation above to compute
