@@ -455,8 +455,8 @@ off when you move away from the center, the radius keeps increasing,
 and the potential keeps increasing as well, or equivalently,
 <tex>$\Psi=-\Phi$</tex> keeps decreasing.
 
-*Bob*: So how do we get from <tex>$\rho(r)$</tex> to <tex>$\rho(\Psi)$</tex>?
-That can't be difficult.  We have 
+*Bob*: So how do we get from <tex>$\rho(r)$</tex> to <tex>$\rho(\Psi)$</tex> ?
+That can't be difficult.  We have
 
 <tex>$$
 \rho(r)dr\,=\,\rho(\Psi)d\Psi \,\,\, \Rightarrow \,\,\,

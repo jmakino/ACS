@@ -55,7 +55,7 @@ to obtain a function <tex>$r(m)$</tex>, and then life is simple:
 == Following the Recipe
 
 *Alice*: That sounds straightforward.  Can you show me the expressions
-you found for <tex>$m(r)$</tex> and <tex>$r(m)$</tex>?
+you found for <tex>$m(r)$</tex> and <tex>$r(m)$</tex> ?
 
 *Bob*: I simply took their expressions.  They use a system of units in which
 the total mass _M_, the gravitational constant _G_ and the structural length
@@ -321,7 +321,7 @@ surprised.  I would argue that a piece of wood with a length of 1 foot
 has also a length of 12 inches.  So you have to multiply the unit of
 length with the dimensionless number 1 or 12, as the case may be, to get
 the physical length.  So I would ask: why are you _dividing_ <tex>$r$</tex>
-by the length scale <tex>$a$</tex>?
+by the length scale <tex>$a$</tex> ?
 
 *Bob*: Yes, students do indeed ask such questions!  It just means that they
 have to practice more with simple examples, until it comes to them naturally.

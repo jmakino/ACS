@@ -267,7 +267,7 @@ symbol for two expressions that have a different functional form, and what
 is worse, even have a different number of parameters is definitely a no-no
 in mathematics.
 
-*Bob*: But what else could I have written but <tex>$f(E, J) = f(E)$</tex>?
+*Bob*: But what else could I have written but <tex>$f(E, J) = f(E)$</tex> ?
 
 *Alice*: A proper mathematical expression would have been
 <tex>$\hat f(E, J) = f(E)$</tex>, for example.  This would imply that

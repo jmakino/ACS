@@ -125,7 +125,7 @@ divided by the distance, <tex>$0.9 \times 0.9 / 1 = 0.81$</tex>.  That
 is indeed what the code gives.  The initial kinetic energy for each
 particle must be <tex>$ 0.5 \times 0.9 \times 0.5 \times 0.5 = 0.1125$</tex>,
 so for both particles together <tex>$0.225$</tex>.  Hey!  The code output
-gives us <tex>$0.25$</tex>!
+gives us <tex>$0.25$</tex> !
 
 == A Warning Light
 

@@ -165,7 +165,7 @@ time for a particle to cross the system, starting at the half-mass radius.
 scale is somewhat more natural than choosing a time scale, since in
 your time scale definition you make use of an earlier length scale definition.
 
-*Bob*: So what is wrong with the choice of <tex>$G=M=r_h=1$</tex>?
+*Bob*: So what is wrong with the choice of <tex>$G=M=r_h=1$</tex> ?
 
 *Alice*: There is nothing wrong with that, and people have used that choice
 as well.  The problem is that in that case the total energy has a non-obvious
