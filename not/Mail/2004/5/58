@@ -1,0 +1,39 @@
+Date: Tue May 04 21:32:23 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > By the way, would it be easy to allow an include file to appear
+ > somewhere with a collection of useful ACS Latex macros (like we had
+ > in gravitylab/books/vol_1/def.tex) ?
+
+I think I forgot to tell you (actually I forgot that this
+functionality can be used this way...), but that functionality
+actually exists. In .acsdocinitrc file, you can define the following
+four variables:
+
+  @@additional_preambles_for_tex = ""
+  @@additional_commands_for_tex = ""
+  @@additional_preambles_for_inline_tex = ""
+  @@additional_commands_for_inline_tex = ""
+
+"preambles" and "commands" are code added before and after
+"\begin{document}", and variables with "inline" are for tex code used
+to HTML embedded inline tex images, and without "inline" are
+single-file latex translation. For example, if you have
+
+  @@addtional_commands_for_tex = "\\input defs"
+  @@additional_commands_for_inline_tex = "\\input defs"
+
+"\input defs" is added after "\begin{document}", for both of the
+single tex file created by "--tolatex" and individual tex file for
+HTML documents. So you can use "defs.tex" as file for standard
+macros.
+
+Jun
+
+
+
+  
+
