@@ -304,7 +304,7 @@ END
     ostring
   end
   
-  def process_single_paragraphs_lists_etc(instring,indent,type,new)
+  def process_single_paragraphs_lists_etc(instring,indent,type,new,vlimit)
     s_prev = ""
     ostr=[]
     ostr.push("\\begin{"+@@listtypes[type][1]+"}")  if new and (type >0)
@@ -318,7 +318,6 @@ END
 # line. So if you use them in a more complex ways, it might cause strange 
 # problems.
 #
-    
     while s=instring.shift
       header_candidate =s.split[0] 
       new_item = nil
@@ -344,10 +343,7 @@ END
 	new_type=4
 	new_item = nil
       end
-      p s1
-      print type, new_type, indent, new_indent,"\n"
-	  
-      if new_indent != indent and new_item == nil and new_indent > 0
+      if new_indent > indent and new_item == nil
 	new_type = 4 
       end
       s1= process_tex_special_chars(s1) unless new_type == 4
@@ -355,10 +351,11 @@ END
 	instring.unshift(s)
 	new=1
 	new = nil if new_type == type and type == 4 
-#	print "type =  #{new_type}, #{type}, #{new}\n"
+	vlimit = indent+1 if new and new_type == 4
 	if new 
 	  ostr+= process_single_paragraphs_lists_etc(instring,new_indent,
-						     new_type,new)
+						     new_type,new,
+						     vlimit)
 	else
 	  ostr.push s1
 	  instring.shift
@@ -369,13 +366,13 @@ END
 	    ostr.push("\\end{"+@@listtypes[type][1]+"}")
 	    instring.unshift(s)
 	    ostr+= process_single_paragraphs_lists_etc(instring,new_indent,
-						       new_type,1)
+						       new_type,1,vlimit)
 	  end
 	  ostr.push("\\item ") if new_type < 4
 	end
 	ostr.push s1
       else
-	if type == 4 and new_type==4
+	if type == 4 and new_type==4 and new_indent > vlimit
 	  indent = new_indent
 	  ostr.push s1
 	else
@@ -422,7 +419,7 @@ END
     s=process_include(instring)
     s=latex_process_tex_equations(s)
     s=latex_find_and_process_figures(s,dirname)
-    s=process_single_paragraphs_lists_etc(s,0,0,1)
+    s=process_single_paragraphs_lists_etc(s,0,0,1,0)
     s=post_process_verbatim(s)
     s=process_link(s)
     s=process_wordmarkup(s,dirname)
@@ -785,8 +782,27 @@ module Acsdoc
       "<ntaga>"+ $1 + "</ntaga><ntagb>"+ @@tex_labels[$1].to_s+ "</ntagb>"}
   end
 
-  def process_toc(instring)
-    instring.gsub(/:tableofcontents:/,"")
+@@sectionheadercounter=0
+@@sectionheaders=[]
+
+  def process_section_headers(instring,filename)
+    instring.gsub(/^(=+)\s*(.+)$/){|s| 
+      sectionlevel = $1.length
+      sectionname = $2
+      sectionlabel="rdocsect"+@@sectionheadercounter.to_s
+      @@sectionheaders.push [sectionlabel,sectionlevel,sectionname,filename]
+      @@sectionheadercounter+= 1
+      s+"\n<name>" + sectionlabel + "</name>\n"
+    }
+  end
+
+@@filefortoc = []
+  def process_toc(instring,filename)
+    if instring =~ /:tableofcontents:/
+      instring=instring.gsub(/:tableofcontents:/,"TOCTOCTOCTOC")
+      @@filefortoc.push(filename)
+    end
+    instring
   end
 
 
@@ -817,7 +833,8 @@ module Acsdoc
       tmp2= find_and_process_tex_equations(tmp2,dirname);
       tmp2= find_and_process_figures(tmp2,dirname);
       tmp2= process_tex_labels(tmp2,dirname);
-      tmp2= process_toc(tmp2);
+      tmp2= process_toc(tmp2,infile);
+      tmp2= process_section_headers(tmp2,infile)
     end
     ofile.print tmp2
     ofile.close
@@ -985,18 +1002,22 @@ module Acsdoc
     end
   end
   
-  def navigation_string(prev,nex)
+  def navigation_string(prev,nex,filename)
+    uppath = "../"* File.dirname(filename).split('/').size
     prevtext = "Previous"
     nexttext = "Next"
-    prevtext = "<a href=#{File.basename(prev)}>Previous</a>" if prev    
-    nexttext = "<a href=#{File.basename(nex)}>Next</a>" if nex
-
-
+    toctext  = "ToC"
+    prevtext = "<a href=#{uppath+prev}>Previous</a>" if prev    
+    nexttext = "<a href=#{uppath+nex}>Next</a>" if nex
+    toctext = "<a href=#{uppath+@@filefortoc[0]}#TOC>ToC</a>" if @@filefortoc[0]
     s = <<END
 <table border="0" width="70%">
 <tr>
   <td>
       #{prevtext}
+  </td>
+  <td>
+      #{toctext}
   </td>
   <td>
       #{nexttext}
@@ -1007,13 +1028,13 @@ END
   end
 
   def add_links(filename,prev,nex)
-    navi = navigation_string(prev,nex)
+    navi = navigation_string(prev,nex,filename)
     instring = open(filename,"r"){|f| f.gets(nil)}.split("\n")
     ostring=""
     while s = instring.shift
-      if s =~ /^<body/
+      if s =~ /^<body(.)*>/
 	ostring += s + "\n" + navi+ "\n"
-      elsif s =~ /^<\/body>/
+      elsif s =~ /^<\/body/
 	ostring +=   navi + "\n" + s + "\n"
       else
 	ostring +=     s + "\n"
@@ -1041,7 +1062,48 @@ END
     cpfiles.collect!{|x|convert_cpfilename_to_rdoc_htmlfilename(x)}
     add_navigation_links(cpfiles)
   end
-end  
+
+  
+  def create_toc_string(filename)
+    s = "<p><H1>Contents</H1><a name=TOC><p>"
+    currentlevel=0
+    dirlevel=File.dirname(filename).split('/').size
+
+    uppath = "../"*dirlevel
+    @@sectionheaders.each{|x|
+      while x[1]>currentlevel
+	s += "<ul>\n"
+	currentlevel+= 1
+      end
+      while x[1]<currentlevel
+	s+=  "</ul>\n"
+	currentlevel -= 1
+      end
+      basename =File.dirname(x[3])+"/."+File.basename(x[3]) 
+      fname =     uppath+basename.gsub(/\./, '_')+ '.html'
+      s+= "<li> <a href=#{fname}##{x[0]}>#{x[2]}</a></li>\n"
+    }
+    while 0<currentlevel
+      s+=  "</ul>\n"
+      currentlevel -= 1
+    end
+    s
+  end  
+  def add_toc
+    @@filefortoc.collect!{|x|
+      s=create_toc_string(x)
+      fname=convert_cpfilename_to_rdoc_htmlfilename(File.dirname(x)+
+						    "/."+File.basename(x))
+      instring=File.open(fname,"r").read.gsub(/TOCTOCTOCTOC/,s)
+      f=File.open(fname,"w+")
+      f.write(instring)
+      f.close
+      fname
+    }
+  end
+
+end
+
 
 # :segment start: acsdoc
 include Acsdoc
@@ -1084,6 +1146,7 @@ else
 end
 system("rdoc #{coptions} #{ARGV.join(" ")}") unless tolatex_flag
 
+add_toc
 create_navigations_for_cp_files(ARGV)
 if del_flag
   del_file_list.each do |f|

@@ -1,5 +1,7 @@
 =README
 
+:tableofcontents:
+
 ==Overview
 
 This is the readme file for the core of the cp system. The system
@@ -143,15 +145,13 @@ same as writing
 
 Which is processed to:
 
-<tex>
-\begin{equation}
-\label{equation1}
-a = b
-\end{equation}
-</tex>
+   :equation:
+   \label{equation1}
+   a = b
+
 
 but equation number is maintained within acsdoc.rb. To refer to
-an equation, use ref(equation1). equation label must be composed of
+an equation, use ref(equation1)  (ref ( equation1 ), with no space). equation label must be composed of
 alphanumerics and ":". "_" or any other symbol is currently illegal.
 
 I also added numbered figures, in the form
@@ -160,7 +160,12 @@ I also added numbered figures, in the form
   caption text for the figure.
 
 
-  
+== Table of contents
+
+The : tableofcontents : directive will create the table of content at
+that location. In latex conversion, it is simply replaced by latex
+\tableofcontents. In rdoc-html conversion, all headers (= name )
+automatically appear in nested list.
 
 == Changes made to rdoc itself
 
@@ -193,5 +198,3 @@ something like:
    @@addtional_preambles_for_inline_tex = "\\usepackage{epsf}"
    @@addtional_commands_for_inline_tex = "\\input macros"
   
-
-    
