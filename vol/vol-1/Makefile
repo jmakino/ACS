@@ -16,6 +16,7 @@ twopfig2.gif: twopfig2.eps
 	convert twopfig2.eps twopfig2.gif
 
 clean : 
-	rm -r doc .imgs
-	rm volume1.tex volume1.aux volume1.cp volume1.dvi volume1.log \
+	-rm -r doc .imgs
+	-rm .[a-z]*\.rb[-+]* .[a-z]*\.rb .acsdoc.command-*
+	-rm volume1.tex volume1.aux volume1.cp volume1.dvi volume1.log \
 	volume1.ps volume1.toc
