@@ -143,7 +143,7 @@ class Worldpoint < Body
 
   def interpolate(other, t)
     wp = deep_copy
-    wp.interpolate_pos_vel(self, other, t)
+    wp.interpolate_pos_vel(self, other, t-@time)
     wp.interpolate_admin(self, other, t)
     wp
   end
