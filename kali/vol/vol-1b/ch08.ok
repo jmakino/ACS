@@ -199,7 +199,7 @@ by another factor of ten?
 
 *Bob*: This makes it pretty clear: it is a second-order scheme.
 
-== Predicting and Correcting
+== Stepping Back
 
 *Alice*: You have been talking about multi-step algorithms.
 How does this relate to predictor-corrector methods?
@@ -274,12 +274,12 @@ is the jerk obtained now from the last two values of the acceleration:
 
 :equation:
 \label{jerkp}
-\bj_{p,1} \,=\, {1\over\Delta t}\, \left\{\ba_{p,1} - \ba_0\right\}
+\bj_{p,1} \,=\, {1\over\Delta t}\, \left(\ba_{p,1} - \ba_0\right)
 
 which is the same procedure that we used to obtain
 
 <tex>$$
-\bj_0 \,=\, {1\over\Delta t}\, \left\{\ba_0 - \ba_{-1}\right\}
+\bj_0 \,=\, {1\over\Delta t}\, \left(\ba_0 - \ba_{-1}\right)
 $$</tex>
 
 but just shifted by one unit in time.  Note that our last step has
@@ -289,15 +289,20 @@ during the extrapolation step, we used information based on the last
 two accelerations, both of which are gained at the past side of that
 step.
 
-Now let us engage in some wishful thinking.  We start with Eq. (ref(ms2back))
-with tells us that we return to the wrong starting point, when we go backward
-in time.  Wouldn't it be nice if we somehow could find out at which point
-we should start so that we would be able to go backwards in time and return
-to the right spot?  Let us call these alternative position and velocity
-at time <tex>$t=1$</tex> the _corrected_ values:
-<tex>$\br_{c,1}$</tex> for the position and <tex>$\bv_{c,1}$</tex> for
-the velocity.  If our wish would be granted, and someone would hand us
-those values, then they would by definition obey the equations:
+*Bob*: Yes, that is nice, to show that so explicitly.
+
+== Wishful Thinking.
+
+*Alice*: Now let us engage in some wishful thinking.
+We start with Eq. (ref(ms2back)) with tells us that we return to the
+wrong starting point, when we go backward in time.  Wouldn't it be
+nice if we somehow could find out at which point we should start so
+that we would be able to go backwards in time and return to the right
+spot?  Let us call these alternative position and velocity at time
+<tex>$t=1$</tex> the _corrected_ values: <tex>$\br_{c,1}$</tex> for
+the position and <tex>$\bv_{c,1}$</tex> for the velocity.  If our wish
+would be granted, and someone would hand us those values, then they
+would by definition obey the equations:
 
 :eqnarray:
 \label{ms2backc}
@@ -324,16 +329,17 @@ last two values of the acceleration, including the as yet unknown
 corrected one:
 
 :equation:
-\bj_{c,1} \,=\, {1\over\Delta t}\, \left\{\ba_{c,1} - \ba_0\right\}
+\bj_{c,1} \,=\, {1\over\Delta t}\, \left(\ba_{c,1} - \ba_0\right)
 
 However, we do have an approximate way out: we can start with
 Eq. (ref(ms2backcc)), and try to solve them in an iterative way.
 
-Let us start with the second equation, since that only involves quantities
-that are freshly recomputed, namely the acceleration and jerk, reserving
-the first equation for later, since that has a velocity term in the
-right-hand side.  As a first step in our iteration process, we will simply
-replace the corrected values on the right-hand side by the predicted values:
+Let us start with the second line in Eq. (ref(ms2backcc)), since that
+only involves quantities that are freshly recomputed, namely the
+acceleration and jerk, reserving the first equation for later, since
+that has a velocity term in the right-hand side.  As a first step in
+our iteration process, we will simply replace the corrected values on
+the right-hand side by the predicted values:
 
 :equation:
 \bv_{c,1} \,=\, \bv_0 + \ba_{p,1}\Delta t
@@ -449,3 +455,18 @@ still have to be a Runge-Kutta step, using <tt>rk2</tt>.  From there
 on, we would _exactly_ follow the same scheme as the +leapfrog+ method.
 
 But I agree, no need to implement that.
+
+*Alice*: And guess what, we got a bonus, in addition!
+
+*Bob*: A bonus?
+
+*Alice*: Yes, there is no need for higher iterations, since we have
+_exactly_ <tex>$\br_{cc,1}=\br_{c,1}$</tex> and
+<tex>$\bv_{cc,1}=\bv_{c,1}$</tex>.  This is because the leapfrog is
+time reversible as we have shown before.
+
+*Bob*: Right you are, how nice!  And I'm afraid this is just a fluke
+for the second-order case.
+
+*Alice*: Yes, something tells me that we won't be so lucky when we
+go to higher order.

@@ -435,89 +435,46 @@ admit, I'm beginning to lose the forest for the trees.
 *Alice*: What we have done now is to compute the predicted positions and
 velocities after one time step, and we have checked that if we vary the
 length of the time step, we indeed find that the velocity changes like the
-time derivative of the position.  Both are aspects of the _orbit_, and we
-can indeed take one more time derivative, to find the value of the
-acceleration at time <tex>$\tau$</tex>
+time derivative of the position.  The question is: are they really solutions
+of the equations of motion that we started out with, up to the fourth order
+in the time step size?
 
- :eqnarray:
-\label{a1}
-a_1 \,=\, f_0 &+&\, \left\{
-v_0 f_r + f_t \right\} \tau                                      \nonumber\\
-&+&\, \hhalf\left\{
-f_0f_r + v_0^2f_{rr} +2v_0f_{rt}+ f_{tt}
-\right\} \tau^2                                                    \nonumber\\
-&+&\, \one{6}\Big\{
-v_0\left(f_r\right)^2 + f_rf_t +
-3v_0f_0f_{rr} + 3f_0f_{rt} \nonumber\\
-&& \ \ \ \ \, v_0^3f_{rrr}
-+ 3v_0^2f_{rrt}+ 3v_0f_{rtt}
-+ f_{ttt} \Big\} \tau^3
-
-What we should do now is to check whether this is indeed a true
-solution of the equations of motion, true up to the level of accuracy
-we are working with.  In other words, we should similarly expand the
-_interaction_ term on the right-hand side of the equations of motion.
-We should then check whether the orbit and interaction results are the
-same, up to fourth order in <tex>$\tau$</tex>.
-
-To sum up, our final question is: after expanding both <tex>$a(\tau)$</tex>
-and <tex>$f(\tau)$</tex>, are they the same op to <tex>$\tau^4$</tex>,
-as desired?  The expansion of <tex>$a(\tau)$</tex> is given in the equation
-above, and we can find the corresponding expression for <tex>$f(\tau)$</tex>
-using the space-time double Taylor series expansion technique we started out
-with:
-
- :eqnarray:
-f_1 \ =\ 
-f(\tau) \,&=&\, f(r(\tau)) \ \,= \ \,f(\rho)                      \nonumber\\
-=\,\ \ \ \ f_0 &+&\, f_r\rho + f_t\tau                            \nonumber\\
-&+&\,\hhalf f_{rr}\rho^2+f_{rt}\rho\tau+\hhalf f_{tt}\tau^2    \nonumber\\
-&+&\,\one{6}f_{rrr}\rho^3+\hhalf f_{rrt}\rho^2\tau
-     +\hhalf f_{rtt}\rho\tau^2 + \one{6}f_{ttt}\tau^3          \nonumber
-
-where again we have used <tex>$\rho$</tex> as a shorthand expression
-for the position after time <tex>$\tau$</tex>.  This position is given
-in Eq. (ref(r1)), but here we only need to include those terms that
-contribute to the expression for <tex>$f_1$</tex> up to <tex>$\tau^4$</tex>.
-Substituting those terms, the last equation becomes:
-
- :eqnarray:
-f_1 \,=\, f_0 &+&
-f_r\left\{v_0\tau + \hhalf f_0\tau^2 + \one{6}\left\{
-v_0 f_r + f_t \right\} \tau^3\right\}+ f_t\tau                 \nonumber\\
-&+&\,\hhalf f_{rr}\left\{ v_0^2\tau^2+v_0f_0\tau^3\right\}
-+f_{rt}\left\{v_0\tau + \hhalf f_0\tau^2\right\}\tau
-+\hhalf f_{tt}\tau^2                                            \nonumber\\
-&+&\,\one{6}f_{rrr}\left\{v_0\tau\right\}^3
-+\hhalf f_{rrt}\left\{v_0\tau\right\}^2\tau
-+\hhalf f_{rtt}\left\{v_0\tau\right\}\tau^2 + \one{6}f_{ttt}\tau^3    \nonumber
-
-Grouping the various powers of <tex>$\tau$</tex> together, we get:
-
- :eqnarray:
-\label{f1}
-f_1 \,=\, f_0 &+&\, \left\{
-v_0 f_r + f_t \right\} \tau                                       \nonumber\\
-&+&\, \hhalf\left\{
-f_0f_r + v_0^2f_{rr} +2v_0f_{rt}+ f_{tt}
-\right\} \tau^2                                                   \nonumber\\
-&+&\, \one{6}\Big\{
-v_0\left(f_r\right)^2 + f_rf_t +
-3v_0f_0f_{rr} + 3f_0f_{rt}                                        \nonumber\\
-&& \ \ \ \ \, v_0^3f_{rrr}
-+ 3v_0^2f_{rrt}+ 3v_0f_{rtt}
-+ f_{ttt} \Big\} \tau^3
-
-*Bob*: And lo and behold, Eqs. (ref(a1)) and (ref(f1)) are the same,
-to within our accuracy:
+Let us go back to the equations of motion, in the form we gave them
+just after we translated the expressions from Abramowitz and Stegun:
 
 :equation:
-a_1(\tau) = f_1(\tau) + O(\tau^4)
+a(t) = \ddot r(t)\,=\,f(r(t), t)
 
-*Alice*: Or even more explicitly:
+We can differentiate this expression, to find the jerk:
 
 :equation:
-a_1(\tau) = {d \over d\tau}v_1(\tau) = f_1(r_1(\tau)) + O(\tau^4)
+j(t) \,=\, {d\over dt}f(r(t), t) \,=\, f_r {dr\over dt} + f_t 
+\,=\, v(t)f_r + f_t
+
+If we differentiate this again, we find the snap:
+
+:equation:
+s(t) \,=\, {d\over dt}j(t) \,=\, a(t)f_r + \left(v(t)\right)^2f_{rr}
++ 2v(t)f_{rt} + f_{tt}
+
+Next, 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 And this proves that the Runge-Kutta scheme listed in Abramowitz and Stegun
 is fourth-order accurate: given that the acceleration is the derivative
