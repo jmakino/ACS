@@ -1,0 +1,24 @@
+Date: Sun Oct 03 11:42:41 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Hi Jun and Murat:
+
+I just noticed that we never tested the -x and -i options,
+and indeed, not too surprisingly, they did not work.
+
+The -i option was rather easy to repair; it was related to
+the fact that we still did not set the end time in a logical
+way, for a new era.  I have fixed that now.
+
+The -x option required more thought.  I have just repaired it
+now in a rather dirty way, just to get the diagnostics out,	
+in case we need to look at acc and jerk.  In doing so, I
+violated the DRY principle, but at least everything works now.
+When we get the data format worked out, we can clean this up.
+
+Now I *really* plan to stop working this weekend (at least
+stop working on acs).  q(^_^)p
+
+Piet
+
