@@ -34,6 +34,7 @@ def store_file_with_date(sourcename, dirname,fullsourcename)
   logfile= "#{subdirpath}/#{targetname}_log"
   open(logfile,"w"){|f| f.print fullsourcename} 
   if $use_svn
+    system "svn add -N #{sourcename}"
     system "svn add -N #{subdirpath}"
     system "svn add -N #{subdirpath}/#{targetname}"
     system "svn add -N #{logfile}"
