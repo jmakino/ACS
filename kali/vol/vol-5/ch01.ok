@@ -2,21 +2,29 @@
 
 == xxx
 
- :inccode: .rknbody.rb
+We now copy our previous <tt>rknbody9.rb</tt> to <tt>rknbody.rb</tt>,
+as our favorite +Body+ and +Nbody+ class.  This will be the beginning
+of an N-body library.
+
+We construct a driver with command line arguments.  Rather than
+calling it <tt>rknbody_driver.rb</tt>, we will call it <tt>rkn.rb</tt>
+for short, since we are planning to invoke it often.
+
+ :inccode: .rkn.rb
 
 == xxx
 
- :commandoutput: ruby rknbody.rb -h < figure8.in
+ :commandoutput: ruby rkn.rb -h < figure8.in
 
- :commandoutput: ruby rknbody.rb -o 2.1088 -e 2.1088 -t 2.1088 < figure8.in
+ :commandoutput: ruby rkn.rb -o 2.1088 -e 2.1088 -t 2.1088 < figure8.in
 
- :commandoutput: ruby rknbody.rb -o 2.1088 -e 2.1088 -t 2.1088 -d 0.01 < figure8.in
+ :commandoutput: ruby rkn.rb -o 2.1088 -e 2.1088 -t 2.1088 -d 0.01 < figure8.in
 
- :commandoutput: ruby rknbody.rb -o 2.1088 -e 2.1088 -t 2.1088 -d 0.1 < figure8.in
+ :commandoutput: ruby rkn.rb -o 2.1088 -e 2.1088 -t 2.1088 -d 0.1 < figure8.in
 
- :commandoutput: ruby rknbody.rb -o 2.1088 -e 2.1088 -t 2.1088 -m rk2 < figure8.in
+ :commandoutput: ruby rkn.rb -o 2.1088 -e 2.1088 -t 2.1088 -m rk2 < figure8.in
 
- :commandoutput: ruby rknbody.rb -o 2.1088 -e 2.1088 -t 2.1088 -d 0.0001 -m rk2 < figure8.in
+ :commandoutput: ruby rkn.rb -o 2.1088 -e 2.1088 -t 2.1088 -d 0.0001 -m rk2 < figure8.in
 
- :commandoutput: ruby rknbody.rb -o 2.1088 -e 2.1088 -t 2.1088 < figure8.in
+ :commandoutput: ruby rkn.rb -o 2.1088 -e 2.1088 -t 2.1088 < figure8.in
 
