@@ -179,7 +179,7 @@ arrays such as <tt>pos[]</tt> and <tt>vel[]</tt> as well as single
 variables such as +m+ will probably have already a +to_s+ method
 associated with them.  Let's check.  How about this:
 
-:inccode: .body.rb.to_s-wrong
+:inccode: .body.rb-to_s-wrong
 
 *A*: Good idea to write a comment at the top, to remind us what this
 class is for.  We may as well get into the habit of writing comments
@@ -210,7 +210,7 @@ that's were the word "string" comes from, after all.
 something to do that.  Here it is: the method +join+ converts an array
 to a string, and you can give a separator as an arguments.  Let's try:
 
-:inccode: .body.rb.to_s
+:inccode: .body.rb-to_s
 
 *A*: The rather lengthy prompt of +irb+ is beginning to bother me.  I
 read that we can customize it.  Shall we leave out the <tt>irb(main)</tt>
