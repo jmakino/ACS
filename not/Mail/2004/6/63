@@ -1,0 +1,51 @@
+Date: Mon Jun 07 10:58:10 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Hi Jun:
+
+I hope you had a good flight, and you're having a good meeting
+in Amsterdam.  Over the weekend, I have started to make good
+progress on vol. 11: Plummer's Model.  It will become a whole
+volume, since I will explain about background of model making,
+use of standard units, provide test codes for energy checking
+and radial quartiles checking, and so on.
+
+Also, I realized that it is *exceedingly* simple to add the
+Hermite algorithm to the codes in volumes 2 and 3, so I did
+that as well.  That is a much more natural place for them,
+instead of waiting for a later volume.  And I have enough
+room in volume 2 to explain the basic ideas (I can take that
+from MSA).
+
+This means that we have to change the title of volume 9.
+I propose to make it "Variable Time Steps".  The volume
+titles now look very natural, in their succession, so I
+added the next four volume titles and directories:
+
+   0. A Vision
+   1. The Two-Body Problem
+   2. Integration Algorithms
+   3. The N-Body Problem
+   4. User Interface  
+   5. Open Knowledge  
+   6. Speeding up Ruby  
+   7. Self-Describing Data Files
+   8. Graphics  
+   9. Variable Time Steps  
+   10. Individual Time Steps  
+   11. Plummer's Model  
+   12. Core Collapse
+   13. Binary Formation
+   14. Kepler Regularization
+   15. Beyond Core Collapse
+
+This will allow me to start writing text for some of the
+future volumes, when I have time, just like I am doing now
+for Plummer's model.
+
+Let me know whether you like these titles, or have another
+preference.
+
+Piet
+
