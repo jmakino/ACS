@@ -4,7 +4,7 @@
 ~\\
 The Kali code for Dense Stellar Systems\\
 ~\\
- Volume 8: Speeding up Ruby
+ Volume 9: Speeding up Ruby
 }
 \author{Piet Hut and Jun Makino}
 \maketitle

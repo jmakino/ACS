@@ -4,7 +4,7 @@
 ~\\
 The Kali code for Dense Stellar Systems\\
 ~\\
- Volume 6: Graphics
+ Volume 7: Graphics
 }
 \author{Piet Hut and Jun Makino}
 \maketitle
