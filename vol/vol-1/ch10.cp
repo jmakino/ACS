@@ -14,6 +14,8 @@ add to each variable its derivative multiplied by the value of the
 time step.  In other words, you just step forward by incrementing each
 variable by its derivative, as specified by the differential equation.
 
+<i>[We will have to put an equation here -- Piet]</i>
+
 *Alice*: The only way to make that sentence clear to someone with little
 experience in this area is to give an example.  So let's code it up.
 
@@ -108,8 +110,9 @@ glorious reason for object-oriented programming is the ability to make
 your life arbitrarily difficult by hiding any and all information
 within those objects, but I don't particularly care for that aspect.
 
-*Alice*: What exactly can be an object?  Do you always need to have
-a bunch of variables, or can you add functions as well?
+*Alice*: I do think encapsulation has its good sides, but we can come
+back to that later.  What exactly can be an object?  Do you always
+need to have a bunch of variables, or can you add functions as well?
 
 *Bob*: To take the specific case of Ruby, a typical class contains both.
 For a class to be useful, you have at least to be able to create an
@@ -344,7 +347,7 @@ ago.  Okay, now I remember.  Of course.  Here is how you do it in
 
  :inccode: body1.C
 
-== xxxxxxxx
+== Initializing a Body
 
 *Alice*: That is quite an impressive difference, between Ruby and C++!
 But aren't you cheating a bit?  That last part, with the +main+ function
