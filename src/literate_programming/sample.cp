@@ -84,24 +84,24 @@ to get the information about our new Body class to irb is to include
 the text of the Body definition above in the irb startup file `~/.irbrc').
 
 irb(main):001:0> b = Body.new
-=> #<Body:0x401c666c @mass=0, @vel=[0, 0, 0], @pos=[0, 0, 0]>
+ => #<Body:0x401c666c @mass=0, @vel=[0, 0, 0], @pos=[0, 0, 0]>
 irb(main):002:0> b.pp
   mass = 0
    pos = 0, 0, 0
    vel = 0, 0, 0
-=> nil
+ => nil
 irb(main):003:0> c = Body.new(1, [1, 0, 0], [0, 1, 0])
-=> #<Body:0x4023a0d4 @mass=1, @vel=[0, 1, 0], @pos=[1, 0, 0]>
+ => #<Body:0x4023a0d4 @mass=1, @vel=[0, 1, 0], @pos=[1, 0, 0]>
 irb(main):004:0> c.pp
   mass = 1
    pos = 1, 0, 0
    vel = 0, 1, 0
-=> nil
+ => nil
 irb(main):005:0> c.simple_print
  1.000000000000000e+00  1.000000000000000e+00  0.000000000000000e+00 \ 
  0.000000000000000e+00  0.000000000000000e+00  1.000000000000000e+00 \ 
  0.000000000000000e+00
-=> nil
+ => nil
 
 Note that the last line is wrapped here to present the results in a
 more orderly way; in the actual irb session all seven numbers appeared
