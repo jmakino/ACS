@@ -85,10 +85,10 @@ class Body
     else
       dt_block = dt_estimate.block
     end
-STDERR.print "dt_block = ", dt_block.to_f, " ; @time = ", @time.to_f, "\n"
+#STDERR.print "dt_block = ", dt_block.to_f, " ; @time = ", @time.to_f, "\n"
     while not dt_block.commensurable?(@time)
       dt_block.halve
-STDERR.print ">> dt_block = ", dt_block.to_f, " ; @time = ", @time.to_f, "\n"
+#STDERR.print ">> dt_block = ", dt_block.to_f, " ; @time = ", @time.to_f, "\n"
     end
     if dt_block == 0.to_b
       STDERR.print "find_next_time: dt_block = 0\n"
@@ -207,6 +207,7 @@ class Nbody
       if @time < t_end
         np.autonomous_step(@body, dt_param)
         nsteps += 1
+#STDERR.print "                                nsteps = ", nsteps, " \n"
       end
       if @time >= t_dia
         sync(t_dia, dt_param)

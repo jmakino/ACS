@@ -2,14 +2,17 @@ require "vector.rb"
 require "clop.rb"
 require "block_time.rb"
 
+$n_longer = $n_shorter = $n_halve = 0
+
 class Body
 
   attr_accessor :mass, :pos, :vel, :acc, :jerk,
                 :pred_pos, :pred_vel,
-                :time, :next_time
+                :time, :next_time, :new_dt, :old_dt
 
   def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
     @mass, @pos, @vel = mass, pos, vel
+    @new_dt = 1.to_b
   end
 
   def autonomous_step(ba, dt_param)
@@ -54,6 +57,10 @@ class Body
     @pred_vel = @vel
     @time = t
     @next_time = find_next_time(ba, dt_param)
+    @old_dt = @new_dt
+    @new_dt = @next_time - @time
+    $n_longer += 1 if @new_dt > @old_dt
+    $n_shorter += 1 if @new_dt < @old_dt
   end  
 
   def collision_time_scale(body_array)
@@ -85,11 +92,17 @@ class Body
     else
       dt_block = dt_estimate.block
     end
-#STDERR.print "dt_block = ", dt_block.to_f, " ; @time = ", @time.to_f, "\n"
+#STDERR.print "dt_block = ", dt_block.to_s, " ; @time = ", @time.to_s, "\n"
+    while not dt_block.commensurable?(@time)
+      dt_block.halve
+      $n_halve += 1
+#STDERR.print ">> dt_block = ", dt_block.to_s, " ; @time = ", @time.to_s, "\n"
+    end
     if dt_block == 0.to_b
       STDERR.print "find_next_time: dt_block = 0\n"
+      exit
     end
-    @time + dt_block
+    return @time + dt_block
   end
 
   def get_acc(body_array)
@@ -185,6 +198,8 @@ class Nbody
     @body.each do |b|
       b.time = @time.copy            # deep copy
       b.next_time = b.find_next_time(@body, dt_param)
+      b.old_dt = b.new_dt
+      b.new_dt = b.next_time - @time
      end
   end
 
@@ -302,12 +317,18 @@ options_text= <<-END
     using individual time steps.  The only allowed time steps are powers of
     two, with a maximum value for the time steps of unity.  In other words,
     dt = 2^(-k) with k >= 0.
-         The difference with the previous version is that now we use a
-    a class Block_time, to represent block time steps without round-off.
+         The difference with the previous version is that we print information
+    about the number of times that particles have made their time step longer
+    or shorter, and also the number of times that they had to halve their
+    time step because of incommensurability.
+         Comparing murat8.rb and murat6.rb, we find that for -d0.01, the
+    standard value, murat8.rb takes 0.1% more time steps than murat6.rb.
+    For -d0.1, however, murat8.rb takes 1% more time steps than murat6.rb.
+
     (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
 
     example:
-    ruby mkplummer3.rb -n 5 | ruby murat6.rb -t 1
+    ruby mkplummer3.rb -n 5 | ruby murat7.rb -t 1
 
 
   Short name: 		-d
@@ -412,3 +433,5 @@ include Math
 nb = Nbody.new
 nb.simple_read
 nb.evolve($dt_param, $dt_dia, $dt_out, $dt_end, $init_out, $x_flag)
+STDERR.print "$n_shorter = ", $n_shorter, " ; $n_longer ", $n_longer
+STDERR.print " ; $n_halve = ", $n_halve, "\n"
