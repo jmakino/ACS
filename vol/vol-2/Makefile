@@ -6,7 +6,7 @@ volume2.tex: $(SRC) .acsdocinitrc
 	cat $(SRC) > volume2.cp
 	ruby ../../src/coherent_programming/acsdoc.rb --tolatex volume2.cp
 doc : $(SRC) .acsdocinitrc 
-	ruby ../../src/coherent_programming/acsdoc.rb  $(SRC) 
+	ruby ../../src/coherent_programming/acsdoc.rb  $(SRC) *.rb
 
 clean : 
 	rm volume2.tex volume2.aux volume2.cp volume2.dvi volume2.log \
