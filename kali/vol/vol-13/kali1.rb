@@ -7,7 +7,7 @@ module Integrator_forward
   end
 
   def force(wl, era)
-    @acc = era.acc(wl, self)
+    @acc = era.acc(wl, @pos, @time)
   end
 
   def predict(dt)
@@ -32,7 +32,7 @@ module Integrator_adams2kana
   end
 
   def force(wl, era)
-    @acc = era.acc(wl, self)
+    @acc = era.acc(wl, @pos, @time)
   end
 
   def predict(dt)
@@ -62,7 +62,7 @@ module Integrator_leapfrog
   end
 
   def force(wl, era)
-    @acc = era.acc(wl, self)
+    @acc = era.acc(wl, @pos, @time)
   end
 
   def predict(dt)
@@ -95,7 +95,7 @@ module Integrator_hermite
   end
 
   def force(wl, era)
-    @acc, @jerk = era.acc_and_jerk(wl, self)
+    @acc, @jerk = era.acc_and_jerk(wl, @pos, @vel, @time)
   end
 
   def predict(dt)
@@ -247,6 +247,23 @@ class Worldline
     end
   end
 
+  def acc(pos, t)
+    p = take_snapshot_of_worldline(t)
+    r = p.pos - pos
+    r2 = r*r
+    r3 = r2*sqrt(r2)
+    p.mass*r/r3
+  end
+
+  def acc_and_jerk(pos, vel, t)
+    p = take_snapshot_of_worldline(t)
+    r = p.pos - pos
+    r2 = r*r
+    r3 = r2*sqrt(r2)
+    v = p.vel - vel
+    [ p.mass*r/r3 , p.mass*(v-3*(r*v/r2)*r)/r3 ]
+  end
+
   def take_snapshot_of_worldline(time)
     if time >= @worldpoint.last.time
       valid_extrapolation?(time)
@@ -286,12 +303,24 @@ class Worldera
     @worldline = []
   end
 
-  def acc(wl, wp)
-    take_snapshot_except(wl, wp.time).get_acc(wp.pos)
+  def acc(wl, pos, t)
+    acc = pos*0                            # null vectors of the correct length
+    @worldline.each do |w|
+      acc += w.acc(pos, t) unless w == wl
+    end
+    acc 
   end
 
-  def acc_and_jerk(wl, wp)
-    take_snapshot_except(wl, wp.time).get_acc_and_jerk(wp.pos, wp.vel)
+  def acc_and_jerk(wl, pos, vel, t)
+    acc = jerk = pos*0                  # null vectors of the correct length
+    @worldline.each do |w|
+      unless w == wl
+        da, dj = w.acc_and_jerk(pos, vel, t)
+        acc += da
+        jerk += dj
+      end
+    end
+    [acc, jerk]
   end
 
   def snap_and_crackle(wl, wp)
@@ -504,30 +533,6 @@ class Worldsnapshot < Nbody
     super
     @time = 0.0
   end
-
-  def get_acc(pos)
-    acc = pos*0                            # null vectors of the correct length
-    @body.each do |b|
-      r = b.pos - pos
-      r2 = r*r
-      r3 = r2*sqrt(r2)
-      acc += b.mass*r/r3
-    end
-    acc
-  end    
-
-  def get_acc_and_jerk(pos, vel)
-    acc = jerk = pos*0                  # null vectors of the correct length
-    @body.each do |b|
-      r = b.pos - pos
-      r2 = r*r
-      r3 = r2*sqrt(r2)
-      v = b.vel - vel
-      acc += b.mass*r/r3
-      jerk += b.mass*(v-3*(r*v/r2)*r)/r3
-    end
-    [acc, jerk]
-  end    
 
   def get_snap_and_crackle(pos, vel, acc, jerk)
     snap = crackle = pos*0                 # null vectors of the correct length
