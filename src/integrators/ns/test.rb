@@ -253,8 +253,11 @@ class Cbody
   attr_accessor :xx
 end
 p cb.xx
-
-
-
-
-
+p x
+xxx = x.inspect
+p xxx
+xxx = x.instance_variables
+p xxx
+x.old_acc = [0,0,0]
+x.display
+p x.old_acc
