@@ -401,7 +401,7 @@ Next, with one more differentiation of the equation for <tex>$s(t)$</tex>,
 we can derive the crackle:
 
  :eqnarray:
-c(t) \,=\, {d\over dt}s(t) \,=\, j(t)f_r &+& 3v(t)a(t)f_{rr} \ +
+c(t) \,=\, {d\over dt}s(t) &=& j(t)f_r \ + \  kira4now3v(t)a(t)f_{rr} \ +
  \  3a(t)f_{rt}                                                   \nonumber\\
 &+& \left(v(t)\right)^3f_{rrr} + 3\left(v(t)\right)^2f_{rrt}
 + 3v(r)f_{rtt} + f_{ttt}
