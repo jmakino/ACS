@@ -15,3 +15,26 @@ class Array
     a.push(*self)
   end
 end
+
+class Float
+  alias :original_mult :*
+  def *(a)
+    if a.class == Vector
+      a*self
+    else
+      original_mult(a)
+    end
+  end
+end
+
+class Fixnum
+  alias :original_mult :*
+  def *(a)
+    if a.class == Vector
+      a*self
+    else
+      original_mult(a)
+    end
+  end
+end
+

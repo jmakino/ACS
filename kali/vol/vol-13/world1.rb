@@ -21,8 +21,8 @@ class Worldpoint
       r2 = r*r
       r3 = r2*sqrt(r2)
       v = b.vel - @vel
-      a += r*(b.mass/r3)
-      j += (v-r*(3*(r*v)/r2))*(b.mass/r3)
+      a += b.mass*r/r3
+      j += b.mass*(v-3*(r*v/r2)*r)/r3
     end
     [a, j]
   end    
@@ -48,7 +48,7 @@ class Worldpoint
   end
 
   def ekin                               # kinetic energy
-    0.5*@mass*(@vel*@vel)
+    0.5*@mass*@vel*@vel
   end
 
   def epot(body_array)                   # potential energy
@@ -88,8 +88,8 @@ class Worldpoint
     wp.mass = @mass
     wp.time = t
     dt = t - @time
-    wp.pos = @pos + @vel*dt + @acc*(dt*dt/2.0) + @jerk*(dt*dt*dt/6.0)
-    wp.vel = @vel + @acc*dt + @jerk*(dt*dt/2.0)
+    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3
+    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2
     wp
   end
 
@@ -98,22 +98,22 @@ class Worldpoint
     wp.mass = @mass
     wp.time = t
     dt = other.time - @time
-    snap = ((@acc - other.acc)*(-6) - (@jerk*2 + other.jerk)*2*dt)/(dt*dt)
-    crackle = ((@acc - other.acc)*12 + (@jerk + other.jerk)*6*dt)/(dt*dt*dt)
+    snap = (-6*(@acc - other.acc) - 2*(2*@jerk + other.jerk)*dt)/(dt*dt)
+    crackle = (12*(@acc - other.acc) + 6*(@jerk + other.jerk)*dt)/(dt*dt*dt)
     dt = t - @time
-    wp.pos = @pos + @vel*dt + @acc*(dt**2/2.0) + @jerk*(dt**3/6.0) +
-             snap*(dt**4/24.0) + crackle*(dt**5/120.0)
-    wp.vel = @vel + @acc*dt + @jerk*(dt**2/2.0) + snap*(dt**3/6.0) + 
-             crackle*(dt**4/24.0)
+    wp.pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
+             (1/24.0)*snap*dt**4 + (1/120.0)*crackle*dt**5
+    wp.vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*snap*dt**3 + 
+             (1/24.0)*crackle*dt**4
     wp
   end
 
   def correct(old)
     dt = @time - old.time
-    @vel = old.vel + (old.acc + @acc)*(dt/2.0) +           # first compute @vel
-                      (old.jerk - @jerk)*(dt*dt/12.0)      # since @vel is used
-    @pos = old.pos + (old.vel + @vel)*(dt/2.0) +           # to compute @pos
-                      (old.acc - @acc)*(dt*dt/12.0)
+    @vel = old.vel + (1/2.0)*(old.acc + @acc)*dt +         # first compute @vel
+                     (1/12.0)*(old.jerk - @jerk)*dt**2     # since @vel is used
+    @pos = old.pos + (1/2.0)*(old.vel + @vel)*dt +         # to compute @pos
+                     (1/12.0)*(old.acc - @acc)*dt**2
   end
 
   def clone
@@ -237,12 +237,21 @@ class Worldera
     wl
   end
 
-  def evolve(dt_era, dt_param)
+  def evolve(dt_era, dt_param, shared_flag)
     nsteps = 0
     @end_time = @start_time + dt_era
     while shortest_interpolated_worldline.worldpoint.last.time < @end_time
-      shortest_extrapolated_worldline.extend(self, dt_param)
-      nsteps += 1
+      unless shared_flag
+        shortest_extrapolated_worldline.extend(self, dt_param)
+        nsteps += 1
+      else
+        t = shortest_extrapolated_worldline.worldpoint.last.next_time
+        @worldline.each do |w|
+          w.worldpoint.last.next_time = t
+          w.extend(self, dt_param)
+          nsteps += 1
+        end
+      end
     end
     [next_era, nsteps]
   end
@@ -323,7 +332,7 @@ class World
     t_end = time + c.dt_end
     @era.write_snapshot(time) if c.init_out
     while @era.start_time < t_end
-      @new_era, dn = @era.evolve(c.dt_era, c.dt_param)
+      @new_era, dn = @era.evolve(c.dt_era, c.dt_param, c.shared_flag)
       nsteps += dn
       while t_dia <= @era.end_time and t_dia <= t_end
         @era.write_diagnostics(t_dia, nsteps, initial_energy, c.x_flag)
@@ -406,7 +415,8 @@ options_text= <<-END
   Description: Individual Time Step Hermite Code
   Long description:
     This program evolves an N-body code with a fourth-order Hermite Scheme,
-    using individual time steps.
+    using individual time steps.  Note that the program can be forced to let
+    all particles share the same (variable) time step with the option -a.
     (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
 
     example:
@@ -520,6 +530,16 @@ options_text= <<-END
 
       acceleration (for all integrators)
       jerk (for the Hermite integrator)
+
+
+  Short name:		-a
+  Long name:  		--shared_timesteps
+  Value type:  		bool
+  Variable name:	shared_flag
+  Description:		All particles share the same time step
+  Long description:
+    If this flag is set to true, all particles will march in lock step,
+    all sharing the same time step.
 
 
   END
