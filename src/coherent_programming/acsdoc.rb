@@ -16,6 +16,21 @@
 #==============================================================================
 
 module Acsdoc
+
+  def add_output(s, ofile)
+    ofile.print "---\n"
+    a = s.split
+    indent = s.index(":output:") 
+    tmpname = ".acsdoc.command-out"
+    prompt = " "* indent + ">"
+    commandline = a[1..a.size].join(" ").chomp
+    print "command to run = ", commandline, "\n"
+    system(commandline + " >& " + tmpname)
+    ofile.print prompt + commandline, "\n"
+    ofile.print `cat #{tmpname}`.each{|x| x = " "*indent + x}
+    ofile.print "---\n"
+  end
+
   def prep_cp(infile, outfile)
     begin
       ifile = open(infile, "r")
@@ -33,6 +48,8 @@ module Acsdoc
 	ofile.print "---\n"
 	ofile.print s
 	ofile.print "---\n"
+      elsif loc = s.index(":output:")  and s.index("\":output:\"")==nil
+	add_output(s, ofile)
       else
 	ofile.print s
       end

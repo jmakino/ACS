@@ -43,3 +43,6 @@ The changes we made are
 
 :inccode: .acsdoc.rb-acsdoc
 
+ :output: echo foo
+
+ :output: date
