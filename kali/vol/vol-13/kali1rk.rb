@@ -316,15 +316,13 @@ module Integrator_rk4
       @vel + @acc*dt + (1/2.0)*@jerk*dt**2                       ]
   end
 
-# note: not so good for first step: jerks calculated at different times !!!
   def interpolate_pos_vel(wp, dt)
     tau = wp.time - @time
-    snap = (-6*(@acc - wp.acc) - 2*(2*@jerk + wp.jerk)*tau)/tau**2
-    crackle = (12*(@acc - wp.acc) + 6*(@jerk + wp.jerk)*tau)/tau**3
-    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
-                       (1/24.0)*snap*dt**4 + (1/144.0)*crackle*dt**5,
-      @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*snap*dt**3 +
-                       (1/24.0)*crackle*dt**4                        ]
+    jerk = (-6*(@vel - wp.vel) - 2*(2*@acc + wp.acc)*tau)/tau**2
+    snap = (12*(@vel - wp.vel) + 6*(@acc + wp.acc)*tau)/tau**3
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*jerk*dt**3 +
+                       (1/24.0)*snap*dt**4,
+      @vel + @acc*dt + (1/2.0)*jerk*dt**2 + (1/6.0)*snap*dt**3 ]
   end
 
 end
@@ -356,7 +354,7 @@ class Worldpoint
   end
 
   def startup(wl, era, dt_max)
-    force(wl, era)
+    startup_force(wl, era)
     timescale = era.timescale(wl, self)
     startup_admin(timescale * INIT_TIMESCALE_FACTOR, dt_max)
     true
