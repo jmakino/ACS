@@ -522,6 +522,9 @@ module Acsdoc
     [s,ostring]
   end
 
+#
+# <tex> xxx </tex> is passed to tex process and converted to 
+# an image link
   def find_and_process_tex_inlines(instring,dirname)
     ostring=""
     while s = instring.shift
@@ -533,6 +536,49 @@ module Acsdoc
       ostring += s+"\n"
     end
     ostring
+  end
+
+  @@tex_equation_number = 0
+  @@tex_labels = {}
+
+  def process_tex_equations(s,instring,dirname)
+    @@tex_equation_number += 1
+    eqtype = s
+    texcode = "\\setcounter{equation}{#{@@tex_equation_number-1}}\n\\begin{#{eqtype}}\n"
+    while (s = instring.shift ) =~ /\S/
+      if s =~ /\\label\{(\S+)\}/ 
+	@@tex_labels[$1]=@@tex_equation_number
+      end
+      texcode += s + "\n"
+      if s == nil 
+	raise "End of file reached while searching for newline: #{$infile}"
+      end
+    end
+    texcode += "\\end{#{eqtype}}\n"
+
+
+    process_texcode(texcode,dirname)+"\n\n"
+  end
+
+
+  def find_and_process_tex_equations(instring,dirname)
+    is = instring.split("\n");
+    ostring=""
+    while s = is.shift
+      p s
+      if s =~ /^\s*:(equation|eqnarray):\s*$/
+	r = process_tex_equations($1,is,dirname)
+	ostring +=r
+      else
+	ostring += s+"\n"
+      end
+    end
+    ostring
+  end
+
+
+  def process_tex_labels(instring,dirname)
+    instring.gsub(/\\ref\{(\S+)\}/){|s| @@tex_labels[$1]}
   end
 
 
@@ -556,6 +602,9 @@ module Acsdoc
       tmp2= Rdoctotex::convert_to_latex(tmpstring,dirname);
     else
       tmp2= find_and_process_tex_inlines(tmpstring,dirname);
+      tmp2= find_and_process_tex_equations(tmp2,dirname);
+      tmp2= process_tex_labels(tmp2,dirname);
+      p tmp2
     end
     ofile.print tmp2
     ofile.close
