@@ -18,7 +18,7 @@ done, while also being flexible enough to be put to new and
 unanticipated use.  In practice, few software packages live up to this
 combined ideal of transparency and flexibility.
 
-== In Software, Research = Education
+== Research = Education
 
 Software architecture is a very young craft.  Humanity has had
 experience with building material buildings for many thousands of
@@ -126,6 +126,8 @@ ourselves discovering new aspects in the middle of our dialogue
 writing.  In quite a number of cases, we found new and better ways to
 do standard operations in N-body simulations, to our great surprise.
 
+== Audience
+
 Having worked with this approach now for a few years, we have reached
 the point that we feel confident in making our results publicly
 available.  From the beginning, we have resisted the temptation to
@@ -152,4 +154,3 @@ had we had our book in our hands when we were students.  While it is
 still too early to judge how effective our approach will be for others,
 this initial experience formed a strong encouragement for us to proceed
 with our unconventional approach.
-
