@@ -58,8 +58,8 @@ ASCII characters are platform independent.
 But in that case, we'd better print everything out with enough digits.
 Let's look at the web.  The IEEE 64-bit floating point number definition
 specifies 1 bit for the sign, 11 bits for the exponent, and the remaining
-52 bits for the mantissa.  2^52 is less than 5.10^15, so 16 digits should
-be enough.
+52 bits for the mantissa.  <tex>$2^{52}$</tex> is less than
+<tex>$5.10^{15}$</tex>, so 16 digits should be enough.
 
 *Bob*: No, there are effectively 53 digits.  By definition of floating point
 notation, the most significant digit of the mantissa is always 1, and
@@ -67,8 +67,8 @@ cleverly the IEEE people have defined their standard so that that 1 is
 being left out.  Effectively we are using 65-bit precision in double
 precision calculations on our computers.
 
-*Alice*: I had no idea!  But 2^53 is about 9.10^15, so 16 digits is still
-enough.  I was lucky there.
+*Alice*: I had no idea!  But <tex>$2^{53}$</tex> is about
+<tex>$9.10^{15}$</tex>, so 16 digits is still enough.  I was lucky there.
 
 == A Simple Version
 

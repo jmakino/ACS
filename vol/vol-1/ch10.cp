@@ -44,7 +44,7 @@ So why put parentheses around nothing?
 
 *Alice*: But in any language I have worked with, if a fuction
 +do_something+ has no arguments, you still have to invoke it with
-<tt>do_something()</tt>, or <tt>call do_something</tt.  Otherwise how
+<tt>do_something()</tt>, or <tt>call do_something</tt>.  Otherwise how
 will the compiler know that
 it is dealing with a function, sorry, method, rather than a variable?
 
@@ -304,11 +304,83 @@ and let me at least properly indent it, it hurts my eyes.
 
 *Alice*: As opposed to a "there document"?
 
-*Bob*: It is really called like that, and for a good reason.
+*Bob*: It is really called like that, and for a simple reason: everything
+that is here, in between <tt><<END</tt> and <tt>END</tt> is interpreted
+as one long string, and that string is the taken as the argument for the
+<tt>STDERR.print</tt> command.
 
-<i>[Jun, onegai shimasu, yoku wakaranai, kono `good reason' -- Piet]</i>.
+*Alice*: What are the backslash symbols <tt>\</tt> doing there at the end
+of the second and third line?
 
+*Bob*: They indicate that the next line should continue after the previous
+line.  Without them, each of the three lines starting with +E_kin+,
++E_pot+, and +E_tot+, would appear on separate lines, and I prefer to have
+them appearing on one line of the output.  So I have to escape the first
+two of the three new-line characters at the end of those three lines.
 
+*Alice*: I think I get the idea.  Basically the print command gobbles up
+everything it see until it comes across the magic word +END+ and then it
+stops.
 
+*Bob*: Effectively, yes, but more precisely speaking the print command
+itself doesn't know about here documents.  The symbol <tt><<END</tt>
+is what causes the rest up to +END+ to be formed into a string.  Then
+that string, once formed, is what the print command sees.  Here, let
+me show you.  Ruby invites you not to take anything on faith, since it
+is so easy to test things for yourself.  When it doubt, test it out!
+
+    |gravity> irb --prompt short_prompt -r vbody1.rb
+    001:0> <<END
+    002:0" this is special string,
+    003:0" for Alice, from Bob.
+    004:0" END
+    "this is special string,\nfor Alice, from Bob.\n"
+    005:0> s = <<END
+    006:0" here is another string,
+    007:0" with another new-line in the middle
+    008:0" END
+    "here is another string,\nwith another new-line in the middle\n"
+    009:0> print s
+    here is another string,
+    with another new-line in the middle
+    nil
+    010:0> print <<END
+    011:0" as you can see, and END in the middle does not really end
+    012:0" the here document.
+    013:0" END
+    as you can see, and END in the middle does not really end
+    the here document.
+    nil
+    014:0> print <<END
+    015:0" Also, no space is allowed beteen << and END,
+    016:0" as I will show in a moment
+    017:0" END
+    Also, no space is allowed beteen << and END,
+    as I will show in a moment
+    nil
+    018:0> << END
+    SyntaxError: compile error
+    (irb):18: syntax error
+    << END
+      ^
+    	from (irb):18
+
+*Alice*: It should be called a mountain document, with all that echoing;
+or better even a valley document, in between those two mountainous ENDs.
+
+*Bob*: Well, the remaining four methods are the ones we've seen before,
+we this is the end of the guided tour.  Pretty pretty, hey?
+
+*Alice*: Yes, very, apart from the here document.  I still think that
+looks ugly, but I see that you have no choice.
+
+*Bob*: The basic question is: do you want pretty code of pretty output.
+In this case you can't have both.
+
+*Alice*: I guess in that case I prefer pretty output.  But speaking of
+output, I haven't seen anything yet.  You said you've tested the code,
+and it really works?
+
+*Bob*: I'll show you.
 
 

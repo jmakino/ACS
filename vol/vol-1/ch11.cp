@@ -1,4 +1,6 @@
-== Testing Forward Euler
+= Testing Forward Euler
+
+== TODO
 
 *Bob*: Here is a fancy version, with command line arguments
 and energy error diagnostics:
