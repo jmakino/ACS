@@ -1,0 +1,38 @@
+Date: Fri Mar 26 15:14:07 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+I have modified and commited "acsdoc.rb". So now it should make files
+like:
+
+ .leap.rb+pp
+  def pp                                # pretty print
+    print "     N = ", @body.size, "\n"
+    print "  time = ", @time, "\n"
+    @body.each do |b| b.pp end
+  end
+
+  .leap.rb+pp+Body
+  def pp               # pretty print
+    print to_s
+  end
+
+  .leap.rb+pp+Nbody
+  def pp                                # pretty print
+    print "     N = ", @body.size, "\n"
+    print "  time = ", @time, "\n"
+    @body.each do |b| b.pp end
+  end
+
+The content of .leap.rb+pp is the last method which appears in the
+source file with that name. Of course, if you have methods with the
+same name in the same class multiple times (which is not impossible,
+if you dynamically change the methods...), you would still have
+problems.
+
+Jun
+
+  
+

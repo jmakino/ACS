@@ -1,0 +1,96 @@
+Date: Fri Apr 09 19:15:07 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Hi Jun:
+
+ > > -- For Fortran 77 readers, like he himself, he thought that many of
+ > >    the Ruby advantages that were mentioned in volume 1 seem less so.
+ > >    I asked about using vector notation, and he admitted that that was
+ > >    a clear Ruby advantage over Fortran.  I guess he mentioned the stuff
+ > >    about I/O and lack of having to specify types and such.  He said
+ > >    "for Fortran 77 people, this discussion will not ring true".
+ > > 
+ > > I'm not sure what we can do here.  Since you know Fortran better than
+ > > I do, perhaps you can look through the text quickly, and find a few
+ > > places where I can let Bob say "but in Fortran . . ." and then Alice
+ > > reminds him that in Ruby you have objects, so soon we will be able to
+ > > pass particles around as variables, which you can't do in Fortran.
+ > 
+ > I guess this is a point we discussed earlier. I'll take a look.
+
+Thanks!
+
+ > > -- When I asked about the debugging chapters, and explained that that
+ > >    was meant also as teaching students HOW to debug, he was surprised,
+ > >    and had not thought about that; he had seen it as purely directed
+ > >    toward explaining issues in Ruby, not meta issues about approach to
+ > >    debugging in general.  But after I mentioned that, he could see the
+ > >    advantage.
+ > > 
+ > > I guess it is a bit like the Scheme book by Sussman and Abelson, who
+ > > really teach how to think about programming, and just happen to use
+ > > Scheme.  I am not sure whether we should add something to the text.
+ > > Perhaps I can let Alice point out how useful this exercise was, also
+ > > as an example for the students?  I thought I did that already, but
+ > > perhaps we should be more explicit.  Or shall we just leave it as it
+ > > is?
+ > 
+ > Here again, it may be becuase Douglas is an exceptional reader. If the
+ > content is very natural to him, that is probably because he would follow
+ > similar course himself anyway.
+
+I'm sure you're right!
+
+ > One possibility would be to add something like a summary of what the
+ > readers are supposed to learn, at the end of each chapter, with single
+ > sentence for each topic. 
+
+Very good idea.  We can do that on various levels, in the preface, in
+appendices, perhaps at the end of each chapter, as a sort of separate
+track through the book.
+
+ > > -- When Douglas mentioned again the desirability of a clean working
+ > >    integrator earlier on, I said that one option would be to present
+ > >    a C++ version of a forward Euler, as in MSA, quickly, and then let
+ > >    A & B figure out how to translate that in Ruby.
+ > > 
+ > > That is possible, and I think we have thought about it before, but I
+ > > don't really like it.  There is no reason to let students who know
+ > > only Fortran (or C/C++) to learn C/C++ (or Fortran) if we go to Ruby
+ > > anyway.  Besides, an early example like in MSA would invite graphics,
+ > > which we decided to postpone to volume 2.
+ > 
+ > Well, if book 2 is ready, quick readers can proceed directly to it. So
+ > I *think* current style is okay. As we discussed earlier, we can
+ > provide the "guided tour" or recommended or suggested order of
+ > reading, depending on  readers' background.
+
+I agree, and yes, a "guided tour" can be combined with the separate track
+idea, to provide background information and guidance.
+
+ > > -- I mentioned to Douglas as a possibility that we could introduce
+ > >    shortcuts: telling the reader at various places how they can jump
+ > >    forwards to find the first Ruby integrator, for example, if they
+ > >    already know Ruby, or are impatient to go through the whole
+ > >    discussion.
+ > > 
+ > > In order to do that, we have to decide how exactly we want to do
+ > > forward and backward referencing, and *especially* how to guarantee
+ > > that those pointers will all be updated, when we change something
+ > > somewhere.
+ > 
+ > Okay, to add some referencing scheme is easy (actually one is hidden
+ > in HTML generator version right now). To make them consistent, after,
+ > say, you changed the name of the section, filename etc, is much
+ > harder, but if we have latex generator, we can relay on latex to do
+ > the consistenct check. So I think it's not too bad.
+ > 
+ > We need to agree on the method to do reference, though.
+
+Yes.  We could try to do that in Kyoto.  Something for the TODO list.
+I just added it to the TODO list.  Fortunately, I could erase about
+half of the old entries!
+
+Piet
+

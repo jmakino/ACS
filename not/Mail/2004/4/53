@@ -1,0 +1,15 @@
+Date: Fri Apr 09 19:17:59 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Hi Jun:
+
+Could you add a blank line before code and code ouptput, in our rdoc
+system, for the latex output?  It all looks fine under html, but in
+the latex version, the top line above code and output runs directly
+up to the previous line.
+
+Thank you!
+
+Piet
+

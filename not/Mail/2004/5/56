@@ -1,0 +1,52 @@
+Date: Mon May 03 14:07:40 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+I added some more functionalities to acsdoc.rb.
+
+One is to support numbered equations and references to them.
+
+The following:
+
+:equation:
+\label{equation1}
+a = b
+
+(blanck line is recognized as the end of equation) is essentially the
+same as writing
+
+<tex>
+\begin{equation}
+\label{equation1}
+a = b
+\end{equation}
+</tex>
+
+but equation number is maintained within acsdoc.rb. To refer to
+an equation, use ref(equation1). equation label must be composed of
+alphanumerics and ":". "_" or any other symbol is currently illegal.
+
+I also added numbered figures, in the form
+
+:figure: name_of_the_figure_file size label
+caption text for the figure.
+
+Here again, label can be refered by ref(label). Size is used by latex
+as the width of the figure. Figure file can be eps, jpeg, or whatever
+imagemagic convert command can handle.
+
+Example is in $ACSROOT/src/coherent_programming/sample2.cp. To use this,
+you need to re-install rdoc from acs local copy,  by
+
+cd $ACSROOT/src/rdoc-0.9.0acs1
+su
+ruby install.rb
+
+I'm sure you'll find problems and bugs. So if you have time to try,
+try it and let me know what problems you see.
+
+Jun
+
+

@@ -1,0 +1,56 @@
+Date: Tue Mar 30 22:58:08 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+Here is my memo for what would go into ACS 1.0
+
+If we really take the showing-out-everything approach, we will make
+the entire ACS source/documents/notes tree (at least everything under
+svn) visible (but not changable) from outside. So the simplest thing
+would be to have index.html under $ACSROOT.
+
+This top-level index.html then point to
+
+--- online rdoc-generated book + ps+pdf
+--- lab notes (if we really want....)
+--- tarball of (probably) src+vol with versions
+
+I guess it is probably okay to keep the online book (all of HTML, PS,
+PDF), to be "latest", that is, the latest according to svn, as far as
+we keep old versions with fixed version numbers on the web as
+well. For books, it is also possible to keep old HTML/PS/PDF files,
+not the tarballs, on the web, but that might be a bit too confusing,
+since when people do Google search they might end up with some older
+versions.
+
+So I propose the web page structure of something like
+
+index.html
+  |
+  |---- current book (PDF/PS)
+  |
+  |---- rdoc books
+  |
+  |---- tarballs of src+vol+PS+PDF+HTML
+  |                          |-----version 1.0
+  |                          |--version 1.1 ...
+  |                          |--this week's snapshot(?)
+  |                          |--today's snapshot
+  |               
+  |---- old book (the moving-star-around book)
+             |
+	     |--- HTML/PS/PDF
+	     |--- source tarball---versions
+
+
+I guess we want to make entire WWW site under SVN controll, and I
+think it's probably okay to show the entire ACS source/vol tree itself
+under WWW. Hmm, well, one problem is whether or not to allow svn
+(read-only) access. For the time being, it might be better not to,
+because there may be security concerns and we might need more
+elaborate scheme to clear the security issues.
+
+Jun
+

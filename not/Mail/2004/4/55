@@ -1,0 +1,16 @@
+Date: Sun Apr 11 18:34:04 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+ > > Could you add a blank line before code and code ouptput, in our rdoc
+ > > system, for the latex output?  It all looks fine under html, but in
+ > > the latex version, the top line above code and output runs directly
+ > > up to the previous line.
+ > 
+ > I made some changes to acsdoc.rb. Could you try to recreate latex
+ > version and see the difference?
+
+Ah, much better, yes, very nice!  And the html is not affected.  Perfect!
+
+Piet
+
