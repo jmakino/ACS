@@ -222,8 +222,12 @@ class Worldera
     nsteps = 0
     @end_time = @start_time + c.dt_era
     while oldest_time < @end_time
-      shortest_worldline.extend(self, c.dt_param)
-      nsteps += 1
+      t = shortest_worldline.worldpoint.last.next_time
+      @worldline.each do |w|
+        w.worldpoint.last.next_time = t
+        w.extend(self, c.dt_param)
+        nsteps += 1
+      end
     end
     [next_era, nsteps]
   end
@@ -404,7 +408,7 @@ options_text= <<-END
   Description: Individual Time Step Hermite Code
   Long description:
     This program evolves an N-body code with a fourth-order Hermite Scheme,
-    using individual time steps.
+    using shared time steps.
     (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
 
     example:
