@@ -137,6 +137,6 @@ options_text= <<-END
 
   END
 
-parse_command_line(options_text)
+parse_command_line(options_text, true)
 
 mkplummer($n_particles, $seed)

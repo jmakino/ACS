@@ -39,8 +39,7 @@ class Body
 
   def correct_step(ba, t, dt_param)
     dt = t - @time
-    new_jerk = get_jerk(ba)
-    new_acc = get_acc(ba)
+    new_acc, new_jerk = get_acc_and_jerk(ba)
     new_vel = @vel + (@acc + new_acc)*(dt/2.0) +        # first compute new_vel
                       (@jerk - new_jerk)*(dt*dt/12.0)   # since new_vel is used
     new_pos = @pos + (@vel + new_vel)*(dt/2.0) +        # to compute new_pos
@@ -77,31 +76,19 @@ class Body
     sqrt(time_scale_sq)                  # time scale value
   end
 
-  def get_acc(body_array)
-    a = @pos*0                              # null vector of the correct length
-    body_array.each do |b|
-      unless b == self
-        r = b.pred_pos - @pred_pos    # NOTE: we use only predicted pos
-        r2 = r*r
-        r3 = r2*sqrt(r2)
-        a += r*(b.mass/r3)
-      end
-    end
-    a
-  end    
-
-  def get_jerk(body_array)
-    j = @pos*0                              # null vector of the correct length
+  def get_acc_and_jerk(body_array)
+    a = j = @pos*0                         # null vectors of the correct length
     body_array.each do |b|
       unless b == self
         r = b.pred_pos - @pred_pos    # NOTE: we use only predicted pos & vel
         r2 = r*r
         r3 = r2*sqrt(r2)
         v = b.pred_vel - @pred_vel
+        a += r*(b.mass/r3)
         j += (v-r*(3*(r*v)/r2))*(b.mass/r3)
       end
     end
-    j
+    [a, j]
   end    
 
   def ekin                         # kinetic energy
@@ -164,8 +151,7 @@ class Nbody
       b.pred_vel = b.vel
     end
     @body.each do |b|
-      b.acc = b.get_acc(@body)       # acc & jerk use pred_pos & pred_vel
-      b.jerk = b.get_jerk(@body)
+      b.acc, b.jerk = b.get_acc_and_jerk(@body)   # acc & jerk use pred_pos/vel
     end
     @body.each do |b|
       b.time = @time
@@ -173,32 +159,32 @@ class Nbody
     end
   end
 
-  def evolve(dt_param, delta_dia, delta_out, delta_end, init_out, x_flag)
+  def evolve(c)
     nsteps = 0
-    startup(dt_param)
-    write_diagnostics(nsteps, x_flag)
-    t_dia = @time + delta_dia
-    t_out = @time + delta_out
-    t_end = @time + delta_end
-    simple_print if init_out
+    startup(c.dt_param)
+    write_diagnostics(nsteps, c.x_flag)
+    t_dia = @time + c.dt_dia
+    t_out = @time + c.dt_out
+    t_end = @time + c.dt_end
+    simple_print if c.init_out
     while @time < t_end
       np = find_next_particle
       @time = np.next_time
       if (@time < t_end)
-        np.autonomous_step(@body, dt_param)
+        np.autonomous_step(@body, c.dt_param)
         nsteps += 1
       end
       if @time >= t_dia
-        sync(t_dia, dt_param)
+        sync(t_dia, c.dt_param)
         nsteps += @body.size
-        write_diagnostics(nsteps, x_flag)
-        t_dia += delta_dia
+        write_diagnostics(nsteps, c.x_flag)
+        t_dia += c.dt_dia
       end
       if @time >= t_out
-        sync(t_out, dt_param)      # we are now syncing twice, if t_dia = t_out
+        sync(t_out, c.dt_param)    # we are now syncing twice, if t_dia = t_out
         nsteps += @body.size
         simple_print
-        t_out += delta_out
+        t_out += c.dt_out
       end
     end
   end
@@ -287,7 +273,7 @@ options_text= <<-END
     (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
 
     example:
-    ruby mkplummer3.rb -n 5 | ruby murat4.rb -t 1
+    ruby mkplummer3.rb -n 5 | ruby sh1.rb -t 1
 
 
   Short name: 		-d
@@ -385,10 +371,8 @@ options_text= <<-END
 
   END
 
-parse_command_line(options_text, true)
-
-include Math
+clop = parse_command_line(options_text)
 
 nb = Nbody.new
 nb.simple_read
-nb.evolve($dt_param, $dt_dia, $dt_out, $dt_end, $init_out, $x_flag)
+nb.evolve(clop)

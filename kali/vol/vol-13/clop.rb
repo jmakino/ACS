@@ -1,8 +1,9 @@
+require "acs.rb"
 require "vector.rb"
 
 class Clop_Option
 
-  attr_reader :shortname, :longname, :type,
+  attr_reader :shortname, :longname, :type, :globalname,
               :description, :longdescription, :printname, :defaultvalue
   attr_accessor :valuestring
 
@@ -52,10 +53,6 @@ class Clop_Option
     return false
   end
 
-  def initialize_global_variable
-    eval("$#{@globalname} = eval_value") if @globalname
-  end
-
   def eval_value
     case @type
       when "bool"
@@ -98,24 +95,27 @@ class Clop_Option
       end
       s += " = " unless @printname == ""
       s += "\n  " if @type =~ /^float\s*vector$/
-      s += "#{eval("$#{@globalname}")}\n"
+      s += eval_value.to_s + "\n"
     end
     return s
   end
 
 end
+#:segment end:
 
 class Clop
 
-  def initialize(def_str, argv_array = nil)
+  def initialize(def_str, argv_array, global_variables_flag)
     parse_option_definitions(def_str)
-    if argv_array
-      parse_command_line_options(argv_array)
-    end
+    parse_command_line_options(argv_array)
+    initialize_option_variables
+    initialize_global_variables if global_variables_flag
+    check_required_options
     print_values
   end
 
   def parse_option_definitions(def_str)
+    def_str += HELP_DEFINITION_STRING
     a = def_str.split("\n")
     @options=[]
     while a[0]
@@ -128,24 +128,32 @@ class Clop
   end
 
   def parse_command_line_options(argv_array)
-    while s = argv_array.shift
+    s1 = argv_array.one_level_deep_copy
+    while s = s1.shift
       if s == "-h"
-        parse_help(argv_array, false)
+        parse_help(s1, false)
         exit
       elsif s == "--help"
-        parse_help(argv_array, true)
+        parse_help(s1, true)
         exit
-      elsif i = find_option(s)
+      elsif s == "---help"
+        print_help(true, 0)
+        exit
+      end
+    end
+    while s = argv_array.shift
+      if i = find_option(s)
         parse_option(i, s, argv_array)
       else
         raise "\n  option \"#{s}\" not recognized; try \"-h\" or \"--help\"\n"
       end
     end
-    initialize_global_variables
   end
 
   def print_values
-    @options.each{|x| STDERR.print x.to_s}
+    for i in 1...@options.size - 1 do    # exclude header & help (first & last)
+      STDERR.print @options[i].to_s
+    end
   end
 
   def find_option(s)
@@ -179,10 +187,25 @@ class Clop
     end
   end
 
-  def initialize_global_variables
-    @options.each{|x| x.initialize_global_variable}
-    check_required_options
+#  def initialize_variables(magic)                     # for connoisseurs . . .
+#    @options.each{|x| eval("#{magic}#{x.globalname}=x.eval_value") if
+#                                                                x.globalname}
+#  end
+
+  def initialize_option_variables
+    @options.each{|x| eval("@#{x.globalname} = x.eval_value") if x.globalname}
   end    
+
+  def initialize_global_variables
+    @options.each{|x| eval("$#{x.globalname} = x.eval_value") if x.globalname}
+  end    
+
+  def mk_reader
+    s = "class Clop \n attr_reader"
+    @options.each{|x| s += " :#{x.globalname}," if x.globalname}
+    s.chop!
+    s + "\n end"
+  end
 
   def check_required_options
     options_missing = 0
@@ -206,9 +229,11 @@ class Clop
   def parse_help(argv_array, long)
     all = true
     while s = argv_array.shift
+      all = false
       if i = find_option(s)
-        all = false
         print_help(long, i)
+      else
+        print_help_warning(s)
       end
     end
     print_help(long) if all
@@ -222,12 +247,16 @@ class Clop
     end
   end
 
+  def print_help_warning(s)
+    STDERR.print "WARNING : ", s, " : ==> this option is not recognized <==\n"
+  end
+
   def help_string(option, long_flag)
     s = ""
-    if option.type
+    if option.type or option.shortname == "-h"
       s += option_name_string(option)
     end
-    if option.type or not long_flag
+    if option.type or option.shortname == "-h" or not long_flag
       s += "#{option.description}"
       s += default_value_string(option)
       s += "\n"
@@ -259,17 +288,48 @@ class Clop
     return s
   end
 
+  HELP_DEFINITION_STRING = <<-END
+
+
+  Short name: 		-h
+  Long name:		--help
+  Description:		Help facility
+  Long description:
+    When providing the command line option -h, followed by one or more
+    options, a one-line summary of each of the options will be printed.
+
+    These options can be specified in either short or long form, i.e
+    typing "some_command -h -x" or "some_command -h --extra" will produce
+    the same output, if "-x" and "--extra" invoke the same option.
+
+    When providing the command line option -h, with nothing else following,
+    a one-line summary of all options will be printed.
+
+    When providing the command line option --help, instead of -h, the same
+    actions occur, the only difference being that instead of a one-liner,
+    a longer description will be printed.
+
+    Anything that appears on the command line between the name of the
+    program and "-h" or "--help" will be ignored.  For example, typing
+    "some_command gobbledygook -h -x" will produce the same output as
+    typing "some_command -h -x"
+
+
+  END
+
 end
 
-def parse_command_line(def_str)
-  Clop.new(def_str, ARGV)
+def parse_command_line(def_str, global_variables_flag = false)
+  c = Clop.new(def_str, ARGV, global_variables_flag)
+  eval(c.mk_reader)
+  c
 end
 
 if __FILE__ == $0
 
   options_definition_string = <<-END
 
-  Description: Command line option parser, (c) 2004, Piet Hut & Jun Makino, ACS
+  Description: Command line option parser
   Long description:
     Test program for the class Clop (Command line option parser),
     (c) 2004, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
@@ -372,6 +432,8 @@ if __FILE__ == $0
 
   END
 
-  parse_command_line(options_definition_string)
-
+  clop = parse_command_line(options_definition_string, false)
+  print "clop.rb: testing automatic generation of attribute readers:\n"
+  print "  clop.t_end = ", clop.t_end, "\n"
+  
 end
