@@ -39,7 +39,7 @@ module Acsmaildoc
 	  outfile.print from, "\n\n"
 	end
       else
-	s = " "+s if s[0] == ">" # to handle quoted texts
+	s = " "+s if s =~ /^>/ # to handle quoted texts
 	outfile.print s
       end
     end
