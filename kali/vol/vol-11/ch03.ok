@@ -183,6 +183,7 @@ This gives us:
 So here is what we were looking for:
 
 :equation:
+\label{mr}
 m(r) \, = \, M\left(1+{a^2\over r^2}\right)^{-3/2}
 
 Indeed eq. (ref(mrahw)), with their choice of units.

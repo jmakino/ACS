@@ -262,8 +262,8 @@ to <tex>$-1$</tex>.
 All we have to do is to pick a floating point number at random,
 somewhere in the interval <tex>$\{-1, +1\}$</tex>.  Let's call the number
 <tex>$x$</tex>.  This determines a number <tex>$y$</tex> defined as
-<tex>$y = {\rm acos}\,x$</tex>.  By construction, the value of
-<tex>$\cos y = \cos({\rm acos}\,x) = x$</tex> is uniformly random,
+<tex>$y = {\rm arccos}\,x$</tex>.  By construction, the value of
+<tex>$\cos y = \cos({\rm arccos}\,x) = x$</tex> is uniformly random,
 as was desired for <tex>$\theta$</tex>.  Hence <tex>$y$</tex> has the
 right distribution of values for <tex>$\theta$</tex>, and we can
 simply take <tex>$\theta=y$</tex>.

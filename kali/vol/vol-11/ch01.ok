@@ -376,6 +376,7 @@ I find it helpful to factor out the radial distance squared in units
 of the structural length <tex>$a$</tex> squared:
 
 :equation:
+\label{potdenspair}
 \left\{ \begin{array}{lcl}
 \Phi(r) \, &=& \,
 {\displaystyle -\,{GM\over a}\left(1+{r^2\over a^2}\right)^{-1/2}} \\

@@ -261,28 +261,29 @@ freshman years.  You start with the following tautology, given that the
 arcsin function is the inverse of the sin function:
 
 <tex>$$
-\sin({\rm asin}x) = x
+\sin({\rm arcsin}x) = x
 $$</tex>
 
 When you differentiate this with respect to <tex>$x$</tex>, you get
 
 <tex>$$
-{d\over dx}\,\sin({\rm asin}x) \,=\,
-\cos({\rm asin}x)\,{d\over dx}\,{\rm asin}x \,=\,1
+{d\over dx}\,\sin({\rm arcsin}x) \,=\,
+\cos({\rm arcsin}x)\,{d\over dx}\,{\rm arcsin}x \,=\,1
 $$</tex>
 
 This implies:
 
 <tex>$$
-{d\over dx}\,{\rm asin}x \,=\,
-{1\over\sqrt{1-[\sin({\rm asin}x)]^2}}\,=\,{1\over\sqrt{1-x^2}}
+{d\over dx}\,{\rm arcsin}x \,=\,
+{1\over\sqrt{1-[\sin({\rm arcsin}x)]^2}}\,=\,{1\over\sqrt{1-x^2}}
 $$</tex>
 
 This means that the solution of our integral is:
 
 <tex>$$
 \int_0^1 {dz\over(1-z)^{1/2} z^{1/2}} \,=\, \int_{-1}^1 {dy\over\sqrt{1-y^2}}
-\,=\,\left.\{{\rm asin}x\}\right|_{-1}^1 \,=\, {\pi\over2}+{\pi\over2}\,=\, \pi
+\,=\,\left.\{{\rm arcsin}x\}\right|_{-1}^1 \,=\,
+{\pi\over2}+{\pi\over2}\,=\, \pi
 $$</tex>
 
 Now that makes me feel good!  From first principles, all the way.
@@ -430,7 +431,12 @@ g(t) &=& {\sin \pi \alpha \over \pi}\,{d\over dt} \,
 
 *Bob*: And that is exactly what you wanted to prove.  Are you happy now?
 
-*Alice*: I'm very happy.  We've pulled it off!
+*Alice*: I'm very happy.
+
+*Bob*: And I even forgot to protest against the fact that you smuggled
+<tex>$\alpha$</tex> back into the game again.
+
+*Alice*: So, we've pulled it off!
 
 *Bob*: And look how much we have pulled.  We have taken a couple sentences
 from an appendix from Binney and Tremaine, and we have expanded their
