@@ -194,7 +194,7 @@ k_3\,&=&\,f(r_0 + v_0\tau + \hhalf k_2\tau^2, \tau)
 == The Auxiliary _k_ Variables
 
 *Alice*: Yes, I find that notation much more congenial, and I'm glad to see
-the explicity space and time dependence now in the definitions of the three
+the explicitly space and time dependence now in the definitions of the three
 _k_ variables.
 
 Let us work out what these _k_ variables actually look like, when we
@@ -363,7 +363,7 @@ f_0f_r + v_0^2f_{rr} +2v_0f_{rt}+ f_{tt}
 
 == The Next Velocity
 
-*Bob*: And this shows how some of the higher time derivates of the position,
+*Bob*: And this shows how some of the higher time derivatives of the position,
 which we introduced before, are related to the interaction terms.
 Let's write them down specifically, to show how these orbit
 characteristics on the left-hand side are related to interaction terms
@@ -460,7 +460,7 @@ _interaction_ term on the right-hand side of the equations of motion.
 We should then check whether the orbit and interaction results are the
 same, up to fourth order in <tex>$\tau$</tex>.
 
-To sum up, our final question is: after expandeding both <tex>$a(\tau)$</tex>
+To sum up, our final question is: after expanding both <tex>$a(\tau)$</tex>
 and <tex>$f(\tau)$</tex>, are they the same op to <tex>$\tau^4$</tex>,
 as desired?  The expansion of <tex>$a(\tau)$</tex> is given in the equation
 above, and we can find the corresponding expression for <tex>$f(\tau)$</tex>
@@ -526,7 +526,7 @@ of the velocity, we must have an error term in the velocity of
 And since position and velocity are both calculated to the same power in
 <tex>$\tau$</tex>, the same must be true for the position.
 
-*Bob*: I wonder whether this conclusion would satisfy a mathamatician working
+*Bob*: I wonder whether this conclusion would satisfy a mathematician working
 in numerical analysis.
 
 *Alice*: Probably not.  Actually, I hope not.  I'm glad some people are more

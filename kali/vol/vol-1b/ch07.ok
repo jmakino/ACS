@@ -35,7 +35,7 @@ tool for composing propagators.  And in Yoshida's case, he is adding a
 series of leapfrog mappings together, in order to get one higher-order
 mapping.  Yes, I can see the analogy.  The flow of the evolution of a
 dynamical system can be modeled as driven by a Lie group, for which
-the Lie algebra is non-cummutative.  Now with the BCH formula . . . 
+the Lie algebra is non-commutative.  Now with the BCH formula . . . 
 
 *Bob*: Alright, I'm glad it makes sense to you, and maybe some day we can sit
 down and teach me the theory of Lie groups.  But today, let's continue our
@@ -81,7 +81,7 @@ with the same set of parameters.  We saw earlier:
 
  :commandoutput: ruby integrator_driver3h.rb < euler.in
 
-My new eigth-order methode <tt>yo8</tt> gives:
+My new eighth-order method <tt>yo8</tt> gives:
 
  :commandoutput: ruby integrator_driver3j.rb < euler.in
 
@@ -94,7 +94,7 @@ Here, let me make the time step somewhat smaller, and similarly the
 integration time, so that we still do five integration steps.  With a
 little bit of luck, that will bring us in a regime where the error scaling
 will behave the way it should.  This last error may still be too large
-to make meaningful corparisions
+to make meaningful comparisons
 
  :commandoutput: ruby integrator_driver3k.rb < euler.in
 
@@ -159,9 +159,9 @@ a picture of the fourth-order dance:
 link:yoshida.gif
 
 This is what your <tt>yo4</tt> is doing, right?  Starting at the bottom,
-at time <tex>$t_i$</tex>, you jump forwards a little further than the
+at time <tex>$t_i$</tex>, you jump forward a little further than the
 time step <tex>$h$</tex> would ask you to do for a single leapfrog.
-Then you jump backwards to such an extent that you have to jump forwards
+Then you jump backward to such an extent that you have to jump forward
 again, over the same distance as you jumped originally, in order to
 reach the desired time at the end of the time step: <tex>$t=t+h=t_{i+1}$</tex>.
 
@@ -175,7 +175,7 @@ first coefficient in the +d+ array in <tt>yo4</tt>:
 <tt>d[0]</tt> = {1\over 2 - 2^{1/3}}
 
 And since the three-leap dance has to land at a distance one into the future,
-in units of the time step, the middle leap backwards has to have a length of:
+in units of the time step, the middle leap backward has to have a length of:
 
 :equation:
 <tt>d[1]</tt> = 1 - 2<tt>d[0]</tt> = -\, {2^{1/3}\over 2 - 2^{1/3}}
@@ -233,4 +233,3 @@ the scaling.  Here goes, for a time step shorter by a factor of ten:
 Perfect!  Yoshida was right, once again.
 
 *Alice*: Indeed, very nicely fourth order.  Great!
-

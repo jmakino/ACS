@@ -1,123 +1,168 @@
-= Cold Collapse with Softening
+= Softening
 
-== Check
+== Close Encounters
 
-*Alice*: It's probably a good idea to try our standard check with the
-figure-8 three-body system, just to make sure that with zero softening
-we get the same results as before.
+*Alice*: Yes, I'm very glad to see that we can integrate eight bodies
+in a cold collapse system.  This is quite a bit more demanding than
+integrating a handful of bodies in a virialized system.  However, in
+both cases, sooner or later there will be close encounters between
+two or more of the particles.  Our code will never be able to handle
+all of those close encounters.  No matter how small a time step we
+give it, sooner or later there will be particles that approach each
+other closely enough to have a near miss that takes less time than the
+time step size.  This will necessarily lead to large numerical errors.
 
-*Bob*: Yes, I agree.  Here we go:
+*Bob*: This is of course why people have introduced variable time
+steps, as well as a whole order set of algorithmic tools to tame the
+unruly behavior of particles that get too close to the inverse square
+singularities of Newtonian gravity.
 
- :commandoutput: ruby rknbody9a_driver.rb < figure8.in
+*Alice*: Soon we will introduce those extensions in our codes,
+but for now, there are more urgent things on our agenda.  I guess we
+just have to live with it, and make sure the students realize that
+this first N-body tool is not to be trusted under all circumstances.
 
-== Large Softening
+*Bob*: Hmm.  I don't much like the idea of giving someone a tool that cannot
+be trusted.  How about adding softening, as an option?
 
-*Alice*: Good.  Now let's try the same cold collapse as before,
-but with a softening length of, say, 0.1.  At the beginning of their
-free fall, the particles will almost feel the same forces as they did
-before.  Let us compare it with the run that had a time step of 0.001.
-For that case we had a horrible lack of energy conservation.  Your
-softened code should do a lot better.
+*Alice*: You mean to soften the potential, from an inverse square law to
+a form that remains finite in the center?
 
-*Bob*: Okay, let us see:
+*Bob*: Indeed.  We start from the singular Newtonian potential
+energy between two particles with positions <tex>$\br_i$</tex> and
+<tex>$\br_j$</tex> and masses <tex>$M_i, M_j$</tex>:
 
- :commandoutput: ruby rknbody9b_driver.rb < cube1.in
+:equation:
+U(\br_i, \br_j) = G \frac{M_i M_j}{|\br_j - \br_i|}
 
-*Alice*: Great!  Very well behaved.  And indeed most particles have
-just passed through the center, as is clear from their position
-components, and are continuing to move on, as their velocity
-components indicate.
+The standard softening approach is to replace this by a regular variant,
+simply by adding the square of a small quantity <tex>$\epsilon$</tex>:
 
-But wait a minute, the energy <tt>E_tot</tt> at time <tt>t = 0</tt> is
-the same as before.  How can that be?  When we change the potential,
-there should at least be some change in the value of the initial total
-energy.
+:equation:
+U(\br_i, \br_j, \epsilon) =
+    G \frac{M_i M_j}{\,(|\br_j - \br_i|^2 + \epsilon^2)^{1/2}}
 
-*Bob*: Ah, but the particles are all separated by at least 2 length units
-from each other.  Since the softening always comes in through an expression
-containing <tex>$r^2 + \epsilon^2$</tex>, we have to check 
-the difference between <tex>$2^2$</tex> and <tex>$2^2 + (0.1)^2$</tex>.
-The latter is only a quarter of a percent larger than the former.  And
-for most particle pairs the difference is much smaller still, so the
-total difference is likely to be more like a tenth of a percent, too
-small to show up within the accuracy with which we print out the energy.
+When you differentiate this modified potential with respect to the
+position of a particle, you obtain a modified acceleration:
 
-== Even larger softening
+:equation:
+\frac{d^2}{dt^2}\br_i =  G \sum_{j=1 \atop j \neq i}^N M_j
+\frac{\br_j - \br_i}{\,(|\br_j - \br_i|^2 + \epsilon^2)^{3/2}}
 
-*Alice*: just to make sure, let us take a softening length of 0.3.
-According to your analysis, that would show a difference in the
-initial total energy, right?
+And of course, in the limit that <tex>$\epsilon\rightarrow 0$</tex>, this
+last equation again returns to the Newtonian gravitational acceleration.
 
-*Bob*: I would think so.  Okay, let's try:
+== Fuzzy-Point Particles
 
- :commandoutput: ruby rknbody9c_driver.rb < cube1.in
+*Alice*: Yes, this is what is often used in collisionless stellar dynamics,
+to suppress the effect of close encounters.  I can't say I'm very happy
+with this softening approach, since it's not the real thing.  It is purely
+a mathematical trick, to avoid numerical problems.
 
-*Alice*: Good!  I'm glad to see that.
+*Bob*: Well, you _can_ give it a physical interpretation.  Instead of using
+point particles, which are not very physical in the first place, each particle
+gets a more extended mass distribution.  In fact, you can easily show that
+a softened potential corresponds to a mass distribution given by a polytrope
+of index five, better known as a Plummer mass distribution:
 
-*Bob*: Yes, it never hurts to check.
+:equation:
+\rho(r) \,\, \propto \,\, \frac{1}{(r^2 + \epsilon^2)^{5/2}}
 
-*Alice*: And it hurts a lot if you don't check, and run into mysterious
-problems later.
+*Alice*: But look, your mass distribution stretches all the way to infinity!
+Even though most of the mass in concentrated in a small region, with a radius
+of order the softening length <tex>$\epsilon$</tex>.  You solution works, in
+the sense of avoiding singularities, and it gives a roughly reasonable answer,
+but it does come at the cost of smearing each particle all over space.
 
-== Small Softening
+*Bob*: It would be quite easy to use a different mass distribution,
+corresponding a finite support.  This is what people so who work with
+SPH particles, for example.  However, for or current purpose, the main
+thing is to provide a tool that works, and we can worry later about
+aesthetic details.
 
-*Bob*: Let's see how far we can push it.  How about a softening length
-of 0.01?  And let me suppress the snapshot output for now:
+*Alice*: Okay.  Even though I can't say I'm very happy with it, I see
+your point, and it is certainly safer to give the students a tool that
+is guaranteed to give finite answer.
 
- :commandoutput: ruby rknbody9d_driver.rb < cube1.in
+*Bob*: It should be easy to add softening to our code.  Time to create
+another version for our N-body code!  So we will call this new file
+<tt>rknbody9.rb</tt>.  Well, this will take me a while.
 
-*Alice*: Not too surprising.  With velocities of order unity, and a
-softening length that is only ten times larger than the time step,
-a typical particle will step through the core of the potential of
-another particle in only a few steps.
+*Alice*: Okay, I'm way behind in reading the astro-ph abstracts.  This
+will give me a chance to catch up.  I'll come back when I've gone through
+them.
 
-*Bob*: And when doing so, the particle will be sped up already to
-velocities typical well above unity, leaving even fewer integration
-steps during which the attraction between the particles changes
-dramatically.  In fact, when they approach each other to a distance of
-order 0.01, there speed will be at least 10 in our units, and probably
-larger than that.  Two particles may pass each other through their
-softening radius in even less than one time step.
+== A New Driver
 
-So yes, it would have been worrisome if the errors would _not_ have
-been large.  Let me use a ten times smaller time step:
+*Bob*: Here it is, the new version of our N-body code, now with softening
+build in.  It was quite straightforward to make the changes.  First of all,
+here is the new driver:
 
- :commandoutput: ruby rknbody9e_driver.rb < cube1.in
+ :inccode: .rknbody9a_driver.rb
 
-*Alice*: That's more like it.  Actually, not so different from what we
-found earlier, without softening.
+As you can see, minimal differences, contained in three lines.  The
+method +evolve+ has an extra parameter, +eps+, the softening length.
+The default value is zero, which means no softening at all.  The third
+new line is where the value of +eps+ is echoed on the standard error
+stream.
 
-*Bob*: I guess this means that our eight particles did not come much
-closer to each other than distances of order 0.01.
+*Alice*: So now +evolve+ has eight parameters.  At some point we may
+want to think about grouping them together, perhaps creating a class
+for them, since there is clear substructure: two flags controlling the
+amount of output, three variables giving intervals between output times,
+and three other variables.
 
-*Alice*: Which is reasonable.  In three dimensions there are two
-independent directions in which two approaching particles can miss
-each other, and you have to aim carefully to come really close.
+*Bob*: But not now.
 
-*Bob*: Let me make the time step half as small again, just to check
-whether the error in the energy conservation drops by at least a
-factor of sixteen:
+*Alice*: Not now, no.  Can you show me the code itself?
 
- :commandoutput: ruby rknbody9f_driver.rb < cube1.in
+== A Code with Softening
 
-*Alice*: I think we can declare victory.
+*Bob*: Here it is.  Almost all changes speak for themselves.
 
-== Central Collapse
+ :inccode: .rknbody9.rb
 
-*Bob*: Ah, let's do something fun, something we never could have done
-without softening.  Let us give all particles equal masses, so that
-when they drop from the corners of the cube, they all will reach each
-other at the center.  Even so, softening should keep them from
-misbehaving.
+== Details
 
-*Alice*: As you like!
+*Alice*: Even though the changes may speak for themselves, I have some
+questions.  First of all, the value of +eps+ has to be passed on
+from the driver, where it is defined, through +evolve+ into +Nbody+
+and then down to the methods within +Body+ that do all the hard work.
 
-*Bob*: So these are the new initial conditions:
+*Bob*: First of all, I gave the +Nbody+ class an extra instance variable,
+<tt>@eps</tt>, which stores the value of the softening.  As soon as +evolve+
+is executed, within the +Nbody+ class, the first thing it does is assign
+the proper value to <tt>@eps</tt>, as well as to <tt>@dt</tt>, as was done
+already in our previous version:
 
- :inccode: cube2.in
+ :inccode: .rknbody9.rb-1
 
-And this is the result:
+*Alice*: I see.  In that way, you don't have to give an extra argument
+to the integration methods, for example: they can just pick up the value
+of the softening length from <tt>@eps</tt>, to which they have automatic
+access, as +Nbody+ class methods.  But of course they _do_ have to
+pass that value down to the particles, which are realized as instances
+of the +Body+ class, since otherwise the particles would not know what
+softening to use.
 
- :commandoutput: ruby rknbody9b_driver.rb < cube2.in
+*Bob*: The one thing I didn't like very much is that the lines in the
+integration methods have become somewhat longer.  Forward Euler, 
+for example, has grown now from:
 
-*Alice*: Well behaved indeed.  Glad to see it all works!
+ :inccode: .rknbody8.rb+forward
+
+to:
+
+ :inccode: .rknbody9.rb+forward
+
+I'm not too happy with the fact that +acc+ now has to get a second
+argument.  But that's the way it is.
+
+If I _really_ would want to make the lines shorter, I could
+use shorter variables than +ba+ and +eps+, for example +a+ and +e+.
+But let us not spend more time on such niceties, which give us
+diminishing return in clarity at the cost of making the code more
+complex and hence less clear.
+
+*Alice*: I fully agree.  Instead, let's see how your new code performance
+in our cold collapse experiment.

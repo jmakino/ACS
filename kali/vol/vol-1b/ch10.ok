@@ -1,256 +1,191 @@
-= The Hermite Algorithm
+= Multi-Step Methods
 
-== xxx
+== An Six-Step Method
 
-The most symmetric Hermite version, and the one closest resembling the
-leapfrog is this one:
+*Alice*: Hi, Bob!  You've been up to something again, I can tell.
 
-:eqnarray:
-\label{hermite-step}
-\br_{i+1} & = & \br_i + \hhalf(\bv_i + \bv_{i+1}) dt +
-                \one{12}(\ba_i - \ba_{i+1})(dt)^2   \nonumber\\
-\bv_{i+1} & = & \bv_i + \hhalf(\ba_i + \ba_{i+1}) dt +
-                \one{12}(\bj_i - \bj_{i+1})(dt)^2
+*Bob*: I got hooked on exploring multi-step methods.
 
-Here <tex>$\bj = d\ba/dt$</tex> is the _jerk_, the time derivative of the
-acceleration, and therefore the third time derivative of position:
+*Alice*: Don't tell me that you went to 6th order!
 
-:equation:
-\bj = \frac{d^3}{dt^3} \br
+*Bob*: No, in the sense that I did not _just_ go to 6th order.
+I actually went to 6th _and_ 8th order.
 
-The term `jerk' has crept into the literature relatively recently,
-probably originally as a pun.  If a car or train changes acceleration
-relatively quickly you experience not a smoothly accelerating or
-decelerating motion, but instead a rather `jerky' one.
+*Alice*: No!  That can't be, with your dislike for combinatorics.  You're
+pulling my leg.
 
-We start with Newton's gravitational equations:
+Bob: No, I did not do the combinatorics myself.  Instead, I used a
+symbolic integrator.  When I saw you struggling with all those
+substitutions when we tracked the fourth-order nature of the
+Runge-Kutta integrator, I was already wondering whether we shouldn't
+use a symbolic integration package.  At that point I didn't bring it
+up, since we were in the middle of trying to figure out how things
+worked in the first place, and introducing yet another tool might have
+been confusing.
 
-:equation:
-\label{newton}
-\ba_i = G \sum_{j=1 \atop j \neq i}^N
-\frac{M_j}{r_{ji}^2} \,\hat\br_{ji}
+And also when we generalized my two-step method to a four-step method,
+I could see the merit of tracking things done with pen and paper.
+Certainly when we're going to show this to our students, we should
+demand that they are at least _able_ to do it with pen and paper.  But
+now that the procedure has become crystal clear, we are just faced
+with solving a large number of linear equations with the same number
+of unknowns, and that is really not something I want to do by hand;
+not would I learn much from doing so.
 
-The jerk can be computed through straightforward differentiation of
-Newton's gravitational equations, Eq. (ref(newton)) :
+Here is what I found, with the results for the coefficients directly
+plugged back into the code:
 
-:equation:
-\label{newton-jerk}
-\bj_i =  G \sum_{j=1 \atop j \neq i}^N \,M_j \left[
-\frac{\bv_{ji}}{r_{ji}^3} - 3 \frac{(\br_{ji}\cdot\bv_{ji})\br_{ji}}{r_{ji}^5}
-\right]
+ :inccode: .ms6body.rb+ms6
 
-where <tex>$\bv_{ji} = \bv_j - \bv_i$</tex>.
+== An Eight-Step Method
 
-As an aside, note that the jerk has one very convenient property.
-Although the expression above looks quite a bit more complicated than
-Newton's original equations, they can still be evaluated through one
-pass over the whole <tex>$N$</tex>-body system.  This is no longer true for
-higher derivatives.  For example, we can obtain the fourth derivative
-of the position of particle <tex>$i$</tex> (the _snap_, see next
-section) by differentiating Eq. (ref(newton-jerk)) :
+*Alice*: Again not so bad, and each time derivative still fits on one line.
+I see a jerk, a snap, a crackle, and a pop.  But what is that next line,
+this +x+ variable?  It must be the derivative of the pop, given that you
+multiply it with yet one higher power of the time step.  What does it stand
+for?
 
-:eqnarray:
-\label{newton-snap}
-\frac{d^4}{dt^4}\br_i = G \sum_{j=1 \atop j \neq i}^N \,M_j \Bigg[ &\,&
-\!\!\!\!\!\!\!\!\!\! \frac{\ba_{ji}}{r_{ji}^3}
--6 \frac{(\br_{ji}\cdot\bv_{ji})}{r_{ji}^5}\bv_{ji} \nonumber \\
- &\,& \!\!\!\!\!\!\!\! + \left\{ -3\frac{v_{ji}^2}{r_{ji}^5}
--3 \frac{(\br_{ji}\cdot\ba_{ji})}{r_{ji}^5}
-+15 \frac{(\br_{ji}\cdot\bv_{ji})^2}{r_{ji}^7} \right\} \br_{ji} \,\,\Bigg]
+*Bob*: To be honest, I had no idea what to call it, so I just called it
++x+.  The advantage was that I could then call the next two derivatives
++y+ and +z+, for the eighth-order scheme.
 
-where <tex>$\ba_{ji} = \ba_j - \ba_i$</tex>, and this is the
-expression that thickens the plot.  Unlike the <tex>$\br_{ji}$</tex>
-and <tex>$\bv_{ji}$</tex> expressions, that are given by the initial
-conditions, <tex>$\ba_{ji}$</tex> has to be calculated from the
-positions and velocities.  However, this calculation does not only
-involve the pairwise attraction of particle <tex>$j$</tex> on particle
-<tex>$i$</tex>, but in fact all pairwise attractions of all particles
-on each other!  This follows immediately when we write out what the
-shorthand implies:
+*Alice*: Iron logic!  And you used Yoshida's sixth-order integrator, to
+rev up the engine, five times.
 
-:equation:
-\ba_{ji} = \ba_j - \ba_i = G \sum_{k=1 \atop k \neq j}^N
-\frac{M_k}{r_{kj}^3} \,\br_{kj} -  G \sum_{k=1 \atop k \neq i}^N
-\frac{M_k}{r_{ki}^3} \,\br_{ki}
+*Bob*: Yes, I am glad we had both <tt>yo6</tt> and <tt>yo8</tt> lying
+around.  They sure came in handy!
 
-When we substitute this back into Eq. (ref(newton-snap)), we see that
-we have to do a double pass over the <tex>$N$</tex>-body system,
-summing over both indices <tex>$k$</tex> and <tex>$j$</tex> in order
-to compute a single fourth derivative for the position of particle
-<tex>$i$</tex>.
+*Alice*: And you'd like to show me the eighth-order version as well,
+don't you?
 
-== Comparison with the Leapfrog
+*Bob*: I can't wait!  Here it is, in file <tt>ms8body.rb</tt>.  
 
-When we look at Eq. (ref(hermite-step)), we see
-some familiar features.  Neglecting the higher-order term for the
-moment, we recognize the leapfrog: the new position is effectively
-determined by the mid-point velocity <tex>$v_{i+1/2}$</tex>, here
-approximated as the average between the two adjacent values
-<tex>$v_{i}$</tex> and <tex>$v_{i+1}$</tex>.  Similarly, the new
-velocity is effectively determined by the mid-point acceleration.
+ :inccode: .ms8body.rb+ms8
 
-In fact, the analogy can be made more precise.  Recalling the leapfrog,
-as written centered on integer times:
+As you can see, this time I abbreviated the variables yet a little
+more: instead of <tt>@ap3</tt>, for example, I wrote <tt>@a3</tt>,
+since by now the meaning is clear, I hope.
 
-:eqnarray:
-\label{leapfrog-step}
-\br_{i+1} & = & \br_i + \bv_{i} dt + \ba_{i} (dt)^2/2             \nonumber\\
-\bv_{i+1} & = & \bv_i + (\ba_i + \ba_{i+1})dt / 2
+== Very Strange
 
-we can transform these back into a pseudo-leap form, without using
-half-integer times explicitly, by rewriting the first equation as:
+*Alice*: Let's see whether your symbolic manipulator has done its job
+correctly . . . 
 
-:eqnarray:
-\label{leapfrog-trick}
-\br_{i+1} & = & \br_i + \hhalf(\bv_{i} + \bv_{i+1}) dt
-                      + \hhalf(\bv_{i} - \bv_{i+1}) dt
-                      + \hhalf\ba_{i} (dt)^2 \nonumber \\
-	  & = & \br_i + \hhalf(\bv_{i} + \bv_{i+1}) dt
-                      + \quarter(-\ba_i-\ba_{i+1})(dt)^2
-                      + \hhalf\ba_{i}(dt)^2 \nonumber \\
-	  & = & \br_i + \hhalf(\bv_{i} + \bv_{i+1}) dt
-                      + \quarter(\ba_i-\ba_{i+1})(dt)^2 \nonumber \\
-	  & = & \br_i + \hhalf(\bv_{i} + \bv_{i+1}) dt - \quarter\bj_i (dt)^3
+*Bob*: . . . and whether I have done my job correctly, typing in the
+results.  We'll start with our, by now almost canonical, set of values:
 
-In the second line, we have simply rearranged terms.  In the third
-line, we have used the second line in Eq. (ref(leapfrog-step)), and in
-the fourth line we
-have used the definition of <tex>$\bj$</tex>, while neglecting higher
-order terms in <tex>$dt$</tex>.
+ :commandoutput: ruby integrator_driver4g.rb < euler.in
 
-The next step is to remember that the leapfrog is a second-order scheme.
-The errors per step are <tex>$\propto(dt^3)$</tex>, and therefore it does not
-matter whether or not we include the last term <tex>$-\bj_i
-(dt)^3/4$</tex> into 
-our leapfrog version: this term is lost in the noise, and is not going
-to improve the accuracy on second-level order.  Therefore, we may
-equally well leave it out.  Doing so transforms Eq. (ref((leapfrog-step))
-into:
+Hmm, almost too good.  Let's be bold and try a much longer time step,
+to get some more playing room, away from machine accuracy.
 
-:eqnarray:
-\br_{i+1} & = & \br_i + \hhalf(\bv_i + \bv_{i+1})dt        \nonumber\\
-\bv_{i+1} & = & \bv_i + \hhalf(\ba_i + \ba_{i+1})dt
+ :commandoutput: ruby integrator_driver4h.rb < euler.in
 
-Here we see explicitly that our good old leapfrog is equivalent, up to
-its second-order accuracy, with the leading terms <tex>$\propto (dt)$</tex> of
-the Hermite algorithm, Eq. (ref(hermite-step)).
-It is a curiosity of the leapfrog that at first sight it resembles a
-first-order scheme, since the second-order terms are hidden in the
-`leapy' way of using average quantities.  Yet, as we have seen, the
-leapfrog is fully second-order.
+Hey, that is _very_ strange!  Now the errors are getting better,
+for a five time longer time step?  That can't be!
 
-In a very similar way, the Hermite scheme is fourth-order, even though
-it resembles a second-order scheme.  For details we refer to the
-literature, but it is interesting to see in a heuristic way why this
-is so.
+*Alice*: That is strange indeed.  Independent of the order, the results
+should at least get worse, certainly for such a short part of a Kepler
+orbit.  It's not like we just encountered a singularity or something.
 
-== Snap, Crackle, and Pop
+*Bob*: It feels as if I have just violated the second law of thermodynamics
+or something.  How can that be?
 
-First a word about terminology.  We will need to introduce a few extra
-derivatives of the position.  It would be fun to give them names with
-a reasonable `feel' to them, just like with jerk.  What type of motion
-feels even more restless than jerking motion?  A sudden snap comes to
-mind.  A what changes its state more sudden than a snap --- how about
-a crackle?  And for those familiar with American rice crispies culture,
-a pop cannot be far away, and indeed, if something pops it really
-changes high derivatives of positions in a substantial way!  We are
-not making these names up: we have seen them used a few times before,
-although the precise source is likely to be lost in (recent) history.
-So here they are:
+== Wiggling the Wires
 
-:equation:
-\bs = \frac{d^4}{dt^4} \br \qquad ; \qquad
-\bc = \frac{d^5}{dt^5} \br \qquad ; \qquad
-\bp = \frac{d^6}{dt^6} \br
+*Alice*: As you say in cases like this, let's wiggle the wires, just to
+see what happens.  How about taking an even larger time step, by a factor
+of two?
 
-_snap_, _crackle_, and _pop_, respectively.
+*Bob*: May as well.  Here is the result:
 
-We are now in a position to write the Taylor series for the four
-quantities that appear in Eq. (ref(hermite-step)), up to crackle:
+ :commandoutput: ruby integrator_driver4i.rb < euler.in
 
-:eqnarray:
-\label{taylor}
-\br_{i+1} & = & \br_i + \bv_i dt + \hhalf\ba_{i}(dt)^2 + \one{6}\bj_{i}(dt)^3
-                      + \one{24}\bs_{i}(dt)^4 + \one{120}\bc_{i}(dt)^5
-\nonumber\\
-\bv_{i+1} & = & \bv_i + \ba_i dt + \hhalf\bj_{i}(dt)^2 + \one{6}\bs_{i}(dt)^3
-                      + \one{24}\bc_{i}(dt)^4                     \nonumber\\
-\ba_{i+1} & = & \ba_i + \bj_i dt + \hhalf\bs_{i}(dt)^2 + \one{6}\bc_{i}(dt)^3
-                                                                 \nonumber\\
-\bj_{i+1} & = & \bj_i + \bs_i dt + \hhalf\bc_{i}(dt)^2
+*Alice*: And now the error finally gets worse, and by a factor of about 60,
+just what you would expect for a 6th-order scheme.
 
-We can now eliminate snap and crackle at time <tex>$t_i$</tex>, expressing them
-in terms of the acceleration and jerk at times <tex>$t_i$</tex> and
-<tex>$t_{i+1}$</tex>, using the last two lines of Eq. (ref(taylor)).  We find:
+*Bob*: If we would have just done the last two runs, we would have been
+very happy and content.  How difficult it is, to test a piece of software!
+We know that there is something _seriously_ wrong, because the first run
+of the last three gave a result that was way off, and yet the last two
+runs with much larger time steps seem to behave like a charm.
 
-:eqnarray:
-\bs_i &=& -6\ba_i +6\ba_{i+1} -4\bj_i -2\bj_{i+1} \nonumber\\
-\bc_i &=& 12\ba_i -12\ba_{i+1} +6\bj_i +6\bj_{i+1} 
+*Alice*: Like a charm indeed.  Now there must be _something_ different,
+between the first run, and the last two.
 
-Substituting both expressions in the second line of Eq. (ref(taylor))
-we directly find:
+*Bob*: But what can there be different?  Same code, some procedure, same
+Bob, same Alice.
 
-:equation:
-\label{hermite-step-a}
-\bv_{i+1} = \bv_i + \hhalf(\ba_i + \ba_{i+1}) dt +
-                \one{12}(\bj_i - \bj_{i+1})(dt)^2
+*Alice*: Only larger time steps.  And since you kept the total
+integration time constant, fewer steps in total.  In fact, the last run
+had just one step, and the run before that only two steps.  But how can
+that make a diff . . . . Ah!  You talked about revving up the engine . . . 
 
-Indeed, we have recovered the second line of Eq. (ref(hermite-step)),
-and thereby 
-explained the mysterious factor <tex>$\one{12}$</tex> in the last term.
+*Bob*: . . . so if I am only doing _one_ or _two_ time steps, as I've
+done in the last two runs . . .
 
-Let us complete our mission, by making the same derivation for 
-the position vector, the first line of Eq. (ref(hermite-step)), in
-the Hermite scheme. 
-Using again the snap and crackle expressions derived above, we find:
+*Alice*: . . . you're not testing Bob, you're testing Yoshida!
 
-:equation:
-\br_{i+1} = \br_i + \bv_i dt + (\seven{20}\ba_i + \three{20}\ba_{i+1})(dt)^2
-            + (\one{20}\bj_i - \one{30}\bj_{i+1})(dt)^3
+*Bob*: And clearly, Yoshida has done a very good job indeed.  And in the
+next-to-last run, where I took ten time steps, I just started to run the
+eight-step method, but only in the last three steps.  Okay!  What a relief.
+No problems with the law of thermodynamics, after all!
 
-Using the same trick we employed in Eq. (ref(leapfrog-trick)) to factor
-out the velocity terms, and using Eq. (ref(hermite-step-a)), we can
-rewrite the above expression as:
+== Testing the Six-Step Method
 
-:equation:
-\br_{i+1} = \br_i + \hhalf(\bv_i + \bv_{i+1}) dt
-            + \one{10}(\ba_i - \ba_{i+1})(dt)^2
-            + \one{120}(\bj_i + \bj_{i+1})(dt)^3
+*Alice*: So we have to do many more steps, much more than the minimum
+number of seven, needed to switch over from the startup <tt>yo6</tt> method
+to the real <tt>ms6</tt> method.  Let's shoot for a full hundred time steps:
 
-While this result still looks quite different from the first line of
-Eq. (ref(hermite-step)), 
-we claim that it is identical up to fourth-order in <tex>$dt$</tex>,
-which is all we need.  Our final step thus parallels the discussion following
-Eq. (ref(leapfrog-trick)) for the leapfrog, where we had to show how
-terms up to second-order were identical.
+ :commandoutput: ruby integrator_driver4j.rb < euler.in
 
-First we rewrite the above equation in terms of quantities defined at
-<tex>$t=i$</tex> : 
+*Bob*: Wow, Yoshida's integrator is great, in comparison.  Let's see what
+happens if we go to a thousand time steps instead, making each step ten
+times smaller.  For a sixth order scheme that should make the error a full
+million times smaller.
 
-:eqnarray:
-\br_{i+1} = \br_i + \hhalf(\bv_i + \bv_{i+1}) dt 
-             & + & \one{10}\ba_i(dt)^2 - \one{10}(\ba_i + \bj_i dt +
-              \hhalf\bs_i (dt)^2)(dt)^2                           \nonumber \\
-          & + & \one{120}\bj_i(dt)^3 + \one{120}(\bj_i + \bs_i dt)(dt)^3
-                                                                 \nonumber \\
-          = \br_i + \hhalf(\bv_i + \bv_{i+1}) dt 
-          & - & \one{12}\bj_i (dt)^3 - \one{24} \bs_i (dt)^4
+ :commandoutput: ruby integrator_driver4k.rb < euler.in
 
-Here we have left out terms containing <tex>$\bc_i$</tex>, since they would be
-proportional to at least <tex>$(dt^5)$</tex> and only contribute to
-the error noise.  We can similarly write out the last term of the
-first line of Eq. (ref(hermite-step)) :
+*Alice*: And yes, the errors _are_ almost a million times smaller.
+Now we're getting there.  Let's do a final test, making the time step
+twice as long again:
 
-:eqnarray:
-\one{12}(\ba_i - \ba_{i+1})(dt)^2  & = & 
-              \one{12}\left(\ba_i(dt)^2 - \one{12}(\ba_i + \bj_i dt +
-              \hhalf\bs_i (dt)^2)\right)(dt)^2                     \nonumber \\
-             & = & - \one{12}\bj_i (dt)^3 - \one{24} \bs_i (dt)^4
+ :commandoutput: ruby integrator_driver4l.rb < euler.in
 
-This proves the desired result:
+Great!  Close to factor 64, and now really with the multi-step integrator,
+not with a little startup help from Yoshida.  We're talking 500 and 1000
+steps here, so we're finally testing the six-step code itself.
 
-:equation:
-\br_{i+1} = \br_i + \hhalf(\bv_i + \bv_{i+1}) dt +
-                \one{12}(\ba_i - \ba_{i+1})(dt)^2
+== Testing the Eight-Step Method
 
+*Bob*: Time to test the eighth-order implementation.  Given that we are
+now warned about not using few time steps, let's start with one hundred
+steps, as we did before:
 
+ :commandoutput: ruby integrator_driver4m.rb < euler.in
+
+*Alice*: Not bad.  But with an eighth-order scheme, we can't make the time
+step ten times smaller, since that would go way beyond machine accuracy,
+for double-precision calculations.  Let's just halve the time step.
+For an eighth-order scheme that should gain us an accuracy factor of
+<tex>$2^8=256$</tex>.
+
+ :commandoutput: ruby integrator_driver4n.rb < euler.in
+
+*Bob*: That's getting closer to a factor 256, but we're not quite there yet.
+I'll try to shrink the time step by another factor two:
+
+ :commandoutput: ruby integrator_driver4o.rb < euler.in
+
+*Alice*: Closer!  And certainly closer to 256 than 128.
+
+*Bob*: And close to machine accuracy as well.
+
+*Alice*: I think we can declare victory, once again.  Congratulations,
+Bob: your second implementation of an eighth-order integration scheme,
+after your <tt>yo8</tt> implementation.  And this time you found all
+the coefficients yourself!
+
+*Bob*: Or, to be honest, the symbolic integrator found them.  Well,
+I'm glad it all worked, especially after that scare with that start-up
+mystery!

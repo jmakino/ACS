@@ -1,108 +1,123 @@
-= A Sixth-Order Integrator
+= Cold Collapse with Softening
 
-== Modularity
+== Check
 
-*Bob*: I couldn't resist translating the sixth-order integrator that we
-developed for the two-body problem to the N-body problem as well.
+*Alice*: It's probably a good idea to try our standard check with the
+figure-8 three-body system, just to make sure that with zero softening
+we get the same results as before.
 
-*Alice*: That was probably straightforward, given that it was constructed
-as a series of call to the leapfrg method.
+*Bob*: Yes, I agree.  Here we go:
 
-*Bob*: Indeed.  I first implemented it for the version of our N-body code
-in file <tt>rknbody6.rb</tt> that incorporated a +calc+ method on the
-+Body+ level, but not yet on the +Nbody+ level.  I put the extended
-version that has an <tt>yo6</tt> method in file <tt>yo6nbody6.rb</tt>.  Here
-is the sixth-order <tt>yo6</tt> method:
+ :commandoutput: ruby rknbody9a_driver.rb < figure8.in
 
- :inccode: .yo6nbody6.rb+yo6
+== Large Softening
 
-I have taken it <i>verbatim</i> from the two-body code in
-<tt>rknbody6.rb</tt>.
+*Alice*: Good.  Now let's try the same cold collapse as before,
+but with a softening length of, say, 0.1.  At the beginning of their
+free fall, the particles will almost feel the same forces as they did
+before.  Let us compare it with the run that had a time step of 0.001.
+For that case we had a horrible lack of energy conservation.  Your
+softened code should do a lot better.
 
-*Alice*: That is exactly why modular programming is so much fun!  When
-you use enough care to set things up correctly, you can plug and play
-with modules, with minimal changes -- in this case, no change at all.
-
-*Bob*: Well, it depends.  I also wrote a sixth-order version for our softened
-code, in file <tt>yo6nbody9.rb</tt>, but there the <tt>yo6</tt> method
-grew considerably:
-
- :inccode: .yo6nbody9.rb+yo6
-
-The reason was that this code did not hand a +dt+ argument to its
-integrators, since we had a +calc+ on the level of the +Nbody+ class
-taking care of that.  Instead, I had to use the +Nbody+ instance variable
-<tt>@dt</tt>.  Nothing complicated, just more lines of code: 14 instead of 5.
-
-*Alice*: It is nice to have so many versions to choose from: clearly some
-versions are somewhat more useful for some applications, allowing direct
-swapping of modules, while others have other advantages, such as more brevity.
-
-== Testing
-
-*Bob*: Let me show you that it all works.  Here was the result for the
-<tt>rk4</tt>
-
- :commandoutput: ruby rknbody6b_driver.rb < figure8.in
-
-Now let us try the <tt>yo6</tt> version:
-
- :commandoutput: ruby yo6nbody6a_driver.rb < figure8.in
-
-*Alice*: Wonderful.  Much more accurate.
-
-*Bob*: Yes, but for a much larger amount of computing time.  The method
-<tt>yo6</tt> involves seven calls to
-the +leapfrog+ method, which itself is implemented in a rather inefficient
-method, with two calles to +acc+ where one would suffice.
-
-*Alice*: Well, we decided not to worry about efficiency, and we'll get back
-to that by the time we are ready to use our code for some more serious
-applications.
-
-== Softening
-
-*Bob*: Time to check whether the sixth-order integrator works in the version
-of our N-body codes that includes a softened potential.  Let me test things
-first for zero softening, for the figure 8 input:
-
- :commandoutput: ruby yo6nbody9a_driver.rb < figure8.in
-
-*Alice*: The exact same result as what you got with the previous version.
-Good!
-
-*Bob*: Now let us switch on softening.
-
-== Cold Collapse
-
-*Alice*: We can try to
-reproduce the cold collapse calculation with eigth particles on a
-cube.  For <tt>rk4</tt> we found for a softening length of 0.1 that we
-had to go to a time step of 0.001 to get a reasonable result.  Let us
-redo that particular run again:
+*Bob*: Okay, let us see:
 
  :commandoutput: ruby rknbody9b_driver.rb < cube1.in
 
-I would like to see how our sixth-order version runs this collapse for
-the same parameter values.
+*Alice*: Great!  Very well behaved.  And indeed most particles have
+just passed through the center, as is clear from their position
+components, and are continuing to move on, as their velocity
+components indicate.
 
-*Bob*: Here you are:
+But wait a minute, the energy <tt>E_tot</tt> at time <tt>t = 0</tt> is
+the same as before.  How can that be?  When we change the potential,
+there should at least be some change in the value of the initial total
+energy.
 
- :commandoutput: ruby yo6nbody9b_driver.rb < cube1.in
+*Bob*: Ah, but the particles are all separated by at least 2 length units
+from each other.  Since the softening always comes in through an expression
+containing <tex>$r^2 + \epsilon^2$</tex>, we have to check 
+the difference between <tex>$2^2$</tex> and <tex>$2^2 + (0.1)^2$</tex>.
+The latter is only a quarter of a percent larger than the former.  And
+for most particle pairs the difference is much smaller still, so the
+total difference is likely to be more like a tenth of a percent, too
+small to show up within the accuracy with which we print out the energy.
 
-As we would have expected, the energy conservation is a lot better.
-I wonder how quickly it will degrade when we make the time step larger.
-Since a sixth-order scheme is so sensitive to time step size, let me
-only double the time step:
+== Even larger softening
 
- :commandoutput: ruby yo6nbody9c_driver.rb < cube1.in
+*Alice*: just to make sure, let us take a softening length of 0.3.
+According to your analysis, that would show a difference in the
+initial total energy, right?
 
-*Alice*: Hmmm, the degradation is faster than I would have expected.
-This may be related to the fact that this particular integrator,
-like the leapfrog out of which it is built up, is based on a
-symplectic algorithm, which has superior energy conservation.  Even if
-the errors in phase scale with the sixth power of the time step,
-cumulative errors in energy may behave differently.
+*Bob*: I would think so.  Okay, let's try:
 
-*Bob*: In any case, it is nice to see how a sixth-order scheme can lead
-to machine accuracy much quicker than a fourth-order scheme.
+ :commandoutput: ruby rknbody9c_driver.rb < cube1.in
+
+*Alice*: Good!  I'm glad to see that.
+
+*Bob*: Yes, it never hurts to check.
+
+*Alice*: And it hurts a lot if you don't check, and run into mysterious
+problems later.
+
+== Small Softening
+
+*Bob*: Let's see how far we can push it.  How about a softening length
+of 0.01?  And let me suppress the snapshot output for now:
+
+ :commandoutput: ruby rknbody9d_driver.rb < cube1.in
+
+*Alice*: Not too surprising.  With velocities of order unity, and a
+softening length that is only ten times larger than the time step,
+a typical particle will step through the core of the potential of
+another particle in only a few steps.
+
+*Bob*: And when doing so, the particle will be sped up already to
+velocities typical well above unity, leaving even fewer integration
+steps during which the attraction between the particles changes
+dramatically.  In fact, when they approach each other to a distance of
+order 0.01, there speed will be at least 10 in our units, and probably
+larger than that.  Two particles may pass each other through their
+softening radius in even less than one time step.
+
+So yes, it would have been worrisome if the errors would _not_ have
+been large.  Let me use a ten times smaller time step:
+
+ :commandoutput: ruby rknbody9e_driver.rb < cube1.in
+
+*Alice*: That's more like it.  Actually, not so different from what we
+found earlier, without softening.
+
+*Bob*: I guess this means that our eight particles did not come much
+closer to each other than distances of order 0.01.
+
+*Alice*: Which is reasonable.  In three dimensions there are two
+independent directions in which two approaching particles can miss
+each other, and you have to aim carefully to come really close.
+
+*Bob*: Let me make the time step half as small again, just to check
+whether the error in the energy conservation drops by at least a
+factor of sixteen:
+
+ :commandoutput: ruby rknbody9f_driver.rb < cube1.in
+
+*Alice*: I think we can declare victory.
+
+== Central Collapse
+
+*Bob*: Ah, let's do something fun, something we never could have done
+without softening.  Let us give all particles equal masses, so that
+when they drop from the corners of the cube, they all will reach each
+other at the center.  Even so, softening should keep them from
+misbehaving.
+
+*Alice*: As you like!
+
+*Bob*: So these are the new initial conditions:
+
+ :inccode: cube2.in
+
+And this is the result:
+
+ :commandoutput: ruby rknbody9b_driver.rb < cube2.in
+
+*Alice*: Well behaved indeed.  Glad to see it all works!

@@ -5,7 +5,7 @@
 *Alice*: Hi, Bob!  To judge from the look at your face, I would bet you found
 a good recipe for a sixth-order Runge Kutta method.
 
-*Bob*: As a matter of ract, yes, I did.
+*Bob*: As a matter of fact, yes, I did.
 
 *Alice*: Let me guess how long the code will be.  The <tt>rk2</tt> method was
 five lines long, and the <tt>rk4</tt> method was eight lines long.  I seem to
@@ -184,4 +184,4 @@ combination of leapfrog calls _is_ nothing else but a Runge-Kutta
 scheme.
 
 *Alice*: I want to know more about this.  What did you find out about the
-theory behind this curious precedure?
+theory behind this curious procedure?

@@ -36,6 +36,7 @@ the _orbit_ part, where we expand the acceleration in a Taylor series with
 just one extra term:
 
 :equation:
+\label{firstacctaylor}
 \ba(t) \,=\, \ba_0 + \bj_0 t + O(t^2)
 
 *Alice*: Our old friend, the jerk, evaluated also at time <tex>$t=0$</tex>.
@@ -46,11 +47,12 @@ value of the acceleration at the beginning of the previous time step, at
 time <tex>$t = -\Delta t$</tex>, as follows:
 
 :equation:
+\label{prevacc}
 \ba_{-1} \,=\, \ba_0 - \bj_0 \Delta t  \,\,\,\,\Rightarrow
 
 :equation:
 \label{firstjerk}
-\bj_0 \,=\, \ba_0 - \ba_{-1} \Delta t
+\bj_0 \,=\, {1\over\Delta t}\, \left\{\ba_0 - \ba_{-1}\right\}
 
 With this information, we can use the same approach as we did with the
 forward Euler algorithm, but we can go one order higher in the Taylor
@@ -153,7 +155,7 @@ in the file <tt>vector.rb</tt>, where I gave an extra method to our
 
 *Alice*: Ah, yes, we only had addition and multiplication methods
 before, but when you compute the jerk in <tt>ms2</tt> it is most
-natural to use substraction.
+natural to use subtraction.
 
 *Bob*: And for good measure, I added a division method as well:
 
@@ -291,3 +293,5 @@ we can always come back and implement a corrector step, if really needed.
 *Bob*: Fair enough.  But before we can implement a fourth-order scheme,
 even just a predictor step, we'll have to do some serious combinatorics,
 in order to get all the coefficients correct.
+
+*Alice*: Let's!

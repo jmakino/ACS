@@ -1,8 +1,326 @@
-= Running Hermite
+= The Hermite Algorithm
 
-== xxx
+== A Self-Starting Fourth-Order Scheme
 
- :commandoutput: ruby integrator_driver2g.rb < euler.in
+*Alice*: I'm quite impressed with the large collection of integrators
+we have built up.  But perhaps it is time to move on, and adapt all of
+them to the real N-body problem, now that we have their two-body form?
 
+*Bob*: Yes, but there is one more integrator that I wanted to add to our
+pile.  I had mentioned the Hermite algorithm, when we started to look at
+multiple-step methods, as an alternative to get fourth-order accuracy,
+without using multiple steps and without using half steps.  Actually,
+coding it up was even simpler than I had expected.  You could argue that
+it is the simplest self-starting Fourth-Order Scheme, once you allow the
+direct calculation of the jerk, in addition to that of the acceleration.
 
- :commandoutput: ruby integrator_driver5a.rb < euler.in
+*Alice*: Can you show me first the idea behind the algorithm?
+
+*Bob*: The trick is to differentiate Newton's gravitational equations of
+motion
+
+:equation:
+\label{newton}
+\ba_i = G \sum_{j=1 \atop j \neq i}^N
+\frac{M_j}{r_{ji}^2} \,\hat\br_{ji}
+
+which I have written here for the general N-body problem.  Differentiation
+with respect to time gives us the jerk directly:
+
+:equation:
+\label{newtonjerk}
+\bj_i =  G \sum_{j=1 \atop j \neq i}^N \,M_j \left[
+\frac{\bv_{ji}}{r_{ji}^3} - 3 \frac{(\br_{ji}\cdot\bv_{ji})\br_{ji}}{r_{ji}^5}
+\right]
+
+where <tex>$\bv_{ji} = \bv_j - \bv_i$</tex>.
+
+Note that the jerk has one very convenient property.  Although the
+expression above looks quite a bit more complicated than Newton's
+original equations, they can still be evaluated through one pass over
+the whole <tex>$N$</tex>-body system.  This is no longer true for
+higher derivatives.  For example, we can obtain the fourth derivative
+of the position of particle <tex>$i$</tex>, the _snap_, by
+differentiating the above equation one more time:
+
+:eqnarray:
+\label{newtonsnap}
+\bs_i \,=\, G \sum_{j=1 \atop j \neq i}^N \,M_j \Bigg[ &\,&
+\!\!\!\!\!\!\!\!\!\! \frac{\ba_{ji}}{r_{ji}^3}
+-6 \frac{(\br_{ji}\cdot\bv_{ji})}{r_{ji}^5}\bv_{ji} \nonumber \\
+ &\,& \!\!\!\!\!\!\!\! + \left\{ -3\frac{v_{ji}^2}{r_{ji}^5}
+-3 \frac{(\br_{ji}\cdot\ba_{ji})}{r_{ji}^5}
++15 \frac{(\br_{ji}\cdot\bv_{ji})^2}{r_{ji}^7} \right\} \br_{ji} \,\,\Bigg]
+
+where <tex>$\ba_{ji} = \ba_j - \ba_i$</tex>, and this is the
+expression that thickens the plot.  Unlike the <tex>$\br_{ji}$</tex>
+and <tex>$\bv_{ji}$</tex> expressions, that are given by the initial
+conditions, <tex>$\ba_{ji}$</tex> has to be calculated from the
+positions and velocities.  However, this calculation does not only
+involve the pairwise attraction of particle <tex>$j$</tex> on particle
+<tex>$i$</tex>, but in fact all pairwise attractions of all particles
+on each other!  This follows immediately when we write out what the
+shorthand implies:
+
+:equation:
+\ba_{ji} = \ba_j - \ba_i = G \sum_{k=1 \atop k \neq j}^N
+\frac{M_k}{r_{kj}^3} \,\br_{kj} -  G \sum_{k=1 \atop k \neq i}^N
+\frac{M_k}{r_{ki}^3} \,\br_{ki}
+
+When we substitute this back into Eq. (ref(newtonsnap)), we see that
+we have to do a double pass over the <tex>$N$</tex>-body system,
+summing over both indices <tex>$k$</tex> and <tex>$j$</tex> in order
+to compute a single fourth derivative for the position of particle
+<tex>$i$</tex>.
+
+== A Higher-Order Leapfrog Look-Alike
+
+*Alice*: I see.  So it is quite natural to differentiate Newton's
+equations of motion just once, and then to use both the acceleration
+and the jerk, obtained directly from Eqs. (ref(newton)) and
+(ref(newtonjerk)).  Can you show me what the expressions for the
+position and velocity look like, in terms of those two quantities?
+
+*Bob*: Here they are:
+
+:eqnarray:
+\label{hermitestep}
+\br_{i+1} & = & \br_i + \hhalf(\bv_i + \bv_{i+1}) \Delta t +
+                \one{12}(\ba_i - \ba_{i+1})(\Delta t)^2   \nonumber\\
+\bv_{i+1} & = & \bv_i + \hhalf(\ba_i + \ba_{i+1}) \Delta t +
+                \one{12}(\bj_i - \bj_{i+1})(\Delta t)^2
+
+*Alice*: That looks like a direct generalization of the leepfrog!
+I had not expected such simplicity an elegance.
+
+*Bob*: Yes, I think you can look at the Hermite scheme as a generalization
+of the leapfrog, in some sense.  If you neglect the
+terms that are quadratic in <tex>$\Delta t$</tex>, you get exactly
+the leapfrog back.
+
+*Alice*: Yes, since in that case you can write the terms linear in 
+<tex>$\Delta t$</tex> as effectively half-step quantities, up to
+higher powers in <tex>$\Delta t$</tex> :
+
+:eqnarray:
+\br_{i+1} & = & \br_i + \bv_{i+1/2} \Delta t + O\left(\Delta t\right)^3
+                                                                    \nonumber\\
+\bv_{i+1} & = & \bv_i + \ba_{i+1/2} \Delta t + O\left(\Delta t\right)^3
+
+since the quadratic terms are eliminated by the clever choice of half-step,
+which characterizes the leapfrog.
+
+In general, you might have expected
+two extra terms, one of order <tex>$(\Delta t)^3$</tex> and one of order
+<tex>$(\Delta t)^4$</tex>, for the position, as well as for the velocity.
+Instead there is just one term, in each case.  And that one term is
+written with a misleading factor of <tex>$(\Delta t)^2$</tex>, but of
+course there is at least one more factor <tex>$\Delta t$</tex> lurking
+in the factor <tex>$\ba_i - \ba_{i+1}$</tex>, which to first order
+in <tex>$\Delta t$</tex> is nothing else than <tex>$-\bj_i\Delta t$</tex>;
+or <tex>$-\bj_{i+1}\Delta t$</tex> for that matter.  And similarly, there
+is a factor <tex>$\Delta t$</tex> hidden in <tex>$\bj_i - \bj_{i+1}$</tex>.
+
+The question is, can we understand why the remaining terms are what
+they are, and especially why they can be written in such a simple way?
+
+*Bob*: I thought you would ask that, and yes, this time I've done my
+homework, anticipating your questions.  Here is the simplest derivation
+that I could come up with.
+
+Since we are aiming at a fourth-order scheme, all we have to do is to
+expand the position and velocity up to fourth-order terms in the time
+step <tex>$\Delta t$</tex>, while we can drop one factor of
+<tex>$\Delta t$</tex> for the acceleration, and two factors for the jerk,
+to the same order of consistency.
+
+*Alice*: You mean that a term proportional to, say, <tex>$(\Delta t)^3$</tex>
+in the jerk would be derived from a term proportional to
+<tex>$(\Delta t)^5$</tex> in the velocity or from a term proportional to
+<tex>$(\Delta t)^6$</tex> in the position, both of which are beyond our
+approximation.
+
+*Bob*: Exactly.  Here it is, in equation form:
+
+:eqnarray:
+\label{taylor}
+\br_{i+1} & = & \br_i + \bv_i \Delta t + \hhalf\ba_{i}(\Delta t)^2
+ + \one{6}\bj_{i}(\Delta t)^3 + \one{24}\bs_{i}(\Delta t)^4        \nonumber\\
+\bv_{i+1} & = & \bv_i + \ba_i \Delta t + \hhalf\bj_{i}(\Delta t)^2
+ + \one{6}\bs_{i}(\Delta t)^3 + \one{24}\bc_{i}(\Delta t)^4         \nonumber\\
+\ba_{i+1} & = & \ba_i + \bj_i \Delta t + \hhalf\bs_{i}(\Delta t)^2 
++ \one{6}\bc_{i}(\Delta t)^3                                     \nonumber\\
+\bj_{i+1} & = & \bj_i + \bs_i \Delta t + \hhalf\bc_{i}(\Delta t)^2
+
+*Alice*: I'll buy that.
+
+== A Derivation
+
+*Bob*: We can now eliminate snap and crackle at time <tex>$t_i$</tex>,
+expressing them in terms of the acceleration and jerk at times
+<tex>$t_i$</tex> and <tex>$t_{i+1}$</tex>, using the last two lines of
+Eq. (ref(taylor)).  This gives us for the snap
+
+<tex>$$
+6\ba_{i+1} - 2\bj_{i+1}\Delta t \ = \ 6 \ba_i + 4 \bj_i\Delta t
++ \bs_i(\Delta t)^2 \ \ \ \ \Rightarrow
+$$</tex>
+
+:equation:
+\bs_i(\Delta t)^2 \ = \ -6\ba_i +6\ba_{i+1}
++-4\bj_i\Delta t -2\bj_{i+1}\Delta t
+
+Substituting this back into the last line of Eq. (ref(taylor)), we get
+for the crackle:
+
+<tex>$$
+\bj_{i+1}\Delta t \ = \ -6\ba_i +6\ba_{i+1} -3\bj_i\Delta t -2\bj_{i+1}\Delta t
++ \hhalf\bc_{i}(\Delta t)^3
+\ \ \ \ \Rightarrow
+$$</tex>
+
+:equation:
+\bc_i(\Delta t)^3 \ = \ 12\ba_i -12\ba_{i+1}
++6\bj_i\Delta t +6\bj_{i+1}\Delta t
+
+Substituting these expressions for the snap and crackle in the second
+line of Eq. (ref(taylor)) we find:
+
+:eqnarray:
+\bv_{i+1} - \bv_i &=& 
+\ba_i \Delta t + \hhalf\bj_{i}(\Delta t)^2
++ \one{6}\bs_{i}(\Delta t)^3 + \one{24}\bc_{i}(\Delta t)^4         \nonumber\\
+&=& \ba_i \Delta t + \hhalf\bj_{i}(\Delta t)^2                \nonumber\\
+&+& -\ba_i\Delta t +\ba_{i+1}\Delta t
+-{\textstyle\frac{2}{3}}\bj_i(\Delta t)^2
+-\one{3}\bj_{i+1}(\Delta t)^2
+                                                           \nonumber\\
+&+& \hhalf\ba_i\Delta t -\hhalf\ba_{i+1}\Delta t
++\one{4}\bj_i(\Delta t)^2 +\one{4}\bj_{i+1}(\Delta t)^2
+\ \ \ \ \Rightarrow                                      \nonumber
+
+:equation:
+\label{hermitestepa}
+\bv_{i+1} = \bv_i + \hhalf(\ba_i + \ba_{i+1}) \Delta t +
+                \one{12}(\bj_i - \bj_{i+1})(\Delta t)^2
+
+Indeed, we have recovered the second line of Eq. (ref(hermitestep)),
+and thereby 
+explained the mysterious factor <tex>$\one{12}$</tex> in the last
+term.
+
+The only thing left to do is to check the expression for the position,
+the first line in Eq. (ref(hermitestep)).  Let us bring everything to
+the left-hand side there, except the acceleration terms.  In other words,
+let us split off the leapfrog expression, and see what is left over:
+
+:eqnarray:
+\br_{i+1} - \br_i - \hhalf(\bv_i + \bv_{i+1})\Delta t &=&
+\left\{\br_{i+1} - \br_i\right\} - \hhalf\bv_i\Delta t
++ \left\{-\hhalf\bv_{i+1})\right\}\Delta t                               \nonumber\\
+ &=&\left\{\bv_i \Delta t + \hhalf\ba_{i}(\Delta t)^2
++ \one{6}\bj_{i}(\Delta t)^3 + \one{24}\bs_{i}(\Delta t)^4\right\}  \nonumber\\
+&-&\hhalf\bv_i\Delta t                                             \nonumber\\
+&+&\left\{-\hhalf\bv_i\Delta t - \one{4}(\ba_i + \ba_{i+1}) (\Delta t)^2
+ -\one{24}(\bj_i - \bj_{i+1})(\Delta t)^3\right\}                   \nonumber\\
+&=& \hhalf\ba_{i}(\Delta t)^2
++ \one{6}\bj_{i}(\Delta t)^3                                       \nonumber\\
+&-& \one{4}\ba_i(\Delta t)^2 +\one{4}\ba_{i+1}(\Delta t)^2
+-\one{6}\bj_i(\Delta t)^3 -\one{12}\bj_{i+1}(\Delta t)^3            \nonumber\\
+&-& \one{4}\ba_i(\Delta t)^2 - \one{4}\ba_{i+1}(\Delta t)^2 -
+  \one{24}\bj_i(\Delta t)^3 + \one{24}\bj_{i+1}(\Delta t)^3        \nonumber\\
+&=& -\one{24}\bj_i(\Delta t)^3 -\one{24}\bj_{i+1}(\Delta t)^3     \nonumber\\
+&=& -\one{24}\bj_i(\Delta t)^3 -
+\one{24}\left\{\bj_i +\bs_i\Delta t\right\}(\Delta t)^3          \nonumber\\
+&=& -\one{12}\bj_i(\Delta t)^3 - \one{24}\bs_i(\Delta t)^4
+
+To within our order of accuracy, this is indeed what we were trying to prove,
+since the right-hand term of the first line in Eq. (ref(hermitestep)) can be
+written as
+
+:eqnarray:
+\one{12}(\ba_i - \ba_{i+1})(\Delta t)^2 &=&
+\one{12}\ba_i(\Delta t)^2
+ - \one{12}\left\{\ba_i + \bj_i\Delta t +
+\hhalf\bs_i(\Delta t)^2\right\}(\Delta t)^2   \nonumber\\
+&=& -\one{12}\bj_i(\Delta t)^3 - \one{24}\bs_i(\Delta t)^4
+
+This proves the desired result:
+
+:equation:
+\br_{i+1} = \br_i + \hhalf(\bv_i + \bv_{i+1}) dt +
+                \one{12}(\ba_i - \ba_{i+1})(dt)^2
+
+== Implementation
+
+*Alice*: Great!  Can you show me how you have implemented this scheme?
+
+*Bob*: It was surprisingly simple.  I opened a file called <tt>hbody.rb</tt>,
+with <tt>yoshida6.rb</tt> as my starting point.  And all I had to do was
+to add a method +jerk+ to compute the jerk, and then a method +hermite+
+to do the actual Hermite integration.
+
+The +jerk+ method, in fact, is rather similar to the +acc+ method:
+
+ :inccode: .hbody.rb+acc
+
+apart from the last line:
+
+ :inccode: .hbody.rb+jerk
+
+*Alice*: Before you show me the integrator, let me look at the equations
+again, which you have derived, to get an idea as to what to expect.  Here
+they are:
+
+:eqnarray:
+\br_{i+1} & = & \br_i + \hhalf(\bv_i + \bv_{i+1}) \Delta t +
+                \one{12}(\ba_i - \ba_{i+1})(\Delta t)^2   \nonumber\\
+\bv_{i+1} & = & \bv_i + \hhalf(\ba_i + \ba_{i+1}) \Delta t +
+                \one{12}(\bj_i - \bj_{i+1})(\Delta t)^2   \nonumber
+
+Now I remember what bothered me about these expressions.  On the
+left-hand side you express the positions and velocities at time
+<tex>$t_{i+1}$</tex>.  However, on the right-hand side you rely also on
+the acceleration and jerk at time <tex>$t_{i+1}$</tex>, which you can
+only compute _after_ you have determined the position and velocity at
+time <tex>$t_{i+1}$</tex>.  In addition, you also have the future
+velocity at the right-hand side as well.
+
+In other words, these are implicit equations for the position and the
+velocity.  How do you deal with them?
+
+*Bob*: Through iteration.  I first determine trial values for the position
+and velocity, simply by expanding both as a Taylor series, using only what
+we know at time <tex>$t_i$</tex>, which are the position, velocity,
+acceleration and jerk.  In fact, this is a type of predictor-corrector
+method.  If I express those trial values with a subscript _p_, I start
+with:
+
+:eqnarray:
+\br_{p,i+1} & = & \br_i + \bv_i \Delta t + \hhalf\ba_{i}(\Delta t)^2
+ + \one{6}\bj_{i}(\Delta t)^3                                       \nonumber\\
+\bv_{p,i+1} & = & \bv_i + \ba_i \Delta t + \hhalf\bj_{i}(\Delta t)^2 \nonumber
+
+Then, with those trial values, I determine the trial values for the
+acceleration and jerk.  Using all those trial values as proxies for
+the actual values at time <tex>$t_{i+1}$</tex>, I can solve the
+equations for the corrector step, where I indicate the final values
+for the position and velocity at time <tex>$t_{i+1}$</tex> with a
+subscript _s_ :
+
+:eqnarray:
+\br_{c,i+1} & = & \br_i + \hhalf(\bv_i + \bv_{p, i+1}) \Delta t +
+                \one{12}(\ba_i - \ba_{p, i+1})(\Delta t)^2   \nonumber\\
+\bv_{c,i+1} & = & \bv_i + \hhalf(\ba_i + \ba_{p, i+1}) \Delta t +
+                \one{12}(\bj_i - \bj_{p, i+1})(\Delta t)^2   \nonumber
+
+Here is explicitly how I do it, on the code level:
+
+ :inccode: .hbody.rb+hermite
+
+Note that the order of the last two lines is crucial: if you swap them,
+you will get the wrong answer, as I found out the hard way.  The last line
+uses the new value for the velocity, so the position can be updated
+only after you update the velocity.
+
+*Alice*: Let's see whether your procedure is acceptable.  The errors 

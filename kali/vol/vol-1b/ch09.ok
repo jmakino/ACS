@@ -1,16 +1,22 @@
-= A Multi-Step Method
+= A Four-Step Method
 
-== xxx
+== Combinatorics
 
-xxx
+*Bob*: Ready to go for a fourth-order multi-step algorithm?
 
-Taylor series:
+*Alice*: Ready whenever you are!
+
+*Bob*: I'll start by repeating the steps I showed you for the second-order
+algorithm.  Instead of Eq. (ref(firstacctaylor)), we now have to expand
+the acceleration in a Taylor series up to the crackle:
 
 :equation:
+\label{secondacc}
 \ba \,=\, \ba_0 + \bj_0 t + \hhalf \bs_0 t^2
 + \one{6} \bc_0 t^3 + O(t^4)
 
-For the three previous times:
+And instead of Eq. (ref(prevacc)) for the previous value of the acceleration,
+we now need to remember _three_ previous values:
 
 :eqnarray:
 \label{threea}
@@ -24,7 +30,25 @@ For the three previous times:
 \ba_0 - 3\bj_0 \Delta t + {\textstyle\frac{9}{2}} \bs_0 (\Delta t)^2
  - {\textstyle\frac{9}{2}} \bc_0 (\Delta t)^3
 
-From Eq. (ref(threea)):
+*Alice*: And these we have to invert, in order to regain the three
+values for <tex>$\bj_0$</tex>, <tex>$\bs_0$</tex> and <tex>$\bc_0$</tex>,
+which we can then use in Eq. (ref(secondacc)).  The only difference is
+that the inversion is a little harder than it was for getting
+Eq. (ref(firstjerk)).
+
+*Bob*: Just a little.  Good luck!
+
+*Alice*: Oh, I have to do it again?  Well, I guess I sort-of like doing
+this, up to a point.
+
+*Bob*: And if you dislike it, you certainly dislike it far less than I do.
+
+*Alice*: Okay, I'll do it.  From Eq. (ref(threea)) we can form the following
+linear combination, subtracting the second equation from twice the
+first one, in order to eliminate the term with the jerk in it.  Similarly,
+we can subtract the third equation from thrice the first one, and we wind
+up with two equations for the two remaining variables, the snap
+<tex>$\bs_0$</tex> and the crackle <tex>$\bc_0$</tex>:
 
 :eqnarray:
 \label{twoa}
@@ -33,7 +57,8 @@ From Eq. (ref(threea)):
 3\ba_{-1} - \ba_{-3} \,&=&\,
 2\ba_0 -  3\bs_0 (\Delta t)^2 + 4\bc_0 (\Delta t)^3
 
-Now eliminate <tex>$\bs_0$</tex> :
+The next step is to eliminate <tex>$\bs_0$</tex>, in order to obtain
+an equation for <tex>$\bc_0$</tex>, as follows:
 
 <tex>$$
 3\left( 2\ba_{-1} - \ba_{-2} \right) - \left( 3\ba_{-1} - \ba_{-3} \right)
@@ -51,7 +76,10 @@ $$</tex>
 \ba_0 -3\ba_{-1} + 3\ba_{-2} - \ba_{-3}
 \right\}
 
-Now substitute Eq. (ref(bc)) in the top line of Eq. (ref(twoa)) :
+*Bob*: One down, two to go!
+
+*Alice*: Each next one will only get easier.  I'll substitute Eq. (ref(bc))
+in the top line of Eq. (ref(twoa)), and that should do it:
 
 :eqnarray:
 \bs_0(\Delta t)^2 \,&=&\, 
@@ -68,8 +96,12 @@ Now substitute Eq. (ref(bc)) in the top line of Eq. (ref(twoa)) :
 2\ba_0 -5\ba_{-1} + 4\ba_{-2} - \ba_{-3}
 \right\}
 
-Now substitute Eqs. (ref(bc)) and (ref(bs)) in the top line of
-Eq. (ref(threea)) :
+You see, now that wasn't that hard, was it?
+
+*Bob*: Not if you do it, no.  Keep up the good work!
+
+*Alice*: Now for the home run.  I'll substitute Eqs. (ref(bc)) and (ref(bs))
+in the top line of Eq. (ref(threea)), and get:
 
 :eqnarray:
 \bj_0 \Delta t \,\,\,=\,\,\, -\ba_1 \,\,+\,\, \ba_0 &+&
@@ -89,7 +121,30 @@ Eq. (ref(threea)) :
 {\textstyle\frac{11}{6}}\ba_0 -3\ba_{-1} + \three{2}\ba_{-2} - \one{3}\ba_{-3}
 \right\}
 
-Now check whether we did not make a mistake:
+So here are the answers!
+
+*Bob*: If you didn't make a mistake anywhere, that is.
+
+== Checking
+
+*Alice*: I thought it was your job to check whether I was not making any
+mistake!
+
+*Bob*: I _think_ you didn't make any.  But as you so often say, it doesn't
+hurt to check.
+
+*Alice*: I can't very well argue with myself, can I?  Okay, how shall we
+check things.  Doing the same things twice is not the best way to test my
+calculations, since I may well make the same mistake the second time, too.
+
+It would be much better to come up with an independent check.  Ah, I
+see what we can do: in Eq. (ref(threea)), I can check whether the solutions
+I just obtained for for <tex>$\bj_0$</tex>, <tex>$\bs_0$</tex> and
+<tex>$\bc_0$</tex> indeed give us those previous three accelerations back
+again.  In each of those three cases, I'll start off with the right-hand
+sides of the equation, to see whether I'll get the left-hand side back.
+
+Here is the first one:
 
 :eqnarray:
 &&\ba_0 - \bj_0 \Delta t + \hhalf\bs_0 (\Delta t)^2
@@ -103,6 +158,8 @@ Now check whether we did not make a mistake:
 &&\,\,-\one{6}\ba_0 +\hhalf\ba_{-1}
   -\hhalf\ba_{-2} +\one{6}\ba_{-3}\,\,\,=\,\,\, \ba_{-1}         \nonumber
 
+*Bob*: Good start!
+
 :eqnarray:
 &&\ba_0 - 2\bj_0 \Delta t + 2 \bs_0 (\Delta t)^2
  - {\textstyle\frac{4}{3}} \bc_0 (\Delta t)^3\,\,=                  \nonumber\\
@@ -114,6 +171,8 @@ Now check whether we did not make a mistake:
   -10\ba_{-1} + 8\ba_{-2} -2\ba_{-3}\nonumber\\
 &&\,\,-{\textstyle\frac{4}{3}}\ba_0 \,\,+\,4\ba_{-1}
   -4\ba_{-2} +{\textstyle\frac{4}{3}}\ba_{-3}\,\,\,=\,\,\, \ba_{-2}  \nonumber
+
+*Alice*: And a good middle part, too.  Now for the finish:
 
 :eqnarray:
 &&\ba_0 - 3\bj_0 \Delta t + {\textstyle\frac{9}{2}} \bs_0 (\Delta t)^2
@@ -130,87 +189,78 @@ Now check whether we did not make a mistake:
   -{\textstyle\frac{27}{2}}\ba_{-2} +{\textstyle\frac{9}{2}}\ba_{-3}
   \,\,\,=\,\,\, \ba_{-3}  \nonumber
 
+Good!  Clearly, the expressions in Eqs. (ref(bj)), (ref(bs)) and (ref(bc))
+are correct.  Phew!  And now that that is done . . . what was it again
+we set out to do?
 
-Then <tt>ms4body.rb</tt>.
+*Bob*: We were trying to get an expression for the acceleration at time
+zero, to third order in the time step, expressed in terms of the previous
+three accelerations.  So all we have to do is to plug your results back
+into Eq. (ref(secondacc)).
 
-Ah, already using "/" method from <tt>vector.rb</tt>
+*Alice*: Ah, yes, it's easy to forget the thread of a story, if you get lost
+in eliminations.
+
+== Implementation
+
+*Bob*: So now it's my turn, I guess.  Let me code up your results.  I'll open
+a new file, <tt>ms4body.rb</tt>.  Let me first have a look at the
+previous second-order method <tt>ms2</tt>, for comparison:
+
+ :inccode: .ms4body.rb+ms2
+
+Our fourth-order multi-step method should be called <tt>ms4</tt>,
+clearly.  I'll use <tt>rk4</tt> to rev up the engine, something we'll
+have to do three times now.  And instead of use snap and crackle
+out-of-the-box, so to speak, I'll use them with the appropriate factors
+of the time step, <tex>$\bs(\Delta t)^2$</tex> and
+<tex>$\bc(\Delta t)^3$</tex>, respectively.
+
+Here it is:
+
+ :inccode: .ms4body.rb+ms4
+
+*Alice*: That's not so much longer than <tt>ms2</tt>, and it still looks
+neat and orderly!  And wait, you have used the division method for our
++Vector+ class, in dividing by those number like <tex>$6.0$</tex> and
+so on.
+
+*Bob*: That's true!  I hadn't even thought about it; it was so natural
+to do that.  What did you say again, when I told you I had added division,
+together with subtraction, to the +Vector+ class?
+
+*Alice*: I said that I was sure it would come in handy sooner or later.
+
+*Bob*: I guess it was sooner rather than later.
+
+*Alice*: And I see that you have abbreviated the names of the variables
+somewhat.  Instead of <tt>@prev_acc</tt> for the previous acceleration,
+you now use <tt>@ap1</tt>, for the first previous acceleration, I guess.
+And then, for the yet more previous acceleration before that, you use
+<tt>@ap2</tt>, and so on.
+
+*Bob*: Yes.  I would have like to write <tt>a-2</tt> for <tex>$a_{-2}$</tex>
+but that would be interpreted as a subtraction of the number
+<tt>2</tt> from the variable +a+, so I choose <tt>@ap2</tt>, for
+<i>a-previous-two</i>.
+
+== Testing
+
+*Alice*: Time to test <tt>ms4</tt>.
+
+*Bob*: Yes, and we may as well start again with the
+same values as we have been using recently:
 
  :commandoutput: ruby integrator_driver4d.rb < euler.in
 
+A good start.  Now for time steps that are ten times smaller:
+
  :commandoutput: ruby integrator_driver4e.rb < euler.in
 
-Not completely clear; let's try a factor 2
+*Alice*: Congratulations!  But this is close to machine accuracy.
+Can you just double the time step, to check whether the errors get
+16 times larger?
 
  :commandoutput: ruby integrator_driver4f.rb < euler.in
 
-Ah, now a factor of almost 16.  Great!
-
-== xxx
-
-Bob: if I were to do this for 6th order, I would definitely
-use a symbolic integrator; (actually use Mathematica and show it here??)
-When I saw you struggling with all those substitutions when we tracked
-the fourth-order nature of the Runge-Kutta integrator, I was already
-wondering whether we shouldn't use a symbolic integration package.
-At that point I didn't bring it up, since we were in the middle of
-trying to figure out how things worked in the first place, and
-introducing yet another tool might have been confusing.  But now that
-the procedure is crystal clear, we are just faced with solving a
-large number of linear equations with the same number of unknowns,
-and that is really not something I want to do by hand; not would I
-learn must from doing so.
-
-Now for 6th order:
-
- :commandoutput: ruby integrator_driver4g.rb < euler.in
-
-Let's be bold and try:
-
- :commandoutput: ruby integrator_driver4h.rb < euler.in
-
-Hey, that is _very_ strange!  Errors are getting better?!?
-
-CHECK THIS AGAIN!  I CHANGED <tt>yo6.rk</tt> to <tt>yo8.rk</tt> !!!!
-
-A factor two larger time step:
-
- :commandoutput: ruby integrator_driver4i.rb < euler.in
-
-A factor of about 60: hence really 6th order
-
-Hey, wait!  We've only tested yo6, so far!  We have to do many more steps.
-
- :commandoutput: ruby integrator_driver4j.rb < euler.in
-
-Ah, Yoshida's integrator is great, yappari.  Ten times shorter time step:
-
- :commandoutput: ruby integrator_driver4k.rb < euler.in
-
-Looks like 6th order.  Two times longer:
-
- :commandoutput: ruby integrator_driver4l.rb < euler.in
-
-Great!  Close to factor 64, and now really with the multi-step integrator.
-
-== xxx
-
-Now for eighth order:
-
-Fortunately, we do have Yoshida's 8th-order integrator, to start our code
-up with.
-
- :commandoutput: ruby integrator_driver4m.rb < euler.in
-
-two times smaller time step:
-
- :commandoutput: ruby integrator_driver4n.rb < euler.in
-
-getting closer to a factor 256, but not there yet.
-
-two times smaller time step:
-
- :commandoutput: ruby integrator_driver4o.rb < euler.in
-
-Closer!  Certainly closer to 256 than 128.  I think we can declare victory.
-
-
+*Bob*: There you are!  We indeed have a fourth-order multi-step integrator!
