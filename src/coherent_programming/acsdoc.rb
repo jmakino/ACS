@@ -1060,6 +1060,7 @@ module Acsdoc
   def expand(s)
     if s 
       t=s.gsub(/([^\t]{8})|([^\t]*)\t/n){[$+].pack("A8")}
+      t=t.gsub(/\f/,"")
     else
       t=nil
     end
