@@ -1,4 +1,4 @@
-= A First-Order Differential Equation
+= First-Order Differential Equations
 
 == Starting at Square One
 
@@ -319,8 +319,10 @@ x_1 = x_0 + f_0\tau + \half f_0 f_0'\tau^2 + O(\tau^3)
 
 How accurate is our new value <tex>$x_1$</tex> after we take one step?  Let us
 see how well we can match Eq. (ref(rk1)) with Eq. (ref(taylor1)),
-in successive powers of <tex>$\tau$</tex>.  The constant term <tex>$x_0$</tex> matches
-trivially, and our first condition arises from the term linear in <tex>$\tau$</tex>:
+in successive powers of <tex>$\tau$</tex>.
+The constant term <tex>$x_0$</tex> matches
+trivially, and our first condition arises
+from the term linear in <tex>$\tau$</tex>:
 
 :equation:
 \alpha_1 f_0 = f_0

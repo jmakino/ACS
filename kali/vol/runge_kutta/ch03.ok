@@ -1,0 +1,416 @@
+= Second-Order Differential Equations
+
+Now that we know how to solve a first-order differential equation, we
+can extend our methods immediately to treat the case of a general
+second-order differential equation
+
+:equation:
+{d^2x \over dt^2} = f\left(x, {dx \over dt}\right)
+
+Here the force per unit mass <tex>$f(x)$</tex> exerted on a particle depends
+explicitly on both the position and the velocity of that particle.
+An example of such a force is the motion of a mass point under the
+influence of friction.  Indeed, our physical interpretation of the
+case of a first-order differential equation followed from the above
+form in the limit of infinitely strong friction, where the
+velocity-dependent term dominated completely.  Another example would
+be the force that is felt by an electron moving in an electromagnetic
+field (where <tex>$x$</tex> would have be interpreted as a three-dimensional
+vector, a point we will come back to later in this chapter).
+
+The second-order equation above can be rewritten as a system of two
+first-order differential equations:
+
+:equation:
+\left\{ \begin{array}{lcl}
+\dot x &=& v \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\dot v &=& f(x, v)
+\end{array} \right.
+
+It is convenient to introduce vector notation, defining
+
+:equation:
+\vec s \ \equiv {x \choose v}
+
+and
+
+:equation:
+\vec g \ \equiv {v \choose f(x, v)}
+
+We can then write our second-order differential equation as a single
+first-order equation in terms of vectors:
+
+:equation:
+{d \over dt} \vec s = \vec g
+
+or simply:
+
+:equation:
+\dot{\vec s} = \vec g
+
+When written out, this leads to the two equations implicit in:
+
+:equation:
+{\dot x \choose \dot v} = {v \choose f(x, v)}
+
+In our case of interest, classical mechanics, we will drop the
+velocity dependence, and study instead the simpler equation:
+
+:equation:
+{d^2x \over dt^2} = f(x)
+
+or, equivalently
+
+:equation:
+{\dot x \choose \dot v} = {v \choose f(x)}
+
+As we will see in the next chapter, we can exploit the simple form of
+these two equations to get an extra order of accuracy, seemingly for
+free.  However, in order to put that clever trick in a clear context,
+in the current section we will be less clever.  Rather, we will simply
+apply the same treatment that we have developed in the previous chapters,
+and our results in this chapter will be valid for a general
+<tex>$f(x,v)$</tex>.
+
+== One Force Evaluation per Step
+
+Everything we have done so far carries over directly to the
+case of two coupled differential equations.  To show this, let us
+repeat the same derivation, but now in vector form.  At the start of a
+time step, we evaluate the right-hand side of the differential
+equation at <tex>$t=0$</tex>:
+
+:equation:
+\vec k_1 = \vec g_0 = {v_0 \choose f_0}
+
+This leads to the following dimensionally correct expression:
+
+:equation:
+\vec s_1 = \vec s_0 + \alpha_1 \vec k_1\tau
+
+Combining the last two equations, we have
+
+:equation:
+\label{rk1vec}
+\vec s_1 = \vec s_0 + \alpha_1 \vec g_0\tau 
+
+We can compare this expression with the Taylor series:
+
+:equation:
+\label{ddotvec}
+\vec s_1 = \vec s_0 + \dot{\vec s}_0\tau +
+\half \ddot{\vec s}_0\tau^2 + O(\tau^3)
+
+where we use the shorthand notations
+
+:equation:
+\dot{\vec s}_0 = {v_0 \choose a_0}
+
+and
+
+:equation:
+\ddot{\vec s}_0 = {a_0 \choose j_0}
+
+to avoid introducing yet another set of new symbols for the
+various derivatives of <tex>$\vec s$</tex> at time 0.
+
+In order to compute
+
+:equation:
+\ddot{\vec s}_0 = {d\over dt}\vec g_0
+
+we will need to determine the time derivative of <tex>$\vec g$</tex>.
+To do so, note that a small variation in <tex>$\vec g$</tex> can be
+expressed as
+
+:equation:
+d\vec g = d{v \choose f(x)} = {dv \choose f'(x)dx}
+
+This implies:
+
+:equation:
+{d\over dt}\vec g = {f \choose vf'}
+
+Let us introduce the symbol <tex>$\vec h_0$</tex> for the right-hand
+side, at time 0:
+
+:equation:
+\vec h_0 \ \equiv {f_0 \choose v_0f_0'}
+
+We can then write Eq. (ref(ddotvec)) as
+
+:equation:
+\label{taylor1vec}
+\vec s_1 = \vec s_0 + \vec g_0\tau + \half \vec h_0\tau^2
+ + O(\tau^3) 
+
+We demand that Eqs. (ref(rk1vec)) and Eq. (ref(taylor1vec)) should be equal.
+The constant term <tex>$\vec s_0$</tex> matches trivially, and the first
+condition arises from the term linear in <tex>$\tau$</tex>:
+
+:equation:
+\label{forwardvec}
+\alpha_1 \vec g_0 = \vec g_0
+
+hence
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_1 = 1
+}$
+}
+
+We have no free parameter left, so this leads us to the
+only possible explicit first-order integration scheme
+
+:equation:
+\label{forward}
+\left\{ \begin{array}{lcl}
+\vec s_1 &=& \vec s_0 + \vec k_1\tau  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\vec k_1 &=& \vec g(\vec s_0)
+\end{array} \right.                    
+
+which is the forward-Euler algorithm, now in vector form.  If we write
+this out in components, we get:
+
+:equation:
+{x_1 \choose v_1} =
+{x_0 + \alpha_1 v_0 \tau \choose v_0 + \alpha_1 f_0\tau}
+
+Let us define
+
+:equation:
+\vec k_1 \ \equiv {v_0 \choose k_1}
+
+where we will use the same symbol <tex>$k$</tex> for the vector and
+the last componenent, again to avoid introducing yet more new letters.
+With this notation, we can write Eq. (ref(forwardvec)) in a more
+traditional form as:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + v_0 \tau \\
+v_1 &=& v_0 + k_1 \tau  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)
+\end{array} \right.
+
+We thus recover the forward-Euler algorithm.  As before, 
+this scheme is only first-order accurate, since it cannot possibly
+reproduce the <tex>$O(\tau^2)$</tex> term in Eq. (ref(taylor1vec)).
+
+== Two Force Evaluations per Step
+
+As before, after a first evaluation of the
+right-hand side of the differential equation, we can perform a
+preliminary integration in time, after which we can evaluate the
+right-hand side again, at a new position:
+
+:eqnarray:
+\vec k_1 &=& \vec g(\vec s_0)    \\
+\vec k_2 &=& \vec g(\vec s_0 + \eta \vec k_1 \tau)
+
+We can now use a more general expression for the new position, in
+which we rely on the preliminary information that has been gathered in
+the two force evoluations.  Since each force evaluation has the
+dimension of a time derivative of the position, we have to multiply
+each one with a single power of <tex>$\tau$</tex>.  The coefficient
+for each term is, as yet, arbitrary, so let us parametrize them as
+follows:
+
+:equation:
+\label{alg11vec}
+\vec s_1 = \vec s_0 + \left( \alpha_1 \vec k_1 + \alpha_2 \vec k_2 \right) \tau
+
+We can combine these equations, and write them as
+
+:equation:
+\label{alg12vec}
+\vec s_1 = \vec s_0 + \left\{ 
+\alpha_1 \vec g_0 + \alpha_2 \vec g(\vec s_0 +\eta \vec g_0 \tau) \right\} \tau
+
+We want to determine
+
+:equation:
+\vec k_2 = \vec g(\vec s_0 + d \vec s)
+
+where
+
+:equation:
+d \vec s = \eta \vec g_0 \tau
+
+We have already seen that 
+
+:equation:
+d\vec g = d{v \choose f(x)} = {dv \choose f'(x)dx}
+
+and we can also write
+
+:equation:
+d \vec s = {dx \choose dv} = \eta {v_0 \choose f_0} \tau
+
+The two results that are encoded here, <tex>$dx = \eta v_0 \tau$</tex>
+and <tex>$dv = \eta f_0 \tau$</tex>, can now be plugged back into the
+definition of <tex>$d\vec g$</tex>
+
+:equation:
+d\vec g = {dv \choose f'(x)dx} = \eta {f_0 \choose v_0f_0'} \tau
+
+We finally get
+
+:equation:
+\vec k_2 = \vec g(\vec s_0 + d \vec s) =
+\vec g(\vec s_0) + d \vec g = \vec k_1 + \eta \vec h_0 \tau
+
+where we use again the notation
+
+:equation:
+\vec h_0 \ \equiv {f_0 \choose v_0f_0'}
+
+To sum up: developing <tex>$\vec k_2$</tex>
+in a Taylor series around <tex>$\tau = 0$</tex> gives:
+
+:equation:
+\label{alg13vec}
+\vec k_2 = \vec g(\vec s_0 +\eta \vec g_0 \tau) =
+\vec g_0 + \eta \vec h_0 \tau + O(\tau^2)  
+
+Using this result in Eq. (ref(alg12vec)), we find for the new
+position, at the end of our time step: 
+
+:equation:
+\label{rk2vec}
+\vec s_1 = \vec s_0 + (\alpha_1 + \alpha_2) \vec g_0 \tau +
+\alpha_2 \eta \vec h_0 \tau^2 + O(\tau^3)
+
+We can now compare this expression with the Taylor series expansion of
+the true orbit, as we did in the previous section:
+
+:equation:
+\label{taylor0vec}
+\vec s_1 = \vec s_0 + \dot{\vec s}_0\tau +
+\half \ddot{\vec s}_0\tau^2 + O(\tau^3)
+
+We can write this, as we saw in Eq. (ref(taylor1vec)), in terms of
+<tex>$\vec h_0$</tex> as follows:
+
+:equation:
+\label{taylor2vec}
+\vec s_1 = \vec s_0 + \vec g_0\tau + \half \vec h_0\tau^2 + O(\tau^3) 
+
+Starting with terms to first order in <tex>$\tau$</tex> in
+Eqs. (ref(rk2vec)) and (ref(taylor2vec)), we have to insist that
+
+:equation:
+(\alpha_1 + \alpha_2) \vec g_0 = \vec g_0
+
+which leads to the condition
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_1 + \alpha_2 = 1
+}$
+}
+
+To second order in <tex>$\tau$</tex>, we would like to satisfy:
+
+:equation:
+\alpha_2 \eta \vec h_0 = \half \vec h_0
+
+which can be done through the condition
+
+:equation:
+\fbox{
+$\displaystyle{
+\eta = {1 \over 2 \alpha_2}
+}$
+}
+
+We conclude that when we allow two force evaluations, we again are
+left with one free parameter <tex>$\alpha$</tex>.
+
+To summarize, we can write:
+
+:equation:
+\left\{ \begin{array}{lcl}
+\vec s_1 &=&
+\vec s_0 + \left( (1-\alpha)\vec k_1 + \alpha \vec k_2 \right) \tau \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\vec k_1 &=& \vec g(\vec s_0)  \\
+\vec k_2 &=& \vec g(\vec s_0 + {1\over 2 \alpha} \vec k_1 \tau)
+\end{array} \right.
+
+Notice that this is exactly the vector generalization of the expressions
+we found in the case of a first-order differential equation:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + \left( (1-\alpha)k_1 + \alpha k_2 \right) \tau \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)  \\
+k_2 &=& f(x_0 + {1\over 2 \alpha} k_1 \tau)
+\end{array} \right.
+
+Let us write out our vector expressions in components.  Starting with
+
+:equation:
+\vec k_1 = \vec g(\vec s_0) = 
+\vec g\left(\ \ {x_0 \choose v_0}\ \ \right) = {v_0 \choose f_0}
+
+we find
+
+:eqnarray:
+\vec k_2 &=& \vec g\left(\ \ {x_0 \choose v_0} + 
+{1\over 2\alpha} {v_0 \choose f_0}\tau\ \ \right)  \\
+&=& \vec g\left(\ \ {x_0 + {1\over 2\alpha}v_0\tau \choose 
+v_0 + {1\over 2\alpha}f_0\tau} \ \ \right) = 
+{v_0 + {1\over 2\alpha}f_0\tau \choose f(x_0 + {1\over 2\alpha}v_0\tau)}
+
+which leads to the expression for <tex>$\vec s_1$</tex>:
+
+:eqnarray:
+{x_1 \choose v_1} &=& {x_0 \choose v_0} + 
+{(1-\alpha)v_0\tau + \alpha(v_0 +
+{1\over 2\alpha} f_0 \tau)\tau \choose 
+(1-\alpha)f_0\tau + \alpha f(v_0 + {1\over 2\alpha} f_0 \tau)\tau} \\
+&=& {x_0 + v_0 \tau + \half f_0\tau^2 \choose 
+v_0 + (1-\alpha)f_0\tau + \alpha f(x_0 + {1\over 2\alpha}v_0\tau) \tau}
+
+We can write this in components as
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + v_0 \tau + \half f_0 \tau^2 \\
+v_1 &=& v_0 + ((1-\alpha)k_1 + \alpha k_2 )\tau  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0) \\
+k_2 &=& f(x_0 + {\textstyle\frac{1}{2\alpha}} v_0 \tau)
+\end{array} \right.
+
+In particular, for <tex>$\alpha = 1$</tex> we find
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + v_0 \tau + \half k_1\tau^2  \\
+v_1 &=& v_0 + k_2 \tau  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0) \\
+k_2 &=& f(x_0 + {\textstyle\frac{1}{2}} v_0 \tau)
+\end{array} \right.
+
+and for <tex>$\alpha = \half$</tex> we find
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + v_0 \tau + \half k_1\tau^2  \\
+v_1 &=& v_0 + {\textstyle\frac{1}{2}}(k_1 + k_2)\tau  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0) \\
+k_2 &=& f(x_0 + v_0 \tau)
+\end{array} \right.
+
+can be improved to leapfrog, if we allow a partitioned scheme.
