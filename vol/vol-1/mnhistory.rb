@@ -187,7 +187,7 @@ class History
                   (1.0/ (@history[i][0] - @history[i-1][0]) )
       dn += 1
       while (dn > 0)
-        increment *= dt/dn               # computer Taylor coefficient
+        increment *= dt/dn               # compute Taylor coefficient
         dn -= 1
       end
     end
@@ -210,7 +210,8 @@ class History
         end
       else
         i = 0 if i == -1                        # allow backwards extrapolation
-        extrapolate(n, i, t - @history[i][0])
+#        extrapolate(n, i, t - @history[i][0])
+        improved_extrapolate(n, i, t - @history[i][0])
       end
     end
   end
