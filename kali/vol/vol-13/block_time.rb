@@ -1,6 +1,6 @@
-include Comparable
-
 class Block_time
+
+  include Comparable
 
   TIME_ARRAY_MAX_LENGTH = 45     # 2**-45 = 2.8e-14 , okay for double precision
 
@@ -19,49 +19,27 @@ class Block_time
       @time_array[i] = rest.floor
       rest = rest - rest.floor
     end
-    contract
   end
 
   def get_time
-    # should return a floating point value of the time
-  end
-
-  def contract
-    while @time_array[@time_array.size - 1] == 0
-      break unless @time_array.pop
+    rest = 1.0
+    number = @time_int
+    for i in 0...@time_array.size
+      rest = rest * 0.5
+      number += rest * @time_array[i]	
     end
-  end
-
-  def expand
-    i = @time_array.size
-    while i < TIME_ARRAY_MAX_LENGTH
-      @time_array[i] = 0
-      i += 1
-    end
+    number
   end
 
   def <=>(a)
     if a.class == Block_time
       return -1 if @time_int < a.time_int
       return 1 if @time_int > a.time_int
-      self_size = @time_array.size
-      other_size = a.time_array.size
       for i in 0...TIME_ARRAY_MAX_LENGTH
-        if self_size <= i 
-          if other_size <= i
-            return 0
-          else
-            if a.time_array[i] == 1
-              return -1
-            end
-          end
-        end
-        if other_size <= i
-          if @time_array[i] == 1
-            return 1
-          end
-        end
+        return -1 if time_array[i] < a.time_array[i]
+        return 1 if time_array[i] > a.time_array[i]
       end
+      return 0
     end
     if a.class == Float or a.class == Fixnum
       a_block = Block_time.new(a)
@@ -72,8 +50,6 @@ class Block_time
   def +(a)
     if a.class == Block_time
       sum = Block_time.new
-      expand
-      a.expand
       i = TIME_ARRAY_MAX_LENGTH - 1
       carry = 0
       while i >= 0
@@ -95,7 +71,6 @@ class Block_time
         i -= 1
       end
       sum.time_int = @time_int + a.time_int + carry
-      sum.contract
       return sum
     end
     if a.class == Float or a.class == Fixnum
@@ -104,8 +79,60 @@ class Block_time
     end
   end
 
+  def -(a)
+    if a.class == Block_time
+      ext = Block_time.new
+      expand
+      a.expand
+      i = TIME_ARRAY_MAX_LENGTH - 1
+      carry = 0
+      while i >= 0
+        total = @time_array[i] - a.time_array[i] - carry
+        case total
+          when 0
+            ext.time_array[i] = 0
+            carry = 0
+          when 1
+            ext.time_array[i] = 1
+            carry = 0
+          when 2
+            ext.time_array[i] = 0
+            carry = 1
+          when 3
+            ext.time_array[i] = 1
+            carry = 1
+        end
+        i -= 1
+      end
+      ext.time_int = @time_int - a.time_int + carry
+      ext.contract
+      return ext
+    end
+    if a.class == Float or a.class == Fixnum
+      a_block = Block_time.new(a)
+      return self + a_block
+    end
+  end
+
+  def contract
+    while @time_array[@time_array.size - 1] == 0
+      break unless @time_array.pop
+    end
+  end
+
+  def expand
+    i = @time_array.size
+    while i < TIME_ARRAY_MAX_LENGTH
+      @time_array[i] = 0
+      i += 1
+    end
+  end
+
   def to_s
-    "{" + @time_int.to_s + ", [" + @time_array.join(", ") + "]}\n"
+    contract
+    s = "{" + @time_int.to_s + ", [" + @time_array.join(", ") + "]}\n"
+    expand
+    s
   end
 
 end
