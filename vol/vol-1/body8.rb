@@ -17,13 +17,11 @@ class Body
   end
 
   def simple_print
-    [[@mass], @pos, @vel].each { |x| x.each { |y| 
-                        printf("%24.16e", y) } ; print "\n" }
+    [[@mass],@pos,@vel].each{|x| x.each{|y| printf("%24.16e",y)}; print "\n"}
   end
 
   def simple_read
-    (@mass,),@pos,@vel = (1..3).map { |i| 
-                      i = gets.split.map { |x| x.to_f } }
+    (@mass,),@pos,@vel = (1..3).map{|i| i = gets.split.map{|x| x.to_f}}
   end
 
 end
