@@ -7,11 +7,21 @@
 	
 <tex>
 
-\title{\bf The Art of Computational Science\\
+\title{{\sl The Art of Computational Science}\\
 \bigskip
-The Kali Code\\
+{\sl The Kali Code}\\
+\bigskip
+{\sl vol. 3}\\
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bf User Interface:\\
 \medskip
- 4: User Interface
+\medskip
+Command Line Arguments
+\bigskip
 }
 \author{\bf Piet Hut and Jun Makino}
 
