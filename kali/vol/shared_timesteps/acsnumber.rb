@@ -25,6 +25,18 @@ options_text= <<-END
     This option allows the user to start numbering the particles at a
     value different from the default value (0, say, or 10, or whatever).
 
+
+  Short name:           -p
+  Long name:            --precision
+  Value type:           int
+  Default value:        16
+  Description:          Floating point precision
+  Variable name:        precision
+  Long description:
+    The precision with which floating point numbers are printed in the output.
+    The default precision is comparable to double precision accuracy.
+
+
   END
 
 c = parse_command_line(options_text)
@@ -39,4 +51,4 @@ nb.body.each do |b|
   b.body_id = i
   i += 1
 end
-nb.acs_write
+nb.acs_write($stdout, false, c.precision)

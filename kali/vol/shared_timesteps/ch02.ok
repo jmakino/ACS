@@ -70,8 +70,8 @@ one, but you can start at zero as well, or at any other place you like.
 Let's test it with our Plummer Model:
 
  :commandoutput: acsnumber.rb -h
- :commandoutput: mkplummer.rb -n 2 -p 5 | acsnumber.rb 
- :commandoutput: mkplummer.rb -n 2 -p 5 | acsnumber.rb -n 42
+ :commandoutput: mkplummer.rb -n 2 | acsnumber.rb -p 5
+ :commandoutput: mkplummer.rb -n 2 | acsnumber.rb -p 5 -n 42
 
 == Defensive Programming
 
@@ -145,6 +145,7 @@ for a circular binary, I believe.  Ah yes, here it is, in
 To start with, let's see whether two identical systems are assigned a
 distance of zero correctly:
 
+ :command: rm -f tmp0.in tmp1.in
  :commandoutput: acsnumber.rb < circular_binary.in > tmp0.in
  :commandoutput: cat tmp0.in tmp0.in | acsdiff.rb
 
@@ -163,6 +164,5 @@ And here is our first real result:
 Just what it should be!  Now for positions only, and a higher precision:
 
  :commandoutput: cat tmp0.in tmp1.in | acsdiff.rb -r -p 5
- :command: rm -f tmp0.in tmp1.in
 
 Perfect.  I think we're ready to move on.
