@@ -163,15 +163,15 @@ string does not correspond to the regular expression, with is
 surrounded by two slashes.
 
 *Alice*: Let me try to remember my regular expressions.  The first
-up arrow <tt>^</tt> means that it matches the beginning of the
-expression.  Then <tt>\s</tt> stands for a white space, a blank or a
+up arrow <tt>^</tt> means that it must match the beginning of the
+string.  Then <tt>\s</tt> stands for a white space, a blank or a
 tab, followed by a <tt>*</tt> which tells us that we can expect zero
 or one or more of those white spaces, while the <tt>+</tt> after the
 second <tt>\s</tt> tells us that there should be at least one, and
 possible more, white spaces between +begin+ and +particle+.
 
 So for a string to match this regular expression, it should start with
-zero of more white spaces, followed by the word +begin+, followed by
+zero or more white spaces, followed by the word +begin+, followed by
 one or more white spaces, followed by the word +particle+, and optionally
 followed by whatever else you like.
 
@@ -216,7 +216,7 @@ and promptly converted to floating point format with <tt>.to_f</tt>.
 *Alice*: Everything, unless there are more equal signs, in which case the
 following pieces would wind up in <tt>s.split("=")[2]</tt>, etc.
 
-*Bob*: True.  Normally there should not be one and exactly one equal sign,
+*Bob*: True.  Normally there should be one and exactly one equal sign,
 and I could have checked that by checking and raising an error condition
 in case <tt>s.split("=").size != 2</tt>.  However, at this stage I'm happy
 to live a bit dangerously.  And besides, the extra stuf will be ignored,
