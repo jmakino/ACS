@@ -1,18 +1,19 @@
+= Chapter 1.  Modeling Dense Stellar Systems
 
-= Chapter 1.  Dense Stellar Systems
+== Introduction
 
-
-== A chat between astronomers
-
+=== A Chat between Two Astronomers
 
 *Alice*: Hi Bob, what are you up to?
 
 *Bob*: Well, to be honest, I'm not quite sure yet.  I'm in between
 projects right now.  It's nice to sit back for a bit, looking at the
-whole field of astronomy, before plunging into a new project.  How
-about you?
+whole field of astronomy, before plunging into a new project.  But
+realistically speaking, it is likely I will continue working on star
+clusters.  How about you?
 
-*A*: Actually, I'm in a similar situation.  Since I moved here, a
+*A*: Actually, I'm in a similar situation of having finished old
+projects and not yet taken on a major new one.  Since I moved here, a
 month ago, I've been dealing with all kind of chores that had been
 accumulating, but now I have a clean desk, and I'm ready to start up.
 
@@ -20,7 +21,7 @@ accumulating, but now I have a clean desk, and I'm ready to start up.
 thesis.  I was surprised to find myself suddenly in a pleasant vacuum,
 after rushing so much to get everything finished in time.  It was soon
 afterwards that I started to get involved in various parallel projects,
-which never seemed to come to an end.  That was six years ago.
+which never seemed to come to an end.  That was eight years ago.
 
 *A*: I heard you just got tenure.  I guess that has something to do
 with your finishing up your two latest projects?
@@ -41,431 +42,1132 @@ number of basic questions that we could address for the first time.
 any other field in astronomy?
 
 *A*: Yeah.  Now that the standard model is pretty well understood,
-cosmology has become a rather ordinary field in astronomy.  Frankly,
-this was one of the reasons that I decided to move here, to get a
-fresh perspective, and perhaps to start working in a new area.
-
-*B*: So we are indeed in comparable situations then.  Well, what are
-your plans.  Are you thinking of moving out of cosmology altogether?
-
-*A*: Moving out is not quite right, since I've been involved in
-various other fields, on and off.  For example, I have studied the
-stellar dynamics of galactic nuclei, and especially the behavior of
-stars in the vicinity of supermassive black holes.  I may want to
-return to that topic again.  How about you?  What were the types of
-work you just finished?
-
-
-== Stellar births and transformations
-
-
-*B*: Both projects were related to birth and death of stars, or more
-accurately, birth and transformations of stars.  One project centered
-around modeling star formation, while the other involved simulations
-of dense star systems, to determine the character of collisions
-between the stars.
-
-*A*: What type of collisions did you find?
-
-*B*: Since I was modeling globular clusters, the encounter speeds were
-not very high, just barely above parabolic, so there were only two
-possibilities: the two stars only weakly interacted, each going their
-own way, or they stuck together, forming a new star as a single merger
-remnant.
-
-*A*: And for the star formation project you modeled part of a
-molecular cloud?
-
-*B*: Indeed.  There I used SPH, smooth particle hydrodynamics, to see
-how a modest number of stars were born in dense cloud cores.  But even
-though I used stellar dynamics for the globular cluster project, in
-both cases stellar collisions were what interested me.  In a star
-forming region, many stars are the product of collisions of dense
-protostellar gas clouds, so you could say that most stars are merger
-remnants.  In most cases these mergers happen while the stars are
-still in their cradle.  The dynamical formation of blue stragglers,
-as collision products in star clusters, just happens to be a late type
-of merger.
-
-*A*: And at the same time there are blue stragglers that are formed in
-isolated binaries, purely by internal processes, aren't there.
-
-*B*: Yes.  And I am interested in trying to disentangle the
-contributions of internal binary evolution and external collisions
-between two or more stars.  Some collisions occur between two single
-stars; others involve an encounter between a binary star and a single
-star; and yet others are more complex.  Binary-binary encounters are
-frequent, and there are even occasional encounters involving triplets
-or quadruplets of various kinds.
-
-*A*: In my case, when I studied collisions between stars in dense
-galactic nuclei, many encounters in my simulations took place at such
-high speed that one or both stars were disrupted.  Adding two stars in
-that environment can lead to two, one, or zeroes stars, depending on
-how fast and how central the collisions are, and the nature of the stars.
-
-*B*: And you said you would like to return to a study of galactic nuclei?
-
-*A*: Perhaps.  I haven't decided yet.  I'm intrigued by the presence
-of young and rather dense star clusters close to our own galactic center.
-They are an example of dense stellar systems that are themselves embedded
-in a wider dense stellar system.  As a result, many of the usual
-assumptions for the evolution of isolated star clusters do not hold there.
-
-*B*: As for me, I'be been toying with the idea of simulating the
-formation of the starforming regions that are prominent in the
-aftermath of collisions between galaxies.  As you know, the tidal arms
-and tails that form during such collisions are studded with what looks
-like giant globular clusters.  They probably originated from the sudden
-compression of gas clouds during the collisions of their parent galaxies.
-
-
-== Stellar dreams
-
-
-*A*: Have you been working on simulations of dense stellar systems
-since you started graduate school?
-
-*B*: By and large, yes.  I did a couple small projects in different
-areas, but most of my serious research has been in systems where
-stellar interactions of one type or another were important.  I have
-always been fascinated by the ecology of stars in dense systems: how
-they influence each other, and how their merger products in turn
-influence each other, and so on.
-
-*A*: Certainly the zoo of possible star types is enormously enlarged,
-once you allow stars to interact at random.  Single stars already show
-a rich number of possible evolutionary states, depending on their
-chemical composition and mass.  Double stars exhibit far more variety,
-when the two stars are close enough that they can exchange mass and
-thus influence each other's evolutionary history in ways that could
-never happen to isolated stars.  And once you start throwing in
-multiple collisions between stars and collision products, the number
-of possibilities is staggering.
-
-*B*: Exactly.  When I started my graduate work, I would sometimes
-dream about a white dwarf circling around a red giant, having its
-accretion disk heated by mass overflow from the giant, and then
-suddenly this whole system having an encounter with a triple system
-of other stars of different colors and types.  I had so much fun, it
-was hard to believe that anybody actually paid me for pursuing such
-wonda erful hobby, of creating and colliding stars in a computer!
-
-*A*: Not that you got paid much, I gather, as a graduate student,
-but yes, I see your point.  We are really lucky to pursue such wild
-adventures in our mind's eye, with the help of computers that provide
-us with virtual telescopes, to watch the products of virtual stellar
-accelerators.
-
-*B*: In contrast to my own excitement, though, I remember being warned
-more than once that my choice of stellar collisions was not a very
-smart career move.  All around me, the best students seemed to go into
-cosmology, as well as other then fashionable areas.  Stellar evolution
-seemed so oldfashioned, in the eyes of faculty as well as students.
-It had seen its heydays in the sixties, when the main problems were
-solved, and the big text books were written.  In the seventies there
-was still excitement about exotic double star evolution, such as the
-formation of X-ray binaries that were then discovered.  But by the
-eighties, stellar evolution dropped out of the limelight of
-astrophysics.  By the time I started my PhD work, in the late nineties,
-anything to do with stars was considered to be such a backwater as not
-to deserve serious mention even during coffee table discussions.
-
-
-== From the shadows to the light
-
-
-*A*: I know what you mean.  I started a decade earlier than you did,
-but even when I was an undergraduate, stellar evolution had already
-retreated into the shadows.  However, I think all this is going to
-chance, in a significant way.
-
-*B*: I hope you are right, but what makes you so confident?
-
-<b>[Jun, this is a point you have made a few times; do you have any
-other suggestions about what we can add here? -- Piet]</b>
-
-*A*: If we take a top down view, starting with cosmology, it is clear
-that simulations of structure formation in the universe are currently
-being limited by uncertainties in stellar astrophysics.  Star formation
-influences the dynamics of galaxy formation, and it determines the
-observational characteristics of galaxies.  And if we take a bottom up
-view, starting with a study of molecular clouds, we see that current
-simulation techniques are just beginning to get a handle on the way in
-which stars form in star clusters.
-
-*B*: You mean that the study of large-scale structure in the universe
-and the study of individual stars are now finding a common meeting
-ground, in the area of star clusters?
-
-*A*: Exactly.  And especially in the area of dense stellar systems,
-where stellar encounters play an important role.
-
-*B*: I think you may be right.  And yes, encounters turn out to be
-essential, even in explaining many of the statistical properties of
-single stars.  For example, the initial mass function that describes
-the relative abundances of single stars of different masses is most
-likely a collective effect, the outcome of all the encounters of blobs
-of gas and protostars of various type within a star forming region.
-
-*A* There is problem, though: while there are many hundreds of
-astronomers observing dense stellar systems, there are far fewer that
-are actively involved in modeling them.
-
-*B*: And there are even fewer who have enough experience to know how
-the simulation software really works.  How many individuals would you
-say there are in the world, who really understand how a gravitational
-N-body code for dense stellar systems functions?
-
-*A*: You mean a code that does not yet include any additional
-hydrodynamics or stellar evolution?
-
-*B*: Yes, let's not ask for too much.  How many people could look at
-the source code of an purely gravitational N-body code that integrates
-the equations of motions just for point particles?
-
-*A*: A dozen?
-
-*B*: Something like that, I would say, if we really ask for proficiency.
-
-
-== Complex tools for a seemingly simple problem
-
-
-*A*: You know, I've never asked myself that question so specifically.
-It is kind of shocking, that the astrophysics of dense stellar systems
-is likely to play an increasingly important role for the next few
-decades, with at least several hundred observers gathering data --
-yet with only a few people knowing the ins and outs of even the most
-`simple' simulation codes.
-
-*B*: Simple here is quite a relative concept!  As we both know, it is
-very simple indeed to write down the equations for the gravitational
-forces between point particles; good old Newton's inverse square law
-of gravity.  But to solve the equations of motion for more than a few
-bodies is fiendishly difficult, because of all the numerical
-complications.
-
-*A*: Yes.  Few astrophysicists realize what is under the hood of a
-stellar dynamics code that can handle close encounters between stars,
-even when treated as point particles.  Even people who have worked
-extensively with collisionless stellar dynamics codes, that emply
-softening and neglect the influence of two-body relaxation, may not
-be aware of how much more complex collisional codes are.
-
-*B*: Kustaanheimo-Stiefel regularization with its unfolding of the
-three-dimensional collision singularity in Kepler orbits by mapping
-them onto four-dimensional harmonic oscillator orbits, for example.
-Complex perturbation schemes with a bookkeeping bureaucracy to keep
-track of how almost isolated double stars and triples are being
-effected by their environment, without requiring an extraordinary
-amount of computational resources.  I know what you mean!
-
-*A*: Even on a more basic level, the use of individual time steps is
-something that you won't find in any standard text book for numerical
-methods of solving differential equations.  The basic ingredients of a
-true N-body code, one that can handle real point particles without any
-softening, are orbit segments, strictly speaking.  What we call particles
-are promisary notes for calculating positions at times required by other
-particles when they momentarily take up a new position.
-
-*B*: All this concerns the abstract complexity of the ingredients, of
-the algorithms used.  There is a whole other level of complexity of
-trying to figure out how an existing code actually implements all this.
-This brings us to the question of documentation.  A description of the
-basic algorithms is essential, in order to understand what is going on
-in such a code, but it is only the beginning.  For a student to have a
-look at the source code, and to figure out what is perturbing what in
-which way is such a daunting project that very few even make an attempt
-to do so.
-
-*A*: I don't think documentation is the biggest problem.
-
-*B*: How so?
-
-*A*: Even if someone were to describe in great detail, without any
-ambiguity, exactly what is going on where, it would still be hard to
-wrap your mind around such a code, unless you have been the main, or
-at least a major, writer of the code.
-
-*B*: Isn't that always the case, for any computer code?
-
-
-== Clarity in complexity
-
-
-*A*: Almost always, yes.  Many computer codes are written in a less
-than transparent way, especially in computational science.  In
-business there is the economic pressure: the necessity to have teams
-of people be able to work collectively on a large project.  In
-theoretical astrophysics such pressure has been largely absent.  As a
-result, big codes are often written in a way that is not so different
-from the way small codes are written.
-
-*B*: Each big code started off small, after all, and just grew and
-grew.
-
-*A*: Yes, that is what happens, over time.  And that is exactly the
-problem.
-
-*B*: But how else can you write a big code, if you don't start small?
-You have to start somewhere!
-
-*A*: The first time around, there may be no other choice.  You cannot
-expect to pioneer a new area of computational science and to come up
-with a neat layout of modules and data structures optimized for the
-job.  So to some extent you have to start out by making a creative
-mess.  But soon afterward, you can start sculpting the mess into an
-architectural structure, combining beauty and functionality.
-
-*B*: Now you sound like a computer scientist.  What does this mean in
-practice, and what for?
-
-*A*: I mean that a second-generation code, or more likely a third or
-higher generation code, should be modular, with well defined interface
-specifications between the modules.  Good documentation is necessary
-but not sufficient; it comes in third, after functional modularity and
-appropriate API choices.
-
-*B*: What is API?
-
-*A*: Literally, it means Application Program Interface.  It describes,
-ideally down to the byte level, exactly how two programs communicate.
-<b>[I'll have to check whether this is the correct acronym -- Piet]</b>
-
-*B*: What for?
-
-*A*: Once a program is divided into modules, and the APIs are described
-completely, then different people can write different modules, in
-different styles, using different internal data structures.  They can
-even use different computer languages.  As long as each module talks
-to the others in the correct way through its APIs, freedom reigns:
-each implementer can do what she or he wants.
-
-*B*: What for?
-
-
-== Clarification of clarity
-
-
-*A*: I thought you would repeat your question, and I'm sure that I am
-still sounding too much like a computer scientist for your taste.  But
-let us look at a realistic N-body code.  Would it be easy to to transform
-two stars, when they come close together, from point particles into SPH
-blobs, modeling them as the gas spheres that they are, rather than
-gravitational singularities?
-
-*B*: Of course not.  You'd have to dive into at least a handful of
-subroutines.  Quite likely, such particles would be part of a
-regularized group of stars, described perhaps by simultaneous KS
-transformations, each with its own time transformation.  Doing this in
-a reliable way might be a thesis project!
-
-*A*: You say `of course not' because you've never seen an example
-where it would take much less time.  But imagine that each of the
-handful of routines you talked about would form its own module, with
-its own API.  If you then took an SPH code, of the type you have
-worked with extensively, and write a wrapper around it, with a clearly
-defined interface, wouldn't that make everything much easier?
-
-*B*: I don't see how that would make anything any easier.  Think of
-all the work you would have to do to rewrite the code into your pretty
-modules!  That would be even more work that splicing SPH in by hand.
-
-*A*: That's exactly why I argued for a rewrite of the whole code.
-Once you have done that, every further modification will be so much
-simpler that within a few years you will save more time than you had
-to put in during the rewrite.  In addition, I bet that you will
-discover many smaller and bigger points where you can make the code
-more robust and more efficient.  Especially if you document not only
-what you did but why you did it.
-
-*B*: What makes you think that?
-
-*A*: you will notice that many of your attempts to explain why things
-are done one way and not the other turn out to fail.  You will notice
-that many aspects were not really well thought out.  You didn't notice
-that, couldn't really notice that before, since the earlier generation
-code was not transparent enough to highlight the many specific unstated
-decisions that went into its design.
-
-*B*: There you go again, sounding like a computer scientist.
-
-*A*: But a practical one, I hope!  There are only two points, really:
-clarity of layout, first, and clarity of documentation, second.  And
-both have to developed simultaneously, since they feed into each other.
-
-== Reluctance
-
-*B*: I don't buy it.
-
-*A*: Why not?
-
-*B*: Speed!
-
-*A*: Speed of the code?
-
-*B*: Yes.  If you get your way, not only will you lose a lot of
-valuable research time yourself, writing such a code, but you will
-then find yourself with the slowest N-body code in the world.  Think
-about it!  You just suggested that we go to the innards of a
-production type N-body code, and put all kind of translation barriers
-right in the middle of where all the work is done.  Integration will
-grind down to a halt.
-
-*A*: Not so fast.
-
-*B*: Exactly.
-
-*A*: I mean, don't draw that conclusion so fast.  Let's make a rough
-estimate.  
-
-<b>[Jun, do you have a suggestion for a speed analysis example
-here? -- Piet]</b>
-
-<b>Here are some possible continuations; which shall we take?</b>
-
-* Bob reluctantly admits that speed <i>may</i> not be as problematic
-  as he thought, but he clearly is not convinced.  In addition, he
-  maintains that, even if you start in a clean way, by the time you
-  make the code really work, you are bound to make it dirty again.
-
-* They talk about stellar evolution codes, how they are a lot less
-  easy to read that stellar dynamics codes, by and large.
-
-* Alice talks about stories she has heard from people in other areas
-  of scientific modeling where people finally decided to rewrite legacy
-  code, how it took a few years, but how that resulted in a much more
-  flexible to build further software on.
-
-* They look at the web, and find anecdotal examples of people
-  rewriting codes for scientific simulations.
-
-* They go back to the future of modeling dense stellar systems.  They
-  wonder about the accuracy of population studies, now and in the future.
-  Are kitchen sink simulations ever going to give reliable answers?
-  The suggestion that you can solve for dozens of uncertain parameters
-  as long as you have many more accurate observational data points.
-  But will that ever be enough?
-
-* Alice remarks something along the lines of:
-
-      I guess one of my *hope* is to be able to demonstrate that
- a point-mass (I mean, with regularization and all other stuff)
- N-body code can be developed in a finite time.  At present, we
- have NBODYx, which, after 4 decades of work by Sverre, still
- need his care every day, and kira, which, after 10 years, is
- difficult to use even by its developers.  These two examples
- made it very difficult for anybody to even think of developing
- a new program.  If you need to spend your lifetime before
- interesting science can be done, you'd better do something else.
-
-      If writing a real point-mass Nbody code is that difficult,
- well, there is no other choice.  However, if we investigate
- each of the necessary ingredients, each of them is really
- simple.  So I believe there must be a simple way to implement
- simple things.  Of course, it may be the case that you need a
- better language than C++, so we will see . . .
-
-* Then, at the end, they decide to try something out, to see for
-  themselves what is doable.
+cosmology has become a rather ordinary field in astronomy.  But I
+never specialized in cosmology.  While most of my work has been in
+stellar dynamics, I seem to keep moving between different fields.
+For example, I just finished a paper in planetary dynamics on the
+dynamical formation of binaries in the Kuiper Belt.
+
+*B*: I'm certainly familiar with your publications in cluster dynamics,
+especially the analytical treatments you have given.  They were quite
+useful for my more applied simulations.  And didn't I see a paper of
+yours on black hole dynamics recently?
+
+*A*: Yes, that was on the question of whether two massive black holes
+spiral in within a Hubble time, after they have been brought into
+proximity by the merging of their parent galaxy.  And indeed, I tend
+to work on more analytical questions, though I enjoy doing large
+simulations too.  Comparing the two and figuring out from both sides
+why there are discrepancies is most fun: it keeps surprising me that
+you can use pen and paper to predict roughly what a computer will come
+up with after performing a trillions of floating point calculations.
+
+*B*: Which of all those fields in stellar dynamics do you find most
+interesting, having worked on all length scales between asteroids and
+cosmology?
+
+*A*: Right now I would say star clusters, especially those star
+clusters where there is an appreciable chance for stellar collisions
+in the densest regions.  Dense stellar systems, in other words.
+
+*B*: As you know, this is close to my interest and background.  But
+let me play the devil's advocate for a moment.  What is so interesting
+about dense stellar systems, in particular?
+
+=== Dense Stellar Systems
+
+*A*: A quarter century ago, when I was an undergraduate, astronomy was
+much less unified than it was today.  People observing in different
+wave length bands did not talk as much with each other as they do
+today, and theorists studying stars, star clusters, galaxies, and
+cosmology had even less overlap in their research.  Someone simulating
+the birth or evolution of a star; someone simulating a star cluster;
+someone simulating a collisions between two galaxies; or someone
+studying large scale structure of the universe -- all four of them
+would be working separately, each on their own island.  In contrast,
+we now see bridges everywhere.
+
+When studying large scale structure simulations, we see how normal
+galaxies are build up through the process of merging smaller galaxies
+and protogalactic gas clouds.  And when we study a collision between
+two galaxies, we see how star clusters are formed through the shocks
+that occur in the bridges and tails connecting them.  So this already
+connects the largest three categories from the largest scale down.
+Similarly, when we start at the bottom, studying the formation of an
+individual star, we have learned that we can only understand the
+formation process in an environmental way, taking into account the
+interactions between many protostellar clouds simultaneously.  So this
+forces us to study a whole star forming region, a proto stellar
+cluster.  In this way all four fields are now connected.
+
+It is fair to say that dense stellar systems form an central topic in
+the current trend toward unification of astrophysics.  Not only is the
+topic connected with structure from the scale of individual stars up
+to that of galaxies and beyond, it also is connected with the study of
+extreme forms of matter, including neutron stars and black holes.  And
+finally, on the level of simulations, it combines the simplest and
+most elegant theory of complexity, that of self-gravitational systems,
+with the a diverse mix of astrophysical effects, as seen in stellar
+evolution and stellar hydrodynamics, including the physics of
+accretion disks, common envelope evolution, and so on.
+
+*B*: That is all nice and fine, from a high-level point of view.
+However, when I'm working in the trenches, so the speak, I do not have
+much use for the big picture, and my only job is getting the details
+straight, and to get the work done.
+
+*A*: Of course, the details are what counts, in any real piece of
+research, if you want to get any real work done.  But it is equally
+important to keep sight of a broader picture.  If not, you'll still get
+a lot of work done, but not necessarily in an efficient way, and it
+will not necessarily lead to interesting results.
+
+*B*: I agree that you have to be sensible.  But you can be sensible
+without grand pictures and declarations, I would think.  How can a grand
+picture help me to get my work done?
+
+*A*: There are many examples.  Just to name one in stellar dynamics:
+the introduction of tree codes in the mid eighties made it possible to
+do the type of cosmological simulations that we are all familiar with.
+Until then, there was a huge gap between P^3M codes and direct summation
+codes.  The breakthrough came not by improving details in a particular
+piece of work in a given project, but by stepping back and rethinking
+the whole approach to large-scale simulations in stellar dynamics.
+
+*B*: I guess you could call that a paradigm shift.  But such shifts
+are few and far between.  I don't think you can take that as a typical
+example.  What I see as the future of dense stellar systems simulations
+doesn't require any paradigm shift.  Computers are getting fast enough,
+and what is needed is to write more software, of the type that can
+handle not only stellar dynamics but also stellar evolution, on the fly.
+And we can throw in hydrodynamics as well.  In short: what I see
+happening is a type of `kitchen sink' approach to simulating dense
+stellar systems.
+
+*A*: That doesn't sound very attractive.  At the very least I hope you
+come up with a better name!  But more seriously, why would you want to
+do that?  And even if you were to do that, why would anyone believe
+the results from such a monstrous combination of complicated codes?
+
+*B*: I think we have no other choice.  I grant you that idealized
+abstractions have their use, by now we have learned enough about a
+system of self-gravitating point masses, all of equal mass, and it is
+time to move on.
+
+*A*: Well, moving on beyond equal-mass point masses, and doing your
+kind of kitchen sink simulation, adding stellar evolution and
+hydrodynamics, those are quite different concepts.  Surely there is a
+middle ground between the two!
+
+*B*: Not really, I would say.  It may sound strange, but I think
+there are only two reasonable ways to simulate a star cluster: either
+you use the most extreme idealization, in which all stars have the
+same mass, and with radius zero; or you couple every star to its own
+stellar evolution program, to model its internal degrees of freedom,
+at least in principle.
+
+*A*: Strange indeed.  Please explain.
+
+=== The Equal-Mass Point-Particle Approximation
+
+*B*: Let us first look at the history.  I presume you know how star
+cluster modeling got started.  You have seen more of it than I have.
+
+*A*: When it all got started, I had barely arrived on this planet, and
+I wasn't reading the Astrophysical Journal yet, or anything else for
+that matter.  But yes, I know the rough history.  It took some 25 to
+35 years to understand the dynamical evolution of a star cluster,
+modeled as a collection of equal-mass point particles, depending on
+how you count, since the earliest N-body calculations were performed
+on modern computers, around 1960.  But you know the details better
+than I do.  I guess it is your turn to do some summarizing.
+
+*B*: During the sixties, simulations by Aarseth, Wielen, and others
+showed how three-body interactions form the dynamical engine at the
+heart of an N-body system, the agents of change in their evolution.
+Even if no binary stars were present initially, they would be formed
+dynamically in simultaneous three-body encounters.  And once there,
+encounters between these binaries and single stars would complicate
+the meek heat flow by two-body relaxation: a single scattering
+encounter can suddenly release a large amount of energy when a binary
+increases its internal binding energy by a significant amount.
+
+During the seventies, Henon and Spitzer and co-workers used
+approximate Monte Carlo Fokker-Planck simulations to model the
+contraction of the core of a star cluster, on a time scale that is
+only an order of magnitude larger than that of the half-mass
+relaxation time scale.  This so-called gravothermal catastrophe was
+predicted in the sixties, and actually observed by Henon in
+rudimentary form in the sixties as well.  But it was seen much more
+clearly in the seventies in statistical simulations.  While more
+difficult to observe in actual N-body calculations, because of the
+still low number of particles, a few hundred at most, they were seen
+there as well.  In fact, one could even argue that in the late
+sixties, some N-body simulations already showed hints of this effect.
+
+In the eighties, finally the behavior of an equal-mass point particle
+system after core collapse was elucidated, first by Sugimoto and
+Bettwieser, who showed that a post-collapse cluster can undergo
+so-called gravothermal oscillations, a series of local mini collapses
+and expansions in the very center of a star cluster.
+
+*A*: And then Goodman gave a detailed stability analysis in which he
+predicted the minimal N value for which an equal-mass N-body system
+would show such behavior.  At that point, theoretically the equal-mass
+evolution was well understood, wouldn't you say?
+
+*B*: I only consider something understood if it comes out of my
+simulations, in a repeatable and robust way.  I have seen too many
+semi-analytic predictions come and go in my young life to have too
+much trust in those!
+
+*A*: What Goodman did was finding roots in the complex plane of
+relatively straightforward and certainly well defined equations; I
+wouldn't call that semi-analytic, and I certainly would trust the
+complex plane a lot more than the complexities of any complicated
+simulation.
+
+*B*: I guess we're talking about matters of taste here, though many
+would think this an odd thing to say about `hard' science.  But moving
+right along, let me make my main point.
+
+It would be another decade before the predictions would be tested in
+simulations.  In the late eighties, various simulations based on
+Fokker-Planck approximations as well as gas models verified what
+Sugimoto and Bettwieser had seen in the early eighties, and in the mid
+nineties saw the first observation of gravothermal oscillations in a
+real N-body simulation, by Makino.  In a way, this was the end of a
+chapter in stellar dynamics, and further progress had to come from
+more realistic systems.
+
+*A*: But surely people had used a mass spectrum long before that.
+
+*B*: Yes, in fact the very first paper by Aarseth already described a
+multi-mass simulation, in the early sixties.  But it was only in the
+seventies that more detailed studies elucidated the main physical
+mechanisms of mass segregation.
+
+== Stellar Evolution
+
+=== The Role of Stellar Evolution
+
+*A*: I guess mass segregation had already been observed in equal-mass
+systems, as soon as hard binaries were formed, since most of the time
+these tight binaries behave as point masses that have twice as much
+mass as single stars.
+
+*B*: Yes and no.  If you would neglect three-body interactions, you
+would be right.  And indeed, if you would start a simulation with a
+significant number of primordial binaries, that would definitely be
+the case.  But those simulations were done later, for the first time
+in the late seventies, and more systematically in the early nineties,
+after observations had shown that globular clusters have indeed
+significant numbers of primordial binaries.  In contrast, if you only
+deal with dynamically formed binaries, you don't see much subsequent
+mass segregation.  First of all, such binaries are formed in the core,
+where the density is highest.  Secondly, recoil from three-body
+reactions will tend to kick binaries away from the center, even while
+mass segregation will tend to let it move back toward the inner part
+of the core.
+
+*A*: I see.  So mass segregation was studied systematically only in
+the seventies?
+
+*B*: Yes.  Monte Carlo Fokker Planck simulations as well as direct
+N-body integrations showed in detail how heavier stars tend to wind up
+in or near the core of a star cluster.  At the same time, lighter
+stars were seen to be more likely to escape from the system.  However,
+the problem with these early multi-mass calculations is that they were
+inconsistent.
+
+*A*: Inconsistent?
+
+*B*: They were not very realistic, by and large, since most of them
+did not include the effects of stellar evolution.  In the real world,
+while heavier stars do tend to sink to the center of a star cluster,
+roughly on a two-body relaxation time, they also tend to burn up more
+quickly.  As you know, a star 25 times more massive than the sun burns
+up a 1000 times faster.  So it would be totally unrealistic to follow
+a multi-mass system, and to leave the heavier mass particles in the
+center, just sitting there.  You really would have to remove them, or
+at least most of their mass, as soon as their age exceeds that
+dictated by stellar evolution.  Few multi-mass simulations did that.
+
+There were some exceptions.  In the early eighties Aarseth and
+coworkers in their simulations began to remove some or all of the mass
+of stars after they reached the end of their life.  And in the late
+eighties, Chernoff and Weinberg provided a treatment of mass loss from
+stellar evolution, in a Fokker-Planck calculation.  But most
+multi-mass simulations in the seventies and eighties did not include
+stellar evolution.
+
+*A*: But it can't be that hard to just diminish the mass of a point
+particle at the end of its nominal lifetime, from that of a main
+sequence star to that of a white dwarf, neutron star, or black hole,
+as the case may be.
+
+*B*: Or put it equal to zero, for those stars where you believe that
+no remnant is left at all.  Yes, that can be done, but that will not
+get you very far.  Fiddling only with the masses of stars is not
+enough.  You would then be faced with the question: what to do with
+binary stars?  Take two stars in a binary with a semi-major axis that
+is much larger than the some of their radii while they are on the main
+sequence.  Soon before the heaviest star will end its life, it will
+want to evolve into a giant phase, and as a result, it may well dump
+much of its mass on its companion star.  How are you going to model
+that?  Not by simply removing the mass from the system.  That would
+not do justice to a large fraction of close binary evolution -- and
+close binaries are exactly the dynamical heat source of an N-body
+system.
+
+In other words, the only way to make a meaningful simulation of a
+non-equal-mass system of particles is to add a realistic form of
+stellar evolution, for single stars and especially for binary stars.
+Nothing else makes sense to compare with observations.
+
+=== The Case for Including Stellar Evolution
+
+*A*: You like to make strong statements, but I can make a few too!
+We don't know much of anything about the quantitative evolution of
+close binaries, so what is the point of adding a largely unknown
+quantity to an otherwise very detailed stellar dynamical situation?
+
+But let me answer my own question, if I may.  We know that the
+dynamical evolution of a star cluster is not very sensitive to the
+nature of the central heat source.  As long as we know the amount of
+heat lost at the half-mass radius, the core will adjust itself to
+whatever size it needs to have to let the central heat source produce
+the amount of energy needed.  The situation is quite similar to the
+evolution of a single star, such as the sun: given the heat lost from
+the photosphere, the central temperature and density can adjust quite
+easily to create the right amount of energy in nuclear reactions.
+
+*B*: Well, that may give you a rough agreement for the overall
+structure, but for me that is not good enough.  I am interested in
+predicting the number of X-ray binaries and millisecond pulsars and
+their binaries, as well as the physical characteristics of those
+systems.  They are important from an observational point of view.
+As you know, a significant fraction of X-ray binaries are located in
+globular clusters, even though these clusters contain much less than
+1% of all the stars in our galaxy.  It is clear that the vast majority
+of those X-ray binaries in clusters are formed through dynamical
+effects, as a result of the high density of stars.
+
+*A*: But you can do that in a two-step process.  First you make a good
+enough dynamical model of the dynamical evolution of a star cluster.
+Since X-ray binaries and binary pulsars form only trace populations,
+neglecting them will not greatly influence the overall dynamical
+evolution, I would think.  Now, having done that first step, you can
+then statistically sprinkle your exotic binaries into the outcome of
+your first step.  This second step will have a Monte Carlo nature, but
+who cares?  Your precise N-body calculation started of from random
+initial conditions, after all.
+
+*B*: Not so fast.  Have you ever looked at the HR diagrams based on
+recent observations of globular clusters?
+
+*A*: Not recently, no.  I do remember that astronomers traditionally
+talked about something like a second parameter effect.  What was that
+again.  I believe that metallicity was the first parameter, and that
+it was claimed that you need at least one more parameter.  In other
+words, two clusters of the same metallicity can still show different
+types of HR diagrams.
+
+*B*: Yes, that was a long time ago, even before the first observations
+with the Hubble Space Telescope.  Since then we have learned that
+there is an amazing variety of morphologies in the HR diagrams.  And
+here we are talking about large numbers of stars, not your occasional
+X-ray source or other exotic object.  The only way we are ever going
+to explain the structure and evolution of globular clusters is by
+making our simulations detailed enough to at least be able to
+reproduce, say, the position and shape of the horizontal branch in
+each well observed globular cluster.
+
+*A*: Okay, you make a strong case for including some form of stellar
+evolution right away, when performing a star cluster simulation,
+besides the basic stellar dynamics.  The main question then is: how
+much?  What is wrong with using a rather crude toy model?
+
+*B*: I can't imagine modeling globular clusters on a cluster by
+cluster basis using such a rough approach.  I'm afraid we have to do
+better than that.  At the same time, I know that there are large
+uncertainties in our understanding of contact binary evolution.  But
+what can we do?  We do the best we can, and hopefully, `the best' will
+get better every year, perhaps when our stellar evolution colleagues
+will use two- and three-dimensional models.
+
+*A*: I won't hold my breath.  But just to set the stage, why don't you
+continue your historical summary.  When did people start using more
+detailed stellar evolution information in their dynamical simulations
+of globular clusters?
+
+=== Tracks and Recipes for (Binary) Star Evolution
+
+*B*: It was only in the nineties that a few groups began to used
+look-up tables for single star stellar evolution, and simple recipes
+to describe what would happen to the evolution of binary stars.  While
+they followed the stellar dynamical evolution in the point mass
+approximation, as before, their stars would loose mass, and their
+binary stars would exchange mass, in a roughly realistic fashion.
+
+Actually, it is pretty amazing that it took so long for stellar
+dynamics and stellar evolution to be come together, even in this
+rather rudimentary way.  It could easily have been done twenty years
+earlier.  After all, in the early seventies, single star evolution was
+well understood, at least in outline, and plenty of evolution tracks
+had become available.  And the main phases of binary star evolution,
+including the conditions for gradual and catastrophic mass transfer,
+had been analyzed as well.
+
+*A*: Yes, I remember learning about cases A, B, and C of mass transfer
+in binary stars, during the undergraduate course in stellar evolution
+that followed.  Why do you think people waited twenty years?
+
+*B*: I don't quite know.  But if I were to guess, I think the problem
+is that the bridge was made from stellar dynamics to stellar evolution.
+Stellar dynamicists had enough problems on their hands as it was, to
+figure out what happened during core collapse and afterward, with
+gravothermal oscillations.  Only after all that had been sorted out,
+and especially with the observational discovery of primordial binaries,
+did an urgent need for stellar evolution treatments make itself felt.
+
+*A*: But you had just convinced me that mass segregation simulations
+were unrealistic without stellar evolution.  This would suggest that
+Aarseth should have added stellar evolution to his code in the early
+sixties!
+
+*B*: Well, he was the first one to do so, as I mentioned, but I guess
+he too had more urgent problems to deal with early on, such as the
+treatment of close binaries, inventing and adapting regularization
+schemes to avoid numerical errors during close encounters.  But in the
+end, I think astrophysicists have inertia, like all human beings:
+stellar dynamicists just won't get excited about bringing in stellar
+evolution in their codes until they really have to.
+
+*A*: So why did stellar evolution folks not add dynamics to their
+simulations, or at least knock on the door of dynamicists?
+
+*B*: They, too, could have and perhaps should have done so in the
+seventies.  They did start to do population synthesis studies around
+that time, Tinsley and others.  But of course, they too had other
+worries to take care of first.  It was already a big job to get single
+star evolution treated correctly in a statistical fashion, for a
+complete star cluster or a whole galaxy.  Then, and even now, there
+are significant questions about what exactly happens to various types
+of stars in the late phases of their evolution.  And when people
+started to add the signatures of binary star evolution, they quickly
+realized how little we know about many important phases of close
+binary evolution, and contact binaries in particular.
+
+So it is perhaps not too surprising that they did not rush to put in
+dynamical effects of stellar collisions.  Even though blue stragglers
+had been known to exist in star clusters since the fifties, it was not
+yet clear how important collisions were in producing those stragglers,
+notwithstanding the pioneering work by Hills in the seventies.  In
+fact, the first conference dedicated to blue stragglers was held in
+the early nineties, and the first conference on stellar collisions
+took place in the year 2000!
+
+In contrast, tidal capture of a neutron star by a main sequence had
+been studied in the mid seventies, because it seemed to be a promising
+route to explaining the large overabundance of X-ray binaries in
+globular clusters, which I mentioned before.  But that type of
+analysis was largely local, studying individual encounters, rather
+than modeling the behavior of a whole cluster in much detail.
+
+*A*: Given that it took twenty years for stellar dynamics and stellar
+evolution to meet, in evolution recipe mode, once they met it must
+have produced a major shift in star cluster modeling.  Before that,
+most simulations were exercises in mathematical physics, a lot of fun
+in itself, but of limited use for comparison with observations, as you
+have just argued.  But once you put in tracks and recipes, aren't you
+in a good position to start explaining the observational data?
+
+*B*: No, not really.  I consider the stage of using recipes as not
+much more than playing scales, as warm-up exercises before moving on
+to the type of kitchen sink simulations that I mentioned before.
+
+=== Limitations of Tracks and Recipes
+
+*A*: Let me come back to my previous objection.  You admitted that we
+know rather little about the evolution of contact binaries.  What is
+the point of computing detailed stellar evolution models if there are
+vast areas of stellar evolution where we don't even have a clue of
+what is going on, beyond a qualitative hand-waving hunch?  Take the
+case of common envelope evolution.  If a white dwarf starts to spiral
+in toward the core of a red giant, it seems plausible from an
+energetic argument that the envelope of the giant might be lost before
+the white dwarf reaches the core, leaving behind a tight pair of what
+will look like two white dwarfs.  And it seems equally plausible that
+not enough mass is lost not fast enough, and that the white dwarf will
+merge with the core.  Detailed 3D calculations of this process are
+very hard to do, given the fact that the initial stages cover very
+many dynamical crossing times.
+
+Given this fundamental uncertainty, why bother doing detailed
+calculations elsewhere in a simulation?  A chain is as weak as its
+weakest link.  It seems like a waste of computer time and software
+effort to build some very strong and detailed links as long as other
+links such as common envelope evolution are too weak to contemplate.
+
+*B*: To some extent I agree with you.  First of all, okay, I see no
+use for live stellar evolution codes to compute the evolution of
+single stars, within a stellar dynamical simulation.  And as a second
+okay, I agree that even the evolution of primordial binaries can be
+treated adequately through a combination of recipes and stellar
+evolution tracks.  Where I differ from you is in my view of the
+treatment of merger products.
+
+*A*: Before we get to differences, let me point out that your first
+and second okay are very different types of okay.  The first one
+applies to the use of relatively accurate and robust information.
+There is pretty good agreement between different stellar evolution
+experts as to the quantitative behavior of the tracks of normal stars,
+apart from perhaps the very most massive stars.  Your second okay
+addresses the use of rather ad hoc and rough treatments of binary star
+evolution, where quantitative certainty is far less good, some would
+say almost absent.
+
+*B*: Yes, I agree with all that, but what can a poor boy do?  We do
+the best we can.  And in order to get at least some new insight in the
+evolution of star clusters, I think those tracks and recipes are good
+enough, even though the latter are far from ideal of course.  But let
+me move on to my main difference with your view.  Whenever two stars
+collide with each other and merge, you wind up with a merger product
+that is totally unlike the type of normal ZAMS (zero age main
+sequence) star that stellar evolution tracks all start with.
+
+A merger remnant has not only a very different metallicity than
+ZAMS stars in the same cluster had, what is worse, the chemical
+composition is different at different radii in the star, due to
+incomplete mixing during the collision, which in general will be
+significantly off center.  In addition, for a hundred million years
+or so, the merger product will be out of thermal equilibrium, and
+therefore will have a quite different structure from a normal star.
+
+The only way you are getting even roughly close to determining the
+structure of such a star is to use not only a live stellar evolution
+code, but also a live hydrodynamics code to follow the collision.
+So what I envision is that when two stars come close together within
+the stellar dynamics part of the simulation, these point particles are
+handed over to a hydrodynamics code, which replaces them with blobs of,
+say, SPH particles, layered in the proper way as specified by the
+stellar evolution information in the simulation.  From this point on,
+the power of SPH is let loose until we arrive at a dynamically settled
+merger remnant.  A stellar evolution code will then follow the thermal
+settling, as well as the subsequent more normal evolution.
+
+But if this does not convince you, consider what happens subsequently
+with a merger remnant.  It will be formed in the core of the cluster,
+most likely, since there the chance for collisions is highest.  It
+will remain in the core, since on average it will be more massive than
+typical single stars.  Therefore, it will stand a significant chance
+to undergo yet another collision, or be captured as a binary member in
+an exchange reaction.  Even if it avoids collision through such a
+three-body dance, subsequent evolution is likely to lead to mass
+overflow.  How can you possibly use recipes to treat mass overflow
+between stars that are not parametrized only by mass and chemical
+composition, but by the full functional dependence of weird
+composition gradients, and are possibly still out of thermal
+equilibrium?
+
+To sum up, while it is possible to make tables of stellar evolution
+tracks for unperturbed stars, and while it is just possible to combine
+pairs of these tracks with elaborate prescriptions for any conceivable
+combination of two stars in orbit around each other, it is utterly
+impossible to prepare beforehand for all types of strange merger
+remnants that can be formed, let alone for their subsequent interactions.
+
+== A Kitchen Sink Approach
+
+=== The Need for Combining Codes
+
+*A*: But as long as only a few strange stars appear in a whole cluster,
+why would you make your cluster evolution code so enormously more
+complicated in order to try to handle those?  Surely the vast majority
+of stars in any globular cluster will never hit another stars.
+
+*B*: But I am not only interested in the vast majority of the stars.  I
+would like to know the nature of X-ray sources and binaries containing
+a millisecond pulsars.  By studying the properties of neutron stars
+and black holes in binaries, we can learn a lot of fundamental
+physics.  We can learn about dense states of matter in a way we
+cannot possibly produce experimentally within a laboratory, and we can
+learn about general relativity in strong fields, right up to the
+horizon of a black hole.  And since black holes are black when nothing
+falls into them, we have little choice but studying them in a binary
+context.
+
+*A*: I am certainly interested in these objects as well.  But wouldn't
+it be good enough to first neglect the stellar evolution complications,
+and later make up for them?  As I suggested earlier, you can use a
+method of successive approximations.  First you model the whole
+cluster history, and only then you take care of the special cases,
+given that you already know the state of the environment they are in.
+
+Let me give an example.  When you calculate the evolution of a single
+star, it is possible to calculate the evolutionary history using only
+a rather small network of nuclear reactions.  Then, if you are
+interested in the amount of trace elements formed during the evolution,
+you can go over the whole history once again, in a second pass.  You
+then take the time dependence of of the structure of the star as given
+by the first pass, and against this background you compute the
+behavior of a much more detailed nuclear reaction network.
+
+*B*: That wouldn't work here.  While it is true that the total number
+of weird stars, affected by collisions, is small compared to the total
+number of stars, it may not be small compared to the number of stars
+in the core.  The densest cores in globular clusters contain only
+about 1% of the total mass of a cluster, if that much.  And a large
+fraction of stars in such a core may have undergone a close stellar
+encounter during its lifetime.
+
+So for the overall cluster properties, you may or may not be right,
+that's an arguable point.  But for the detailed core properties, you
+are certainly not right.  How the merger products behave in the core
+affects the core parameters, and by changing the local environment,
+all stars in the core are affected.
+
+*A*: Well, maybe that is true.  And, come to think of it, there are
+other dense stellar systems where encounters are more dominant.  If we
+look at star-forming regions, it now seems pretty clear that many if
+not most stars are produced by interactions between two or more
+protostellar gas clouds.  So for those systems, you have no choice but
+combining hydrodynamics and stellar dynamics and stellar evolution.
+And if we look at galactic nuclei, we quickly realize that the stars
+in the immediate neighborhood of a central massive black hole have
+a mean time between collisions that is far shorter than the age of the
+universe.
+
+So, yes, while I still don't like the idea of a kitchen sink approach,
+I must admit that there are certainly situations where one has no
+choice but to go that route.  And the outcome of such calculations
+apply to the formation of all stars, and the final stages of the most
+interesting end products of stellar evolution.  Okay, I'm convinced now!
+
+*B*: Glad to hear that!  And of course, I am not advertising a kitchen
+sink approach for all stars simultaneously.  There is plenty of room
+for stellar evolution tracks and binary evolution recipes, as we saw.
+But that in itself is good and bad.  It is good in that it is easier
+to check the accuracy of tracks and recipes than the accuracy of the
+outcome of kitchen sink combinations of codes.  But it is bad in the
+sense that the software package you wind up with is maximally
+complicated.
+
+Compare the situation with a mindless approach in which you do every
+stellar evolution from scratch, without using stellar evolution
+tracks.  In addition, you could compute the behavior of each binary by
+letting two live evolution codes talk to each other, dump mass from
+the one onto the other if need be, and adjust the orbital parameters
+according to the mass and energy and angular momentum exchanged.  It
+would cost a lot more computer time, perhaps, but it would certainly
+make the code simpler.
+
+In contrast, what I have in mind is a code that combines everything:
+stellar dynamics, stellar hydrodynamics, stellar evolution tracks,
+recipes for binary star evolution, a live stellar evolution code,
+and yes, a live binary star evolution code as well.  I'm not looking
+forward to putting all that together, but frankly, I see no other
+choice.
+
+=== Parametrization
+
+*A*: If you really succeed in putting together such a code, and you
+start doing simulations with it, then what?
+
+*B*: publish the results.
+
+*A*: I suppose so.  But what have you learned from it?  We have agreed
+now that such calculations should be done, but it is a different
+question how to interpret them.
+
+*B*: I don't see what the problem is.  After you do a detailed
+simulation, you just make a reasonable choice of what figures to
+publish, based on the most relevant physical parameters, and then you
+write the text around it.  And for people who want to know more
+details, you can make the raw data available.  What else can you do
+with the results of a simulation?
+
+*A*: I mean more than that.  You told me that you are interested in
+learning more about the properties of neutron stars and black holes.
+A theoretical physicist staring at your published figures of
+Lagrangian radii is not going to find much deep insight in those.
+In the end you want to come up with hard numbers describing some of
+the properties of these exotic objects.
+
+Now in order to do that, you have to find a way to characterize the
+environment of these objects, at the very least the cluster core, as
+you stressed already.  Since all stars interact with each other in the
+core, we can only believe the details of a simulation if we can
+believe the details of all physical processes that play a role in the
+environment.
+
+*B*: But we have already seen that, regrettably, it will be a very
+long time indeed, before we will be able to give a quantitative
+treatment of common envelope evolution and similar such ill understood
+stellar evolution phases.  I think we just have to live with what we
+can do.
+
+*A*: I think we can do better.  Let us take the example of the
+evolution of a single star.  Imagine that you were the first person
+ever to attempt to do a computer calculation modeling the evolution of
+a single star.  You want to write a computer code, but first you have
+to decide how to represent the physics.  Now I walk by your office,
+ask what you are going to work on, and then I tell you that it cannot
+be done, since we don't know convection.  Sure, we can make order of
+magnitude estimates, a form of dimensional analysis.  We can talk
+about the typical size of a convective cell, but beyond that we know
+next to nothing.  How can we possibly make quantitative calculations
+about a star in which convection plays an important role, if we don't
+even know the value of the most significant digit describing the local
+state of a fluid in convective motion?
+
+*B*: I imagine that I would be unhappy, hearing that, but that I would
+argue that I would try anyway, just to see how good or bad the outcome
+of my calculation would be.  After all, that is what happened
+historically, and we're all glad people didn't give up in the late
+fifties!
+
+*A*: Well, yes, that is what happened, but there was an essential step
+that was taken first.  Even without any detailed knowledge of convection,
+a brave step was taken by introducing the concept of convective scale
+length _h_.  And while there really was no reason to believe that this notion
+had much physical meaning beyond an order of magnitude characterization,
+it did provide us with a quantitative handle, a number _h_ that could be
+determined afterwards, by comparing theory and observation.
+
+It was altogether possible that no single good value for _h_ would
+have reproduced the observed structure and evolution of stars.
+Perhaps convection should have been modeled by a function that is
+fully dependent on temperature and density and chemical composition.
+A priori you just don't know.  The happy surprise was that a _single_
+number _h_ turned out to be enough to find rather good agreement
+between the model produced and the stars observed.
+
+What I would propose for a kitchen sink calculation of a globular
+cluster, or any dense stellar system for that matter, would be a
+parametrization of _all_ the unknown physics, by however many
+parameters it would take.
+
+=== Comparison with Observation
+
+*B*: You'll wind up with dozens of parameters, do you realize that?
+
+*A*: I do, and yes, that may present us with significant problems.
+But now it is my turn to say: what else can we do?  But I can say
+more.  First of all, any globular cluster simulation already requires
+you to choose dozens of parameters.  There is the choice of initial
+model for the density distribution, if we assume the simplest case of
+isotropy.  Then there is the choice of mass spectrum.  And for the
+primordial binaries you have to give a prescription for the initial
+distribution function, as a function of mass ratios, separation and
+eccentricity.
+
+*B*: And a prescription for the tidal field, which can be time dependent.
+And perhaps you'd like to take into account disk shocking, when the
+cluster passes through the galactic plane.  Yes, I know, there are
+many numbers you have to specify already.  And these may well be
+different for different globular clusters.
+
+*A*: Exactly, that is my point.  If you can make detailed realistic
+models for a number of different globular clusters, you have to provide
+all those initial conditions, and vary them until you get good fits
+with the observations.  So the situation will not be much worse if you
+add a handful of parameters modeling the physical uncertainties.  And
+the good thing is, a parameter describing the outcome of common envelope
+evolution, for example, can be expected to be the same for different
+clusters, at least in first approximation.  So the more clusters you
+model, the less these extra parameters will cause problems.
+
+Even so, it still seems worrisome to fit dozens of parameters to one
+set of observations.  There is this nice quote about John von Neumann,
+who certainly knew how to use computers to fit data.  He used to say:
+"with four parameters I can fit an elephant, and with five I can make
+him wiggle his trunk."
+
+*B*: It just shows that globular clusters are more complicated than
+elephants.
+
+*A*: I don't think von Neumann would have agreed.  But it all depends
+on the accuracy of the available data, and most importantly, upon the
+lack of degeneracy in the types of data available.  And this brings me
+to my second point.  If we would just try to fit density profiles and
+velocity dispersions, we would be hopelessly lost.  The only thing
+that can save us is detailed observations of specific types of stars,
+such as binaries of different types.  In that way, we can hope to
+obtain more independent constraints than there are independent initial
+conditions.
+
+*B*: Are you thinking of X-ray binaries and binary pulsars?  Given the
+many hundreds of such X-ray sources that have been found in galactic
+globular clusters, they can help constrain quite a few parameters
+already.  And similarly, the wealth of pulsars that is being
+discovered in globulars is constantly growing as well.
+
+*A*: Yes, but I am also thinking about more normal binaries.  If
+future observations can pin down more of the parameters of the current
+population of binaries, we still will have to search around in
+parameter space to find the original distribution, but at least that
+will constrain the uncertainty quite a bit.  Primordial binaries
+provide the largest number of free parameters in setting up a
+realistic set of initial conditions for a cluster evolution, I bet.
+
+*B*: That is right.  And yes, the observations are improving.  Also, I
+don't expect to have a working kitchen sink code any time soon.  I fully
+trust the observers to have quite a bit more data in hand by the time my
+code will work and is debugged.
+
+*A*: Is a code ever fully debugged?
+
+*B*: Well, good enough is good enough, I'd say.  No person is perfect,
+and no code is perfect.
+
+*A*: Given that you have convinced me that a kitchen sink code is a
+reasonable goal to work toward, I'm curious to hear a bit more about
+how you intend to write such a code.
+
+== Software Architecture
+
+=== Legacy Codes
+
+*B*: The basic idea is to start with an N-body code, then to add
+stellar evolution tracks and binary evolution recipes, then to add a
+stellar evolution code, and possibly an extra version of it that can
+handle binary stellar evolution, then to put in a hydro code as well,
+and make it all work together.
+
+*A*: That reminds me of a description of a human being as worth a few
+hundred dollars in terms of chemical ingredients.  Just how to put the
+ingredients together to make a human being is not that simple.
+
+*B*: That's not a fair comparison.  That would be like saying that I
+had to start with ones and zeroes, or had to start at the byte level.
+Fortunately I can start with so-called legacy codes: codes for stellar
+dynamics, stellar evolution, and stellar hydrodynamics, that have been
+developed over many years by many people.
+
+*A*: Okay, I admit, my example was too extreme.  I should have said
+that you take a fish and a reptile and a bird, and put it together to
+make a primate.
+
+*B*: Still not fair, but I won't argue with analogies.  I can only
+repeat our mantra: what else can we do?  You're not proposing that I'm
+going to write a kitchen sink code from scratch, do you?  That would
+mean reproducing more than a hundred person-years work of code writing!
+In fact, that would be an apt use of your analogy of the chemical worth
+of a human being.
+
+*A*: I'm not sure what the best solution is, but I am sure that there
+are various ways that are definitely not the best.  For example, if
+you don't make your kitchen sink code modular, you are asking for
+trouble and you will become bogged down hopelessly.  Also, if you do
+not insist that the legacy code providers give you completely robust
+codes, you're inviting disaster.  Can you imaging handholding some of
+your stars, because they don't know how to complete their full stellar
+evolution track through difficult phases along the giant branch or
+horizontal branch?  With a few hundred thousand stars, you can't
+afford holding even 1% of them by the hand!
+
+*B*: Your second point is certainly well taken.  Until recently, in
+fact no stellar evolution codes could really run by themselves, in a
+fully automated fashion.  However, there now are several experts in
+stellar evolution who have developed more robust codes, and who have
+shown an interest in sharing their codes with me.  Still, it will be
+up to me to connect all the codes, from stellar dynamics to stellar
+evolution to hydrodynamics.
+
+*A*: That brings me back to the notion of modularity.
+
+*B*: What exactly do you mean?
+
+*A*: If you can define a set of interfaces, between each of your
+legacy codes, through which a limited number of exactly defined
+variable values can be passed, your life will be a lot simpler.
+
+*B*: Forcing yourself to do that will be very complicated, and
+frankly, unnatural.  How can such an exercise in formality help you?
+
+*A*: What is your alternative, what do you consider natural?
+
+*B*: Any stellar dynamics legacy code I have ever seen has many
+different places where two stars can come in close proximity.  Think
+about the various regularization techniques, as well as the ways in
+which perturbers are treated, not to mention stars with unusually high
+velocity that can suddenly show up unexpectedly.  All these places in
+the code can and probably should be coupled to a hydro code, since in
+all these cases a stellar collision or close encounter can occur.
+
+*A*: That will never work well.  Even if you can get it to work ever,
+based on a particular legacy code, before you know it either the
+legacy code will change in small and subtle ways, throwing you off, or
+you may decide to ask slightly different questions, requiring you to
+revisit all these many connection points between the two codes.  And
+you want to do this with at least three legacy codes and put in tracks
+and recipes to boot!  This will be hopeless.
+
+*B*: Do you have a _realistic_ alternative?  Surely your formal
+picture of limited well-defined interfaces can't possibly be
+implemented in a real stellar dynamics code with regularization and
+perturbers and all that.  You'll have to rewrite everything from
+scratch, and even then, it will be far slower than your old code.
+
+=== Modularity
+
+*A*: Let us start with what modularity means.  If a code is truly
+modular, you can understand and test each part separately.  Then, to
+see how it all works together, you can make sure that you have at
+least two independent implementations for each part, so that you can
+mix and match and see how swapping modules influences the outcome of
+a calculation.
+
+Now, to answer your question about regularization and perturbers,
+I do not suggest that you rewrite the non-gravitational codes.
+You can put a wrapper around a stellar evolution code, with a well
+defined interface, and similarly you can put a wrapper around a
+hydrodynamics code.  But the stellar dynamics code will have to be
+rewritten, I'm pretty sure, for the reasons you just gave.  Let us
+take a bird's eye view of the situation.
+
+Logically speaking, you could introduce four elements.  A manager,
+and three legacy codes, all wrapped in an interface.  The three codes
+will be like black boxes.  If you open the hydro box or the evolution
+box, you will see lots of physics, and lots of wires connecting the
+various physics modules.  But if you open the dynamics box, you will
+see very little physics, and almost only wires.  The part of the code
+that solves Newton's equations of motion is literally only a few lines,
+occurring in only a few places.  Everything else is bookkeeping,
+complex orchestration of coordinate transformations, updating of
+perturber lists, handling exceptions, shrinking or extending groups of
+particles that need special treatment and so on.
+
+*B*: Ah, you know more about direct N-body codes that you have let me
+to believe, so far!
+
+*A*: Yeah, it has been a while, but I did crawl through one of them,
+years ago.  It wasn't easy.  But you see my point.  Logically speaking,
+you could introduce a manager module, which takes care of all the
+bookkeeping needed to let the three modules talk together.  But you
+would be replicating much of the bookkeeping that is already happening
+in the stellar dynamics module.  It would be much more natural to
+rewrite the stellar dynamics module, elevating it in the process to
+the status of manager module, and letting it do its interfacing with
+the two other modules.  And it can take care of the interface timing
+between the two other modules as well, as a good manager should.
+
+*B*: You're going way over my head here, talking about two different
+ways of doing your modular thing, while I have no interest whatsoever
+in being formal, or modular, or whatever other paradigm computer
+scientists may come up with.  But as far as I can follow you, your
+second alternative goes more in the direction of what I would do.
+I would simply take an existing N-body code, and splice in all the
+connections that are needed with the stellar evolution code, and with
+the hydrodynamics code.  The only difference I can see is that you
+want me to write the N-body code from scratch, while I maintain that
+it is a lot more efficient to stat from a legacy N-body code.
+
+*A*: The main difference is what you just called this splicing thing.
+Where you would to make a few dozen connections between the dynamics
+code and the other codes, I want to limit the connections to a few,
+at most.  And then I want to define and document those connections
+in a completely precise way, down to the byte level.  That will
+require you to rewrite your N-body code.  That will take time, but you
+will soon gain time, over the years to come, when you want to make
+later extensions.  As you know, several of the current legacy codes
+have a life time of twenty or thirty years, if not longer.  It is well
+worth your time to spend a few years setting things up correctly, and
+then reaping the benefits for a long time afterward.  After all, the
+time that is spent by experimentalists and observers building a
+laboratory or observatory is a fair fraction of the time they spend
+using it.  If they wouldn't carefully plan in building a new lab or
+telescope, and just build new stuff haphazardly on top of old pieces,
+they would fail.
+
+=== Interface specifications
+
+*B*: Wait a minute: you said that modularity means flexibility, and
+that means that you can later extend things more easily.  But then you
+said that you need well-defined interfaces.  That to me sounds like
+the opposite of flexibility.  We have seen plenty of examples where
+progress was hampered by rigid definitions.
+
+To take a real life example: for decades now, the telephone system in
+the United States has been running up against the barrier of the
+ten-digit specification of telephone numbers, with three for an area
+code and seven for the number within an area code.  As a result, they
+have split up existing regions for a given area code into two halves,
+one of which retained the old area code, and one of which got a new
+one.  Think of all the effort in people having to reprint all the
+material that has their telephone number on it, having to repaint
+their delivery car, and so on.
+
+*A*: Yes, that is a good example of the problems you can get with an
+inflexible specification.  But think of the alternative: if any telephone
+number could have had any length, back in the days in which the
+telephone systems was set up, based on mechanical relays, it would
+probably have been more cumbersome then.  In any case, whatever
+solution they would have come up with would sooner or later have led
+to unforeseen problems.
+
+The real mistake with the telephone system was not so much that they
+ran into a limitation of a specification, but rather that they did not
+change the specification.
+
+*B*: What is the point of a specification if you can easily change it?
+
+*A*: You don't want to change it in arbitrary ways, whenever there is
+a small problem for which it seems convenient to stretch the
+specification a bit.  But you do want to make a change when it is
+unavoidable to do so, and you don't want to postpone such a change
+until you walk straight into a wall.  In the case of the telephone
+system, it would probably have been much better to extend the number
+of digits a few decades ago, as soon as computers began to replace
+mechanical relays.  That way there would have been only one change
+for everybody, rather than an annoying and interruptive change of
+area codes once every few years or more.
+
+I suspect that the real reason for the long delay in a change of
+specification for the telephone system has to do more with politics
+than with engineering.  It is probably too difficult to get everyone
+involved to agree on all levels.
+
+*B*: The same problem applies to the internet address protocol, of
+course.  The limitations of a 32-bit address are being felt severely
+now, especially outside the United States, in countries that were
+given far fewer addresses than the U.S. had already taken, but where
+there are now a comparable number of users.  The problem there, too,
+is politics: until the U.S. will agree to go to a wider address
+protocol, it is unlikely that it will change.
+
+*A*: Fortunately, we don't have to worry too much about high level
+political pressure when developing star cluster simulation software.
+In our case we can learn from these and other mistakes.  I suggest to
+allow a controlled update of the specifications, whenever you define a
+new major version number for your code, in a very well defined manner.
+
+*B*: Why not just allow a common block, and let people pass whatever
+they want?
+
+*A*: If you allow that, you may as well forget about modularity.
+In that case, there are so many ways that a small modification can
+cause a major perturbation that will be almost impossible to trace
+down.  And if you want to parallelize your code, things only will
+get worse.
+
+=== A Matter of Opinion?
+
+*B*: I see that you are really serious with your modularity speak.
+I will give you the benefit of the doubt, for argument's sake.
+You have just shown that you are familiar with the basic lay-out of an
+N-body code, which I respect, since there are few astrophysicists who
+have actually gone through a direct N-body code that has all the bells
+and whistles to do collisional stellar dynamics.  So let's play the
+game: you describe to me how I should modularize my code.  Then I'll
+tell you whether it would even have a chance of being reasonable.
+
+*A*: First of all, you should treat the dynamics code in exactly the
+same way as we have treated the overall kitchen sink code: it should
+be split up into smaller modules, connected with well-defined interfaces.
+For starters, the N-body code will be split in a global and local part.
+The global part will compute the particle orbits throughout the whole
+cluster, while the local part will handle all the close encounters,
+coordinate transformations, regularization, and so on.
+
+*B*: But what about perturber lists?
+
+*A*: You mean particles that are too far from a local clump to be part
+of the clump, but too close, so that their influence on the clump can
+not be neglected, unlike the bulk of stars that are further removed?
+
+*B*: Exactly.  Those perturbers will give you a bunch of spaghetti
+that cross wires between your two neat local and global modules.
+
+*A*: No, they won't.  I won't let them.  One solution would be to
+introduce a separate perturber module, besides the local and global
+modules.  Another solution would be to include the perturber lists
+within the local module.  Yet another solution is to device a
+different and novel algorithm that dispenses with the use of
+perturbers altogether.
+
+*B*: The last case is just silly.  Decades of experience has shown
+that you get an enormous penalty in computer time needed when you
+leave out the use of perturber lists.  As for hiding the lists, in
+whatever module, and then passing their information through a few
+narrow interface bottlenecks, that is not much better.  You'll get
+a huge data passing overhead.
+
+*A*: The penalty may not be that bad.  And you won't know until you
+try.
+
+*B*: Until you try -- that's easier said than done.  What you just
+proposed does require a complete rewrite of a stellar dynamics code.
+
+*A*: That, too, may not be as bad as you think.  While it has taken
+decades to write a legacy code, to rewrite it will surely take a lot
+less time.  You can learn from past insights as well as from past
+mistakes.  You don't have to reinvent the wheel.
+
+*B*: I strongly disagree.  Writing a skeleton version, sure, but
+getting the details right is like finetuning a race car, it requires
+skill and patience.  
+
+*A*: Even so, inventing the concept of a race car must have taken far
+more time than any subsequent designing and building of race cars.
+In any case, it is clear that we have a different was of looking at
+things.  Perhaps you are right, and I have too optimistic a view of
+the power of modularity.  It is possible that the problem is just
+too dirty, and that any approach no matter how clean will get bogged
+down into details which force you break the rules you started with.
+I doubt it, but it is a logical possibility.  But perhaps I am right,
+and you have too pessimistic a view, colored by too much frustration
+with less modular approaches.  How are we going to find out who is
+right?  You said you wanted to give me the benefit of the doubt.
+Well, what type of benefit are you willing to give me?
+
+=== Writing a toy model
+
+*B*: I have a suggestion.  How about working together for a while in
+writing a toy model version of your grand vision.  You can have the
+satisfaction of seeing the first steps being taken toward your castle
+in the sky.  And I will then have the satisfaction of you realizing
+how much more complicated it will be than you know think, to get from
+the toy model to reality.
+
+*A*: But if you don't believe me, why would you even go to the trouble
+of writing a toy model?
+
+*B*: Pragmatism.  I have to teach a stellar dynamics class, and I had
+been thinking about developing some form of toy version of an N-body
+code, to give the students some hands-on experience without requiring
+them to walk through a legacy code, which they would never be able to
+do within the time frame of a single course.
+
+*A*: So you will allow my ideas to spoil the young?
+
+*B*: I'll take that risk -- as long as I can then point out to them in
+the end, how very far they will still be from a competitive N-body code!
+
+*A*: Good, we have a deal.  I have thought for a long time about the
+question of how to structure a stellar dynamics code in a more clean
+and modular way, and still let it be able to handle close encounters
+and all that.  I had not thought about combining it with stellar
+evolution and hydrodynamics, but now that we discussed these options,
+I feel even more convinced that a modular approach is called for.
+
+If we can manage to construct a flexible modular framework for a
+general simulation code, getting the overall bookkeeping straight,
+we can then postpone any decision about what physics to put in, and
+what approximations to allow.  You want stellar evolution?  Fine, plug
+in your favorite module.  You prefer to use Monte Carlo integration of
+orbits, rather than the more accurate but much more expensive direct
+N-body integration?  Fine, replace the global dynamics module for a
+Monte Carlo module.  You like perturbers?  Use a local module in which
+perturbers lists are implemented.  You think you can do without?  Then
+design a local module built on an algorithms that doesn't require
+perturbers.  Let a hundred flowers bloom!
+
+*B*: I'd be happy to let one flower bloom, just writing one toy model,
+good enough for my students to play with.  I'll leave you with the
+seeds for the other ninety nine flowers.
+
+*A*: No need to try to convince you, at this point.  Let's roll up our
+sleeves, and see where our toy model will lead us.

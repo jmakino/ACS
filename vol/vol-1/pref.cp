@@ -171,9 +171,11 @@ special gratitude to the Yukawa Institute of Theoretical Physics in
 Kyoto, where we have produced a substantial part of our ACS material,
 including its basic infrastructure, during extended visits made
 possible by the kind invitations to both of us by Professor Masao
-Ninomiya.
+Ninomiya.  In addition, we thank the Observatory of Strasbourg, where
+the kind invitation of Professor Christian Boily allowed us to make a
+rapid beginning with the current volume.
+
+We thank Douglas Heggie, xxx, and xxx for their comments on the
+manuscript.
 
 [ ]  Piet Hut & Jun Makino
-[ ]  Yukawa Institute of Theoretical Physics
-[ ]  Kyoto University
-[ ]  Kyoto

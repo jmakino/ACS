@@ -18,7 +18,7 @@ with reading and writing the data for a single particle.  For an
 object oriented language like Ruby, that suggests that we create a
 class +Body+ for a particle in an N-body system.
 
-=== 3.1. A Body Class
+== 3.1. A Body Class
 
 *B*: How about:
 
@@ -376,7 +376,7 @@ Then they write a ruby script to generate files with sample initial conditions:
  :commandoutput: ruby test.rb
  :command: rm -f test.rb
 
-*A* Here is another one:
+*A*: Here is another one:
 
  :inccode: .mk_triple-demo.rb-demo
 
