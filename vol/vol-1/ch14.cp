@@ -87,7 +87,7 @@ This can be visualized as a vector pointing from particle 1 to particle
 2, in other words with its head at the position of particle 2, and its
 tail at the position of particle 1.
 
-link:../twopfig.gif
+link:../vol/vol-1/twopfig.gif
 
 Introducing <tex>$r = |{\bf r}_2 - {\bf r}_1|$</tex>, we then get:
 
@@ -392,42 +392,4 @@ code working quickly, so I didn't think about it to much, but I have
 an idea of how to get rid of even +k+.
 
 *Alice*: That would be even better.  But shall we first check whether
-everything works as advertised?  There is a call to +simple_read+, so
-I presume we have to provide an input file.
-
-*Bob*: Let's call it <tt>euler.in</tt>; how about this one?
-
- :inccode: euler.in
-
-*Alice*: A nice example already for our dimensional freedom: a
-two-body problem is intrinsically two-dimensional.  It was not just
-laziness that I showed the equations in component form only for two
-dimensions.  Even in three dimensions, a 2-body problem can always
-be reduced to a two-dimensional problem.  The point is that you can
-always find a plane in which the relative motion takes place.
-
-*Bob*: That may not be immediately obvious for a student.  When I heard
-this for the first time, I thought about two particles passing each
-other at right angles at a distance, like the two arms of a cross but
-then offset in the third dimension.
-
-*Alice*: You are right.  The best way to convince a student is probably
-to let her or him do the exercise of translating the motion to the
-center of mass system of the two particles.  In that system, the
-motion of the one particle is the same but opposite as the motion of
-the other particle, apart from a scaling factor involving the ratios
-of the two masses.  The position vector of one particle as defined
-from the center of mass, together with the velocity vector of that
-particle, spans a unique plane.  The fact that the other particle
-moves in the (scaled) opposite way then implies that the other
-particle moves in the same plane as well.
-
-*Bob*: Yes, even if you know the answer, it always requires some thinking
-to reconstruct the reason for the answer.  So because a two-body
-problem is inherently two-dimensional, we might as well start with
-specifying only two components for the position and velocity of the
-relative motion of the two particles, which made me choose the above
-numbers.  Total mass of unity, initial position on the x-axis, also
-unity, and initial velocity perpendicular to that, and one half, for a
-change.
-
+everything works as advertised?

@@ -230,3 +230,16 @@ before taking their inner product:
 
 *Alice*: And yet it is.  Something must be different.  Something must
 have happened.
+
+
+ . . . .
+
+*Bob*: So now we can translate our formulas directly into computer code!
+
+*Alice*: Perhaps Ruby should be called FORmula TRANslator.
+
+*Bob*: I'm afraid that name has already been taken, a few years ago . . .
+
+
+
+
