@@ -91,6 +91,7 @@ Now let's run it:
 
  :command: cp -f body-init-demo1.rb test.rb
  :commandoutput: ruby test.rb
+ :command: rm -f test.rb
 
 *A*: So far so good.  The +p+ command just dumps the value of the object
 +b+ that is created.  The first number after <tt>Body:</tt> must be the id or
@@ -100,8 +101,9 @@ me try to assign values other than the default zeroes:
  :inccode: .body-init-demo2.rb-demo
 
 Let's see a non-trivial output:
-
- :output: ruby body-init-demo2.rb
+ :command: cp -f body-init-demo2.rb test.rb
+ :commandoutput: ruby test.rb
+ :command: rm -f test.rb
 
 *B*: Nontrivial indeed -- but how nice to get such clear instructions!
 Quite a bit more helpful than <i>segmentation fault</i> or something
@@ -114,13 +116,17 @@ as arrays, making three arguments in total.
 
 This should work:
 
- :output: ruby body-init-demo3.rb
+ :command: cp -f body-init-demo3.rb test.rb
+ :commandoutput: ruby test.rb
+ :command: rm -f test.rb
 
 *B*: Let's try the getter and setter commands.
 
  :inccode: .body-init-demo4.rb-demo
 
- :output: ruby body-init-demo4.rb
+ :command: cp -f body-init-demo4.rb test.rb
+ :commandoutput: ruby test.rb
+ :command: rm -f test.rb
 
 *A*: Well, that's simple and straightforward.  You can even use array
 notation, and everything works just like you would hope it would.
@@ -132,7 +138,9 @@ thought you would type something like:
 
 which would have given the same effect:
 
- :output: ruby body-init-demo5.rb
+ :command: cp -f body-init-demo5.rb test.rb
+ :commandoutput: ruby test.rb
+ :command: rm -f test.rb
 
 *A*: Yes, you read my mind.  I had understood that "<tt>c.vel =</tt>"
 is parsed by Ruby as an assignment operator "<tt>vel=</tt>"
@@ -152,7 +160,9 @@ in Ruby:
 
  :inccode: .body-print-demo.rb-demo
 
- :output: ruby body-print-demo.rb
+ :command: cp -f body-print-demo.rb test.rb
+ :commandoutput: ruby test.rb
+ :command: rm -f test.rb
 
 *A*: It still gives some information, but only the id.  And as with
 the previous command, it returns +nil+ which probably means that there
@@ -179,7 +189,9 @@ Let's see what this version will do.
 
  :inccode: .body-to_s-wrong-demo.rb-demo
 
- :output: ruby body-to_s-wrong-demo.rb
+ :command: cp -f body-to_s-wrong-demo.rb test.rb
+ :commandoutput: ruby test.rb
+ :command: rm -f test.rb
 
 *B*: Huh?  Why are the contents of the arrays smeared together this way?
 
@@ -201,7 +213,9 @@ to a string, and you can give a separator as an arguments.  How about:
 
  :inccode: .body-to_s-demo.rb-demo
 
- :output: ruby body-to_s-demo.rb
+ :command: cp -f body-to_s-demo.rb test.rb
+ :commandoutput: ruby test.rb
+ :command: rm -f test.rb
 
 *B*: Much better!  And I like the shorter prompt.  Interesting that
 the order of the dumped variables seems to be arbitrary: the mass
@@ -219,7 +233,9 @@ well use the <tt>to_s</tt> method to define a pretty printing method
 
 *B*: Let's run it:
 
- :output: ruby body-pp-demo.rb
+ :command: cp -f body-pp-demo.rb test.rb
+ :commandoutput: ruby test.rb
+ :command: rm -f test.rb
 
 *A*: Pretty indeed, and much less clutter, only the essentials.
 

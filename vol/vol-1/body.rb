@@ -30,18 +30,21 @@ class Body
 
 #:segment start: simple-IO
   def simple_print
-    printf("%22.15e", @mass)
+    printf("%22.15e\n", @mass)
     @pos.each do |x| printf("%23.15e", x) end
+    print "\n"
     @vel.each do |x| printf("%23.15e", x) end
     print "\n"
   end
 
   def simple_read
+    @mass = gets
     s = gets
     a = s.split
-    @mass = a[0]
-    @pos = a[1..NDIM]
-    @vel = a[(NDIM+1)..(NDIM*2)]
+    @pos = a[0...NDIM]
+    s = gets
+    a = s.split
+    @vel = a[0...NDIM]
   end
 #:segment end:
 
