@@ -11,7 +11,17 @@ any further.  Let's start with the <tt>body.rb</tt> file we created while
 we were experimenting with higher-order integrators, strip off everything
 but the I/O part, and see whether we can rewrite that into our new format.
 
-*Bob*: Okay.  Let's call it <tt>iobody.rb</tt>.  Here it is:
+*Bob*: Okay.  Let's call it <tt>iobody.rb</tt>.  And since we will keep
+adding and changing things, it is probably a good idea to keep a number
+of versions around, so that we can always go back to see what we did
+earlier.  We can start with a file called <tt>iobody1.rb</tt>, and after
+we have some rudimentary functionality we just freeze it, and don't modify
+it anymore.  From then on we will work on <tt>iobody2.rb</tt>, and so on.
+
+*Alice*: That's a good idea, to keep a trail of previous versions.
+
+*Bob*: So here is our starting point, a copy of what we did before, which
+we can call <tt>iobody0.rb</tt>:
 
  :inccode: init_iobody.rb
 
