@@ -7,7 +7,7 @@ class Body
 
   attr_accessor :mass, :pos, :vel
 
-  def initialize(mass = 0, pos = [0,0,0], vel = [0,0,0])
+  def initialize(mass = 0.0, pos = [0.0,0.0,0.0], vel = [0.0,0.0,0.0])
     @mass, @pos, @vel = mass, pos, vel
   end
 #
@@ -48,4 +48,21 @@ class Body
   end
 #:segment end:
 
+  def simple_fprint(file_name)
+    file_name.printf("%22.15e\n", @mass)
+    @pos.each do |x| file_name.printf("%23.15e", x) end
+    file_name.print "\n"
+    @vel.each do |x| file_name.printf("%23.15e", x) end
+    file_name.print "\n"
+  end
+
+  def simple_fread(file_name)
+    @mass = file_name.gets
+    s = file_name.gets
+    a = s.split
+    @pos = a[0...NDIM]
+    s = file_name.gets
+    a = s.split
+    @vel = a[0...NDIM]
+  end
 end

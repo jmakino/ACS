@@ -295,22 +295,20 @@ a class constant, with the +Body+ class:
 
 *A*: Let's see.  To run this, we now have to put in the values by hand:
 
-    |gravity> ruby body05.rb
-    3 0.1 0.2 0.3 4 5 6
-     3.000000000000000e+00 \
-     1.000000000000000e-01  2.000000000000000e-01  3.000000000000000e-01 \
+    |gravity> ruby body-simple-io-demo
+    3
+    0.1 0.2 0.3
+    4 5 6
+     3.000000000000000e+00
+     1.000000000000000e-01  2.000000000000000e-01  3.000000000000000e-01
      4.000000000000000e+00  5.000000000000000e+00  6.000000000000000e+00
     |gravity> 
 
-*B*: And you quickly inserted some backslashes "<tt>\\</tt>" by hand to break
-up the single line we so carefully crafted.  I guess you don't like to have
-a line run over more than eighty columns?
+*B*: Now let's chain the commands, by invoking it twice, piping the
+values from the output of the first invocation to the input for the
+second one.
 
-*A*: It must be an atavism from my old FORTRAN days.  Now let's chain
-the commands, by invoking it twice, piping the values from the output
-of the first invocation to the input for the second one.
-
-    |gravity> ruby body05.rb | ruby body05.rb
+    |gravity> ruby body-simple-io-demo | ruby body-simple-io-demo
     3 0.1 0.2 0.3 4 5 6
      3.000000000000000e+00 \
      1.000000000000000e-01  2.000000000000000e-01  3.000000000000000e-01 \
@@ -341,3 +339,63 @@ quite a bit more lines of code.
 letting it chain, all that is a nontrivial beginning.  This is
 encouraging!  Let's move on, to see how much we have to add before we
 can let the integrator integrate.
+
+== 2.4. Moving right along [I'll change these titles/sections soon -- Piet]
+
+<i>[I'm only putting in a few words for now; when we agree upon the
+story, I will flesh it out and provide a complete dialogue --
+Piet]</i>
+
+Next our friends write an +Nbody+ class:
+
+ :inccode: nbody.rb
+
+Then they write a ruby script to generate files with sample initial conditions:
+
+ :inccode: sample_init.rb
+
+*A*: Time for a demo:
+
+ :inccode: .mk_binary-demo.rb-demo
+
+*B*: Let's run it:
+
+ :command: cp -f mk_binary-demo.rb test.rb
+ :commandoutput: ruby test.rb
+ :command: rm -f test.rb
+
+*A* Here is another one:
+
+ :inccode: .mk_triple-demo.rb-demo
+
+*B*: Here goes:
+
+ :command: cp -f mk_triple-demo.rb test.rb
+ :commandoutput: ruby test.rb
+ :command: rm -f test.rb
+
+*A*: We can also test the reading and writing, with another file
+<tt>test-io</tt>:
+
+ :inccode: .nbody-simple-io-demo.rb-demo
+
+*A*: Now we can pipe the triple output through this last script to
+check whether we can the same result:
+
+ :command: cp -f mk_triple-demo.rb       test.rb
+ :command: cp -f nbody-simple-io-demo.rb test-io.rb
+ :commandoutput: ruby test.rb | ruby test-io.rb
+ :command: rm -f test.rb test-io.rb
+
+*B*: Or to make inspection even easier:
+
+ :command: cp -f mk_triple-demo.rb test.rb
+ :command: cp -f nbody-simple-io-demo.rb test-io.rb
+ :command: rm -f test.out test-io.out
+ :commandoutput: (ruby test.rb > test.out)
+ :commandoutput: (ruby test.rb | ruby test-io.rb > test-io.out)
+ :commandoutput: diff test.out test-io.out
+ :command: rm -f test.out test-io.out
+ :command: rm -f test.rb  test-io.rb
+
+

@@ -1,4 +1,4 @@
-#<i>Demo for +simple_read+ and +simple_print+ methods</i>
+#<i>Demo for +simple_read+ and +simple_print+ methods in Body</i>
 
 require "body.rb"
 

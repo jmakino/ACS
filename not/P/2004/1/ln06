@@ -1,0 +1,91 @@
+2004, January 6, Tuesday, Tokyo: Jun and Piet
+
+===1. New Book Writing Plan
+
+Jun and I made a new plan for our book.  First we continued to discuss
+our previous idea to let our two protagonists have a background in
+cosmology and in galactic stellar dynamics, respectively, with both
+getting interested in dense stellar systems as a logical next area to
+investigate.  Cosmology is reaching the resolution of dense stellar
+systems top-down, starting at large scales, while people investigating
+star formation, whether in normal form or triggered by galactic
+collosions, are climbing up to model larger and larger number of
+starforming cores.
+
+Jun then suggested that it might be better, after all, to let our two
+main players be already specialists in dense stellar systems, on the
+same level of the one dozen or so people in the world who are really
+familiar with the details of collisional stellar dynamics codes,
+people like Sverre, Douglas, Rainer, Holger, Steve and the two of us.
+We liked the idea, since it would save us all the work and initial page
+writing to describe how our main actors browse the web to find NBODY1h
+and Nemo en Starlab.  It comes closer to our plan, ten days ago, to
+move ahead and let our actors start writing a Ruby code with
+individual time steps right away.
+
+The main question is: how do we avoid writing as Jun and Piet?  How
+can we give our two characters sufficient differences to warrant a
+dialogue, rather than a third-person narrative?  Jun still felt
+strongly that a dialogue would be better, and after a while we decided
+to let the younger male figure play a more conservative, hesitant
+role, while the older female figure would be more like Jun and me.
+While the younger person would not be like someone so set in his ways
+that he would not attempt anything new, he would do so reluctantly,
+and only after quite a bit of work would he been drawn in to the new
+ways of doing things.  While never really admitting that the older
+person was right, he would instead begin to forget his earlier
+reluctance and become a happy practitioner of the new approach.
+
+Okay, that seems like a good direction.  We then made the following
+volume division plan.  In the first few books we will immediately move
+towards setting up the Kali code.  Rather than spending more time on
+educational issues, a high priority for the whole MODEST movement is
+to create a flexible new code that can really combine easily stellar
+evolution and hydrodynamics with stellar dynamics.  Perhaps we can
+pull this off in a couple years.  After doing that in the first three
+books, say, others can then continue with additional volumes in our
+series, describing in similar ways simple versions of stellar
+evolution and stellar hydro codes.
+
+After that, we ourselves can then descend to simpler levels, with a
+discussion of a scattering environment and more basic things like
+two-body relaxation.  Scattering could be done by a postdoc at the
+same institute as our two main actors, and two-body relaxation, etc.,
+by one or more grad students.  There is still so much to explore, in
+mass segregation, rotating clusters, you name it, that even those more
+educational volumes will still contain plenty of research.  And
+certainly the scattering work will be original for a large part, and
+will result in a hopefully very practical lab.
+
+So our first book plan is largely unchanged: the topic is writing
+simple N-body codes, with individual time steps, written in Ruby and
+with speed-up parts written with C.  Here is an outline:
+
+[Book 0] N=10, nbody_sh1.C, not really part of our series.
+[Book 1] N=100, 1965, Nbody1h in Ruby, with softening
+[Book 2] N=1000, 1995, kira in Ruby, honest point particles
+[Book 3] Kali code, 2005, state of the art, hooks to evol/hydro,
+	 perturber list example, and multipole perturbations example
+[Book 4] stellar ev. code?
+[Book 5] stellar hydro code?
+[Book 6] scattering code?
+
+Here are some more details about the first couple books:
+
+[Book 1] start with Ruby, younger person then implements in C,
+	 then they work together on speedup.
+[Book 2] when investigating clump merging, story mechanism,
+	 younger person sees how useful Ruby is.  Around that
+         time also the `invention' of lab note mechanism,
+         adoption of rdoc, and description of acsdoc, etc.
+
+===2. Chapter 2, Volume 1.
+
+We then spent another five hours or so, going throught the draft of
+chapter 2 that Piet had written ten days ago, while adapting Jun's
+software for automatic code inclusion.  Jun also wrote code for
+automatic output generation and inclusion.  We now have the basic
+pieces in hand for our book writing, finally!  A great relief.  The
+only point left for later was the question of how to deal with data
+given to a script by typing it in on the command line.  We'll have to
+solve that part too, before too long.
