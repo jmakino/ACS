@@ -1177,20 +1177,29 @@ tolatex_flag = false
 
 ARGV.collect! do |a|
   if a =~ /\.cp$/
-    unless tolatex_flag 
-      dot_a = File.dirname(a)+"/."+File.basename(a);
+    if File.exist?(a)
+      unless tolatex_flag 
+	dot_a = File.dirname(a)+"/."+File.basename(a);
+      else
+	dot_a = File.dirname(a)+"/"+File.basename(a,".cp")+ ".tex"
+      end
+      prep_cp(a, dot_a, tolatex_flag)
+      a = dot_a
+      del_file_list.push(dot_a)
     else
-      dot_a = File.dirname(a)+"/"+File.basename(a,".cp")+ ".tex"
+      a = ""
     end
-    prep_cp(a, dot_a, tolatex_flag)
-    a = dot_a
-    del_file_list.push(dot_a)
+    a
   elsif a =~ /\.rb$/
-    prep_rb(a)
-    prep_rb_defs(a)
-    prep_rb_hashes(a)
-    prep_rb_special_comments(a)
-    prep_rb_special_comments_for_partfiles(a)
+    if File.exist?(a)
+      prep_rb(a)
+      prep_rb_defs(a)
+      prep_rb_hashes(a)
+      prep_rb_special_comments(a)
+      prep_rb_special_comments_for_partfiles(a)
+    else
+      a = ""
+    end
     a
   elsif a == "--keep-dot-files"
     del_flag = false
