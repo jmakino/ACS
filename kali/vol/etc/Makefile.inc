@@ -9,8 +9,8 @@ ifdef DVIPDF
 else
    alldepends =  $(TARGET).ps.gz
 endif
-
-ACSDOC = ruby ../../../src/coherent_programming/acsdoc.rb $(ACSDOCOPTIONS)
+ACSDOCOPTIONS = --reuseoutput --keep-dot-files
+ACSDOC = ruby $(ACSROOT)/src/coherent_programming/acsdoc.rb $(ACSDOCOPTIONS)
 GZIP = gzip --force
 LOCALDIR = kali
 

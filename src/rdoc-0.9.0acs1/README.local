@@ -137,3 +137,42 @@ diff -C0 html_generator.rb html_generator.rb.original
 This makes the form (some text)[url] to be converted to <a
 href=url>some text</a>. Original rdoc has the capability of converting
 the form text[url] anyway. So this is additional function.
+
+2005/4/4 One more change to the same file:
+
+<yebisu:/home/makino/acs/src/rdoc-0.9.0acs1/rdoc/generators>diff -C0 html_generator.rb html_generator.rb.original
+*** html_generator.rb   2005-04-05 03:02:47.000000000 +0900
+--- html_generator.rb.original  2003-12-31 18:31:05.000000000 +0900
+***************
+*** 158 ****
+!         "<img ALIGN=\"middle\" src=\"#{url}\">"
+--- 158 ----
+!         "<img src=\"#{url}\">"
+***************
+*** 170,173 ****
+!       unless text =~ /(\w+)\[(.*?)\]/
+!       unless text =~ /\((.*?)\)\[(.*?)\]/
+!         return text
+!       end
+--- 170,171 ----
+!       unless text =~ /(\S+)\[(.*?)\]/
+!         return text
+***************
+*** 177,180 ****
+!       unless text =~ /\((.*?)\)\[(.*?)\]/
+!         unless url =~ /\w+?:/
+!           url = "http://#{url}"
+!         end
+--- 175,177 ----
+!       
+!       unless url =~ /\w+?:/
+!         url = "http://#{url}"
+***************
+*** 221,222 ****
+!         @markup.add_special(/\b(\w+?\[\S+?\.\S+?\])/, :TIDYLINK)
+!         @markup.add_special(/(\(\S+.*?\)\[\S+?\.\S+?\])/, :TIDYLINK)
+--- 218 ----
+!         @markup.add_special(/\b(\S+?\[\S+?\.\S+?\])/, :TIDYLINK)
+
+New change is at lines 177-180 (in the new file). This change suppless
+the addition of "http://" in case the linke is the form (text)[url]

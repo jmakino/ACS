@@ -174,8 +174,10 @@ module Generators
       end
       label = $1
       url   = $2
-      unless url =~ /\w+?:/
-        url = "http://#{url}"
+      unless text =~ /\((.*?)\)\[(.*?)\]/
+        unless url =~ /\w+?:/
+          url = "http://#{url}"
+        end
       end
 
       if url =~ /^link:/
