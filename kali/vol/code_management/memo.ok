@@ -83,7 +83,71 @@ actually updating file.
 Further question: What should be defined as environment valiables and
 how?
 
+== Much more memo on code management
 
+We want to say, for example,
+
+   require "acs"
+
+and let the system somehow cleverly figure out which version of, for
+example, clop.rb to actually load. So we have the following questions:
+
+1. How to maintain multiple version of clop.rb and where.
+
+2. How an program specify which version to include.
+
+3. What we do if we want to change some "old" version.   
+
+This is clearly not something easy to explain. "Solution" we ended up
+is:
+
+We say something like
+
+   acsdate "20050301"
+   require "acs"
+
+and clop.rb, in the library directory, has all old versions like
+
+    clop20040103.rb
+    clop20041001.rb
+    clop20041203.rb
+    ....
+
+in the directory, well, something like clop_rb
+
+Then, if we say require "clop", it would look for the newest among the
+ones older than the date specified.
+
+Hmm, sounds very complicated....
+
+== Programmer interface
+
+Anyway, we need,
+
+* The way to refer to an include file, which will be
+
+     acsdate "20050301"
+     acsreq "acs"
+
+  Perhaps better not to overload standard "require" method, since that
+  would be too confusing.
+
+* The way to install a new version of a library. I think it should
+  just be
+
+     make libs
+
+  With the Makefile which for example look like:
+
+     LIBSRCS = clop.rb
+        
+  That is, the same as the initial version I made.
+
+  make libs will check if the already installed version is newer or
+  not, and if it is older, install the current version in the volume
+  directory to the library directory.
+
+  
 
   
   
