@@ -1,0 +1,29 @@
+#!/bin/csh -f
+#
+# update-lab
+#
+cd $ACSROOT/not
+
+set year = 2003
+loopyear:
+set success = 0
+foreach month (1 2 3 4 5 6 7 8 9 10 11 12)
+    echo $year $month
+    ls */$year/$month 
+    if ( $status == 0 ) then
+       ls  */$year/$month/*[0-9]
+           if ( $status == 0 ) then
+       
+              ruby ../src/labnotes/combine-notes.rb 	combined/${year}-${month}-all       	 */$year/$month/*[0-9]
+              set success = 1
+        endif
+    endif
+end
+if ( $success == 1) then
+    @ year = $year + 1
+    goto loopyear
+endif
+svn add `ls -1 -d [A-Z]*/*/*/*[^~] [A-Z]*/*/*/.[0-9,a-z,A-Z]*[^~] [A-Z]*/*/*/*/*[^~] | grep -v \.svn`
+rdoc combined/*
+
+
