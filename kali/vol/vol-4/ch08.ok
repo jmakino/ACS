@@ -48,7 +48,7 @@ you can type:
 
   |gravity> ruby some_program.rb -h -o
 
-and this will give you only one line of output, a short descriptin of the
+and this will give you only one line of output, a short description of the
 <tt>-o</tt> option.  This is especially useful for the case of long help,
 since the command:
 
@@ -83,12 +83,12 @@ names for the options themselves.
 which means that you get one-line help for all options.  The reason is
 that such a line as you just gave can naturally be generated through
 the use of a Unix <tt>!!</tt> command, as we already discussed, and the
-presence of the <tt>-o</tt> is likely to be a matter of lazyness, rather
+presence of the <tt>-o</tt> is likely to be a matter of laziness, rather
 than significance.  If your previous command has been
 
   |gravity> ruby some_program.rb -o
 
-and if you then decide you wnat short help for that particular option,
+and if you then decide you what short help for that particular option,
 you have to type:
 
   |gravity> !! -h -o

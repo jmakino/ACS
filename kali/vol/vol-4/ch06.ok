@@ -105,7 +105,7 @@ option would leave the value false, mentioning it would make it true.
 The advantage of a boolean variable is that there is no third option, so
 no need to specify anything!
 
-*Alice*: Okay, that is clear, and yes, I am all for automatization, whenever
+*Alice*: Okay, that is clear, and yes, I am all for automatizing, whenever
 a situation is unambiguous.
 
 == Default Values
@@ -253,7 +253,7 @@ and then the print name, for example, would be extracted as
 
         @printname = read_content(content)
 
-But I concluded that the improvement in readibility did not outweigh the
+But I concluded that the improvement in readability did not outweigh the
 extra complexity of introducing yet another method.  Having to let your
 eyes jump around to too many places also decreases readability.
 
@@ -272,7 +272,7 @@ parser, who could mistakenly interpret it as a short description?
 
 *Bob*: No, since a long description is only allowed at the end of an option
 block.  This has to be the case, since the only way to find the end of
-a multi-line long description is to look for two consequtive blank lines.
+a multi-line long description is to look for two consecutive blank lines.
 And when those lines are found, you are by definition at the end of
 the option.  Therefore, the method <tt>parse_single_lines_done?</tt>
 will always first encounter the short one-line +Description+ before it
@@ -337,7 +337,7 @@ not see a good way to break this up.
 pieces of code?  I thought you didn't particularly like the notion of
 trying to be modular.  And now you talk like Mr. Modularity himself!
 
-*Bob*: I know, I'm a bit surprized too, I must admit.  But in Ruby,
+*Bob*: I know, I'm a bit surprised too, I must admit.  But in Ruby,
 I somehow find myself writing methods that are much shorter than the
 subroutines I would write in Fortran, or functions in C.  I wonder why
 that is.
@@ -395,7 +395,7 @@ funny, doesn't it?  If there is ever going to be a contest for piling
 non-alphanumeric symbols on top of each other, this one may have a
 chance, though I bet that clever programmers would be able to come up
 with something much longer.  Anyway, this method does what I have
-advertized: it goes from variable-name-holder to variable to value.  Let
+advertised: it goes from variable-name-holder to variable to value.  Let
 us take it apart, and translate what we find.
 
 If an option wants to initialize its global variable, say +dt+ for the
@@ -490,7 +490,7 @@ getting addicted to writing short methods!
 
 *Bob*: Not _so_ short, actually: you forget here that we have to use
 a third piece of information: we cannot evaluate the value of the global
-variable unless we know its type, knoweldge of which is encoded in the
+variable unless we know its type, knowledge of which is encoded in the
 string <tt>@type</tt>, as we have seen while parsing the single lines.
 
 *Alice*: Ah, of course, yes.  And different types lead to different actions.

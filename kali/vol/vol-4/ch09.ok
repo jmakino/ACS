@@ -5,7 +5,7 @@
 *Alice*: Have you tested the whole parsing mechanism that you have written?
 
 *Bob*: Yes, and as far as I can see, it all works as advertised.  At first,
-while I was writing the +Clop+ class, I put the definition of the clas,
+while I was writing the +Clop+ class, I put the definition of the class,
 as well as the definition of the helper class <tt>Clop_Option</tt>, in the
 file <tt>clop.rb</tt>, and I used a different file to test the whole
 thing.  That other file contained a driver with a long `here document',
@@ -69,7 +69,7 @@ indeed!  So if that is what you did, can I try it?
 
 Wow, that's a lot more than I expected.  Where did that all come from?
 
-*Bob*: In defining the option blocks, you can specificy the default value
+*Bob*: In defining the option blocks, you can specify the default value
 +none+, which means that no default is given, which in turn means that the
 user should provide one.  I included various options in the here
 document of my test driver, and two of them I gave the the default value
@@ -88,9 +88,9 @@ about English grammar.  Look: it talks at the end about the missing `option'
 rather than the missing `options', as it did when two options were missing.
 Nice touch.
 
-*Bob*: Thanks!  I like to get such details straight.  A matter of craftmanship,
-as they used to call it.  Why don't you add the second option too?  No output
-file will be created here; it is just a test.
+*Bob*: Thanks!  I like to get such details straight.  A matter of
+craftsmanship, as they used to call it.  Why don't you add the second
+option too?  No output file will be created here; it is just a test.
 
 *Alice*: Okay, this should stop the complaints:
 
@@ -133,7 +133,7 @@ options as well.
 
 *Bob*: Don't worry, the program will remind you if you don't.
 
-*Alice*: Let there be boolean initital state output:
+*Alice*: Let there be boolean initial state output:
 
  :commandoutput: ruby clop.rb -n3 -o tmp.out -x
 
@@ -171,7 +171,7 @@ at least I made a start here.
 
  :commandoutput: ruby clop.rb -o tmp.out -n 3 --shift_velocity [2, 3]
 
-And it behaves as I exptected it to.
+And it behaves as I expected it to.
 
 == A Star Type Option
 
