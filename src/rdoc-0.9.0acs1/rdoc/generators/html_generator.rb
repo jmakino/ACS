@@ -176,7 +176,10 @@ module Generators
       unless url =~ /\w+?:/
         url = "http://#{url}"
       end
-      
+
+      if url =~ /^link:/
+	url=url[5,url.length]
+      end
       "<a href=\"#{url}\">#{label}</a>"
     end
 

@@ -10,30 +10,6 @@ $maildir = "/home/not/Mail/inbox"
 $seqfile = $docroot + "/seq"
 
 module Acsmaildoc
-  def prep_cp(infile, outfile)
-    begin
-      ifile = open(infile, "r")
-    rescue
-      raise "#{infile} does not exist"
-    end
-    ofile = open(outfile, "w+")
-    while s = ifile.gets
-      s.gsub!(/<p>/, '<i>[Jun: ')
-      s.gsub!(/<\/p>/, ' -- Piet] </i>')
-      s.gsub!(/<j>/, '<i>[Piet ')
-      s.gsub!(/<\/j>/, ' -- Jun] </i>')
-      if s =~ /:in.*code:/ and s.index("\":inccode:\"")==nil
-	s.sub!(/:in.*code:/, ':include:')
-	ofile.print "---\n"
-	ofile.print s
-	ofile.print "---\n"
-      else
-	ofile.print s
-      end
-    end
-    ifile.close
-    ofile.close
-  end
 
   def process_mailfile(seqnum)
     infile = open(seqname = $maildir + "/" + seqnum.to_s, "r")
@@ -63,13 +39,13 @@ module Acsmaildoc
 	  outfile.print from, "\n\n"
 	end
       else
+	s = " "+s if s[0] == ">" # to handle quoted texts
 	outfile.print s
       end
     end
     infile.close
     outfile.close if inheader == 0
   end
-
 
   def acsmaildoc()
     begin
