@@ -29,7 +29,7 @@ def mkplummer(c)
     nb.body.push(b)
   end
   STDERR.print "             actual seed used\t: ", srand, "\n"
-  nb.acs_write("Plummer model", $stdout, c.precision, c.add_indent)
+  nb.acs_write($stdout, c.precision, c.add_indent)
 end
 
 def plummer_sample

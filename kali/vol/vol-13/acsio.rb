@@ -48,7 +48,7 @@ class String
     loop do
       line = a.shift
       return s.chomp unless line
-      blanks = count_initial_blanks(line)
+      blanks = ACS_IO.count_initial_blanks(line)
       if blanks < indent
         a.unshift(line)
         return s.chomp
@@ -70,7 +70,7 @@ class Array
   def Array.acs_parse(a, base_indent)
     ar = []
     loop do
-      result = acs_parse_manager(a, base_indent)
+      result = ACS_IO.acs_parse_manager(a, base_indent)
       if result
         ar.push(result)
       else
@@ -91,14 +91,17 @@ module ACS_IO
   def to_acs_s(name, precision = PRECISION, base_indent = BASE_INDENT,
                add_indent = ADD_INDENT)
     indent = base_indent + add_indent
-    if defined? self.class::ACS_IO_NAME
-      tag = self.class::ACS_IO_NAME
+    if defined? self.class::ACS_OUTPUT_NAME
+      tag = self.class::ACS_OUTPUT_NAME
     else
       tag = self.class.to_s
     end
     s = " " * base_indent + tag + " " + name + "\n"
     if self.instance_variables.size > 0
-      return s + instance_variables_to_acs_s(precision, indent, add_indent)
+      self.instance_variables.sort.each do |v|
+        s += eval(v).to_acs_s(v.delete("@"), precision, indent, add_indent)
+      end
+      return s
     end
     case self.class.to_s
     when "String"
@@ -109,14 +112,6 @@ module ACS_IO
       return s + self.to_acs_special_s(precision, indent)
     end
     s += " " * indent + self.to_s + "\n"
-  end
-
-  def instance_variables_to_acs_s(precision, indent, add_indent)
-    s = ""
-    self.instance_variables.each do |v|
-      s += eval(v).to_acs_s(v.delete("@"), precision, indent, add_indent)
-    end
-    s
   end
 
   def acs_write(file = $stdout, precision = PRECISION, add_indent = ADD_INDENT)
@@ -141,30 +136,45 @@ module ACS_IO
     contents
   end
 
-  def ACS_IO.acs_read(file = $stdin)
+  def ACS_IO.acs_read(top_class = nil, file = $stdin)
     s = ACS_IO.read_acs_string(file)
     return nil if not s
     a = s.split("\n")
     first_line = a.shift
-    indent = count_initial_blanks(first_line)
+    indent = ACS_IO.count_initial_blanks(first_line)
     top_class_name = first_line.strip
-    begin
-      tc = eval(top_class_name).new
+    if top_class
+      acceptable_class_name?(top_class_name, top_class)
+      tc = top_class.new
+    else
+      top_class_name = first_line.strip
+      begin
+        tc = eval(top_class_name).new
       rescue NameError
-      define_class(top_class_name)
-      retry
+        ACS_IO.define_new_class(top_class_name)
+        retry
+      end
     end
     tc.acs_parse(a, indent)
   end
 
-  def define_class(name)
+  def acceptable_class_name?(class_name, class_request)
+    while class_request.to_s != class_name
+      class_request = class_request.superclass
+      unless class_request
+        raise "requested #{class_request.to_s} incompatible with #{class_name}"
+      end
+    end
+  end
+
+  def ACS_IO.define_new_class(name)
     eval("class #{name} \nend", TOPLEVEL_BINDING)
   end   
 
   def io_name_okay?(w)
-    if defined? ACS_IO_NAME
-      if w != ACS_IO_NAME
-        raise "first_word = #{first_word} != #{ACS_IO_NAME}"
+    if defined? ACS_OUTPUT_NAME
+      if w != ACS_OUTPUT_NAME
+        raise "first_word = #{first_word} != #{ACS_OUTPUT_NAME}"
       end
     else
       if w != self.class.to_s
@@ -177,7 +187,7 @@ module ACS_IO
     loop do
       return self unless a[0]
       variable_name = a[0].split[1]
-      result = acs_parse_manager(a, base_indent)
+      result = ACS_IO.acs_parse_manager(a, base_indent)
       if result
         eval("@#{variable_name} = result")
       else
@@ -186,10 +196,10 @@ module ACS_IO
     end
   end
 
-  def acs_parse_manager(a, base_indent)
-    first_line = acs_parse_terminate?(a, base_indent)
+  def ACS_IO.acs_parse_manager(a, base_indent)
+    first_line = ACS_IO.next_line?(a, base_indent)
     return nil unless first_line
-    indent = count_initial_blanks(first_line)
+    indent = ACS_IO.count_initial_blanks(first_line)
     word = first_line.split
     class_name = word[0]
     case class_name
@@ -204,17 +214,17 @@ module ACS_IO
       begin
         x = eval("#{class_name}.new")
       rescue NameError
-        define_class(class_name)
+        ACS_IO.define_new_class(class_name)
         retry
       end
       return x.acs_parse(a, indent)
     end
   end
 
-  def acs_parse_terminate?(a, base_indent)
+  def ACS_IO.next_line?(a, base_indent)
     first_line = a.shift
     return nil unless first_line
-    indent = count_initial_blanks(first_line)
+    indent = ACS_IO.count_initial_blanks(first_line)
     if indent <= base_indent
       a.unshift(first_line)
       return nil
@@ -222,9 +232,24 @@ module ACS_IO
     first_line
   end
 
-  def count_initial_blanks(s)
+  def ACS_IO.count_initial_blanks(s)
     s =~ /^ */
     $&.size
+  end
+
+  def dump_contents
+    a = []
+    self.instance_variables.each do |v|
+      a.push([v, eval(v)])
+    end
+    a
+  end
+
+  def restore_contents(from)
+    from.dump_contents.each do |a|
+      eval(a[0] + "= a[1]")
+    end
+    self
   end
 
 end

@@ -11,6 +11,13 @@ class Worldpoint < Body
     @maxstep = 0
   end
 
+  def setup(time)
+    @time = @next_time = time
+    @acc = @pos*0
+    @jerk = @pos*0
+    self
+  end
+
   def start_step(worldline)
     worldline.take_snapshot(@next_time)
   end
@@ -165,8 +172,10 @@ class Worldline
 
   attr_accessor  :worldpoint
 
-  def initialize
+  def initialize(wp = nil, time = 0.0)
     @worldpoint = []
+    return unless wp
+    @worldpoint[0] = wp.setup(time)
   end
 
   def startup(era, dt_param, dt_max)
@@ -356,13 +365,10 @@ class Worldera
 #  end
 
   def read_initial_snapshot(dt_era)
-    n = gets.to_i
-    @start_time = gets.to_f
+    ss = ACS_IO.acs_read(Worldsnapshot)
+    @start_time = ss.time
     @end_time = @start_time + dt_era
-    for i in 0...n
-      @worldline[i] = Worldline.new
-      @worldline[i].read_initial_worldpoint(@start_time)
-    end
+    ss.body.each{|b| @worldline.push(Worldline.new(b.to_worldpoint, ss.time))}
   end
 
   def write_snapshot(t)
@@ -424,6 +430,11 @@ class Worldsnapshot < Nbody
 
   attr_accessor :time
 
+  def initialize
+    super
+    @time = 0.0
+  end
+
   def kinetic_energy
     e = 0
     @body.each{|b| e += b.kinetic_energy}
@@ -469,6 +480,15 @@ class Worldsnapshot < Nbody
 #      b.write
 #    end
 #  end
+
+end
+
+class Body
+
+  def to_worldpoint
+    wp = Worldpoint.new
+    wp.restore_contents(self)
+  end
 
 end
 

@@ -2,7 +2,7 @@ require "acs.rb"
 
 class Body
 
-  ACS_IO_NAME = self.to_s
+  ACS_OUTPUT_NAME = self.to_s
 
   attr_accessor :mass, :pos, :vel
 
@@ -16,7 +16,7 @@ end
 
 class Nbody
 
-  ACS_IO_NAME = self.to_s
+  ACS_OUTPUT_NAME = self.to_s
 
   attr_accessor :body
 
