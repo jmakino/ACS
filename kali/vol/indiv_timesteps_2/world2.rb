@@ -520,7 +520,8 @@ class WorldLine
   end
 
   def setup_from_single_worldpoint(b, method, dt_param, time)
-    @worldpoint[0], @body_id = b.to_worldpoint
+    @worldpoint[0] = b.to_worldpoint
+    @body_id = @worldpoint[0].body_id
     @method = method
     @dt_param = dt_param
     if eval("defined? #{@method}_number_of_steps")
@@ -854,7 +855,7 @@ class Body
 
   def to_worldpoint
     wp = WorldPoint.new
-    [wp.restore_contents(self), @body_id]
+    wp.restore_contents(self)
   end
 
 end
