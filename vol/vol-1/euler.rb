@@ -2,10 +2,10 @@ require "body.rb"
 
 include Math
 
-dt = 0.01
-dt_dia = 1
-dt_out = 1
-dt_end = 1
+dt = 0.01           # time step
+dt_dia = 1          # diagnostics printing interval
+dt_out = 1          # output interval
+dt_end = 1          # duration of the integration
 
 STDERR.print "dt = ", dt, "\n",
       "dt_dia = ", dt_dia, "\n",
