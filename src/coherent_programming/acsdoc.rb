@@ -699,7 +699,13 @@ ARGV.collect! do |a|
   a
 end
 
-system("rdoc #{ARGV.join(" ")}") unless tolatex_flag
+if  (ENV["LANG"] == "ja_JP.eucJP") or ($KCODE == "EUC") 
+  coptions = "--charset=EUC-JP"
+else
+  coptions = " "
+end
+
+system("rdoc #{coptions} #{ARGV.join(" ")}") unless tolatex_flag
 
 if del_flag
   del_file_list.each do |f|
