@@ -1,4 +1,4 @@
-require "rknbody.rb"
+require "rknbody.rb"                                                         #1
 
 def print_help
   print "usage: ", $0,
@@ -9,7 +9,7 @@ def print_help
     "         [-m integration_method]\n"
 end
 
-require "getoptlong"
+require "getoptlong"                                                         #5
 
 parser = GetoptLong.new
 parser.set_options(
@@ -70,20 +70,20 @@ def read_options(parser)
   return eps, dt, dt_dia, dt_out, dt_end, init_out, x_flag, method
 end
 
-eps, dt, dt_dia, dt_out, dt_end, init_out, x_flag,
-   method = read_options(parser)
+eps, dt, dt_dia, dt_out, dt_end, init_out, x_flag, method =                  #4
+   read_options(parser)                                                      #4
 
-STDERR.print "eps = ", eps, "\n",
-      "dt = ", dt, "\n",
-      "dt_dia = ", dt_dia, "\n",
-      "dt_out = ", dt_out, "\n",
-      "dt_end = ", dt_end, "\n",
-      "init_out = ", init_out, "\n",
-      "x_flag = ", x_flag, "\n",
-      "method = ", method, "\n"
+STDERR.print "eps = ", eps, "\n",                                            #3
+      "dt = ", dt, "\n",                                                     #3
+      "dt_dia = ", dt_dia, "\n",                                             #3
+      "dt_out = ", dt_out, "\n",                                             #3
+      "dt_end = ", dt_end, "\n",                                             #3
+      "init_out = ", init_out, "\n",                                         #3
+      "x_flag = ", x_flag, "\n",                                             #3
+      "method = ", method, "\n"                                              #3
 
 include Math
 
-nb = Nbody.new
-nb.simple_read
-nb.evolve(method, eps, dt, dt_dia, dt_out, dt_end, init_out, x_flag)
+nb = Nbody.new                                                               #2
+nb.simple_read                                                               #2
+nb.evolve(method, eps, dt, dt_dia, dt_out, dt_end, init_out, x_flag)         #2

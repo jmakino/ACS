@@ -1,3 +1,9 @@
 = Performance
 
 == xxx
+
+Adding the line
+
+ require "profile"
+
+at the top of a file gives profiling information when you run the file.

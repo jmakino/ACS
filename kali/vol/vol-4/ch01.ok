@@ -1,28 +1,302 @@
 = Command Line Arguments
 
-== xxx
+== A New Approach
 
-We now copy our previous <tt>rknbody9.rb</tt> to <tt>rknbody.rb</tt>,
-as our favorite +Body+ and +Nbody+ class.  This will be the beginning
-of an N-body library.
+*Bob*: Hi Alice!  Look what I've done, since we last met.
 
-We construct a driver with command line arguments.  Rather than
-calling it <tt>rknbody_driver.rb</tt>, we will call it <tt>rkn.rb</tt>
-for short, since we are planning to invoke it often.
+*Alice*: What have you done?
 
- :inccode: .rkn.rb
+*Bob*: I added command line arguments to our latest N-body code.
+I was getting so tired of having to edit a line in our driver file,
+each time we were doing a different run.  It was high time that we
+made this switch.  Now we can instruct the code on the command line
+what options and value to give to the +evolve+ method.
 
-== xxx
+*Alice*: Can you show me what you did?
 
- :commandoutput: ruby rkn.rb -h < figure8.in
+*Bob*: Here is the file <tt>rkn1.rb</tt>, which reads the command line,
+and then invokes +evolve+.  But before showing you the contents, let
+me first show you how it works.  Here is an example:
 
- :commandoutput: ruby rkn.rb -o 2.1088 -e 2.1088 -t 2.1088 < figure8.in
+ :commandoutput: ruby rkn1.rb -o 2.1088 -e 2.1088 -t 2.1088 < figure8.in
 
- :commandoutput: ruby rkn.rb -o 2.1088 -e 2.1088 -t 2.1088 -d 0.01 < figure8.in
+You can see from the values that were echoed that I just ran a fourth-order
+Runge-Kutta, for 1/3 of an orbit of a figure-eight triple configuration.
+And by the way, you can see from the output that I have reproduced the same
+positions and velocities as before, as a test that the code still
+works correctly.
 
- :commandoutput: ruby rkn.rb -o 2.1088 -e 2.1088 -t 2.1088 -d 0.1 < figure8.in
+== Flexibility
 
- :commandoutput: ruby rkn.rb -o 2.1088 -e 2.1088 -t 2.1088 -m rk2 < figure8.in
+*Alice*: So how do you ask the code to use, say, a leapfrog integrator
+instead of your default fourth-order Runge-Kutta, perhaps with a ten
+times smaller time step?
 
- :commandoutput: ruby rkn.rb -o 2.1088 -e 2.1088 -t 2.1088 -d 0.0001 -m forward < figure8.in
+*Bob*: Easy!  This is what you type:
 
+ :commandoutput: ruby rkn1.rb -o 10 -e 2.1088 -t 2.1088 -m leapfrog -d 0.0001 < figure8.in
+
+You see, I added the option <tt>-o 10</tt> to suppress the snapshot output.
+This makes the interface much more flexible than it was before.
+
+*Alice*: What exactly is the meaning of <tt>-o</tt>, and so on?
+
+*Bob*: rather than answering you, let me ask the code.  It even has a help
+function:
+
+ :commandoutput: ruby rkn1.rb -h
+
+You see now what I did.  By adding the option <tt>-o 10</tt> to the command
+line in my last little run above, I asked the program to postpone the first
+output to the time <tt>t = 10</tt> which is later than the time
+<tt>t = 2.1088</tt> at which I had ordered the program to halt and to give
+energy diagnostics.  In that way, I suppressed the output of the snapshot,
+so that we could concentrate on looking only at the energy.
+
+== Various Options
+
+*Alice*: Adding a help facility is a great improvement, I agree!  But what
+would happen if I would have typed <tt>--help</tt> instead?  I would
+not have guess that the help option would have been the old-fashion
+Unix-style <tt>-h</tt>.
+
+*Bob*: Try it!
+
+*Alice*: Okay:
+
+ :commandoutput: ruby rkn1.rb --help
+
+Ah, the same answer.  Good!  But your +help+ answer is not complete:
+it suggests that you can only use single letter options.
+
+*Bob*: You're right.  I could have added that explicitly.  But in a way,
+it is there already.  Try your "<tt>--</tt>" notation with the longer words
+that appear in the help answer.
+
+*Alice*: You mean:
+
+ :commandoutput: ruby rkn1.rb --total_duration 1 --output_interval 10 < figure8.in
+
+I yes, that indeed works.  But what about the <tt>-i</tt> option?  That
+was a flag, if I remember it correctly; if you set it, you got the initial
+output.  What is the long version of the command to set the flag?
+
+*Bob*: Let me look at the code.  Ah, the long option is
+<tt>--initial_output</tt>.  I could have written that in the +help+
+output, but I decided that that would be too cryptic.  If you would
+have gotten <tt>[-i initial_output]</tt> as part of the answer, that
+probably would not made much sense.  Instead, I let
+the +help+ option echo the sentence <tt>[-i (start output at t = 0)]</tt>.
+
+== A Critical Attitude
+
+*Alice*: Well, I applaud the _idea_ of using command line options, and I also
+very much like the addition of a +help+ function.  Both aspects are essential
+in a good user interface.  However, if you don't mind me saying so, your
+current +help+ facility still needs a lot of help.
+
+*Bob*: It's just my first try.  In fact, please be critical!  I would love
+to provide a good user interface.  For one thing, if we don't, my students
+will keep knocking on my door to ask me how to use all these codes.
+If we can make things more transparent, it will actually save me a lot of
+time, if that means that the students can figure out things for themselves.
+
+*Alice*: You really want me to be really critical?  You may regret asking!
+
+*Bob*: Sure, go ahead, be critical!
+
+*Alice*: Okay!  Then I won't hold back.  I already mentioned a few things
+that were not clear, and certainly not yet documented, but now that
+you challenge me, why don't we go through the code you wrote,
+and I will critically appraise your whole approach!
+
+*Bob*: You look as if you mean business.  But I have nothing to hide.
+Here is the code, in file <tt>rkn1.rb</tt> It is only a couple pages.
+Let me print it out first, and then we can walk through it.
+
+ :inccode: .rkn1.rb
+
+== An Overview
+
+*Alice*: Can you show me roughly how it all works?  No need to go into all
+the details, right now, since we'll probably want to change the functionality
+soon.  If you can just show me the flow of control, that would be fine.
+
+*Bob*: Don't worry, I'll give you an overview, just enough information to
+start your critical quest!
+
+The first line of the file <tt>rkn1.rb</tt> reads:
+
+ :include .rkn1.rb-1
+
+which means that it reads in the file <tt>rknbody.rb</tt>, which is
+just a straight copy from the file <tt>rknbody9.rb</tt>, where we had
+just introduced softening as an extra option.  Remember, that file
+contained the +Body+ and +Nbody+ definitions.  The file <tt>rknbody.rb</tt>
+will be the beginning of our N-body library.
+
+*Alice*: That is something I definitely approve of, to keep the best bits
+and piece of our prototyping, and to use those to build up a library.
+
+*Bob*: Until now, we have used a special driver file where we wrote down
+the arguments that were given to the method +evolve+.  In this case, these
+arguments will be plucked from the command line, through the method
+<tt>read_options</tt>, the longest method in this file.  But before we
+get there, it will be easiest to read the file starting at the end.
+
+The last three lines:
+
+ :include .rkn1.rb-2
+
+are exactly the same as the last three lines of the old driver file
+that we used to invoke the softened version of our N-body code.  Just
+above that, we report the parameter values that are actually used in
+the run:
+
+ :include .rkn1.rb-3
+
+These are also exactly the same as what was written in the old driver.
+However, working our way back up, from here on things are different.
+Where we wrote down the values of all parameters by hand in the old
+driver code, here there are assigned by a call to <tt>read_options</tt>
+with a single argument, called +parser+, as follows:
+
+ :include .rkn1.rb-4
+
+The method <tt>read_options</tt> is written just above this call.  At
+the top of that method, all default values are assigned to the parameters
+that will become the arguments for the call to +evolve+.  Then the method
+enters a loop in which all command line options are being read in.  They
+are being parsed, as they say in computer science, which just means that
+their meaning is being interpreted in the correct way. 
+
+*Alice*: And I see that you have defined +parser+ as a global variable.
+Somehow this variable, which is an instance of a class called +GetoptLong+,
+knows how to gather the information about all legal options in your code,
+both the one-letter versions starting with a single "<tt>-</tt>" sign,
+as well as the longer command line arguments that start with "<tt>--</tt>".
+
+*Bob*: Yes, this is a piece of magic that is provided by a package that
+I loaded through the statement near the top:
+
+ :include .rkn1.rb-5
+
+*Alice*: What does this package do, and roughly how does it work?
+
+*Bob*: I must admit, I did not really look at it.  I was browsing in a few
+Ruby books, and I came across this example.  It seemed really handy, so I
+copied it.  And the example was easy enough to change to my own requirements.
+The important thing is: it works!  And it has made my life already a
+lot easier.
+
+== A Beautiful Violation
+
+*Alice*: All of that I don't doubt.  And as I already mentioned, this is
+definitely going in the right direction, but if you want my honest
+opinion . . . 
+
+*Bob*: . . . nothing less!
+
+*Alice*: . . . then I must say: your writing style is a terrible violation
+of the DRY principle.  Or perhaps I should say: a beautiful example, since
+it violates the Don't Repeat Yourself so flagrantly!
+
+Look, each option, from "<tt>-h</tt>" all the way to "<tt>-m</tt>", occurs
+three times: in the <tt>print_help</tt> method at the top of the file,
+then immediately after that in the <tt>parser.set_options</tt> block, and
+then once again in the method following just below, <tt>read_options</tt>.
+
+This means that you have created an ideal breading ground for bugs!  How
+easy it will be to add or change an option, and to forget to make the
+addition or change in all three places.  Or worse, to make different
+modifications in different places.  Just a single typo will be enough.
+And you're likely to make typos because it is such boring to repeat
+the work for changing the same option in three different places.
+
+*Bob*: Well, that may all be true, but aren't you chasing after a form of
+Utopia?  There is a reason to do things three times.  In the first
+occurrence, in <tt>print_help</tt>, we provide a help facility for the
+user.  In the second occurrence, in +parser+, we tell the parser what
+to expect on the command line, and to hand it to us.  In the third
+occurrence, in <tt>read_options</tt> we interpret what the +parser+
+has just handed us, and in doing so we prepare for the proper execution
+of +evolve+.
+
+I admit that I am handling each option three times, but frankly, I doubt
+that we have a choice.  Look.  This driver file <tt>rkn1.rb</tt> does
+three things: 1) it instructs the parser to deliver information, in a
+precise way, so that it will get the correct information; 2) it
+interprets the information and then passes it on to the +evolve+ method,
+again in a precise way, as needed by +evolve+; 3) it also is friendly
+enough to share all that information with the user, through a help facility.
+
+I simply don't see how we can dispense with providing the central information
+to these three players: the parser, the evolver, and the user.  You have
+been stressing modularity so often.  As I understand modularity, this means
+that the different modules don't know from each other how they deal with
+the information that they get.  And this then means that someone has
+to play the role of go-between.  You talked about interface specifications.
+Well, here my driver program forms a type of interface between parser,
+evolver, and user.
+
+== Arguments about Arguments
+
+*Alice*: All of that is true.  The parser should not and cannot know about
+the way the options are going to be used by the +evolve+ function, and neither
+of those two should know about friendly user interfaces and how
+exactly such a user interface implements a help facility.
+
+*Bob*: So you agree that someone somewhere has to do a three-way translation
+of the information?
+
+*Alice*: Yes.
+
+*Bob*: Good!  And I think it is not fair to say that I violated the DRY
+principle.  It is true that I _mentioned_ each option three times.  But
+each time I did something quite different with it.  So I did not _repeat_
+anything, really.  It would be like receiving a dollar bill from someone,
+showing it to you to let you know what I got, and then spending it
+somewhere in a store.  Each of those three actions is different and
+totally independent of the other two.  So none of these actions can be said
+to repeat any of the other ones.
+
+*Alice*: No, at this point I disagree.  You did repeat yourself, in the code.
+
+*Bob*: Before disagreeing about the code, can you tell me what is wrong with
+my simple analogy of the dollar bill?
+
+*Alice*: That was not a good analogy.  In fact, there you did _not_ repeat
+yourself.  You mentioned the word `dollar bill' only once!  If your sentence
+would have reflected your style of code writing, you might have said something
+like the following: ``tt would be like receiving a dollar bill from someone,
+showing the dollar bill to you to let you know what I got, and then spending
+the dollar bill somewhere in a store.''  Notice how strange that would sound.
+In that case you would have mentioned the words `dollar bill' three times, in
+a way that sounds odd, since people would expect to hear it only once.
+
+In other words, I don't object against using the information dealt
+with in the command line options three times.  You are right: we have
+no choice there.  This is a direct consequence from the fact that we
+are coding in a modular way, and that information has to be passed from
+module to module.  What I do object against is the fact that you are
+explicitly using the same _label_ three times.  That is where you are
+inviting mistakes to happen.
+
+*Bob*: I still don't see how I can pass the same information around if
+I don't use the same label.  Your analogy is fishy.
+
+*Alice*: It was your analogy.
+
+*Bob*: Ah, but you twisted it around.  In a natural language, like English,
+you can replace the words `dollar bill' by `it', and somehow native speakers
+can figure out what each `it' refers to.  But in a computer language that
+doesn't work.  A computer language has to be precise.  Even Ruby is hopefully
+unambiguous in its meaning, unlike natural languages!
+
+*Alice*: I don't think we will convince each other on the level of analogies.
+Why don't we sit down and see whether we can adapt your first command line
+argument parser, in such a way that we avoid repetition.
+
+*Bob*: If you think that can be done, fine.  I don't think you can succeed,
+but I'm willing to give it a try.  I agree that these arguments about parsing
+command line arguments can only be decided by hard-nosed coding examples.

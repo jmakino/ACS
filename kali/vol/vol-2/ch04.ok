@@ -137,7 +137,9 @@ this method is third-order.  But that would be very unusual.  In all
 text books I've seen, you mostly come across second-order and
 fourth-order Runge Kuttas.  While you certainly can construct a
 third-order version, I wouldn't have expected Abramowitz and Stegun to
-feature one.
+feature one.  Besides, look at the last expression for the velocity.
+Doesn't that resemble Simpson's rule, suggesting fourth-order accuracy.
+I'm really puzzled now.
 
 *Alice*: Could it be a misprint?
 
