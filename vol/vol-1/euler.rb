@@ -11,22 +11,22 @@ class Body
 
   def evolve_step(dt)
     r2 = 0
-    pos.each {|p| r2 += p*p}
+    @pos.each {|p| r2 += p*p}
     r3 = r2 * sqrt(r2)
-    acc = pos.map { |x| -b.mass * x/r3 }
-    pos.each_index { |k| pos[k] += vel[k] * dt }
-    vel.each_index { |k| vel[k] += acc[k] * dt }
+    acc = pos.map { |x| -@mass * x/r3 }
+    @pos.each_index { |k| @pos[k] += @vel[k] * dt }
+    @vel.each_index { |k| @vel[k] += acc[k] * dt }
   end
 
   def ekin
     @ek = 0
-    vel.each {|v| @ek += v*v}
+    @vel.each {|v| @ek += v*v}
     @ek *= 0.5
   end
 
   def epot
     r2 = 0
-    pos.each {|p| r2 += p*p}
+    @pos.each {|p| r2 += p*p}
     r = sqrt(r2)
     @ep = -1/r
   end
