@@ -89,9 +89,9 @@ tail at the position of particle 1.  Introducing
 <tex>
 \begin{eqnarray}
 \frac{d^2}{dt^2}{\bf r} & = &
-\frac{d^2}{dt^2}\br_2 - \frac{d^2}{dt^2}\br_2           \\
-& = & G M_1 \frac{\br_1 - \br_2}{\,|\br_1 - \br_2|^3}
-- G M_2 \frac{\br_2 - \br_1}{\,|\br_2 - \br_1|^3}       \\
+\frac{d^2}{dt^2}{\bf r}_2 - \frac{d^2}{dt^2}{\bf r}_2                   \\
+& = & G M_1 \frac{{\bf r}_1 - {\bf r}_2}{\,|{\bf r}_1 - {\bf r}_2|^3}
+- G M_2 \frac{{\bf r}_2 - {\bf r}_1}{\,|{\bf r}_2 - {\bf r}_1|^3}       \\
  & = & - G \frac{M_1 + M_2}{r^3}{\bf r}
 \end{eqnarray}
 </tex>
