@@ -329,16 +329,16 @@ class World
     while @era.start_time < t_end
       @new_era, dn = @era.evolve(c.dt_era, c.dt_param)
       nsteps += dn
-      @old_era = @era
-      @era = @new_era
-      while t_dia <= @old_era.end_time and t_dia <= t_end
-        @old_era.write_diagnostics(t_dia, nsteps, initial_energy, c.x_flag)
+      while t_dia <= @era.end_time and t_dia <= t_end
+        @era.write_diagnostics(t_dia, nsteps, initial_energy, c.x_flag)
         t_dia += c.dt_dia
       end
-      while t_out <= @old_era.end_time and t_out <= t_end
-        @old_era.write_snapshot(t_out)
+      while t_out <= @era.end_time and t_out <= t_end
+        @era.write_snapshot(t_out)
         t_out += c.dt_out
       end
+      @old_era = @era
+      @era = @new_era
     end
   end
 
