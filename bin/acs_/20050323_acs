@@ -12,10 +12,10 @@
 # J. Makino and P. Hut 2005/3
 #
 def addtoenv(name,w,base)
-  if ENV[name] == nil
-    ENV[name] = base + "/" + w
-  elsif ENV[name].index(w) == nil
-    ENV[name] += ":"+base + "/" + w
+  if ENV[name[0]] == nil
+    ENV[name[0]] = base + "/" + w
+  elsif ENV[name[0]].index(w) == nil
+    ENV[name[0]] += ":"+base + "/"+name[1]+ "/" + w
   end
 end
 
@@ -27,12 +27,13 @@ end
 
 basename = ENV["ACSROOT"]
 raise "Env. var ACSROOT is not defined " unless basename
-ENV["RUBYPATH"] = ".:"+basename+"/bin" unless  ENV["RUBYPATH"]
-ENV["RUBYLIB"] = ".:"+basename+"/lib" unless  ENV["RUBYLIB"]
+ENV["RUBYPATH"] = ".:"+basename+"/bin" unless  ENV["RUBYPATH"]==""
+ENV["RUBYLIB"] = ".:"+basename+"/lib" unless  ENV["RUBYLIB"]==""
+
 
 if ENV["ACSSUBPATH"]
   ENV["ACSSUBPATH"].split.each{|subname|
-    ["RUBYPATH",  "RUBYLIB"].each{|envname|
+    [["RUBYPATH","bin"],  ["RUBYLIB","lib"]].each{|envname|
       addtoenv(envname, subname, basename)
     }
   }
