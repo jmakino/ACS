@@ -271,7 +271,7 @@ END
 	ostring.push("\\label{sect:#{@@latex_section_number}}")
 	instring.unshift(s)
 	labeltext=nil
-      elsif /^---+/ =~ header_candidate
+      elsif /^---*$/ =~ header_candidate
 	if afterverbatim
 	  ostring.push("\\hrule\n\n\\bigskip\n\n")
 	else
@@ -568,7 +568,7 @@ module Acsdoc
     tmpcommand = ".acsdoc.command-file"
     prompt = " "* indent + @@prompt
     commandline = a[1..a.size].join(" ").chomp
-    ostring = ostring +  "---\n"     unless noout
+    ostring = ostring +  "---\n"     unless ( noout or @previous_is_command )
       fullcommand  = "cd #{dirname}; #{commandline}" 
     unless noout
       fullcommand  = "cd #{dirname}; (#{commandline})>&  #{tmpname}" 
@@ -605,7 +605,8 @@ module Acsdoc
 	outfile.close
       end
       output.each{|x| ostring+=  " "*indent + x}
-      ostring+= "---\n"
+      ostring+= "\n"
+      @previous_is_command = true;
     end
     ostring
   end
@@ -656,6 +657,7 @@ module Acsdoc
     output += `cat #{dirname}/#{tmpname}`  if  showout
     output.each{|x| ostring = ostring +  " "*indent + x}
     ostring = ostring +  "---\n"
+    @previous_is_command = nil if showout 
     if showout then ostring else "" end
   end
 
@@ -687,6 +689,7 @@ module Acsdoc
 # 
   def prep_cp_string(instring,dirname,fname)
     ostring = ""
+    @previous_is_command=nil;
     lineno = 0
     while s = instring.shift
       lineno += 1
@@ -714,7 +717,9 @@ module Acsdoc
 	ostring = ostring +  command_with_input(s,":commandinput:", instring,
 				      dirname,false)
       else
-	ostring = ostring +  s
+	ostring += "---\n" if @previous_is_command
+	ostring += s 
+	@previous_is_command = nil 
       end
     end
     ostring
