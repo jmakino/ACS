@@ -503,8 +503,8 @@ at our hands.
 
 *Alice*: A natural choice would be to require that the second force
 evaluation takes place in the middle of the time step
-(<tex>$\eta_{21} = \half$</tex>), while the third force evaluation
-takes place at the end of the step (<tex>$\eta_{31}+\eta_{32} = 1$</tex>).
+<tex>$(\eta_{21} = \half)$</tex>, while the third force evaluation
+takes place at the end of the step <tex>$(\eta_{31}+\eta_{32} = 1)$</tex>.
 With these two extra conditions, barring unforeseen complications, we
 can expect to find a unique solution.
 
@@ -551,7 +551,7 @@ You need the third force calculation at the very end of the step, otherwise
 there is nothing to recycle.
 
 *Alice*: That is true, but you asked for example algorithms, and I expect this
-to lead to a well-known scheme, so let us derive it here on the side.
+to lead to another well-known scheme, so let us derive it here on the side.
 If nothing else, it can function as a check on our calculations.
 We require that <tex>$\eta_{21} = \one{3}$</tex> and
 <tex>$\eta_{31}+\eta_{32} = \two{3}$</tex>.  Plugging this into the
@@ -563,7 +563,7 @@ four conditions we have found before leads to:
 \phantom{1}&\phantom{1}&\phantom{1}           \nonumber \\
 \one{3}\alpha_2 + \two{3}\alpha_3 &=& \half            \nonumber \\
 \phantom{1}&\phantom{1}&\phantom{1}           \nonumber \\
-\one{4}\alpha_2 + {\textstyle\frac{4}{9}}\alpha_3 &=& \one{3}        \nonumber \\
+\one{9}\alpha_2 + {\textstyle\frac{4}{9}}\alpha_3 &=& \one{3}        \nonumber \\
 \phantom{1}&\phantom{1}&\phantom{1}           \nonumber \\
 \alpha_3\eta_{32} = \half
 \end{array} \right.
@@ -802,9 +802,10 @@ the expression for the second force becomes:
 :equation:
 k_2 = f(x_0 + {1\over 2 \alpha} k_1 \tau)
 
-Indeed, for <tex>$\eta = 1/(2\alpha)$</tex>, Eq. (ref(sum1)) becomes
-Eq. (ref(sum2)).  It all hangs together!  The third force calculation
-in Eq. (ref(sum1)) effectively drops out, for this choice of parameters.
+We conclude that, for the choice <tex>$\eta = 1/(2\alpha)$</tex>,
+Eq. (ref(sum1)) becomes Eq. (ref(sum2)).  It all hangs together!  The
+third force calculation in Eq. (ref(sum1)) effectively drops out, for
+this choice of parameters.
 
 *Alice*: It is also instructive to compare this scheme with the
 second-order scheme we found based on one new force calculation and
@@ -819,21 +820,21 @@ k_1 &=& f(x_0)  \\
 k_2 &=& f(x_0 + k_1 \tau)
 \end{array} \right.                         
 
-*Bob*: which in fact is exactly the previous set, Eq. (ref(sum2)), for
-<tex>$\alpha = \half$</tex>.
+*Bob*: which in fact is exactly the previous set, Eq. (ref(sum2)), with
+the further restriction that <tex>$\alpha = \half$</tex>.
 
 *Alice*: Let us sum up.
 We conclude that we have found three different ways of constructing a
 second-order Runge-Kutta method:
 
-1. <i>Without</i> recycling, we have Eq.(ref(sum2)), with {\it two} new force
-   calculations per time step, and {\it one} free parameter;
+1. <i>Without</i> recycling, we have Eq.(ref(sum2)), with _two_ new force
+   calculations per time step, and _one_ free parameter;
 
-2. <i>With</i> recycling, we have Eq.(ref(sum3)), with {\it one} new force
-   calculation per time step, and {\it no} free parameters;
+2. <i>With</i> recycling, we have Eq.(ref(sum3)), with _one_ new force
+   calculation per time step, and _no_ free parameters;
 
-3. <i>With</i> recycling, we have Eq.(ref(sum1)), with {\it two} new force
-   calculations per time step, and {\it three} free parameters.
+3. <i>With</i> recycling, we have Eq.(ref(sum1)), with _two_ new force
+   calculations per time step, and _three_ free parameters.
 
 *Bob*: Well done!  Now it's time to leave this first-order differential
 equation behind us.  I think we've learned enough, and I would prefer to

@@ -249,11 +249,11 @@ module Integrator_rk4n                  # not partitioned
     @acc, @jerk = era.acc_and_jerk(wl, @pos, @vel, @time)
   end
 
-  def force_on_pos_at_time(pos,time,wl, era)
+  def force_on_pos_at_time(pos, time, wl, era)
     era.acc(wl, pos, time)
   end
 
-  def derivative(pos,vel,time,wl,era)
+  def derivative(pos, vel, time, wl, era)
     [ vel, force_on_pos_at_time(pos,time,wl, era) ]
   end
 
@@ -395,7 +395,7 @@ module Integrator_rk4                  # Abramowitz and Stegun's eq. 25.5.22
     @acc, @jerk = era.acc_and_jerk(wl, @pos, @vel, @time)
   end
 
-  def force_on_pos_at_time(pos,time,wl, era)
+  def force_on_pos_at_time(pos, time, wl, era)
     era.acc(wl, pos, time)
   end
 
@@ -452,7 +452,7 @@ module Integrator_rk3
     @acc, @jerk = era.acc_and_jerk(wl, @pos, @vel, @time)
   end
 
-  def force_on_pos_at_time(pos,time,wl, era)
+  def force_on_pos_at_time(pos, time, wl, era)
     era.acc(wl, pos, time)
   end
 
@@ -488,6 +488,161 @@ module Integrator_rk3
       @vel + @acc*dt + (1/2.0)*jerk*dt**2 + (1/6.0)*snap*dt**3 ]
   end
 end
+
+module Integrator_cc # NOTE: ONLY WORKS NOW IF ALL BODIES USE THIS METHOD
+                     # since I haven't added acc extra/inter-polation elsewhere
+  include Integrator_force_default
+
+  attr_accessor :acc
+  attr_reader :jerk
+  attr_writer :time
+
+  def setup_integrator
+    @acc = @pos*0
+    @jerk = @pos*0
+  end
+
+  def startup_force(wl, era)
+    @acc, @jerk = era.acc_and_jerk(wl, @pos, @vel, @time)
+  end
+
+  def force_on_pos_at_time(pos, time, wl, era)
+    era.acc(wl, pos, time)
+  end
+
+  def gforce_on_pos_at_time(pos, acc, time, wl, era)
+    era.gacc(wl, pos, acc, time)
+  end
+
+  def integrator_step(wl, era)
+    dt = @next_time - @time
+    k1 = @acc
+    k2 = force_on_pos_at_time(@pos + 0.5*@vel*dt + (1.0/12)*k1*dt**2,
+                              @time + 0.5*dt, wl, era)
+    k2 += (1/48.0)*dt*dt*
+          gforce_on_pos_at_time(@pos + 0.5*@vel*dt + (1.0/12)*k1*dt**2,
+                                k2, @time + 0.5*dt, wl, era)
+    new_point = deep_copy
+    new_point.pos += @vel*dt + (1/6.0)*(k1 + 2*k2)*dt**2
+    new_point.time = @next_time
+    new_point.force(wl,era)
+    k3 = new_point.acc
+    new_point.vel += (1/6.0)*(k1 + 4*k2 + k3)*dt
+    new_point.estimate_jerk(self)
+    new_point
+  end
+
+  def estimate_jerk(old)
+    @jerk = (old.acc - @acc) / (old.time - @time)
+  end
+
+  def predict_pos_vel(dt)
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3,
+      @vel + @acc*dt + (1/2.0)*@jerk*dt**2                       ]
+  end
+
+  def predict_pos_vel_acc(dt)
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3,
+      @vel + @acc*dt + (1/2.0)*@jerk*dt**2,
+      @acc + @jerk*dt                                            ]
+  end
+
+  def interpolate_pos_vel(wp, dt)
+    tau = wp.time - @time
+    jerk = (-6*(@vel - wp.vel) - 2*(2*@acc + wp.acc)*tau)/tau**2
+    snap = (12*(@vel - wp.vel) + 6*(@acc + wp.acc)*tau)/tau**3
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*jerk*dt**3 +
+                       (1/24.0)*snap*dt**4,
+      @vel + @acc*dt + (1/2.0)*jerk*dt**2 + (1/6.0)*snap*dt**3   ]
+  end
+
+  def interpolate_pos_vel_acc(wp, dt)
+    tau = wp.time - @time
+    jerk = (-6*(@vel - wp.vel) - 2*(2*@acc + wp.acc)*tau)/tau**2
+    snap = (12*(@vel - wp.vel) + 6*(@acc + wp.acc)*tau)/tau**3
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*jerk*dt**3 +
+                       (1/24.0)*snap*dt**4,
+      @vel + @acc*dt + (1/2.0)*jerk*dt**2 + (1/6.0)*snap*dt**3,
+      @acc + jerk*dt + (1/2.0)*snap*dt**2                        ]
+  end
+end
+
+module Integrator_cco # NOTE: ONLY WORKS NOW IF ALL BODIES USE THIS METHOD
+                     # since I haven't added acc extra/inter-polation elsewhere
+  include Integrator_force_default
+
+  attr_accessor :acc
+  attr_reader :jerk
+  attr_writer :time
+
+  def setup_integrator
+    @acc = @pos*0
+    @jerk = @pos*0
+  end
+
+  def startup_force(wl, era)
+    @acc, @jerk = era.acc_and_jerk(wl, @pos, @vel, @time)
+  end
+
+  def force_on_pos_at_time(pos, time, wl, era)
+    era.acc(wl, pos, time)
+  end
+
+  def gforce_on_pos_at_time(pos, acc, time, wl, era)
+    era.gacc(wl, pos, acc, time)
+  end
+
+  def integrator_step(wl, era)
+    dt = @next_time - @time
+    np = deep_copy
+    np.vel += (1/6.0)*np.acc*dt
+    np.pos += 0.5*np.vel*dt
+    np.acc = np.force_on_pos_at_time(np.pos, @time + 0.5*dt, wl, era)
+    np.acc += (1/48.0)*dt*dt*np.gforce_on_pos_at_time(np.pos, np.acc,
+                                                      @time + 0.5*dt, wl, era)
+    np.vel += (2/3.0)*np.acc*dt
+    np.pos += 0.5*np.vel*dt
+    np.time = @next_time
+    np.force(wl,era)
+    np.vel += (1/6.0)*np.acc*dt
+    np.estimate_jerk(self)
+    np
+  end
+
+  def estimate_jerk(old)
+    @jerk = (old.acc - @acc) / (old.time - @time)
+  end
+
+  def predict_pos_vel(dt)
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3,
+      @vel + @acc*dt + (1/2.0)*@jerk*dt**2                       ]
+  end
+
+  def predict_pos_vel_acc(dt)
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3,
+      @vel + @acc*dt + (1/2.0)*@jerk*dt**2,
+      @acc + @jerk*dt                                            ]
+  end
+
+  def interpolate_pos_vel(wp, dt)
+    tau = wp.time - @time
+    jerk = (-6*(@vel - wp.vel) - 2*(2*@acc + wp.acc)*tau)/tau**2
+    snap = (12*(@vel - wp.vel) + 6*(@acc + wp.acc)*tau)/tau**3
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*jerk*dt**3 +
+                       (1/24.0)*snap*dt**4,
+      @vel + @acc*dt + (1/2.0)*jerk*dt**2 + (1/6.0)*snap*dt**3   ]
+  end
+
+  def interpolate_pos_vel_acc(wp, dt)
+    tau = wp.time - @time
+    jerk = (-6*(@vel - wp.vel) - 2*(2*@acc + wp.acc)*tau)/tau**2
+    snap = (12*(@vel - wp.vel) + 6*(@acc + wp.acc)*tau)/tau**3
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*jerk*dt**3 +
+                       (1/24.0)*snap*dt**4,
+      @vel + @acc*dt + (1/2.0)*jerk*dt**2 + (1/6.0)*snap*dt**3,
+      @acc + jerk*dt + (1/2.0)*snap*dt**2                        ]
+  end
+end
 
 class Worldpoint
 
@@ -497,7 +652,7 @@ class Worldpoint
 
   attr_accessor :pos, :vel, :next_time
 
-  attr_reader :mass, :time, 
+  attr_reader :mass, :time,
               :nsteps, :minstep, :maxstep
 
   def setup(method, dt_param, time)
@@ -559,6 +714,13 @@ class Worldpoint
     wp
   end
 
+  def gacc_extrapolate(t)
+    wp = deep_copy
+    wp.pos, wp.vel, wp.acc = predict_pos_vel_acc(t - @time)
+    wp.extrapolate_admin(t)
+    wp
+  end
+
   def extrapolate_admin(t)
     @time = t
   end
@@ -566,6 +728,13 @@ class Worldpoint
   def interpolate(other, t)
     wp = deep_copy
     wp.pos, wp.vel = interpolate_pos_vel(other, t-@time)
+    wp.interpolate_admin(self, other, t)
+    wp
+  end
+
+  def gacc_interpolate(other, t)
+    wp = deep_copy
+    wp.pos, wp.vel, wp.acc = interpolate_pos_vel_acc(other, t-@time)
     wp.interpolate_admin(self, other, t)
     wp
   end
@@ -634,6 +803,16 @@ class Worldline
     p.mass*r/r3
   end
 
+  def gacc(pos, acc, t)
+    p = take_gacc_snapshot_of_worldline(t)
+    r = p.pos - pos
+    r2 = r*r
+    r3 = r2*sqrt(r2)
+#    a = p.acc - acc
+    a = - acc
+    2*(p.mass/r3)*(a - 3*((r*a)/r2)*r)
+  end
+
   def acc_and_jerk(pos, vel, t)
     p = take_snapshot_of_worldline(t)
     r = p.pos - pos
@@ -670,6 +849,22 @@ class Worldline
     end
   end
 
+  def take_gacc_snapshot_of_worldline(time)
+    if time >= @worldpoint.last.time
+      valid_extrapolation?(time)
+      @worldpoint.last.gacc_extrapolate(time)
+    else
+      valid_interpolation?(time)
+      i = @worldpoint.size
+      loop do
+        i -= 1
+        if @worldpoint[i].time <= time
+          return @worldpoint[i].gacc_interpolate(@worldpoint[i+1], time)
+        end
+      end
+    end
+  end
+
   def next_worldline(time)
     valid_interpolation?(time)
     i = @worldpoint.size
@@ -698,6 +893,14 @@ class Worldera
       acc += w.acc(pos, t) unless w == wl
     end
     acc 
+  end
+
+  def gacc(wl, pos, acc, t)
+    gacc = pos*0                           # null vectors of the correct length
+    @worldline.each do |w|
+      gacc += w.gacc(pos, acc, t) unless w == wl
+    end
+    gacc 
   end
 
   def acc_and_jerk(wl, pos, vel, t)
