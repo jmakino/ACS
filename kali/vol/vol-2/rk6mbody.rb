@@ -103,8 +103,8 @@ class Body
 
       @vel = @old_vel*2 - @prev1_vel +
              (@old_acc*5 + @prev1_acc*2 + @prev2_acc*5)*dt*dt/12
-      
-
+    end
+  end
 
   def rk6(dt)
     d = [0.784513610477560e0, 0.235573213359357e0, -1.17767998417887e0,
