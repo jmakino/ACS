@@ -1,7 +1,156 @@
 = The <tt>WorldPoint</tt> Class
 
-== xxx
+== Down at the Bottom
+
+*Bob*: Now we come to the bottom of our hierarchy, where we find the
++WorldPoint+ class, which is a subclass of the +Body+ class:
 
  :inccode:.world1.rb-WorldPoint
 
-== xxx
+== Setting Up and Starting Up
+
+*Alice*: We have defined three phases of operation, a setup phase,
+a startup phase, and a normal phase in which we push particles forward.
+The difference between there three is finally becoming clear now.
+
+*Bob*: At startup, we are revving the engines, so to speak: we are
+computing the initial force calculations, but we are not moving any
+particle yet.  The engines are running in place.
+
+*Alice*: In a way, we are simulating a previous step, by leaving the
+system in exactly the type of state it would have been in, had we arrived
+at the initial time from a previous integration.  To the extent that a
+previous integration would have provided us with force calculations at
+the end of a previous step, we are doing those force calculations now.
+
+*Bob*: Now why did we not just combine the +setup+ and +startup+ routines?
+
+*Alice*: Good question.  Hmm.  On this level there certainly does not seem
+to be any clear reason not to combine these two.  But we must have had
+_some_ reason.  Let's go back to the next level up, to +WordLine+, where
+these functions must be called from.
+
+Ah, yes, there too we have two functions with the same name, +setup+
+and +startup+.  Hmm again.  At this point, too, it seems clear that we
+could have combined these functions.  Well, let's keep moving up, to
+the +WorldEra+ level.
+
+*Bob*: Ho, before we do that, notice that there is another setup related
+method on the +WorldLine+ level.  At the very end, we have
+<tt>setup_from_single_worldpoint</tt>.  In that method, the worldpoint
+itself is set up.  Not _that_ type of setting up surely has to be done
+for each particle, before we can even think of starting up the force
+calculation for each particle.
+
+*Alice*: Perhaps we should have combined those two methods,
+<tt>WorldLine#setup</tt> and <tt>WorldLine#setup_from_single_worldpoint</tt>.
+Something to keep in mind for a future version.  For now, let's leave this
+version alone as it is, since it works.
+
+Still, I'd like to see what happens on higher levels.  I'll just do a search
+for +setup+.
+
+On the +WorldEra+ level, the only thing that turns up is
+<tt>setup_from_snapshot</tt>.  Ah, this is in contrast with what we
+just saw on the +WorldLine+ level, where we set up a single word line
+from a single world point, as the starting point.  Here we setup the
+whole system, starting from a whole snapshot.
+
+Continuing the search for +setup+, here is the next function, now on
+the top level, <tt>World#setup_from_world</tt> and
+<tt>World#setup_from_snapshot</tt>.
+
+*Bob*: The first one is almost trivial, since everything has already been
+set up in the previous run; all we have to do is to set a few appropriate
+variables and off we go.  The second one, <tt>setup_from_snapshot</tt>,
+is the interesting one.  And hey, look, on the fifth line, we are doing
+a form of startup, in <tt>startup_and_report_energy</tt>.
+
+*Alice*: Now _that_ is confusing.  Definitely, in the next rewrite, I will
+insist on separating setting up and starting up on all levels!
+
+*Bob*: But as you already said, not today.  We still have to go through the
++WorldPoint+ class definition, remember!  We've only looked at the
+first two methods.
+
+== Predicting and Correcting.
+
+*Alice*: The rest should not contain too many surprises.  The +correct+
+step looks just like what we already had in <tt>nbody_ind1.rb</tt>:
+all the coefficients are the same, as they should be, just the notation
+is somewhat different.
+
+But wait a minute, if we have a corrector here, what happened with
+our predictor?
+
+*Bob*: You have forgotten already?  On the +WorldLine+ level, we took
+a single step as follows:
+
+ :inccode:.world1.rb+take_step
+
+which indeed contains a predict step and a correct step.  The correct
+step is a direct invocation of <tt>WorldPoint#correct</tt> which we are
+now looking at.  And the predict step is given on the +WorldLine+ level as:
+
+ :inccode:.world1.rb+take_step
+
+This means that we should not look for a method <tt>WorldPoint#predict</tt>
+but a method <tt>WorldPoint#extrapolate</tt>.
+
+*Alice*: Hmm, not exactly what I would have expected.  And I don't want to
+rely on memory.  The logic of the code should speak for itself!
+
+Perhaps we should call <tt>WorldPoint#extrapolate</tt>n
+<tt>WorldPoint#predict</tt> instead.  But
+no, that won't do either, since there are other places where we only want to
+exrapolate.  There we specifically want to call
+<tt>WorldPoint#extrapolate</tt> and it would be confusing to have to
+call <tt>WorldPoint#predict</tt>.  Perhaps the best thing to do is to
+introduce the name <tt>WorldPoint#predict</tt> as just a one line
+method calling <tt>WorldPoint#extrapolate</tt>, as a kind of alias.
+
+*Bob*: Not today!  I'm sure that once you get started, your taste for
+abstraction and modularity and what not will get you carried away.  We'll
+leave that for the next pass.
+
+Where were we?  The method +admin+ is trivial, just does some bookkeeping.
+And then we have +extrapolate+, which we just discussed.  It does indeed
+exactly what <tt>Body#predict_step</tt> did in <tt>nbody_ind1.rb</tt>.
+
+The next method is +interpolate+.  Ah, this is new.
+
+*Alice*: Yes.  We decided that we'd better be as accurate as we could
+reasonably be with our interpolation.  After all, the main reason to
+interpolate is to construct snapshots that we then hand to a diagnostics
+routine.
+
+*Bob*: I thought the _main_ reason to construct snapshots was to be able
+to do force calculations.
+
+*Alice*: True, but for _those_ snapshots, we have to extrapolate particles;
+excuse me, _predict_ particle positions.  This double meaning of predicting
+and extrapolating is making things sound complicated. 
+
+*Bob*: I see.  So while you're growing world lines dynamically, you're always
+taking snapshots that are a bit ahead of every known world point.  That makes
+sense.  But by the time you look back to do all the diagnostics for a completed
+era, you use interpolation.
+
+*Alice*: Exactly.  And in order to get the most accurate energy estimate,
+we may as well use all the information we have, from both world
+points, before and after the time at which we want to interpolated.
+
+*Bob*: And if we count parameters, we have computed acceleration and jerk
+at each of the two world point.  These four pieces of information can be
+transformed into four quantities at one the points, for convenience, to
+allow us to construct a Taylor series there, without loss of information.
+
+This means that at that point we have the acceleration and jerk that were
+already available, and we compute the next two derivatives, the snap and
+crackle, <tex>$d^4\br/dt^4$</tex> and <tex>$d^5\br/dt^5$</tex>, from the
+two accelarations and jerks we have at hand.  Got it!
+
+== Interpolation
+
+*Alice*: I don't remember exactly how we derived the equations here.
+I'd feel more comfortable just to check them again.

@@ -10,19 +10,16 @@ class WorldPoint < Body
                 :minstep, :maxstep,
                 :body_id
 
-  def initialize
+  def setup(time)
+    @time = @next_time = time
+    @acc = @pos*0
+    @jerk = @pos*0
     @nsteps = 0
     @minstep = VERY_LARGE_NUMBER
     @maxstep = 0
   end
 
-  def setup(time)
-    @time = @next_time = time
-    @acc = @pos*0
-    @jerk = @pos*0
-  end
-
-  def init(acc, jerk, timescale, dt_param, dt_max)
+  def startup(acc, jerk, timescale, dt_param, dt_max)
     @acc = acc
     @jerk = jerk
     dt = timescale * dt_param
@@ -126,7 +123,7 @@ class WorldLine
     wp = @worldpoint[0]
     acc, jerk = era.acc_and_jerk(self, wp)
     timescale = era.timescale(self, wp)
-    wp.init(acc, jerk, timescale, @dt_param, dt_max)
+    wp.startup(acc, jerk, timescale, @dt_param, dt_max)
   end
 
   def take_step(era, dt_max)

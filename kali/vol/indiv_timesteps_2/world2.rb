@@ -9,15 +9,12 @@ class WorldPoint < Body
                 :minstep, :maxstep,
                 :body_id
 
-  def initialize
-    @nsteps = 0
-    @minstep = VERY_LARGE_NUMBER
-    @maxstep = 0
-  end
-
   def forward_setup(time)
     @time = @next_time = time
     @acc = @pos*0
+    @nsteps = 0
+    @minstep = VERY_LARGE_NUMBER
+    @maxstep = 0
   end
 
   def leapfrog_setup(time)
@@ -40,29 +37,21 @@ class WorldPoint < Body
     @pop = @pos*0
   end
 
-  def forward_init(acc, timescale, dt_param, dt_max)
+  def forward_startup(acc, timescale, dt_param, dt_max)
     @acc = acc
     dt = timescale * dt_param
     dt = dt_max if dt > dt_max
     @next_time = @time + dt
   end    
 
-  def leapfrog_init(acc, timescale, dt_param, dt_max)
+  def leapfrog_startup(acc, timescale, dt_param, dt_max)
     @acc = acc
     dt = timescale * dt_param
     dt = dt_max if dt > dt_max
     @next_time = @time + dt
   end    
 
-  def hermite_init(acc, jerk, timescale, dt_param, dt_max)
-    @acc = acc
-    @jerk = jerk
-    dt = timescale * dt_param
-    dt = dt_max if dt > dt_max
-    @next_time = @time + dt
-  end    
-
-  def ms4_init_first_round(acc, jerk, timescale, dt_param, dt_max)
+  def hermite_startup(acc, jerk, timescale, dt_param, dt_max)
     @acc = acc
     @jerk = jerk
     dt = timescale * dt_param
@@ -70,7 +59,15 @@ class WorldPoint < Body
     @next_time = @time + dt
   end    
 
-  def ms4_init_second_round(snap, crackle)
+  def ms4_startup_first_round(acc, jerk, timescale, dt_param, dt_max)
+    @acc = acc
+    @jerk = jerk
+    dt = timescale * dt_param
+    dt = dt_max if dt > dt_max
+    @next_time = @time + dt
+  end    
+
+  def ms4_startup_second_round(snap, crackle)
     @snap = snap
     @crackle = crackle
   end    
@@ -377,7 +374,7 @@ class WorldLine
     wp = @worldpoint[0]
     acc = era.acc(self, wp)
     timescale = era.timescale(self, wp)
-    wp.forward_init(acc, timescale, @dt_param, dt_max)
+    wp.forward_startup(acc, timescale, @dt_param, dt_max)
     true
   end
 
@@ -385,7 +382,7 @@ class WorldLine
     wp = @worldpoint[0]
     acc = era.acc(self, wp)
     timescale = era.timescale(self, wp)
-    wp.leapfrog_init(acc, timescale, @dt_param, dt_max)
+    wp.leapfrog_startup(acc, timescale, @dt_param, dt_max)
     true
   end
 
@@ -393,7 +390,7 @@ class WorldLine
     wp = @worldpoint[0]
     acc, jerk = era.acc_and_jerk(self, wp)
     timescale = era.timescale(self, wp)
-    wp.hermite_init(acc, jerk, timescale, @dt_param, dt_max)
+    wp.hermite_startup(acc, jerk, timescale, @dt_param, dt_max)
     true
   end
 
@@ -403,12 +400,12 @@ class WorldLine
       @startup_cycle = 1
       acc, jerk = era.acc_and_jerk(self, wp)
       timescale = era.timescale(self, wp)
-      wp.ms4_init_first_round(acc, jerk, timescale, @dt_param, dt_max)
+      wp.ms4_startup_first_round(acc, jerk, timescale, @dt_param, dt_max)
       return false
     elsif @startup_cycle == 1
       @startup_cycle += 1
       snap, crackle = era.snap_and_crackle(self, wp)
-      wp.ms4_init_second_round(snap, crackle)
+      wp.ms4_startup_second_round(snap, crackle)
       time = wp.time
       dt = wp.next_time - time
       for i in (1..3)

@@ -287,11 +287,3 @@ same identity as the body we read in, by taking over the same value
 of its <tt>@body_id</tt>.  And at the end, we call +setup+, which as
 we have seen passed the work on to the world point method with the
 same name.  Done!
-
-
-
-
-
-*Bob*: What happens if we read in +WorldPoint+ objects right from the start?
-
-
