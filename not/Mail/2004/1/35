@@ -1,0 +1,11 @@
+Date: Wed Jan 07 11:40:16 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Hi Piet,
+
+I added ":commandinputoutpt:" to the acsdoc directive set. See
+README.cp for example. It seems to work fine.
+
+Jun
+
