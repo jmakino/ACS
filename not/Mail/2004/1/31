@@ -1,0 +1,111 @@
+Date: Sun Jan 04 18:38:04 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+ > By the way, this points to the following lines in "acsdoc.rb" :
+ > 
+ >   if s =~ /:in.*code:/ and s.index("\":inccode:\"")==nil
+ >     s.sub!(/:in.*code:/, ':include:')
+ > 
+ > Can you remind me why you added the s.index part?  Is that for the
+ > case that someone wants to escape the inccode directive, for example,
+ > when writing about it in a book?
+
+My intention was only to be able to write ":inccode:", and not to be
+more general than that.
+
+ >   if s =~ /:in.*code:/ and s.index("\":in.*code:\"")==nil
+ > 
+ > with the .* in the second place there as well?
+
+Well, for that one the argument of index must be an regular
+expression, so .... well, how do you write that?
+
+ > > > I guess you did not commit this to svn yet?  I could not find it.
+ > > 
+ > > You mean sample.gif by this? It was intentionally left out. Should I
+ > > make up something?
+ > 
+ > Yes, I think that would be better.  It is always better to actually
+ > see an example, that to see the *description* of an example, which is
+ > clear for the writer but not always for the reader.
+ > 
+ > But wait, there are two levels of meta here.  Right now, the rdoc
+ > output gives:
+ > 
+ >   Anyway, here is a sample inline image: 
+ > 
+ > ignoring what was written in the README file, namely:
+ > 
+ >   Anyway, here is a sample inline image: 
+ > 
+ >   link:sample.gif
+ > 
+ > I guess what we really need is 1) a small gif file (acs logo would be nice!)
+ > and 2) a way to escape the "link:sample.gif" statement so that we can
+ > include that in the rdoc output *without* it being translated by acsdoc.
+
+I implemented a try. Please take a look at the current document,   which
+you have to make by  
+    
+   ruby acsdoc.rb -S README.cp acsdoc.rb
+
+ > By the way, it is confusing to have a README file and a README.cp file,
+ > with the same text.  I'm not sure what to do.  People expect a README
+ > file, not a README.cp file.  One possibility would be to extent our
+ > acsdoc script to look not only for .cp files but also for a README file;
+ > but that could be too dangerous?
+
+Well, a practical approach would be to process *all* files (may be
+except for the .rb files) this way. Another way would be to have, say,
+acsdoc.cp file instead of README, and use README to give more
+higher-level description.
+
+ > Here, too, it might be better to show the whole code as well, to show
+
+Sorry, why "too"? 
+
+ > Not really ;>).  sumimasen.  In directory not/P/2003/11/images there
+ > are two files to be included, currently in ps format:
+ > 
+ >   labnote-031111.eps
+ >   labnote-031112.eps
+ > 
+ > However, I presume that we have to go to the original files
+ > 
+ >   labnote-031111.obj
+ >   labnote-031112.obj
+ > 
+ > and produce from them .gif files.  By now it is long enough ago that I
+ > have forgotten the name of the program that produced the .obj files,
+ > so I don't know how to make the .gif files.
+
+Okay, the command is "tgif", and you should do "print" after you
+selected the output firmat (default is LATEX/EPS, which should be
+shown as icon. By cricking that icon you can change the format) 
+
+ > However, I just did everything else that is needed.  In the file
+ > "labnotes031111" I replaced the original line
+ > 
+ >    \fig{labnote-031111.eps, 15 cm}
+ > 
+ > by the following new text
+ > 
+ >     # comment, added 2004/1/2:
+ >     # originally we had here:
+ >     # \fig{labnote-031111.eps, 15 cm}
+ >     # but we have now replaced this with our current mechanism
+ >     # used to include the following figure:
+ >    
+ >    link:images/labnote-031111.gif
+
+Well, to actually make a link to a image is currently a bit more
+complex, since the link is relative to the place where the generated
+HTML file is placed. Thus, you have to write (I believe)
+
+   link: ../P/2003/11/images/labnote-031111.gif
+
+(without space after link: )   
+
+Jun
+

@@ -1,0 +1,36 @@
+Date: Sun Jan 04 17:35:13 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+
+ > Okay, that's fine.  Perhaps we can start with a single big file, on
+ > the browser at least, so that we keep all the information together;
+ > of course we can enter the information from BUGS/200x/x structure,
+ > as you mentioned.
+ > 
+ > > No. I think TODO list must be short. It may be a good exercise to move
+ > > the entries of TODO list to lab notes, presumablly manually.
+ > 
+ > Sorry, what do you mea with "move"?  Copy them and delete them after
+ > they are done, or copy them to lab notes to remind ourselves what
+ > still needs to be done, or something else?
+
+What I had in mind was something like the following: Imagine that we
+have
+
+* make kali
+
+as an entry for TODO file at certain point. At day 200x/yy/zz, we
+completed kali. So we want to remove this entry from TODO file. So we
+can just remove it from TODO file. For the record, however, it may be
+useful to keep it in labnote, at the date 200x/yy/zz, as, for example,
+
+* Work done: removed from TODO
+   * make kali
+
+To have a specific format here may be useful, but not absolutely
+necessary, since we record the trace of TODO file in svn anyway.
+
+Jun
+   
+

@@ -1,0 +1,20 @@
+Date: Sun Jan 04 17:39:25 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > However, I think I did something wrong, since now the labnotes file
+ > for 2003/12 comes up in my rdoc window with a grey-white color smeared
+ > over the normally bright blue color of the banner at the file header.
+ > The grey smear continues for about the first half of the file, then
+ > things get clearer again.  I put a white space at the front of each
+ > line in all the email files that I committed, but I guess there are
+ > still other commands somewhere that are funny, some email directives
+ > that confuse rdoc?  Well, I guess we can check that later, unless you
+ > immediately see what went wrong.
+
+Do you still have this problem? It looks okay on my machine.
+
+Jun
+
