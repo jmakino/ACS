@@ -1,4 +1,4 @@
-\header Fri Nov 14 17:09:38 JST 2003 Jun Makino Session No. = 2003-11-11-001
+\header Fri Nov 14 21:55:27 JST 2003 Jun Makino Session No. = 2003-11-11-001
 
 2003, November 11, Tuesday, Kyoto: Jun and Piet
 
@@ -262,7 +262,7 @@ and {\it simultaneously} on the level of what the construction expressed,
 and how it was actually implemented.
 
 
-\header Fri Nov 14 17:09:38 JST 2003 Jun Makino Session No. = 2003-11-12-001
+\header Fri Nov 14 21:55:27 JST 2003 Jun Makino Session No. = 2003-11-12-001
 
 2003, November 12, Wednesday, Kyoto: Jun and Piet
 
@@ -520,41 +520,86 @@ We made the following todo list:
      as a toy model
 
 
-\header Fri Nov 14 17:09:38 JST 2003 Jun Makino Session No. = 2003-11-13-001
+\header Fri Nov 14 21:55:27 JST 2003 Jun Makino Session No. = 2003-11-14-001
 
-2003, November 13, Thursday, Kyoto: Jun and Piet
+Sample reference from outside section
+	
+	\ref 2003-11-11-1-1.1.1
 
-1. Yesterday's Lab Notes
+	\ref 2003-11-11-1
 
-We finished writing yesterday's lab notes.  Now that we have decided
-upon a format and mechanism, we will try to finish each set of notes
-on the day the work described is done.
+	
 
-2. Todo List
+1. Backward pointer and reference to internal structure.
 
-We discussed various ways to automate the updating of our todo list.
-One option is to include a current version at the end of our local
-file, in which we write our session reports.  In that case we could
-simply synchronize our todo list by hand.  Another option is to create
-a separate todo file and put that under svn; however, chances are that
-we then never look at it.
+We refer to previous note in the following format:
 
-3. Remaining Work for This Week
+\\ref 200311-001-1.2.3.
 
-We decided to write a minimum version of whatever software is needed
-to make it possible to put at least some material on our ACS web site,
-both the labnotes of the last few days, and a beginning of volume 4,
-which could describe the labnote mechanism.
+Here, 200311 is the year and month, given as 6-character concatinated
+form, and 001 is the sequence number within the month.
 
-4. Open Kitchen
+Hmm... Well, I agree that not to be able to refer to the thing by date
+may be not ideal...
 
-On our ACS web site, we will add a clickable line, called {\it open kitchen},
-which contains in a publicly visible way our ongoing labnotes and
-latest drafts of our various volumes.  This will make it much easier
-to communicate with others; when asking for comments and suggestions,
-we can simply point them to the appropriate descriptions in our book
-manuscripts and labnotes.
+So we agreed that it's better to refer the things as:
+
+\\ref 2003-11-14-1-2.3.5.
+
+Well, I need to change register-note.rb...
+
+So I do that:
+
+changes for register-note.rb was actually rather minimal
+
+for not2.rb, I implemeted name tags for single session files, but not
+for multisession files yet.
+
+tags for multisession file added
+
+bakward tag implemented.
+
+We should implement reversal tag, from place referred by the backward
+pointer to the place of backward pointer. For that purpose, I
+implemented the mechanism to create the file with the list of
+source-target pair, named "backward_pointers.dat". This file looks
+like:
+
+
+2003-11-12-001-5. 2003-11-11-1-2.4.3.
 
 
 
+first column is source and the second is target. You need
+to create an associative array with multiple data...
+
+The file name we use to submit the current session will be,
+session.not. Well, any other name is possible and also it is possible
+to allow class of name. It is perhaps comvenient to all some rule (the
+simplest would be shell's file name expansion rule) to be defined in
+some configulation file, so that you can set names there.
+
+Back to the backward pointers. A reasonably fancy way would be to use
+linked list, but with associative array a simpler approach is always
+possible:
+
+source[target_name + " 0"] gives the first entry
+source[target_name + " "+ i.to_s] gives the i-th entry
+sourcecount[target_name] gives the number of sources with the same
+target
+
+
+7. Dummy references.
+
+Here are examples of lost of references, like     
+\ref 2003-11-11-1-2.4.3.      \ref 2003-11-11-1-2.4.2.
+      \ref 2003-11-11-1-1.           \ref 2003-11-11-1-3.     
+
+
+Apparently there are some problems in recognizing multiple references
+in a single line.      
+
+ところで、日本語は通るのかしらね？
+
+大丈夫みたい
 
