@@ -2,11 +2,22 @@
 
 require "nbody.rb"
 
-module Integrator_pec_mode
+module Integrator_force_default
+
+  def setup_integrator
+    @acc = @pos*0
+  end
 
   def startup_force(wl, era)
     force(wl, era)
   end
+
+  def force(wl, era)
+    @acc = era.acc(wl, @pos, @time)
+  end
+end
+
+module Integrator_pec_mode
 
   def integrator_step(wl, era)
     new_point = extrapolate(@next_time)
@@ -14,7 +25,6 @@ module Integrator_pec_mode
     new_point.correct(self, new_point.time - @time)
     new_point
   end
-
 end
 
 module Integrator_forward
@@ -40,7 +50,6 @@ module Integrator_forward
   def interpolate_pos_vel(wp, dt)
     predict(dt)
   end
-
 end
 
 module Integrator_forwardplus
@@ -65,7 +74,6 @@ module Integrator_forwardplus
   def interpolate_pos_vel(wp, dt)
     predict(dt)
   end
-
 end
 
 module Integrator_adams2kana
@@ -101,7 +109,6 @@ module Integrator_adams2kana
     [ @pos + @vel*dt + (1/2.0)*@acc*dt**2,
       @vel + @acc*dt + (1/2.0)*jerk*dt**2 ]
   end
-
 end
 
 module Integrator_leapfrog
@@ -132,7 +139,6 @@ module Integrator_leapfrog
     [ @pos + @vel*dt + (1/2.0)*@acc*dt**2,
       @vel + @acc*dt + (1/2.0)*jerk*dt**2 ]
   end
-
 end
 
 module Integrator_multistep
@@ -224,7 +230,6 @@ module Integrator_multistep
     end
     result*dt
   end
-
 end
 
 module Integrator_hermite
@@ -263,7 +268,6 @@ module Integrator_hermite
       @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*snap*dt**3 +
                        (1/24.0)*crackle*dt**4                        ]
   end
-
 end
 
 module Integrator_rk4
@@ -326,7 +330,6 @@ module Integrator_rk4
                        (1/24.0)*snap*dt**4,
       @vel + @acc*dt + (1/2.0)*jerk*dt**2 + (1/6.0)*snap*dt**3 ]
   end
-
 end
 
 class Worldpoint
@@ -426,7 +429,6 @@ class Worldpoint
     end
     p
   end
-
 end
 
 class Worldline
@@ -519,7 +521,6 @@ class Worldline
       end
     end
   end
-
 end
 
 class Worldera
@@ -670,7 +671,6 @@ class Worldera
     end
     take_snapshot(t).write_diagnostics(initial_energy)
   end
-
 end
 
 class World
@@ -766,7 +766,6 @@ class World
       raise "#{object.class} not recognized"
     end
   end
-
 end
 
 class Worldsnapshot < NBody
@@ -849,7 +848,6 @@ class Worldsnapshot < NBody
         (E_tot - E_init) / E_init = #{sprintf("%.3g", (etot - e0)/e0 )}
     END
   end
-
 end
 
 class Body
@@ -858,7 +856,6 @@ class Body
     wp = Worldpoint.new
     wp.restore_contents(self)
   end
-
 end
 
 options_text= <<-END
@@ -1082,8 +1079,5 @@ options_text= <<-END
   END
 
 clop = parse_command_line(options_text, true)
-
-#w = World.admit($stdin, clop)
-#w.evolve(clop)
 
 World.admit($stdin, clop).evolve(clop)
