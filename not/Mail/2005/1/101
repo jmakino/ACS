@@ -1,0 +1,24 @@
+Date: Mon Jan 10 12:49:55 JST 2005
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Well, this occurs in a rather complex situation. Let me try to
+explain:
+
+not@artcompsci.org is translated to not@grape.astron.s.u-tokyo.ac.jp
+because of the setting we did for the web server.
+
+From outside the U-tokyo astronomy department network, and mail which
+directed to not@grape.astron.s.u-tokyo.ac.jp or not@artcompsci.org is
+actually sent to not@margaux.astron.s.u-tokyo.ac.jp, which correctly
+sends to you, me, and not@grape.astron.s.u-tokyo.ac.jp. However, if I
+send mail from within the astronomy department network, directly to
+not@artcompsci.org, it is sent directly to
+not@grape.astron.s.u-tokyo.ac.jp, and it will not be further
+forwarded.
+
+This is somewhat inconvenient. I'll see if I can fix it.
+
+Jun
+
+
