@@ -93,6 +93,7 @@ module Acsmaildoc
     ofile.close
 
     if updated == 1 then
+      print "Now runs update-lab etc"
       system("update-lab")
       system("cd #{$docroot} ; svn commit --message Mails-added")
     end
