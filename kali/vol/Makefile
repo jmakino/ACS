@@ -11,6 +11,10 @@ all:
 	$(MAKE) -C vol-9
 	$(MAKE) -C vol-10
 	$(MAKE) -C vol-11
+	$(MAKE) -C vol-12
+	$(MAKE) -C vol-13
+	$(MAKE) -C vol-14
+	$(MAKE) -C vol-15
 
 clean:
 	$(MAKE) -C vol-0 clean
@@ -25,4 +29,8 @@ clean:
 	$(MAKE) -C vol-9 clean
 	$(MAKE) -C vol-10 clean
 	$(MAKE) -C vol-11 clean
+	$(MAKE) -C vol-12 clean
+	$(MAKE) -C vol-13 clean
+	$(MAKE) -C vol-14 clean
+	$(MAKE) -C vol-15 clean
 
