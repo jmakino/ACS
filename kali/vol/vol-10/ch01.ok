@@ -1,19 +1,150 @@
-= What Package to Use
+= XXX
 
-== Test of TeX Math macros
+== xxx
 
-Try <$a^2 = b^2 + c^2$> first and then 
+The idea of taking an arbitrary N-body snapshot, and giving a short
+description of the most important characteristics.
 
-and <$$a^2 = b^2 + c^2$$> and also
+Normally you do: initial conditions, integration, data output,
+figures, interpretation.  The idea here is to get a summary form of
+interpretation immediately after the integration.
 
-<$$
-a^2 = b^ + c^2
-$$>
+What should go in?
 
-to see what happens.
+N, time, {mass, pos, vel} and later type (single, binary, triple, ...)
 
-Ah: the first two work, but the last one doesn't.
+What should come out?
 
+are the units (close to) standard N-body units?
+total mass, energy, r_c, r_h, angular momentum vector, 
+is there once clump or are there several clumps,
+distance between c.o.m and center of density,
+2K/W (K = total kinetic energy; W = absolute value of total potential energy),
+2K_r/K_t (2x the radial kinetic energy divided by tangential kinetic energy),
+inertia tensor and its eigenvalues, number of bound stars, thermal radius
+(radius up to which a Maxwellian is a good approximation).
 
+Then later temperature over spherical shells, and how many sigma away from
+isothermal.  Take k = 1/6N in standard N-body units.
 
+Also: recognition of being close to a polytrope or King model, etc,
+in terms of f(E), and perhaps rho(r), T(r), etc.
 
+== xxx
+
+Let's start with the question whether the system is close to dynamical
+equilibrium.
+
+Musing: (thermal equilibrium, nuclear equilibrium, from binary
+energy generation???  actually in a star: global dynamical equilibrium,
+local thermal equilibrium, global thermal equilibrium includes the
+right amount of nuclear energy generation -- here binary energy generation;
+could check whether it is in post-core-collapse, only for very large N,
+and then core oscilations form a problem).
+Maybe leave this out.
+
+Let us start with the file <tt>energy.rb</tt> that we used when we
+built our Plummer models:
+
+ :inccode: .energy.rb
+
+And then start with:
+
+center of mass or center of density?
+
+For determining the core structure, c.o.d. better, but for determining
+escaper, probably c.o.m. of bound particles (to be determined iteratively).
+
+Start with file <tt>report.rb</tt>
+
+Homework: can there be an oscilation in the number of escapers,
+preventing convergence?
+
+TEST: take a 300-particle system, and give one particle a position and
+velocity component with e+02.
+
+== xxx
+
+Idea [040909] we could average the absolute value of the velocity for
+each particle over a number of time steps, weighted with the length of
+the time step, over an interval before and after each snapshot
+output.  This could be done within the code itself.  Perhaps easiest
+to try this with the MSA C++ code.
+
+Stefano Casertano suggested to Michele that we may want to use the
+actual potential, rather than the spherically averaged one, in
+computing N(E).
+
+== xxx
+
+Recipe for determining f(E)
+
+0) start with a snapshot of an N-body system: positions, velocities, masses
+   for each particle.
+
+1) give each particle a density, using the Casertano-Hut algorithm.
+
+2) mark all particles as `true'.
+
+3) determine the center-of-density, in analogogy to the center-of-mass:
+   the position and velocity of the c.o.d. is the density weighted average
+   of the positions and velocities of all particles marked `true'.
+
+4) mark all particles as `false'; determine which particles are bound
+   with respect to the c.o.d., and change their marking to `true'.
+
+5) repeat step 3 and 4; iterate this loop until the identity of the
+   bound particles does not change anymore.  We will call the final
+   c.o.d. position the center of the snapshot.
+
+6) replace each particle with an infinitesimally thin shell centered at 
+   the center, with radius equal to the distance between the particle
+   and the center.
+
+7') first determine the smoothing length, as a fixed fraction of the
+    core radius
+
+7) determine the run of the potential phi(r) using this collection
+   of shells, but near the center replace the Kepler potential by
+   a smoothing kernel (both the procedure and the interpretation are
+   a bit tricky; see our longer notes).
+
+8) determine N(E), the density of particles in one-dimensional E space;
+   this will be a sum of delta functions, since each particle has a
+   precise position and velocity, hence a precise potential energy and
+   kinetic energy.
+
+9) for each particle, determine the distance eta in energy space to its kth
+   nearest neighbor (k=4 is probably a good choice).
+
+10) define an energy resolution value zeta (e.g. 1% of the absolute value
+    of the central potential).
+
+11) for each particle, define the smoothing length epsilon as the maximum
+    of eta and zeta (eta is particle dependent but zeta is not).
+
+12) smooth N(E), by replacing the delta function for each particle by
+    a smoothing kernel with compact support of radius epsilon; we will
+    use a quadratic generalization of a triangle (a `bell function',
+    but with  compact support).
+
+13) for each particle with an energy distance to the central potential
+    less than epsilon, increase its distance to epsilon.  This is needed
+    to avoid particles growing wings in unphysical energy space below
+    the lowest point of the potential well.
+
+14) determine f(E) for points between the central potential and E = 0,
+    where the points are spaced at distance zeta in energy.  For each
+    point, compute the conversion factor Omega(E), such that
+    f(E) = N(E) / Omega(E).  Omega(E) is an integral over r containing
+    a square root of E - Phi(r).
+
+Note that step 13 will give N(E) a quadratic dependence on the amount
+of energy above the central potential, which will lead to a locally
+constant value for f(E).  If we had use a simpler smoothing kernel,
+such as a triangle or tophat, we wound have found a divergent value
+for f(E) for E approaching the value of the central potential.
+
+Note also that we may want to make a similar adjustment toward E = 0,
+either by shifting particles to slightly lower energy or by shrinking
+the zeta value there locally.  We will leave this for later.
