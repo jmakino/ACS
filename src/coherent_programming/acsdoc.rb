@@ -82,6 +82,7 @@ module Acsdoc
   end
   # :segment end: prep_rb
 
+  # :segment start: acsdoc
   def acsdoc()
     
     del_flag = true
@@ -111,6 +112,7 @@ module Acsdoc
       end
     end
   end
+  # :segment end:
 end
 
 include Acsdoc

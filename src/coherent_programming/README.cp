@@ -38,5 +38,8 @@ The changes we made are
   ":segment end:" will be stored the file .foo.rb-segment.name, where
   foo.rb is the source file. Here is a sample code segment included:
 
- :inccode: .acsdoc.rb-prep_rb
+:inccode: .acsdoc.rb-prep_rb
+
+
+:inccode: .acsdoc.rb-acsdoc
 
