@@ -23,3 +23,12 @@ embed images.
 
 
 
+* I (JM) would like to add to acsdoc.rb the capability to convert an
+  arbitrary TeX string to link to its complied image. The only
+  question is what format to use. The obvious choice would be someting
+  like
+
+     "<tex>   $x=y$ </tex>"
+
+  Is there better possibilities?
+

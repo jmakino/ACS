@@ -25,6 +25,7 @@ module Acsdoc
 
   @@prompt = "|gravity>"
 
+  @@imgcount = 0
 #
 # takes a single string which contains a command
 # and creates processed string which contain output
@@ -134,7 +135,9 @@ module Acsdoc
   def prep_cp_string(instring,dirname)
     ostring = ""
     while s = instring.shift
-      if s =~ /:in.*code:/ and s.index("\":inccode:\"")==nil
+      if s.index("#") == 0
+        print "comment line skipped ",s, "\n"
+      elsif s =~ /:in.*code:/ and s.index("\":inccode:\"")==nil
 	s.sub!(/:in.*code:/, ':include:')
 	ostring = ostring +  "---\n"
 	ostring = ostring +  s
@@ -153,7 +156,7 @@ module Acsdoc
       elsif loc = check_tag(s,":commandinput:")
 	ostring = ostring +  command_with_input(s,":commandinput:", instring,
 				      dirname,false)
-      elsif s.index("#") != 0
+      else
 	ostring = ostring +  s
       end
     end
@@ -161,7 +164,83 @@ module Acsdoc
     ostring
   end
 
+  def process_texcode(texcode,dirname)
+    p texcode
+    imgbase =".imgs/"
+    imgdir = dirname + "/"+ imgbase 
+    p imgdir
+    Dir.mkdir(imgdir) unless File.exist?(imgdir)
+    texname = "tmp.tex"
+    texbase = "tmp"
+    texsource=open(texname,"w+")
+    texsource.print <<-END_TEXSOURCE
+    \\documentclass{article}
+    \\begin{document}
+       \\pagestyle{empty}
+       \\thispagestyle{empty}
+       #{texcode}
+    \\end{document}
+    END_TEXSOURCE
+    texsource.close
+    system("cat "+texname)
+    system "latex #{texname}"
+    system "dvips -l 1 -x 1440 -E #{texbase}"
+    system "rm -f #{texbase}.jpeg; convert  #{texbase}.ps  #{texbase}.jpeg "
+    imgname = imgbase + @@imgcount.to_s + ".jpeg"
+    if File.exist?(texbase+".jpeg")
+      system "mv -f #{texbase}.jpeg #{dirname}/#{imgname}"
+    elsif File.exist?(texbase+".jpeg.0")
+      system "mv -f #{texbase}.jpeg.0 #{dirname}/#{imgname}"
+    else
+      raise "Failed to create the jpeg file #{texbase}.jpeg"
+    end
+    system "echo #{dirname}/#{imgname}"
+    @@imgcount+=1
+    "link:../#{imgname}"
+  end
+
+  def process_tex_inlines(s,instring,dirname)
+    p s
+    if s.index("<tex>")-1==  s.index("\\<tex>")
+      print "s is escaped ", s, "\n"
+      return [s[s.index("<tex>")+5,s.length],s[0,s.index("<tex>")+5]]
+    end
+    ostring = s[0,s.index("<tex>")]
+    s = s[s.index("<tex>")+5,s.length]
+    texcode = ""
+    while s.index("</tex>")==nil
+      texcode += s + "\n"
+      s = instring.shift
+      if s == nil 
+	raise "End of file reached while searching for </tex>: #{$infile}"
+      end
+    end
+    texcode += s[0,s.index("</tex>")];
+    s = s[s.index("</tex>")+6,s.length]
+    texresult=    process_texcode(texcode,dirname)
+    p texresult
+    ostring += texresult
+    [s,ostring]
+  end
+
+  def find_and_process_tex_inlines(instring,dirname)
+    ostring=""
+    while s = instring.shift
+      while loc = s.index("<tex>")  
+	print "in file_and ...", s, "\n"
+	r = process_tex_inlines(s,instring,dirname)
+	ostring +=r[1]
+	s = r[0]
+	p r
+      end
+      ostring += s+"\n"
+    end
+    ostring
+  end
+
+
   def prep_cp(infile, outfile)
+    $infile = infile
     begin
       ifile = open(infile, "r")
     rescue
@@ -174,7 +253,10 @@ module Acsdoc
       instring.push(s)
     end
     ifile.close
-    ofile.print prep_cp_string(instring,dirname);
+    tmpstring=prep_cp_string(instring,dirname).split("\n");
+    tmp2= find_and_process_tex_inlines(tmpstring,dirname);
+    p tmp2
+    ofile.print tmp2
     ofile.close
   end
 

@@ -91,4 +91,17 @@ END
 # This line is not shown
 
  # This line is shown
- 
+
+* You can embed arbitrary TeX source code fragment, by saying
+  \<tex> some tex expression </tex>. For example, 
+  \<tex> $x=y$ </tex> gives
+
+  <tex> $x=y$ </tex>
+
+* It seems to fail in a strange way in some cases. This is apparently
+  a problem with rdoc. For example, <tex> This should be okay</tex>
+  but I suspect after \<tex> this </tex>, the next thing will fail
+  <tex> This will fail </tex> for unknown reason.
+  
+  
+

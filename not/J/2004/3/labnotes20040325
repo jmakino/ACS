@@ -1,0 +1,14 @@
+== More on acsdoc
+
+Tex stuff is more or less working with current acsdoc.rb, though there
+are strange problems in the way rdoc handle link: file stuff.
+
+Thing to be done
+
+* configulation file to set
+   * the image size
+   * location of commands like dvips, netpbm etc
+
+* some error message capability?
+
+   
