@@ -7,7 +7,7 @@ class Body
 
   attr_accessor :mass, :pos, :vel
 
-  def initialize(mass = 0.0, pos = [0.0,0.0,0.0], vel = [0.0,0.0,0.0])
+  def initialize(mass = 0, pos = [0,0,0], vel = [0,0,0])
     @mass, @pos, @vel = mass, pos, vel
   end
 #
@@ -38,12 +38,14 @@ class Body
   end
 
   def simple_read
-    @mass = gets
+    @mass = gets.to_f
     s = gets
     a = s.split
+    a.collect! { |x| x.to_f }
     @pos = a[0...NDIM]
     s = gets
     a = s.split
+    a.collect! { |x| x.to_f }
     @vel = a[0...NDIM]
   end
 #:segment end:
