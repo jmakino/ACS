@@ -1,6 +1,23 @@
 require "nbody.rb"
 
+module Integrator_pec_mode
+
+  def startup_force(wl, era)
+    force(wl, era)
+  end
+
+  def integrator_step(wl, era)
+    new_point = extrapolate(@next_time)
+    new_point.force(wl, era)
+    new_point.correct(self, new_point.time - @time)
+    new_point
+  end
+
+end
+
 module Integrator_forward
+
+  include Integrator_pec_mode
 
   def setup_integrator
     @acc = @pos*0
@@ -26,6 +43,8 @@ end
 
 module Integrator_forwardplus
 
+  include Integrator_pec_mode
+
   def setup_integrator
     @acc = @pos*0
   end
@@ -48,6 +67,8 @@ module Integrator_forwardplus
 end
 
 module Integrator_adams2kana
+
+  include Integrator_pec_mode
 
   attr_reader :acc
 
@@ -83,6 +104,8 @@ end
 
 module Integrator_leapfrog
 
+  include Integrator_pec_mode
+
   attr_reader :acc
 
   def setup_integrator
@@ -111,6 +134,8 @@ module Integrator_leapfrog
 end
 
 module Integrator_multistep
+
+  include Integrator_pec_mode
 
   attr_reader :acc, :acc_0_history, :time_history
 
@@ -202,6 +227,8 @@ end
 
 module Integrator_hermite
 
+  include Integrator_pec_mode
+
   attr_reader :acc, :jerk
 
   def setup_integrator
@@ -236,6 +263,69 @@ module Integrator_hermite
   end
 
 end
+
+module Integrator_rk4
+
+  attr_reader :acc, :jerk
+  attr_writer :time
+
+  def setup_integrator
+    @acc = @pos*0
+    @jerk = @pos*0
+  end
+
+  def startup_force(wl, era)
+    @acc, @jerk = era.acc_and_jerk(wl, @pos, @vel, @time)
+  end
+
+  def force(wl, era)
+    @acc = era.acc(wl, @pos, @time)
+  end
+
+  def force_on_pos_at_time(pos,time,wl, era)
+    era.acc(wl, pos, time)
+  end
+
+  def derivative(pos,vel,time,wl,era)
+    [ vel, force_on_pos_at_time(pos,time,wl, era) ]
+  end
+
+  def integrator_step(wl, era)
+    dt = @next_time - @time
+    k1 = derivative(@pos,@vel,@time,wl,era)
+    k2 = derivative(@pos+0.5*dt*k1[0],@vel+0.5*dt*k1[1],
+		       @time+0.5*dt,wl,era)
+    k3 = derivative(@pos+0.5*dt*k2[0],@vel+0.5*dt*k2[1],
+		       @time+0.5*dt,wl,era)
+    k4 = derivative(@pos+dt*k3[0],@vel+dt*k3[1],@time+dt,wl,era)
+    new_point = deep_copy
+    new_point.pos += (k1[0]+2*k2[0]+2*k3[0]+k4[0])*dt/6
+    new_point.vel += (k1[1]+2*k2[1]+2*k3[1]+k4[1])*dt/6
+    new_point.time=@next_time
+    new_point.force(wl,era)
+    new_point.estimate_jerk(self)
+    new_point
+  end
+
+  def estimate_jerk(old)
+    @jerk = (old.acc - @acc) / (old.time - @time)
+  end
+
+  def predict(dt)
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3,
+      @vel + @acc*dt + (1/2.0)*@jerk*dt**2                       ]
+  end
+
+  def interpolate_pos_vel(wp, dt)
+    tau = wp.time - @time
+    jerk = (-6*(@vel - wp.vel) - 2*(2*@acc + wp.acc)*tau)/tau**2
+    snap = (12*(@vel - wp.vel) + 6*(@acc + wp.acc)*tau)/tau**3
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*jerk*dt**3 +
+                       (1/24.0)*snap*dt**4,
+      @vel + @acc*dt + (1/2.0)*jerk*dt**2 + (1/6.0)*snap*dt**3 ]
+  end
+
+end
 
 class Worldpoint
 
@@ -264,7 +354,7 @@ class Worldpoint
   end
 
   def startup(wl, era, dt_max)
-    force(wl, era)
+    startup_force(wl, era)
     timescale = era.timescale(wl, self)
     startup_admin(timescale * INIT_TIMESCALE_FACTOR, dt_max)
     true
@@ -277,9 +367,7 @@ class Worldpoint
   end
 
   def step(wl, era, dt_max)
-    new_point = extrapolate(@next_time)
-    new_point.force(wl, era)
-    new_point.correct(self, new_point.time - @time)
+    new_point = integrator_step(wl,era)
     timescale = era.timescale(wl, new_point)
     new_point.step_admin(@time, timescale, dt_max)
     new_point

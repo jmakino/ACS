@@ -10,3 +10,138 @@ and for a complete dump:
 
 ruby mkplummer.rb -n 8 -s 8 | ruby acsnumber.rb | ruby world4.rb -t 20 -d 5 -z > plum8s8.dump
 
+Here are the diagnostics:
+
+<kamuy|vol-7b> ruby mkplummer.rb -n 8 -s 2 | ruby world4.rb -i -t 35 -d 5 -o 0.01 > plum8s2t35o01.out
+==> Plummer's Model Builder <==
+Number of particles		: N = 8
+pseudorandom number seed given	: 2
+Floating point precision	: precision = 16
+Incremental indentation		: add_indent = 2
+             actual seed used	: 2
+==> Individual Time Step, Individual Integration Scheme Code <==
+Choice of integration method	: integration_method = hermite
+Determines the time step size	: dt_param = 0.01
+Duration of an era		: dt_era = 0.01
+Maximum time step (units dt_era): dt_max_param = 1.0
+Diagnostics output interval	: dt_dia = 5.0
+Snapshot output interval	: dt_out = 0.01
+Duration of the integration	: t = 35.0
+Output the initial snapshot
+Floating point precision	: precision = 16
+Incremental indentation		: add_indent = 2
+at time t = 0 (from interpolation after 0 steps to time 0):
+    E_kin = 0.385 ,     E_pot =  -0.672 ,      E_tot = -0.287
+       E_tot - E_init = 0
+        (E_tot - E_init) / E_init = -0
+at time t = 5 (from interpolation after 34426 steps to time 5.01):
+    E_kin = 0.548 ,     E_pot =  -0.835 ,      E_tot = -0.287
+       E_tot - E_init = -5.42e-10
+        (E_tot - E_init) / E_init = 1.89e-09
+at time t = 10 (from interpolation after 143616 steps to time 10.01):
+    E_kin = 0.884 ,     E_pot =  -1.17 ,      E_tot = -0.287
+       E_tot - E_init = -3.92e-11
+        (E_tot - E_init) / E_init = 1.37e-10
+at time t = 15 (from interpolation after 453822 steps to time 15.01):
+    E_kin = 1.95 ,     E_pot =  -2.23 ,      E_tot = -0.287
+       E_tot - E_init = -2.27e-08
+        (E_tot - E_init) / E_init = 7.9e-08
+at time t = 20 (from interpolation after 684303 steps to time 20):
+    E_kin = 1.03 ,     E_pot =  -1.32 ,      E_tot = -0.287
+       E_tot - E_init = -7.29e-08
+        (E_tot - E_init) / E_init = 2.54e-07
+at time t = 25 (from interpolation after 867598 steps to time 25):
+    E_kin = 0.582 ,     E_pot =  -0.87 ,      E_tot = -0.287
+       E_tot - E_init = -8.05e-08
+        (E_tot - E_init) / E_init = 2.8e-07
+at time t = 30 (from interpolation after 1382217 steps to time 30):
+    E_kin = 0.785 ,     E_pot =  -1.07 ,      E_tot = -0.287
+       E_tot - E_init = 3.64e-07
+        (E_tot - E_init) / E_init = -1.27e-06
+at time t = 35 (from interpolation after 1917602 steps to time 35):
+    E_kin = 5.37 ,     E_pot =  -5.66 ,      E_tot = -0.287
+       E_tot - E_init = -1.58e-08
+        (E_tot - E_init) / E_init = 5.49e-08
+<kamuy|vol-7b> 
+
+<kamuy|vol-7b> ruby mkplummer.rb -n 8 -s 8 | ruby world4.rb -i -t 20 -d 5 -o 0.01 > plum8s8t20o01.out
+==> Plummer's Model Builder <==
+Number of particles		: N = 8
+pseudorandom number seed given	: 8
+Floating point precision	: precision = 16
+Incremental indentation		: add_indent = 2
+             actual seed used	: 8
+==> Individual Time Step, Individual Integration Scheme Code <==
+Choice of integration method	: integration_method = hermite
+Determines the time step size	: dt_param = 0.01
+Duration of an era		: dt_era = 0.01
+Maximum time step (units dt_era): dt_max_param = 1.0
+Diagnostics output interval	: dt_dia = 5.0
+Snapshot output interval	: dt_out = 0.01
+Duration of the integration	: t = 20.0
+Output the initial snapshot
+Floating point precision	: precision = 16
+Incremental indentation		: add_indent = 2
+at time t = 0 (from interpolation after 0 steps to time 0):
+    E_kin = 0.161 ,     E_pot =  -0.629 ,      E_tot = -0.468
+       E_tot - E_init = 0
+        (E_tot - E_init) / E_init = -0
+at time t = 5 (from interpolation after 56408 steps to time 5.01):
+    E_kin = 0.55 ,     E_pot =  -1.02 ,      E_tot = -0.468
+       E_tot - E_init = -5.26e-09
+        (E_tot - E_init) / E_init = 1.12e-08
+at time t = 10 (from interpolation after 163600 steps to time 10.01):
+    E_kin = 0.357 ,     E_pot =  -0.825 ,      E_tot = -0.468
+       E_tot - E_init = -2.71e-08
+        (E_tot - E_init) / E_init = 5.8e-08
+at time t = 15 (from interpolation after 395466 steps to time 15.01):
+    E_kin = 0.643 ,     E_pot =  -1.11 ,      E_tot = -0.468
+       E_tot - E_init = 4.46e-09
+        (E_tot - E_init) / E_init = -9.53e-09
+at time t = 20 (from interpolation after 627896 steps to time 20):
+    E_kin = 0.148 ,     E_pot =  -0.616 ,      E_tot = -0.468
+       E_tot - E_init = -6.71e-09
+        (E_tot - E_init) / E_init = 1.43e-08
+<kamuy|vol-7b> 
+
+<kamuy|vol-7b> ruby mkplummer.rb -n 8 -s 8 | ruby acsnumber.rb | ruby world4.rb -t 20 -d 5 -z > plum8s8.dump
+==> Plummer's Model Builder <==
+Number of particles		: N = 8
+pseudorandom number seed given	: 8
+Floating point precision	: precision = 16
+Incremental indentation		: add_indent = 2
+             actual seed used	: 8
+==> Takes an N-body system, and numbers all particles <==
+The value of @body_id for the first particle: n = 1
+==> Individual Time Step, Individual Integration Scheme Code <==
+Choice of integration method	: integration_method = hermite
+Determines the time step size	: dt_param = 0.01
+Duration of an era		: dt_era = 0.01
+Maximum time step (units dt_era): dt_max_param = 1.0
+Diagnostics output interval	: dt_dia = 5.0
+Snapshot output interval	: dt_out = 1.0
+Duration of the integration	: t = 20.0
+Full output of all worldpoints, in World output format
+Floating point precision	: precision = 16
+Incremental indentation		: add_indent = 2
+at time t = 0 (from interpolation after 0 steps to time 0):
+    E_kin = 0.161 ,     E_pot =  -0.629 ,      E_tot = -0.468
+       E_tot - E_init = 0
+        (E_tot - E_init) / E_init = -0
+at time t = 5 (from interpolation after 56444 steps to time 5.01):
+    E_kin = 0.55 ,     E_pot =  -1.02 ,      E_tot = -0.468
+       E_tot - E_init = -3.69e-09
+        (E_tot - E_init) / E_init = 7.89e-09
+at time t = 10 (from interpolation after 178408 steps to time 10.01):
+    E_kin = 0.548 ,     E_pot =  -1.02 ,      E_tot = -0.468
+       E_tot - E_init = -3.85e-08
+        (E_tot - E_init) / E_init = 8.22e-08
+at time t = 15 (from interpolation after 249913 steps to time 15.01):
+    E_kin = 0.412 ,     E_pot =  -0.88 ,      E_tot = -0.468
+       E_tot - E_init = -3.79e-08
+        (E_tot - E_init) / E_init = 8.1e-08
+at time t = 20 (from interpolation after 343334 steps to time 20):
+    E_kin = 0.441 ,     E_pot =  -0.909 ,      E_tot = -0.468
+       E_tot - E_init = -4.35e-08
+        (E_tot - E_init) / E_init = 9.3e-08
+<kamuy|vol-7b> 
