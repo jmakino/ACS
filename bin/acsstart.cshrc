@@ -5,10 +5,10 @@
 #
 if ( $?ACSROOT) then
    if (! $?ACSSCRIPTS ) then
+     setenv ACSSCRIPTS $ACSROOT/bin
      set path=( $ACSSCRIPTS $path )
    endif
    setenv ACSDOCOPTIONS --reuseoutput
-   setenv ACSSCRIPTS $ACSROOT/bin
    setenv ACSLIBS $ACSROOT/lib
    setenv RUBYPATH $ACSSCRIPTS
    setenv RUBYLIB $ACSLIBS
