@@ -7,11 +7,21 @@
 	
 <tex>
 
-\title{\bf The Art of Computational Science\\
+\title{{\sl The Art of Computational Science}\\
 \bigskip
-The Kali Code\\
+{\sl The Kali Code}\\
+\bigskip
+{\sl vol. 13}\\
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bf Binary Formation:\\
 \medskip
- 13. Individual Time Steps
+\medskip
+Detection, Evolution, and Feedback
+\bigskip
 }
 \author{\bf Piet Hut and Jun Makino}
 

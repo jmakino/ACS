@@ -7,11 +7,21 @@
 	
 <tex>
 
-\title{\bf The Art of Computational Science\\
+\title{{\sl The Art of Computational Science}\\
 \bigskip
-The Kali Code\\
+{\sl The Kali Code}\\
+\bigskip
+{\sl vol. 7}\\
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bf ACS Data Format:\\
 \medskip
- 7: Self-Describing Data Files
+\medskip
+Self-Describing Data Files
+\bigskip
 }
 \author{\bf Piet Hut and Jun Makino}
 

@@ -7,11 +7,21 @@
 	
 <tex>
 
-\title{\bf The Art of Computational Science\\
+\title{{\sl The Art of Computational Science}\\
 \bigskip
-The Kali Code\\
+{\sl The Kali Code}\\
+\bigskip
+{\sl vol. 10}\\
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bf Dynamic Control:\\
 \medskip
- 10: Organization
+\medskip
+Variable Time Steps
+\bigskip
 }
 \author{\bf Piet Hut and Jun Makino}
 

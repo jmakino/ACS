@@ -7,11 +7,21 @@
 	
 <tex>
 
-\title{\bf The Art of Computational Science\\
+\title{{\sl The Art of Computational Science}\\
 \bigskip
-The Kali Code\\
+{\sl The Kali Code}\\
+\bigskip
+{\sl vol. 9}\\
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bf Gravothermodynamics:\\
 \medskip
- 9: Open Knowledge
+\medskip
+The Low-N Limit, with Softening
+\bigskip
 }
 \author{\bf Piet Hut and Jun Makino}
 

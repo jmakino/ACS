@@ -7,11 +7,21 @@
 	
 <tex>
 
-\title{\bf The Art of Computational Science\\
+\title{{\sl The Art of Computational Science}\\
 \bigskip
-The Kali code for Dense Stellar Systems\\
+{\sl The Kali Code}\\
+\bigskip
+{\sl vol. 0}\\
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bf A Vision:\\
 \medskip
- 0: A Vision
+\medskip
+Dealing with Dense Stellar Systems
+\bigskip
 }
 \author{\bf Piet Hut and Jun Makino}
 

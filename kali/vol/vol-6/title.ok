@@ -7,11 +7,21 @@
 	
 <tex>
 
-\title{\bf The Art of Computational Science\\
+\title{{\sl The Art of Computational Science}\\
 \bigskip
-The Kali Code\\
+{\sl The Kali Code}\\
+\bigskip
+{\sl vol. 6}\\
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bf A Matter of Speed:\\
 \medskip
- 6: Speeding up Ruby
+\medskip
+C Modules for Ruby
+\bigskip
 }
 \author{\bf Piet Hut and Jun Makino}
 

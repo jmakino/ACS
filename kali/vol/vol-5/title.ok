@@ -7,11 +7,21 @@
 	
 <tex>
 
-\title{\bf The Art of Computational Science\\
+\title{{\sl The Art of Computational Science}\\
 \bigskip
-The Kali Code\\
+{\sl The Kali Code}\\
+\bigskip
+{\sl vol. 5}\\
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bf Initial Conditions:\\
 \medskip
- 5: Plummer's Model
+\medskip
+Plummer's Model
+\bigskip
 }
 \author{\bf Piet Hut and Jun Makino}
 

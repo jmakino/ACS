@@ -7,11 +7,21 @@
 	
 <tex>
 
-\title{\bf The Art of Computational Science\\
+\title{{\sl The Art of Computational Science}\\
 \bigskip
-The Kali Code\\
+{\sl The Kali Code}\\
+\bigskip
+{\sl vol. 12}\\
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bf Core Collapse:\\
 \medskip
- 12. Variable Time Steps
+\medskip
+The Low-N Limit
+\bigskip
 }
 \author{\bf Piet Hut and Jun Makino}
 
