@@ -6,20 +6,32 @@ module Integrator_forward
     @acc = @pos*0
   end
 
+  def startup_force(wl, era)
+    force(wl, era)
+  end
+
   def force(wl, era)
     @acc = era.acc(wl, @pos, @time)
   end
 
-  def predict(dt)
+  def intermediate_point(old_ip, i)
+    nil
+  end
+
+  def integrator_extrapolate(dt)
     [ @pos + @vel*dt,  @vel + @acc*dt ]
   end
 
+  def integrator_predict(dt)
+    integrator_extrapolate(dt)
+  end
+
   def correct(old, dt)
-    @pos, @vel = predict(dt)
+    @pos, @vel = integrator_predict(dt)
   end
 
   def interpolate_pos_vel(wp, dt)
-    predict(dt)
+    integrator_predict(dt)
   end
 
 end
@@ -30,19 +42,31 @@ module Integrator_forwardplus
     @acc = @pos*0
   end
 
+  def startup_force(wl, era)
+    force(wl, era)
+  end
+
   def force(wl, era)
     @acc = era.acc(wl, @pos, @time)
   end
 
-  def predict(dt)
+  def intermediate_point(old_ip, i)
+    nil
+  end
+
+  def integrator_extrapolate(dt)
     [ @pos + @vel*dt + (1/2.0)*@acc*dt**2,  @vel + @acc*dt ]
+  end
+
+  def integrator_predict(dt)
+    integrator_extrapolate(dt)
   end
 
   def correct(old, dt)
   end
 
   def interpolate_pos_vel(wp, dt)
-    predict(dt)
+    integrator_predict(dt)
   end
 
 end
@@ -55,12 +79,24 @@ module Integrator_adams2kana
     @acc = @pos*0
   end
 
+  def startup_force(wl, era)
+    force(wl, era)
+  end
+
   def force(wl, era)
     @acc = era.acc(wl, @pos, @time)
   end
 
-  def predict(dt)
+  def intermediate_point(old_ip, i)
+    nil
+  end
+
+  def integrator_extrapolate(dt)
     [ @pos + @vel*dt + (1/2.0)*@acc*dt**2,  @vel + @acc*dt ]
+  end
+
+  def integrator_predict(dt)
+    integrator_extrapolate(dt)
   end
 
   def correct(old, dt)
@@ -89,12 +125,24 @@ module Integrator_leapfrog
     @acc = @pos*0
   end
 
+  def startup_force(wl, era)
+    force(wl, era)
+  end
+
   def force(wl, era)
     @acc = era.acc(wl, @pos, @time)
   end
 
-  def predict(dt)
+  def intermediate_point(old_ip, i)
+    nil
+  end
+
+  def integrator_extrapolate(dt)
     [ @pos + @vel*dt + (1/2.0)*@acc*dt**2,  @vel + @acc*dt ]
+  end
+
+  def integrator_predict(dt)
+    integrator_extrapolate(dt)
   end
 
   def correct(old, dt)
@@ -106,6 +154,68 @@ module Integrator_leapfrog
     jerk = (wp.acc - @acc) / (wp.time - @time)
     [ @pos + @vel*dt + (1/2.0)*@acc*dt**2,
       @vel + @acc*dt + (1/2.0)*jerk*dt**2 ]
+  end
+
+end
+
+module Integrator_rk4
+
+  attr_reader :acc, :jerk
+
+  def setup_integrator
+    @acc = @pos*0
+    @jerk = @pos*0
+  end
+
+  def startup_force(wl, era)
+    @acc, @jerk = era.acc_and_jerk(wl, @pos, @vel, @time)
+  end
+
+  def force(wl, era)
+    @acc = era.acc(wl, @pos, @time)
+  end
+
+  def intermediate_point(old_ip, i)
+    ip = deep_copy
+    dt = @next_time - @time
+    case i
+    when 1
+      @k_1 = @acc
+      ip.time += (1/2.0)*dt
+      ip.pos += (1/2.0)*@vel*dt + (1/8.0)*@k_1*dt**2
+    when 2
+      @k_2 = old_ip.acc
+      ip.time += dt
+      ip.pos += ip.vel*dt + (1/2.0)*@k_2*dt**2
+    when 3
+      @k_3 = old_ip.acc
+      return nil
+    end
+    ip
+  end
+
+  def integrator_extrapolate(dt)
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*jerk*dt**3,
+      @vel + @acc*dt + (1/2.0)*@jerk*dt**2                     ]
+  end
+
+  def integrator_predict(dt)
+    [ @pos + @vel*dt + (1/6.0)*(@k_1 + 2*@k_2)*dt**2,
+      @vel + (1/6.0)*(@k_1 + 4*@k_2 + @k_3)*dt          ]
+  end
+
+  def correct(old, dt)
+    @jerk = (old.acc - @acc) / (old.time - @time)
+  end
+
+  def interpolate_pos_vel(wp, dt)
+    tau = wp.time - @time
+    snap = (-6*(@acc - wp.acc) - 2*(2*@jerk + wp.jerk)*tau)/tau**2
+    crackle = (12*(@acc - wp.acc) + 6*(@jerk + wp.jerk)*tau)/tau**3
+    [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
+                       (1/24.0)*snap*dt**4 + (1/144.0)*crackle*dt**5,
+      @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*snap*dt**3 +
+                       (1/24.0)*crackle*dt**4                        ]
   end
 
 end
@@ -126,6 +236,10 @@ module Integrator_multistep
     force(wl, era)
   end
 
+  def intermediate_point(old_ip, i)
+    nil
+  end
+
   def force(wl, era)
     @acc[0] = era.acc(wl, @pos, @time)
   end
@@ -134,9 +248,13 @@ module Integrator_multistep
     nil
   end
 
-  def predict(dt)
+  def integrator_extrapolate(dt)
     [ @pos + taylor_increment([@vel, *@acc], dt),
       @vel + taylor_increment(@acc, dt)          ]
+  end
+
+  def integrator_predict(dt)
+    integrator_extrapolate(dt)
   end
 
   def new_order(order)
@@ -154,9 +272,9 @@ module Integrator_multistep
 
   def interpolate_pos_vel(wp, dt)
     if (wp.next_time - @time).abs < (@next_time - wp.time).abs
-      predict(dt)
+      integrator_extrapolate(dt)
     else
-      wp.predict(dt + @time - wp.time)
+      wp.integrator_extrapolate(dt + @time - wp.time)
     end
   end
 
@@ -209,13 +327,25 @@ module Integrator_hermite
     @jerk = @pos*0
   end
 
+  def startup_force(wl, era)
+    force(wl, era)
+  end
+
   def force(wl, era)
     @acc, @jerk = era.acc_and_jerk(wl, @pos, @vel, @time)
   end
 
-  def predict(dt)
+  def intermediate_point(old_ip, i)
+    nil
+  end
+
+  def integrator_extrapolate(dt)
     [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3,
       @vel + @acc*dt + (1/2.0)*@jerk*dt**2                       ]
+  end
+
+  def integrator_predict(dt)
+    integrator_extrapolate(dt)
   end
 
   def correct(old, dt)
@@ -241,12 +371,13 @@ class Worldpoint
 
   ACS_OUTPUT_NAME = "Body"
 
+#  INIT_TIMESCALE_FACTOR = 1
   INIT_TIMESCALE_FACTOR = 1.0e-06
   MAX_TIMESTEP_INCREMENT_FACTOR = 2
 
-  attr_accessor :pos, :vel
+  attr_accessor :pos, :vel, :time
 
-  attr_reader :mass, :time, :next_time,
+  attr_reader :mass, :next_time,
               :nsteps, :minstep, :maxstep
 
   def setup(dt_param, time)
@@ -263,7 +394,7 @@ class Worldpoint
   end
 
   def startup(wl, era, dt_max)
-    force(wl, era)
+    startup_force(wl, era)
     timescale = era.timescale(wl, self)
     startup_admin(timescale * INIT_TIMESCALE_FACTOR, dt_max)
     true
@@ -276,7 +407,13 @@ class Worldpoint
   end
 
   def step(wl, era, dt_max)
-    new_point = extrapolate(@next_time)
+    i = 1
+    ip = nil
+    while ip = intermediate_point(ip, i)
+      ip.force(wl, era)
+      i += 1
+    end
+    new_point = predict(@next_time)
     new_point.force(wl, era)
     new_point.correct(self, new_point.time - @time)
     timescale = era.timescale(wl, new_point)
@@ -298,9 +435,20 @@ class Worldpoint
     @next_time = @time + new_dt
   end
 
+  def predict(t)
+    wp = deep_copy
+    wp.pos, wp.vel = integrator_predict(t - @time)
+    wp.predict_admin(t)
+    wp
+  end
+
+  def predict_admin(t)
+    @time = t
+  end
+
   def extrapolate(t)
     wp = deep_copy
-    wp.pos, wp.vel = predict(t - @time)
+    wp.pos, wp.vel = integrator_extrapolate(t - @time)
     wp.extrapolate_admin(t)
     wp
   end
