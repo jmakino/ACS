@@ -89,7 +89,8 @@ releaselog = "RELEASES"
 
 load "src/utilities/svn-recursive-print-files.rb"
 
-def doc_directories(dirname)
+def doc_directories(dirname,excludeexpression)
+  return [] if dirname =~ excludeexpression 
   docs = []
   childdirs = Dir.entries(dirname)
   childdirs =childdirs.collect{|x| 
@@ -97,7 +98,7 @@ def doc_directories(dirname)
     x
   }
   childdirs.each{|x|
-    docs += doc_directories(dirname+"/"+x) if x
+    docs += doc_directories(dirname+"/"+x,excludeexpression ) if x
   }
   docname = dirname+"/doc"
   if File.exist?(docname) and  File.ftype(docname) == "directory"
@@ -152,10 +153,10 @@ end
 unless $webonly
 
   STDERR.print "Creating the file list....."
-  svnlist = svn_files(".",/(^\.\/msa$)|(^not$)/)
+  svnlist = svn_files(".",/(^\.\/msa$)|(^\.\/not$)/)
   
   STDERR.print "svn files finished ..."
-  doclist = doc_directories(".")
+  doclist = doc_directories(".", /.\/not$/)
   doclist += add_files(doclist, ["v*.ps.gz",  "v*.pdf", ".imgs"])
   #doclist.each{|x| print x,"\n"}
   STDERR.print "doc files finished ..."
