@@ -1,0 +1,129 @@
+Date: Sat Jul 10 00:20:53 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+I *believe* I have not replied to this message before.
+
+ > > > In general, we need a way to cross link between different volumes.
+ > > > Did you get a chance to think about how to implement that in acsdoc?
+ > > 
+ > > Well, technically speaking it is easy. One problem is perhaps
+ > > that you have been changing the volume number quite a bit.
+ > 
+ > Sumimasen.  However, this time I *think* we can stay with the
+ > volume numbering of ACS 1.1.  I like the logic: One vision
+ > volume, four start-up volumes, seven foundation volumes, and
+ > then many research volumes.
+
+Even so, I *think* we should have a way which makes the change of the
+volume numbering possible. Once we have cross links with fixed file
+names, changes simply become impossible.
+
+ > Of course, we *could* decide to use indirect addressing:
+ > for example, we could address the Plummer volume with a
+ > logical name "Plummer" or "vol-acs11-5" to indicate that
+ > during acs-1.1 it was called volume 5.  I would be happy
+ > with either choice: hard-wired "vol-5" and indirect
+ > addressing.  Do you have a preference?
+
+Frankly I do not believe you'll be happy with hard-wired name. Some
+form of indirect addressing is of absolute necessity. The only
+solution is, I think, some form of indirect addressing, and the way to
+do so is to add logical name to each volume somehow. The only question
+is how.
+
+ > > However, there are several practical
+ > > implementation problems:
+ > > 
+ > > a) How to uniquely specify, for example, the section name. It is quite
+ > >    possible that a same section or subsection name appears multiple
+ > >    times in one volume.
+ > > 
+ > >    In latex the problem is solved by letting the user to specify a
+ > >    unique label to anything to be referred. We can take that approach
+ > 
+ > I do not like so much the idea of a global name space for all volumes,
+ > since later we may get 100 volumes.  On the other hand, perhaps this
+ > is the best solution.  Of course, we could use a label such as:
+ > "vol-acs11-5-binney-tremaine-appendix-chapter-section-bob-unhappy".
+ > Surely such a label will never be used elsewhere in the book, or at
+ > least it will be extremely unlikely.
+
+I think there are two problems, which I'm not sure you are aware of or
+not.
+
+One is how to give name to the place to be referred to, and the other
+is how to use that label.
+
+For example, when you wrote:
+
+ > "vol-acs11-5-binney-tremaine-appendix-chapter-section-bob-unhappy".
+
+Do you mean one would write that to the place to be refered, or to the
+place which refers, or both?
+
+If you do not mind to add long labels to the places to be referred to,
+that is certainly the simplest solution.
+
+ > Another option would be to give a logical name (label) to each volume,
+ > and to each chapter, and to each section.  But perhaps that would be
+ > more work.  It would be a very Ruby-like approach though, using such
+ > indirect addressing.  Again, I do not have a strong preference.
+ > What do you think?
+
+Here again, I'm not sure whether or not you see the difference of the
+above two problem. *WHO* give a logical name? The human author (I
+think that's unpractical)?  Or acsdoc.rb (if you can specify a unique
+naming algorithm which does not depend on the file name and location,
+that's easy)?
+
+ > > c) How the link should appear in the text? I mean, what should we
+ > >    specify for "X"  below? 
+ > > 
+ > >       <a href=....#Name-here-must-be-unique-over-entire-ACS-or-Kali>X</a>
+ > >    
+ > >    In latex, sections are numbered, so the solution was easy. In
+ > >    acsdoc, sections are not numbered, nor the volumes (well, at least
+ > >    not in a stable way). So it is not clear what to write at "X". We
+ > >    could write:
+ > > 
+ > >       "Volume 1a, Chapter 01, Section  Setting the Stage"
+ > >   
+ > >   But I'm not sure if that is the best way or not.
+ > 
+ > See above, my example of very-long-label.
+
+Sorry, I do not see the relation between long label and link text. In
+my above example, "#Name-here-must-be-unique-over-entire-ACS-or-Kali"
+is the long name, but my question is how "X" part should be specified.
+
+ > > d) In PS or TeX version there is no way to cross referensing to other
+ > >    books. So what should we do there? 
+ > 
+ > Perhaps this would be an argument for giving all books a logical
+ > name, and also each chapter and each section.  We could then 
+ > `compile', I mean Latex, all .ok files of acs in one big pass,
+ > but that might be too huge a job.  However, I see no other way to
+ > get all the references consistent.  This is a very difficult point.
+
+
+Hmm, well, I can see a very nice solution, which probably you do not
+like, but let me explain:
+
+The easiest solution is to stop using the directory names like vol-1,
+vol-2, but use the "logical" name as the name for the directory for
+each volume. That is, to use "plummer" as the name of the directory,
+and then add reasonably simple label to the places you want to refer.
+
+I mean, if a volume should have a logical name, there is no reason not
+to use it as the directory name. If you still want to have numbered
+names for directories, you can make soft links or hard links.
+
+How do you think?
+
+I'll answer the second half in my next message.
+
+Jun
+
