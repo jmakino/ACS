@@ -94,8 +94,8 @@ def mkplummer(c)
     b.mass = 1.0/c.n
     nb.body.push(b)
   end
-  nb.adjust_center_of_mass
-  nb.adjust_units
+  nb.adjust_center_of_mass if c.n > 0
+  nb.adjust_units if c.n > 1
   STDERR.print "             actual seed used\t: ", srand, "\n"
   nb.acs_write($stdout, false, c.precision, c.add_indent)
 end

@@ -16,7 +16,7 @@ That meant that a change of diagnostics affected the actual outcome of
 the code.  Here is an example, starting again from our standard input
 choice:
 
- :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby nbody_set_id.rb > test.in
+ :commandoutput: ruby mkplummer.rb -n 4 -s 1 | ruby nbody_set_id.rb > test.in
 
 We will run the code first with two energy reports, only at the beginning
 and the end:
@@ -51,7 +51,7 @@ diagnostics off-line, so to speak.  Well, we'd better check:
 
 *Bob*: A good sign already!  Let's inspect the phase space distance:
 
- :commandoutput: cat test[12].out | ruby newnbody_diff.rb
+ :commandoutput: cat test[12].out | ruby nbody_diff.rb
 
 *Alice*: Perfect.  Modularity in practice, not only in theory!
 
@@ -89,7 +89,7 @@ do more than measuring phase space distances: I'll do a +diff+ on the
 whole output file, to check whether _any_ variable, important or not,
 has _any_ change whatsoever.  Here is the test suite:
 
- :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby nbody_set_id.rb > tmp0
+ :commandoutput: ruby mkplummer.rb -n 4 -s 1 | ruby nbody_set_id.rb > tmp0
  :commandoutput: ruby world1.rb -t 1 -r < tmp0 | ruby acstail.rb > tmp1w
  :commandoutput: ruby world1.rb -t 1 -r < tmp1w | ruby acstail.rb > tmp2ww
  :commandoutput: ruby world1.rb -t 2 -o 2 -r < tmp0 | ruby acstail.rb > tmp2w
@@ -117,7 +117,7 @@ do a phase space distance measurement at the end as well.  Here you are:
  :commandoutput: ruby world1.rb -t 1 < tmp1s | ruby acstail.rb > tmp2ss
  :commandoutput: diff tmp2ss tmp2s | wc
  :commandoutput: cat tmp2s | wc
- :commandoutput: cat tmp2ss tmp2s | ruby newnbody_diff.rb
+ :commandoutput: cat tmp2ss tmp2s | ruby nbody_diff.rb
 
 *Alice*: As we expected, many lines are different, as you can see from
 the wordcount +wc+ after the +diff+, which is comparable in size to the file

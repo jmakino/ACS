@@ -16,7 +16,7 @@ scheme?
 is still sixth order, in constant as well as shared time step form.  First
 I'll prepare initial conditions with the particles all properly numbered:
 
- :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby nbody_set_id.rb > test.in
+ :commandoutput: ruby mkplummer.rb -n 4 -s 1 | ruby nbody_set_id.rb > test.in
 
 Starting with the constant time step version, let's choose the
 <tt>yo6</tt> integrator, but what options did we use for algorithm

@@ -2,6 +2,9 @@
 	
 = Preface
 
+In this volume, we will present a detailed analysis of some of the
+simpler Runge-Kutta algorithms, and other related integration schemes.
+
 == xxx
 
 We thank xxx, xxx, and xxx for their comments on the

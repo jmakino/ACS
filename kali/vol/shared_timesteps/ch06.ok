@@ -35,7 +35,7 @@ step, which would result in a huge energy error.
 we've done something like this already, but let's run it again, from the
 same initial conditions:
 
- :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby nbody_set_id.rb > test
+ :commandoutput: ruby mkplummer.rb -n 4 -s 1 | ruby nbody_set_id.rb > test
 
 == Concrete Results
 

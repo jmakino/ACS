@@ -2,8 +2,9 @@
 
 == Documentation
 
-*Alice*: Now that we got started writing some simple Ruby codes,
-it is high time that we begin to write some documentation.
+*Alice*: Now that we got so far at to write actual N-body codes in Ruby,
+with a rich variety of integratorsk it is high time that we begin to
+write some documentation.
 
 *Bob*: I don't like writing documentation.
 
@@ -111,7 +112,7 @@ dry and boring, and indeed hard to read later on.  But if we recreate
 a dialogue between the two of us, we can tell our students and
 colleagues how and why we did what, in a natural flow of arguments.
 
-*Bob*: Like Platonic dialogues?
+*Bob*: Like Plato's dialogues?
 
 *Alice*: Perhaps more like the dialogues that Galileo wrote.  But let's leave
 out Simplicio, and just take two able researchers.
@@ -188,9 +189,15 @@ we had when we saw each other over coffee, and asked each other what
 our research plans were?  That's how we got this idea of writing some
 code for toy model simulations of dense stellar systems.
 
-*Bob*: I guess we can reconstruct a dialogue along those lines.  But how
-do you want to write that, in what form?  Plain text is not very helpful.
-At the very least we want to put that material on the web, to make it
+*Bob*: I guess we can reconstruct a dialogue along those lines.  That
+will be a good place to start, since we were just chatting.  It will
+become more complicated once we try to reconstruct how we learned to
+work with Ruby, how we coded up the two-body problem, how I got
+carried away with adding yet more integrators, and so on.
+
+But already with the first volume, a pure dialogue, how do you want to
+write that, in what form?  Plain text is not very helpful.  At the
+very least we want to put that material on the web, to make it
 accessible to our students and others who may be interested.
 
 *Alice*: But I don't like writing everything in HTML.  For one thing,

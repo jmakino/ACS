@@ -237,7 +237,7 @@ pushing toward machine accuracy.
 
 *Bob*: We may as well.  Let's start with the same initial conditions:
 
- :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby nbody_set_id.rb > test.in
+ :commandoutput: ruby mkplummer.rb -n 4 -s 1 | ruby nbody_set_id.rb > test.in
 
 I will repeat the two previous runs, with a ten times shorter time step,
 and then treat the new code in the same way:

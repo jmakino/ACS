@@ -254,7 +254,7 @@ options_text= <<-END
     (c) 2005, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
 
     example:
-    ruby mkplummer.rb -n 5 -s 1 | ruby #{$0} -t 1 > /dev/null
+    ruby mkplummer.rb -n 4 -s 1 | ruby #{$0} -t 1 > /dev/null
 
 
   Short name:		-g

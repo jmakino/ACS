@@ -147,7 +147,7 @@ that we get the same answers as before.  Let us apply our standard test
 again, using the by now familiar initial conditions for our 5-particle
 system:
 
- :commandoutput: ruby mkplummer.rb -n 5 -s 1 | ruby nbody_set_id.rb > test.in
+ :commandoutput: ruby mkplummer.rb -n 4 -s 1 | ruby nbody_set_id.rb > test.in
 
 Here is our comparison run for the older code:
 
@@ -160,7 +160,7 @@ And here is what our new code gives:
 Aha, at least the number of time steps is very similar, and so is the
 total energy error.  Here is the distance in phase space
 
- :commandoutput: cat tmpi.out tmpw.out | ruby newnbody_diff.rb
+ :commandoutput: cat tmpi.out tmpw.out | ruby nbody_diff.rb
 
 == Almost Perfect Scaling
 
@@ -183,7 +183,7 @@ show a similar error:
 *Alice*: And so it does.  So this suggests that the phase space difference
 should also be about 10,000 times larger.
 
- :commandoutput: cat tmpi.out tmpw.out | ruby newnbody_diff.rb
+ :commandoutput: cat tmpi.out tmpw.out | ruby nbody_diff.rb
 
 *Bob*: Which is indeed the case.  Almost Perfect Scaling!
 Okay, we seem to have done something right.
