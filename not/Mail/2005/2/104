@@ -1,0 +1,138 @@
+Date: Mon Feb 07 00:11:36 JST 2005
+
+From: Piet Hut <piet@ias.edu>
+
+------- Start of forwarded message -------
+Date: Sun, 06 Feb 2005 23:57:20 +0900 (JST)
+To: piet@ias.edu
+Cc: makino@astron.s.u-tokyo.ac.jp
+Subject: Re: self-describing data
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+Reply-To: makino@astron.s.u-tokyo.ac.jp
+In-Reply-To: <200502051222.j15CMLga004505@hera.sns.ias.edu>
+X-Scanned-By: MIMEDefang 2.49 on 172.16.17.18
+X-Scanned-By: MIMEDefang 2.42
+X-Spam-DCC: xmailer: morpheus 1192; Body=1 Fuz1=1 Fuz2=1
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on morpheus.sns.ias.edu
+X-Spam-Level: 
+X-Spam-Status: No, hits=-99.4 required=5.0 tests=AWL,BAYES_00 autolearn=ham 
+	version=2.63
+
+Piet,
+
+ > Something we need very soon is a step further toward self-describing data.
+ > When I give Hans-Peter a data file, it really should have the history in it
+ > of how I generated the data, as we did with starlab.
+ > 
+ > This should go in the discussion of the data format, volume 4, and I am
+ > happy to write about that soon.  But now that we started working with
+ > Hans-Peter, it would be good to have something working quickly, even if
+ > it is just very simple.
+ > 
+ > You are much quicker than I am in writing a new program.  For the clop
+ > idea, you wrote a first version, and then I improved in a number of ways.
+ > Following the same model, could you write something as a minimal history
+ > mechanism?  I can then document it in a dialogue and extend it further.
+
+There are quite a few design decisions we need to make before
+implementing even a simplest prototype.
+
+Basically, we need to define how the file should look like, and
+how we call I/O functions.
+
+In current ACSIO, any file should look like
+
+ACS
+   Some data
+SCA
+... more ACS blocks, 
+ACS
+   Some data
+SCA
+
+Or formally, a file consist of multiple ACS blocks, with each ACS
+block being just
+
+ACS
+  Data for one object
+ACS
+
+Data for one object is defined as
+
+Class_name variable_name [[array_size]]
+   Data for instance object
+
+Data for instance object is either the same as the Data for one
+object, or for classes String, Float, Fixnum, Vector, just value[s]
+printed in ASCII.
+
+I/O is done through
+
+write:  Object#acs_write
+
+read:   ACSIO.acs_read
+
+Now the first question is how and where we want to put the history
+information.
+
+Do we want something like
+
+ACS
+  History
+    ...
+SCA
+ACS
+  Nbody
+     ...
+SCA
+ACS
+  Nbody
+     ...
+SCA
+
+or          
+
+
+ACS
+  History
+    ...
+  Nbody
+     ...
+SCA
+ACS
+  Nbody
+     ...
+SCA
+
+or something else?
+
+The second question is how we read/write them
+
+Right now, we do, for example,
+
+    ss = ACS_IO.acs_read(Worldsnapshot)
+
+for reading and
+    
+   acs_write($stdout, false, c.precision, c.add_indent)
+
+for writing.
+
+Do we want to say, for example,
+
+    history= ACS_IO.acs_read(History)
+    ss = ACS_IO.acs_read(Worldsnapshot)
+   
+    history.add_history.acs_write($stdout, false, c.precision,
+    c.add_indent)
+    acs_write($stdout, false, c.precision, c.add_indent)
+
+or do we want acs_read/acs_write to automagically take care of the
+history, or what else?
+
+Once we have a clear idea of what to implement, actually implementing
+that is easy (though it will take time...)
+
+Jun
+------- End of forwarded message -------
+

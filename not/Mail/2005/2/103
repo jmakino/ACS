@@ -1,0 +1,71 @@
+Date: Sun Feb 06 10:31:14 JST 2005
+
+From: Piet Hut <piet@ias.edu>
+
+Jun,
+
+Well, I spent most of yesterday and today trying to remember what we
+did in September.  It took me a while, but now I am on track again.
+I should now be able to write the individual time step code development,
+hopefully during the next few weeks.
+
+So far I have writen a code "vol-4/nbody_cst1.rb" that does N-body
+evolution with softening and constant time steps, for all of the
+2-body algorithms that we have written: forward Euler, leapfrog,
+Runge-Kutta 2nd order, Runge-Kutta 4th order, Yoshida 2nd, 4th, 6th
+and 8th order, multistep 2n, 4th, 6th and 8th order and Hermite.
+A nice set of choices, and useful as a backup, to check calculations
+of individual time step codes!  Until today, we did not have one code
+with all these algorithms in one file.  Several of them were not yet
+translated from 2-body to N-body, in fact.
+
+The code "vol-4/nbody_cst1.rb" does I/O in ACS format, but I will
+write the dialogue starting with "vol-4/nbody_cst0.rb" which does
+I/O in the old simple format.
+
+I also wrote two conversion tools "vol-4/acs2sim.rb" and
+"vol-4/sim2acs.rb" which do exactly what you think they should do.
+
+Finally, I went through all of the old N-body versions that I could
+find, and I renamed the most interestingly different ones as follows:
+
+   nbody_cst1.rb      constant time steps
+
+   nbody_sh1.rb       shared time steps
+
+   nbody_ind1.rb      individual time steps
+
+   nbody_ind2.rb      individual time steps
+
+   nbody_ind3.rb      individual time steps
+
+   world1.rb       wordline-based individual time steps
+
+   world2.rb       wordline-based individual time steps
+
+   world3.rb       wordline-based individual time steps
+
+Note that the last one "vol-7a/world3.rb" is the same as the last
+version of what we used to call "vol-13/world1.rb".
+
+Finally, I remembered that you prefered to leave the name "kali1.rb"
+for later; indeed, we agreed to keep using the "worldx" name longer.
+
+Therefore, I have renamed our "kali1.rb" code, which we were
+working on last month, "vol-7b/world4.rb" .
+Note that "kali1rk.rb" is therefore now "vol-7b/world4rk.rb" ,
+and "kali1rk2.rb" is therefore now "vol-7b/world4rk2.rb" ,
+
+It will still be a lot of work to sort out more details, but at least
+I have finally begun to clean things up, and I can now see the whole
+landscape, for the first time, of what we have done in the last half
+year.
+
+Ah, yes, I have also taken the last chapter of vol-3a and put that as
+the first chapter of vol-3b.  In this way, any application of our clop
+stuff to N-body codes will be in vol-3b.  The name of vol-3b I have
+therefore changed from "User Interface: More on Command Line Arguments"
+to the more interesting title "User Interface: Applications" .
+
+Piet
+

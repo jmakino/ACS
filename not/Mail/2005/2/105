@@ -1,0 +1,175 @@
+Date: Mon Feb 07 00:35:47 JST 2005
+
+From: Piet Hut <piet@ias.edu>
+
+Hi Jun:
+
+Thank you for your thoughtful analysis of the question of how to put
+a history mechanism in our ACS data files.  I must admit, I had not
+thought through in detail what needed to be done.
+
+I've forwarded your email to "notonly", and I'm writing this to "not",
+to keep it in our lab notes.
+
+Hmm, I can see advantages of all of the alternatives that you suggest.
+If you have a particular preference, then by all means, go ahead and
+implement that one.
+
+If you don't have a strong preference, then my first reaction would
+be to start with the notion that _any_ piece of data should have a
+history attached to it, automatically, and _any_ program that handles
+the data, reading, writing, transforming, whatever, should know what
+to do with the history information.
+
+It is almost tempting to mix in a History module in Object, so that
+any instance of anything can deal with history in some way, but I
+guess that would be overkill, and anyway, I don't have a clear view
+of what that would entail.  So this may not be necessary.
+
+How about the following idea?  Any heading "ACS" is immediately
+followed by some form of History information.  So instead of your
+two examples:
+
+ > Do we want something like
+ > 
+ > ACS
+ >   History
+ >     ...
+ > SCA
+ > ACS
+ >   Nbody
+ >      ...
+ > SCA
+ > ACS
+ >   Nbody
+ >      ...
+ > SCA
+ > 
+ > or          
+ > 
+ > 
+ > ACS
+ >   History
+ >     ...
+ >   Nbody
+ >      ...
+ > SCA
+ > ACS
+ >   Nbody
+ >      ...
+ > SCA
+ > 
+ > or something else?
+
+I suggest the following "something else":
+
+ACS
+  History
+    ...
+  Nbody
+     ...
+SCA
+ACS
+  History
+    ...
+  Nbody
+     ...
+SCA
+
+Then, whenever another program takes a piece of data from a previous
+program, that piece of data inherits the original history, immediately
+after ACS.
+
+Here is the idea.  When we evolve a Plummer model, the output would be:
+
+ACS
+  History
+    Command
+      Command Line
+        ruby mkplummer.rb -n 5 -s 1
+      Acs version
+        1.1.2.alpha
+      Situation
+        piet@kamuy  Sun Feb  6 10:26:01 EST 2005
+    Command
+      Command Line
+        ruby world3.rb -t 1
+      Acs version
+        1.1.2.alpha
+      Situation
+        piet@kamuy  Sun Feb  6 10:26:02 EST 2005
+  Nbody 
+    Array body
+      Body body[0]
+        Float mass
+             2.0000000000000001e-01
+        Vector pos
+            -2.1832508779881257e-02   6.2689891403162334e-01
+        . . . 
+      Body body[1]
+        Float mass
+             2.0000000000000001e-01
+        Vector pos
+             1.5293338711229076e+00   1.6374182150362074e+01
+        . . . 
+
+Let us say that you want to keep the data of some subset, say a
+binary formed by the first two particles.  You could get:
+
+ACS
+  History
+    Command
+      Command Line
+        ruby mkplummer.rb -n 5 -s 1
+      Acs version
+        1.1.2.alpha
+      Situation
+        piet@kamuy  Sun Feb  6 10:26:01 EST 2005
+    Command
+      Command Line
+        ruby world3.rb -t 1
+      Acs version
+        1.1.2.alpha
+      Situation
+        piet@kamuy  Sun Feb  6 10:26:02 EST 2005
+    Command
+      Command Line
+        ruby extract_binaries
+      Acs version
+        1.1.2.alpha
+      Situation
+        piet@kamuy  Sun Feb  6 10:26:35 EST 2005
+  Array binary
+    Body body[0]
+      Float mass
+           2.0000000000000001e-01
+      Vector pos
+          -2.1832508779881257e-02   6.2689891403162334e-01
+      . . . 
+    Body body[1]
+      Float mass
+           2.0000000000000001e-01
+      Vector pos
+           1.5293338711229076e+00   1.6374182150362074e+01
+      . . . 
+
+And I think we should then follow your last suggestion for input:
+
+ > Do we want to say, for example,
+ > 
+ >     history= ACS_IO.acs_read(History)
+ >     ss = ACS_IO.acs_read(Worldsnapshot)
+ >    
+ >     history.add_history.acs_write($stdout, false, c.precision,
+ >     c.add_indent)
+ >     acs_write($stdout, false, c.precision, c.add_indent)
+ > 
+ > or do we want acs_read/acs_write to automagically take care of the
+ > history, or what else?
+
+Yes, automagically :>) would be the best!
+
+Does this make sense?
+
+Piet
+

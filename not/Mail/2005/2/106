@@ -1,0 +1,33 @@
+Date: Mon Feb 07 00:56:58 JST 2005
+
+From: Piet Hut <piet@ias.edu>
+
+Jun,
+
+ > > While trying to sort out all the different files and version in all
+ > > our directories, I am wondering again what we would like to do in
+ > > terms of Ruby code libraries.  Sooner or later we will have to face
+ > > that question again.
+ > > 
+ > > I found an email from you, from fourteen months (!) ago.  Do you
+ > > still think this is useful?  Here it is, below -- Piet
+ > 
+ > Ya, it is certainly useful, but here again the question is exactly
+ > what we want.
+ > 
+ > Practically speaking any setup or install utility programs install all
+ > executables (or libraries or whatsoever) in a single directory. This
+ > means that it does not support multiple files with the same name in
+ > different volumes.
+ > 
+ > So if we want to keep multiple files with the same name in different
+ > volumes to behave differently and yet want to make something like
+ > library, we need something different from standard setup/install.
+
+Yes, I thought about that too.  Perhaps we should just wait a few more
+months, and by the time we get a binary tree version of the kali code
+ready, we can think of making one default library structure for at least
+that code, and auxiliary programs.
+
+Piet
+
