@@ -1,3 +1,7 @@
+#
+#  murat0.rb   040913    Version of rknbody8.rb, with adaptive time step
+#
+
 require "vector.rb"
 
 class Body
@@ -247,4 +251,3 @@ END
   end
 
 end
-ÿÿÿÿ
