@@ -60,9 +60,49 @@ definition of the +Vector+ class in the file <tt>vector.rb</tt>
 
  :inccode: vector1.rb
 
+*Alice*: Ah, I see that Ruby uses the same <tt>==</tt> construct as C
+does, to test for equality.  Many students are going to trip on that,
+when they write <tt>if a = b</tt>, not realizing that they are now
+assigning the value of the variable +b+ to the variable +a+.
+
+*Bob*: Yes, in Ruby, like in C, this can easily give rise to confusion.
+Here is the correct usage:
+
+    |gravity> irb --prompt short_prompt
+    001:0> a = 3
+    3
+    002:0> if a == 4
+    003:1>   p "amazing!"
+    004:1> else
+    005:1*   p "of course not"
+    006:1> end
+    "of course not"
+    nil
+
+And here is what happens often during the first few weeks that you are
+programming in C, C++ or Ruby:
+
+    007:0> if a = 4
+    008:1>   p "amazing!"
+    009:1> else
+    010:1*   p "of course not"
+    011:1> end
+    (irb):7: warning: found = in conditional, should be ==
+    "amazing!"
+    nil
+
+*Alice*: Hey, that is nice!  +irb+ tells us that we are probably making
+a mistake.  Very clever!
+
+*Bob*: And very friendly!  
+
 == Debugging
 
-Before explaining what all this means, let us first see whether it works.
+*Alice*: Before further analyzing what it all means, what you have put
+in the +Vector+ class definition in <tt>vector.rb</tt>,
+let us first see whether it works.
+
+*Bob*: Here we are:
 
     |gravity> irb --prompt short_prompt -r vector.rb
     001:0> a = Vector[1, 2, 3]
