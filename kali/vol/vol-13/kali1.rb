@@ -10,17 +10,47 @@ module Integrator_forward
     @acc = era.acc(wl, self)
   end
 
-  def predict(old, dt)
-    @pos = old.pos + old.vel*dt
-    @vel = old.vel + old.acc*dt
+  def predict(dt)
+    pos = @pos + @vel*dt
+    vel = @vel + @acc*dt
+    [pos, vel]
   end
 
   def correct(old, dt)
   end
 
-  def interpolate_pos_vel(wp1, wp2, dt)
-    @pos = wp1.pos + wp1.vel*dt
-    @vel = wp1.vel + wp1.acc*dt
+  def interpolate_pos_vel(wp, dt)
+    predict(dt)
+  end
+
+end
+
+module Integrator_adams2kana
+
+  def clear_force
+    @acc = @pos*0
+  end
+
+  def force(wl, era)
+    @acc = era.acc(wl, self)
+  end
+
+  def predict(dt)
+    pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2
+    vel = @vel + @acc*dt
+    [pos, vel]
+  end
+
+  def correct(old, dt)
+    @vel = old.vel + (1/2.0)*(old.acc + @acc)*dt
+    @pos = old.pos + (1/2.0)*(old.vel + @vel)*dt
+  end
+
+  def interpolate_pos_vel(wp, dt)
+    jerk = (wp.acc - @acc) / (wp.time - @time)
+    pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2
+    vel = @vel + @acc*dt + (1/2.0)*jerk*dt**2
+    [pos, vel]
   end
 
 end
@@ -35,20 +65,22 @@ module Integrator_leapfrog
     @acc = era.acc(wl, self)
   end
 
-  def predict(old, dt)
-    @pos = old.pos + old.vel*dt + (1/2.0)*old.acc*dt**2
-    @vel = old.vel + old.acc*dt
+  def predict(dt)
+    pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2
+    vel = @vel + @acc*dt
+    [pos, vel]
   end
 
   def correct(old, dt)
     @vel = old.vel + (1/2.0)*(old.acc + @acc)*dt
-    @pos = old.pos + (1/2.0)*(old.vel + @vel)*dt
+    @pos = old.pos + old.vel*dt + (1/2.0)*old.acc*dt**2
   end
 
-  def interpolate_pos_vel(wp1, wp2, dt)
-    jerk = (wp2.acc - wp1.acc) / (wp2.time - wp1.time)
-    @pos = wp1.pos + wp1.vel*dt + (1/2.0)*wp1.acc*dt**2 + (1/6.0)*jerk*dt**3
-    @vel = wp1.vel + wp1.acc*dt + (1/2.0)*jerk*dt**2
+  def interpolate_pos_vel(wp, dt)
+    jerk = (wp.acc - @acc) / (wp.time - @time)
+    pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2
+    vel = @vel + @acc*dt + (1/2.0)*jerk*dt**2
+    [pos, vel]
   end
 
 end
@@ -66,10 +98,11 @@ module Integrator_hermite
     @acc, @jerk = era.acc_and_jerk(wl, self)
   end
 
-  def predict(old, dt)
-    @pos = old.pos + old.vel*dt + (1/2.0)*old.acc*dt**2 +
-                                  (1/6.0)*old.jerk*dt**3
-    @vel = old.vel + old.acc*dt + (1/2.0)*old.jerk*dt**2
+  def predict(dt)
+    pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3
+                                 
+    vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2
+    [pos, vel]
   end
 
   def correct(old, dt)
@@ -79,37 +112,32 @@ module Integrator_hermite
                      (1/12.0)*(old.acc - @acc)*dt**2
   end
 
-  def interpolate_pos_vel(wp1, wp2, dt)
-    tau = wp2.time - wp1.time
-    snap = (-6*(wp1.acc - wp2.acc) - 2*(2*wp1.jerk + wp2.jerk)*tau)/tau**2
-    crackle = (12*(wp1.acc - wp2.acc) + 6*(wp1.jerk + wp2.jerk)*tau)/tau**3
-    @pos = wp1.pos + wp1.vel*dt + (1/2.0)*wp1.acc*dt**2 +
-                                  (1/6.0)*wp1.jerk*dt**3 +
-                                  (1/24.0)*snap*dt**4 +
-                                  (1/120.0)*crackle*dt**5
-    @vel = wp1.vel + wp1.acc*dt + (1/2.0)*wp1.jerk*dt**2 +
-                                  (1/6.0)*snap*dt**3 +
-                                  (1/24.0)*crackle*dt**4
+  def interpolate_pos_vel(wp, dt)
+    tau = wp.time - @time
+    snap = (-6*(@acc - wp.acc) - 2*(2*@jerk + wp.jerk)*tau)/tau**2
+    crackle = (12*(@acc - wp.acc) + 6*(@jerk + wp.jerk)*tau)/tau**3
+    pos = @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3 +
+                           (1/24.0)*snap*dt**4 + (1/120.0)*crackle*dt**5
+    vel = @vel + @acc*dt + (1/2.0)*@jerk*dt**2 + (1/6.0)*snap*dt**3 +
+                           (1/24.0)*crackle*dt**4
+    [pos, vel]
   end
 
 end
-
+
 class Worldpoint < Body
 
   attr_reader :mass, :pos, :vel, :acc,
               :time, :next_time, :nsteps,
               :minstep, :maxstep
 
-  def initialize
-    @nsteps = 0
-    @minstep = VERY_LARGE_NUMBER
-    @maxstep = 0
-  end
-
   def setup(dt_param, time)
     @dt_param = dt_param
     @time = @next_time = time
     clear_force
+    @nsteps = 0
+    @minstep = VERY_LARGE_NUMBER
+    @maxstep = 0
   end
 
   def startup(wl, era, dt_max)
@@ -126,13 +154,23 @@ class Worldpoint < Body
     new_point.force(wl, era)
     timescale = era.timescale(wl, new_point)
     new_point.correct(self, new_point.time - @time)
-    new_point.admin(@time, timescale, dt_max)
+    new_point.step_admin(@time, timescale, dt_max)
     new_point
+  end
+
+  def step_admin(old_time, timescale, dt_max)
+    old_dt = @time - old_time
+    @maxstep = old_dt if @maxstep < old_dt
+    @minstep = old_dt if @minstep > old_dt
+    @nsteps = @nsteps + 1
+    new_dt = timescale * @dt_param
+    new_dt = dt_max if new_dt > dt_max
+    @next_time = @time + new_dt
   end
 
   def extrapolate(t)
     wp = deep_copy
-    wp.predict(self, t - @time)
+    wp.pos, wp.vel = predict(t - @time)
     wp.extrapolate_admin(t)
     wp
   end
@@ -143,7 +181,7 @@ class Worldpoint < Body
 
   def interpolate(other, t)
     wp = deep_copy
-    wp.interpolate_pos_vel(self, other, t-@time)
+    wp.pos, wp.vel = interpolate_pos_vel(other, t-@time)
     wp.interpolate_admin(self, other, t)
     wp
   end
@@ -153,16 +191,6 @@ class Worldpoint < Body
     @maxstep = max(wp1.maxstep, wp2.maxstep)
     @nsteps = max(wp1.nsteps, wp2.nsteps)
     @time = t
-  end
-
-  def admin(old_time, timescale, dt_max)
-    old_dt = @time - old_time
-    @maxstep = old_dt if @maxstep < old_dt
-    @minstep = old_dt if @minstep > old_dt
-    @nsteps = @nsteps + 1
-    new_dt = timescale * @dt_param
-    new_dt = dt_max if new_dt > dt_max
-    @next_time = @time + new_dt
   end
 
   def kinetic_energy
@@ -190,7 +218,7 @@ class Worldline
     @worldpoint = []
   end
 
-  def setup_from_single_worldpoint(b, method, dt_param, time)
+  def setup(b, method, dt_param, time)
     @worldpoint[0] = b.to_worldpoint
     @worldpoint[0].extend(eval("Integrator_#{method}"))
     @worldpoint[0].setup(dt_param, time)
@@ -222,9 +250,11 @@ class Worldline
       @worldpoint.last.extrapolate(time)
     else
       valid_interpolation?(time)
-      @worldpoint.each_index do |i|
-        if @worldpoint[i].time > time
-          return @worldpoint[i-1].interpolate(@worldpoint[i], time)
+      i = @worldpoint.size
+      loop do
+        i -= 1
+        if @worldpoint[i].time <= time
+          return @worldpoint[i].interpolate(@worldpoint[i+1], time)
         end
       end
     end
@@ -271,18 +301,18 @@ class Worldera
                                                            wp.pos, wp.vel)
   end
 
-  def setup_from_snapshot(ss, method, dt_param, dt_era)
+  def setup(ss, method, dt_param, dt_era)
     @start_time = ss.time
     @end_time = @start_time + dt_era
     ss.body.each do |b|
       wl = Worldline.new
-      wl.setup_from_single_worldpoint(b, method, dt_param, ss.time)
+      wl.setup(b, method, dt_param, ss.time)
       @worldline.push(wl)
     end
   end
 
-  def startup_and_report_energy(dt_max)
-    list = @worldline.clone
+  def startup(dt_max)
+    list = @worldline
     while list.size > 0
       new_list = []
       list.each do |wl|
@@ -290,10 +320,13 @@ class Worldera
       end
       list = new_list
     end
+  end
+
+  def report_energy
     take_snapshot(@start_time).total_energy
   end
 
-  def shortest_extrapolated_worldline
+  def wordline_with_minimum_extrapolation
     t = VERY_LARGE_NUMBER
     wl = nil
     @worldline.each do |w|
@@ -305,7 +338,7 @@ class Worldera
     wl
   end
 
-  def shortest_interpolated_worldline
+  def wordline_with_minimum_interpolation
     t = VERY_LARGE_NUMBER
     wl = nil
     @worldline.each do |w|
@@ -319,12 +352,12 @@ class Worldera
 
   def evolve(dt_era, dt_max, shared_flag)
     nsteps = 0
-    while shortest_interpolated_worldline.worldpoint.last.time < @end_time
+    while wordline_with_minimum_interpolation.worldpoint.last.time < @end_time
       unless shared_flag
-        shortest_extrapolated_worldline.grow(self, dt_max)
+        wordline_with_minimum_extrapolation.grow(self, dt_max)
         nsteps += 1
       else
-        t = shortest_extrapolated_worldline.worldpoint.last.next_time
+        t = wordline_with_minimum_extrapolation.worldpoint.last.next_time
         @worldline.each do |w|
           w.worldpoint.last.next_time = t
           w.grow(self, dt_era)
@@ -411,12 +444,13 @@ class World
     @era = @new_era
   end
 
-  def startup_from_snapshot(ss, c)
+  def startup(ss, c)
     @era = Worldera.new
-    @era.setup_from_snapshot(ss, c.integration_method, c.dt_param, c.dt_era)
+    @era.setup(ss, c.integration_method, c.dt_param, c.dt_era)
     @nsteps = 0
     @dt_max = c.dt_era * c.dt_max_param
-    @initial_energy = @era.startup_and_report_energy(@dt_max)
+    @era.startup(@dt_max)
+    @initial_energy = @era.report_energy
     @time = @era.start_time
     @t_out = @time
     @t_dia = @time
@@ -446,7 +480,7 @@ class World
       return object
     elsif object.class == Worldsnapshot
       w = World.new
-      w.startup_from_snapshot(object, c) if object.class == Worldsnapshot
+      w.startup(object, c) if object.class == Worldsnapshot
       return w
     else
       raise "#{object.class} not recognized"
@@ -581,7 +615,7 @@ options_text= <<-END
 
     This is a test version, for the ACS data format
 
-    (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
+    (c) 2005, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
     example:
     ruby mkplummer.rb -n 5 -s 1 | ruby #{$0} -t 1
