@@ -70,7 +70,7 @@ class Body
     @vel = vel + (a0+a1*4+a2)*(1/6.0)*dt                                    #1
   end
 
-  def rk6(dt)                         # yoshida6b, from Akagi book
+  def rk6(dt)
     d = [0.784513610477560e0, 0.235573213359357e0, -1.17767998417887e0,
          1.31518632068391e0]
     for i in 0..2 do leapfrog(dt*d[i]) end
