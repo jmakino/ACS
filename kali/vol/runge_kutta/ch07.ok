@@ -13,7 +13,7 @@ k_2 &=& f(x_0 + v_0\tau + \eta k_1 \tau^2)
 x_1 &=& x_0 + v_0 \tau + \left(\alpha_1 k_1 + \alpha_2 k_2\right) \tau^2  \\
 v_1 &=& v_0 + \left(\beta_1 k_1 + \beta_2 k_2\right) \tau
 
-3rd order not possible: in Eq. (\ref{standard1}) we see that starting
+3rd order not possible: in Eq. (ref(standard1)) we see that starting
 the first force calculation at time zero implies that the coefficient
 for <tex>$v_0$</tex> in <tex>$k_2$</tex> should be <tex>$2/3$</tex>, and not <tex>$1$</tex> as we insist upon above.
 
@@ -96,3 +96,589 @@ For <tex>$\alpha = 0$</tex> and <tex>$\eta = \half$</tex>, simplest choice: leap
 [check for which values time symmetry; 
 presumably only for <tex>$\alpha = 0$</tex> and <tex>$\eta = \half$</tex>]
 
+== Two Force Evaluations per Step
+
+%\subsubsubsection{General Form}
+{\bf 4.2.2.1. General Form}
+
+:eqnarray:
+k_1 &=& f(x_0)    \nonumber\\
+k_2 &=& f(x_0 + \eta_{21}v_0\tau + \eta_{22} k_1 \tau^2)    \nonumber\\
+k_3 &=& f(x_0 + v_0\tau + \eta_{32} k_1 \tau^2 + \eta_{33} k_2 \tau^2)
+
+:eqnarray:
+x_1 &=& x_0 + v_0 \tau
+ + \left(\alpha_1 k_1 + \alpha_2 k_2 + \alpha_3 k_3\right) \tau^2  \nonumber \\
+v_1 &=& v_0 + 
+\left(\beta_1 k_1 + \beta_2 k_2 + \beta_3 k_3\right) \tau
+
+Let us expand up to powers in <tex>$\tau^3$</tex>.
+
+:equation:
+k_2 = f_0 + \eta_{21}v_0f_0'\tau 
++ \left\{\eta_{22} f_0f_0' + \half \eta_{21}^2v_0^2f_0''\right\}\tau^2
++ O(\tau^3)
+
+:equation:
+k_3 = f_0 + v_0f_0'\tau 
++ \left\{\left(\eta_{32}+\eta_{33}\right) f_0f_0'
++ \half v_0^2f_0''\right\}\tau^2
++ O(\tau^3)
+
+we get
+
+:eqnarray:
+x_1 &=& x_0 + v_0 \tau
++ \left(\alpha_1 + \alpha_2 + \alpha_3 \right) f_0\tau^2         \nonumber \\
+&&+ \left(\alpha_2\eta_{21} + \alpha_3\right)v_0f_0'\tau^3
++ O(\tau^4)                
+
+This has to be equal to
+
+:equation:
+x_1 = x_0 + v_0 \tau + \half f_0\tau^2
++\one{6}v_0f_0'\tau^3
+ + O(\tau^4)
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_1 + \alpha_2 + \alpha_3 = \half
+}$
+}
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_2\eta_{21} + \alpha_3 = \one{6}
+}$
+}
+
+:eqnarray:
+v_1 &=& v_0 + \left(\beta_1 + \beta_2 + \beta_3\right)f_0 \tau 
++\left( \beta_2\eta_{21} + \beta_3\right)v_0f_0'\tau^2            \nonumber \\
+&&
++ \left\{
+\Big( \beta_2\eta_{22} + \beta_3(\eta_{32} +\eta_{33}) \Big)f_0f_0'
++ \half\left(\beta_2\eta_{21}^2 + \beta_3 \right)v_0^2f_0''
+\right\}\tau^3                                                   \nonumber \\
+&&+ O(\tau^4)
+
+This has to be equal to
+
+:equation:
+v_1 = v_0 + f_0 \tau +\half v_0f_0'\tau^2
++\one{6}\left\{f_0f_0' +v_0^2f_0''\right\}\tau^3
++ O(\tau^4)
+
+:equation:
+\fbox{
+$\displaystyle{
+\beta_1 + \beta_2 + \beta_3 = 1
+}$
+}
+
+:equation:
+\fbox{
+$\displaystyle{
+\beta_2\eta_{21} + \beta_3 = \half
+}$
+}
+
+:equation:
+\fbox{
+$\displaystyle{
+\beta_2\eta_{21}^2 + \beta_3 = \one{3}
+}$
+}
+
+:equation:
+\fbox{
+$\displaystyle{
+\beta_2\eta_{22} + \beta_3(\eta_{32} + \eta_{33}) = \one{6}
+}$
+}
+
+%\subsubsubsection{Third Order Recycle Conditions}
+
+{\bf 4.2.2.2. Third Order Recycle Conditions}
+
+Now insist that <tex>$\tilde x_1 - x_1 = O(\tau^3)$</tex>:
+
+:eqnarray:
+\tilde x_1 &=& x_0 + v_0 \tau +
+\left(\eta_{32} k_1+\eta_{33} k_2\right) \tau^2 +O(\tau^3)        \nonumber\\
+x_1 &=& x_0 + v_0 \tau + \half f_0\tau^2
+
+:equation:
+\fbox{
+$\displaystyle{
+\eta_{32} + \eta_{33} = \half
+}$
+}
+
+seven equations for ten variables.
+
+From the last two:
+
+:equation:
+\beta_2\eta_{22} + \half\beta_3 = \one{6}
+
+Combining that with the equation above the two we just used:
+
+:equation:
+\beta_2\left(\half\eta_{21}^2-\eta_{22}\right) = 0
+
+Two possibilities: <tex>$\beta_2=0$</tex> or <tex>$\eta_{22}=\half\eta_{21}$</tex>.
+In the first case, <tex>$\beta_3 = \half$</tex> and <tex>$\beta_3 = \one{3}$</tex> from the
+next to last equation and the one above that.  Contradiction.  Hence:
+
+:equation:
+\eta_{22}=\half\eta_{21}
+
+Introduce <tex>$\alpha \equiv \alpha_2$</tex> and <tex>$\eta \equiv \eta_{21}$</tex>, and use
+<tex>$\zeta \equiv \eta_{33}$</tex> as the third parameter.
+Then
+
+:equation:
+\left\{ \begin{array}{lcl}
+\alpha_1 &=& \one{3} + \alpha(\eta -1)  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\alpha_2 &=& \alpha                      \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\alpha_3 &=& \one{6} - \alpha\eta        \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\beta_1 &=& {\displaystyle {3\eta -1 \over 6\eta}}       \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\beta_2 &=& {\displaystyle {1 \over 6\eta(1-\eta)}}     \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\beta_3 &=& {\displaystyle {2-3\eta \over 6(1-\eta)}}     \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\eta_{21} &=& \eta                     \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\eta_{22} &=& \half\eta^2              \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\eta_{32} &=& \half - \zeta            \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\eta_{33} &=& \zeta                    \\
+\end{array} \right.
+
+So in general:
+
+:equation:
+\label{threeparam}
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + v_0 \tau
+ + \left((\one{3} + \alpha(\eta -1)) k_1  + \alpha k_2
+ + (\one{6} - \alpha\eta) k_3\right) \tau^2  \nonumber \\
+v_1 &=& v_0 + 
+\left({3\eta -1 \over 6\eta} k_1
+ + {1 \over 6\eta(1-\eta)} k_2 + {2-3\eta \over 6(1-\eta)} k_3\right) \tau \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)    \\
+k_2 &=& f(x_0 + \eta v_0\tau + \half\eta^2 k_1 \tau^2)    \\
+k_3 &=& f(x_0 + v_0\tau +
+((\half-\zeta) k_1 + \zeta k_2 )\tau^2)
+\end{array} \right.             
+
+Example: for <tex>$\alpha = \zeta=0$</tex>, <tex>$\eta=\half$</tex>:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + v_0 \tau
+ + \one{6} \left(2 k_1  + k_3\right) \tau^2   \\
+v_1 &=& v_0 + \one{6}\left(k_1 +4k_2 + k_3\right) \tau \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)    \\
+k_2 &=& f(x_0 + \half v_0\tau + \one{8} k_1 \tau^2)    \\
+k_3 &=& f(x_0 + v_0\tau + \half k_1 \tau^2)
+\end{array} \right.
+
+Like trapezium rule for integration!
+
+Another example: for <tex>$\alpha = \zeta=0$</tex>, <tex>$\eta=\one{3}$</tex>:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + v_0 \tau
+ + \one{6} \left(2 k_1  + k_3\right) \tau^2   \\
+v_1 &=& v_0 + \one{4}\left(3k_2 + k_3\right) \tau \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)    \\
+k_2 &=& f(x_0 + \one{3} v_0\tau + \one{18} k_1 \tau^2)    \\
+k_3 &=& f(x_0 + v_0\tau + \half k_1 \tau^2)
+\end{array} \right.
+
+%\subsubsubsection{Exact Recycling}
+
+{\bf 4.2.2.3. Exact Recycling}
+
+So far, only pseudo-FSAL, or better: pseudo Runge Kutta!
+
+Can we make it really FSAL Runge Kutta?
+
+:equation:
+\half - \zeta = \one{3} - \alpha(\eta-1)
+
+:equation:
+\zeta = \alpha
+
+:equation:
+\one{6} - \alpha\eta = 0
+
+With the first two:
+
+:equation:
+\one{6} + \alpha\eta = 2\alpha
+
+combining this with the third:
+
+:equation:
+\alpha = \one{6}
+
+leading to 
+
+:equation:
+\zeta = \one{6}
+
+but alas:
+
+:equation:
+\eta = 1
+
+So this doesn't work: the coefficients for the <tex>$k_2$</tex> and <tex>$k_3$</tex> terms
+in the expression for <tex>$v_1$</tex> in Eq. (ref(threeparam)) blow up.
+
+%\subsubsubsection{A Search for a Fourth Order Scheme}
+
+{\bf 4.2.2.4. A Search for a Fourth Order Scheme}
+
+Given that we have three free parameters left in our construction of a
+recycling scheme that is third order correct, it is tempting to search
+for a fourth-order scheme, based on only two new force calculations
+per time step.  
+
+Repeating the previous analysis to one order higher in <tex>$\tau$</tex>, we get
+
+:eqnarray:
+k_2 &=& f_0 + \eta_{21}v_0f_0'\tau 
++ \left\{\eta_{22} f_0f_0' + \half \eta_{21}^2v_0^2f_0''\right\}\tau^2  
+ \nonumber \\
+&&+ \left\{\eta_{21}\eta_{22}v_0f_0f_0''
++\one{6}\eta_{21}^3v_0^3f_0'''\right\}\tau^3
++ O(\tau^4)
+
+:eqnarray:
+k_3 &=& f_0 + v_0f_0'\tau 
++ \left\{\left(\eta_{32}+\eta_{33}\right) f_0f_0'
++ \half v_0^2f_0''\right\}\tau^2                  \nonumber \\
+&&
++ \left\{ \eta_{21}\eta_{33}v_0\left(f_0'\right)^2
++ \left(\eta_{32}+\eta_{33}\right) v_0f_0f_0''
++ \one{6} v_0^3f_0'''\right\}\tau^3              \nonumber \\
+&&+\  O(\tau^4)
+
+we get
+
+:eqnarray:
+x_1 &=& x_0 + v_0 \tau
++ \left(\alpha_1 + \alpha_2 + \alpha_3 \right) f_0\tau^2  
++ \left(\alpha_2\eta_{21} + \alpha_3\right)v_0f_0'\tau^3          \nonumber \\
+&&+ \left(\alpha_2\eta_{22}
++ \alpha_3\left(\eta_{32}+\eta_{33}\right) \right)f_0f_0'\tau^4
++ \half\left(\alpha_2\eta_{21}^2 + \alpha_3\right)v_0^2f_0''\tau^4 \nonumber \\
+&&+\  O(\tau^5)
+
+This has to be equal to
+
+:equation:
+x_1 = x_0 + v_0 \tau + \half f_0\tau^2
++\one{6}v_0f_0'\tau^3 + \one{24}f_0f_0'\tau^4 + \one{24}v_0^2f_0''\tau^4
+ + O(\tau^5)
+
+In addition to the previous conditions, we get the following two additional
+requirements:
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_2\eta_{22} + \alpha_3\left(\eta_{32}+\eta_{33}\right) = \one{24}
+}$
+}
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_2\eta_{21}^2 + \alpha_3 = \one{12}
+}$
+}
+
+Now:
+
+:eqnarray:
+v_1 &=& v_0 + \left(\beta_1 + \beta_2 + \beta_3\right)f_0 \tau 
++\left( \beta_2\eta_{21} + \beta_3\right)v_0f_0'\tau^2            \nonumber \\
+&&
++ \left\{
+\Big( \beta_2\eta_{22} + \beta_3(\eta_{32} +\eta_{33}) \Big)f_0f_0'
++ \half\left(\beta_2\eta_{21}^2 + \beta_3 \right)v_0^2f_0''
+\right\}\tau^3                                                   \nonumber \\
+&&
++ \left\{
+\beta_3\eta_{21}\eta_{33}v_0\left(f_0'\right)^2
++ \Big( \beta_2\eta_{21}\eta_{22} + 
+\beta_3(\eta_{32} +\eta_{33}) \Big)v_0f_0f_0''\right.          \nonumber \\
+&&
+\quad \ \ \left.
++\  \one{6}\left(\beta_2\eta_{21}^3 + \beta_3 \right)v_0^3f_0'''
+\right\}\tau^4                                                   \nonumber \\
+&&+ O(\tau^5)
+
+This has to be equal to
+
+:eqnarray:
+v_1 &=& v_0 + f_0 \tau +\half v_0f_0'\tau^2
++\one{6}\left\{f_0f_0' +v_0^2f_0''\right\}\tau^3           \nonumber \\
+&&
++\  \one{24}\left\{v_0\left(f_0'\right)^2 +
+3v_0f_0f_0'' +v_0^3f_0'''\right\}\tau^4
++ O(\tau^5)
+
+We get the additional equations:
+
+:equation:
+\fbox{
+$\displaystyle{
+\beta_2\eta_{21}^3 + \beta_3 = \one{4}
+}$
+}
+
+:equation:
+\fbox{
+$\displaystyle{
+\beta_2\eta_{21}\eta_{22} + \beta_3(\eta_{32} + \eta_{33}) = \one{8}
+}$
+}
+
+:equation:
+\fbox{
+$\displaystyle{
+\beta_3\eta_{21}\eta_{33} = \one{24}
+}$
+}
+
+We have thus eleven conditions gathered so far for the ten
+unknown parameters <tex>$\{\alpha_1, \alpha_2, \alpha_3, \beta_1, \beta_2,
+\beta_3, \eta_{21}, \eta_{22}, \eta_{32}, \eta_{33}\}$</tex>.  {\it A priori}
+we would expect to find no solutions in such an overdetermined system.
+However, let's see how far we get when we try.  Let us list the
+conditions here together:
+
+:equation:
+\left\{ \begin{array}{lcl}
+\alpha_1 + \alpha_2 + \alpha_3 = \half  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\alpha_2\eta_{21} + \alpha_3 = \one{}  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\alpha_2\eta_{21}^2 + \alpha_3 = \one{12}  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\alpha_2\eta_{22} + \alpha_3\left(\eta_{32}+\eta_{33}\right) = \one{24}  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\beta_1 + \beta_2 + \beta_3 = 1        \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\beta_2\eta_{21} + \beta_3 = \half    \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\beta_2\eta_{21}^2 + \beta_3 = \one{3}  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\beta_2\eta_{21}^3 + \beta_3 = \one{4}  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\beta_2\eta_{22} + \beta_3(\eta_{32} + \eta_{33}) = \one{6}  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\beta_2\eta_{21}\eta_{22} + \beta_3(\eta_{32} + \eta_{33}) = \one{8}  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\beta_3\eta_{21}\eta_{33} = \one{24}
+\end{array} \right.
+
+Subtracting the 6th and 7th equation, we find
+
+:equation:
+\beta_2\eta_{21}(1-\eta_{21}) = \one{6}
+
+and subtracting the 7th and 8th equation, we find
+
+:equation:
+\beta_2\eta_{21}^2(1-\eta_{21}) = \one{12}
+
+Together, these two expressions imply
+
+:equation:
+\eta_{21}(1-\eta_{21}) = 2\eta_{21}^2(1-\eta_{21})
+
+There are three solutions: <tex>$\eta_{21} = 0$</tex>, <tex>$\eta_{21} = 1$</tex>, and
+<tex>$\eta_{21} = \half$</tex>.  The first two solutions can be discarded, because
+they would imply that the left-hand side of the 6th, 7th, and 8th
+equations above would all have the same value, contradicting the fact
+that their right-hand sides have different values.  We thus find
+
+:equation:
+\eta_{21} = \half
+
+With this result, we can use the remaining information in the 6th,
+7th, and 8th equations above to determine the other two values:
+
+:equation:
+\beta_2 = \two{3}
+
+:equation:
+\beta_3 = \one{6}
+
+The 5th equation gives us
+
+:equation:
+\beta_1 = \one{6}
+
+Subtracting the 9th and 10th equation, we find
+
+:equation:
+\beta_2\eta_{22}(1-\eta_{21}) = \one{24}
+
+and plugging in the values we have found so far gives us
+
+:equation:
+\eta_{22} = \one{8}
+
+The 9th and 10th equation then give us:
+
+:equation:
+\eta_{32} + \eta_{33} = \half
+
+Since the 11th equation gives us
+
+:equation:
+\eta_{33} = \half
+
+we conclude that
+
+:equation:
+\eta_{32} = 0
+
+We can now write the 2nd and 3rd equations as
+
+:equation:
+\half \alpha_2 + \alpha_3 = \one{6}
+
+:equation:
+\one{4} \alpha_2 + \alpha_3 = \one{12}
+
+Subtraction those expressions gives us
+
+:equation:
+\one{4} \alpha_2 = \one{12}
+
+or
+
+:equation:
+\alpha_2 = \one{3}
+
+and plugging this back in the expressions above gives
+
+:equation:
+\alpha_3 = 0
+
+The 1st equation then gives
+
+:equation:
+\alpha_1 = \one{6}
+
+Remarkably, we have been able to solve the eleven equations for the
+ten unknowns and found a consistent solution!  To summarize:
+
+:equation:
+\left\{ \begin{array}{lcl}
+\alpha_1 = \one{6}  
+&;&
+\alpha_2 = \one{3}  
+\quad \  ; \quad 
+\alpha_3 = 0       \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\beta_1 =  \one{6}  
+&;&
+\beta_2 =  \two{3}  
+\quad \  ; \quad 
+\beta_3 =  \one{6}  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\eta_{21} = \half   
+&;&
+\eta_{22} =  \one{8}  
+\quad ; \quad 
+\eta_{32} =  0      
+\quad ; \quad 
+\eta_{33} = \half
+\end{array} \right.
+
+Not only that, it turns out that we get an additional bonus: these
+solutions solve the previous relation for demanding the
+<tex>$\tilde x_1 = x_1 + O(\tau^3)$</tex>, which was
+
+:equation:
+\eta_{32} + \eta_{33} = \half
+
+We have thus found a consistent set of solutions for ten variables
+satisfying twelve equations.  Could we be really lucky?  Could it be
+that in fact <tex>$\tilde x_1 = x_1 + O(\tau^4)$</tex>?  If that were true,
+our fourth-order scheme would allow us to recycle the last force
+calculation, and we would really have obtained a fourth-order scheme
+with an effective costs of only two new force calculations per step.
+This does sound too good to be true, but let's just check.
+
+:eqnarray:
+\tilde x_1 - x_1 &=& 
+\left\{
+\left(\eta_{32} k_1+\eta_{33} k_2\right)
+- \left(\alpha_1 k_1 + \alpha_2 k_2 + \alpha_3 k_3\right)
+\right\} \tau^2  \nonumber\\
+&=&
+\left\{
+\half k_2
+- \left(\one{6} k_1 + \one{3}k_2\right)
+\right\} \tau^2  \nonumber\\
+&=&
+\one{6}(k_2 - k_1)\tau^2  \nonumber\\
+&=& \one{12}v_0f_0'\tau^3 +O(\tau^4)
+
+It was too good to be true!
+
+We thus have:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + v_0 \tau
+ + \one{6} \left(k_1  + 2k_2\right) \tau^2   \\
+v_1 &=& v_0 + \one{6}\left(k_1 +4k_2 + k_3\right) \tau \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)    \\
+k_2 &=& f(x_0 + \half v_0\tau + \one{8} k_1 \tau^2)    \\
+k_3 &=& f(x_0 + v_0\tau + \half k_2 \tau^2)
+\end{array} \right.
+
+Looking at the equations this way, we can in fact see directly that a
+fourth-order scheme doesn't work ('directly' once you have become
+sufficiently familiar with all these expressions).  For the scheme to
+be fourth order, the position where the last force calculation is
+computed should agree to third order with the new position at the end
+of the time step.  However, the latter has a <tex>$k_1$</tex> term which the
+former lacks, and since the difference <tex>$k_1 - k_2$</tex> is of first order
+in <tex>$\tau$</tex>, there is a real third-order difference between the two
+positions, hence between the forces computed in these two positions.
+The upshot is that this will introduce a fourth-order error in the
+velocity in the next step, when we recycle the last force calculation.
+Our scheme is thus only third-order accurate when we recycle, even
+though it is fourth-order accurate if we decide to compute all three
+new forces anew at each step.
+
+By the way, as a fourth-order scheme, it is listed in Abramowitz and
+Stegun's welknown Handbook of Mathematical Functions as eq. 25.5.22,
+but with a typo: the error in the position is listed as being
+<tex>$O(\tau^4)$</tex>, while it really should be <tex>$O(\tau^5)$</tex>; in addition no
+error is listed for the velocity.  As we have seen, for the velocity,
+too, the error is <tex>$O(\tau^5)$</tex>.

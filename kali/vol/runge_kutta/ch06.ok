@@ -65,25 +65,28 @@ k_1 = f(x_0)
 This leads to the following dimensionally correct expressions:
 
 :eqnarray:
+\label{array1a}
 x_1 &=& x_0 + v_0 \tau + \alpha_1 k_1\tau^2  \\
-v_1 &=& v_0 + \beta_1 k_1\tau   \label{array1a}
+v_1 &=& v_0 + \beta_1 k_1\tau   
 
 Comparing this with
 
 :equation:
+\label{taylor4x}
 x_1 = x_0 + v_0\tau + \half a_0\tau^2
-+ \one{6} j_0\tau^3  + O(\tau^4) \label{taylor4x}
++ \one{6} j_0\tau^3  + O(\tau^4) 
 
 and
 
 :equation:
+\label{taylor4v}
 v_1 = v_0 + a_0\tau + \half j_0\tau^2
-+ \one{6} s_0\tau^3  + O(\tau^4) \label{taylor4v}
++ \one{6} s_0\tau^3  + O(\tau^4) 
 
 we find for the <tex>$O(\tau)$</tex> terms that <tex>$\beta_1 = 1$</tex>.
 
-Going to second order in <tex>$\tau$</tex> we require from Eq. (\ref{taylor4x})
-that <tex>$\alpha_1 = \half$</tex>.  However, Eq. (\ref{taylor4v}) tells us that
+Going to second order in <tex>$\tau$</tex> we require from Eq. (ref(taylor4x))
+that <tex>$\alpha_1 = \half$</tex>.  However, Eq. (ref(taylor4v)) tells us that
 
 :equation:
 j_0 = f_0' v_0 = 0
@@ -147,20 +150,22 @@ where <tex>$\eta_1$</tex> is a free parameter.  Using the linear extrapolation o
 the position, as sketched above, we obtain:
 
 :equation:
-k_1 = f(x_0 + \eta_1 v_0 \tau) \label{aha}
+\label{aha}
+k_1 = f(x_0 + \eta_1 v_0 \tau) 
 
 This leads to the following dimensionally correct expressions:
 
 :eqnarray:
+\label{array1b}
 x_1 &=& x_0 + v_0 \tau + \alpha_1 k_1\tau^2  \\
-v_1 &=& v_0 + \beta_1 k_1\tau   \label{array1b}
+v_1 &=& v_0 + \beta_1 k_1\tau   
 
 If we expand <tex>$k_1$</tex> to first order in <tex>$\tau$</tex>, we obtain:
 
 :equation:
 k_1 = f_0 + \eta_1 f_0' v_0 \tau
 
-Eq. (\ref{array1b}) can thus be written as:
+Eq. (ref(array1b)) can thus be written as:
 
 :equation:
 \left\{ \begin{array}{lcl}
@@ -172,8 +177,9 @@ v_1 &=& v_0 + \beta_1 f_0\tau + \beta_1 \eta_1 f_0' v_0 \tau^2 + O(\tau^3)
 Comparing this with
 
 :equation:
+\label{taylor3x}
 x_1 = x_0 + v_0\tau + \half a_0\tau^2
-+ \one{6} j_0\tau^3  + O(\tau^4) \label{taylor3x}
++ \one{6} j_0\tau^3  + O(\tau^4) 
 
 let us first consider the <tex>$O(\tau^2)$</tex> terms, which leads to the
 requirement:
@@ -189,8 +195,9 @@ which leads to
 Similarly, we can use the Taylor series for <tex>$v$</tex>:
 
 :equation:
+\label{taylor3v}
 v_1 = v_0 + a_0\tau + \half j_0\tau^2
-+ \one{6} s_0\tau^3  + O(\tau^4) \label{taylor3v}
++ \one{6} s_0\tau^3  + O(\tau^4) 
 
 Considering the <tex>$O(\tau)$</tex> term, we have:
 
@@ -235,12 +242,13 @@ Using one evaluation of the right-hand side of the differential equation,
 we have thus arrived at the following second-order integration scheme:
 
 :equation:
+\label{verlet}
 \left\{ \begin{array}{lcl}
 x_1 &=& x_0 + v_0 \tau + \half k_1 \tau^2  \\
 v_1 &=& v_0 + k_1 \tau  \\
 \phantom{1}&\phantom{1}&\phantom{1} \\
 k_1 &=& f(x_0 + \half v_0 \tau)
-\end{array} \right.       \label{verlet}
+\end{array} \right.       
 
 Even though the equation for the velocity looks first-order, it is
 actually second-order accurate, through the clever choice of time at
@@ -294,8 +302,8 @@ v_1 &=& v_0 + f_{1/2} \tau
 
 This representation shows clearly that the equations are fully time
 symmetric.  This fact was rather hidden in the original formulation,
-eqs. (\ref{verlet}).  However, if we explicitly take a step forward
-and then another step backward, using eqs. (\ref{verlet}), we can
+eqs. (ref(verlet)).  However, if we explicitly take a step forward
+and then another step backward, using eqs. (ref(verlet)), we can
 recover the time symmetry inherent in these equations, as follows.
 Let us denote the resulting position and velocity by <tex>$\{x_{-0}, v_{-0}\}$</tex>,
 which are obtained from <tex>$\{x_{1}, v_{1}\}$</tex> by taking a time step with
@@ -358,7 +366,7 @@ x_1 &=& x_0 + v_0\tau + \half f_0 \tau^2           \\
 v_1 &=& v_0 + \half ( f_0 + f_1 ) \tau
 \end{array} \right.
 
-Comparing this with our starting point, eqs. (\ref{verlet}):
+Comparing this with our starting point, eqs. (ref(verlet)):
 
 :equation:
 \left\{ \begin{array}{lcl}
@@ -407,7 +415,7 @@ now known as the <tex>Runge-Kutta-Nystr\"om</tex> algorithms.
 
 In his section 2, p. 7, near the bottom, he remarks that, to be
 consistent, we should allow the freedom to write a general expression
-of the type we have done above in Eq. (\ref{aha}).  He then adds that
+of the type we have done above in Eq. (ref(aha)).  He then adds that
 he decided against considering this extra freedom, for two reasons,
 both pragmatic, the first related to speed of execution of the
 algorithms, the second related to speed of derivation of the
@@ -420,7 +428,7 @@ calculations, we can further improve the accuracy, without having to
 perform new force evaluations).  Secondly, he adds, starting from such
 a general expression has led him to such unwieldy expressions that he
 was more or less forced to put <tex>$\eta_1 = 0$</tex> in his equivalent to our
-Eq. (\ref{aha}).
+Eq. (ref(aha)).
 
 Of course, current availability of algebraic manipulation programs
 have now invalidated his second argument.  Curiously, all text books
@@ -444,8 +452,9 @@ k_2 &=& f(x_0 + \eta_{21} v_0\tau + \eta_{22} k_1 \tau^2)
 which leads to the following expressions for position and velocity steps:
 
 :eqnarray:
+\label{array2a}
 x_1 &=& x_0 + v_0 \tau + \left(\alpha_1 k_1 + \alpha_2 k_2\right) \tau^2  \\
-v_1 &=& v_0 + \left(\beta_1 k_1 + \beta_2 k_2\right) \tau   \label{array2a}
+v_1 &=& v_0 + \left(\beta_1 k_1 + \beta_2 k_2\right) \tau   
 
 Substituting the <tex>$k_i$</tex> values, these equations expand into
 
@@ -547,6 +556,7 @@ These can be solved in terms of <tex>$\eta_{11}$</tex>, as follows:
 If we take the standard assumption <tex>$\eta_{11} = 0$</tex>, we get:
 
 :equation:
+\label{standard1}
 \left\{
 \eta_{11} = 0                     \  ; \ 
 \eta_{21} = {\textstyle \frac {2}{3}}            \  ; \ 
@@ -555,7 +565,7 @@ If we take the standard assumption <tex>$\eta_{11} = 0$</tex>, we get:
 \alpha_2 = \one{4}            \  ; \ 
 \beta_1 = \one{4}            \  ; \ 
 \beta_2 = {\textstyle \frac {3}{4}}
-\right\}                               \label{standard1}
+\right\}                               
 
 This produces exactly what <tex>Nystr\"om</tex> (1925) gives this as his simplest
 algorithm:

@@ -227,7 +227,7 @@ a_0 &=& \dot v_0 \ = \ {d \over dt} f_0
 j_0 &=& \dot a_0 \ = \ f_0^2 f_0'' + f_0 (f_0')^2     \label{j0} \\
 \phantom{1}&\phantom{1}&\phantom{1}                  \nonumber \\
 s_0 &=& \dot j_0 \ = \ f_0^3 f_0''' + 4f_0^2f_0'f_0'' +
-(f_0')^3 f_0           \label{s0}
+(f_0')^3 f_0                                          \label{s0}
 
 *Bob*: Note that we should not interpret the acceleration as something that
 happens as the result of a force being applied.  If a spoon moving
@@ -302,21 +302,23 @@ x_1 = x_0 + \alpha_1 k_1\tau
 Combining the last two equations, we have
 
 :equation:
-x_1 = x_0 + \alpha_1 f_0\tau \label{rk1}
+\label{rk1}
+x_1 = x_0 + \alpha_1 f_0\tau 
 
 We can compare this expression with our Taylor series:
 
 :equation:
 x_1 = x_0 + v_0\tau + \half a_0\tau^2 + O(\tau^3)
 
-Using Eqs. (\ref{v0}) and (\ref{a0}),
+Using Eqs. (ref(v0)) and (ref(a0)),
 we can write this as
 
 :equation:
-x_1 = x_0 + f_0\tau + \half f_0 f_0'\tau^2 + O(\tau^3) \label{taylor1}
+\label{taylor1}
+x_1 = x_0 + f_0\tau + \half f_0 f_0'\tau^2 + O(\tau^3) 
 
 How accurate is our new value <tex>$x_1$</tex> after we take one step?  Let us
-see how well we can match Eq. (\ref{rk1}) with Eq. (\ref{taylor1}),
+see how well we can match Eq. (ref(rk1)) with Eq. (ref(taylor1)),
 in successive powers of <tex>$\tau$</tex>.  The constant term <tex>$x_0$</tex> matches
 trivially, and our first condition arises from the term linear in <tex>$\tau$</tex>:
 
@@ -336,15 +338,16 @@ We have no free parameter left, so this leads us to the
 only possible explicit first-order integration scheme
 
 :equation:
+\label{forward}
 \left\{ \begin{array}{lcl}
 x_1 &=& x_0 + k_1\tau  \\
 \phantom{1}&\phantom{1}&\phantom{1} \\
 k_1 &=& f(x_0)
-\end{array} \right.                    \label{forward}
+\end{array} \right.                    
 
 which is the forward-Euler algorithm.  This scheme is only first-order
 accurate, since it cannot possibly reproduce the <tex>$O(\tau^2)$</tex> term in
-Eq. (\ref{taylor1}):
+Eq. (ref(taylor1)):
 such a match would require <tex>$\half f_0 f_0' = 0$</tex>,
 which is certainly not true for general force prescriptions.
 
@@ -374,49 +377,77 @@ right-hand side again, at a new position:
 k_1 &=& f(x_0)    \\
 k_2 &=& f(x_0 + \eta k_1 \tau)
 
-We can now use a more general expression for the new position:
+We can now use a more general expression for the new position, in
+which we rely on the preliminary information that has been gathered in
+the two force evoluations.  Since each force evaluation has the
+dimension of a time derivative of the position, we have to multiply
+each one with a single power of <tex>$\tau$</tex>.  The coefficient
+for each term is, as yet, arbitrary, so let us parametrize them as
+follows:
 
 :equation:
-x_1 = x_0 + \left( \alpha_1 k_1 + \alpha_2 k_2 \right) \tau  \label{alg11}
+\label{alg11}
+x_1 = x_0 + \left( \alpha_1 k_1 + \alpha_2 k_2 \right) \tau  
 
-Combining these equations, we have
+We can combine these equations, and write them as
 
 :equation:
+\label{alg12}
 x_1 = x_0 + \left\{ 
-\alpha_1 f_0 + \alpha_2 f(x_0 +\eta f_0 \tau) \right\} \tau \label{alg12}
+\alpha_1 f_0 + \alpha_2 f(x_0 +\eta f_0 \tau) \right\} \tau
 
-The right-most term in Eqs. (\ref{alg11}) and (\ref{alg12}) can be
-expanded in a power series in <tex>$\tau$</tex> when we develop <tex>$k_2$</tex> in a Taylor
-series around <tex>$\tau = 0$</tex>:
+*Bob*: Our strategy is again to compare this expression with a Taylor series
+defined at the start of the time step, right?
+
+*Alice*: Yes.  And since that Taylor series for <tex>$x_1$</tex> is defined
+as a series in <tex>$\tau$</tex>, we must somehow translate the above
+expressions, too, a series in <tex>$\tau$</tex>, around <tex>$\tau = 0$</tex>.
+
+*Bob*: The main obstacle here is <tex>$k_2$</tex>,
+which itself involves an expression that depends on <tex>$\tau$</tex>.
+
+*Alice*: The solution here is that we can develop <tex>$k_2$</tex>
+itself in a Taylor series around <tex>$\tau = 0$</tex>.  In general,
+for any function of , we can write the Taylor series for a position
+<tex>$x+\epsilon$</tex> near <tex>$x$</tex> as:
 
 :equation:
+f(x + \epsilon) = f(x) + \epsilon f'(x) + \half\epsilon^2f''(x) + O(\epsilon^3)
+
+In our particular case, this gives us:
+
+:equation:
+\label{alg13}
 k_2 = f(x_0 +\eta f_0 \tau) =
 f_0 + (\eta f_0) f_0' \tau + \half (\eta f_0)^2 f_0'' \tau^2
-+ O(\tau^3)  \label{alg13}
++ O(\tau^3)  
 
 We thus find for the new position, at the end of our time step:
 
 :equation:
+\label{rk2}
 x_1 = x_0 + (\alpha_1 + \alpha_2) f_0 \tau +
 \alpha_2 \eta f_0 f_0' \tau^2 +
-\half \alpha_2 \eta^2 f_0^2 f_0'' \tau^3 + O(\tau^4) \label{rk2}
+\half \alpha_2 \eta^2 f_0^2 f_0'' \tau^3 + O(\tau^4) 
 
 We can now compare this expression with the Taylor series expansion of
 the true orbit:
 
 :equation:
+\label{taylor0}
 x_1 = x_0 + v_0\tau + \half a_0\tau^2
-+ \one{6} j_0\tau^3  + O(\tau^4)                \label{taylor0}
++ \one{6} j_0\tau^3  + O(\tau^4)                
 
-Using Eqs. (\ref{v0}), (\ref{a0}), and (\ref{j0}), 
+Using Eqs. (ref(v0)), (ref(a0)), and (ref(j0)), 
 we can write this as
 
 :equation:
+\label{taylor2}
 x_1 = x_0 + f_0\tau + \half f_0 f_0'\tau^2
 + \one{6} \left\{ f_0^2 f_0'' + f_0 (f_0')^2 \right\} \tau^3
-+ O(\tau^4) \label{taylor2}
++ O(\tau^4) 
 
-To what order can we make Eqs. (\ref{rk2}) and (\ref{taylor2}) compatible?
+To what order can we make Eqs. (ref(rk2)) and (ref(taylor2)) compatible?
 Starting with terms to first order in <tex>$\tau$</tex>, we have to insist that
 
 :equation:
@@ -445,7 +476,7 @@ $\displaystyle{
 }$
 }
 
-Would it be possible to match Eqs. (\ref{rk2}) and (\ref{taylor2}) also to
+Would it be possible to match Eqs. (ref(rk2)) and (ref(taylor2)) also to
 third order in <tex>$\tau$</tex>?  This would require
 
 :equation:
@@ -456,14 +487,38 @@ While we can match the first term on the right-hand side, by choosing
 <tex>$\alpha_2 \eta^2 = 1/3$</tex>, this would require that <tex>$f_0 (f_0')^2 = 0$</tex>,
 which is not true for general force prescriptions.
 
-== xxx
+== A One-Parameter Family of Algorithms
 
-We have to conclude that our scheme is only second-order
-accurate.  We have three free parameters, <tex>$\alpha_1$</tex>, <tex>$\alpha_2$</tex>, and
-<tex>$\eta$</tex>.  Since we only have two conditions, Eqs. (xx) and (yy)
-{\bf[note: box ref problem]}, we can expect to be left with one degree
-of freedom in choosing the coefficients in our algorithm.  This is
-indeed the case.  If we write <tex>$\alpha = \alpha_2$</tex>, we obtain:
+*Bob*: So we have to conclude that our scheme is only second-order
+accurate.  That makes sense: with one force evaluation, we got a
+first-order scheme, and with two force evaluations, we get a
+second-order scheme.  Presumably with _p_ force evaluations, you get a
+scheme that is accurate to order _p_.
+
+*Alice*: I would have guessed so too, but this is not so.  Your guess
+is correct for order 3 and 4, but it turns out that you need 6 force
+evaluations to build an algorithm that is accurate to order 5!
+
+*Bob*: That is surprising!
+
+*Alice*: It is, until you realize that you get more and more equations that
+you have to satisfy.  The number of such conditions grows quite a bit
+faster than the the number of force calculations.  This is not yet obvious
+in what we have done, but if will become obvious pretty soon.  In general,
+there are a lot of complicated combinatorial surprises in Runge-Kutta
+derivations.
+
+*Bob*: Fascinating.  But for now, at least, it seems that going to higher
+order gives us more freedom, rather than less.  Unlike the first-order case,
+we now have an extra parameter to play with.
+
+We started with three free parameters, <tex>$\alpha_1$</tex>,
+<tex>$\alpha_2$</tex>, and <tex>$\eta$</tex>.  Since we only have the
+two boxed conditions above, we can expect to be left with one degree
+of freedom in choosing the coefficients in our algorithm.
+
+*Alice*: Well, let's check.  If we define
+<tex>$\alpha \equiv \alpha_2$</tex>, we find:
 
 :equation:
 \left\{ \begin{array}{lcl}
@@ -472,27 +527,29 @@ indeed the case.  If we write <tex>$\alpha = \alpha_2$</tex>, we obtain:
 \eta &=& 1 / (2\alpha)
 \end{array} \right.
 
-we obtain the following family
-of algorithms:
+We thus obtain the following one-parameter family of algorithms:
 
 :equation:
+\label{rk2alpha}
 \left\{ \begin{array}{lcl}
 x_1 &=& x_0 + \left( (1-\alpha)k_1 + \alpha k_2 \right) \tau \\
 \phantom{1}&\phantom{1}&\phantom{1} \\
 k_1 &=& f(x_0)  \\
 k_2 &=& f(x_0 + {1\over 2 \alpha} k_1 \tau)
-\end{array} \right.                         \label{rk2alpha}
+\end{array} \right.
 
-One classical choice for a second-order Runge-Kutta is <tex>$\alpha = \half$</tex>,
-leading to:
+*Bob*: Ah, this is nice.  I recognize some of the algorithms that I've been
+using in the past.  One classical choice for a second-order Runge-Kutta is
+<tex>$\alpha = \half$</tex>, leading to:
 
 :equation:
+\label{rk2alphahalf}
 \left\{ \begin{array}{lcl}
 x_1 &=& x_0 + \half \left( k_1 + k_2 \right) \tau \\
 \phantom{1}&\phantom{1}&\phantom{1} \\
 k_1 &=& f(x_0)  \\
 k_2 &=& f(x_0 + k_1 \tau)
-\end{array} \right.                     \label{rk2alphahalf}
+\end{array} \right.                     
 
 Another classical choice is <tex>$\alpha = 1$</tex>, which gives:
 
@@ -504,8 +561,20 @@ k_1 &=& f(x_0)  \\
 k_2 &=& f(x_0 + \half k_1 \tau)
 \end{array} \right.
 
-For <tex>$\alpha = \half$</tex>, we effectively average the evaluations at the
-beginning and at the end of the trial step, while for <tex>$\alpha = 1$</tex>, we
-use only the evaluation at the end of a smaller trial step that brings
-us approximately mid-way between the beginning and the end of the step.
+*Alice*: Yes, and now we have given a derivation for why they work.
+In general, for higher-order algorithms, you have to follow such a
+derivation to convince yourself that the recipe has the order that is
+claimed for it.  However, in this second-order case, you can still
+use your intuition to convince yourself that the expressions are okay.
 
+For <tex>$\alpha = \half$</tex>, we effectively average the
+evaluations at the beginning and at the end of the trial step, and you
+can imagine that this gives you one extra order of accuracy, since you
+effectively cancel the types of error you would make if you were using
+a force calculation only at one end of the step.
+
+Similarly, for <tex>$\alpha = 1$</tex>, we use the evaluation at the
+end of a smaller trial step that brings us approximately mid-way
+between the beginning and the end of the step.  Then, at that point,
+we again obtain an estimate for the average of the forces at begin and
+end of the time step.

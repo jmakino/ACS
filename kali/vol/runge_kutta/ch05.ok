@@ -65,9 +65,10 @@ This leads to the following dimensionally correct expression:
 Comparing this with our Taylor series:
 
 :equation:
+\label{taylor12}
 {x_1 \choose v_1} = {x_0 \choose v_0} + 
 {v_0\choose a_0}\tau + \half {a_0 \choose j_0} \tau^2 +
-O(\tau^3) \label{taylor12}
+O(\tau^3) 
 
 we see that
 
@@ -98,7 +99,7 @@ k_1 &=& f(x_0)
 
 We thus recover the forward-Euler algorithm.  As before, 
 this scheme is only first-order accurate, since it cannot possibly
-reproduce the <tex>$O(\tau^2)$</tex> term in Eq. (\ref{taylor12}).
+reproduce the <tex>$O(\tau^2)$</tex> term in Eq. (ref(taylor12)).
 
 == Two Force Evaluations per Step
 
