@@ -187,12 +187,12 @@ that are easy to generate and easy to interpret.
 I wonder whether we should not have noticed that there was something wrong
 with the energies in the case of the circular orbit where the masses
 of the two stars were equal to each other, but different from unity.  Let
-us look at that case again.  Where did we file those data.  Ah, here it is:
+us look at that case again.  Where did we file those data?  Ah, here it is:
 we stored the initial conditions in the file <tt>test3.in</tt>:
 
  :inccode: test3.in
 
-Let us run that case again:
+Let us run that case again, with the original code <tt>rknbody1.rb</tt>:
 
  :commandoutput: ruby rknbody1a_driver.rb < test3.in
 
@@ -218,7 +218,7 @@ development is not to make programmers perfect, since that is impossible.
 Instead, the goal should be to make debugging easy enough, so that
 imperfect people can still converge to an almost-perfect code, when
 they try hard enough.  This in itself is already enough of a reason
-for using a language like Ruby, where the programming is not bogged
+for using a language like Ruby, where the programmers are not bogged
 down with trying to keep the compiler happy.  We can at least spend
 all of our energy on the debugging process itself, without worrying
 about declarations and type checking and all the other constraints

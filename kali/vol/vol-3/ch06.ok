@@ -117,7 +117,7 @@ If we can make the prototyping process easier and more transparent, that
 would already be a big gain.  I care less about elegance of the final
 version than I do about the intermediate test versions.
 
-*Bob*: Well, okay, but we shouldn't wait _too_ longing in checking the
+*Bob*: Well, okay, but we shouldn't wait _too_ long in checking the
 speed.  I would feel more comfortable if we had some hard-nosed proof
 that a Ruby-based N-body code can really compete with codes written in
 C or Fortran.  Meanwhile, I must admit, I do like the flexibility of Ruby.
@@ -132,7 +132,7 @@ does not invite that way of thinking.
 
 *Bob*: Quite convolved: for one thing, you would need to find a way to
 implement a form of dynamic loading!  C++ is a compiled language, not
-an interpret language like Ruby.
+an interpreted language like Ruby.
 
 *Alice*: Ah, yes, of course, I'm already beginning to forget what it
 means to work with compile cycles in prototyping code!

@@ -161,6 +161,12 @@ formulating plans, noticing problems, adjusting their aims, finding
 ways around stumbling blocks, in short, dealing with the joys and
 frustrations of every-day research.
 
+One of us (J.M.) first applied
+this approach in a short book called <i>Pasokon Butsuri Jitchi Shidou
+(Practical Computer Physics)</i> [1999, Kyouritsu Shuppan, Tokyo, Japan].
+Since we were both happy with the result, we decided to continue this
+style in the ACS series.
+
 We could of course have written a fictional dialogue between the two
 of us, distilling our experience of working together for much of our
 professional life: since 1988 we have been coauthors on some fifty
@@ -234,6 +240,26 @@ leading to far more robust and general code, but it will also require
 far more patience from the reader to get there.  This is one of the
 reasons that we decided to keep the MSA volume on our web site
 indefinitely, as additional introductory material.
+
+== Background
+
+The quickest way to obtain more background information about dense
+stellar systems is to consult the web site
+"http://www.manybody.org/modest.html" of the MODEST initiative (for
+<i>MOdeling DEnse STellar systems</i>).  There you
+can find out about its many workshops and working groups, as well as
+teaching activities, including N-body Schools where we regularly
+present the current ACS material.  You can also find literature references
+there, under working group 8.
+
+Two specific recent references, close to the material presented in the
+<i>Kali</i> series, are:
+
+* <i>Gravitational N-Body Simulations</i>, by Sverre Aarseth, 2003
+  [Cambridge University Press]
+
+* <i>The Gravitational Million-Body Problem</i>, by Douglas Heggie and 
+  Piet Hut, 2003 [Cambridge University Press]
 
 == Acknowledgments
 

@@ -9,9 +9,9 @@ dt_out = 2           # output interval
 dt_end = 2           # duration of the integration
 init_out = false     # initial output requested ?
 x_flag = false       # extra diagnostics requested ?
-#method = "forward"  # integration method
-#method = "leapfrog" # integration method
-#method = "rk2"      # integration method
+##method = "forward"  # integration method
+##method = "leapfrog" # integration method
+##method = "rk2"      # integration method
 method = "rk4"       # integration method
 
 STDERR.print "eps = ", eps, "\n",

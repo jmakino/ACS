@@ -112,15 +112,17 @@ content of their knowledge, but also the flavor and setting and
 ramifications.
 
 Of course, we realized that it would take a lot of our time, to write
-dialogues covering the whole process of software development.  In fact,
-we had no idea at all, in the beginning, of how much time this would
-actually take us.  The amount of essential but tacit knowledge hidden
-in the mind of any expert is enormous, typically far more than the
-expert is aware of.  However, our investments have borne fruit already,
-much more than we had expected.  Even in areas where we were convinced
-that we had all the necessary knowledge under our finger tips, as soon
-as we forced ourselves to be explicit about all the `hows' and `whys',
-we found ourselves discovering new aspects in the middle of our dialogue
+dialogues covering the whole process of software development.  In
+fact, we had no idea at all, in the beginning, of how much time this
+would actually take us.  The amount of essential but tacit knowledge
+hidden in the mind of any expert is enormous, typically far more than
+the expert is aware of, as emphasized already half a century ago by
+the physical chemist turned social scientist Michael Polanyi.
+
+Even in areas where we were convinced that we had all the
+necessary knowledge under our finger tips, as soon as we forced
+ourselves to be explicit about all the `hows' and `whys', we found
+ourselves discovering new aspects in the middle of our dialogue
 writing.  In quite a number of cases, we found new and better ways to
 do standard operations in N-body simulations, to our great surprise.
 

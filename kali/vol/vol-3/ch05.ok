@@ -173,7 +173,7 @@ it in one or more other places.
 
 *Bob*: But in many cases it could never hurt you.  In C++, for
 example, you normally declare all your functions, and specify the
-types of the arguments and the return values, in a different places
+types of the arguments and the return values, in different places
 from where you actually define those functions.  Now if you make a
 mistake, and provide conflicting information, the compiler will give
 you an error message.  So there is nothing that can go wrong there.
@@ -187,7 +187,7 @@ rapid prototyping.
 While violating the DRY principle may not always lead to likely
 errors, the consequences are equally bad that if it discourages free
 experimentation.  In that way you are likely to miss more optimal
-solution.  Missing out on more optimal solutions often enough in a
+solution.  Miss out on more optimal solutions often enough in a
 large software project, and you get an end product that can be very
 far from optimal, through the aggregate effect of all the suboptimal
 decisions you have made.
@@ -210,14 +210,14 @@ way soon, I guess it's up to us to see how our collaboration develops
 further.  As for me, I think our different attitudes have been
 balanced quite well, so far.
 
-*Bob*: I agree.  And I'm glad to take my recalcitrance with a sense of
+*Bob*: I agree.  And I'm glad you take my recalcitrance with a sense of
 humor, since I'm not likely to become `principled' any time soon!
 
 == Simplifying Further
 
 *Alice*: This discussion about the DRY principle started when I told
 you I was glad that the +initialize+ method no longer had to
-repeat what the <tt>simple_read</tt> read method also did, namely the
+repeat what the <tt>simple_read</tt> method also did, namely the
 initialization of the upward links from particles to N-body system,
 links that you have now removed.  However, I still see some repetition
 left in the the initialization method, of stuff that is already taken
@@ -248,7 +248,7 @@ time, before you internally assign values to the masses, positions and
 velocities of those bodies.
 
 *Alice*: Ah, yes, in that case these extra arguments would come in handy,
-I agree.  But so far yo have often made it clear to me that we should
+I agree.  But so far you have often made it clear to me that we should
 be demand-driven, and that we should not build in extra options for
 possible future use, unless we actually plan to use those pretty soon.
 

@@ -6,9 +6,9 @@ dt = 0.001           # time step
 dt_dia = 2.1088      # diagnostics printing interval
 dt_out = 2.1088      # output interval
 dt_end = 2.1088      # duration of the integration
-#method = "forward"  # integration method
-#method = "leapfrog" # integration method
-#method = "rk2"      # integration method
+##method = "forward"  # integration method
+##method = "leapfrog" # integration method
+##method = "rk2"      # integration method
 method = "rk4"       # integration method
 
 STDERR.print "dt = ", dt, "\n",
