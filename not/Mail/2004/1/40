@@ -1,0 +1,250 @@
+Date: Fri Jan 09 17:33:38 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Hi Jun:
+
+After our phone conversation, here is a new version of the outline for
+our book.
+
+               WRITING A SIMPLE N-BODY CODE
+
+Ch. 1: Dense Stellar Systems
+
+Alice and Bob meet each other.  Alice is 45, started out in particle
+physics, then worked on various astrophysical topics, including
+cosmology, and also has extensive experience in simulating dense
+stellar systems..  Bob is 35, just got tenure, and has worked on dense
+stellar systems modeling for most of his career, mostly stellar dynamics,
+but with some work in SPH.
+
+They talk about how the astrophysics of dense stellar systems is going
+to be a central topic for decades to come.  Cosmology, from the top
+down, is now able to resolve star cluster size masses, and in addition
+star formation is now the largest uncertainty in large scale structure
+simulations.  Star formation, from the bottom up, is now being modeled
+in the context of giant molecular clouds, and before long will be able
+to model the formation of reasonably large star clusters.  Besides
+forming the meeting ground of stellar astrophysics and cosmology,
+dense stellar systems include the most fascinating astrophysical
+environments, those that can be found around supermassive black holes
+in the nuclei of galaxies.
+
+They then lament the fact that many hundreds of astronomers are
+observing dense stellar systems, but that only a few dozen individuals
+are involved in modeling those systems.  They wonder what the reasons
+are.  They suggest the fact that cosmology has been the most fascinable
+topic; the fact that the elegance of equal-mass modeling ended in the
+late eighties when the mathematical physics of those systems were
+finally understood; the problem with kitchen-sink simulations that you
+are not sure what to believe of the outcome.
+
+Next, they discuss the state of the art of modeling dense stellar systems.
+They briefly look back at the history.  Alice talks about the late eighties,
+when she started her first work on dense stellar systems, after getting
+her PhD, using NBODY5, and later working with Kira.  Bob also has used
+NBODYx codes in his work, as well as Kira.
+
+Alice talks about how little modularity there is, and how difficult
+it will be to validate and modify the codes, two things that prior
+experience has taught her to be absolutely crucial.  Bob can see her
+point theoretically, but his experience has shown him, in contrast,
+that any clean idea will soon get dirty as soon as you start working
+on realistic applications.  They both think the other person is a bit
+unreasonable, but decide not to stress their points, and instead they
+continue to talk about what they have in common.
+
+They discuss the way in which (astro)physicists write code, how their
+education does not teach them anything about good style and approach.
+They swap anecdotes about stellar evolution codes that are unreadable
+and about a recent book by a well known hydro expert without even
+subroutines.  They also talk about stories they have heard from people
+in other areas of scientific modeling where people finally decided to
+rewrite legacy code, how it took a few years, but how that resulted in
+a much more flexible to build further software on.
+
+Ch. 2: Rapid Protyping
+
+In this context Alice mentions one extreme: the Sussman/Wisdom book,
+which appeals to them in many ways.  Bob vaguely has heard about Lisp,
+never about Scheme.  When Alison takes the book from her bookshelf,
+Bob is shocked by the parentheses.  Is this computer code, he asks.
+Alice talks a bit about it, but agrees that the isolation of Scheme
+may be too much.  They discuss Perl and Python as more practical
+compromises, better than C and C++ and Fortran, which Bob and Alice
+both have experience with, but which Alice has grown frustrated with.
+Bob doesn't mind either C++ or Fortran, but he does like the
+flexibility and power of quick expression of Perl and Python.
+
+Alison mentions a bold idea: would it be possible to write a N-body
+code in such a more flexible language?  Bob: anything is possible, you
+can do it in Basic or Awk if you want.  Alison presses her point, and
+Bob, more out of politeness than anything else, listens.  For the sake
+of curiosity, he asks her what she has in mind, mostly to show her how
+wrong she is.  After some more discussion he has to admit that the idea,
+while impractical, may not be as ridiculous as he first thought.
+Seeing it still as a game, he starts thinking out loud with Alice how
+they would do such a strange thing.
+
+Oscillating between Perl and Python, as the most realistic
+compromises, they are also afraid that a compromise may have the
+disadvantages of both sides, and they both feel that it would be
+better to have a single coherent vision that they can agree with.
+Coherence is better than committee decisions.  In short, they want a
+pragmatic approach.
+
+Just for fun, since they are sitting behind a terminal, they decide to
+type in "pragmatic programming", in the hope to find something there,
+more as a joke.  To their surprise they find the two books of two
+characters that call themselves the Pragmatic Programmers.  They
+browse through a few pages of their first book and like it a lot,
+since it really reflects their own experience.  Like Kernighan and
+Pike, but addressing more broadly the whole of software development,
+says Bob.  Like Knuth, very sensible, but a generation later, says
+Alice.
+
+Then they look at the second book, about Ruby.  Since they already
+thought about Perl and Python, they give it a closer look, and become
+convinced that this may be better than just a comprise.  They decide
+to give it a try.  After all, 90% of an N-body code takes less than 1%
+of the compute, so who cares about the speed of an interpreted language.
+It is flexibility and clarity and rapid prototyping and recycling that
+counts.  What to do first?  Get familiar with the language, and write
+something simple but actually useful, in order to see how it works out
+in practice; in other words, a pragmatic program.
+
+Alice suggests to write a constant time step leapfrog.  Bob laughs and
+says that he recognizes that Alice has also worked in cosmology.
+Alice counters that Bob's SPH experience must make him feel happy with
+leapfrog.  Bob says that, yes, for problems with softening that might
+not be too bad, but now they want to do stellar dynamics of stellar
+systems, and they should be able to handle point particles.  At the
+very least they need variable time steps, and much better even
+individual time steps.  He quotes the classic paper by Makino and Hut
+(1988), Performance Analysis of Direct N-Body Calculations, to make
+his point.  And by the way, when you get close encounters, the
+leapfrog sucks.  Fourth-order schemes are a must, and Hermite is the
+most elegant scheme.
+
+Alice agrees that something like NBODY1h would be a good idea, but she
+laughs at the idea of learning a whole new computer language by starting
+to write such a complicated code from scratch.  Shouldn't you first learn
+to do I/O and to write a simple class for individual particles and for
+the whole system?  Sure, says Bob, a bit annoyed that Alice seems to use
+her longer experience and seniority to push for what he thinks is an
+overly indirect and long-winded approach.  He is still not completely
+used to have tenure, and he automatically feels the tension between
+what he thinks is best and the need to be respectful to more senior
+professors.  But, Bob tries once more, once you write a leapfrog, it
+wouldn't take many more lines to write a Hermite code, right?  And
+to go from equal to variable time steps is also only a few more lines,
+basically having a time step criterion, which in an interpreted language
+is rather simple to add.  And even block time steps isn't that big of
+a deal, once you figure out what to do, something you pick up from
+other codes anyway.
+
+Alice has to admit that an equal-timestep leapfrog code will probably
+be more than half as long as an individual time step block time step
+code with Hermite.  But there is another argument, she adds.  The main
+reason to use an interpreted object-oriented language like ruby is to
+be able to rapidly switch between classes and methods, changing
+inheritance and mixins; all so much more easily than in C++.  So by
+providing both a leapfrog and a Hermite code, they can get valuable
+experience in switching between methods.  If they really get serious
+in writing a full-fledged dense stellar systems code, they surely will
+need to be able to switch methods, at some point.  And to get experience
+doing so early on will help them, first of all, to decide whether ruby
+is really the right language for the job, and secondly, if they go
+with ruby, they will then have the necessary experience to use ruby in
+a way that makes such method switching natural.
+
+Meanwhile, although defending her point of view eloquently, Alice is
+having her doubts too.  She knows how easy it is to waste time when
+trying to do something that is too elegant.  However, before she can
+say that, to her surprise Bob brings up a point in favor of starting
+with a leapfrog.  If they would start with a complete NBODY1h type
+code, he says, they would probably just translate such a code line by
+line into ruby.  That will probably work, but they run the risk that
+in that way they never really get a flavor of the language, and so
+will not be able to tap the real power of ruby.  That, for him, is a
+more important argument to start with the leapfrog.
+
+Alice has to laugh again, and tells Bob that she was just about to
+agree with him that starting with NBODY1h would not be such a bad
+idea after all, but that she must say that Bob's latest argument is
+certainly convincing too.  What she doesn't tell Bob is that she
+thinks it is funny that he could agree to her idea only after he
+came up with a different argument for it; even so, she appreciates his
+independence and critical attitude.  Bob, meanwhile, has to smile too,
+realizing that Alice is not as inflexible as he had thought, and
+reminding himself at the same time that he now has tenure, after all,
+and that there really is no reason not to push his own agenda and use
+his own judgement.
+
+Ch. 3: A Leapfrog in Ruby
+
+They then get seated in front of a terminal, and decide to get going,
+to write an equal time step leapfrog code.
+
+Start with the two obvious clasess, Body and Nbody, and finding out
+how to get data in and out of it: I/O.  Rather flexible, without types.
+
+In addition to having doors in a car, you need a steering wheel:
+Command Line arguments.  They are pleased that this has been provided
+already in the language.
+
+They then code up the leapfrog, and test that it is second-order accurate.
+
+During all this, they discuss how to divide the code over different files,
+whether or not to inherit classes to make new subclasses, whether or not
+to define modules, for mixin into classes.
+
+Ch. 4: Virial Equilibrium and Plotting 
+
+They explore how pgplot has been embedded in Ruby, play with a binary
+and triple, then add softening and set up a system in virial equilibrium:
+a constant density sphere with also constant density in velocity
+space, up to a cut-off velocity.  Such a system will settle into a
+potential-density pair in true dynamic equilibrium pretty soon,
+with hardly any escapers.
+
+Ch. 5: Speedup with C modules
+
+They move to Hermite.  They discuss the ease of switching between
+leapfrog and hermite.  They see again how much faster Hermite is, for
+the same energy error, but they also get really annoyed by the slow
+speed of ruby.  They had already noticed right away that ruby has set
+them back by ten to fifteen years, as far as speed is concerned.  They
+start experimenting with rewriting parts in C, and find a speedup of
+x10, x5, x4.
+
+Ch. 6: Block Time Steps
+
+They are now ready to implement individual time steps.  They argue
+about whether or not to use block time steps, something they will
+eventually need for parallel applications, from vector machines to
+Grapes to whatever.  They then realize that a real speedup of ruby
+with C modules would also require block time steps, because the C
+modules act as a type of software Grape.
+
+Ch. 7: Core Collapse
+
+Having a dense stellar systems code, they are curious whether they cal
+actually see the center piece of collisional stellar dynamics: core
+collapse.  They try 64 particles, are not quite sure, do 128, it becomes
+clearer, and then for 256 they are both convinced they see core collapse.
+In the process, they implement density measurements and Lagragian radii.
+Using the natural sorting methods in ruby, they write a script to make
+lagrangian radia visible on the command line.  They are pleased with
+how simple and natural it is to get that type of basic information
+out, something that is only indirectly visible in a plot.
+
+Ch. 8: Binaries
+
+In all cases, they notice how things get bad quickly once binaries form.
+They write a few simple binary diagnostics routine, and realize that
+the next thing to do is to provide at least some form of simple
+regularization.
+
+At this point: time to move on to the next book.
+
