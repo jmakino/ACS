@@ -176,41 +176,41 @@ So there.  It worked!
 
 == Assigning New Values
 
-  xxxx
+*Bob*: Now that you have successfully created and initialized a particle,
+I bet you would like to change some of its internal state.
 
-  xxxx
+*Alice*: If we are going to integrate the orbit of a particle, we'll
+certainly have to update its position and velocity.  But let me try
+first with the simplest case, the scalar value of the mass.  How about
+a bit of mass loss?
 
-  xxxx
+    irb(main):017:0> Body.@mass = 0.9
+    SyntaxError: compile error
+    (irb):17: syntax error
+    Body.@mass = 0.9
+              ^
+            from (irb):17
+            from ^C:0
 
+*Bob*: That's what you get for not reading the manual!  In Ruby, the
+internal variables of a class are all private.  There is no way that
+you can access them from outside, either for reading or for writing.
+If I would have designed a language, I wouldn't have been so strict,
+but that's the way it is.
 
-*B*: Let's try to getter and setter commands.
+*Alice*: I actually think that is a _very_ good feature of Ruby.  If
+you change some piece of code you or someone else has written a long
+time ago, it is good to have a clear protocol about how to access
+internal data.  A house has walls, an animal has a skin, a cell has
+a cell wall, and there are good reasons for that!
 
-    irb(main):004:0> c.mass
-    => 1
-    irb(main):005:0> c.pos[0]
-    => 0.5
-    irb(main):006:0> c.vel[1] = 0.8
-    => 0.8
-    irb(main):007:0> c.vel
-    => [0, 0.8, 0]
-    irb(main):008:0> 
+*Bob*: Rather than getting into a modularity argument again, the good
+news is that Ruby makes both of us happy: you have your encapsulation,
+and I can almost pretend that it wasn't there, since it is very easy
+to set up a mechanism to get around this cellular approach, with a
+very natural syntax.  Let me show you how to do this in the most
+straightforward way once, but then I'll move on to a much better
+shortcut.
 
-*A*: Well, that's simple and straightforward.  You can even use array
-notation, and everything works just like you would hope it would.
-
-*B*: I saw you hesitating when you typed line 6.  I would have
-thought you would type something like:
-
-    irb(main):006:0> c.vel = [0, 0.8, 0]
-    => [0, 0.8, 0]
-
-which would have given the same effect.
-
-*A*: Yes, you read my mind.  I had understood that "<tt>c.vel =</tt>"
-is parsed by Ruby as an assignment operator "<tt>vel=</tt>"
-associated with +c+ and frankly I did not expect that I could throw in
-the component selector "<tt>[1]</tt>" without complaints from the
-interpreter.
-
-*B*: but it did the right thing!  This must be what they mean when
-they say that Ruby is based on the principle of minimum surprise.
+In order to change the mass we have to add the following line to the
+class definition.
