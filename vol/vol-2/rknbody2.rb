@@ -30,8 +30,6 @@ class Body
     body_array.each do |b|
       unless b == self
         r = b.pos - @pos
-        r2 = r*r
-        r3 = r2*sqrt(r2)
         p += -@mass*b.mass/sqrt(r*r)
       end
     end

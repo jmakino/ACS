@@ -9,7 +9,7 @@ class Body
   end
 
   def acc
-    a = @pos*0                          # null vector of the correct length  #5
+    a = @pos*0                    # null vector of the correct length        #5
     @nb.body.each do |b|
       unless b == self                                                       #2
         r = b.pos - @pos                                                     #3
@@ -30,8 +30,6 @@ class Body
     @nb.body.each do |b|
       unless b == self
         r = b.pos - @pos
-        r2 = r*r
-        r3 = r2*sqrt(r2)
         p += -@mass*b.mass/sqrt(r*r)
       end
     end
@@ -104,7 +102,6 @@ class Nbody
     @body.each_index{|i| old_acc[i] = @body[i].acc}
     @body.each{|b| b.pos += b.vel*dt}
     @body.each_index{|i| @body[i].vel += old_acc[i]*dt}
-    @body.each{|b| b.vel += b.acc*dt}
   end
 
   def leapfrog(dt)
@@ -138,7 +135,7 @@ class Nbody
     @body.each_index{|i| a2[i] = @body[i].acc}
     @body.each_index{|i|
       @body[i].pos = old_pos[i] + @body[i].vel*dt +
-                        (a0[i]+a1[i]*2)*(1/6.0)*dt*dt}
+                                  (a0[i]+a1[i]*2)*(1/6.0)*dt*dt}
     @body.each_index{|i| @body[i].vel += (a0[i]+a1[i]*4+a2[i])*(1/6.0)*dt}
   end
 
@@ -161,7 +158,7 @@ class Nbody
   def write_diagnostics(nsteps)
     etot = ekin + epot
     STDERR.print <<END
-at time t = #{sprintf("%g", time)}:
+at time t = #{sprintf("%g", time)}, after #{nsteps} steps :
   E_kin = #{sprintf("%.3g", ekin)} ,\
  E_pot =  #{sprintf("%.3g", epot)},\
  E_tot = #{sprintf("%.3g", etot)}
