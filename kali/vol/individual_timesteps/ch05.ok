@@ -1,4 +1,4 @@
-= XXX
+= The <tt>World</tt> Class
 
 == Of Forests and Trees
 
@@ -17,7 +17,7 @@ this means starting at the end, or at least close to the end, with the
 
  : inccode:.world1.rb+World
 
-== xxx
+== Admittance
 
 *Alice*: We'd better start at the gate: at the very bottom of our code,
 we can see how we make our entrance:
@@ -76,8 +76,24 @@ and it then reads it in _as_ a +WorldSnapshot+ object.
 *Bob*: Ah yes, how clever we were, when we wrote that!  Almost too clever,
 I'm afraid.  But it does all seem to work.  Okay, so even in the case
 of a completely fresh Plummer model input file, the +elsif+ statement
-will evaluate as +true+.  Good.
+will evaluate as +true+.  Good.  In that case we create a new +World+
+object +w+, which we return so that it can be evolved.
 
+*Alice*: Yes, but before doing so, there is quite a bit of work done in
+the method <tt>setup_from_snapshot</tt>, more than in the +World+ case.
+
+*Bob*: The reason is that a +World+ object is already all set to go, since
+it came from a previous integration with the same code <tt>world1.rb</tt>.
+If we start from a general +NBody+ object, we'll have to do more book keeping.
+For example, we have to compute the initial energy.  You can see the call
+to <tt>startup_and_report_energy</tt>, a method of the +WorldEra+ class,
+in the middle of <tt>setup_from_snapshot</tt>.  In contrast, if we start
+from a +World+ object, we can safely assume that the initial energy value
+has already been stored there.
+
+== xxx
+
+*Alice*: I get the picture now.  
 
 
 
