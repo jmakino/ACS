@@ -345,8 +345,7 @@ class Worldera
     take_snapshot(t).write_diagnostics(initial_energy, x_flag)
   end
 
-  def read_initial_snapshot(dt_era)
-    ss = ACS_IO.acs_read(Worldsnapshot)
+  def setup_from_snapshot(ss, dt_era)
     @start_time = ss.time
     @end_time = @start_time + dt_era
     ss.body.each{|b| @worldline.push(Worldline.new(b.to_worldpoint, ss.time))}
@@ -366,24 +365,57 @@ class World
   TAG = "world"
 
   def evolve(c)
-    dt_max = c.dt_era * c.dt_max_param
-    if c.world_input_flag
-      @new_era = @era.next_era(c.dt_era)
+    while @era.start_time < @t_end
+      @new_era, dn = @era.evolve(c.dt_era, c.dt_param, @dt_max, c.shared_flag)
+      @nsteps += dn
+      @time = @era.end_time
+      while @t_dia <= @era.end_time and @t_dia <= @t_end
+        @era.write_diagnostics(@t_dia, @nsteps, @initial_energy, c.x_flag)
+        @t_dia += c.dt_dia
+      end
+      while @t_out <= @era.end_time and @t_out <= @t_end
+        output(c)
+        @t_out += c.dt_out
+      end
       @old_era = @era
       @era = @new_era
-    else
-      @nsteps = 0
-      @initial_energy = @era.startup_and_report_energy(c.dt_param, dt_max)
     end
-    time = @era.start_time
-    if c.world_input_flag
-      @t_end += c.dt_end
+  end
+
+  def output(c)
+    if c.world_output_flag
+      acs_write($stdout, false, c.precision, c.add_indent)
     else
-      @t_out = time + c.dt_out
-      @t_dia = time + c.dt_dia
-      @t_end = time + c.dt_end
+      @era.take_snapshot(@t_out).acs_write($stdout, true,
+                                           c.precision, c.add_indent)
     end
-    @era.write_diagnostics(time, @nsteps, @initial_energy, c.x_flag, true)
+  end
+
+  def setup_from_world(c)
+    @dt_max = c.dt_era * c.dt_max_param
+    @t_out += c.dt_out
+    @t_end += c.dt_end
+    init_output(c)
+    @new_era = @era.next_era(c.dt_era)
+    @old_era = @era
+    @era = @new_era
+  end
+
+  def setup_from_snapshot(ss, c)
+    @era = Worldera.new
+    @era.setup_from_snapshot(ss, c.dt_era)
+    @nsteps = 0
+    @dt_max = c.dt_era * c.dt_max_param
+    @initial_energy = @era.startup_and_report_energy(c.dt_param, @dt_max)
+    @time = @era.start_time
+    @t_out = @time + c.dt_out
+    @t_dia = @time + c.dt_dia
+    @t_end = @time + c.dt_end
+    init_output(c)
+  end
+
+  def init_output(c)
+    @era.write_diagnostics(@time, @nsteps, @initial_energy, c.x_flag, true)
     if c.init_out
       if c.world_output_flag
         acs_write($stdout, false, c.precision, c.add_indent)
@@ -392,28 +424,19 @@ class World
                                             c.precision, c.add_indent)
       end
     end
-    while @era.start_time < @t_end
-      @new_era, dn = @era.evolve(c.dt_era, c.dt_param, dt_max,
-                                 c.shared_flag)
-      @nsteps += dn
-      while @t_dia <= @era.end_time and @t_dia <= @t_end
-        @era.write_diagnostics(@t_dia, @nsteps, @initial_energy, c.x_flag)
-        @t_dia += c.dt_dia
-      end
-      while @t_out <= @era.end_time and @t_out <= @t_end
-        if c.world_output_flag
-          acs_write($stdout, false, c.precision, c.add_indent)
-        else
-#p @t_out
-#p @era.start_time
-#p @era.end_time
-          @era.take_snapshot(@t_out).acs_write($stdout, true,
-                                               c.precision, c.add_indent)
-        end
-        @t_out += c.dt_out
-      end
-      @old_era = @era
-      @era = @new_era
+  end
+
+  def World.admit(file, c)
+    object = acs_read([self, Worldsnapshot], file)
+    if object.class == self
+      object.setup_from_world(c)
+      return object
+    elsif object.class == Worldsnapshot
+      w = World.new
+      w.setup_from_snapshot(object, c) if object.class == Worldsnapshot
+      return w
+    else
+      raise "#{object.class} not recognized"
     end
   end
 
@@ -625,7 +648,7 @@ options_text= <<-END
       jerk (for the Hermite integrator)
 
 
-  Short name:		-q
+  Short name:		-r
   Long name:  		--world_output
   Value type:  		bool
   Variable name:	world_output_flag
@@ -636,17 +659,6 @@ options_text= <<-END
     such an world again will allow an fully (?) accurate restart of the
     integration,  since no information is lost in the process of writing
     out and reading in in terms of world format.
-
-
-  Short name:		-r
-  Long name:  		--world_input
-  Value type:  		bool
-  Variable name:	world_input_flag
-  Description:		World input format, instead of snapshot
-  Long description:
-    If this flag is set to true, input data should have the form of a
-    full world dump, instead of a snapshot (the default).  See also the
-    option --world_output
 
 
   Short name:		-a
@@ -689,10 +701,7 @@ options_text= <<-END
 
 clop = parse_command_line(options_text, true)
 
-if (clop.world_input_flag)
-  w = ACS_IO.acs_read(World)
-else
-  w = World.new
-  w.read_initial_snapshot(clop)
-end
-w.evolve(clop)
+#w = World.admit($stdin, clop)
+#w.evolve(clop)
+
+World.admit($stdin, clop).evolve(clop)

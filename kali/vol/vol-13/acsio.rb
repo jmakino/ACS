@@ -142,6 +142,11 @@ module ACS_IO
     contents
   end
 
+  def acs_read(array = [], file = $stdin)
+    array = [array] unless array.class == Array
+    ACS_IO.acs_read(array.push(self.class), file)
+  end
+
   def ACS_IO.acs_read(top_class = nil, file = $stdin)
     s = ACS_IO.read_acs_string(file)
     return nil if not s
@@ -150,8 +155,7 @@ module ACS_IO
     indent = ACS_IO.count_initial_blanks(first_line)
     top_class_name = first_line.strip
     if top_class
-      acceptable_class_name?(top_class_name, top_class)
-      tc = top_class.new
+      tc = acceptable_class_name(top_class_name, top_class).new
     else
       top_class_name = first_line.strip
       begin
@@ -164,13 +168,17 @@ module ACS_IO
     tc.acs_parse(a, indent)
   end
 
-  def acceptable_class_name?(class_name, class_request)
-    while class_request.to_s != class_name
-      class_request = class_request.superclass
-      unless class_request
-        raise "requested #{class_request.to_s} incompatible with #{class_name}"
+  def acceptable_class_name(class_name, class_request)
+    class_request = [class_request] if class_request.class != Array
+    class_request.each do |r|
+      r_init = r
+      while r
+        return r_init if r.to_s == class_name
+        r = r.superclass
       end
     end
+    separator = ", "
+    raise "#{class_name} not in [#{class_request.join(separator).to_s}]"
   end
 
   def ACS_IO.define_new_class(name)
