@@ -4,7 +4,7 @@
 
 == N-Body Simulations
 
-The current manuscript is Volume 1 in a series of books titled <i>The
+The current manuscript is Volume 1a in a series of books titled <i>The
 Kali Code</i>, which in turn is part of a larger series, under the
 name <i>The Art of Computational Science (ACS)</i>.  We refer to the
 preface of Volume 0 for more background concerning both series.
@@ -21,9 +21,9 @@ integration scheme we use here is the forward Euler scheme.  While of
 little practical use, its extreme simplicity makes it a useful toy
 algorithm to illustrate some of the general issues involved in
 building N-body codes.  Various additional algorithms, such as the
-leapfrog, and a few Runge-Kutta methods, will be discussed in Volume 2,
+leapfrog, and a few Runge-Kutta methods, will be discussed in Volume 1b,
 also within the context of the 2-body problem.  The general N-body
-problem will be addressed in Volume 3.
+problem will be addressed in Volume 2.
 
 == Ruby
 
@@ -106,4 +106,4 @@ Michele Trenti for their comments on the manuscript.
 
 Piet Hut and Jun Makino
 
-Kyoto, June 2004
+Kyoto, July 2004
