@@ -23,4 +23,4 @@ that we just wrote.  But let us first write the input method, so that we
 can see what form this blind data handling will take.  What have you
 written so far?
 
-*Bob*: 
+*Bob*: I started with a file <tt>iobody2.rb</tt>, 

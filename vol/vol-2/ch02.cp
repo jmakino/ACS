@@ -23,7 +23,7 @@ it anymore.  From then on we will work on <tt>iobody2.rb</tt>, and so on.
 *Bob*: So here is our starting point, a copy of what we did before, which
 we can call <tt>iobody0.rb</tt>:
 
- :inccode: init_iobody.rb
+ :inccode: iobody0.rb
 
 == A Single Write Method
 
@@ -79,9 +79,9 @@ the numbers of digits of precision, we may as well allow them to specify
 the incremental indentation between the <tt>begin particle</tt> line
 and the subsequent lines.  How about something like
 
-  def to_s(precision = 16, base_indentation = 0, additional_indentation = 2)
-  . . .
-  end
+ :include: .iobody1.rb-to_s_def
+   . . .
+   end
 
 *Alice*: Good.  That makes it clear that we intend to give 16 digits of
 precision by default, enough to cover double-precision notation.  You're
@@ -89,9 +89,10 @@ quick at figuring out how to implement this, why don't you fill in the dots?
 
 == Writing <tt>to_s</tt>
 
-*Bob*: How about this?
+*Bob*: How about this?  As we discussed, I've put this now in file
+<tt>iobody1.rb</tt>:
 
- :inccode: .iobody.rb+to_s
+ :inccode: .iobody1.rb+to_s
 
 *Alice*: I see that you return the string with all the output information
 in the last logical line, which is actually wrapped over the last five
@@ -108,23 +109,28 @@ convenience in other languages.  But you're right, it does look very natural.
 *Bob*: I then have to provide the main tag +particle+, which I have encoded
 as a +Body+ class constant, by adding the following line to the +Body+ class:
 
- :inccode: .iobody.rb-tag
+ :inccode: .iobody1.rb-tag
 
 The rest of the tag, in our example <tt>star giant AGB</tt>, which I call
 the type, in our case the type of particle, I assume will be stored in
 an instance variable <tt>@type</tt>.  By default, when you create a
-vanilla flavor +Body+ instance, there is not extra type information,
+vanilla flavor +Body+ instance, there is no extra type information,
 so I have added the following line to the +initialize+ method:
 
- :inccode: .iobody.rb-type
+ :inccode: .iobody1.rb-type
+
+and I added <tt>@type</tt> to the list of accessor macros:
+
+ :inccode: .iobody1.rb-type_acc
 
 If a type is specified, then the string <tt>@type</tt> is inserted after
 the string +TAG+, with a space in between, as you can see in the +if+ clause;
 the +else+ clause does not add anything.
 
-*Alice*: I must admit, that first line is a bit confusing, but I guess I
-can make sense of it.  What appears to the right of the <tt>=</tt> sign
-is a normal if-else construction, but without the usual indentation.
+*Alice*: I must admit, that first line in <tt>to_s</tt> is a bit confusing,
+but I guess I can make sense of it.  What appears to the right of the
+<tt>=</tt> sign is a normal if-else construction, but without the
+usual indentation.
 
 *Bob*: Yes, it seemed a bit wastful of space to use five lines for what
 can be easily written in half a line.  But note that I added the word
@@ -162,7 +168,7 @@ A nice example of top-down programming!
 *Bob*: The real work is actually very simple, since we've done it already
 in our previous version.  Here is the first method:
 
- :inccode: .iobody.rb+f_to_s
+ :inccode: .iobody1.rb+f_to_s
 
 *Alice*: So I guess +f+ stands for floating-point format, and <tt>f_to_s</tt>
 indicates a conversion from a floating point number to a string.  That makes
@@ -180,7 +186,7 @@ as well.  I like it.
 
 *Bob*: Here is the second method:
 
- :inccode: .iobody.rb+f_v_to_s
+ :inccode: .iobody1.rb+f_v_to_s
 
 *Alice*: I see.  Earlier we have used a <tt>to_v</tt> method as an extra
 method for the class +Array+, which is in fact a type of a-to-v method,
@@ -205,7 +211,7 @@ to add that we are doing an extra conversion.  You can also look at the
 <tt>simple_read</tt> input method that we defined before.  The position,
 for example, was read in as follows:
 
- :inccode: .init_iobody.rb-pos_f_v
+ :inccode: .iobody0.rb-pos_f_v
 
 So you see, from that point of view it is natural to make a
 combination like <tt>to_f_v</tt>, as we will undoubtedly do later on
@@ -225,7 +231,7 @@ important, so let's do it your way.
 *Alice*: We still need a method to do the actual output.
 Let me try something.  How about this:
 
- :inccode: .iobody.rb+write
+ :inccode: .iobody1.rb+write
 
 *Bob*: Yes, that should work.  By default this will print to the standard
 output, and if you provide a file name, the output will be stored in that
@@ -234,7 +240,7 @@ file.
 *Alice*: Let's test it.  Here is a test file <tt>test.rb</tt>
 
  :commandinput: cat > test.rb END
-require "iobody.rb"
+require "iobody1.rb"
 
 b = Body.new(1, [2,3], [4.5, 6.7])
 b.write
@@ -251,7 +257,7 @@ order of the arguments to +write+, this means that we now have to
 explicitly supply the file name +stdout+:
 
  :commandinput: cat > test.rb END
-require "iobody.rb"
+require "iobody1.rb"
 
 b = Body.new(1, [2,3], [4.5, 6.7])
 b.write($stdout, 4)
@@ -266,7 +272,7 @@ Let's test it:
 *Alice*: Just what it should be.  Let's see whether the indentation works:
 
  :commandinput: cat > test.rb END
-require "iobody.rb"
+require "iobody1.rb"
 
 b = Body.new(1, [2,3], [4.5, 6.7])
 b.write($stdout, 4, 16, 4)
@@ -278,3 +284,12 @@ END
 
 *Bob*: Perfect.  I think we've done enough writing now.  Time to start
 reading in our new data format!
+
+*Alice*: I agree.  But just to see the whole landscape,
+can you show me what the file <tt>iobody1.rb</tt> looks like now?
+
+== The File <tt>iobody1.rb</tt>
+
+*Bob*: My pleasure:
+
+ :inccode: iobody1.rb
