@@ -6,8 +6,7 @@ class WorldPoint < Body
 
   attr_accessor :acc, :jerk, :snap, :crackle,
                 :time, :next_time, :nsteps,
-                :minstep, :maxstep,
-                :body_id
+                :minstep, :maxstep
 
   def initialize
     @nsteps = 0
@@ -488,16 +487,12 @@ class WorldLine
   def take_snapshot_of_worldline(time)
     if time >= @worldpoint.last.time
       valid_extrapolation?(time)
-      wp = @worldpoint.last.extrapolate(time, @method)
-      wp.body_id = @body_id
-      wp
+      @worldpoint.last.extrapolate(time, @method)
     else
       valid_interpolation?(time)
       @worldpoint.each_index do |i|
         if @worldpoint[i].time > time
-          wp = @worldpoint[i-1].interpolate(@worldpoint[i], time, @method)
-          wp.body_id = @body_id
-          return wp
+          return @worldpoint[i-1].interpolate(@worldpoint[i], time, @method)
         end
       end
     end
@@ -520,7 +515,7 @@ class WorldLine
   end
 
   def setup_from_single_worldpoint(b, method, dt_param, time)
-    @worldpoint[0], @body_id = b.to_worldpoint
+    @worldpoint[0] = b.to_worldpoint
     @method = method
     @dt_param = dt_param
     if eval("defined? #{@method}_number_of_steps")
@@ -854,7 +849,7 @@ class Body
 
   def to_worldpoint
     wp = WorldPoint.new
-    [wp.restore_contents(self), @body_id]
+    wp.restore_contents(self)
   end
 
 end
@@ -954,6 +949,22 @@ options_text= <<-END
     The snapshot contains the mass, position, and velocity values
     for all particles in an N-body system.
 
+    The program expects input of a single snapshot of an N-body
+    system, in the following format: the number of particles in the
+    snapshot n; the time t; mass mi, position ri and velocity vi for
+    each particle i, with position and velocity given through their
+    three Cartesian coordinates, divided over separate lines as
+    follows:
+
+                  n
+                  t
+                  m1 r1_x r1_y r1_z v1_x v1_y v1_z
+                  m2 r2_x r2_y r2_z v2_x v2_y v2_z
+                  ...
+                  mn rn_x rn_y rn_z vn_x vn_y vn_z
+
+    Output of each snapshot is written according to the same format.
+
 
   Short name: 		-t
   Long name:		--time_period
@@ -1031,5 +1042,8 @@ options_text= <<-END
   END
 
 clop = parse_command_line(options_text, true)
+
+#w = World.admit($stdin, clop)
+#w.evolve(clop)
 
 World.admit($stdin, clop).evolve(clop)
