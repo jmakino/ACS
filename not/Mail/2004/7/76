@@ -1,0 +1,28 @@
+Date: Tue Jul 13 09:36:52 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > > > 1) long web names run off the page now in TeX, and since some web
+ > > >    names can be veeeeery long, this may be a problem.
+ > > 
+ > > Ya. One possibility is to put URL into footnote, but even with this
+ > > very long name can still cause problem. However, if we put this to
+ > > footnote, it is relatively easy to cut long URLs to several parts.
+ > 
+ > Good idea!
+
+Okay, I'll try it.
+
+ > With me, only the "Up" is clickable, none of the others; this is the
+ > case both on top and on the bottom.  The normal chapters work fine;
+ > there all eight are clickable (four on top; four on the bottom).
+ > I wonder whether my systems is set up different from yours, in some
+ > way, with respect to acsdoc?
+
+Hmm, could you try "make clean" and then "make" at vol-0? It could be
+that something left out from previous build do something strange...
+
+Jun
+
