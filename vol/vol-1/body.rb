@@ -1,70 +1,31 @@
-#<i> Body models a single particle in an N-body system </i>
-
-#:segment start: barebones
 class Body
-
-  NDIM = 3
 
   attr_accessor :mass, :pos, :vel
 
   def initialize(mass = 0, pos = [0,0,0], vel = [0,0,0])
     @mass, @pos, @vel = mass, pos, vel
   end
-#
-#end
-#:segment end:
 
-#:segment start: to_s
   def to_s
     "  mass = " + @mass.to_s + "\n" +
     "   pos = " + @pos.join(", ") + "\n" +
     "   vel = " + @vel.join(", ") + "\n"
   end
-#:segment end:
 
-#:segment start: pp
-  def pp            # pretty print
+  def pp               # pretty print
     print to_s
   end
-#:segment end:
 
-#:segment start: simple-IO
   def simple_print
-    printf("%22.15e\n", @mass)
-    @pos.each do |x| printf("%23.15e", x) end
-    print "\n"
-    @vel.each do |x| printf("%23.15e", x) end
-    print "\n"
+    printf("%24.16e\n", @mass)
+    @pos.each { |x| printf("%24.16e", x) } ; print "\n"
+    @vel.each { |x| printf("%24.16e", x) } ; print "\n"
   end
 
   def simple_read
     @mass = gets.to_f
-    s = gets
-    a = s.split
-    a.collect! { |x| x.to_f }
-    @pos = a[0...NDIM]
-    s = gets
-    a = s.split
-    a.collect! { |x| x.to_f }
-    @vel = a[0...NDIM]
-  end
-#:segment end:
-
-  def simple_fprint(file_name)
-    file_name.printf("%22.15e\n", @mass)
-    @pos.each do |x| file_name.printf("%23.15e", x) end
-    file_name.print "\n"
-    @vel.each do |x| file_name.printf("%23.15e", x) end
-    file_name.print "\n"
+    @pos = gets.split.map { |x| x.to_f }
+    @vel = gets.split.map { |x| x.to_f }
   end
 
-  def simple_fread(file_name)
-    @mass = file_name.gets
-    s = file_name.gets
-    a = s.split
-    @pos = a[0...NDIM]
-    s = file_name.gets
-    a = s.split
-    @vel = a[0...NDIM]
-  end
 end
