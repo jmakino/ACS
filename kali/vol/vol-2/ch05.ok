@@ -2,3 +2,57 @@
 
 [to be written]
 
+ :commandoutput: ruby integrator_driver2g.rb < euler.in
+
+
+
+
+at ~/acs, give the command:  "make newversion".  It first tries to
+make all the documents.  Then it asks for the version number; you can
+just say "tmp" or whatever.  Than it creates an archive with that name
+in the "rel" directory, and then it asks you whether you want to
+update that to the web site, and you say "no".  [Jun will make a local
+version soonish]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ :commandoutput: ruby integrator_driver2k.rb < euler.in
+
+ :commandoutput: ruby integrator_driver2l.rb < euler.in
+
+ :commandoutput: ruby integrator_driver2m.rb < euler.in
+
+ :commandoutput: ruby integrator_driver2n.rb < euler.in
+
+
+
+
+
+
+
+ :commandoutput: ruby integrator_driver2o.rb < euler.in
+
+ :commandoutput: ruby integrator_driver2p.rb < euler.in
+
+
