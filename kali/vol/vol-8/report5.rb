@@ -5,7 +5,9 @@
 # information about the potential with Dehnen's softening and we 
 # compute the distribution function f(E).
 # 
+# example:
 # 
+# ruby mkplummer3.rb -s1 -n 128 | nbody_sh1 -t 50 -e 5 -o 50 | ruby report5.rb
 # 
 
 require "vector.rb"
@@ -67,7 +69,8 @@ end
 class Nbody
 
   attr_accessor :time, :body, :index, :com, :cod, :eps, :r_c, :n_c,
-                :energy_array, :epsilon_array, :energy_smoothing_number, :zeta
+                :energy_array, :epsilon_array, :energy_smoothing_number, :zeta,
+                :phi0
 
   def initialize
     @body = []
@@ -367,8 +370,11 @@ class Nbody
   def setup_f_of_e_helpers(zeta)
     @zeta = zeta
     @energy_smoothing_number = 4                # default
+    @phi0 = phi(0)
     setup_energy_array
     setup_epsilon_array
+    shrink_out_of_boundary_kernels
+#    shift_out_of_boundary_kernels
   end
 
   def setup_energy_array
@@ -384,6 +390,36 @@ class Nbody
     @energy_array.each_index do |i|
       @epsilon_array[i] = find_eta(i)
       @epsilon_array[i] = @zeta if @epsilon_array[i] < @zeta
+    end
+  end
+
+
+# shrink the support of the kernel for particles close to the boundary
+  def shrink_out_of_boundary_kernels
+    @body.each_index do |i|
+      if @energy_array[i] - @epsilon_array[i] < @phi0
+	@epsilon_array[i] = @energy_array[i] - @phi0	
+      end
+      if @energy_array[i] + @epsilon_array[i] > 0
+	@epsilon_array[i] = -@energy_array[i]
+      end
+    end
+  end
+
+# shift the particles close to the boundary
+# it is not working properly for small particle number since the support of the
+# kernel can be grater than |\Phi(0)|
+  def shift_out_of_boundary_kernels
+    @body.each_index do |i|
+      if @energy_array[i] - @epsilon_array[i] < @phi0
+	STDERR.print "Warning1: ",i," ",-@phi0 + @energy_array[i] - @epsilon_array[i] , "\n"
+	@energy_array[i] = @epsilon_array[i] + @phi0	
+      end
+      if @energy_array[i] + @epsilon_array[i] > 0
+	STDERR.print "Warning2: ",i, " ",@energy_array[i] + @epsilon_array[i]
+	STDERR.print " ",@epsilon_array[i],  "\n"
+	@energy_array[i] = - @epsilon_array[i]
+      end
     end
   end
 
@@ -412,6 +448,7 @@ class Nbody
     for i in low..high
       result += n_of_E_contribution(i, energy)
     end
+ #   STDERR.print "number of contributions = ", high-low, " for E = ", energy, "\n"
     result/(@body.size).to_f
   end
   
@@ -616,23 +653,25 @@ include Math
 nb = Nbody.new
 nb.simple_read
 nb.setup
-nb.write_report
+#nb.write_report
   
-nb.setup_f_of_e_helpers(0.01)
+#r = 0.0001
+#pot = nb.phi(r)
+#print r, "  ", pot, "\n"
+#for i in 1..50
+#  r = i/5.0
+#  pot = nb.phi(r)
+#  print r, "  pot = ", pot, " ; N(pot) = ", nb.n_of_E(pot), "\n"
+#end
 
-r = 0.0001
-pot = nb.phi(r)
-print r, "  ", pot, "\n"
-for i in 1..50
-  r = i/5.0
-  pot = nb.phi(r)
-  print r, "  pot = ", pot, " ; N(pot) = ", nb.n_of_E(pot), "\n"
-end
+#print "r_c = ", nb.r_c, "\n"
+#print "n_c = ", nb.n_c, "\n"
 
-print "r_c = ", nb.r_c, "\n"
-print "n_c = ", nb.n_c, "\n"
 
-for i in 1..32
+nb.setup_f_of_e_helpers(0.05)
+for i in 1..33
   en = -1.7+i*0.05
-  print en, " ",nb.f_of_E(en), "\n"
+  print en, " ",nb.f_of_E(en), " ",nb.n_of_E(en)," ",nb.omega(en), "\n"
 end
+
+nb.write_report
