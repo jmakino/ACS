@@ -98,4 +98,108 @@ older ones:
 *Alice*: And so it does.  Good!  I think we can stick with this version
 as our work horse, for a while at least.
 
-== xxx
+== More Information
+
+*Bob*: There is one improvement I would like to add.  Remember when we were
+debugging our code and we were analyzing a single time step, trying to figure
+out whether the position and velocity were updated correctly?
+
+*Alice*: Yes, that was a simple situation, in the case of the forward Euler
+algorithm, and we could analytically calculate the acceleration.
+
+*Bob*: Of course, in general we can't be so lucky, and I would prefer
+to have an easy way to ask for an output of the acceleration as well.
+Ah, come to think of it, we have this pretty print output version,
+that we wrote long ago, but that never used since.  Here it is:
+
+ :inccode: .rknbody7.rb+pp+Nbody
+
+All it does is invoke the pretty print version for each particle:
+
+ :inccode: .rknbody7.rb+pp+Body
+
+which does nothing else put print the +Body+ instance in its standard
+string form:
+
+ :inccode: .rknbody7.rb+to_s
+
+Well, let us just add an extra line for the acceleration.  Since
+pretty print became +pp+, a pretty print with extras should be called
+a +ppx+:
+
+ :inccode: .rknbody8.rb+ppx+Body
+
+*Alice*: That makes a lot of sense.  You choose the standard error
+output stream +STDERR+ because you don't want this extra debugging
+information to be mixed up with the particle output snapshot, which
+is written on the default standard output stream, and which can be
+piped into another program.
+
+And of course, you have to give +ppx+ a parameter, namely the array of
+all the particles in the N-body system, otherwise our particle cannot
+compute the acceleration that it receives from all other particles.
+Let's see.  This means that +ppx+ on the +Body+ level must be invoked
+from the +Nbody+ as:
+
+ :inccode: .rknbody8.rb+ppx+Nbody
+
+== An Initial Snapshot Output
+
+*Bob*: Indeed.  Now what else is there left to do?  We don't want to
+have this extra information all the time, since it would clutter up
+the output.  Let us introduce a special flag, <tt>x_flag</tt>, a
+boolean variable that will be set to `true' if the extra output is
+desired, and set to `false' when we don't need it.
+
+This means that the method that writes the diagnostics will now get
+<tt>x_flag</tt> as a second parameter, and a few extra lines at the
+end, to invoke +ppx+ if the flag is set to be `true':
+
+ :inccode: .rknbody8.rb+write_diagnostics
+
+*Alice*: Now that we are adding features, I would like to have the
+option to echo the initial snapshot, the data file that is read in
+before any integration step is taken.  I know that I can always read
+that information myself from the input file, but sometimes it is nice
+to have it right in front of you, together with the other data,
+
+*Bob*: Yes, especially when are debugging and you want to take a
+single time step.  Okay, let us introduce a second flag <tt>init_out</tt>.
+If the value of this flag is `true', we will require an initial output,
+in the form of a snapshot on the standard output stream.  If the value is
+`false', we skip the initial output.
+
+We can implement the effects of both flags, <tt>x_flag</tt> and
+<tt>init_out</tt>, by passing them as additional parameters to
++evolve+.  The modifications to the body of this method are then very
+minor.  We only have to change three lines.  First, the two calls to
+<tt>write_diagnostics</tt> acquire <tt>x_flag</tt> as extra
+parameter, as we have already seen.  Second, we add an extra line
+
+ :include: .rknbody8.rb-1
+
+just before we start the +while+ loop.  The new version of the +evolve+
+method thus becomes:
+
+ :inccode: .rknbody8.rb+evolve
+
+== A New Driver
+
+*Alice*: Let's make the necessary changes in the driver file as well:
+
+ :inccode: .rknbody8a_driver.rb
+
+== A Final Test
+
+*Bob*: All very straightforward indeed: at the end the two extra parameters
+for +evolve+, and above the introduction of the two flags in analogy with
+the other parameters.  Let's test it out, to see whether we still get
+the same results for our figure out orbit:
+
+ :commandoutput: ruby rknbody7a_driver.rb < figure8.in
+
+*Alice*: All is well, clearly.  Good!  So now we have a version of the code
+that is both lean and easy to read on the level of the integrators,
+and has extra debugging options.  Progress!.
+
+

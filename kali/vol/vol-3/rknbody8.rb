@@ -53,7 +53,7 @@ class Body
   end
 
   def ppx(body_array)              # pretty print, with extra information (acc)
-    print to_s + "   acc = " + acc(body_array).join(", ") + "\n"
+    STDERR.print to_s + "   acc = " + acc(body_array).join(", ") + "\n"
   end
 
   def simple_print
@@ -91,7 +91,7 @@ class Nbody
     t_out = dt_out - 0.5*dt
     t_end = dt_end - 0.5*dt
 
-    simple_print if init_out
+    simple_print if init_out                                                 #1
 
     while @time < t_end
       send(integration_method)

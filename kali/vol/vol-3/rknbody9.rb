@@ -54,7 +54,7 @@ class Body
   end
 
   def ppx(body_array, eps)         # pretty print, with extra information (acc)
-    print to_s + "   acc = " + acc(body_array, eps).join(", ") + "\n"
+    STDERR.print to_s + "   acc = " + acc(body_array, eps).join(", ") + "\n"
   end
 
   def simple_print
