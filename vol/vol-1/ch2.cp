@@ -84,18 +84,22 @@ system.  How about:
 *B*: This is only the class definition.  Let's see whether we can do a
 little bit of useful work, by adding the following lines
 
- :inccode: .body-init-demo.rb-demo
+ :inccode: .body-init-demo1.rb-demo
 
+*B*: Now let's run it:
 
-    |gravity> irb -r body01.rb
-    irb(main):001:0> b = Body.new
-     => #<Body:0x401c7e7c @mass=0, @vel=[0, 0, 0], @pos=[0, 0, 0]>
-    irb(main):002:0>
+ :output: ruby body-init-demo1.rb
 
-*A*: So far so good.  The interpreter echoes the value of the object
-+b+ that is created.  The first number +0x401c7e7c+ must be the id or
+*A*: So far so good.  The +p+ command just dumps the value of the object
++b+ that is created.  The first number after <tt>Body:</tt> must be the id or
 identifier, the unique name of that particular object for Ruby.  Let
 me try to assign values other than the default zeroes:
+
+ :inccode: .body-init-demo.rb-demo
+
+*B*: Now let's run it:
+
+ :output: ruby body-init-demo.rb
 
     irb(main):002:0> c = Body.new(1, 0.5, 0, 0, 0, 0.7, 0)
     ArgumentError: wrong # of arguments(7 for 3)</tt>
