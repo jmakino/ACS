@@ -1,0 +1,10 @@
+= Wikib?
+
+One question would be whether or now to use some Web-based
+documentation system, such as Wiki or Hiki.
+
+One merit of Wiki-type system is that it offers quite extensive
+support for cross-referencing, which current rdoc seem to lack.
+
+To be precise, it is certainly possible to enbed any URL, but it is
+not supported to enbed any name tag. 
