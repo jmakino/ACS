@@ -672,7 +672,7 @@ options_text= <<-END
   Long name:            --precision
   Value type:           int
   Default value:        16
-  Description:          floating point precision
+  Description:          Floating point precision
   Variable name:        precision
   Long description:
     The precision with which floating point numbers are printed in the output.
@@ -683,7 +683,7 @@ options_text= <<-END
   Long name:            --indentation
   Value type:           int
   Default value:        2
-  Description:          incremental indentation
+  Description:          Incremental indentation
   Variable name:        add_indent
   Long description:
     This option allows the user to set the incremental indentation, i.e.
