@@ -1,11 +1,5 @@
 #!/usr/local/bin/ruby -w
 
-def acsp(s)
-  
-
-  STDERR.print "#{s} = #{eval(s)}\n"
-end
-
 require "kali/nbody.rb"
 
 module Integrator_force_default
@@ -828,11 +822,37 @@ class Worldline
     [ p.mass*r/r3 , p.mass*(v-3*(r*v/r2)*r)/r3 ]
   end
 
-  def prune(k)
+  def t_at_or_after(t)
+    @worldpoint.each do |p|
+      return p.time if p.time >= t
+    end
+    return nil
+  end
+
+  def census(t_start, t, t_overshoot)
+    n = ([0]*5).to_v
+    @worldpoint.each do |p|
+      pt = p.time
+      if p.nsteps > 0
+        case
+        when pt < t_start      : n[0] = p.nsteps
+        when pt == t_start     : n[1] += 1
+        when pt < t            : n[2] += 1
+        when pt == t           : n[3] += 1
+        when pt <= t_overshoot : n[4] += 1
+        end
+      end
+    end
+    n
+  end
+
+  def prune(k, t_start, t_end)
     new_worldpoint = []      # protect the original; not yet cleanly modular
-    @worldpoint.each_index do |i|
-      if i%k == 0 or i == @worldpoint.size - 1
-        new_worldpoint.push(@worldpoint[i])
+    @worldpoint.each do |wp|
+      if (wp.nsteps == 0 or t_start < wp.time) and wp.time <= t_end
+        if wp.nsteps%k == 0
+          new_worldpoint.push(wp)
+        end
       end
     end
     @worldpoint = new_worldpoint
@@ -981,21 +1001,18 @@ class Worldera
   end
 
   def evolve(dt_era, dt_max, shared_flag)
-    nsteps = 0
     while wordline_with_minimum_interpolation.worldpoint.last.time < @end_time
       unless shared_flag
         wordline_with_minimum_extrapolation.grow(self, dt_max)
-        nsteps += 1
       else
         t = wordline_with_minimum_extrapolation.worldpoint.last.next_time
         @worldline.each do |w|
           w.worldpoint.last.next_time = t
           w.grow(self, dt_era)
-          nsteps += 1
         end
       end
     end
-    [next_era(dt_era), nsteps]
+    next_era(dt_era)
   end
 
   def next_era(dt_era)
@@ -1009,21 +1026,14 @@ class Worldera
   end
 
   def census(t = @end_time)
-    t_overshoot = t
-    @worldline.each do |w|
-      t_overshoot = [t_overshoot, w.first_time_after(t)].max
-    end
-    n_steps = [0,0,0,0,0].to_v
-    @worldline.each do |w|
-      n_steps += w.census(@begin_time, t, t_overshoot)
-    end
-    n_steps
+    tmax = @worldline.map{|w| w.t_at_or_after(t)}.inject{|tt, tm| [tt,tm].max}
+    @worldline.map{|w| w.census(@start_time, t, tmax)}.inject{|n, dn| n+dn}
   end
 
   def prune(k)
     new_worldline = []      # protect the original; not yet cleanly modular
     @worldline.each do |w|
-      new_worldline.push(w.prune(k))
+      new_worldline.push(w.prune(k, @start_time, @end_time))
     end
     @worldline = new_worldline
     self
@@ -1043,14 +1053,11 @@ class Worldera
     ws
   end
 
-  def write_diagnostics(t, nsteps, initial_energy, init_flag = false)
+  def write_diagnostics(t, initial_energy)
     STDERR.print "at time t = #{sprintf("%g", t)} "
-    STDERR.print "(from interpolation after #{nsteps} steps "
-    if init_flag
-      STDERR.print "to time #{sprintf("%g", @start_time)}):\n"
-    else
-      STDERR.print "to time #{sprintf("%g", @end_time)}):\n"
-    end
+    cen = census(t)
+    STDERR.print "(after #{cen[0..2].inject{|n,dn|n+dn}}, "
+    STDERR.print "#{cen[3]}, #{cen[4]} steps <,=,> t}"
     take_snapshot(t).write_diagnostics(initial_energy)
   end
 end
@@ -1058,59 +1065,50 @@ end
 module Output
 
   def diagnostics_and_output(c)
-    t_target = set_target(false)
-    diagnostics(t_target, c.dt_dia, false)
+    t_target = [@t_end, @era.end_time].min
+    diagnostics(t_target, c.dt_dia)
     output(c, t_target, false)
   end
 
   def initial_diagnostics_and_output(c)
-    t_target = set_target(true)
-    diagnostics(t_target, c.dt_dia, true)
+    t_target = @time
+    diagnostics(t_target, c.dt_dia)
     output(c, t_target, true)
   end
 
-  def set_target(init)
-    if init
-      @time
-    elsif @t_end < @era.end_time
-      @t_end
-    else
-      @era.end_time
-    end
-  end
-
-  def diagnostics(t_target, dt_dia, init)
+  def diagnostics(t_target, dt_dia)
     while @t_dia <= t_target
-      @era.write_diagnostics(@t_dia, @nsteps, @initial_energy, init)
+      @era.write_diagnostics(@t_dia, @initial_energy)
       @t_dia += dt_dia
     end
   end
 
-#  def output(c, t_target, initial_output)
-#    if (k = c.async_output_interval) > 0 and not initial_output
-#      do_pruned_dump
-#    else
-#      do_timed_output
-#    end
-#  end
-
   def output(c, t_target, initial_output)
-    if (k = c.async_output_interval) > 0 and not initial_output
-      @era.clone.prune(k).acs_write($stdout, false, c.precision, c.add_indent)
-    elsif c.dump_flag and not initial_output
-      @era.acs_write($stdout, false, c.precision, c.add_indent)
+    if (k = c.prune_factor) > 0
+      pruned_dump(c, initial_output)
     else
-      while @t_out <= t_target
-        if not initial_output or c.init_out_flag
-          if c.world_output_flag
-            acs_write($stdout, false, c.precision, c.add_indent)
-          else
-            @era.take_snapshot(@t_out).acs_write($stdout, true,
-                                                 c.precision, c.add_indent)
-          end
+      timed_output(c, t_target, initial_output)
+    end
+  end
+
+  def pruned_dump(c, initial_output)
+    unless initial_output
+      @era.clone.prune(c.prune_factor).acs_write($stdout, false, c.precision,
+                                                 c.add_indent)
+    end
+  end
+
+  def timed_output(c, t_target, initial_output)
+    while @t_out <= t_target
+      if not initial_output or c.init_out_flag
+        if c.world_output_flag
+          acs_write($stdout, false, c.precision, c.add_indent)
+        else
+          @era.take_snapshot(@t_out).acs_write($stdout, true,
+                                               c.precision, c.add_indent)
         end
-        @t_out += c.dt_out
       end
+      @t_out += c.dt_out
     end
   end
 end
@@ -1146,7 +1144,6 @@ include Output
   def setup(ss, c)
     @era = Worldera.new
     @era.setup(ss, c.integration_method, c.dt_param, c.dt_era)
-    @nsteps = 0
     @dt_max = c.dt_era * c.dt_max_param
     @time = @era.start_time
     @t_dia = @time
@@ -1162,22 +1159,11 @@ include Output
 
   def evolve(c)
     while @era.start_time < @t_end
-      @new_era, dn = @era.evolve(c.dt_era, @dt_max, c.shared_flag)
-      @nsteps += dn
+      @new_era = @era.evolve(c.dt_era, @dt_max, c.shared_flag)
       @time = @era.end_time
       diagnostics_and_output(c)
       @old_era, @era = @era, @new_era
     end
-    x = 3.6
-
-acsp("x")
-
-#print "@time = ", @time, "\n"
-#acsp("@time")
-#acsr {"@time"}
-#print "x = ", x, "\n"
-##acsp("x")
-##acsr{"x"}
   end
 end
 
@@ -1330,7 +1316,7 @@ options_text = <<-END
   Short name: 		-e
   Long name:		--era_length
   Value type:		float
-  Default value:	0.01
+  Default value:	0.0078125
   Variable name:	dt_era
   Description:		Duration of an era
   Long description:
@@ -1385,22 +1371,22 @@ options_text = <<-END
 
 
   Short name: 		-y
-  Long name:		--asynchronous_output
+  Long name:		--pruned_dump
   Value type:		int
   Default value:	0
-  Variable name:	async_output_interval
-  Description:		Asynchronous output interval
+  Variable name:	prune_factor
+  Description:		Prune Factor
   Long description:
     If this option is invoked with a positive argument k = 1, then
     the full information for a particle is printed as soon as it
-    makes a step.  If the asynchronous output interval is set to a
-    value k > 1, then the information is printed only for 1 out of
-    every k steps.  The output will appear in ACS format on the
-    standard output channel.  It is guaranteed that for each particle
-    the full information will be printed before the first step and
-    after the last step.  The resulting stream of outputs contains
-    information for different particles at different times, but the
-    particles are guaranteed to be time ordered.
+    makes a step.  If the prune factor is set to a value k > 1,
+    the information is printed only for 1 out of every k steps.
+    The output appears in ACS format on the standard output channel.
+    It is guaranteed that for each particle the full information will
+    be printed before the first step and after the last step.  
+    The resulting stream of outputs contains information for different
+    particles at different times, but within each worldline, the
+    world points are time ordered.
 
     If this option is not invoked, or if it is invoked with the default
     value k = 0, no such action will be undertaken.  This option, when
@@ -1443,17 +1429,6 @@ options_text = <<-END
     such an world again will allow a fully accurate restart of the
     integration,  since no information is lost in the process of writing
     out and reading in, in terms of world format.
-
-
-  Short name:		-z
-  Long name:  		--full_output_dump
-  Value type:  		bool
-  Variable name:	dump_flag
-  Description:		Full output of all worldpoints in World output format
-  Long description:
-    If this flag is set to true, the full information of all worldpoints will
-    be written out.  This option, when switched on, overrides the normal output
-    options (a specified value for the normal output interval will be ignored).
 
 
   Short name:		-a
