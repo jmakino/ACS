@@ -80,6 +80,9 @@ aaa
 bbb
 ccc
 END
+
+  :commandoutput: ls -al aho; pwd
+
   :commandoutput: cat aho
   :command: rm aho
   
