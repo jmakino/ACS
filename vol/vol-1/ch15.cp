@@ -327,3 +327,42 @@ before taking their inner product:
 
 *Alice*: And yet it is.  Something must be different.  Something must
 have happened.
+
+
+<i>[I am really puzzled myself, here -- Piet]</i>
+
+
+<i>[Below is more stuff that I will add as soon as this bug is cleared
+up -- Piet]</i>
+
+
+
+
+
+
+
+
+
+
+
+
+And it does!  So now we can rewrite our integrator, in file <tt>test.rb</tt>:
+
+ :inccode: euler2.rb
+
+
+
+==
+
+*Bob*: Here is a fancy version, with command line arguments
+and energy error diagnostics:
+
+ :inccode: euler.rb
+
+*Bob*: And here is how you run it
+
+ :commandoutput: ruby euler.rb < euler.in > /dev/null
+
+ :commandoutput: ruby euler.rb -o 10 -d 0.0001< euler.in
+
+ :commandoutput: ruby euler.rb -o 10 -d 0.00001 < euler.in
