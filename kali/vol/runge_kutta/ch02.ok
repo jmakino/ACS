@@ -458,6 +458,7 @@ Eqs. (ref(alg25)) and (ref(taylor3)), we find for the first order in
 <tex>$\tau$</tex> the relation
 
 :equation:
+\label{cond31}
 \fbox{
 $\displaystyle{
 \alpha_1 + \alpha_2 + \alpha_3 = 1
@@ -467,6 +468,7 @@ $\displaystyle{
 For the second order terms in <tex>$\tau$</tex> we find
 
 :equation:
+\label{cond32}
 \fbox{
 $\displaystyle{
 \alpha_2\eta_{21} + \alpha_3\left(\eta_{31}+\eta_{32}\right) = \half
@@ -620,6 +622,7 @@ Requiring the coefficients of <tex>$\tau$</tex> and <tex>$\tau^2$</tex> to match
 two equations gives us two extra conditions:
 
 :equation:
+\label{cond33}
 \fbox{
 $\displaystyle{
 \alpha_1 + \alpha_2 + \alpha_3 = \eta_{31} + \eta_{32}
@@ -701,7 +704,8 @@ a second-order algorithm.
 *Alice*: However, not all is lost: our scheme is still second-order, and has
 more freedom than our non-recycling scheme.  Specifically, let us
 gather the set of conditions necessary to guarantee at least
-second-order behavior for our recycling method.  These are:
+second-order behavior for our recycling method.  These are, from
+Eqs. ((ref(cond31)), ((ref(cond32)), and ((ref(cond33)):
 
 :equation:
 \left\{ \begin{array}{lcl}
