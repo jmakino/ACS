@@ -40,14 +40,14 @@ simply by adding the square of a small quantity <tex>$\epsilon$</tex>:
 
 :equation:
 U(\br_i, \br_j, \epsilon) =
-    G \frac{M_i M_j}{\sqrt{|\br_j - \br_i|^2 + \epsilon^2}}
+    G \frac{M_i M_j}{\,(|\br_j - \br_i|^2 + \epsilon^2)^{1/2}}
 
 When you differentiate this modified potential with respect to the
 position of a particle, you obtain a modified acceleration:
 
 :equation:
 \frac{d^2}{dt^2}\br_i =  G \sum_{j=1 \atop j \neq i}^N M_j
-\frac{\br_j - \br_i}{(|\br_j - \br_i|^2 + \epsilon^2)^{3/2}}
+\frac{\br_j - \br_i}{\,(|\br_j - \br_i|^2 + \epsilon^2)^{3/2}}
 
 And of course, in the limit that <tex>$\epsilon\rightarrow 0$</tex>, this
 last equation again returns to the Newtonian gravitational acceleration.
@@ -66,34 +66,113 @@ a softened potential corresponds to a mass distribution given by a polytrope
 of index five, better known as a Plummer mass distribution:
 
 :equation:
-\rho(r) = G \frac{M}{(r^2 + \epsilon^2)^{5/2}}
+\rho(r) \,\, \propto \,\, \frac{1}{(r^2 + \epsilon^2)^{5/2}}
 
 *Alice*: But look, your mass distribution stretches all the way to infinity!
 Even though most of the mass in concentrated in a small region, with a radius
-of order the softening length <tex>$\epsilon$</tex>.
+of order the softening length <tex>$\epsilon$</tex>.  You solution works, in
+the sense of avoiding singularities, and it gives a roughly reasonable answer,
+but it does come at the cost of smearing each particle all over space.
 
-*Bob*: 
+*Bob*: It would be quite easy to use a different mass distribution,
+corresponding a finite support.  This is what people so who work with
+SPH particles, for example.  However, for or current purpose, the main
+thing is to provide a tool that works, and we can worry later about
+aesthetic details.
 
+*Alice*: Okay.  Even though I can't say I'm very happy with it, I see
+your point, and it is certainly safer to give the students a tool that
+is guaranteed to give finite answer.
 
-  Our particles
-are being spread out over space
+*Bob*: It should be easy to add softening to our code.  Time to create
+another version for our N-body code!  So we will call this new file
+<tt>rknbody9.rb</tt>.  Well, this will take me a while.
 
+*Alice*: Okay, I'm way behind in reading the astro-ph abstracts.  This
+will give me a chance to catch up.  I'll come back when I've gone through
+them.
 
+== A New Driver
 
+*Bob*: Here it is, the new version of our N-body code, now with softening
+build in.  It was quite straightforward to make the changes.  First of all,
+here is the new driver:
 
+ :inccode: .rknbody9a_driver.rb
 
-*Bob*: You know, it would
+As you can see, minimal differences, contained in three lines.  The
+method +evolve+ has an extra parameter, +eps+, the softening length.
+The default value is zero, which means no softening at all.  The third
+new line is where the value of +eps+ is echoed on the standard error
+stream.
 
- :commandoutput: ruby rknbody9a_driver.rb < figure8.in
+*Alice*: So now +evolve+ has eight parameters.  At some point we may
+want to think about grouping them together, perhaps creating a class
+for them, since there is clear substructure: two flags controlling the
+amount of output, three variables giving intervals between output times,
+and three other variables.
 
- :commandoutput: ruby rknbody9b_driver.rb < cube1.in
+*Bob*: But not now.
 
- :commandoutput: ruby rknbody9c_driver.rb < cube1.in
+*Alice*: Not now, no.  Can you show me the code itself?
 
- :commandoutput: ruby rknbody9d_driver.rb < cube1.in
+== A Code with Softening
 
- :commandoutput: ruby rknbody9e_driver.rb < cube1.in
+*Bob*: Here it is.  Almost all changes speak for themselves.
 
- :inccode: cube2.in
+ :inccode: .rknbody9.rb
 
- :commandoutput: ruby rknbody9b_driver.rb < cube2.in
+== Details
+
+*Alice*: Even though the changes may speak for themselves, I have some
+questions.  For example, I understand that each integration method now
+needs to receive a parameter, +eps+ for the softening length, since this
+value needs to be passed down to the individual particles, to do the
+correct acceleration and potential energy calculations.  However, an
+integration method is invoked by the +send+ command.  How does the +send+
+command arrange for +eps+ to arrive at the right place?
+
+*Bob*: In our unsoftened version, +evolve+ was invoking +send+ as follows:
+
+ :include: .rknbody8.rb-2
+
+What I have written in the softened version is instead:
+
+ :include: .rknbody9.rb-1
+
+The way Ruby has define send is that it invokes a method with a name
+given by the first argument, and with parameters specified in the
+remaining arguments: <tt>send(x, y, z)</tt> results in <tt>x(y,z)</tt>
+to be executed.  In our case, this means that the first argument must
+be the name of the integration method, and the second argument the
+softening parameter.
+
+*Alice*: Simplicity itself!  Very nice.  And in a way, another example
+of the principle of least surprise.
+
+*Bob*: The one thing I didn't like very much is that the lines in the
+integration methods have become somewhat longer.  Forward Euler, 
+for example, has grown now from:
+
+ :inccode: .rknbody8.rb+forward
+
+to:
+
+ :inccode: .rknbody9.rb+forward
+
+While I don't mind so much the new first argument +eps+ for +calc+,
+I'm not too happy with the fact that +acc+ also has to get a second
+argument.  But that's the way it is.
+
+*Alice*: I presume we could make it shorter, if we really wanted to,
+for example by making +eps+ an instance variable <tt>@eps</tt> for the
++Nbody+ class, and to let +calc+ on the +Nbody+ level hand down the
+value of <tt>@eps</tt> to +calc+ on the +Body+ level.
+
+*Bob*: And we could use shorter variables than +ba+ and +eps+, for
+example +a+ and +e+.  But let us not spend more time on such niceties,
+which give us dimishing return in clarity at the cost of making the
+code more complex and hence less clear.
+
+*Alice*: I agree.  Instead, let's see how your new code performance
+in our cold collapse experiment.

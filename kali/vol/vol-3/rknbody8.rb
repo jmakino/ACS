@@ -94,7 +94,7 @@ class Nbody
     simple_print if init_out                                                 #1
 
     while @time < t_end
-      send(integration_method)
+      send(integration_method)                                               #2
       @time += dt
       nsteps += 1
       if @time >= t_dia

@@ -59,6 +59,9 @@ like this:
 
  :inccode: .rknbody7.rb+forward
 
+Note that I have created yet another version of our code, in file
+<tt>rknbody7.rb</tt>.
+
 *Alice*: That is short and sweet, indeed.  And we have to modify +calc+
 on the +Nbody+ level from what we had before:
 
@@ -128,6 +131,8 @@ pretty print became +pp+, a pretty print with extras should be called
 a +ppx+:
 
  :inccode: .rknbody8.rb+ppx+Body
+
+I will put this version in file <tt>rknbody8.rb</tt>.
 
 *Alice*: That makes a lot of sense.  You choose the standard error
 output stream +STDERR+ because you don't want this extra debugging
