@@ -1,0 +1,61 @@
+= CHAPTER: Introduction
+
+For the simplest form of differential equation, we will use the
+notation:
+
+:equation:
+{dx \over dt} = f(x)
+
+where we will call the variable <tex>$x$</tex> the position and the variable <tex>$t$</tex>
+the time.  The solution of this equation is given by <tex>$x(t)$</tex>.  When we
+solve this equation numerically, we use a finite time step <tex>$\tau$</tex>.
+For now, we will analyze the properties of the first time step.  We
+choose <tex>$t=0$</tex> at the beginning of the first time step, and we denote
+the positions at the beginning and end of the first time step by <tex>$x_0$</tex>
+and <tex>$x_1$</tex>, respectively:
+
+:equation:
+x_0 \equiv x(0) \ \ \ \ \ ; \ \ \ \ x_1 \equiv x(\tau)
+
+We also introduce the notation:
+
+:equation:
+\dot x \equiv {dx \over dt} \equiv {d \over dt}x(t)
+
+:equation:
+f' \equiv {df \over dx} \equiv {d \over dx}f(x)
+This leads to:
+
+:equation:
+\dot f \equiv {d \over dt}f(x(t)) = {dx \over dt} f' = \dot x f'
+
+For the higher derivatives of the position, we introduce the
+historical notation in terms of velocity, acceleration, jerk,
+snap, crackle and pop, respectively:
+
+:equation:
+\left\{ \begin{array}{lcl}
+v \equiv \dot x = {d \over dt}x(t)     &;&
+a \equiv \dot v = {d^2 \over dt^2}x(t)   \quad ; \quad
+j \equiv \dot a = {d^3 \over dt^3}x(t)   \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+s \equiv \dot j = {d^4 \over dt^4}x(t)   &;&
+c \equiv \dot s = {d^5 \over dt^5}x(t)   \quad ; \quad
+p \equiv \dot c = {d^6 \over dt^6}x(t)
+\end{array} \right.
+
+These expressions are especially useful for the following type of
+second-order differential equation encountered in classical mechanics:
+
+:equation:
+\ddot x \equiv {d^2x \over dt^2} = f(x)
+
+which can be written as a system of two first-order differential equations:
+
+:equation:
+\left\{ \begin{array}{lcl}
+\dot x &=& v \\
+\dot v &=& f(x)
+\end{array} \right.
+
+xxx

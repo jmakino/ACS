@@ -1,0 +1,153 @@
+= CHAPTER: A Special Second-Order Differential Equation
+
+Now that we know how to solve a first-order differential equation, we
+can extend our methods immediately to treat the case of a general
+second-order differential equation
+
+:equation:
+{d^2x \over dt^2} = f\left(x, {dx \over dt}\right)
+
+Here the force per unit mass <tex>$f(x)$</tex> exerted on a particle depends
+explicitly on both the position and the velocity of that particle.
+An example is such a force is the motion of a mass point under the
+influence of friction.  Indeed, our physical interpretation of the
+case of a first-order differential equation followed from the above
+form in the limit of infinitely strong friction, where the
+velocity-dependent term dominated completely.  Another example would
+be the force that is felt by an electron moving in an electromagnetic
+field (where <tex>$x$</tex> would have be interpreted as a three-dimensional
+vector).
+
+The second-order equation above can be rewritten as a system of two
+first-order differential equations:
+
+:equation:
+\left\{ \begin{array}{lcl}
+\dot x &=& v \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\dot v &=& f(x, v)
+\end{array} \right.
+
+In our case of interest, classical mechanics, we will drop the
+velocity dependence, and study instead the simpler equation:
+
+:equation:
+{d^2x \over dt^2} = f(x)
+
+which, using vector notation, can be translated into the system:
+
+:equation:
+{\dot x \choose \dot v} = {v \choose f(x)}
+
+As we will see in the next section, we can exploit the simple form of
+these two equations to get an extra order of accuracy, seemingly for
+free.  However, in order to put this clever trick in a clear context,
+in the current section we will be less clever.  Rather, we will simply
+apply the same treatment that we have developed in the previous section.
+
+= One Force Evaluation per Step
+
+Everything we did in the previous section carries over directly to the
+case of two coupled differential equations.  To show this, let us
+repeat the same derivation, but now in vector form.  At the start of a
+time step, we evaluate the right-hand side of the differential
+equation at <tex>$t=0$</tex>:
+
+:equation:
+\vec k_1 = {v_0 \choose f_0}
+
+This leads to the following dimensionally correct expression:
+
+:equation:
+{x_1 \choose v_1} = {x_0 \choose v_0} + \alpha_1 \vec k_1\tau =
+{x_0 + \alpha_1 v_0 \tau \choose v_0 + \alpha_1 f_0\tau}
+
+Comparing this with our Taylor series:
+
+:equation:
+{x_1 \choose v_1} = {x_0 \choose v_0} + 
+{v_0\choose a_0}\tau + \half {a_0 \choose j_0} \tau^2 +
+O(\tau^3) \label{taylor12}
+
+we see that
+
+:equation:
+{\alpha_1 v_0 = v_0 \choose \alpha_1 f_0 = a_0}
+
+The first line gives
+
+:equation:
+\alpha_1 = 1
+
+and indeed this makes the second line into the correct expression:
+
+:equation:
+a_0 = f_0
+
+as dictated by the differential equation.  We can write our results in
+a more traditional form, using a scalar expression for <tex>$k_1$</tex>, rather
+than a vector expression, as follows:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + v_0 \tau \\
+v_1 &=& v_0 + k_1 \tau  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)
+\end{array} \right.
+
+We thus recover the forward-Euler algorithm.  As before, 
+this scheme is only first-order accurate, since it cannot possibly
+reproduce the <tex>$O(\tau^2)$</tex> term in Eq. (\ref{taylor12}).
+
+= Two Force Evaluations per Step
+
+When we allow two force evaluations, we again are left with one free
+parameter <tex>$\alpha$</tex>.  Let us first recall what we found in the case of
+a first-order differential equation:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + \left( (1-\alpha)k_1 + \alpha k_2 \right) \tau \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)  \\
+k_2 &=& f(x_0 + {1\over 2 \alpha} k_1 \tau)
+\end{array} \right.
+
+In our case, this translates directly to
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + v_0 \tau +
+{\textstyle\frac{1}{2}}((1-\alpha)k_1 + \alpha k_2 )\tau^2  \\
+v_1 &=& v_0 + ((1-\alpha)k_1 + \alpha k_2 )\tau  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0) \\
+k_2 &=& f(x_0 + {\textstyle\frac{1}{2\alpha}} v_0 \tau)
+\end{array} \right.
+
+In particular, for <tex>$\alpha = \half$</tex> we find
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + v_0 \tau +
+{\textstyle\frac{1}{4}}(k_1 + k_2)\tau^2  \\
+v_1 &=& v_0 + {\textstyle\frac{1}{2}}(k_1 + k_2)\tau  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0) \\
+k_2 &=& f(x_0 + v_0 \tau)
+\end{array} \right.
+
+and for <tex>$\alpha = 1$</tex> we find
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + v_0 \tau +
+{\textstyle\frac{1}{2}}k_2\tau^2  \\
+v_1 &=& v_0 + k_2 \tau  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0) \\
+k_2 &=& f(x_0 + {\textstyle\frac{1}{2}} v_0 \tau)
+\end{array} \right.
+
+xxx

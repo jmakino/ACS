@@ -1,0 +1,227 @@
+= Recycling Force Evaluations
+
+== One Force Evaluation per Step
+
+%\subsubsubsection{Exact Recycling}
+{\bf 2.2.1.1. Exact Recycling}
+
+Taking the results from the previous section, Eq.(\ref{rk2alpha})
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + \left( (1-\alpha)k_1 + \alpha k_2 \right) \tau \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)  \\
+k_2 &=& f(x_0 + {1\over 2 \alpha} k_1 \tau)
+\end{array} \right.                         \label{rk2alpha2}
+
+would it be possible to use the force evaluation <tex>$k_2$</tex> of the first step,
+and to recycle its use, to let it function as the <tex>$k_1$</tex> contribution
+to the second step?  For this to work, strictly speaking, the position
+at which <tex>$k_2$</tex> is calculated during the first step should coincide
+with the position at which <tex>$k_1$</tex> needs to be calculated during the second
+step.
+
+Let us define <tex>$\tilde x_1$</tex> by <tex>$k_2 \equiv f(\tilde x_1)$</tex>, which implies
+
+:equation:
+\tilde x_1 = x_0 + {1\over 2 \alpha} k_1 \tau
+
+Recycling the last force calculation from the first step, in order to
+use it for the second step, thus requires that <tex>$\tilde x_1 = x_1$</tex>.
+This implies:
+
+:equation:
+x_0 + {1\over 2 \alpha} k_1 \tau =
+x_0 + \left( (1-\alpha)k_1 + \alpha k_2 \right) \tau 
+
+or
+
+:equation:
+k_1 = 2 \alpha\left( (1-\alpha)k_1 + \alpha k_2 \right)
+
+or
+
+:equation:
+2 \alpha^2\left(k_1 - k_2 \right) = (2 \alpha -1)k_1
+
+For arbitrary values of <tex>$k_1$</tex> and <tex>$k_2$</tex>, this condition cannot be
+fulfilled, and we have to conclude that there is no <tex>$\alpha$</tex> value
+for which the last force calculation has exactly been done where we
+needed it.  This result is not surprising, when we reflect on what
+this means: if the equality <tex>$\tilde x_1 = x_1$</tex> would hold exactly,
+there would be no reason to compute the last force evaluation.  The
+best we can hope for is that <tex>$\tilde x_1$</tex> is a reasonably accurate
+predicted value, that will turn out not to differ too much from the
+corrected value <tex>$x_1$</tex>.
+
+In our specific example, the best we can do is to let the right hand
+side disappear, through the choice <tex>$\alpha=\half$</tex>.  In that case, the
+left-hand side will not be exactly zero, but it will be small, to the
+extent that <tex>$k_1 \approx k_2$</tex>.  Specifically, for <tex>$\alpha=\half$</tex>:
+
+:eqnarray:
+k_1 - k_2 &=& f(x_0) - f(x_0 + k_1\tau)    \nonumber \\
+&=& -f_0'k_1\tau + O(\tau^2) = -f_0'f_0\tau + O(\tau^2)
+
+which means that
+
+:eqnarray:
+\tilde x_1 - x_1 &=& \left\{ x_0 + k_1 \tau \right\}
+- \left\{x_0 + \half \left( k_1 + k_2 \right) \tau \right\}    \nonumber \\
+&=& \half \left( k_1 - k_2 \right) \tau               \nonumber \\
+&=& -\half f_0'f_0\tau^2 + O(\tau^3)                   \label{nogo1}
+
+There are two other ways to look at this result.  First of all, we could
+have derived it in a more formal way, by minimizing the difference
+between <tex>$\tilde x_1 $</tex> and <tex>$ x_1$</tex> directly, starting from the most
+general form:
+
+:eqnarray:
+\tilde x_1 - x_1 &=&
+x_0 + {1\over 2 \alpha} k_1 \tau -
+\left\{
+x_0 + \left( (1-\alpha)k_1 + \alpha k_2 \right) \tau 
+\right\}                                              \nonumber \\
+&=&
+{1\over 2 \alpha} k_1 \tau
++ (\alpha-1)k_1 \tau - \alpha k_2  \tau 
+                                              \nonumber \\
+&=&
+(\alpha-1 + {1\over 2 \alpha})k_1 \tau - \alpha k_2  \tau 
+                                                  \label{formal1}
+
+As in the previous section, we can write <tex>$k_1 = f_0$</tex> and use the
+expansion
+
+:equation:
+k_2 = f(x_0 + {1\over 2 \alpha} k_1 \tau) =
+f_0 + {1\over 2 \alpha} f_0 f_0' \tau + O(\tau^2)
+
+which then gives for Eq. (\ref{formal1}):
+
+:eqnarray:
+\tilde x_1 - x_1 &=&
+(\alpha-1 + {1\over 2 \alpha})f_0 \tau
+- \alpha \left\{ f_0 + {1\over 2 \alpha} f_0 f_0' \tau \right\} \tau
+ + O(\tau^3)                                  \nonumber \\
+&=&
+({1\over 2 \alpha}-1) f_0 \tau
+- \half f_0 f_0' \tau^2
+ + O(\tau^3)                                            \label{nogo2}
+
+In order to let the first order term vanish, we regain our previous
+results: <tex>$\alpha = \half$</tex> is the best approximation, and the remaining
+term is second order in <tex>$\tau$</tex>.
+
+The second way to view this result is more intuitive.  At the
+beginning of the second step, we can only recycle a previous force if
+that force was performed at the end of the previous step.  In first
+approximation, given the force <tex>$f_0$</tex> at <tex>$x_0$</tex>, we can write
+<tex>$x_1 = x_0 + f_0 \tau + O(\tau^2)$</tex>.  Comparing this with
+Eq. (\ref{rk2alpha2}), we see immediately that <tex>$1/(2\alpha) = 1$</tex>,
+hence <tex>$\alpha) = \half$</tex>.  Even so, it was a good exercise to go
+through various derivations, with different degrees of formality, so
+that we will be prepared for the far more complicated manipulations
+that await us for larger numbers of force evaluations per time step.
+
+%\subsubsubsection{Approximate Recycling}
+
+{\bf 2.2.1.2. Approximate Recycling}
+
+Returning to our original goal of recycling the last force evaluation
+of an earlier time step, what can we conclude from our failure to do
+so in a strict sense?  This second-order offset in Eqs. (\ref{nogo1})
+and (\ref{nogo2}) may seem problematic, since we are aiming at
+developing a second order algorithm, with third-order errors.
+However, when we recycle the last force calculation in the next step
+we will always use it in multiplication with an extra power of <tex>$\tau$</tex>.
+This means that the slight offset will cause only third order errors,
+on the same level of the truncation errors we are making anyway.
+
+To show this explicitly, let us extend our notation, using <tex>$k_{i,j}$</tex>
+to denote <tex>$k_j$</tex> for the step starting at <tex>$x_i$</tex>, and let us use tildes
+to indicate the approximate solution that we obtain when we recycle
+the previous force evaluation.  Here are the expressions for the first
+step, the correct second step without recycling, and the approximate
+second step with recycling:
+
+Starting again from
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + \half \left( k_{0,1} + k_{0,2} \right) \tau \\
+k_{0,1} &=& f(x_0)  \\
+k_{0,2} &=& f(x_0 + k_{0,1} \tau)
+\end{array} \right.
+
+we have:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_2 &=& x_1 + \half \left( k_{1,1} + k_{1,2} \right) \tau \\
+k_{1,1} &=& f(x_1)  \\
+k_{1,2} &=& f(x_1 + k_{1,1} \tau)
+\end{array} \right.
+
+:equation:
+\left\{ \begin{array}{lcl}
+\tilde x_2 &=& x_1 + \half \left(\tilde k_{1,1} + \tilde k_{1,2}\right) \tau \\
+\tilde k_{1,1} &=& k_{0,2}  \\
+\tilde k_{1,2} &=& f(x_1 + \tilde k_{1,1} \tau)
+\end{array} \right.
+
+more generally:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_{i+1} &=& x_i + \half \left( k_{i,1} + k_{i,2} \right) \tau \\
+k_{i,1} &=& f(x_i)  \\
+k_{i,2} &=& f(x_i + k_{i,1} \tau)
+\end{array} \right.                        \label{second1}
+
+:equation:
+\left\{ \begin{array}{lcl}
+\tilde x_{i+1} &=&
+x_i + \half \left(\tilde k_{i-1,2} + \tilde k_{i,2}\right) \tau \\
+\tilde k_{i,2} &=& f(x_i + \tilde k_{i-1,2} \tau)
+\end{array} \right.                        \label{second2}
+
+At each step, the difference between <tex>$\tilde x_{i+1}$</tex> and <tex>$x_{i+1}$</tex>
+is of third order in <tex>$\tau$</tex>, as we can immediately illustrate at the
+time of the second step, by evaluating
+
+:equation:
+\tilde x_2 - x_2 = \half \left(
+\tilde k_{1,1} - k_{1,1} \right)\tau +
+\left( \tilde k_{1,2} - k_{1,2}) \right) \tau     \label{diff2}
+
+Using Eq. (\ref{nogo2}), we can expand the
+first term on the right hand side as follows
+
+:eqnarray:
+\tilde k_{1,1} - k_{1,1} &=& f(\tilde x_1) - f(x_1) =
+(\tilde x_1 - x_1) f'(x_1) + O(\tau^3)         \nonumber \\
+&=& -\half f_0f_0'f_1'\tau^2 + O(\tau^3)
+
+This result can in turn be used to expand 
+the second term on the right-hand side of Eq.(\ref{diff2}):
+
+:eqnarray:
+\tilde k_{1,2} - k_{1,2} &=&
+f(x_1 + \tilde k_{1,1}\tau) - f(x_1 + k_{1,1}\tau)      \nonumber \\
+&=& \left(\tilde k_{1,1} - k_{1,1}\right)
+f'(x_1 + \tilde k_{1,1}\tau) \tau + O(\tau^4)            \nonumber \\
+&=& -\half f_0f_0'f_1'f'(x_1 + \tilde k_{1,1}\tau)\tau^3 + O(\tau^4)
+
+Substituting the last two results in Eq. (\ref{diff2}), we find
+
+:equation:
+\tilde x_2 - x_2 = -\one{4}f_0f_0'f_1'\tau^3 + O(\tau^4)
+
+This is the promised result: recycling the force calculation at the
+end of one step introduces and extra error in the next step which is
+third order in <tex>$\tau$</tex>.  Since our basic algorithm is only second-order
+accurate in <tex>$\tau$</tex> per step, the only effect is to change the
+magnitude of the leading error term, without affecting the
+second-order nature of the algorithm.

@@ -1,0 +1,245 @@
+= CHAPTER: A First-Order Differential Equation
+
+== Notation
+
+Although we are primarily interested in classical mechanics, let us
+first investigate the simpler case of a first-order differential equation:
+
+:equation:
+{dx \over dt} = f(x)
+
+This can be interpreted as describing the motion of an object that is being
+pushed through a very resistive medium, such as a spoon being pushed through
+molasses.  The velocity of the spoon is proportional to the force term
+<tex>$f(x)$</tex> on the right-hand side.  In order to solve numerically for the
+orbit <tex>$x(t)$</tex> of the object, we can express the position at the end of
+one time step in a Taylor series:
+
+:equation:
+x_1 = x_0 + v_0\tau + \half a_0\tau^2 + \one{6} j_0\tau^3 + \one{24} s_0\tau^4
++ O(\tau^5)
+
+The velocity at time zero is given directly by the differential equation.
+The higher derivatives of the position, starting with the acceleration,
+can be found by differentiating both sides of the differential equation,
+one or more times.  This leads to expressions such as:
+
+:eqnarray:
+v_0 &=& f(x(0)) \ = \ f(x_0) \ = \ f_0      \label{v0}  \\
+\phantom{1}&\phantom{1}&\phantom{1}                    \nonumber\\
+a_0 &=& \dot v_0 \ = \ {d \over dt} f_0
+\ = \ {df_0 \over dx} {dx \over dt}
+\ = \ f_0' v_0 \ = \ f_0 f_0'               \label{a0} \\
+\phantom{1}&\phantom{1}&\phantom{1}                  \nonumber \\
+j_0 &=& \dot a_0 \ = \ f_0^2 f_0'' + f_0 (f_0')^2     \label{j0} \\
+\phantom{1}&\phantom{1}&\phantom{1}                  \nonumber \\
+s_0 &=& \dot j_0 \ = \ f_0^3 f_0''' + 4f_0^2f_0'f_0'' +
+(f_0')^3 f_0           \label{s0}
+
+== New Force Evaluations
+
+xxx
+
+== One Force Evaluation per Step
+
+At the start of a time step, the only evaluation of the right-hand
+side of the differential equation that is possible is the one at <tex>$t=0$</tex>:
+
+:equation:
+k_1 = f(x_0)
+
+This leads to the following dimensionally correct expression:
+
+:equation:
+x_1 = x_0 + \alpha_1 k_1\tau
+
+Combining the last two equations, we have
+
+:equation:
+x_1 = x_0 + \alpha_1 f_0\tau \label{rk1}
+
+We can compare this expression with our Taylor series:
+
+:equation:
+x_1 = x_0 + v_0\tau + \half a_0\tau^2 + O(\tau^3)
+
+Using Eqs. (\ref{v0}) and (\ref{a0}),
+we can write this as
+
+:equation:
+x_1 = x_0 + f_0\tau + \half f_0 f_0'\tau^2 + O(\tau^3) \label{taylor1}
+
+How accurate is our new value <tex>$x_1$</tex> after we take one step?  Let us
+see how well we can match Eq. (\ref{rk1}) with Eq. (\ref{taylor1}),
+in successive powers of <tex>$\tau$</tex>.  The constant term <tex>$x_0$</tex> matches
+trivially, and our first condition arises from the term linear in <tex>$\tau$</tex>:
+
+:equation:
+\alpha_1 f_0 = f_0
+
+hence
+
+:equation:
+\alpha_1 = 1
+
+We have no free parameter left, so this leads us to the
+only possible first-order integration scheme
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + k_1\tau  \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)
+\end{array} \right.                    \label{forward}
+
+which is the forward-Euler algorithm.  This scheme is only first-order
+accurate, since it cannot possibly reproduce the <tex>$O(\tau^2)$</tex> term in
+Eq. (\ref{taylor1}):
+such a match would require <tex>$\half f_0 f_0' = 0$</tex>,
+which is certainly not true for general force prescriptions.
+
+== Two Force Evaluations per Step
+
+After a first evaluation of the right-hand side of the differential
+equation, we can perform a preliminary integration in time, after
+which we can evaluate the right-hand side again, at a new position:
+
+:eqnarray:
+k_1 &=& f(x_0)    \\
+k_2 &=& f(x_0 + \eta k_1 \tau)
+
+We can now use a more general expression for the new position:
+
+:equation:
+x_1 = x_0 + \left( \alpha_1 k_1 + \alpha_2 k_2 \right) \tau  \label{alg11}
+
+Combining these equations, we have
+
+:equation:
+x_1 = x_0 + \left\{ 
+\alpha_1 f_0 + \alpha_2 f(x_0 +\eta f_0 \tau) \right\} \tau \label{alg12}
+
+The right-most term in Eqs. (\ref{alg11}) and (\ref{alg12}) can be
+expanded in a power series in <tex>$\tau$</tex> when we develop <tex>$k_2$</tex> in a Taylor
+series around <tex>$\tau = 0$</tex>:
+
+:equation:
+k_2 = f(x_0 +\eta f_0 \tau) =
+f_0 + (\eta f_0) f_0' \tau + \half (\eta f_0)^2 f_0'' \tau^2
++ O(\tau^3)  \label{alg13}
+
+We thus find for the new position, at the end of our time step:
+
+:equation:
+x_1 = x_0 + (\alpha_1 + \alpha_2) f_0 \tau +
+\alpha_2 \eta f_0 f_0' \tau^2 +
+\half \alpha_2 \eta^2 f_0^2 f_0'' \tau^3 + O(\tau^4) \label{rk2}
+
+We can now compare this expression with the Taylor series expansion of
+the true orbit:
+
+:equation:
+x_1 = x_0 + v_0\tau + \half a_0\tau^2
++ \one{6} j_0\tau^3  + O(\tau^4)                \label{taylor0}
+
+Using Eqs. (\ref{v0}), (\ref{a0}), and (\ref{j0}), 
+we can write this as
+
+:equation:
+x_1 = x_0 + f_0\tau + \half f_0 f_0'\tau^2
++ \one{6} \left\{ f_0^2 f_0'' + f_0 (f_0')^2 \right\} \tau^3
++ O(\tau^4) \label{taylor2}
+
+To what order can we make Eqs. (\ref{rk2}) and (\ref{taylor2}) compatible?
+Starting with terms to first order in <tex>$\tau$</tex>, we have to insist that
+
+:equation:
+(\alpha_1 + \alpha_2) f_0 = f_0
+
+which leads to the condition
+
+:equation:
+\fbox{
+$\displaystyle{
+\alpha_1 + \alpha_2 = 1
+}$
+}
+
+To second order in <tex>$\tau$</tex>, we would like to satisfy:
+
+:equation:
+\alpha_2 \eta f_0 f_0' = \half f_0 f_0'
+
+which can be done through the condition
+
+:equation:
+\fbox{
+$\displaystyle{
+\eta = {1 \over 2 \alpha_2}
+}$
+}
+
+Would it be possible to match Eqs. (\ref{rk2}) and (\ref{taylor2}) also to
+third order in <tex>$\tau$</tex>?  This would require
+
+:equation:
+\half \alpha_2 \eta^2 f_0^2 f_0'' =
+\one{6} \left\{f_0^2 f_0'' + f_0 (f_0')^2 \right\}
+
+While we can match the first term on the right-hand side, by choosing
+<tex>$\alpha_2 \eta^2 = 1/3$</tex>, this would require that <tex>$f_0 (f_0')^2 = 0$</tex>,
+which is not true for general force prescriptions.
+
+== xxx
+
+We have to conclude that our scheme is only second-order
+accurate.  We have three free parameters, <tex>$\alpha_1$</tex>, <tex>$\alpha_2$</tex>, and
+<tex>$\eta$</tex>.  Since we only have two conditions, Eqs. (xx) and (yy)
+{\bf[note: box ref problem]}, we can expect to be left with one degree
+of freedom in choosing the coefficients in our algorithm.  This is
+indeed the case.  If we write <tex>$\alpha = \alpha_2$</tex>, we obtain:
+
+:equation:
+\left\{ \begin{array}{lcl}
+\alpha_1 &=& 1 - \alpha  \\
+\alpha_2 &=& \alpha \\
+\eta &=& 1 / (2\alpha)
+\end{array} \right.
+
+we obtain the following family
+of algorithms:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + \left( (1-\alpha)k_1 + \alpha k_2 \right) \tau \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)  \\
+k_2 &=& f(x_0 + {1\over 2 \alpha} k_1 \tau)
+\end{array} \right.                         \label{rk2alpha}
+
+One classical choice for a second-order Runge-Kutta is <tex>$\alpha = \half$</tex>,
+leading to:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + \half \left( k_1 + k_2 \right) \tau \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)  \\
+k_2 &=& f(x_0 + k_1 \tau)
+\end{array} \right.                     \label{rk2alphahalf}
+
+Another classical choice is <tex>$\alpha = 1$</tex>, which gives:
+
+:equation:
+\left\{ \begin{array}{lcl}
+x_1 &=& x_0 + k_2 \tau \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+k_1 &=& f(x_0)  \\
+k_2 &=& f(x_0 + \half k_1 \tau)
+\end{array} \right.
+
+For <tex>$\alpha = \half$</tex>, we effectively average the evaluations at the
+beginning and at the end of the trial step, while for <tex>$\alpha = 1$</tex>, we
+use only the evaluation at the end of a smaller trial step that brings
+us approximately mid-way between the beginning and the end of the step.
+

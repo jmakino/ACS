@@ -1,0 +1,38 @@
+== CHAPTER: Abstract
+
+We present a pedagogic overview of the freedom one has in choosing the
+coefficients in explicit Runge-Kutta integration schemes.  We limit
+ourselves to the simple cases in which there are at most two `force'
+evaluations of the right-hand side of the differential equation per
+time step.  We start with first-order differential equations, to
+explain the general procedures, but then we specially to a special
+case of second-order differential equations, the one that occurs in
+classical mechanics, where the forces are dependent only on positions,
+and independent of the velocities.  In that case we derive some of the
+classical <tex>Runge-Kutta-Nystr\"om</tex> schemes, and
+generalize this to include a first evaluation that does not take place
+at the beginning of a time step.  We show how such a generalized
+approach naturally leads us to the
+<tex>leapfrog-Verlet-St\"ormer-Delambre</tex>
+scheme, as a particular form of a generalized explicit Runge-Kutta
+scheme.
+
+We extend our treatment to answer the question under which circumstances
+force calculations can be recycled from one step to the next, using
+the so-called FSAL (first same as last) procedure.  We also analyse a
+variant on two force evaluations per time step, in which one
+evaluation is that of the force, and the other evaluation pertains to
+the derivative of the force.  This will lead us to the Hermite scheme,
+used widely in collisional stellar dynamics.  Finally, we discuss the
+use of explicity multi-step explicit methods, in which force evaluations
+of multiple previous steps are remembered and used again to determine
+the next step to higher orders of accuracy.
+
+[we can also allow a position expression of one order higher than the
+velocity.  This won't improve the global order, but can it make the
+coefficient smaller, in position and/or total energy.  If force
+evaluations are extremely expensive, it may well pay to have this
+additional accuracy essentially for free, as long as it doesn't
+disturbe something else, such as time symmetry.  Perhaps also:
+implicit schemes?]
+
