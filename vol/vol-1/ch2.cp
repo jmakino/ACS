@@ -78,12 +78,14 @@ single particle.  For an object oriented language like Ruby, that
 suggests that we create a class +Body+ for a particle in an N-body
 system.  How about:
 
-:inccode: .body.rb-barebones
+ :inccode: .body.rb-barebones
   
 
-*B*: Let's see whether it behaves as we think it should.  We can use the
-interactive Ruby shell +irb+, and we can start it up with the
-<tt>-r</tt> option that specifies a file to be loaded:
+*B*: This is only the class definition.  Let's see whether we can do a
+little bit of useful work, by adding the following lines
+
+ :inccode: .body-init-demo.rb-demo
+
 
     |gravity> irb -r body01.rb
     irb(main):001:0> b = Body.new
@@ -179,7 +181,7 @@ arrays such as <tt>pos[]</tt> and <tt>vel[]</tt> as well as single
 variables such as +m+ will probably have already a +to_s+ method
 associated with them.  Let's check.  How about this:
 
-:inccode: .body-to_s-wrong.rb-to_s
+ :inccode: .body-to_s-wrong.rb-to_s
 
 *A*: Good idea to write a comment at the top, to remind us what this
 class is for.  We may as well get into the habit of writing comments
@@ -210,7 +212,7 @@ that's were the word "string" comes from, after all.
 something to do that.  Here it is: the method +join+ converts an array
 to a string, and you can give a separator as an arguments.  Let's try:
 
-:inccode: .body.rb-to_s
+ :inccode: .body.rb-to_s
 
 *A*: The rather lengthy prompt of +irb+ is beginning to bother me.  I
 read that we can customize it.  Shall we leave out the <tt>irb(main)</tt>
@@ -265,7 +267,7 @@ from the command line, rather than using the interpreter.  We may as
 well use the <tt>to_s</tt> method to define a pretty printing method
 +pp+ that we can then invoke directly, as follows:
 
-:inccode: .body.rb-pp
+ :inccode: .body.rb-pp
 
  :inccode: .body-pp-demo.rb-demo
 
@@ -329,7 +331,7 @@ orbit, or a planetary system in a planar approximation, later on.
 *B*: Since I don't like global variables, let's encapsulate +NDIM+ as
 a class constant, with the +Body+ class:
 
-:inccode: .body.rb-simple-IO
+ :inccode: .body.rb-simple-IO
 
  :inccode: .body-simple-io-demo.rb-demo
 
