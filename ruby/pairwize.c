@@ -2,7 +2,21 @@
 
 
 typedef double  real;
-const int NDIM = 3;                        // number of spatial dimensions
+#define NDIM  3                        // number of spatial dimensions
+
+
+typedef struct{
+    real mass;
+    real pos[NDIM];
+    real vel[NDIM];
+    real acc[NDIM];
+    real jerk[NDIM];
+}Cbody, *Cbody_ptr;
+
+static VALUE RCbody;
+
+static real epot;
+static real coll_time_q;
 
 static void pairwise_acc_jerk_pot_coll(real massi, real massj,
 				real posi[], real posj[],
@@ -179,12 +193,176 @@ static VALUE pairwize_force(VALUE self, VALUE pi, VALUE pj, VALUE c)
     return Qnil;
 }
 
+static void Cbody_free(Cbody_ptr p)
+{
+    free(p);
+}
+
+static VALUE Cbody_new(VALUE self)
+{
+    VALUE obj, vpath, vmode;
+    Cbody_ptr bp;
+
+    obj = Data_Make_Struct(RCbody, Cbody, NULL, Cbody_free, bp);
+    return obj;
+}
+
+void Cbody_set_mass(Cbody_ptr b, real m)
+{
+    b->mass = m;
+    printf("mass set = %g\n",b->mass);
+}
+
+
+real Cbody_get_mass(Cbody_ptr b)
+{
+    return b->mass;
+}
+
+static VALUE RCbody_set_mass(VALUE self, VALUE x)
+{
+    real d;
+    Cbody_ptr p;
+    d = NUM2DBL(x);
+    Data_Get_Struct(self, Cbody, p);
+    Cbody_set_mass(p,d);
+    return Qnil;
+}
+
+static VALUE RCbody_get_mass(VALUE self)
+{
+    Cbody_ptr p;
+    Data_Get_Struct(self, Cbody, p);
+    return rb_float_new(Cbody_get_mass(p));
+}
+
+static VALUE RCbody_set_pos_vel_and_mass(VALUE self, VALUE rp)
+{
+    Cbody_ptr p;
+    Data_Get_Struct(self, Cbody, p);
+    get_pos_vel_and_mass(rp,p->pos, p->vel, &(p->mass));
+    return Qnil;
+}
+
+static VALUE RCbody_get_acc_jerk(VALUE self, VALUE rp)
+     
+{
+    int k;
+    VALUE local, element;
+    real * acci;
+    Cbody_ptr p;
+    Data_Get_Struct(self, Cbody, p);
+    local = rb_iv_get(rp, "@acc");
+    for(k=0;k<3;k++){
+	rb_ary_store(local,k,rb_float_new(p->acc[k]));
+    }
+    local = rb_iv_get(rp, "@jerk");
+    for(k=0;k<3;k++){
+	rb_ary_store(local,k,rb_float_new(p->jerk[k]));
+    }
+}
+
+static VALUE RCbody_set_acc_jerk(VALUE self, VALUE rp)
+     
+{
+    int k;
+    VALUE local, element;
+    Cbody_ptr p;
+    Data_Get_Struct(self, Cbody, p);
+    local = rb_iv_get(rp, "@acc");
+    for(k=0;k<3;k++){
+	p->acc[k]=NUM2DBL(rb_ary_entry(local,k));
+    }
+    local = rb_iv_get(rp, "@jerk");
+    for(k=0;k<3;k++){
+	p->jerk[k]=NUM2DBL(rb_ary_entry(local,k));
+    }
+
+}
+
+static VALUE RCbody_clear_acc_jerk(VALUE self)
+
+{
+    int k;
+    Cbody_ptr p;
+    Data_Get_Struct(self, Cbody, p);
+    for(k=0;k<3;k++){
+	p->acc[k]=0.0;
+	p->jerk[k]=0.0;
+    }
+}
+
+
+static VALUE Cbody_set_epot_and_collq(VALUE self,VALUE c)
+{
+    epot = NUM2DBL(rb_cv_get(c, "@@epot"));
+    coll_time_q = NUM2DBL(rb_cv_get(c, "@@coll_time_q"));
+    return Qnil;
+}
+
+static VALUE Cbody_get_epot_and_collq(VALUE self,VALUE c)
+{    
+    rb_cv_set(c, "@@epot",rb_float_new(epot));
+    rb_cv_set(c, "@@coll_time_q",rb_float_new(coll_time_q));
+    return Qnil;
+}
+
+
+static void Cbody_pairwize_force(Cbody_ptr p1, Cbody_ptr p2)
+{
+
+    int k;
+    real acci[3], accj[3], jerki[3], jerkj[3];
+    pairwise_acc_jerk_pot_coll(p1->mass, p2->mass,
+			       p1->pos, p2->pos,
+			       p1->vel, p2->vel,
+			       acci, accj, jerki, jerkj,
+			       &epot, &coll_time_q);
+    for(k=0;k<NDIM;k++){
+	p1->acc[k] += acci[k];
+	p1->jerk[k] += jerki[k];
+	p2->acc[k] += accj[k];
+	p2->jerk[k] += jerkj[k];
+    }
+}
+
+
+static VALUE RCbody_pairwize_force(VALUE rp1, VALUE rp2)
+{
+    real * acci;
+    Cbody_ptr p1;
+    Cbody_ptr p2;
+    Data_Get_Struct(rp1, Cbody, p1);
+    Data_Get_Struct(rp2, Cbody, p2);
+    Cbody_pairwize_force(p1, p2);
+    return Qnil;
+}
+
+		    
+    
+
 void Init_pairwize()
 {
-    /* say_helloメソッドを定義する。 */
     rb_define_global_function("say_hello", say_hello, 0);
     rb_define_global_function("hello1", hello1, 1);
     rb_define_global_function("hello2", hello2, 2);
     rb_define_global_function("pairwize_force", pairwize_force, 3);
+    RCbody = rb_define_class("Cbody", rb_cObject);
+    rb_define_singleton_method(RCbody, "new", Cbody_new, 0);
+    rb_define_method(RCbody, "set_mass", RCbody_set_mass, 1);
+    rb_define_method(RCbody, "get_mass", RCbody_get_mass, 0);
+    rb_define_method(RCbody, "set_pos_vel_and_mass",
+		     RCbody_set_pos_vel_and_mass, 1);
+    rb_define_method(RCbody, "set_acc_jerk",
+		     RCbody_set_acc_jerk, 1);
+    rb_define_method(RCbody, "get_acc_jerk",
+		     RCbody_get_acc_jerk, 1);
+    rb_define_method(RCbody, "set_epot_and_collq",
+		     Cbody_set_epot_and_collq, 1);
+    rb_define_method(RCbody, "get_epot_and_collq",
+		     Cbody_get_epot_and_collq, 1);
+    rb_define_method(RCbody, "pairwize_force",
+		     RCbody_pairwize_force, 1);
+
 }
 
