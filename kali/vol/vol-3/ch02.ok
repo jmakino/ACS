@@ -252,11 +252,22 @@ it should be converted to a proper vector at the end of the day.
 
 *Alice*: Fine with me.  This is really a matter of taste.
 
+== Potential Energy
+
 *Bob*: While we're at in, let me walk you through the rest of the +Body+
 class definition.  The potential is constructed in a very similar way
 as the acceleration, by doing a body walk through the whole system.
-The difference is that the potential energy includes a product of the
-mass of the calling particle and the called particle:
+In the two-body case, we started with:
+
+ :inccode: .rkbody.rb+epot
+
+My new N-body version reads:
+
+ :inccode: .rknbody1.rb+epot+Body
+
+The difference with respect to +acc+ is that the potential energy
+includes a product of the mass of the calling particle _i_ and the
+mass of the called particle _j_:
 
 :equation:
 E_{pot, i} =  - G \sum_{j=1 \atop j \neq i}^N 
@@ -379,11 +390,9 @@ certainly nice to work with an interpreted, rather than a compiled language:
 this type of checking you can do extremely quickly and easily.
 
 *Alice*: The story for the potential energy must be similar.  For each particle
-we have a method +epot+ associated with the +Body+ class:
-
- :inccode: .rknbody1.rb+epot+Body
-
-and a method with the same name, but associated with the +Nbody+ class:
+we have a method +epot+ associated with the +Body+ class, as you just
+showed us already, and a method with the same name, but associated
+with the +Nbody+ class:
 
  :inccode: .rknbody1.rb+epot+Nbody
 

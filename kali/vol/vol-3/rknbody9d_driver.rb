@@ -3,7 +3,7 @@ require "rknbody9.rb"
 include Math
 
 eps = 0.01
-dt = 0.0001          # time step
+dt = 0.001           # time step
 dt_dia = 2           # diagnostics printing interval
 dt_out = 10          # output interval
 dt_end = 2           # duration of the integration

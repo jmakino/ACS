@@ -2,10 +2,10 @@ require "rknbody9.rb"
 
 include Math
 
-eps = 0.01
+eps = 0.3
 dt = 0.001           # time step
 dt_dia = 2           # diagnostics printing interval
-dt_out = 10          # output interval
+dt_out = 2           # output interval
 dt_end = 2           # duration of the integration
 init_out = false     # initial output requested ?
 x_flag = false       # extra diagnostics requested ?

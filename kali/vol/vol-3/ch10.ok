@@ -28,12 +28,43 @@ just passed through the center, as is clear from their position
 components, and are continuing to move on, as their velocity
 components indicate.
 
+But wait a minute, the energy <tt>E_tot</tt> at time <tt>t = 0</tt> is
+the same as before.  How can that be?  When we change the potential,
+there should at least be some change in the value of the initial total
+energy.
+
+*Bob*: Ah, but the particles are all separated by at least 2 length units
+from each other.  Since the softening always comes in through an expression
+containing <tex>$r^2 + \epsilon^2$</tex>, we have to check 
+the difference between <tex>$2^2$</tex> and <tex>$2^2 + (0.1)^2$</tex>.
+The latter is only a quarter of a percent larger than the former.  And
+for most particle pairs the difference is much smaller still, so the
+total difference is likely to be more like a tenth of a percent, too
+small to show up within the accuracy with which we print out the energy.
+
+== Even larger softening
+
+*Alice*: just to make sure, let us take a softening length of 0.3.
+According to your analysis, that would show a difference in the
+initial total energy, right?
+
+*Bob*: I would think so.  Okay, let's try:
+
+ :commandoutput: ruby rknbody9c_driver.rb < cube1.in
+
+*Alice*: Good!  I'm glad to see that.
+
+*Bob*: Yes, it never hurts to check.
+
+*Alice*: And it hurts a lot if you don't check, and run into mysterious
+problems later.
+
 == Small Softening
 
 *Bob*: Let's see how far we can push it.  How about a softening length
 of 0.01?  And let me suppress the snapshot output for now:
 
- :commandoutput: ruby rknbody9c_driver.rb < cube1.in
+ :commandoutput: ruby rknbody9d_driver.rb < cube1.in
 
 *Alice*: Not too surprising.  With velocities of order unity, and a
 softening length that is only ten times larger than the time step,
@@ -51,7 +82,7 @@ softening radius in even less than one time step.
 So yes, it would have been worrisome if the errors would _not_ have
 been large.  Let me use a ten times smaller time step:
 
- :commandoutput: ruby rknbody9d_driver.rb < cube1.in
+ :commandoutput: ruby rknbody9e_driver.rb < cube1.in
 
 *Alice*: That's more like it.  Actually, not so different from what we
 found earlier, without softening.
@@ -67,7 +98,7 @@ each other, and you have to aim carefully to come really close.
 whether the error in the energy conservation drops by at least a
 factor of sixteen:
 
- :commandoutput: ruby rknbody9e_driver.rb < cube1.in
+ :commandoutput: ruby rknbody9f_driver.rb < cube1.in
 
 *Alice*: I think we can declare victory.
 
