@@ -1,16 +1,3 @@
-# A simple forward-Euler integrator, for an 2-body system.
-#
-# <i>I/O data format:</i>
-# mass::         sum of masses of the two particles
-# position::     x y z : vector components of relative position
-# velocity::     vx vy vz : vector components of relative velocity
-#
-# <i>usage:</i>
-#
-#  ruby euler.rb [-h (for help)] [-d step_size]
-#                [-e diagnostics_interval] [-o output_interval]
-#                [-t total_duration]
-
 include Math
 
 class Body
@@ -60,11 +47,9 @@ class Body
     STDERR.print " , E_tot = "
     STDERR.printf("%.3g", etot)
     STDERR.print "\n             ",
-#      "absolute energy error: E_tot - E_init = "
       "E_tot - E_init = "
     STDERR.printf("%.3g", etot-@e0)
     STDERR.print "\n  ",
-#      "relative energy error: (E_tot - E_init) / E_init = "
       "(E_tot - E_init) / E_init = "
     STDERR.printf("%.3g", (etot - @e0) / @e0 )
     STDERR.print "\n"
@@ -94,67 +79,7 @@ class Body
 
 end
 
-#<i>driver for forward-Euler 2-body integrator</i>
-
-def print_help
-  print "usage: ", $0,
-    " [-h (for help)] [-d step_size] [-e diagnostics_interval] \n",
-    "         [-o output_interval] [-t total_duration]\n"
-end
-
-require "getoptlong"
-
-parser = GetoptLong.new
-parser.set_options(
-  ["-d", "--step_size", GetoptLong::REQUIRED_ARGUMENT],
-  ["-e", "--diagnostics_interval", GetoptLong::REQUIRED_ARGUMENT],
-  ["-h", "--help", GetoptLong::NO_ARGUMENT],
-  ["-o", "--output_interval", GetoptLong::REQUIRED_ARGUMENT],
-  ["-t", "--total_duration", GetoptLong::REQUIRED_ARGUMENT])
-
-def read_options(parser)
-  dt = 0.01
-  dt_dia = 1
-  dt_out = 1
-  dt_tot = 1
-
-  loop do
-    begin
-      opt, arg = parser.get
-      break if not opt
-
-      case opt
-      when "-d"
-	dt = arg.to_f
-      when "-e"
-	dt_dia = arg.to_f
-      when "-h"
-	print_help
-        exit         # exit after providing help
-      when "-o"
-	dt_out = arg.to_f
-      when "-t"
-	dt_tot = arg.to_f
-      end
-
-    rescue => err
-      print_help
-      exit           # exit if option unknown
-    end
-
-  end
-
-  return dt, dt_dia, dt_out, dt_tot
-end
-
 def evolve(b, dt, dt_dia, dt_out, dt_tot)
-
-#  STDERR.print "Starting a forward Euler integration for a ",
-#               "2-body system,\n",
-#               "  for a duration of ", dt_tot,
-#               "  with time step dt = ", dt,
-#               " ,\n  with diagnostics output interval dt_dia = ", dt_dia,
-#               ",\n  and snapshot output interval dt_out = ", dt_out, ".\n"
 
   time = 0
   nsteps = 0
@@ -185,7 +110,10 @@ def evolve(b, dt, dt_dia, dt_out, dt_tot)
   end
 end
 
-dt, dt_dia, dt_out, dt_tot = read_options(parser)
+dt = 0.0001
+dt_dia = 1
+dt_out = 1
+dt_tot = 1
 
 STDERR.print "dt = ", dt, "\n",
       "dt_dia = ", dt_dia, "\n",
@@ -195,6 +123,3 @@ STDERR.print "dt = ", dt, "\n",
 b = Body.new
 b.simple_read
 evolve(b, dt, dt_dia, dt_out, dt_tot)
-
-
-
