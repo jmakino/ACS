@@ -23,6 +23,7 @@ d-3) we probably want to make subdirectory for each added session, so
        -- image files for equations
        -- forward pointers to future notes
 
+
 Exactly what way we refer to past notes? In what format?
 
 In other words, how we set identity of the note?
@@ -52,3 +53,42 @@ and, in addition to them, the id to be used for furture
 reference. This id would also be used as the name for the subdirectory
 to store additional informations.
 
+Maintainance:
+
+Basic idea:
+
+--- each developer and system (acs@grape) have complete copy of everything
+--- when one new labnote is committed, acs will update its local copy
+    by svn update, and then execute the command to update global file
+    (and html stuff)
+    
+Problem:  how we prevent a random user (like Jun or Piet) to mess up
+the global file?
+
+Simple answer: Since the global file itself is maintained by svn, you
+do not care. You can recover the corrupted file from older svn
+archive.
+
+directory structure and name conventions
+
+acs
+ |
+ |lab---- 200311----001
+ |      |
+ |      |
+ |      |
+ |      |--200312----
+ |
+ |
+ |src
+ 
+lab directory contains
+ --- all top-level HTML files and mother .not file
+ --- directory for each month
+
+ directory for each month then contains
+   --- each labnote file sequecened as 001-999
+       these files have name xxx.not
+   --- directory named 001 etc to store subsidary information
+    
+ 
