@@ -400,9 +400,10 @@ s_0 \,=\, f_0f_r + v_0^2f_{rr} +2v_0f_{rt}+ f_{tt}
 Next, with one more differentiation of the equation for <tex>$s(t)$</tex>,
 we can derive the crackle:
 
-:equation:
-c(t) \,=\, {d\over dt}s(t) \,=\, j(t)f_r + 3v(t)a(t)f_{rr} + 3a(t)f_{rt} 
-+ \left(v(t)\right)^3f_{rrr} + 3\left(v(t)\right)^2f_{rrt}
+ :eqnarray:
+c(t) \,=\, {d\over dt}s(t) \,=\, j(t)f_r &+& 3v(t)a(t)f_{rr} \ +
+ \  3a(t)f_{rt}                                                   \nonumber\\
+&+& \left(v(t)\right)^3f_{rrr} + 3\left(v(t)\right)^2f_{rrt}
 + 3v(r)f_{rtt} + f_{ttt}
 
 Using the expression for the jerk, that we found above, we find for
