@@ -794,13 +794,13 @@ Plugging this back into the first line of Eq. (ref(sum1)), we get for the
 new position:
 
 :equation:
-x_1 &=& x_0 + \left( (1-\alpha)k_1 + \alpha k_2 \right) \tau
+x_1 = x_0 + \left( (1-\alpha)k_1 + \alpha k_2 \right) \tau
 
 just as in Eq. (ref(sum2).  Since <tex>$\eta = 1/(2\alpha)$</tex>,
 the expression for the second force becomes:
 
 :equation:
-k_2 &=& f(x_0 + {1\over 2 \alpha} k_1 \tau)
+k_2 = f(x_0 + {1\over 2 \alpha} k_1 \tau)
 
 Indeed, for <tex>$\eta = 1/(2\alpha)$</tex>, Eq. (ref(sum1)) becomes
 Eq. (ref(sum2)).  It all hangs together!  The third force calculation
