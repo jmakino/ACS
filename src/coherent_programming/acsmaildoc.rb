@@ -8,6 +8,7 @@ require "time.rb"
 $docroot = "/usr2/acs/acs/not/Mail"
 $maildir = "/home/not/Mail/inbox"
 $seqfile = $docroot + "/seq"
+
 module Acsmaildoc
   def prep_cp(infile, outfile)
     begin
@@ -34,7 +35,6 @@ module Acsmaildoc
     ofile.close
   end
 
-  # :segment start: prep_rb
   def process_mailfile(seqnum)
     infile = open(seqname = $maildir + "/" + seqnum.to_s, "r")
     inheader = 1
@@ -69,7 +69,8 @@ module Acsmaildoc
     infile.close
     outfile.close if inheader == 0
   end
-  # :segment end: prep_rb
+
+
   def acsmaildoc()
     begin
       ifile = open($seqfile, "r")
