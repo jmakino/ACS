@@ -1,0 +1,644 @@
+\documentclass{article}[12pt]
+\usepackage{verbatim}\usepackage{epsf}
+\usepackage{subsubsection}
+\setcounter{secnumdepth}{7}
+\setcounter{tocdepth}{7}
+
+\setlength{\textwidth}{16cm}            % default seems to be around 4.8 inch,
+\addtolength{\evensidemargin}{-0.2in}    % so we can devide the extra 0.4 inch
+\addtolength{\oddsidemargin}{-0.2in}     % equally over left and right margin
+
+\setlength{\parindent}{2.5em}
+\setlength{\parskip}{1.2 ex plus0.2ex minus 0.1ex}
+\renewcommand{\baselinestretch}{1.05}
+\renewcommand{\floatpagefraction}{1.0}
+\renewcommand{\topfraction}{1.0}
+
+\def\filler{xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
+xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
+xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
+xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
+xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
+xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
+xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx
+xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx xxxx}
+\def\filler{}
+
+\begin{document}
+
+\title{Kali: A Gravitational Many-Body Code}
+
+\author{Piet Hut \& Jun Makino}
+
+\maketitle
+
+\begin{abstract}
+
+xxx
+
+yyy
+
+xxx
+
+\end{abstract}
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\section{Introduction}
+
+\filler
+
+\subsection{A Brief History of Many-Body Codes}
+
+\filler
+
+\subsubsection{Prehistory}
+
+Hand Calculations by Chazy and Copenhagen groups
+
+Using photoelectric cells
+
+First calculations in Los Alamos(?)
+
+\subsubsection{Diversification}
+
+Cambrian explosion in the sixties.
+
+In the seventies and eighties: Aarseth's codes the only game in town
+for collisional stellar dynamics, or as it became called later: the
+dynamics of dense stellar systems.
+
+In the nineties: the Kira code, as the only competitor.
+
+\subsubsection{NBODY4}
+
+Mention the various NBODYx, and the prominent role of NBODY4, and its
+main structure.  Pros and cons.
+
+\subsubsection{Kira}
+
+Main structure.  Pros and cons.
+
+\subsection{Modeling Dense Stellar Systems}
+
+\filler
+
+\subsubsection{Stellar Evolution and Binary Stellar Evolution}
+
+The need for stellar evolution.
+
+From stellar dynamics: need to treat physical encounters within dynamics.
+
+From stellar evolution: need to make population studies dynamic.
+
+The problem that stellar evolution codes don't run by themselves.
+
+\subsubsection{Hydrodynamics of Stellar Collisions}
+
+From hydrodynamics: need cluster models to generate relevant collisions.
+
+Collision conference 2000 at AMNH.
+
+\subsubsection{Stellar Dynamics in Various Approximations}
+
+Mention Monte Carlo codes, Fokker-Planck, Gas Codes, etc.
+
+\subsubsection{Recipe-based Stellar Evolution: BSE and SeBa}
+
+\filler
+
+\subsubsection{MODEST workshops, reviews, working groups}
+
+Brief history.  Main goals.  Current situation (needs frequent updates).
+
+\subsection{A New Approach}
+
+\filler
+
+\subsubsection{Thorny Problems in Existing Many-Body Codes}
+
+\filler
+
+\subsubsection{The Need for a Protocol to Connect Codes}
+
+\filler
+
+\subsubsection{The Kali Code: A Top-Down Approach to Specification}
+
+Kali is the name of an Indian Goddess, associated with time ({\it
+kala} is the Sanskrit word for time).  Kali is associated with wild
+motion and destruction but also with freedom from fear.  She is the
+embodiment of the energy and power of time and manifest in both benign
+and terrible ways.  Kali is black, symbolizing the Night of Time; She
+straddles the cosmic eons.  Her four arms represent the four directons
+of space identified with the complete cycle of Time.  The name of the
+Indian city Calcutta is actually an anglicized version of {\it
+kali-ghatt}, or `steps of kali', Calcutta being Kali's temple city.
+
+\clearpage
+\newpage
+
+\section{A Modular Approach}
+
+\filler
+
+\subsection{The Need for Flexibility and Robustness}
+
+\filler
+
+\subsubsection{Stellar Evolution Codes as Black Boxes}
+
+\filler
+
+\subsubsection{Mixing Various Languages and Implementations}
+
+\filler
+
+\subsubsection{The Use of Special-Purpose Hardware}
+
+\filler
+
+\subsubsection{Anticipating Unforseen Developments}
+
+\filler
+
+\subsection{The Role of Specifications}
+
+\filler
+
+\subsubsection{Language Independent Descriptions}
+
+\filler
+
+\subsubsection{Validation}
+
+\filler
+
+\subsection{The Importance of Interface Definitions}
+
+\filler
+
+\subsubsection{Interfaces on Many Levels}
+
+\filler
+
+\subsubsection{Simplicity and Precision}
+
+\filler
+
+\clearpage
+\newpage
+
+\section{Top-Level Structure}
+
+\filler
+
+\subsection{Stellar Dynamics, Hydrodynamics and Stellar Evolution}
+
+\filler
+
+\subsection{The Global-Local Structure of Stellar Dynamics}
+
+\begin{figure}[htb]
+\begin{center}
+\epsfxsize = 3in
+\epsffile{top1.eps}
+\caption
+{Top-level view xxx xxx xxx xxx}
+\label{fig:top1}
+\end{center}
+\end{figure}
+
+%\begin{figure}[htb]
+%\begin{center}
+%\epsfxsize = 3.5in
+%\epsffile{top2.eps}
+%\caption
+%{Top-level view xxx xxx xxx xxx}
+%\label{fig:top2}
+%\end{center}
+%\end{figure}
+
+\filler
+
+\subsubsection{Global Stellar Dynamics}
+
+\filler
+
+\subsubsection{Local Stellar Dynamics}
+
+\filler
+
+\subsubsection{Stellar Physics}
+
+\filler
+
+\subsubsection{Master Scheduler}
+
+\begin{figure}[htb]
+\begin{center}
+\epsfxsize = 3.5in
+\epsffile{top3.eps}
+\caption
+{Top-level view xxx xxx xxx xxx}
+\label{fig:top3}
+\end{center}
+\end{figure}
+
+\filler
+
+\subsection{Connectivity between Modules}
+
+\filler
+
+\subsubsection{Global-Local Conversion}
+
+\filler
+
+\subsubsection{Local-Stellar Conversion}
+
+\filler
+
+\subsubsection{Global-Local-Stellar Coupling}
+
+\filler
+
+\subsubsection{Master-[Global/Local/Stellar] Sequencing}
+
+\filler
+
+\clearpage
+\newpage
+
+\section{Global Stellar Dynamics}
+
+\filler
+
+\subsection{Overview}
+
+\begin{figure}[htb]
+\begin{center}
+\epsfxsize = 2.5in
+\epsffile{gsd1.eps}
+\caption
+{Global Dynamics overview xxx xxx xxx xxx}
+\label{fig:gsd1}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\epsfxsize = 3.5in
+\epsffile{gsd2.eps}
+\caption
+{Global Dynamics detailed overview xxx xxx xxx xxx}
+\label{fig:gsd2}
+\end{center}
+\end{figure}
+
+\clearpage
+
+\filler
+
+\subsubsection{Internal Structures}
+
+\filler
+
+\subsubsection{External Interfaces}
+
+\filler
+
+\subsection{Scheduler Module}
+
+\filler
+
+\subsubsection{Structure}
+
+\filler
+
+\subsubsection{Interfaces}
+
+\filler
+
+\subsubsubsection{Interface with Orbit Module}
+
+\filler
+
+\subsubsubsection{Global-Master Sequencing Interface}
+
+\filler
+
+\subsection{Orbit Module}
+
+\filler
+
+\subsubsection{Structure}
+
+\filler
+
+\subsubsection{Interfaces}
+
+\filler
+
+\subsubsubsection{Interface with Scheduler Module}
+
+\filler
+
+\subsubsubsection{Interface with Interaction Module}
+
+\filler
+
+\subsubsubsection{Global-Local Conversion Interface}
+
+\filler
+
+\subsubsubsection{Global-Stellar Coupling Interface}
+
+For changes in mass and radius.
+
+\subsection{Interaction Module}
+
+\filler
+
+\subsubsection{Structure}
+
+\filler
+
+\subsubsection{Interfaces}
+
+\filler
+
+\subsubsubsection{Interface with Orbit Module}
+
+\filler
+
+\subsubsubsection{Global-Local Coupling Interface}
+
+\filler
+
+\subsubsubsubsection{Global-to-Local Coupling Interface}
+
+\filler
+
+\subsubsubsubsection{Local-to-Global Coupling Interface}
+
+\filler
+
+\subsubsubsection{Global-Stellar Coupling Interface}
+
+For example, to take into account the effects of the quadrupole
+moments of isolated contact binaries.
+
+\subsubsubsection{Global-to-Stellar Coupling Interface}
+
+\filler
+
+\subsubsubsection{Stellar-to-Global Coupling Interface}
+
+If a single star has a large flattening, and therefore a quadrupole
+moment that can influence nearby stars, then that star will be flagged
+through the `f' factor in $r_{ij} < f(R_i + R_J)$ as neading a `hydro'
+type treatment (which could be just a simple formula).
+
+All contact binaries always send three pseudoparticles to the global
+module to communicate their quadrupole moment.
+
+\clearpage
+\newpage
+
+\section{Local Stellar Dynamics}
+
+\filler
+
+\subsection{Overview}
+
+\begin{figure}[htb]
+\begin{center}
+\epsfxsize = 3.5in
+\epsffile{lsd1.eps}
+\caption
+{Local Dynamics overview xxx xxx xxx xxx}
+\label{fig:lsd1}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\epsfxsize = 4.5in
+\epsffile{lsd2.eps}
+\caption
+{Local Dynamics detailed overview xxx xxx xxx xxx}
+\label{fig:lsd2}
+\end{center}
+\end{figure}
+
+\clearpage
+
+\filler
+
+\subsubsection{Internal Structures}
+
+\filler
+
+\subsubsection{External Interfaces}
+
+\filler
+
+\subsection{Scheduler Module}
+
+\filler
+
+\subsubsection{Structure}
+
+\filler
+
+\subsubsection{Interfaces}
+
+\filler
+
+\subsubsubsection{Interface with Orbit Module}
+
+\filler
+
+\subsubsubsection{Local-Master Sequencing Interface}
+
+\filler
+
+\subsection{Orbit Module}
+
+\filler
+
+\subsubsection{Structure}
+
+\noindent
+For `collapsed' binaries:
+
+1) if the outside perturbing tidal force is more than $10^{-3}$ times the
+internal forces, the perturbation is considered strong.
+
+2) if the perturber is closer than 10 times the radius of the binary, the
+perturbation is also considered strong, even if it does not influence
+the binary very much (if the perturber is very light, for example), since
+the binary is likely to influence the other particle significantly.
+
+\noindent
+For `quarantined' multiples, we need a similar criterion, perhaps with
+different coefficients.
+
+\subsubsection{Interfaces}
+
+\filler
+
+\subsubsubsection{Interface with Scheduler Module}
+
+Warn about occurrence of slingshot events producing new high-velocity stars.
+
+\subsubsubsection{Interface with Interaction Module}
+
+\filler
+
+\subsubsubsection{Interface with Fusion Module}
+
+\filler
+
+\subsubsubsection{Interface with Fission Module}
+
+\filler
+
+\subsubsubsection{Local-Stellar Coupling Interface}
+
+\filler
+
+\subsection{Interaction Module}
+
+\filler
+
+\subsubsection{Structure}
+
+\filler
+
+\subsubsection{Interfaces}
+
+\filler
+
+\subsubsubsection{Interface with Orbit Module}
+
+\filler
+
+\subsubsubsection{Local-Global Coupling Interface}
+
+\filler
+
+\subsubsubsection{Local-Lobal Coupling Interface}
+
+\filler
+
+\subsubsubsection{Local-Stellar Coupling Interface}
+
+\filler
+
+\subsection{Fusion Module}
+
+\filler
+
+\subsubsection{Structure}
+
+\filler
+
+\subsubsection{Interfaces}
+
+\filler
+
+\subsubsubsection{Interface with Orbit Module}
+
+\filler
+
+\subsubsubsection{Local-Global Fusion Conversion Interface}
+
+\filler
+
+\subsection{Fission Module}
+
+\filler
+
+\subsubsection{Structure}
+
+\filler
+
+\subsubsection{Interfaces}
+
+\filler
+
+\subsubsubsection{Interface with Orbit Module}
+
+\filler
+
+\subsubsubsection{Local-Global Fission Conversion Interface}
+
+\filler
+
+\clearpage
+\newpage
+
+\section{Stellar Physics}
+
+\filler
+
+\subsection{Overview}
+
+\begin{figure}[htb]
+\begin{center}
+\epsfxsize = 2.5in
+\epsffile{sp1.eps}
+\caption
+{Stellar Physics overview xxx xxx xxx xxx}
+\label{fig:sp1}
+\end{center}
+\end{figure}
+
+\begin{figure}[htb]
+\begin{center}
+\epsfxsize = 3.5in
+\epsffile{sp2.eps}
+\caption
+{Stellar Physics detailed overview xxx xxx xxx xxx}
+\label{fig:sp2}
+\end{center}
+\end{figure}
+
+\clearpage
+
+\filler
+
+\subsection{}
+
+\filler
+
+\subsection{}
+
+\filler
+
+\subsection{}
+
+\filler
+
+\clearpage
+\newpage
+
+\section{Conclusion}
+
+\filler
+
+\subsection{}
+
+\filler
+
+\subsection{}
+
+\filler
+
+\end{document}

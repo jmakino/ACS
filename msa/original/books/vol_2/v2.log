@@ -1,0 +1,114 @@
+This is TeX, Version 3.14159 (Web2C 7.3.1) (format=latex 2001.8.23)  14 MAY 2002 13:16
+**v2
+(v2.tex
+LaTeX2e <1999/12/01> patch level 1
+Babel <v3.6Z> and hyphenation patterns for american, french, german, ngerman, i
+talian, portuges, russian, spanish, nohyphenation, loaded.
+(/usr/share/texmf/tex/latex/base/book.cls
+Document Class: book 1999/09/10 v1.4a Standard LaTeX document class
+(/usr/share/texmf/tex/latex/base/bk10.clo
+File: bk10.clo 1999/09/10 v1.4a Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+) (pream.tex
+(/usr/share/texmf/tex/latex/tools/verbatim.sty
+Package: verbatim 2000/01/07 v1.5m LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks14
+\verbatim@line=\toks15
+\verbatim@in@stream=\read1
+)
+(/usr/share/texmf/tex/plain/dvips/epsf.tex
+This is `epsf.tex' v2.7k <10 July 1997>
+\epsffilein=\read2
+\epsfframemargin=\dimen103
+\epsfframethickness=\dimen104
+\epsfrsize=\dimen105
+\epsftmp=\dimen106
+\epsftsize=\dimen107
+\epsfxsize=\dimen108
+\epsfysize=\dimen109
+\pspoints=\dimen110
+\epsfnoopenhelp=\toks16
+)) (v2.aux (pref.aux) (ch1.aux))
+\openout1 = `v2.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 5.
+LaTeX Font Info:    ... okay on input line 5.
+ (def.tex) (title.tex
+Overfull \hbox (101.63951pt too wide) in paragraph at lines 7--2
+[][][]\OT1/cmtt/m/n/10 Time-stamp: <2002-05-14 13:16:39 piet>
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 7--2
+
+ []
+
+) [1
+
+
+]
+\openout2 = `pref.aux'.
+
+ (pref.tex [2
+
+] [1] [2
+
+] (v2.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 3.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 3.
+)
+\tf@toc=\write3
+\openout3 = `v2.toc'.
+
+ [3] [4
+
+] (v2.lof)
+\tf@lof=\write4
+\openout4 = `v2.lof'.
+
+) [5] [6
+
+
+]
+\openout2 = `ch1.aux'.
+
+ (ch1.tex
+Chapter 1.
+[1
+
+
+] [2] [3]) [4] (v2.aux (pref.aux) (ch1.aux)) ) 
+Here is how much of TeX's memory you used:
+ 429 strings out of 20863
+ 4169 string characters out of 195485
+ 51125 words of memory out of 350001
+ 3411 multiletter control sequences out of 10000+15000
+ 9083 words of font info for 32 fonts, out of 400000 for 1000
+ 26 hyphenation exceptions out of 10000
+ 27i,10n,20p,193b,211s stack positions out of 3000i,100n,1500p,50000b,4000s
+
+Output written on v2.dvi (12 pages, 12908 bytes).

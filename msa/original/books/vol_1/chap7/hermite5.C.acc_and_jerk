@@ -1,0 +1,42 @@
+//-----------------------------------------------------------------------------
+void acc_and_jerk(double m[], double r[][3], double v[][3], double a[][3],
+                  double jk[][3], int n, double & coll_time)
+{
+    double coll_time_sq = 1e300;;
+    double coll_est_sq;
+
+    for (int i = 0; i < n; i++)
+        for (int k = 0; k < 3; k++)
+            a[i][k] = jk[i][k] = 0.0;
+    for (int i = 0; i < n; i++){
+        for (int j = i+1; j < n; j++){
+            double rji[3], vji[3];
+            for (int k = 0; k < 3; k++){
+                rji[k] = r[j][k] - r[i][k];
+                vji[k] = v[j][k] - v[i][k];
+            }
+            double r2 = 0;
+            double v2 = 0;
+            for (int k = 0; k < 3; k++){
+                r2 += rji[k] * rji[k];
+                v2 += vji[k] * vji[k];
+            }
+            coll_est_sq = r2/v2;
+            if (coll_time_sq > coll_est_sq)
+                coll_time_sq = coll_est_sq;
+            double r3 = r2 * sqrt(r2);
+            double rv = 0;
+            for (int k = 0; k < 3; k++)
+                rv += rji[k] * vji[k];
+            rv /= r2;
+            for (int k = 0; k < 3; k++){
+                a[i][k] += m[j] * rji[k] / r3;
+                a[j][k] -= m[i] * rji[k] / r3;
+                jk[i][k] += m[j] * (vji[k] - 3 * rv * rji[k]) / r3;
+                jk[j][k] -= m[i] * (vji[k] - 3 * rv * rji[k]) / r3;
+            }
+        }
+    }
+    coll_time = sqrt(coll_time_sq);
+}
+//-----------------------------------------------------------------------------

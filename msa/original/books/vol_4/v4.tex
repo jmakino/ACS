@@ -1,0 +1,72 @@
+\documentclass{book}
+% comment out the following line if you want to latex the whole book:
+%\includeonly{ch9}
+  \input{pream.tex}
+\begin{document}
+  \frontmatter
+\makebox[3.5in][s]{}\verb=Time-stamp: <2002-01-20 21:29:09 piet>=
+%
+% nice latex feature: you can specify which files you want to include in your
+% next output, by listing only those files as arguments to \includeonly{} 
+% above on the third line (I had to put this comment here, since the emacs
+% time stamp is only recognized in the first eight lines).
+% NOTE: if you want to print out the whole book, simply comment out the line
+% starting with \includeonly above.
+%
+% It is a good idea to write this top level file out, each time a change has
+% been made, in order to get the correct time stamp to appear on the title
+% page.  Even if you print out only one chapter, still the title page will
+% appear, so that the time stamp will be include (otherwise the time stamp
+% would appear uselessly on a separate white page, before the chapter).
+%
+    \input{def}           % input, not include, since all files need the \def{}
+    \input{title}         % input, in order to let the time stamp appear
+%
+% uncomment the following three lines, if you want to print two pages
+% on one, using e.g. "psnup -2 v1.ps > v1_2.ps".  Normally the next three
+% lines should be commented out, but in that case psnup will print the right
+% (left) pages on the left (right) side.
+%
+%\newpage
+%\thispagestyle{empty}
+%\mbox{}
+%
+    \include{pref}
+  \mainmatter
+      \include{ch1}
+    \part{$N$-Body Codes with Recursive Coordinate Refinement}
+      \include{ch2}
+      \include{ch3}
+    \part{Gravitylab}
+      \include{ch4}
+      \include{ch5}
+    \part{Astrophysical Applications}
+      \include{ch6}
+      \include{ch7}
+      \include{ch8}
+%    \appendix
+%      \include{apA}
+%      \include{apB}
+  \backmatter
+\end{document}
+%
+% ...........................................................................
+%
+% history:
+%
+% May 2001: ph and jm met in New York, where they wrote code and produced
+%           pictures for the two-body problem.
+%
+% July 2001: ph and jm met in Tokyo, where they wrote code and produced
+%            pictures for the figure-8 three-body problem.
+%
+% Nov. 2001: ph and jm met in New York, where they discussed how to structure
+%            the first three volumes.  Following their meeting, ph started to
+%            write draft text for the first part of volume 1.
+%
+% Dec. 2001: ph started to add introductory text in preface and early chapters
+%            and ph and jm began to experiment with joint code development and
+%            text writing across the internet
+%
+% ...........................................................................
+%

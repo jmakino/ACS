@@ -1,0 +1,453 @@
+                  Time-stamp: <2003-09-17 11:08:41 piet>
+
+   chronicles.txt              2001, Dec. 12                Piet Hut
+
+   This file contains a summary of the major questions and decisions
+   that come up while developing the first version of gravitylab.
+
+   For now, Piet Hut will maintain this file, while Jun Makino will
+   send his comments by email, to be inserted by Piet.
+
+2001-12-12
+
+After a one-hour phone conversation between Piet and Jun, we decided
+that Piet will begin to set up a mini-version of gravitylab, starting
+with a leapfrog integrator, and up to a block-timestep Hermite code.
+
+That evening we had another 20 minute phone call, to decide the degree
+of complexity of our implementation of leapfrog and hermite codes in
+our first book.  The conclusion: we will use unix style one-letter
+command line arguments, with a -h option to echo the option choices;
+we will represent an N-body snapshot as a list of {N, t} on one line,
+followed by N lines of particle data {m, r, v}, followed optionally by
+more snapshots.  Adding anything more (history mechanism, scripting,
+documentation, built-in test options, exception handling, fancier data
+structures) will detract from the goal of quickly getting to a useable
+N-body tool.  Educationally, it is also better to introduce the fancier
+stuff later, when hopefully it is becoming clearer how useful it all is.
+
+2001-12-17
+
+Piet completed the first version of a leapfrog integrator, contained
+in one file, using a vector of vectors of reals to represent a snapshot.
+Jun and Piet had a 45-minute phone conversation, in which they decided
+to write at least three versions of this code: one array-based, one
+with vectors of vectors of reals, and one with one higher layer of
+vectors.  They decided not to include any error checking at this point.
+
+2001-12-19
+
+Piet polished and improved a number of aspects of the first leapfrog
+integrator, and then wrote four other versions, as discussed with Jun.
+We now have leapfrog_ptX.C, with X = {1, 2a, 2b, 3a, 3b}, all tested.
+
+2001-12-20
+
+Jun and Piet had a one-hour phone call.  They decided to continue
+coding in the following way:
+1) introduce collisions, as a way to put the fixed-timestep leapfrog
+   to good physical use.  Do this first in the leapfrog_pt1 style,
+   purely array-based;
+2) then develop a vector-based code, in leapfrog_pt3 style, to show
+   (hopefully) that that simplifies matters;
+3) add a class for 3D vectors (called "vect"), to simplify the code,
+   and to give a first practical use of the notion of a simple class,
+   with overloading operators;
+4) use multiple mergers as a reason to introduce stories, which leads
+   to the introduction of a particle class, which can contain a story
+   together with the other dynamical information;
+5) then go to variable timestep leapfrog, and to a hermite version,
+   still with all functions in one file without header files or
+   libraries or even any other need for linking files -- it will be
+   nice to have a stand-alone version of a (flat) hermite code to
+   give away to people who don't necessarily want to install a whole
+   environment such as starlab;
+6) having settled for the time being on a data structure for particles,
+   we can then start splitting up our codes into more specialized files,
+   which leads to a mini (micro?) version of a starlab-like environment.
+
+2001-12-23
+
+Jun and Piet talked for another hour, mostly about the text of the
+first book.  They divided some tasks.  They also discussed whether or
+not to include a toy model for stellar evolution as a next step after
+writing a collision code.  No decision was made about that yet.  Jun
+wondered whether it would be too much right now, if we tried to model
+actual open clusters, including a mass spectrum, etc.  Piet mentioned
+that we could simply provide a toy model, in order to see what minimum 
+requirements it would impose on the nbody data structure, while leaving
+the actual modeling of open clusters for later.
+
+2001-12-25
+
+Piet finished a first draft of chapter 3, on the forward Euler algorithm.
+
+2001-12-27
+
+Jun and Piet talked for three quarters of an hour.  They decided to
+decrease the output for the codes in Ch. 3, since right now it takes
+too long for the postscript files to read in tens of Mbyte of data.
+They talked about code file names, and decided to keep the names in
+Chs. 3 and 4, to change leapfrog_pt1 to nbody_leap1.C, and to call the
+new collision code nbody_coll1.C.  As for file data structures, at the
+end of the book, they will introduce a starlab type format, including
+stories.  That way, a C++ expert picking up the book will not be put
+off, hopefully, but the simplicity of the first part of the book, when
+(s)he sees the (new standard) gravitylab codes at the end.  As for
+comments, they decided to leave out all comments in Chs. 3 and 4, and
+to start commenting only with nbody_leap1.C.  They discussed approaching
+a publisher, given that a first draft of the whole book might be ready
+in a few months.  Addison-Wesley might be the most appropriate.  Piet
+to contact a few people, perhaps Stroustrup or Jeff Robbins.
+
+2001-12-28
+
+Piet finished a first draft of chapters 4 and 5, on the leapfrog.
+
+2001-12-29
+
+Piet wrote a first version of a collision program, nbody_coll1.C
+and adapted a Plummer model generator, mk_plummer.C
+
+2001-12-30
+
+Jun and Piet talked for an hour.  Main points:
+
+1) On p. 33, 34: let them try to plot 40 Mbyte, 400 Mbytes, and see how
+   postscript, etc., becomes very cumbersome.  Say that in the text, but
+   don't provide the file.hs.
+
+2) On p. 46: more explanation about leapfrog background and choice of
+   algorithm?  Time-symmetric AND second order for velocity as well,
+   although it may look like a first-order scheme.  (4.3) may look
+   like first-oder, but interleaving makes it second-order.  Also add
+   various names for leapfrog.
+
+3) Talk more about the notion of functions.  Many physicists use
+   common blocks, not arguments, if they use functions as all.
+   Perhaps put back in an example of the use of functions.  Take the
+   3-body leapfrog, make it in N-body leapfrog with I/O, let's see.
+
+4) Jun to write an awk script to split a C++ source file into
+   functions, each in a file with the function name attached.  The
+   unique comment style will help to do that.
+
+5) We agreed to introduce a Plummer model at this point, to illustrate
+   dynamical equilibrium.  This will require a separate chapter of
+   explanation.
+
+6) We agreed to show five programs, in three styles, as nbody_leap?*.C,
+   assigned to Bob, Alice, Carol.
+
+That evening, Jun and Piet talked for another half uur.  They decided
+to add a discussion of the Hermite scheme to Part I of the book, and
+to add shared but variable time steps before going into collisions.
+The structured examples of nbody_leap1.C, etc., will then be followed
+by a Hermite version with variable timesteps.  In fact, the three
+parts of the book can now be seen to center around:
+1) algorithms;
+2) programming;
+3) astrophysics.
+Whether the Plummer model should go into part 3 or not is a question
+we can later decide.  We had planned to use part 2, but with this new
+division, at the beginning of part 3 would be more logical.
+
+2001-12-31
+
+Piet wrote two versions of the Hermite code, which first seemed to be
+only third-order accurate.  Jun found the bugs, and Piet will use those 
+those as illustrations in the text.
+
+Piet extended an awk script that Jun had written, to take a source
+apart into separate functions that can then directly be included in
+the latex file for the book.
+
+2002-1-3
+
+Piet started a discussion of the Hermite scheme in chapter 6.  He ran
+into trouble with the coefficient for the position corrector, and Jun
+showed how the jerk contributions could be rewritten to change the
+acceleration contributions.
+
+2002-1-5
+
+Jun and Piet talked for half an hour.  We talked about the presentation
+of the Hermite scheme in ch. 6, and the structured codes in ch. 7.  We
+decided to drop the leapfrog in ch 7, and to go directly to Hermite there.
+Rather than introducing too many novelties at once, we will add in turn:
+-- I/O in new format, with time, N, masses, positions, velocities
+-- functions, while maintaining the previous prompting style input
+-- command line arguments
+-- variable time step
+All this will be illustrated with the array-based code.  Comments will
+be added as we go along.
+
+About Part III, astrophysics with collisions, we considered as an
+application the formation of binaries in a star forming region.
+Starting with a Plummer model and a Salpeter mass spectrum, binaries
+will be formed dynamically with a distribution function f(m1, m2, a, e),
+where we can measure the binary {a,e} parameters simply by computing
+energy and angular momentum.  This will then give an interesting and
+non-trivial analysis challenge, to make sense of the data, and we will
+thus have a non-trivial initial value module (Plummer), evolve module
+(Hermite with collisions) and analysis module (dynamic binary formation).
+
+We talked briefly about packaging this last product.  The danger of
+black-boxing is that users may apply it in ways that are not physical,
+and were not foreseen.  The challenge may be to provide enough safeguards
+to prevent that.
+
+2002-1-7
+
+Piet wrote text explaining the use of the Hermite scheme, in ch. 6.
+
+2002-1-8
+
+Piet cleaned up and shortened the code fragments used in Part I.
+
+2002-1-9
+
+Piet wrote a variable time step version of a leapfrog code.
+
+2002-1-10
+
+Piet finished a first version of a variable time step Hermite code.
+
+2002-1-11
+
+Piet wrote chapter 1, after Jun provided some of the figures from the web.
+
+2002-1-12
+
+Jun and Piet talked for half an hour.  They discussed the current
+Hermite presentation.  Strictly speaking, the new accelerations and
+jerks should be calculated from the corrected, not from the predicted
+positions and velocities.   There is an emperical question: do you
+gain more from one (or more) iteration(s) or from halving (or further
+dividing) the time step?  Jun will meet Yoshida during a meeting,
+March 11-13, if not earlier; he will ask him about new developments
+concerning time symmetry.
+
+Piet mentioned his plan to determine the distribution of energy errors
+per time step for different time step criteria.  The Pythagorean problem
+might be a good place to start.  Especially interesting would be to
+know whether there is any tail in the distribution of infrequent but
+large errors.
+
+We decided not to include physical collisions, after all; we will
+leave that for later, perhaps for the Applied Gravity series.
+Instead, we can do experimentation with mass segregation.
+
+Piet suggested to write an appendix about how to use a GRAPE-6 board
+with our codes.  Jun said that in half a year or so, there will be a
+version with four GRAPE-6 chips with a PC-card connection, for less
+than $5,000.  Fukushige is working on that right now.
+
+2002-1-14
+
+Piet started to write chapter 7.
+
+2002-1-16
+
+Piet finished chapter 7.
+
+2002-1-17
+
+Piet added to chapter 7 a second collison time scale estimate, using
+a free fall assumptions besides the earlier linear motion assumption.
+
+2002-1-18
+
+Jun and Piet talked for 20 minutes.  Jun noticed that Piet had used a
+non-standard way to allocate storage implicitly for the main particle
+arrays in the Hermite codes in chapter 7 and 8.  Piet will correct this
+using `new' and `delete' explicitly.
+
+2002-1-26
+
+Jun and Piet talked about the content of volumes after volume 1.
+After some lenghty discussion we agreed to dedicate volume 2 to
+scattering.  The main reason was motivation: if we show how binaries
+occur naturally and then slow down the computations, in part 3 of
+volume 1, we can then decided to go into detail with respect to
+scattering processes.  While doing so, we can also introduce the
+concept of a software environment, in which many layers of analysis
+tools can be draped over each other.
+
+2002-2-2
+
+Jun and Piet talked about the use of random number generators in
+constructing a Plummer model.  Jun suggest to use "drand48" or
+"random" to circumvent the problem of the machine dependence in
+the original unix "rand" and "srand" functions, which use a "rand_max"
+macro.  Jun also mentioned the use of an html reader in emacs, using
+the command "w3".  In mk_plummer, we agreed not to use mass layering,
+for simplicity, i.e. each next particle will be drawn anywhere from
+the distribution function.
+
+We did not decide how to set up a labnote structure.  As for particle
+number, we agreed on using powers of two, and perhaps an interpolation
+between those, i.e.  N = 2, 3, 4, 6, 8, 11, 16, 23, 32, 45, 64, 91, 128.
+
+We also discussed how to fold together output and analysis comments,
+in a way that mirrors source code and code comments.  It is too early
+to use stories here.  Perhaps we can use a separate log file?
+
+-------------------
+INTERMEZZO
+INTERMEZZO
+All kinds of things were discussed, at various times, between early
+February and mid November, but we did not keep track of the details.
+No new code or text was produced during this period.
+INTERMEZZO
+INTERMEZZO
+-------------------
+
+2002-11-15
+
+Jun and Piet started to write "density.C", which computes the local
+mass density around each star, based on the Casertano-Hut algorithm.
+We finished everything except the actual function "density()".
+
+2002-11-16
+
+Jun and Piet finished writing "density.C".
+
+2002-11-17
+
+Jun and Piet wrote density_center.C, scale_mass.C, add_snapshot.awk,
+and lagrangian_radii.C
+
+2002-11-18
+
+Jun and Piet showed core collapse to be observable, in a crude fashion,
+using the hermite integrator and the Lagrangian radii tool.
+
+2002-11-22
+
+Last week, Jun and Piet made an estimate of N_min, how many particles
+could be followed to core collapse on a laptop or desk top machine,
+with and without a baby GRAPE, in the future; and similarly for N_hr,
+per hour.  The idea was to start with N=100, and make an estimate
+of 100.100.300.30 = 10^8 force calculations for core collapse: two
+factors because of N^2, another factor of number of time steps per
+orbit, and number of orbits for core collapse.  Scaling then assumes
+that computers get 8 times faster every five years, effective, hence
+doubling N; and that with a baby GRAPE the speed-up is more like a
+factor 3 increase in N every five years, because of the faster
+increase in GRAPE chip speed.
+
+ =========================================================
+|        |         N_min          |        N_hr           |
+|--------+------------------------+-----------------------|
+|        |   laptop   laptop w.   |  laptop   laptop w.   |
+| year   |    only    baby-GRAPE  |   only    baby-GRAPE  |
+|--------+------------------------+-----------------------|
+| 2000   |     64        80       |    256       700      |
+| 2005   |    128       256       |    512        2k      |
+| 2010   |    256       700       |     1k        5k      |
+| 2015   |    512        2k       |     2k       16k      |
+| 2020   |     1k        5k       |     4k       50k      |
+| 2025   |     2k        16k      |     8k      128k      |
+ =========================================================
+
+2002-12-28
+
+Jun wrote a shell script to plot the mass segregation of a
+two-component system.  We used it to see a few massive particles
+settle toward the center of a Plummer model of many light particles.
+
+2003-01-05
+
+Jun and I discussed various plans.  We will write a white paper on our
+views about education through hands-on trial and error.  We will develop 
+a fully time-symmetric individual-timestep integrator, that includes
+the options to use tree codes in space and generalized Ahmed-Cohen
+schemes in time.  Iteration in time-symmetrization becomes the third
+component: space, time, and iteration.  Neighborlists are useful for
+the implementation of all three cases.
+
+2003-01-07
+
+We now have the Hermite code of chapter 8.
+What we want to upgrade are:
+-- version numbering mechanism: CVS
+-- XML file format
+-- C++ classes
+-- command line argument parser (later)
+-- variable order of integration
+-- time symmetrization
+-- block time steps
+-- Kepler regularization
+-- quadruple precision for positions and time
+-- individual time steps
+-- tree code + multiple Ahmed-Cohen
+-- stellar evolution
+
+2003-01-09
+
+We installed psgml (XML mode for emacs) and blitz (C++ class library
+for scientific computing, using templates).
+
+We looked at SAX and DOM, for XML APIs; will get back to this later.
+
+2003-01-12
+
+Piet took the Hermite code from book 1, and implemented a simple and very
+crude I/O to read an write N-body snapshots in XML form.
+
+He then implemented a body class, using starlab as an example (and
+basically borrowing the starlab vector class).
+
+Piet then tested to make sure that he got exactly the same output with the
+original integrator and mk_plummer (where "00" is added in the name),
+as with the XML versions of both ("01" added in the name), and also with
+the class based version of nbody_sh1 ("02" added in the name).  The first
+test went fine, but he has not been able yet to reproduce things in the
+class-based code.  But at least everything compiles now.
+
+2003-01-13
+
+xx
+
+2003-01-15
+
+xx
+
+todo: html implementation of readme files for all our versions
+
+2003-01-16
+
+We agreed on a plan to finish book one, without Plummer model, but
+with a chapter on 3D cold collapse, followed by a couple chapters on
+1D cold collapse.
+
+2003-09-17
+
+Chapters for The Art of Computational Science
+
+1. Introduction: what is Computational Science (30 p.)
+
+   Dialogue starts: characters are introduced.
+   Alice, the professor, and Bob, Carol, Dick, Emily.
+   In book 1 B&C, in book 2 D&E, later together to show modular programming
+   pitfalls, when pieces made by each group don't fit together.
+
+   Simulations in Science: why
+     Many things cannot be done in a real lab (too big/small/expensive/etc.)
+     Virtual laboratory
+
+   Simulations in Science: what
+     examples from astro to climate modeling to genome to whatever
+
+   Simulations in Science: how to pose the problem
+     Differential Equations as a way to model nature
+     Invented by Newton/Leibniz, then used in much of science
+
+2. The Gravitational N-body problem (30 p.)
+
+   Introduce the astrophysical and historical context (e.g. Feynman)
+
+3. From here on, follow the current Volume 1, but add whole chunks of
+   background that the students learn through dialogue (perhaps with
+   boxes of background material, or separate chapters).

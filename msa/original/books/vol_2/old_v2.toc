@@ -1,0 +1,17 @@
+\contentsline {chapter}{Preface}{i}
+\contentsline {chapter}{\numberline {1}Gravitational Scattering Experiments}{1}
+\contentsline {part}{I\hspace {1em}3-Body Scattering in 1D}{3}
+\contentsline {chapter}{\numberline {2}Regularization}{5}
+\contentsline {chapter}{\numberline {3}Setting Up and Analyzing Gravitational Scattering Experiments}{7}
+\contentsline {chapter}{\numberline {4}A Topological Investigation of Parameter Space}{9}
+\contentsline {part}{II\hspace {1em}3-Body Scattering in 2D}{11}
+\contentsline {chapter}{\numberline {5}Levi-Civita Regularization}{13}
+\contentsline {chapter}{\numberline {6}Cross Sections and Reaction Rates}{15}
+\contentsline {part}{III\hspace {1em}3-Body Scattering in 3D}{17}
+\contentsline {chapter}{\numberline {7}Quaternion Regularization}{19}
+\contentsline {chapter}{\numberline {8}Cross Sections and Reaction Rates}{21}
+\contentsline {chapter}{\numberline {9}A Watershed in Energy Flow}{23}
+\contentsline {part}{IV\hspace {1em}Many-Body Scattering}{25}
+\contentsline {chapter}{\numberline {10}The Many Channels in 4-Body Scattering}{27}
+\contentsline {chapter}{\numberline {11}A General Scattering Code}{29}
+\contentsline {chapter}{\numberline {12}Astrophysical Applications}{31}

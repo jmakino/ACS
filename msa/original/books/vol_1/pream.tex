@@ -1,0 +1,55 @@
+% preamble
+
+\usepackage{verbatim}\usepackage{epsf}
+\usepackage{framed}
+\usepackage{html}
+\usepackage[dvipdfm]{graphicx}
+\usepackage[thmmarks,standard,framed,thref]{ntheorem}
+
+%
+% The complete documentation of this ntheorem package is in
+% ntheorem.ps
+% 
+\theoremstyle{break}
+\newtheorem{Exercise}{Exercise}[chapter]
+\newframedtheorem{Code}{Code}[chapter]
+\newframedtheorem{Output}{Output}[chapter]
+%\newtheorem{Code}{Code}[chapter]
+%\newtheorem{Output}{Output}[chapter]
+
+%
+% If you want to add new box, just add a line like
+%
+%\newframedtheorem{foo}{foo}[chapter]
+%
+% this will make the foo environment, numbered sequentially within
+% chapter, available. So if you say
+%
+% \begin{foo}
+% This is first sample of foo.
+% \end{foo}
+% You will see this in a framed box
+%
+% To get a list of this foo box, you need to say something like
+%
+%\chapter*{List of foos}
+%\addcontentsline{toc}{chapter}{List of foos}
+%\theoremlisttype{allname}
+%\listtheorems{foo}
+%
+% first two lines are just to make this list looks like list of
+% figures and list of tables. 
+
+\setlength{\textwidth}{ 5.45in}           % default seems to be around 4.8 inch,
+\addtolength{\evensidemargin}{-0.4in}  % so we can devide the extra 0.65 inch
+\addtolength{\oddsidemargin}{-0.4in}   % over left and right margin
+
+\setlength{\parindent}{2.5em}
+\setlength{\parskip}{1.2 ex plus0.2ex minus 0.1ex}
+\renewcommand{\baselinestretch}{1.05}
+\renewcommand{\floatpagefraction}{1.0}
+\renewcommand{\topfraction}{1.0}
+
+\begin{htmlonly}
+\setlength{\textheight}{30in}
+\end{htmlonly}

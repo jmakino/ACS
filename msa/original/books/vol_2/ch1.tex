@@ -1,0 +1,165 @@
+\chapter{The Two-Body Problem}
+
+{\bf Here I will collect equations with some brief text, as
+introductory material -- Piet}
+
+\section{equation of motion}
+
+To start with, let us recall the equations of section 2.3 in volume 1.
+
+Newton's gravitational equation of motion for the vector $\br = \br_2 - \br_1$
+pointing from particle 1 to particle 2:
+
+\begin{equation}
+\frac{d^2}{dt^2}\br = - G \frac{M_1 + M_2}{r^3}\br
+\end{equation}
+
+Here $r = | \br |$ is the absolute value of the separation vector $\br$,
+the masses of the two particles are indicated by $M_1$ and $M_2$,
+respectively, and $G$ is the value of Newton's gravitational constant.
+
+
+Let us again choose units such that
+
+\begin{eqnarray}
+G & = & 1 \\
+M_1 + M_2 & = & 1
+\end{eqnarray}
+
+which leads to the simplified equation of motion
+
+\begin{equation}
+\frac{d^2}{dt^2}\br = - \frac{\br}{r^3} \label{newton-2-bodies}
+\end{equation}
+
+\section{1D: time transformation only}
+
+Let us start with the one-dimensional case, to see how we can deal
+with the singularity in the equation:
+
+\begin{equation}
+\frac{d^2r}{dt^2} = - \frac{1}{r^2}
+\end{equation}
+
+We will use the shorthand notation of a dot above a quantity to denote
+the time derivative, \ie $\dot{\alpha} = d\alpha/dt$.  This
+allows us to write:
+
+\begin{equation}
+\ddot{r} = - \frac{1}{r^2} \label{eom}
+\end{equation}
+
+Note that the energy
+
+\begin{equation}
+h = \dhalf\dot{r}^2 - \frac{1}{r} \label{energy}
+\end{equation}
+
+is conserved:
+
+\begin{equation}
+\dot h = \dot r \ddot r + \frac{\dot r}{r^2} =
+         - \frac{\dot r}{r^2} + \frac{\dot r}{r^2} = 0
+\end{equation}
+
+Let us try to get rid of the singularity in the equation of motion \ref{eom}
+through a time transformation, introducing a variable $\tau$
+determined by the differential equation
+
+\begin{equation}
+dt = r^\alpha d\tau
+\end{equation}
+
+Let us indicate differentiation with respect to $\tau$ by a prime,
+\ie $\alpha' = d\alpha/d\tau$.
+
+We have:
+
+\begin{equation}
+r' = \frac{dr}{d\tau} = \frac{dt}{d\tau} \frac{dr}{dt} = r^\alpha \frac{dr}{dt}
+\end{equation}
+
+and:
+
+\begin{eqnarray}
+r''=\frac{d^2r}{d\tau^2} &=& \alpha r^{\alpha-1}\frac{dr}{d\tau}\frac{dr}{dt}
+     + \frac{dt}{d\tau} r^\alpha \frac{d^2r}{dt^2}
+= \alpha r^{2\alpha-1}\dot r^2 + r^{2\alpha} \ddot r \nonumber \\
+&=& \alpha r^{2\alpha-1}\left(2h+\frac{2}{r}\right)
+ + r^{2\alpha} \left(- \frac{1}{r^2}\right) 
+\end{eqnarray}
+
+or
+
+\begin{eqnarray}
+r'' = 2h\alpha r^{2\alpha-1} + (2\alpha-1)r^{2\alpha-2}
+\end{eqnarray}
+
+There are two natural choices for $\alpha$ that present themselves.
+
+\begin{eqnarray}
+\fbox{$\alpha=1$:}&\qquad& r''=2hr+1 \qquad\qquad\qquad\qquad\qquad\qquad \\
+{\rm and}\qquad\qquad\qquad\qquad\qquad\qquad&\qquad& \nonumber \\
+\fbox{$\alpha=\dhalf$:}&\qquad& r''=h \qquad\qquad\qquad\qquad\qquad\qquad
+\end{eqnarray}
+
+The choice $\alpha=1$ leads to an equation of motion for a displaced
+harmonic oscilator.  The choice $\alpha=\dhalf$ leads to an even
+simpler equation of motion, similar to that for an object falling in a
+constant gravitational field.  If we choose the initial condition $r(0)=0$,
+the general solution is:
+
+\begin{equation}
+\fbox{$\alpha=\dhalf$:}\qquad r(\tau) = A\tau + \dhalf h \tau^2
+\end{equation}
+
+Note that for $\tau \rightarrow 0$ (and hence $r \rightarrow 0$ and
+$t \rightarrow 0$), Eq. \ref{energy} tells us that we may as well
+take $h=0$ to first order, since the other two terms grow without bound.
+This leads to the approximation:
+
+\begin{equation}
+A=r'=r^\dhalf \dot r = r^\dhalf \left( \frac{2}{r} \right)^\dhalf = \sqrt{2}
+\end{equation}
+
+which leads to the full solution:
+
+\begin{equation}
+\fbox{$\alpha=\dhalf$:}\qquad r(\tau) = \sqrt{2}\tau + \dhalf h \tau^2
+\end{equation}
+
+
+
+
+
+\section{xxx}
+
+\section{yyy}
+
+\section{2D: time transformation only}
+
+Douglas: I think the time transformation in 2d works OK, as follows:
+
+\begin{eqnarray}
+{d\br\over dt} &=& {1\over r}{d\br\over d\tau}, \\
+{d^2\br\over dt^2} &=&
+-{1\over r^2}\dot r{d\br\over d\tau} + {1\over r^2}{d^2\br\over d\tau^2}, \\
+&=& -{\br\over r^3}
+\end{eqnarray}
+
+and so
+
+\begin{eqnarray}
+{d^2\br\over d\tau^2} &=& -{\br\over r} + r\dot r\dot\br, \\
+&=& 2h\br + r\dot r\dot\br - \dot\br^2\br + {\br\over r}, \\
+&=& 2h\br - \be,
+\end{eqnarray}
+
+where the Lenz vector is 
+
+\begin{eqnarray}
+\be &=&  - r\dot r\dot\br + \dot\br^2\br - {\br\over r}, \\
+&=& \dot\br\times(\br\times\dot\br) - {\br\over r}
+\end{eqnarray}
+
+which fortunately is the same result as in Chapter 15!

@@ -1,0 +1,720 @@
+\documentstyle[epsf,11pt,verbatim]{article}
+
+\font\lggggb=cmbx10 scaled \magstep5
+\font\lgggb=cmbx10 scaled \magstep4
+\font\lggb=cmbx10 scaled \magstep3
+\font\lgb=cmbx10 scaled \magstep2
+\font\lb=cmbx10 scaled \magstep1
+\font\lgr=cmr10 scaled \magstep2
+\font\lr=cmr10 scaled \magstep1
+\font\slgh=cmr10 scaled \magstep2
+\font\sb=cmbx9
+\font\sr=cmr9
+%
+\renewcommand{\floatpagefraction}{0.9}
+%
+\def\simlt{\hbox{ \rlap{\raise 0.425ex\hbox{$<$}}\lower 0.65ex\hbox{$\sim$} }}
+\def\simgt{\hbox{ \rlap{\raise 0.425ex\hbox{$>$}}\lower 0.65ex\hbox{$\sim$} }}
+\def\sub#1{_{\rm #1}}
+\def\sup#1{^{\rm #1}}
+\def\undertext#1{{$\underline{\hbox{#1}}$}}
+\def\doubleundertext#1{{$\underline{\underline{\hbox{#1}}}$}}
+\def\half{{\scriptstyle {1 \over 2}}}
+\def\ie{{\it {\frenchspacing i.{\thinspace}e. }}}
+\def\eg{{\frenchspacing e.{\thinspace}g. }}
+\def\cf{{\frenchspacing\it cf. }}
+\def\etal{{\frenchspacing\it et al.}}
+\def\et{{\etal}}
+\def\simlt{\hbox{ \rlap{\raise 0.425ex\hbox{$<$}}\lower 0.65ex\hbox{$\sim$} }}
+\def\simgt{\hbox{ \rlap{\raise 0.425ex\hbox{$>$}}\lower 0.65ex\hbox{$\sim$} }}
+\def\solar{\odot}
+\def\msun{\ifmmode{M_\solar}\else{$M_\solar$}\fi}
+\def\rsun{\ifmmode{R_\solar}\else{$R_\solar$}\fi}
+\def\Rf{\parindent=0pt\smallskip\hangindent=3pc\hangafter=1}
+\def\pc{{\rm pc}}
+\def\kpc{{\rm kpc}}
+\def\Mpc{{\rm Mpc}}
+\def\yr{{\rm yr}}
+\def\Myr{{\rm Myr}}
+\def\Gyr{{\rm Gyr}}
+\def\kT{\ifmmode{kT}\else{$kT$}\fi}
+\def\N{{\ifmmode{N}\else{$N$}\fi}}
+\def\fb{{\ifmmode{f_B}\else{$f_B$}\fi}}
+\def\emax{{\ifmmode{E_{max}}\else{$E_{max}$}\fi}}
+\def\td{{\ifmmode{t_d}\else{$t_d$}\fi}}
+\def\tcr{{\ifmmode{t_{cr}}\else{$t_{cr}$}\fi}}
+\def\tr{{\ifmmode{t_r}\else{$t_r$}\fi}}
+\def\trh{\ifmmode{t_{rh}}\else{$t_{rh}$}\fi}
+\def\vv{{\ifmmode{\langle v^2\rangle}\else{$\langle v^2 \rangle$}\fi}}
+\def\v{{\ifmmode{\langle v^2\rangle^{1/2}}
+                \else{$\langle v^2 \rangle^{1/2}$}\fi}}
+\def\half{{\ifmmode{{1 \over 2}}\else{${1 \over 2}$}\fi}}
+\def\dhalf{{\textstyle {1 \over 2}}}
+\def\threehalf{{\ifmmode{{3 \over 2}}\else{${3 \over 2}$}\fi}}
+\def\dthreehalf{{\textstyle {3 \over 2}}}
+\def\dfivehalf{{\textstyle {5 \over 2}}}
+\def\dfivethree{{\textstyle {5 \over 3}}}
+\def\kms{\ifmmode{\rm km\,s^{-1}}\else{$\rm km\,s^{-1}$}\fi}
+\def\kmps{{\rm km/s}}
+\def\piet#1{{\bf[#1 -- piet]}}
+\def\jun#1{{\bf[#1 -- jun]}}
+\def\bx{{\bf x}}
+\def\br{{\bf r}}
+\def\bv{{\bf v}}
+\def\ba{{\bf a}}
+\def\badot{{\bf \dot a}}
+\def\batwo{{{\bf  a}^{(2)}}}
+\def\bathree{{{\bf  a}^{(3)}}}
+%
+% ...........................................................................
+%
+\begin{document}
+
+\begin{center}
+
+{\lgggb Pure Gravity}
+
+\bigskip
+
+{\lggb Particles at Play}
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+{\slgh Piet Hut}
+
+\bigskip
+
+{\lr School of Natural Sciences}
+
+\medskip
+
+{\lr Institute for Advanced Study}
+
+\medskip
+
+{\lr Princeton, NJ 08540, U.S.A.}
+
+\medskip
+
+{{\it email:} piet@ias.edu}
+
+\bigskip
+
+\bigskip
+
+{\slgh Jun Makino}
+
+\bigskip
+
+{\lr Department of Astronomy}
+
+\medskip
+
+{\lr University of Tokyo}
+
+\medskip
+
+{\lr 7-3-1 Hongo, Bunkyo-ku}
+
+\medskip
+
+{\lr Tokyo 113-0033, JAPAN}
+
+\medskip
+
+{{\it email:} makino@astron.s.u-tokyo.ac.jp}
+
+\end{center}
+
+\bigskip
+
+\bigskip
+
+\begin{abstract}
+
+Chapter 1. [ {\it DRAFT -- DRAFT -- DRAFT -- DRAFT } ]
+
+\end{abstract}
+
+\newpage
+\section{Introduction}
+
+\subsection{2-body problem, forward-Euler}
+
+2-body problem, first as 1-body problem of relative motion.
+
+$$
+\frac{d^2}{dt^2}\br = - G \frac{M_1 + M_2}{r^3}\br
+$$
+
+$G=1$
+
+$M_1 + M_2 = 1$
+
+\verbatiminput{forward_euler1.C}
+
+\begin{verbatim}
+g++ forward_euler1.C -o forward_euler1
+\end{verbatim}
+
+\begin{verbatim}
+|gravity> forward_euler1 > for.out
+|gravity> head for.out
+1 0.005 0 -0.01 0.5 0
+0.9999 0.01 0 -0.0199996 0.49995 0
+0.9997 0.0149995 0 -0.0300001 0.49985 0
+0.9994 0.019998 0 -0.0400027 0.4997 0
+0.999 0.024995 0 -0.0500088 0.4995 0
+0.9985 0.02999 0 -0.0600194 0.499249 0
+0.9979 0.0349825 0 -0.0700359 0.498948 0
+0.997199 0.039972 0 -0.0800595 0.498597 0
+0.996399 0.0449579 0 -0.0900916 0.498195 0
+0.995498 0.0499399 0 -0.100133 0.497742 0
+|gravity> tail for.out
+7.62061 -6.22601 0 0.812921 -0.574783 0
+7.62874 -6.23176 0 0.812841 -0.574718 0
+7.63687 -6.23751 0 0.812761 -0.574653 0
+7.645 -6.24325 0 0.812682 -0.574588 0
+7.65312 -6.249 0 0.812602 -0.574523 0
+7.66125 -6.25475 0 0.812523 -0.574458 0
+7.66937 -6.26049 0 0.812443 -0.574393 0
+7.6775 -6.26623 0 0.812364 -0.574329 0
+7.68562 -6.27198 0 0.812286 -0.574264 0
+7.69375 -6.27772 0 0.812207 -0.5742 0
+|gravity>
+\end{verbatim}
+
+ast: Unexpected large!! What happened.
+
+comp: Perhaps a trap because you did not use ./forward\_euler1 ?
+
+ast: baka, why?
+
+comp: well, I'm not really serious about danger, but note that other
+programs with the same name may be picked up.  For example, beginners
+often call a program `test', which makes it quite likely that a
+who-knows-where program will be executed instead.
+
+ast: I doubt that there is a forward\_euler1 lurking somewhere in the
+operating system.
+
+comp: I think you're right -- now while we are writing this book.  But
+notice that the first reader, after downloading the book, will indeed
+have a program by that name somewhere on his or her system!  So I
+still vote for using ./forward\_euler1.  Oh well, go ahead and live
+dangerously if you want.  But don't tell me I didn't warn you!
+
+ast: Let's look at the real danger here -- let's look at what went
+wrong with the orbit.
+
+\begin{verbatim}
+|gravity> gnuplot
+gnuplot> set size square
+gnuplot> plot 'for.out'
+\end{verbatim}
+
+Note that the sentence ``set size square'' can be included in a file
+called `.gnuplot'; we will not repeat this line here in further
+examples of the use of gnuplot; we will leave it to the reader to add
+this line to a `.gnuplot' file, or to add it manually at the beginning
+of each example below.
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm;
+\epsffile{for.ps}
+\caption{$dt = 0.01$}
+\label{fig:for}
+\end{center}
+\end{figure}
+
+ast: aha!
+
+comp: aha??
+
+ast: the time step must have been too large.
+
+(With this program, the orbit flies apart around the first pericenter
+passage, and the particles escape from each other.)
+
+ast: by the way, I'd like to print out a copy.  How do we do that?
+
+\begin{verbatim}
+gnuplot> set terminal post eps 22
+Terminal type set to 'postscript'
+Options are 'eps noenhanced monochrome dashed defaultplex "Helvetica" 22'
+gnuplot> set output "for.ps"
+gnuplot> replot
+gnuplot> 
+\end{verbatim}
+
+comp: now you can simply plot the figure by giving the command:
+
+\begin{verbatim}
+|gravity> lpr for.ps
+|gravity>
+\end{verbatim}
+
+So let's make the time step size something we can specify, to make it
+smaller:
+
+\verbatiminput{forward_euler2.C}
+
+First repeat the previous disaster.
+
+For $dt = 0.01$, the same explosion happens.
+
+\begin{verbatim}
+g++ forward_euler2.C -o forward_euler2
+|gravity> forward_euler2 > for1.out
+1
+Etot [t = 0] = -0.875
+de = 6.24998e-05
+de = 0.000124996
+de = 0.000187497
+de = 0.000250011
+de = 0.000312547
+. . . . .
+de = 1.26899
+de = 1.26899
+de = 1.26899
+|gravity> forward_euler2 > for10.out
+10
+Etot [t = 0] = -0.875
+de = 6.25e-07
+de = 6.87512e-06
+de = 1.3126e-05
+de = 1.93786e-05
+. . . . .
+de = 0.425318
+de = 0.425319
+de = 0.425319
+|gravity> gnuplot
+gnuplot> plot 'for10.out'
+\end{verbatim}
+
+For $dt = 0.001$, at least a few orbits are completed, but each orbit
+quickly grows.
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{for10.ps}
+\caption{$dt = 0.001$}
+\label{fig:for10}
+\end{center}
+\end{figure}
+
+For $dt = 0.0001$, the spiraling-out is calmer.
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{for100.ps}
+\caption{$dt = 0.0001$}
+\label{fig:for100}
+\end{center}
+\end{figure}
+
+For $dt = 0.00001$, the spiraling-out is still barely visible under gnuplot
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{for1000.ps}
+\caption{$dt = 0.00001$}
+\label{fig:for1000}
+\end{center}
+\end{figure}
+
+\subsection{2-body problem, leapfrog}
+
+\verbatiminput{leapfrog1.C}
+
+\begin{verbatim}
+g++ leapfrog1.C -o leapfrog1
+|gravity> leapfrog1 > leap1.out
+1
+Etot [t = 0] = -0.875
+de = 1.17198e-09
+de = 4.68985e-09
+de = 1.05594e-08
+de = 1.87905e-08
+. . . . .
+de = 3.6141e-05
+de = 3.38728e-05
+de = 3.17741e-05
+|gravity> leapfrog1 > leap10.out
+10
+Etot [t = 0] = -0.875
+de = 1.1724e-13
+de = 1.41822e-11
+de = 5.17113e-11
+de = 1.12767e-10
+. . . . .
+de = 3.85679e-07
+de = 3.61152e-07
+de = 3.38488e-07
+|gravity> leapfrog1 > leap100.out
+100
+Etot [t = 0] = -0.875
+de = -1.11022e-16
+de = 1.20126e-13
+de = 4.74509e-13
+de = 1.06393e-12
+. . . . .
+de = 3.88014e-09
+de = 3.63308e-09
+de = 3.40483e-09
+|gravity> leapfrog1 > leap1000.out
+1000
+Etot [t = 0] = -0.875
+de = 0
+de = 5.55112e-16
+de = 2.88658e-15
+de = 9.10383e-15
+. . . . .
+de = 3.88177e-11
+de = 3.6344e-11
+de = 3.40558e-11
+|gravity> gnuplot
+gnuplot> plot 'leap1.out'
+\end{verbatim}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{leap1.ps}
+\caption{$dt = 0.01$}
+\label{fig:leap1}
+\end{center}
+\end{figure}
+
+notice rotation of periastron: advance of apsidal nodes.
+In other words, in the previous picture the apastron part of the orbit
+was fattened; now the quadratures are the parts were the lines get thicker.
+
+\begin{verbatim}
+gnuplot> plot 'leap10.out'
+\end{verbatim}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{leap10.ps}
+\caption{$dt = 0.001$}
+\label{fig:leap10}
+\end{center}
+\end{figure}
+
+Aha!  Now you cannot see the deviations anymore from orbit to orbit.
+
+\subsection{3-body problem, leapfrog, circle}
+
+Now we put three particles on a circle.  We use the balance of
+centrifugal force $ \frac{v^2}{r} $ and the centripetal gravitational
+force to enforce a circular orbit.
+
+\verbatiminput{leapfrog1a.C}
+
+\begin{verbatim}
+g++ leapfrog1a.C -o leapfrog1a
+|gravity> leapfrog1a > triple1a.out
+1
+Etot [t = 0] = -0.866025
+de = 1.0103e-14
+de = 4.16334e-14
+de = 9.34808e-14
+de = 1.66644e-13
+. . . . .
+de = 2.64304e-10
+de = 2.66949e-10
+de = 2.69598e-10
+\end{verbatim}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1a.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1a}
+\end{center}
+\end{figure}
+
+Now add a 0.001 perturbation to the velocity of particle 1, and run
+for a longer time, 1000 instead of 10 time units:
+
+\verbatiminput{leapfrog1b.C}
+
+\begin{verbatim}
+g++ leapfrog1b.C -o leapfrog1b
+|gravity> leapfrog1b > triple1b.out
+1
+Etot [t = 0] = -0.866025
+de = 8.33436e-11
+de = 1.66702e-10
+de = 2.50068e-10
+de = 3.33439e-10
+. . . . .
+de = 1.48837e-08
+de = 1.52172e-08
+de = 1.5549e-08
+\end{verbatim}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1b.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1b}
+\end{center}
+\end{figure}
+
+The orbits begin to diverge.
+Now twice as long:
+
+\verbatiminput{leapfrog1c.C}
+
+\begin{verbatim}
+g++ leapfrog1c.C -o leapfrog1c
+|gravity> leapfrog1c > triple1c.out
+1
+Etot [t = 0] = -0.866025
+de = 8.33436e-11
+de = 1.66702e-10
+de = 2.50068e-10
+de = 3.33439e-10
+. . . . .
+de = 8.25631e-06
+de = 8.1391e-06
+de = 8.02621e-06
+\end{verbatim}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1c.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1c}
+\end{center}
+\end{figure}
+
+The orbits begin to get chaotic.
+Now four times as long:
+
+\verbatiminput{leapfrog1d.C}
+
+\begin{verbatim}
+g++ leapfrog1d.C -o leapfrog1d
+|gravity> leapfrog1d > triple1d.out
+1
+Etot [t = 0] = -0.866025
+de = 8.33436e-11
+de = 1.66702e-10
+de = 2.50068e-10
+de = 3.33439e-10
+. . . . .
+de = 29.1127
+de = 29.1127
+de = 29.1127
+\end{verbatim}
+
+Note that in gnuplot we want to give the extra commands:
+
+\begin{verbatim}
+set xrange [-5:5]
+set yrange [-5:5]
+\end{verbatim}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1d.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1d}
+\end{center}
+\end{figure}
+
+Energy error causes explosion.
+Now with ten times smaller time steps:
+
+\begin{verbatim}
+|gravity> leapfrog1d > triple1d1.out
+10
+Etot [t = 0] = -0.866025
+de = 8.32667e-14
+de = 9.17044e-13
+de = 1.7506e-12
+de = 2.58327e-12
+. . . . .
+de = 1.60324e-06
+de = 1.91979e-06
+de = 2.29792e-06
+\end{verbatim}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1d1.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1d1}
+\end{center}
+\end{figure}
+
+Great: decay of unstable triple.  But have we converged to reality?
+Now with again ten times smaller time steps:
+
+\begin{verbatim}
+|gravity> leapfrog1d > triple1d2.out
+100
+Etot [t = 0] = -0.866025
+de = 1.11022e-16
+de = 7.66054e-15
+de = 1.58762e-14
+de = 2.39808e-14
+. . . . .
+de = 1.84725e-08
+de = 2.07468e-08
+de = 2.3423e-08
+\end{verbatim}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1d2.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1d2}
+\end{center}
+\end{figure}
+
+Great: We do seem to have converged to reality!
+Now ten times longer:
+
+\verbatiminput{leapfrog1e.C}
+
+\begin{verbatim}
+g++ leapfrog1e.C -o leapfrog1e
+|gravity> leapfrog1e > triple1e.out
+100
+Etot [t = 0] = -0.866025
+de = 1.11022e-16
+de = 7.66054e-15
+de = 1.58762e-14
+de = 2.39808e-14
+. . . . .
+de = 1.88229e-09
+de = 1.96058e-09
+de = 2.04432e-09
+\end{verbatim}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1e.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1e}
+\end{center}
+\end{figure}
+
+By the way, notice how leapfrog recovers from $10^{-5}$ back to
+$10^{-10}$ type errors.
+
+\subsection{3-body problem, leapfrog, figure-8}
+
+\verbatiminput{leapfrog2.C}
+
+\begin{verbatim}
+g++ leapfrog2.C -o leapfrog2
+|gravity> leapfrog2 > triple1.out
+1
+Etot [t = 0] = -1.28705
+de = -3.95102e-08
+de = -1.58104e-07
+de = -3.55968e-07
+de = -6.33411e-07
+. . . . .
+de = -7.43225e-05
+de = -7.50071e-05
+de = -7.54851e-05
+\end{verbatim}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1}
+\end{center}
+\end{figure}
+
+\subsection{modular leapfrog}
+
+now a more modular version.
+
+Note: extra header file for width of output field:
+
+\begin{verbatim}
+#include  <iomanip.h>
+\end{verbatim}
+
+\verbatiminput{leapfrog2.C}
+
+But more compact, with the following input file:
+
+\verbatiminput{triple.in}
+
+we can use:
+
+\verbatiminput{leapfrog3.C}
+
+or slightly more compactly:
+
+\verbatiminput{leapfrog4.C}
+
+todo:
+
+N = 2 --$>$ N
+
+softening
+
+refine --$>$ t\_out and t\_end
+
+subroutines
+
+initial conditions
+
+better output
+
+
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+{\it Acknowledgements:}
+We thank xxx, xxx and xxx for valuable
+discussions.  This work is supported in part by the Research for the
+Future Program of Japan Society for the Promotion of Science
+(JSPS-RFTP97P01102).
+
+\end{document}

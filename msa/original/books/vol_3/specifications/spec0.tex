@@ -1,0 +1,459 @@
+\documentclass{article}[12pt]
+\usepackage{verbatim}\usepackage{epsf}
+
+\setlength{\textwidth}{16cm}            % default seems to be around 4.8 inch,
+\setlength{\textheight}{22cm}        
+\setlength{\topmargin}{0cm}          
+\addtolength{\evensidemargin}{-0.2in}    % so we can devide the extra 0.4 inch
+\addtolength{\oddsidemargin}{-0.2in}     % equally over left and right margin
+\setlength{\leftmargin}{-1cm}        
+
+\setlength{\parindent}{2.5em}
+\setlength{\parskip}{1.2 ex plus0.2ex minus 0.1ex}
+\renewcommand{\baselinestretch}{1.05}
+\renewcommand{\floatpagefraction}{1.0}
+\renewcommand{\topfraction}{1.0}
+
+\title{Working document for the specifications for an $N$-body code}
+\author{Piet Hut and Jun Makino}
+
+\begin{document}
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+\section{Introduction}
+
+In this document, we will present a complete specification of an
+$N$-body time integration program for dense stellar systems, along
+with the rationale to every decision made on the specification
+itself. As such, this document would give more of the background and
+history of the specification, rather than the compact and
+self-consistent description of the specification itself. The
+specification alone will be given elsewhere.
+
+In the following, we call the code being specified simpley as ``the
+code'' or just CODE in capital letters, since this code will be the
+one code which can handle every conceivable problems in the dynamics
+of the dense stellar systems {\tt :)}
+
+The goal we have in our mind is to come up with a single document
+which specifies
+
+\begin{itemize}
+\item How the code is organized into different modules.
+\item How  modules interact with others.
+\item How modules are further subdivided into submodules
+\item How submodules ....
+\end{itemize}
+
+The primary reason why we want to start with such a specification for
+the code is that the organization of the code is sufficiently complex
+that it is probably beyond the capacity of any single person to keep
+all the details of the code without a written document for them.
+
+Another reason is that  the development of the code itself is likely
+to be beyond the capacity of a single person, in particular if it will
+contains the realistic treatment of stellar physics like
+
+\begin{itemize}
+\item Routines to handle the evolution of single stars.
+\item Routines to handle binary stellar evolution
+\item routines to handle physical collisions and strong tidal
+interaction between stars, each of which can be a MS star, a giant,
+a WD, a NS or a BH.
+\end{itemize}
+along with sophisticated treatment of comact subsystems (binaries and
+other small-$N$ systems within a dense stellar systems), which would
+encompass
+
+\begin{itemize}
+\item special treatment for close encounters between two stars, in
+order to prevent the round-off error (loss of effective digits) from
+affecting the accracy of the time integration.
+\item special treatment for stable binary, in order to save time and
+improve accuracy.
+\item Ability to recursively perform the above special treatment to
+handle hierarchical systems, binary-single star encounter,
+binary-binary encounter or more complex events.
+\item Within such special treatment to include the effect of
+additional physics such as the tidal dissipation, gravitational wave
+radiation etc.
+\item Ability to handle, in some way or other, massive black hole(s)
+and stars strongly bound to them, in, ideally, a unified way as we
+handle normal binaries.
+\end{itemize}
+
+At this point, it should be clear that the task of developing such a
+code is so complicated that nobody with the sane mind would even
+imagine of actually writing such a code. Nevertheless, we {\it hope}
+it is not impossible to develop such a code, if we can apply the usual
+divide-and-conquer approach in the right way.
+
+Well, what do we mean by the ``right way''? Clearly, we do not know
+the answer at this moment of writing, since otherwize we would already
+have such a code. So at this point, all we write is sort of the
+product of wild optimism and possibly wrong illusion. Even so, we
+think it should be possible to develop, well, at least something which
+is better, in some sence, than the existing solutions.
+
+This document will organized (or disintegrated) into following pieces.
+In the section titled {\it Random thoughts}, we simply give what came
+to our mind while we discussed the way to organize specification and
+write it up. In section titled {\it Top level modules}, we discuss
+what kind of top level conceptual division we make and why.
+
+(more to be added here)
+
+
+
+
+\section{Random thoughts}
+
+\begin{itemize}
+
+\item don't write any code until you know exactly what to do.
+
+\item the code should be efficient, both in choice of algorithm and in
+    implementation.
+
+\item we will use C++.
+
+\item what goes into the code now:
+\begin{itemize}
+    \item Hermite integrator, 4th order
+    \item option to include softening
+    \item individual block time steps
+    \item option to invoke the GRAPE (watch out for very large mass ratios)
+    \item analytic regularization ("collapsed binaries")
+    \item binary trees, with offset regularization
+    \item high-eccentricity, near pericenter: locally analytic regularization
+    \item perturber list, slow perturbation treatment (as in "slow KS")
+    \item tuple quarantine (triples, quadruples, etc.)
+    \item treatment for stars with very high speed
+    \item coupling to hydrodynamics and stellar evolution (including mass loss
+         treatment: 1) slow, 2) medium, 3) fast with respect to orbital period)
+    \item coupling to a module for gravitational wave losses
+\end{itemize}
+
+\item what does not go in, but for which we should keep (easy) room:
+\begin{itemize}
+    \item galactic tidal field
+    \item parallelization
+    \item higher order integrators
+    \item Ahmad-Cohen and generalizations thereof
+    \item tree codes
+    \item time symmetrization
+    \item periodic boundary conditions (e.g. for 3-body binary formation)
+
+\end{itemize}
+\item ( perhaps as a testing option: write a scatter code version, using
+      the same modules as are used in the N-body code.)
+
+\end{itemize}
+
+
+
+
+\begin{itemize}
+
+\item for equal mass particles, two particles can be expected to
+   stay in a Kepler orbit reasonably long (and thus can be
+   analytically Kepler regularized) is there separation
+   $r_{ij}$ obeys $r_{ij} < r_K$ with $r_K \propto N^{-3/7}$.
+   This follows from the requirement that the Kepler orbital
+   time $T < \tau$ where $\tau = 1/(n \sigma v)$ is the
+   encounter time, with $\sigma$ the geometrical cross section
+   and $v$ the typical velocity.  Then $\tau = 1/(N.r_K^2.1)$
+   and $T=(N.r_K^3)^{-1/2}$, hence $r_K \propto N^{-3/7}$.
+
+\item for the Global-Local fusion triggering, the global interaction
+   module flags pairs of particles as candidates for merging, but
+   then the orbit module only sends two particles at a time to
+   the local module.  If one particle wants to consider two other
+   particles as candidates to be merged with, the orbit module
+   decides, perhaps just randomly, which of those candidates to
+   offer to the local module first.  Here is the scheduling:
+\begin{itemize}
+   \item do a block time step, which returns k particle pair candidates
+   \item send all nonoverlapping particle pairs to the local module
+   \item if none are accepted, send one or more remaining pairs
+   \item whenever a change is accepted, rerun the force calculator
+   \item if nothing new is accepted, and no pairs remain, take the
+      the next block time step.
+\end{itemize}
+
+\item each atom or molecule, whether it is a gravitational collection
+   of mass points within the local module, or an SPH region within
+   the stellar physics module, or a contact binary or single
+   star (with possibly tidal bulges), has a radius $R$ that is
+   defined exactly as the largest distance from the center of
+   mass of that atom or molecule of any bit of mass that is still
+   dynamically significant. The $f$ factor that determines whether
+   two (atom/molecule)s are candidates for merging is hardwired
+   to be a certain factor $f_{local}$, typically $1.2$ or $1.3$
+   or so, for conversion from the global to the local module.
+   For the conversion from the local to the stellar-physics module,
+   the $f$ factor is provided by the stellar-physics module, and
+   it is typically 3 to 10.  This same $f$ value will be used
+   whenever we consider the fusion of two stellar-physics objects,
+   independent of whether each object is a single star or a
+   contact binary or an SPH region.
+
+\item conceptually, the data tree of a star cluster is like what
+   we use in kira, where each kira leaf is a node with $10^{60}$
+   or more daughters, one for each nucleus or electron or photon
+   inside a star.  The top node has somewhat less than $N$
+   daughters, and the next level nodes are either single stars
+   or double stars or SPH regions, or they are gravitational
+   molecules, each of which has up to ten or so daughters in
+   the nearly equal mass case, or up to $10^4$ to $10^5$ daughters
+   in case of a very massive black hole.  A central point: we will
+   never do a complete treewalk as is done in kira, since we now
+   have strict abstraction boundaries between horizontal levels
+   in this tree; the implementer of one level does not need to
+   know how a deeper level is handled.
+
+\item how did we derive the loss-of-digits criterion of
+   $r_{ij} = \epsilon_{trigger}\sqrt{m_i+m_j}$, with 
+   $\epsilon_{trigger} \sim 10^{-2}$ ?
+        We start with the requirement that we want to protect
+   the energy conservation of the whole system, to within a small
+   error tolerance of, say, $10^{-11}$ in N-body units.
+        Note that by doing so, we sacrifice accuracy for
+   very very light particles.  For example, Earth and Moon
+   in a globular cluster of $10^6$ stars, have a total mass
+   of $10^{-12}$, so the criterion reads $r_{ij} = 10^{-8}$,
+   so you are reduced to single precision integration,
+   effectively.  Interestingly, $r_{ij} = 10^{-8}$ corresponds
+   to a distance ten times larger than the distance to the moon;
+   or anything within the current Hills sphere of the Earth is
+   regularized. The round-off distance, by the way, is a couple
+   hundred meters.
+        Anyway, the absolute energy error is $\epsilon \sim
+   \frac{m_j}{r_{ij}}\frac{r_{roundoff}}{r_{ij}} < \epsilon_{safe}$.
+   This implies $r_{ij}^2>m_j \frac{r_{roundoff}}{\epsilon_{safe}}$
+   or for the trigger radius to start fusion: $r_{trigger} 
+   = \sqrt{\frac{r_{roundoff}}{\epsilon_{safe}}}\sqrt{m_i+m_j}$
+   With $r_{roundoff} \sim 10^{-15}$ and $\epsilon_{safe}=10^{-11}$
+   we have $r_{trigger} = 10^{-2}\sqrt{m_i+m_j}$.
+
+\item how did we derive the Kepler integration accuracy criterion of
+   $r_{ij} = 10^{-1}\sqrt{m_i+m_j}$ ?  We start with the value
+   of $10^{-2}$ for the coefficient for a single close encounter.
+   Assuming that a Kepler orbit gets mostly regularized through
+   analytical Kepler integration, we have perhaps $10^4$ orbits
+   that need to be numerically integrated.  If the error adds
+   in square root fashion, it will grow only by a factor of
+   $10^{-2}$.  As we saw above, $\epsilon_{trigger}$ grows only
+   with the square root of the energy error, so it becomes only
+   $10$ times larger than the previous value of $10^{-2}$.
+
+\item strong perturbations from an external object on a molecule
+   would not necessarily cause that object to become part of
+   the molecule.  For example, a very heavy black hole with not
+   cause everything nearby to become part of one molecule unless
+   a loss-of-digit criterion or other criterion is triggered.
+\end{itemize}
+
+Basic idea for perturvation from local to global, and global to
+local.
+
+Do not maintain anything like the perturber list. Just always
+calculate the perturbation term by exposing the local mass
+distribution.
+
+If the perturbation on the internal dynamics is large (say $10^{-3}$),
+there is some external star not too far away from the molecule, and
+the timestep of that star, as well as the center-of-mass motion of the
+molecule, would not be much larger than that for the internal motion
+of the molecule, and there is not much reason not to do $O(N)$
+calculation (on GRAPE) at each timestep.
+
+If the perturbation is small, one should develop a perturvative scheme
+which integrates the orbital elements of the internal motion (well,
+that of the outermost stable binary) using secular perturbation
+treatment. This automatically implies that  the mass distribution of
+the local molecule must be expressed as static one, which varies only
+in the timescale of the orbital evolution due to external
+perturbation. In other words, we should express the internal dynamics
+as slowly changing multipole expansion, most likely just by quadrupole
+terms.
+
+The external field should also be expressed by spherical harmonics
+expansion (so-called local expansion in terminology of FMM). One can
+calculate this either by using Anderson's method, {\it i.e.,} by
+calculating the potential on selected points on a sphere, or by
+directly constructing the force on some selected points and construct
+the interpolation polynomial. 
+
+
+
+\newpage
+
+\section{Top level modules}
+
+In this section, we first discuss what ``top level'' modules we want
+to have and why.
+
+\subsection{History}
+
+What do we mean by ``History''? Well, we practically have two
+programs, each with its own fairly long development record, to be
+discussed. One is Sverre Aarseth's NBODYx (not the real NBODYX, which
+is a marriage of the treecode with individual timestep and the KS
+regularization, but generic name for NBODY1 through NBODY6 or 7). The
+other is Kira.
+
+\subsubsection{NBODYx}
+
+It would not be unfair to say that the there is no clear module
+separation within NBODYx code. All persistent data are in various
+common blocks, which are visible from any subroutines. This of course
+is partly due to the syntactical and semantical limitation of the
+Fortran 77 (and Fortran IV or Fortran II on which the earlier versions
+of the programs had been developed), but to keep everything in the
+common block was also a design choice to make the checkpointing
+possible. Here, checkpointing means writing out the complete
+information of the current state of the program to the secondary
+storage (either disk or tape), so that the program can restart by
+reading in the data on the storage, producing the result exactly the
+same as it would produce if the execution was continued without
+restarting.
+
+One way to guarantee the restartability of the code is to allocate
+{\it all} variables statically, avoiding the use of any dynamically
+allocated data. In this way one can guarantee that, if the dump of all
+data is created when the control is in the main routine, one can
+terminate the program at any later momemnt, and restart the execution
+by first reading in the last dump file and jump to the point just
+after the creation of the dump file in the main program. Note that
+this approach prevent us from using any pointer type variables, since
+there is no guarantee that the virtual address of any variable is
+actually same after restarting.
+
+If we have dynamic data structure, it is not impossible to make the
+code restartable, but it requires, either to rely on the operating
+system's capability to make the checkpoint (which is not alway
+available on all operating systems, though one would think it
+should), or to develop some way to make the complete image of the
+current state of the dynamic data structure. Conceptually, it is not
+particularrily complex to do so: If the data structure is treelike,
+one need to traverse the tree, converting all the pointers to some
+kind of indices and write them out, so that one can reconstruct the
+pointers  from the values of indices. Some rational languages like
+Ruby provide language-level support for such function, but most of
+widely-used languages do not.
+
+However, we believe this cost is what one should pay, and to restrict
+ourselves to static data structure which is shared by all subroutines
+is far too restricted, to tackle the complex problem as the
+interaction between stellar dynamics, stellar evolution and stellar
+hydrodynamics.
+
+\subsubsection{kira}
+
+Now let us take a look at kira. Kira has been developed by a group of
+people, including both author of this document as the initial
+member. In fact, many of the very first design decisions are made
+between two of us. So we tend to think {\it every} design decision
+about kira is sound and fine. But let us try to be very critical on
+ourselves.
+
+The beauty of kira is in its uniform treatment of any subsystem. The
+basic data structure of kira is a tree. If there is no compact
+subsystem, all particles belong to a one-level, flat tree (see figure
+\ref{fig:kira-flat-tree}. This tree is expressed as a bidirectional
+list.
+
+When two particles come to close to each other, one would like to
+transform their phase-space variable to their relative motion and the
+center-of-mass motion, because of several reasons (we return to the
+exact reasoning later). In NBODYx, particle data are stored in Fortran
+77 arrays, and distinction between the transformed stars (in the
+following we sometimes call them binaries, though not all binaries are
+treated this way and some of the pairs treated this way are not
+binaries) and normal, or single stars by their location within the
+array. binary components occupy locations 1 to $2 N_{pairs}$, while
+single particles $2 N_{pairs}+1$ through $N$. locations $N+1$ through
+$N+N_{pairs}$ are used to store center-of-mass pseudoparticles.
+
+An obvious limitation of the NBODYx approach is that it is not easy to
+handle more complex objects such as hierarchical triples and
+quadruples.
+
+Hierarchical triples are not rare, even in $N$-body simulations from
+no primodial triples. If we start the run with no primordial binary,
+it is not too likely that triples are formed dynamically. However, if
+the initial cluster contains a fair fraction of primordial binaries,
+binary-binary interaction can easily lead to a triple.
+
+The binary-binary interaction itself can be treated by isolating the
+participant and integrate them in their center-of-mass frame. If you
+like, you can also apply complex regularization techniques such as
+chain or others. However, hierarchical triple poses a different kind
+of problem.
+
+First of all, you need to put three particles in their local
+coordinate (most likely the center-of-mass frame). If we have only KS
+regularization, which can handle only two particles, it is of course
+technically difficult to handle triples.
+
+
+
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize 10 cm
+\epsffile{kira-flat-tree.eps}
+\end{center}
+\caption{Top-level flat tree of kira.}
+\label{fig:kira-flat-tree}
+\end{figure}
+
+
+
+
+
+
+
+
+\large
+\begin{minipage}[b]{7.9cm}
+
+\noindent
+Candidate:
+\begin{enumerate}
+\item $ r_{ij} < f(R_i+R_j)$
+\item $ r_{ij} < R_i^{mol}+R_j^{mol})$
+\item $ r_{ij} < \epsilon_{trig}\sqrt{m_i+m_j}$, $\epsilon_{trig} \sim 10^{-2}$
+\item $ r_{ij} < \epsilon_{trig}^{kep}\sqrt{m_i+m_j}$ {\tt \&\&
+bound},
+
+$\epsilon_{trig}^{kep} \sim 10^{-1}$
+\end{enumerate}
+
+\end{minipage}
+\begin{minipage}[b]{7.9cm}
+Candidate:
+\begin{enumerate}
+\item $ r_{ij} < f(R_i+R_j)$
+\item $g(m_{1},r_{1},v_{1},R_{1}, m_{2},r_{2},v_{2},R_{2})$
+
+\end{enumerate}
+\end{minipage}
+
+
+\epsfxsize \columnwidth
+\epsffile{top_conversion.eps}
+
+\begin{center}
+check
+\begin{eqnarray}
+1\le f \le 10 & {\rm okay}\nonumber\\
+ f > 10 & {\rm warning}\nonumber\\
+ f < 1 & {\rm error}\nonumber
+\end{eqnarray}
+\end{center}
+\end{document}

@@ -1,0 +1,67 @@
+\chapter{Generating Initial Conditions}
+
+\section{A few Simple Tools}
+
+\code{chap9/pmk_circ_binary.C}
+
+\code{chap9/mk_fig8_triple.C}
+
+\code{chap9/mk_binary_binary.C}
+
+\section{Using a Makefile}
+
+\code{chap9/Makefile}
+
+\section{Setting up a Plummer Model}
+
+\code{chap9/plummer.C}
+
+
+
+%% From old version of chapter 7:
+%%
+%%\section{A More Modular Leapfrog}
+%%
+%%After having drawn up the first wish list above, Alice, Bob, and Carol
+%%sat down to rewrite their leapfrog code to comply with these new
+%%wishes.  Although they were in close contact during their code
+%%writing, they wound up with three versions, differing only in the way
+%%the internal data were stored.  As for the external data format, they
+%%all agreed upon the same convention, which meant that their programs
+%%could share data from other versions, using the output from those
+%%versions as input for their own program, and conversely.  They also
+%%stuck to the same logical flow in their three programs.
+%%
+%%We will first have a look at the program that Bob wrote, which is the
+%%simplest of the three, in that it does not use any STL additions to
+%%the C++ language.  Those who are familiar with C, the computer
+%%language on which C++ was originally modeled, will recognize that
+%%Bob's program {\st nbody\_leap1.C} is written pretty much in a C style
+%%fashion.  Following that, we will see how Alice introduced the notion
+%%of a {\sl vector} from the Standard Template Library to store the
+%%particles in an $N$-body system.  Finally, we show how Carol extended
+%%Alice's use of vectors to cover the internal data representation for a
+%%single particle.
+%%
+%%Here is Bob's code:
+%%
+%%\code{chap7/nbody_leap1.C}
+%%
+%%\section{Comments}
+%%
+%%\section{Functions and their Arguments}
+%%
+%%\section{Command Line Options}
+%%
+%%\section{I/O Control and External Data Structures}
+%%
+%%\section{Internal Data Structures}
+%%
+%%\section{Diagnostics}
+%%
+%%\section{The Driver for the Integrator}
+%%
+%%\section{The Leapfrog Integrator}
+%%
+%%\section{The Core Loop: Where the Action is}
+%%

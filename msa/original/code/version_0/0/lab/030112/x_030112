@@ -1,0 +1,2231 @@
+<gingakogen|/home/piet/gravitylab> cd
+<gingakogen|/home/piet> lt
+    4 drwx------    2 piet     sns          4096 Jan  7 08:11 bin/
+    4 -rw-r--r--    1 piet     sns          1176 Jan  7 16:52 tmp.mai
+   40 -rw-------    1 piet     sns         39424 Jan  8 09:45 tmp_rusty.doc
+   16 -rw-r--r--    1 piet     sns         15204 Jan  8 10:16 tmp_rusty.txt
+    4 -rw-------    1 piet     sns           775 Jan  8 16:40 tmp.uni
+    4 -rw-------    1 piet     sns           825 Jan  9 09:19 tmp.unix
+    4 -rw-r--r--    1 piet     sns          2481 Jan  9 16:06 tmp.txt
+    8 drwx------   14 piet     sns          8192 Jan  9 16:53 M/
+  244 -rw-------    1 piet     sns        243668 Jan  9 17:34 psgml-1.2.5.tar.gz
+    4 drwx------   14 piet     sns          4096 Jan  9 17:35 ref/
+<gingakogen|/home/piet> ls psg*
+psgml-1.2.5.tar.gz
+<gingakogen|/home/piet> cd tmp
+<gingakogen|/home/piet/tmp> ls
+0207318.tar  final/	  NEWAST_301_ctf.pdf  rev_0207318.tar
+fig1.eps     harvard.sty  NEWAST_301_oof.pdf  tmp/
+fig2.eps     modest.tex   pointdata3.eps      treetrim.doc
+<gingakogen|/home/piet/tmp> cd tmp
+<gingakogen|/home/piet/tmp/tmp> ls
+tmp_finkel2.aux  tmp_finkel2.log  tmp_finkel.aux  tmp_finkel.log
+tmp_finkel2.dvi  tmp_finkel2.ps   tmp_finkel.dvi  tmp_finkel.ps
+tmp_finkel2.idx  tmp_finkel2.tex  tmp_finkel.idx  tmp_finkel.tex
+<gingakogen|/home/piet/tmp/tmp> \rm *
+<gingakogen|/home/piet/tmp/tmp> mv ../../psgm* .
+<gingakogen|/home/piet/tmp/tmp> ls
+psgml-1.2.5.tar.gz
+<gingakogen|/home/piet/tmp/tmp> gunzip *
+<gingakogen|/home/piet/tmp/tmp> ls
+psgml-1.2.5.tar
+<gingakogen|/home/piet/tmp/tmp> tar tvf *
+drwxr-xr-x lenst/staff       0 2002-04-19 14:37:46 psgml-1.2.5/
+-rw-r--r-- lenst/staff   22921 2002-04-19 14:37:46 psgml-1.2.5/ChangeLog
+-rwxr-xr-x lenst/staff   34133 2002-04-19 14:37:46 psgml-1.2.5/configure
+-rw-r--r-- lenst/staff     497 2002-04-19 14:37:46 psgml-1.2.5/configure.in
+-rw-r--r-- lenst/staff    7721 2002-04-19 14:37:46 psgml-1.2.5/INSTALL
+-rw-r--r-- lenst/staff    4773 2002-04-19 14:37:46 psgml-1.2.5/install-sh
+-rw-r--r-- lenst/staff    2772 2002-04-19 14:37:46 psgml-1.2.5/iso88591.map
+-rw-r--r-- lenst/staff    1314 2002-04-19 14:37:46 psgml-1.2.5/Makefile
+-rw-r--r-- lenst/staff    1214 2002-04-19 14:37:46 psgml-1.2.5/Makefile.in
+-rwxr-xr-x lenst/staff     606 2002-04-19 14:37:46 psgml-1.2.5/mkinstalldirs
+-rw-r--r-- lenst/staff    3691 2002-04-19 14:37:46 psgml-1.2.5/psgml-api.el
+-rw-r--r-- lenst/staff   25622 2002-04-19 14:37:46 psgml-1.2.5/psgml-api.info
+-rw-r--r-- lenst/staff   27449 2002-04-19 14:37:46 psgml-1.2.5/psgml-api.texi
+-rw-r--r-- lenst/staff    3972 2002-04-19 14:37:46 psgml-1.2.5/psgml-charent.el
+-rw-r--r-- lenst/staff   25049 2002-04-19 14:37:46 psgml-1.2.5/psgml-debug.el
+-rw-r--r-- lenst/staff   31489 2002-04-19 14:37:46 psgml-1.2.5/psgml-dtd.el
+-rw-r--r-- lenst/staff   72553 2002-04-19 14:37:46 psgml-1.2.5/psgml-edit.el
+-rw-r--r-- lenst/staff   10713 2002-04-19 14:37:46 psgml-1.2.5/psgml-fs.el
+-rw-r--r-- lenst/staff   13285 2002-04-19 14:37:46 psgml-1.2.5/psgml-info.el
+-rw-r--r-- lenst/staff    6659 2002-04-19 14:37:46 psgml-1.2.5/psgml-lucid.el
+-rw-r--r-- lenst/staff    3093 2002-04-19 14:37:46 psgml-1.2.5/psgml-maint.el
+-rw-r--r-- lenst/staff    5953 2002-04-19 14:37:46 psgml-1.2.5/psgml-other.el
+-rw-r--r-- lenst/staff  145698 2002-04-19 14:37:46 psgml-1.2.5/psgml-parse.el
+-rw-r--r-- lenst/staff   61555 2002-04-19 14:37:46 psgml-1.2.5/psgml.el
+-rw-r--r-- lenst/staff   57975 2002-04-19 14:37:46 psgml-1.2.5/psgml.info
+-rw-r--r-- lenst/staff  197598 2002-04-19 14:37:46 psgml-1.2.5/psgml.ps
+-rw-r--r-- lenst/staff   56630 2002-04-19 14:37:46 psgml-1.2.5/psgml.texi
+-rw-r--r-- lenst/staff    2613 2002-04-19 14:37:46 psgml-1.2.5/README.psgml
+<gingakogen|/home/piet/tmp/tmp> tar xvf *
+psgml-1.2.5/
+psgml-1.2.5/ChangeLog
+psgml-1.2.5/configure
+psgml-1.2.5/configure.in
+psgml-1.2.5/INSTALL
+psgml-1.2.5/install-sh
+psgml-1.2.5/iso88591.map
+psgml-1.2.5/Makefile
+psgml-1.2.5/Makefile.in
+psgml-1.2.5/mkinstalldirs
+psgml-1.2.5/psgml-api.el
+psgml-1.2.5/psgml-api.info
+psgml-1.2.5/psgml-api.texi
+psgml-1.2.5/psgml-charent.el
+psgml-1.2.5/psgml-debug.el
+psgml-1.2.5/psgml-dtd.el
+psgml-1.2.5/psgml-edit.el
+psgml-1.2.5/psgml-fs.el
+psgml-1.2.5/psgml-info.el
+psgml-1.2.5/psgml-lucid.el
+psgml-1.2.5/psgml-maint.el
+psgml-1.2.5/psgml-other.el
+psgml-1.2.5/psgml-parse.el
+psgml-1.2.5/psgml.el
+psgml-1.2.5/psgml.info
+psgml-1.2.5/psgml.ps
+psgml-1.2.5/psgml.texi
+psgml-1.2.5/README.psgml
+<gingakogen|/home/piet/tmp/tmp> ls
+psgml-1.2.5/  psgml-1.2.5.tar
+<gingakogen|/home/piet/tmp/tmp> cd p*5
+<gingakogen|/home/piet/tmp/tmp/psgml-1.2.5> ls
+ChangeLog     Makefile	      psgml-charent.el	psgml.info	psgml.ps
+configure*    Makefile.in     psgml-debug.el	psgml-info.el	psgml.texi
+configure.in  mkinstalldirs*  psgml-dtd.el	psgml-lucid.el	README.psgml
+INSTALL       psgml-api.el    psgml-edit.el	psgml-maint.el
+install-sh    psgml-api.info  psgml.el		psgml-other.el
+iso88591.map  psgml-api.texi  psgml-fs.el	psgml-parse.el
+<gingakogen|/home/piet/tmp/tmp/psgml-1.2.5> file IN*
+INSTALL: ASCII English text
+<gingakogen|/home/piet/tmp/tmp/psgml-1.2.5> cat IN*
+Basic Installation
+==================
+
+   These are generic installation instructions.
+
+   The `configure' shell script attempts to guess correct values for
+various system-dependent variables used during compilation.  It uses
+those values to create a `Makefile' in each directory of the package.
+It may also create one or more `.h' files containing system-dependent
+definitions.  Finally, it creates a shell script `config.status' that
+you can run in the future to recreate the current configuration, a file
+`config.cache' that saves the results of its tests to speed up
+reconfiguring, and a file `config.log' containing compiler output
+(useful mainly for debugging `configure').
+
+   If you need to do unusual things to compile the package, please try
+to figure out how `configure' could check whether to do them, and mail
+diffs or instructions to the address given in the `README' so they can
+be considered for the next release.  If at some point `config.cache'
+contains results you don't want to keep, you may remove or edit it.
+
+   The file `configure.in' is used to create `configure' by a program
+called `autoconf'.  You only need `configure.in' if you want to change
+it or regenerate `configure' using a newer version of `autoconf'.
+
+The simplest way to compile this package is:
+
+  1. `cd' to the directory containing the package's source code and type
+     `./configure' to configure the package for your system.  If you're
+     using `csh' on an old version of System V, you might need to type
+     `sh ./configure' instead to prevent `csh' from trying to execute
+     `configure' itself.
+
+     Running `configure' takes awhile.  While running, it prints some
+     messages telling which features it is checking for.
+
+  2. Type `make' to compile the package.
+
+  3. Optionally, type `make check' to run any self-tests that come with
+     the package.
+
+  4. Type `make install' to install the programs and any data files and
+     documentation.
+
+  5. You can remove the program binaries and object files from the
+     source code directory by typing `make clean'.  To also remove the
+     files that `configure' created (so you can compile the package for
+     a different kind of computer), type `make distclean'.  There is
+     also a `make maintainer-clean' target, but that is intended mainly
+     for the package's developers.  If you use it, you may have to get
+     all sorts of other programs in order to regenerate files that came
+     with the distribution.
+
+Compilers and Options
+=====================
+
+   Some systems require unusual options for compilation or linking that
+the `configure' script does not know about.  You can give `configure'
+initial values for variables by setting them in the environment.  Using
+a Bourne-compatible shell, you can do that on the command line like
+this:
+     CC=c89 CFLAGS=-O2 LIBS=-lposix ./configure
+
+Or on systems that have the `env' program, you can do it like this:
+     env CPPFLAGS=-I/usr/local/include LDFLAGS=-s ./configure
+
+Compiling For Multiple Architectures
+====================================
+
+   You can compile the package for more than one kind of computer at the
+same time, by placing the object files for each architecture in their
+own directory.  To do this, you must use a version of `make' that
+supports the `VPATH' variable, such as GNU `make'.  `cd' to the
+directory where you want the object files and executables to go and run
+the `configure' script.  `configure' automatically checks for the
+source code in the directory that `configure' is in and in `..'.
+
+   If you have to use a `make' that does not supports the `VPATH'
+variable, you have to compile the package for one architecture at a time
+in the source code directory.  After you have installed the package for
+one architecture, use `make distclean' before reconfiguring for another
+architecture.
+
+Installation Names
+==================
+
+   By default, `make install' will install the package's files in
+`/usr/local/bin', `/usr/local/man', etc.  You can specify an
+installation prefix other than `/usr/local' by giving `configure' the
+option `--prefix=PATH'.
+
+   You can specify separate installation prefixes for
+architecture-specific files and architecture-independent files.  If you
+give `configure' the option `--exec-prefix=PATH', the package will use
+PATH as the prefix for installing programs and libraries.
+Documentation and other data files will still use the regular prefix.
+
+   In addition, if you use an unusual directory layout you can give
+options like `--bindir=PATH' to specify different values for particular
+kinds of files.  Run `configure --help' for a list of the directories
+you can set and what kinds of files go in them.
+
+   If the package supports it, you can cause programs to be installed
+with an extra prefix or suffix on their names by giving `configure' the
+option `--program-prefix=PREFIX' or `--program-suffix=SUFFIX'.
+
+Optional Features
+=================
+
+   Some packages pay attention to `--enable-FEATURE' options to
+`configure', where FEATURE indicates an optional part of the package.
+They may also pay attention to `--with-PACKAGE' options, where PACKAGE
+is something like `gnu-as' or `x' (for the X Window System).  The
+`README' should mention any `--enable-' and `--with-' options that the
+package recognizes.
+
+   For packages that use the X Window System, `configure' can usually
+find the X include and library files automatically, but if it doesn't,
+you can use the `configure' options `--x-includes=DIR' and
+`--x-libraries=DIR' to specify their locations.
+
+Specifying the System Type
+==========================
+
+   There may be some features `configure' can not figure out
+automatically, but needs to determine by the type of host the package
+will run on.  Usually `configure' can figure that out, but if it prints
+a message saying it can not guess the host type, give it the
+`--host=TYPE' option.  TYPE can either be a short name for the system
+type, such as `sun4', or a canonical name with three fields:
+     CPU-COMPANY-SYSTEM
+
+See the file `config.sub' for the possible values of each field.  If
+`config.sub' isn't included in this package, then this package doesn't
+need to know the host type.
+
+   If you are building compiler tools for cross-compiling, you can also
+use the `--target=TYPE' option to select the type of system they will
+produce code for and the `--build=TYPE' option to select the type of
+system on which you are compiling the package.
+
+Sharing Defaults
+================
+
+   If you want to set default values for `configure' scripts to share,
+you can create a site shell script called `config.site' that gives
+default values for variables like `CC', `cache_file', and `prefix'.
+`configure' looks for `PREFIX/share/config.site' if it exists, then
+`PREFIX/etc/config.site' if it exists.  Or, you can set the
+`CONFIG_SITE' environment variable to the location of the site script.
+A warning: not all `configure' scripts look for a site script.
+
+Operation Controls
+==================
+
+   `configure' recognizes the following options to control how it
+operates.
+
+`--cache-file=FILE'
+     Use and save the results of the tests in FILE instead of
+     `./config.cache'.  Set FILE to `/dev/null' to disable caching, for
+     debugging `configure'.
+
+`--help'
+     Print a summary of the options to `configure', and exit.
+
+`--quiet'
+`--silent'
+`-q'
+     Do not print messages saying which checks are being made.
+
+`--srcdir=DIR'
+     Look for the package's source code in directory DIR.  Usually
+     `configure' can determine that directory automatically.
+
+`--version'
+     Print the version of Autoconf used to generate the `configure'
+     script, and exit.
+
+`configure' also accepts some other, not widely useful, options.
+
+<gingakogen|/home/piet/tmp/tmp/psgml-1.2.5> sh ./configure
+creating cache ./config.cache
+checking whether make sets ${MAKE}... yes
+checking for a BSD compatible install... /usr/bin/install -c
+checking for emacs... /usr/bin/emacs
+checking where .elc files should go... $(datadir)/emacs/site-lisp
+checking for makeinfo... /usr/bin/makeinfo
+updating cache ./config.cache
+creating ./config.status
+creating Makefile
+<gingakogen|/home/piet/tmp/tmp/psgml-1.2.5> make
+/usr/bin/emacs -batch -q -no-site-file -l ./psgml-maint.el -f psgml-compile-files
+Wrote /home/piet/tmp/tmp/psgml-1.2.5/psgml.elc
+Wrote /home/piet/tmp/tmp/psgml-1.2.5/psgml-parse.elc
+Wrote /home/piet/tmp/tmp/psgml-1.2.5/psgml-edit.elc
+Wrote /home/piet/tmp/tmp/psgml-1.2.5/psgml-dtd.elc
+Wrote /home/piet/tmp/tmp/psgml-1.2.5/psgml-info.elc
+Wrote /home/piet/tmp/tmp/psgml-1.2.5/psgml-charent.elc
+Wrote /home/piet/tmp/tmp/psgml-1.2.5/psgml-api.elc
+Wrote /home/piet/tmp/tmp/psgml-1.2.5/psgml-other.elc
+Done compiling
+<gingakogen|/home/piet/tmp/tmp/psgml-1.2.5> make check
+make: *** No rule to make target `check'.  Stop.
+<gingakogen|/home/piet/tmp/tmp/psgml-1.2.5> su
+Password: 
+
+gingakogen:]0;root@gingakogen:/home/piet/tmp/tmp/psgml-1.2.5[3;31m/home/piet/tmp/tmp/psgml-1.2.5[0m make install
+/usr/bin/emacs -batch -q -no-site-file -l ./psgml-maint.el -f psgml-compile-files
+Done compiling
+/bin/sh mkinstalldirs /usr/local/share/emacs/site-lisp
+mkdir /usr/local/share/emacs
+mkdir /usr/local/share/emacs/site-lisp
+for p in *.elc; do \
+  echo " /usr/bin/install -c -m 644 $p /usr/local/share/emacs/site-lisp/$p"; \
+  /usr/bin/install -c -m 644 $p /usr/local/share/emacs/site-lisp/$p; \
+done
+ /usr/bin/install -c -m 644 psgml-api.elc /usr/local/share/emacs/site-lisp/psgml-api.elc
+ /usr/bin/install -c -m 644 psgml-charent.elc /usr/local/share/emacs/site-lisp/psgml-charent.elc
+ /usr/bin/install -c -m 644 psgml-dtd.elc /usr/local/share/emacs/site-lisp/psgml-dtd.elc
+ /usr/bin/install -c -m 644 psgml-edit.elc /usr/local/share/emacs/site-lisp/psgml-edit.elc
+ /usr/bin/install -c -m 644 psgml.elc /usr/local/share/emacs/site-lisp/psgml.elc
+ /usr/bin/install -c -m 644 psgml-info.elc /usr/local/share/emacs/site-lisp/psgml-info.elc
+ /usr/bin/install -c -m 644 psgml-other.elc /usr/local/share/emacs/site-lisp/psgml-other.elc
+ /usr/bin/install -c -m 644 psgml-parse.elc /usr/local/share/emacs/site-lisp/psgml-parse.elc
+/usr/bin/install -c -m 644 iso88591.map /usr/local/share/emacs/site-lisp
+gingakogen:]0;root@gingakogen:/home/piet/tmp/tmp/psgml-1.2.5[3;31m/home/piet/tmp/tmp/psgml-1.2.5[0m exit
+exit
+<gingakogen|/home/piet/tmp/tmp/psgml-1.2.5> ls
+ChangeLog	Makefile.in	   psgml-dtd.elc   psgml-maint.el
+config.cache	mkinstalldirs*	   psgml-edit.el   psgml-other.el
+config.log	psgml-api.el	   psgml-edit.elc  psgml-other.elc
+config.status*	psgml-api.elc	   psgml.el	   psgml-parse.el
+configure*	psgml-api.info	   psgml.elc	   psgml-parse.elc
+configure.in	psgml-api.texi	   psgml-fs.el	   psgml.ps
+INSTALL		psgml-charent.el   psgml.info	   psgml.texi
+install-sh	psgml-charent.elc  psgml-info.el   README.psgml
+iso88591.map	psgml-debug.el	   psgml-info.elc
+Makefile	psgml-dtd.el	   psgml-lucid.el
+<gingakogen|/home/piet/tmp/tmp/psgml-1.2.5> du -s .
+1252	.
+<gingakogen|/home/piet/tmp/tmp/psgml-1.2.5> mkdir ~/psgml
+<gingakogen|/home/piet/tmp/tmp/psgml-1.2.5> mv * !$
+mv * ~/psgml
+<gingakogen|/home/piet/tmp/tmp/psgml-1.2.5> la
+total 8
+   4 drwxr-xr-x    2 piet     sns          4096 Jan  9 17:44 ./
+   4 drwxr-xr-x    3 piet     sns          4096 Jan  9 17:36 ../
+<gingakogen|/home/piet/tmp/tmp/psgml-1.2.5> cd ..
+<gingakogen|/home/piet/tmp/tmp> ls
+psgml-1.2.5/  psgml-1.2.5.tar
+<gingakogen|/home/piet/tmp/tmp> rm -r *
+rm: descend into directory `psgml-1.2.5'? y
+rm: remove directory `psgml-1.2.5'? y
+rm: remove `psgml-1.2.5.tar'? y
+<gingakogen|/home/piet/tmp/tmp> la
+total 8
+   4 drwxr-xr-x    2 piet     sns          4096 Jan  9 17:44 ./
+   4 drwx------    4 piet     sns          4096 Jan  2 18:17 ../
+<gingakogen|/home/piet/tmp/tmp> cd
+<gingakogen|/home/piet> cd psg*
+<gingakogen|/home/piet/psgml> ls
+ChangeLog	Makefile.in	   psgml-dtd.elc   psgml-maint.el
+config.cache	mkinstalldirs*	   psgml-edit.el   psgml-other.el
+config.log	psgml-api.el	   psgml-edit.elc  psgml-other.elc
+config.status*	psgml-api.elc	   psgml.el	   psgml-parse.el
+configure*	psgml-api.info	   psgml.elc	   psgml-parse.elc
+configure.in	psgml-api.texi	   psgml-fs.el	   psgml.ps
+INSTALL		psgml-charent.el   psgml.info	   psgml.texi
+install-sh	psgml-charent.elc  psgml-info.el   README.psgml
+iso88591.map	psgml-debug.el	   psgml-info.elc
+Makefile	psgml-dtd.el	   psgml-lucid.el
+<gingakogen|/home/piet/psgml> lss
+   4 -rw-r--r--    1 piet     sns          1001 Jan  9 17:40 config.cache
+   4 -rw-r--r--    1 piet     sns          1214 Apr 19  2002 Makefile.in
+   4 -rw-r--r--    1 piet     sns          1287 Jan  9 17:40 Makefile
+   4 -rw-r--r--    1 piet     sns          2613 Apr 19  2002 README.psgml
+   4 -rw-r--r--    1 piet     sns          2772 Apr 19  2002 iso88591.map
+   4 -rw-r--r--    1 piet     sns          2940 Jan  9 17:41 psgml-api.elc
+   4 -rw-r--r--    1 piet     sns          3093 Apr 19  2002 psgml-maint.el
+   4 -rw-r--r--    1 piet     sns          3337 Jan  9 17:41 psgml-charent.elc
+   4 -rw-r--r--    1 piet     sns           352 Jan  9 17:40 config.log
+   4 -rw-r--r--    1 piet     sns          3691 Apr 19  2002 psgml-api.el
+   4 -rw-r--r--    1 piet     sns          3972 Apr 19  2002 psgml-charent.el
+   4 -rw-r--r--    1 piet     sns           497 Apr 19  2002 configure.in
+   4 -rwxr-xr-x    1 piet     sns           606 Apr 19  2002 mkinstalldirs*
+   8 -rw-r--r--    1 piet     sns          4502 Jan  9 17:41 psgml-other.elc
+   8 -rw-r--r--    1 piet     sns          4773 Apr 19  2002 install-sh
+   8 -rw-r--r--    1 piet     sns          5953 Apr 19  2002 psgml-other.el
+   8 -rw-r--r--    1 piet     sns          6659 Apr 19  2002 psgml-lucid.el
+   8 -rw-r--r--    1 piet     sns          7721 Apr 19  2002 INSTALL
+   8 -rwxr-xr-x    1 piet     sns          5071 Jan  9 17:40 config.status*
+  12 -rw-r--r--    1 piet     sns         10140 Jan  9 17:41 psgml-info.elc
+  12 -rw-r--r--    1 piet     sns         10713 Apr 19  2002 psgml-fs.el
+  16 -rw-r--r--    1 piet     sns         13285 Apr 19  2002 psgml-info.el
+  24 -rw-r--r--    1 piet     sns         22921 Apr 19  2002 ChangeLog
+  28 -rw-r--r--    1 piet     sns         25049 Apr 19  2002 psgml-debug.el
+  28 -rw-r--r--    1 piet     sns         25622 Apr 19  2002 psgml-api.info
+  28 -rw-r--r--    1 piet     sns         27449 Apr 19  2002 psgml-api.texi
+  32 -rw-r--r--    1 piet     sns         31163 Jan  9 17:41 psgml-dtd.elc
+  32 -rw-r--r--    1 piet     sns         31489 Apr 19  2002 psgml-dtd.el
+  36 -rwxr-xr-x    1 piet     sns         34133 Apr 19  2002 configure*
+  60 -rw-r--r--    1 piet     sns         56630 Apr 19  2002 psgml.texi
+  60 -rw-r--r--    1 piet     sns         56741 Jan  9 17:41 psgml.elc
+  60 -rw-r--r--    1 piet     sns         56944 Jan  9 17:41 psgml-edit.elc
+  64 -rw-r--r--    1 piet     sns         57975 Apr 19  2002 psgml.info
+  68 -rw-r--r--    1 piet     sns         61555 Apr 19  2002 psgml.el
+  76 -rw-r--r--    1 piet     sns         72553 Apr 19  2002 psgml-edit.el
+ 148 -rw-r--r--    1 piet     sns        145698 Apr 19  2002 psgml-parse.el
+ 164 -rw-r--r--    1 piet     sns        162133 Jan  9 17:41 psgml-parse.elc
+ 200 -rw-r--r--    1 piet     sns        197598 Apr 19  2002 psgml.ps
+<gingakogen|/home/piet/psgml> gv psgml.ps
+gv: terminated by signal 2
+<gingakogen|/home/piet/psgml> cd
+<gingakogen|/home/piet> lt
+   16 -rw-r--r--    1 piet     sns         15204 Jan  8 10:16 tmp_rusty.txt
+    4 -rw-------    1 piet     sns           775 Jan  8 16:40 tmp.uni
+    8 drwx------   14 piet     sns          8192 Jan  9 04:53 M/
+    4 -rw-------    1 piet     sns           825 Jan  9 09:19 tmp.unix
+    4 -rw-r--r--    1 piet     sns          2481 Jan  9 16:06 tmp.txt
+    4 drwxr-xr-x    2 piet     sns          4096 Jan  9 17:44 psgml/
+    4 drwx------    9 piet     sns          4096 Jan  9 18:15 gravitylab/
+    4 -rw-r--r--    1 piet     sns          2159 Jan  9 18:24 gv_3e1e0497_1_CPPXML.pdf.tmp
+ 1000 -rw-------    1 piet     sns       1019425 Jan  9 20:56 blitz-0.6.tar.gz
+    4 drwx------   14 piet     sns          4096 Jan  9 20:57 ref/
+<gingakogen|/home/piet> cd grav*
+<gingakogen|/home/piet/gravitylab> mkdir blitz
+<gingakogen|/home/piet/gravitylab> mv ../blit* blit*
+<gingakogen|/home/piet/gravitylab> cd !$
+cd blit*
+<gingakogen|/home/piet/gravitylab/blitz> la
+total 1008
+   4 drwxr-xr-x    2 piet     sns          4096 Jan  9 20:57 ./
+   4 drwx------   10 piet     sns          4096 Jan  9 20:57 ../
+1000 -rw-------    1 piet     sns       1019425 Jan  9 20:56 blitz-0.6.tar.gz
+<gingakogen|/home/piet/gravitylab/blitz> gunzip *
+<gingakogen|/home/piet/gravitylab/blitz> tar xvf *
+blitz-0.6/
+blitz-0.6/benchmarks/
+blitz-0.6/benchmarks/.cvsignore
+blitz-0.6/benchmarks/Makefile.am
+blitz-0.6/benchmarks/Makefile.in
+blitz-0.6/benchmarks/acou3d.cpp
+blitz-0.6/benchmarks/acou3db1.cpp
+blitz-0.6/benchmarks/acou3db2.cpp
+blitz-0.6/benchmarks/acou3db3.cpp
+blitz-0.6/benchmarks/acou3db4.cpp
+blitz-0.6/benchmarks/acou3df.f
+blitz-0.6/benchmarks/acou3df2.f
+blitz-0.6/benchmarks/acou3df90.f90
+blitz-0.6/benchmarks/acou3df902.f90
+blitz-0.6/benchmarks/acoustic.cpp
+blitz-0.6/benchmarks/acousticf.f
+blitz-0.6/benchmarks/acousticf2.f
+blitz-0.6/benchmarks/acousticf90.f90
+blitz-0.6/benchmarks/acousticf902.f90
+blitz-0.6/benchmarks/arrdaxpy.cpp
+blitz-0.6/benchmarks/arrdaxpy.m
+blitz-0.6/benchmarks/arrdaxpy2.m
+blitz-0.6/benchmarks/arrdaxpyf.f
+blitz-0.6/benchmarks/arrexpr1.cpp
+blitz-0.6/benchmarks/arrexpr1.m
+blitz-0.6/benchmarks/cfd.cpp
+blitz-0.6/benchmarks/cfdf.f
+blitz-0.6/benchmarks/cfortran.h
+blitz-0.6/benchmarks/chunky.cpp
+blitz-0.6/benchmarks/compiletime.cpp
+blitz-0.6/benchmarks/ctime-results
+blitz-0.6/benchmarks/ctime1.cpp
+blitz-0.6/benchmarks/ctime1v.cpp
+blitz-0.6/benchmarks/ctime2.cpp
+blitz-0.6/benchmarks/ctime2v.cpp
+blitz-0.6/benchmarks/ctime3.cpp
+blitz-0.6/benchmarks/ctime3v.cpp
+blitz-0.6/benchmarks/ctime4.cpp
+blitz-0.6/benchmarks/ctime4v.cpp
+blitz-0.6/benchmarks/ctime5.cpp
+blitz-0.6/benchmarks/ctime5c.cpp
+blitz-0.6/benchmarks/ctime5v.cpp
+blitz-0.6/benchmarks/daxpy.cpp
+blitz-0.6/benchmarks/daxpy2.cpp
+blitz-0.6/benchmarks/daxpyf90-2.f90
+blitz-0.6/benchmarks/daxpyf90.f90
+blitz-0.6/benchmarks/dot.cpp
+blitz-0.6/benchmarks/dot2.cpp
+blitz-0.6/benchmarks/echof2-back.f
+blitz-0.6/benchmarks/echotune.cpp
+blitz-0.6/benchmarks/echotune.m
+blitz-0.6/benchmarks/echotunef.f
+blitz-0.6/benchmarks/fdaxpy.f
+blitz-0.6/benchmarks/fidaxpy.f
+blitz-0.6/benchmarks/frek.m
+blitz-0.6/benchmarks/haney.cpp
+blitz-0.6/benchmarks/haneyf.f
+blitz-0.6/benchmarks/hao-he-mark.cpp
+blitz-0.6/benchmarks/hao-he.cpp
+blitz-0.6/benchmarks/kepler.cpp
+blitz-0.6/benchmarks/loop1-bug.cpp
+blitz-0.6/benchmarks/loop1.cpp
+blitz-0.6/benchmarks/loop10.cpp
+blitz-0.6/benchmarks/loop10f.f
+blitz-0.6/benchmarks/loop10f90.f90
+blitz-0.6/benchmarks/loop11.cpp
+blitz-0.6/benchmarks/loop11f.f
+blitz-0.6/benchmarks/loop11f90.f90
+blitz-0.6/benchmarks/loop12.cpp
+blitz-0.6/benchmarks/loop12f.f
+blitz-0.6/benchmarks/loop12f90.f90
+blitz-0.6/benchmarks/loop13.cpp
+blitz-0.6/benchmarks/loop13f.f
+blitz-0.6/benchmarks/loop13f90.f90
+blitz-0.6/benchmarks/loop14.cpp
+blitz-0.6/benchmarks/loop14f.f
+blitz-0.6/benchmarks/loop14f90.f90
+blitz-0.6/benchmarks/loop15.cpp
+blitz-0.6/benchmarks/loop15f.f
+blitz-0.6/benchmarks/loop15f90.f90
+blitz-0.6/benchmarks/loop16.cpp
+blitz-0.6/benchmarks/loop16f.f
+blitz-0.6/benchmarks/loop16f90.f90
+blitz-0.6/benchmarks/loop17.cpp
+blitz-0.6/benchmarks/loop17f.f
+blitz-0.6/benchmarks/loop17f90.f90
+blitz-0.6/benchmarks/loop18.cpp
+blitz-0.6/benchmarks/loop18f.f
+blitz-0.6/benchmarks/loop18f90.f90
+blitz-0.6/benchmarks/loop19.cpp
+blitz-0.6/benchmarks/loop19f.f
+blitz-0.6/benchmarks/loop19f90.f90
+blitz-0.6/benchmarks/loop1f.f
+blitz-0.6/benchmarks/loop1f90.f90
+blitz-0.6/benchmarks/loop2.cpp
+blitz-0.6/benchmarks/loop21.cpp
+blitz-0.6/benchmarks/loop21f.f
+blitz-0.6/benchmarks/loop21f90.f90
+blitz-0.6/benchmarks/loop22.cpp
+blitz-0.6/benchmarks/loop22f.f
+blitz-0.6/benchmarks/loop22f90.f90
+blitz-0.6/benchmarks/loop23.cpp
+blitz-0.6/benchmarks/loop23f.f
+blitz-0.6/benchmarks/loop23f90.f90
+blitz-0.6/benchmarks/loop24.cpp
+blitz-0.6/benchmarks/loop24f.f
+blitz-0.6/benchmarks/loop24f90.f90
+blitz-0.6/benchmarks/loop25.cpp
+blitz-0.6/benchmarks/loop25f.f
+blitz-0.6/benchmarks/loop25f90.f90
+blitz-0.6/benchmarks/loop2f.f
+blitz-0.6/benchmarks/loop2f90.f90
+blitz-0.6/benchmarks/loop3.cpp
+blitz-0.6/benchmarks/loop36.cpp
+blitz-0.6/benchmarks/loop36f.f
+blitz-0.6/benchmarks/loop36f90.f90
+blitz-0.6/benchmarks/loop3f.f
+blitz-0.6/benchmarks/loop3f90.f90
+blitz-0.6/benchmarks/loop4.cpp
+blitz-0.6/benchmarks/loop4f.f
+blitz-0.6/benchmarks/loop4f90.f90
+blitz-0.6/benchmarks/loop5.cpp
+blitz-0.6/benchmarks/loop5f.f
+blitz-0.6/benchmarks/loop5f90.f90
+blitz-0.6/benchmarks/loop6.cpp
+blitz-0.6/benchmarks/loop6f.f
+blitz-0.6/benchmarks/loop6f90.f90
+blitz-0.6/benchmarks/loop8.cpp
+blitz-0.6/benchmarks/loop8f.f
+blitz-0.6/benchmarks/loop8f90.f90
+blitz-0.6/benchmarks/loop9.cpp
+blitz-0.6/benchmarks/loop9f.f
+blitz-0.6/benchmarks/loop9f90.f90
+blitz-0.6/benchmarks/loopstruct.cpp
+blitz-0.6/benchmarks/looptest.cpp
+blitz-0.6/benchmarks/makelogo.cpp
+blitz-0.6/benchmarks/makeloops.cpp
+blitz-0.6/benchmarks/plot_benchmarks.m.in
+blitz-0.6/benchmarks/qcd.cpp
+blitz-0.6/benchmarks/qcd.txt
+blitz-0.6/benchmarks/qcdf.f
+blitz-0.6/benchmarks/quinlan.cpp
+blitz-0.6/benchmarks/stencil.cpp
+blitz-0.6/benchmarks/stencilf.f
+blitz-0.6/benchmarks/stencilf2.f
+blitz-0.6/benchmarks/stencilf90.f90
+blitz-0.6/benchmarks/stenciln.cpp
+blitz-0.6/benchmarks/tiny3.cpp
+blitz-0.6/benchmarks/tinydaxpy.cpp
+blitz-0.6/.cvsignore
+blitz-0.6/COPYING
+blitz-0.6/ChangeLog
+blitz-0.6/ChangeLog.1
+blitz-0.6/INSTALL
+blitz-0.6/LEGAL
+blitz-0.6/LICENSE
+blitz-0.6/Makefile.am
+blitz-0.6/Makefile.in
+blitz-0.6/README
+blitz-0.6/README.binutils
+blitz-0.6/TODO
+blitz-0.6/acinclude.m4
+blitz-0.6/aclocal.m4
+blitz-0.6/config.guess
+blitz-0.6/config.h.in
+blitz-0.6/config.sub
+blitz-0.6/configure
+blitz-0.6/configure.in
+blitz-0.6/depcomp
+blitz-0.6/install-sh
+blitz-0.6/missing
+blitz-0.6/mkinstalldirs
+blitz-0.6/bin/
+blitz-0.6/bin/.cvsignore
+blitz-0.6/bin/Makefile.am
+blitz-0.6/bin/Makefile.in
+blitz-0.6/bin/autotest
+blitz-0.6/bin/includes
+blitz-0.6/blitz/
+blitz-0.6/blitz/array/
+blitz-0.6/blitz/array/.cvsignore
+blitz-0.6/blitz/array/Makefile.am
+blitz-0.6/blitz/array/Makefile.in
+blitz-0.6/blitz/array/asexpr.h
+blitz-0.6/blitz/array/bops.cc
+blitz-0.6/blitz/array/cartesian.h
+blitz-0.6/blitz/array/cgsolve.h
+blitz-0.6/blitz/array/complex.cc
+blitz-0.6/blitz/array/convolve.cc
+blitz-0.6/blitz/array/convolve.h
+blitz-0.6/blitz/array/cycle.cc
+blitz-0.6/blitz/array/domain.h
+blitz-0.6/blitz/array/et.h
+blitz-0.6/blitz/array/eval.cc
+blitz-0.6/blitz/array/expr.h
+blitz-0.6/blitz/array/fastiter.h
+blitz-0.6/blitz/array/funcs.h
+blitz-0.6/blitz/array/functorExpr.h
+blitz-0.6/blitz/array/geometry.h
+blitz-0.6/blitz/array/indirect.h
+blitz-0.6/blitz/array/interlace.cc
+blitz-0.6/blitz/array/io.cc
+blitz-0.6/blitz/array/iter.h
+blitz-0.6/blitz/array/map.h
+blitz-0.6/blitz/array/methods.cc
+blitz-0.6/blitz/array/misc.cc
+blitz-0.6/blitz/array/multi.h
+blitz-0.6/blitz/array/newbops.cc
+blitz-0.6/blitz/array/newet-macros.h
+blitz-0.6/blitz/array/newet.h
+blitz-0.6/blitz/array/ops.cc
+blitz-0.6/blitz/array/ops.h
+blitz-0.6/blitz/array/reduce.cc
+blitz-0.6/blitz/array/reduce.h
+blitz-0.6/blitz/array/resize.cc
+blitz-0.6/blitz/array/shape.h
+blitz-0.6/blitz/array/slice.h
+blitz-0.6/blitz/array/slicing.cc
+blitz-0.6/blitz/array/stencil-et.h
+blitz-0.6/blitz/array/stencilops.h
+blitz-0.6/blitz/array/stencils.cc
+blitz-0.6/blitz/array/stencils.h
+blitz-0.6/blitz/array/storage.h
+blitz-0.6/blitz/array/uops.cc
+blitz-0.6/blitz/array/where.h
+blitz-0.6/blitz/array/zip.h
+blitz-0.6/blitz/.cvsignore
+blitz-0.6/blitz/MAT-NOTE.gz
+blitz-0.6/blitz/Makefile.am
+blitz-0.6/blitz/Makefile.in
+blitz-0.6/blitz/applics.h
+blitz-0.6/blitz/array-impl.h
+blitz-0.6/blitz/array-old.h
+blitz-0.6/blitz/array.h
+blitz-0.6/blitz/bench.cc
+blitz-0.6/blitz/bench.h
+blitz-0.6/blitz/benchext.cc
+blitz-0.6/blitz/benchext.h
+blitz-0.6/blitz/blitz.h
+blitz-0.6/blitz/bzdebug.h
+blitz-0.6/blitz/compiler.h
+blitz-0.6/blitz/config-ICL.h
+blitz-0.6/blitz/config-KCC.h
+blitz-0.6/blitz/config-SC4.0.h
+blitz-0.6/blitz/config-SGi.h
+blitz-0.6/blitz/config-g++2.7.2.h
+blitz-0.6/blitz/config-mwerks.h
+blitz-0.6/blitz/config-xlC.h
+blitz-0.6/blitz/etbase.h
+blitz-0.6/blitz/extremum.h
+blitz-0.6/blitz/funcs.h
+blitz-0.6/blitz/indexexpr.h
+blitz-0.6/blitz/limits-hack.h
+blitz-0.6/blitz/listinit.h
+blitz-0.6/blitz/matbops.h
+blitz-0.6/blitz/matdiag.h
+blitz-0.6/blitz/matexpr.h
+blitz-0.6/blitz/matgen.h
+blitz-0.6/blitz/mathf2.h
+blitz-0.6/blitz/mathfunc.h
+blitz-0.6/blitz/matltri.h
+blitz-0.6/blitz/matref.h
+blitz-0.6/blitz/matrix.cc
+blitz-0.6/blitz/matrix.h
+blitz-0.6/blitz/matsymm.h
+blitz-0.6/blitz/mattoep.h
+blitz-0.6/blitz/matuops.h
+blitz-0.6/blitz/matutri.h
+blitz-0.6/blitz/memblock.cc
+blitz-0.6/blitz/memblock.h
+blitz-0.6/blitz/minmax.h
+blitz-0.6/blitz/mstruct.h
+blitz-0.6/blitz/numinquire.h
+blitz-0.6/blitz/numtrait.h
+blitz-0.6/blitz/ops.h
+blitz-0.6/blitz/prettyprint.h
+blitz-0.6/blitz/promote-old.h
+blitz-0.6/blitz/promote.h
+blitz-0.6/blitz/rand-dunif.h
+blitz-0.6/blitz/rand-mt.h
+blitz-0.6/blitz/rand-normal.h
+blitz-0.6/blitz/rand-tt800.h
+blitz-0.6/blitz/rand-uniform.h
+blitz-0.6/blitz/random.h
+blitz-0.6/blitz/randref.h
+blitz-0.6/blitz/range.h
+blitz-0.6/blitz/reduce.h
+blitz-0.6/blitz/shapecheck.h
+blitz-0.6/blitz/tau.h
+blitz-0.6/blitz/timer.h
+blitz-0.6/blitz/tiny.h
+blitz-0.6/blitz/tinymat.h
+blitz-0.6/blitz/tinymatexpr.h
+blitz-0.6/blitz/tinymatio.cc
+blitz-0.6/blitz/tinyvec-et.h
+blitz-0.6/blitz/tinyvec.cc
+blitz-0.6/blitz/tinyvec.h
+blitz-0.6/blitz/tinyvecio.cc
+blitz-0.6/blitz/tinyveciter.h
+blitz-0.6/blitz/traversal.cc
+blitz-0.6/blitz/traversal.h
+blitz-0.6/blitz/tuning.h
+blitz-0.6/blitz/tvcross.h
+blitz-0.6/blitz/tvecglobs.h
+blitz-0.6/blitz/update.h
+blitz-0.6/blitz/vecaccum.cc
+blitz-0.6/blitz/vecall.cc
+blitz-0.6/blitz/vecany.cc
+blitz-0.6/blitz/vecbfn.cc
+blitz-0.6/blitz/vecbops.cc
+blitz-0.6/blitz/veccount.cc
+blitz-0.6/blitz/vecdelta.cc
+blitz-0.6/blitz/vecdot.cc
+blitz-0.6/blitz/vecexpr.h
+blitz-0.6/blitz/vecexprwrap.h
+blitz-0.6/blitz/vecglobs.cc
+blitz-0.6/blitz/vecglobs.h
+blitz-0.6/blitz/vecio.cc
+blitz-0.6/blitz/veciter.h
+blitz-0.6/blitz/vecmax.cc
+blitz-0.6/blitz/vecmin.cc
+blitz-0.6/blitz/vecnorm.cc
+blitz-0.6/blitz/vecnorm1.cc
+blitz-0.6/blitz/vecpick.cc
+blitz-0.6/blitz/vecpick.h
+blitz-0.6/blitz/vecpickio.cc
+blitz-0.6/blitz/vecpickiter.h
+blitz-0.6/blitz/vecsum.cc
+blitz-0.6/blitz/vector-et.h
+blitz-0.6/blitz/vector.cc
+blitz-0.6/blitz/vector.h
+blitz-0.6/blitz/vecuops.cc
+blitz-0.6/blitz/vecwhere.cc
+blitz-0.6/blitz/vecwhere.h
+blitz-0.6/blitz/wrap-climits.h
+blitz-0.6/blitz/zero.cc
+blitz-0.6/blitz/zero.h
+blitz-0.6/blitz/generate/
+blitz-0.6/blitz/generate/.cvsignore
+blitz-0.6/blitz/generate/Makefile.am
+blitz-0.6/blitz/generate/Makefile.in
+blitz-0.6/blitz/generate/arroperands.h
+blitz-0.6/blitz/generate/arroptuple.h
+blitz-0.6/blitz/generate/bzfstream.h
+blitz-0.6/blitz/generate/genarrbops.cpp
+blitz-0.6/blitz/generate/genarruops.cpp
+blitz-0.6/blitz/generate/genmatbops.cpp
+blitz-0.6/blitz/generate/genmathfunc.cpp
+blitz-0.6/blitz/generate/genmatuops.cpp
+blitz-0.6/blitz/generate/genpromote.cpp
+blitz-0.6/blitz/generate/genvecbops.cpp
+blitz-0.6/blitz/generate/genvecuops.cpp
+blitz-0.6/blitz/generate/genvecwhere.cpp
+blitz-0.6/blitz/generate/operands.h
+blitz-0.6/blitz/generate/operands2.h
+blitz-0.6/blitz/generate/optuple.h
+blitz-0.6/blitz/generate/optuple2.h
+blitz-0.6/blitz/meta/
+blitz-0.6/blitz/meta/.cvsignore
+blitz-0.6/blitz/meta/Makefile.am
+blitz-0.6/blitz/meta/Makefile.in
+blitz-0.6/blitz/meta/dot.h
+blitz-0.6/blitz/meta/matassign.h
+blitz-0.6/blitz/meta/matmat.h
+blitz-0.6/blitz/meta/matvec.h
+blitz-0.6/blitz/meta/metaprog.h
+blitz-0.6/blitz/meta/product.h
+blitz-0.6/blitz/meta/sum.h
+blitz-0.6/blitz/meta/vecassign.h
+blitz-0.6/compiler/
+blitz-0.6/compiler/.cvsignore
+blitz-0.6/compiler/LEGAL
+blitz-0.6/compiler/Makefile.am
+blitz-0.6/compiler/Makefile.in
+blitz-0.6/compiler/README
+blitz-0.6/compiler/bool.cpp
+blitz-0.6/compiler/bzconfig
+blitz-0.6/compiler/climits.cpp
+blitz-0.6/compiler/cmthscop.cpp
+blitz-0.6/compiler/complex.cpp
+blitz-0.6/compiler/compmath.cpp
+blitz-0.6/compiler/constcst.cpp
+blitz-0.6/compiler/cstd.cpp
+blitz-0.6/compiler/default.cpp
+blitz-0.6/compiler/dynamic.cpp
+blitz-0.6/compiler/elabbase.cpp
+blitz-0.6/compiler/elabret.cpp
+blitz-0.6/compiler/enumcmp2.cpp
+blitz-0.6/compiler/enumcomp.cpp
+blitz-0.6/compiler/except.cpp
+blitz-0.6/compiler/explicit.cpp
+blitz-0.6/compiler/fullspec.cpp
+blitz-0.6/compiler/getruse.cpp
+blitz-0.6/compiler/ieeemath.cpp
+blitz-0.6/compiler/instant.cpp
+blitz-0.6/compiler/mathscop.cpp
+blitz-0.6/compiler/membcnst.cpp
+blitz-0.6/compiler/membtmp2.cpp
+blitz-0.6/compiler/membtmpl.cpp
+blitz-0.6/compiler/mutable.cpp
+blitz-0.6/compiler/namespac.cpp
+blitz-0.6/compiler/nontype.cpp
+blitz-0.6/compiler/numlimit.cpp
+blitz-0.6/compiler/numtrait.cpp
+blitz-0.6/compiler/oldfor.cpp
+blitz-0.6/compiler/partial.cpp
+blitz-0.6/compiler/porder.cpp
+blitz-0.6/compiler/promote.cpp
+blitz-0.6/compiler/reinterp.cpp
+blitz-0.6/compiler/restric2.cpp
+blitz-0.6/compiler/restrict.cpp
+blitz-0.6/compiler/rtti.cpp
+blitz-0.6/compiler/statcast.cpp
+blitz-0.6/compiler/std.cpp
+blitz-0.6/compiler/stl.cpp
+blitz-0.6/compiler/sysvmath.cpp
+blitz-0.6/compiler/tempkey.cpp
+blitz-0.6/compiler/template.cpp
+blitz-0.6/compiler/tempqmt.cpp
+blitz-0.6/compiler/tempqual.cpp
+blitz-0.6/compiler/temptemp.cpp
+blitz-0.6/compiler/typename.cpp
+blitz-0.6/compiler/vac.icc
+blitz-0.6/compiler/valarray.cpp
+blitz-0.6/demos/
+blitz-0.6/demos/.cvsignore
+blitz-0.6/demos/Makefile.in
+blitz-0.6/examples/
+blitz-0.6/examples/.cvsignore
+blitz-0.6/examples/Makefile.am
+blitz-0.6/examples/Makefile.in
+blitz-0.6/examples/array.cpp
+blitz-0.6/examples/cartesian.cpp
+blitz-0.6/examples/cast.cpp
+blitz-0.6/examples/cfd.cpp
+blitz-0.6/examples/complex-test.cpp
+blitz-0.6/examples/convolve.cpp
+blitz-0.6/examples/curldiv.cpp
+blitz-0.6/examples/deriv.cpp
+blitz-0.6/examples/diff.cpp
+blitz-0.6/examples/erf.cpp
+blitz-0.6/examples/fixed.cpp
+blitz-0.6/examples/indirect.cpp
+blitz-0.6/examples/io.cpp
+blitz-0.6/examples/iter.cpp
+blitz-0.6/examples/matmult.cpp
+blitz-0.6/examples/nested.cpp
+blitz-0.6/examples/numinquire.cpp
+blitz-0.6/examples/outer.cpp
+blitz-0.6/examples/pauli.cpp
+blitz-0.6/examples/pick.cpp
+blitz-0.6/examples/polymorph.cpp
+blitz-0.6/examples/prettyprint.cpp
+blitz-0.6/examples/profile.cpp
+blitz-0.6/examples/qcd.cpp
+blitz-0.6/examples/rand2.cpp
+blitz-0.6/examples/random.cpp
+blitz-0.6/examples/rangexpr.cpp
+blitz-0.6/examples/reduce.cpp
+blitz-0.6/examples/simple.cpp
+blitz-0.6/examples/slicing.cpp
+blitz-0.6/examples/stencil.cpp
+blitz-0.6/examples/stencil2.cpp
+blitz-0.6/examples/stencil3.cpp
+blitz-0.6/examples/stencil4.f
+blitz-0.6/examples/stencilet.cpp
+blitz-0.6/examples/storage.cpp
+blitz-0.6/examples/tiny.cpp
+blitz-0.6/examples/tiny2.cpp
+blitz-0.6/examples/tiny3.cpp
+blitz-0.6/examples/transform.cpp
+blitz-0.6/examples/useret.cpp
+blitz-0.6/examples/where.cpp
+blitz-0.6/examples/whitt.cpp
+blitz-0.6/lib/
+blitz-0.6/lib/.cvsignore
+blitz-0.6/lib/Makefile.am
+blitz-0.6/lib/Makefile.in
+blitz-0.6/lib/readme.txt
+blitz-0.6/manual/
+blitz-0.6/manual/examples/
+blitz-0.6/manual/examples/.cvsignore
+blitz-0.6/manual/examples/Makefile.am
+blitz-0.6/manual/examples/Makefile.in
+blitz-0.6/manual/examples/cast.cpp
+blitz-0.6/manual/examples/debug.cpp
+blitz-0.6/manual/examples/dump.cpp
+blitz-0.6/manual/examples/fixed.cpp
+blitz-0.6/manual/examples/outer.cpp
+blitz-0.6/manual/examples/outer.log
+blitz-0.6/manual/examples/output.cpp
+blitz-0.6/manual/examples/output.log
+blitz-0.6/manual/examples/range.cpp
+blitz-0.6/manual/examples/simple.cpp
+blitz-0.6/manual/examples/simple.log
+blitz-0.6/manual/examples/slicing.cpp
+blitz-0.6/manual/examples/storage.cpp
+blitz-0.6/manual/examples/storage.log
+blitz-0.6/manual/examples/strideslice.cpp
+blitz-0.6/manual/examples/xor.cpp
+blitz-0.6/manual/.cvsignore
+blitz-0.6/manual/Frames.html
+blitz-0.6/manual/INDEX.html
+blitz-0.6/manual/Index-epilogue.html
+blitz-0.6/manual/Index-prologue.html
+blitz-0.6/manual/Index.html
+blitz-0.6/manual/Makefile.am
+blitz-0.6/manual/Makefile.in
+blitz-0.6/manual/arrays-ctors.yo
+blitz-0.6/manual/arrays-debug.yo
+blitz-0.6/manual/arrays-expr.yo
+blitz-0.6/manual/arrays-globals.yo
+blitz-0.6/manual/arrays-indirect.yo
+blitz-0.6/manual/arrays-intro.yo
+blitz-0.6/manual/arrays-io.yo
+blitz-0.6/manual/arrays-members.yo
+blitz-0.6/manual/arrays-multi.yo
+blitz-0.6/manual/arrays-slicing.yo
+blitz-0.6/manual/arrays-stencils.yo
+blitz-0.6/manual/arrays-storage.yo
+blitz-0.6/manual/arrays-types
+blitz-0.6/manual/arrays-usertype.yo
+blitz-0.6/manual/blitz.gif
+blitz-0.6/manual/blitz.html
+blitz-0.6/manual/blitz.ps
+blitz-0.6/manual/blitz.yo
+blitz-0.6/manual/blitz01.html
+blitz-0.6/manual/blitz02.html
+blitz-0.6/manual/blitz03.html
+blitz-0.6/manual/blitz04.html
+blitz-0.6/manual/blitz05.html
+blitz-0.6/manual/blitz06.html
+blitz-0.6/manual/blitz07.html
+blitz-0.6/manual/blitz08.html
+blitz-0.6/manual/blitz09.html
+blitz-0.6/manual/blitz10.html
+blitz-0.6/manual/blitzmacros.yo
+blitz-0.6/manual/blitztiny.jpg
+blitz-0.6/manual/classref.html
+blitz-0.6/manual/compiling.yo
+blitz-0.6/manual/constants.yo
+blitz-0.6/manual/download.yo
+blitz-0.6/manual/faq.yo
+blitz-0.6/manual/help.yo
+blitz-0.6/manual/index.html
+blitz-0.6/manual/index.m4
+blitz-0.6/manual/indirect.eps
+blitz-0.6/manual/indirect.fig
+blitz-0.6/manual/indirect.gif
+blitz-0.6/manual/install.yo
+blitz-0.6/manual/legal.yo
+blitz-0.6/manual/makeHTMLIndex.cpp
+blitz-0.6/manual/makedatestring
+blitz-0.6/manual/makeindex
+blitz-0.6/manual/numinquire.yo
+blitz-0.6/manual/parallel.yo
+blitz-0.6/manual/platforms.yo
+blitz-0.6/manual/preview
+blitz-0.6/manual/proc2e.sty
+blitz-0.6/manual/random.yo
+blitz-0.6/manual/range.html
+blitz-0.6/manual/sinsoid.eps
+blitz-0.6/manual/sinsoid.gif
+blitz-0.6/manual/slice.eps
+blitz-0.6/manual/slice.fig
+blitz-0.6/manual/slice.gif
+blitz-0.6/manual/strideslice.eps
+blitz-0.6/manual/strideslice.fig
+blitz-0.6/manual/strideslice.gif
+blitz-0.6/manual/tau.yo
+blitz-0.6/manual/tensor1.eps
+blitz-0.6/manual/tensor1.fig
+blitz-0.6/manual/tensor1.gif
+blitz-0.6/manual/tinymatrix.yo
+blitz-0.6/manual/tinyvector.yo
+blitz-0.6/manual/tuning.yo
+blitz-0.6/manual/update
+blitz-0.6/manual/vector.html
+blitz-0.6/manual/stencils/
+blitz-0.6/manual/stencils/.cvsignore
+blitz-0.6/manual/stencils/Laplacian2D.yo
+blitz-0.6/manual/stencils/Laplacian2D4.yo
+blitz-0.6/manual/stencils/Makefile.am
+blitz-0.6/manual/stencils/Makefile.in
+blitz-0.6/manual/stencils/backward11.yo
+blitz-0.6/manual/stencils/backward12.yo
+blitz-0.6/manual/stencils/backward21.yo
+blitz-0.6/manual/stencils/backward22.yo
+blitz-0.6/manual/stencils/backward31.yo
+blitz-0.6/manual/stencils/backward32.yo
+blitz-0.6/manual/stencils/backward41.yo
+blitz-0.6/manual/stencils/backward42.yo
+blitz-0.6/manual/stencils/central12.yo
+blitz-0.6/manual/stencils/central14.yo
+blitz-0.6/manual/stencils/central22.yo
+blitz-0.6/manual/stencils/central24.yo
+blitz-0.6/manual/stencils/central32.yo
+blitz-0.6/manual/stencils/central34.yo
+blitz-0.6/manual/stencils/central42.yo
+blitz-0.6/manual/stencils/central44.yo
+blitz-0.6/manual/stencils/dump-stencil.cpp
+blitz-0.6/manual/stencils/dump1D
+blitz-0.6/manual/stencils/dumpdiffs
+blitz-0.6/manual/stencils/dumpst
+blitz-0.6/manual/stencils/forward11.yo
+blitz-0.6/manual/stencils/forward12.yo
+blitz-0.6/manual/stencils/forward21.yo
+blitz-0.6/manual/stencils/forward22.yo
+blitz-0.6/manual/stencils/forward31.yo
+blitz-0.6/manual/stencils/forward32.yo
+blitz-0.6/manual/stencils/forward41.yo
+blitz-0.6/manual/stencils/forward42.yo
+blitz-0.6/random/
+blitz-0.6/random/.cvsignore
+blitz-0.6/random/F.h
+blitz-0.6/random/Makefile.am
+blitz-0.6/random/Makefile.in
+blitz-0.6/random/beta.h
+blitz-0.6/random/chisquare.h
+blitz-0.6/random/default.h
+blitz-0.6/random/discrete-uniform.h
+blitz-0.6/random/exponential.h
+blitz-0.6/random/gamma.h
+blitz-0.6/random/mt.h
+blitz-0.6/random/normal.h
+blitz-0.6/random/uniform.h
+blitz-0.6/src/
+blitz-0.6/src/.cvsignore
+blitz-0.6/src/Makefile.am
+blitz-0.6/src/Makefile.in
+blitz-0.6/src/globals.cpp
+blitz-0.6/testsuite/
+blitz-0.6/testsuite/.cvsignore
+blitz-0.6/testsuite/Adnene-Ben-Abdallah-1.cpp
+blitz-0.6/testsuite/Adnene-Ben-Abdallah-2.cpp
+blitz-0.6/testsuite/Josef-Wagenhuber.cpp
+blitz-0.6/testsuite/Makefile.am
+blitz-0.6/testsuite/Makefile.in
+blitz-0.6/testsuite/Olaf-Ronneberger-1.cpp
+blitz-0.6/testsuite/Ulisses-Mello-1.cpp
+blitz-0.6/testsuite/arrayresize.cpp
+blitz-0.6/testsuite/chris-jeffery-1.cpp
+blitz-0.6/testsuite/chris-jeffery-2.cpp
+blitz-0.6/testsuite/chris-jeffery-3.cpp
+blitz-0.6/testsuite/complex-test.cpp
+blitz-0.6/testsuite/constarray.cpp
+blitz-0.6/testsuite/contiguous.cpp
+blitz-0.6/testsuite/copy.cpp
+blitz-0.6/testsuite/ctors.cpp
+blitz-0.6/testsuite/derrick-bass-1.cpp
+blitz-0.6/testsuite/derrick-bass-3.cpp
+blitz-0.6/testsuite/exprctor.cpp
+blitz-0.6/testsuite/extract.cpp
+blitz-0.6/testsuite/free.cpp
+blitz-0.6/testsuite/gary-huber-1.cpp
+blitz-0.6/testsuite/initialize.cpp
+blitz-0.6/testsuite/interlace.cpp
+blitz-0.6/testsuite/iter.cpp
+blitz-0.6/testsuite/loop1.cpp
+blitz-0.6/testsuite/matthias-troyer-1.cpp
+blitz-0.6/testsuite/matthias-troyer-2.cpp
+blitz-0.6/testsuite/mattias-lindstroem-1.cpp
+blitz-0.6/testsuite/minmax.cpp
+blitz-0.6/testsuite/minsumpow.cpp
+blitz-0.6/testsuite/module1.cpp
+blitz-0.6/testsuite/module2.cpp
+blitz-0.6/testsuite/newet.cpp
+blitz-0.6/testsuite/peter-bienstman-1.cpp
+blitz-0.6/testsuite/peter-bienstman-2.cpp
+blitz-0.6/testsuite/peter-bienstman-3.cpp
+blitz-0.6/testsuite/peter-bienstman-4.cpp
+blitz-0.6/testsuite/peter-bienstman-5.cpp
+blitz-0.6/testsuite/peter-nordlund-1.cpp
+blitz-0.6/testsuite/peter-nordlund-2.cpp
+blitz-0.6/testsuite/peter-nordlund-3.cpp
+blitz-0.6/testsuite/promote.cpp
+blitz-0.6/testsuite/qcd.cpp
+blitz-0.6/testsuite/reduce.cpp
+blitz-0.6/testsuite/reindex.cpp
+blitz-0.6/testsuite/reverse.cpp
+blitz-0.6/testsuite/shape.cpp
+blitz-0.6/testsuite/shapecheck.cpp
+blitz-0.6/testsuite/storage.cpp
+blitz-0.6/testsuite/stub.cpp
+blitz-0.6/testsuite/testsuite.h
+blitz-0.6/testsuite/theodore-papadopoulo-1.cpp
+blitz-0.6/testsuite/tinymat.cpp
+blitz-0.6/testsuite/tinyvec.cpp
+blitz-0.6/testsuite/transpose.cpp
+blitz-0.6/testsuite/troyer-genilloud.cpp
+blitz-0.6/testsuite/wei-ku-1.cpp
+blitz-0.6/testsuite/where.cpp
+<gingakogen|/home/piet/gravitylab/blitz> 
+
+<gingakogen|/home/piet/gravitylab/blitz> <gingakogen|/home/piet/gravitylab/blitz> 
+<gingakogen|/home/piet/gravitylab/blitz> ls
+blitz-0.6/  blitz-0.6.tar
+<gingakogen|/home/piet/gravitylab/blitz> rm *tar
+rm: remove `blitz-0.6.tar'? y
+<gingakogen|/home/piet/gravitylab/blitz> cd b*
+<gingakogen|/home/piet/gravitylab/blitz/blitz-0.6> ls
+acinclude.m4  compiler/      demos/	  LICENSE	  README
+aclocal.m4    config.guess*  depcomp*	  Makefile.am	  README.binutils
+benchmarks/   config.h.in    examples/	  Makefile.in	  src/
+bin/	      config.sub*    INSTALL	  manual/	  testsuite/
+blitz/	      configure*     install-sh*  missing*	  TODO
+ChangeLog     configure.in   LEGAL	  mkinstalldirs*
+ChangeLog.1   COPYING	     lib/	  random/
+<gingakogen|/home/piet/gravitylab/blitz/blitz-0.6> cat INSTALL
+Installation procedure for Blitz++
+
+
+1.  Installation
+
+1.1 From tarfile
+
+You should unpack blitz-VERSION.tar.gz in the directory
+where you would like the blitz headers, examples, etc. to reside.
+(Hint: don't do this in /usr/include; try ~/software or /software/Blitz++).
+
+The file blitz-VERSION.tar.gz file will unpack into a subdirectory
+blitz-VERSION.  
+
+Now cd into blitz-VERSION, and run
+
+./configure --with-cxx=[compiler]
+
+The [compiler] options are:
+  --with-cxx=gcc       gcc (http://gcc.cygnus.com/)
+  --with-cxx=KCC       KAI C++ (http://www.kai.com/)
+  --with-cxx=cray      Cray C++ 3.0 or better (http://www.cray.com/)
+  --with-cxx=DECcxx6.2 DEC cxx 6.2 (http://www.dec.com/)
+  --with-cxx=DECcxx6.3 DEC cxx 6.3 or better (http://www.dec.com/)
+  --with-cxx=SGI64     SGI C++ 7.3 or better (http://www.sgi.com/)
+  --with-cxx=SGI32          ... with 32-bit ABI (n32)
+	--with-cxx=aCC       HP-UX aCC (http://www.hp.com/go/c++)
+	--with-cxx=icc       Intel icc (http://www.intel.com/)
+
+Then do:
+        make
+
+This is a minimal build.  You can also do one of these:
+
+        make check-testsuite  Build and check the testsuite
+        make check-examples   Build and check the examples
+        make check-benchmarks Build and check the benchmarks (takes a long time)
+				make install          Install Blitz++
+
+1.2 From cvs repository 
+
+After you have checked out the latest version of Blitz from the cvs
+repository, the procedure is identical as with a tarfile. 
+
+Note however that you might get into trouble when running the command
+"make". If the command aborts with the following type of messages:
+
+WARNING: `aclocal-1.6' is missing on your system.  You should only need it if
+          you modified `acinclude.m4' or `configure.in'.  You might want
+          to install the `Automake' and `Perl' packages.  Grab them from
+          any GNU archive site.
+
+WARNING: `automake-1.6' is missing on your system.  You should only need it if
+          you modified `Makefile.am', `acinclude.m4' or `configure.in'.
+          You might want to install the `Automake' and `Perl' packages.
+          Grab them from any GNU archive site.
+
+You should just need to update the date of the file "configure". You can do
+that by running the following command:
+
+touch configure
+
+You can then proceed with make.
+
+
+2.  Setting up symbolic links
+
+If you have root privileges, you can install some symbolic links
+to the headers and library.  Suppose you unpacked blitz in
+/software/Blitz++; then do these commands:
+
+# ln -s /software/Blitz++/blitz /usr/include/blitz
+# ln -s /software/Blitz++/lib/libblitz.a
+
+
+3.  Getting started
+
+There are example programs in the "examples" directory.
+Documentation is found in the "manual" directory.
+Point your browser at manual/index.html, or do "gv manual/blitz.ps".
+
+4.  OTHER COMPILERS
+
+If you want to try Blitz++ with a compiler not in the above
+list, I suggest the following approach:
+
+  1. Check the "supported platforms" list at:
+     http://oonumerics.org/blitz/platforms/
+
+     and the development mailing list at:
+     http://oonumerics.org/blitz/contribute/blitz-dev/archive/index.html
+
+     To see what progress has been made on your compiler.
+     
+  2. Go into the compiler subdirectory and run the bzconfig
+     script.  This will exercise your compiler to see what
+     language features it supports.  If it doesn't have
+     member templates and enum computations, just give up.
+
+  3. Install autoconf (from e.g. ftp://prep.ai.mit.edu/pub/gnu)
+     if you don't have it already.
+
+  4. Make a backup of configure.in, and edit configure.in
+     to add appropriate cases for your compiler.  Then invoke
+     autoconf to generate the configure script.  Then try
+     configure with your new --with-cxx= option.  Repeat
+     until it works..
+
+  5. Try building the testsuite ('make check-testsuite').
+
+  6. Holy schmoly!  It works!  Please drop a note to
+     blitz-dev@oonumerics.org and include:
+
+        - name and info about your compiler
+        - diffs for configure.in, if any
+        - the file <blitz/config.h>
+
+
+<gingakogen|/home/piet/gravitylab/blitz/blitz-0.6> br
+<gingakogen|blitz-0.6> ./configure --with-cxx=gcc
+checking build system type... i686-pc-linux-gnu
+checking host system type... i686-pc-linux-gnu
+checking target system type... i686-pc-linux-gnu
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for gawk... gawk
+checking whether make sets ${MAKE}... yes
+checking whether make sets ${MAKE}... (cached) yes
+
+Configuring Blitz++ for i686-pc-linux-gnu
+
+Configuring for gcc (wahoo!)
+Linux: assuming g++/g77 or icc/icf
+
+checking for ar... ar
+checking for ranlib... ranlib
+checking for C++ compiler default output... a.out
+checking whether the C++ compiler works... yes
+checking whether we are cross compiling... no
+checking for suffix of executables... 
+checking for suffix of object files... o
+checking whether we are using the GNU C++ compiler... yes
+checking whether g++ accepts -g... yes
+checking for style of include used by make... GNU
+checking dependency style of g++... gcc3
+checking for sin in -lm... yes
+Checking to see if there is a usable BLAS library kicking around..
+  (If so, Blitz++ will use BLAS library to run benchmarks against 
+   if you build the benchmarks.  Blitz++ itself does NOT use BLAS.)
+checking for daxpy_ in -lblas... no
+checking for daxpy in -lblas... no
+checking for DAXPY in -lblas... no
+checking for daxpy__ in -lblas... no
+
+CXX                = g++
+CXXFLAGS           = -ftemplate-depth-30
+CXX_OPTIMIZE_FLAGS = -O2 -funroll-loops -fstrict-aliasing -fno-gcse
+CXX_DEBUG_FLAGS    = -g -DBZ_DEBUG
+F77                = g77
+F77_OPTIMIZE_FLAGS = -O2 -funroll-loops
+F90                = g77
+F90_OPTIMIZE_FLAGS = -O2 -funroll-loops
+FORTLIBS           = -lg2c
+BLASLIB            = 
+
+configure: creating ./config.status
+config.status: creating Makefile
+config.status: creating bin/Makefile
+config.status: creating blitz/Makefile
+config.status: creating blitz/array/Makefile
+config.status: creating blitz/generate/Makefile
+config.status: creating blitz/meta/Makefile
+config.status: creating random/Makefile
+config.status: creating compiler/Makefile
+config.status: creating src/Makefile
+config.status: creating lib/Makefile
+config.status: creating manual/Makefile
+config.status: creating manual/examples/Makefile
+config.status: creating manual/stencils/Makefile
+config.status: creating testsuite/Makefile
+config.status: creating examples/Makefile
+config.status: creating benchmarks/Makefile
+config.status: creating benchmarks/plot_benchmarks.m
+config.status: creating demos/Makefile
+config.status: executing depfiles commands
+
+The configure script has generated makefiles for your platform.
+You have several options now:
+
+	make                  Check the compiler and create libblitz.a
+	make check-testsuite  Build and check the testsuite
+	make check-examples   Build and check the examples
+	make check-benchmarks Build and check the benchmarks (takes a long time)
+	make install          Install Blitz++
+
+<gingakogen|blitz-0.6> make
+cd . && /bin/sh /home/piet/gravitylab/blitz/blitz-0.6/missing --run aclocal-1.6 
+/home/piet/gravitylab/blitz/blitz-0.6/missing: aclocal-1.6: command not found
+WARNING: `aclocal-1.6' is missing on your system.  You should only need it if
+         you modified `acinclude.m4' or `configure.in'.  You might want
+         to install the `Automake' and `Perl' packages.  Grab them from
+         any GNU archive site.
+cd . && \
+  /bin/sh /home/piet/gravitylab/blitz/blitz-0.6/missing --run automake-1.6 --gnu  --ignore-deps Makefile
+/home/piet/gravitylab/blitz/blitz-0.6/missing: automake-1.6: command not found
+WARNING: `automake-1.6' is missing on your system.  You should only need it if
+         you modified `Makefile.am', `acinclude.m4' or `configure.in'.
+         You might want to install the `Automake' and `Perl' packages.
+         Grab them from any GNU archive site.
+cd . && /bin/sh /home/piet/gravitylab/blitz/blitz-0.6/missing --run autoconf
+FATAL ERROR: Autoconf version 2.53 or higher is required for this script
+make: *** [configure] Error 1
+<gingakogen|blitz-0.6> which perl
+/usr/bin/perl
+<gingakogen|blitz-0.6> which automake
+/usr/bin/automake
+<gingakogen|blitz-0.6> which autoconf
+/usr/bin/autoconf
+<gingakogen|blitz-0.6> /usr/bin/autoconf --help
+Usage: autoconf [-h] [--help] [-m dir] [--macrodir=dir]
+       [-l dir] [--localdir=dir] [--version] [template-file]
+<gingakogen|blitz-0.6> /usr/bin/autoconf --version
+Autoconf version 2.13
+<gingakogen|blitz-0.6> touch configure
+<gingakogen|blitz-0.6> make
+/bin/sh ./config.status --recheck
+running /bin/sh ./configure  --with-cxx=gcc  --no-create --no-recursion
+checking build system type... i686-pc-linux-gnu
+checking host system type... i686-pc-linux-gnu
+checking target system type... i686-pc-linux-gnu
+checking for a BSD-compatible install... /usr/bin/install -c
+checking whether build environment is sane... yes
+checking for gawk... gawk
+checking whether make sets ${MAKE}... yes
+checking whether make sets ${MAKE}... (cached) yes
+
+Configuring Blitz++ for i686-pc-linux-gnu
+
+Configuring for gcc (wahoo!)
+Linux: assuming g++/g77 or icc/icf
+
+checking for ar... ar
+checking for ranlib... ranlib
+checking for C++ compiler default output... a.out
+checking whether the C++ compiler works... yes
+checking whether we are cross compiling... no
+checking for suffix of executables... 
+checking for suffix of object files... o
+checking whether we are using the GNU C++ compiler... yes
+checking whether g++ accepts -g... yes
+checking for style of include used by make... GNU
+checking dependency style of g++... gcc3
+checking for sin in -lm... yes
+Checking to see if there is a usable BLAS library kicking around..
+  (If so, Blitz++ will use BLAS library to run benchmarks against 
+   if you build the benchmarks.  Blitz++ itself does NOT use BLAS.)
+checking for daxpy_ in -lblas... no
+checking for daxpy in -lblas... no
+checking for DAXPY in -lblas... no
+checking for daxpy__ in -lblas... no
+
+CXX                = g++
+CXXFLAGS           = -ftemplate-depth-30
+CXX_OPTIMIZE_FLAGS = -O2 -funroll-loops -fstrict-aliasing -fno-gcse
+CXX_DEBUG_FLAGS    = -g -DBZ_DEBUG
+F77                = g77
+F77_OPTIMIZE_FLAGS = -O2 -funroll-loops
+F90                = g77
+F90_OPTIMIZE_FLAGS = -O2 -funroll-loops
+FORTLIBS           = -lg2c
+BLASLIB            = 
+
+configure: creating ./config.status
+
+The configure script has generated makefiles for your platform.
+You have several options now:
+
+	make                  Check the compiler and create libblitz.a
+	make check-testsuite  Build and check the testsuite
+	make check-examples   Build and check the examples
+	make check-benchmarks Build and check the benchmarks (takes a long time)
+	make install          Install Blitz++
+
+cd . && /bin/sh ./config.status Makefile 
+config.status: creating Makefile
+Making all in .
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6'
+cd . && /bin/sh ./config.status demos/Makefile
+config.status: creating demos/Makefile
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6'
+Making all in bin
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/bin'
+cd .. && /bin/sh ./config.status bin/Makefile 
+config.status: creating bin/Makefile
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/bin'
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/bin'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/bin'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/bin'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/bin'
+Making all in compiler
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/compiler'
+cd .. && /bin/sh ./config.status compiler/Makefile 
+config.status: creating compiler/Makefile
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/compiler'
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/compiler'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/compiler'
+./bzconfig --compiler=g++ --flags="-ftemplate-depth-30" --srcdir=.
+
+Blitz++ compiler evaluation
+
+This script will test your compiler to determine which language
+features it supports.  
+
+ 
+I am now going to try a simple program.
+Okay, it compiled.  But will it link?
+Yes, it linked too.  Great.
+ 
+ 
+Okay, now the fun begins.
+ 
+ 
+Does your compiler implement namespaces?
+Yes.
+ 
+What about exceptions?
+Yes.
+ 
+Run-Time Type Identification?
+Yes.
+ 
+Member constants?
+Yes.
+ 
+Does your compiler cling to the old 'for' scoping rules?
+Nope.
+ 
+Now for some of the new keywords.
+ 
+How about the 'explicit' keyword?
+Yes.
+ 
+What about the 'mutable' keyword?
+Yes.
+ 
+Does your compiler recognize 'typename'?
+Yes.
+ 
+Just on the off chance... the NCEG 'restrict' keyword?
+Nope.
+ 
+Maybe it recognizes __restrict__?
+Yes.
+ 
+Does it recognize bool as a built-in type?
+Yes.
+ 
+Does your compiler understand the newfangled casting syntax?
+ 
+What about const_cast<>?
+Yes.
+ 
+static_cast<>?
+Yes.
+ 
+reinterpret_cast<>?
+Yes.
+ 
+dynamic_cast<>?
+Yes.
+ 
+Okay, now the important stuff -- templates.
+ 
+Will it handle basic templates? (If not, just give up now.)
+Yes.
+ 
+Partial specialization?
+Yes.
+ 
+Partial ordering?
+Yes.
+ 
+Default template parameters?
+Yes.
+ 
+Member templates?
+Yes.
+ 
+Member templates outside the class declaration?
+Yes.
+ 
+Does it recognize the full specialization syntax?
+Yes.
+ 
+Function templates with non-type parameters?
+Yes.
+ 
+Template-qualified base class specifiers?
+Yes.
+ 
+Template-qualified return types (necessary for vector type promotion)?
+Yes.
+ 
+Explicit template function qualification?
+Yes.
+ 
+Templates as template arguments?
+Yes.
+ 
+Use of the template keyword as a qualifier?
+Yes.
+ 
+Function matching with argument types which are template scope-qualified?
+Yes.
+ 
+Will it support the vector type promotion mechanism?
+Yes.
+ 
+Numeric traits promotions (sum type, etc.)?
+Yes.
+ 
+Can your compiler handle computations inside an enum?
+Yes.
+ 
+Does it handle (int) casts in enum computations?
+Yes.
+ 
+Which library features does your compiler provide?
+ 
+Does it have complex<T>?
+Yes.
+ 
+Does it have numeric_limits<T>?
+Nope.
+ 
+Does it have <climits>?
+Yes.
+ 
+Does it have valarray<T>?
+Yes.
+ 
+Complex math functions?
+Nope.
+ 
+IEEE Math library?
+Yes.
+ 
+System V Math library?
+Nope.
+ 
+Are C math functions in <cmath> and std::?
+Yes.
+ 
+Are complex math functions in std::?
+Yes.
+ 
+ISO C++ Standard library?
+Yes.
+ 
+Standard template library?
+Yes.
+ 
+What about getrusage()?
+Yes.
+ 
+The results have been written to the file config.h.
+If you're curious about which tests passed and failed and why, see
+this file:
+-rw-r--r--    1 piet     sns          6839 Jan  9 21:05 logfile
+cp config.h ../blitz/config.h
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/compiler'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/compiler'
+Making all in blitz
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz'
+cd .. && /bin/sh ./config.status blitz/Makefile 
+config.status: creating blitz/Makefile
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz'
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz'
+Making all in array
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/array'
+cd ../.. && /bin/sh ./config.status blitz/array/Makefile 
+config.status: creating blitz/array/Makefile
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/array'
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/array'
+Making all in .
+make[3]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/array'
+make[3]: Nothing to be done for `all-am'.
+make[3]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/array'
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/array'
+Making all in generate
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/generate'
+cd ../.. && /bin/sh ./config.status blitz/generate/Makefile 
+config.status: creating blitz/generate/Makefile
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/generate'
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/generate'
+Making all in .
+make[3]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/generate'
+make[3]: Nothing to be done for `all-am'.
+make[3]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/generate'
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/generate'
+Making all in meta
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/meta'
+cd ../.. && /bin/sh ./config.status blitz/meta/Makefile 
+config.status: creating blitz/meta/Makefile
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/meta'
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/meta'
+Making all in .
+make[3]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/meta'
+make[3]: Nothing to be done for `all-am'.
+make[3]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/meta'
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/meta'
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz'
+Making all in random
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/random'
+cd .. && /bin/sh ./config.status random/Makefile 
+config.status: creating random/Makefile
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/random'
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/random'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/random'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/random'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/random'
+Making all in src
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/src'
+cd .. && /bin/sh ./config.status src/Makefile depfiles
+config.status: creating src/Makefile
+config.status: executing depfiles commands
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/src'
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/src'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/src'
+source='globals.cpp' object='globals.o' libtool=no \
+depfile='.deps/globals.Po' tmpdepfile='.deps/globals.TPo' \
+depmode=gcc3 /bin/sh ../depcomp \
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o globals.o `test -f 'globals.cpp' || echo './'`globals.cpp
+rm -f libblitz.a
+ar -cru libblitz.a globals.o 
+ranlib libblitz.a
+cp libblitz.a ../lib/libblitz.a
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/src'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/src'
+Making all in lib
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/lib'
+cd .. && /bin/sh ./config.status lib/Makefile 
+config.status: creating lib/Makefile
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/lib'
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/lib'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/lib'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/lib'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/lib'
+Making all in manual
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/manual'
+cd .. && /bin/sh ./config.status manual/Makefile 
+config.status: creating manual/Makefile
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/manual'
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/manual'
+Making all in examples
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/examples'
+cd ../.. && /bin/sh ./config.status manual/examples/Makefile 
+config.status: creating manual/examples/Makefile
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/examples'
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/examples'
+Making all in .
+make[3]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/examples'
+make[3]: Nothing to be done for `all-am'.
+make[3]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/examples'
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/examples'
+Making all in stencils
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/stencils'
+cd ../.. && /bin/sh ./config.status manual/stencils/Makefile 
+config.status: creating manual/stencils/Makefile
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/stencils'
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/stencils'
+Making all in .
+make[3]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/stencils'
+make[3]: Nothing to be done for `all-am'.
+make[3]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/stencils'
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/stencils'
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/manual'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/manual'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/manual'
+Making all in testsuite
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/testsuite'
+cd .. && /bin/sh ./config.status testsuite/Makefile 
+config.status: creating testsuite/Makefile
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/testsuite'
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/testsuite'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/testsuite'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/testsuite'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/testsuite'
+Making all in examples
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/examples'
+cd .. && /bin/sh ./config.status examples/Makefile 
+config.status: creating examples/Makefile
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/examples'
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/examples'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/examples'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/examples'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/examples'
+Making all in benchmarks
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/benchmarks'
+cd .. && /bin/sh ./config.status benchmarks/Makefile 
+config.status: creating benchmarks/Makefile
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/benchmarks'
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/benchmarks'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/benchmarks'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/benchmarks'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/benchmarks'
+Making all in demos
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/demos'
+make[1]: Nothing to be done for `all'.
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/demos'
+<gingakogen|blitz-0.6> make
+Making all in .
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6'
+make[1]: Nothing to be done for `all-am'.
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6'
+Making all in bin
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/bin'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/bin'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/bin'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/bin'
+Making all in compiler
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/compiler'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/compiler'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/compiler'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/compiler'
+Making all in blitz
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz'
+Making all in array
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/array'
+Making all in .
+make[3]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/array'
+make[3]: Nothing to be done for `all-am'.
+make[3]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/array'
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/array'
+Making all in generate
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/generate'
+Making all in .
+make[3]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/generate'
+make[3]: Nothing to be done for `all-am'.
+make[3]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/generate'
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/generate'
+Making all in meta
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/meta'
+Making all in .
+make[3]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/meta'
+make[3]: Nothing to be done for `all-am'.
+make[3]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/meta'
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz/meta'
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/blitz'
+Making all in random
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/random'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/random'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/random'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/random'
+Making all in src
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/src'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/src'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/src'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/src'
+Making all in lib
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/lib'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/lib'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/lib'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/lib'
+Making all in manual
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/manual'
+Making all in examples
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/examples'
+Making all in .
+make[3]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/examples'
+make[3]: Nothing to be done for `all-am'.
+make[3]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/examples'
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/examples'
+Making all in stencils
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/stencils'
+Making all in .
+make[3]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/stencils'
+make[3]: Nothing to be done for `all-am'.
+make[3]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/stencils'
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/manual/stencils'
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/manual'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/manual'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/manual'
+Making all in testsuite
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/testsuite'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/testsuite'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/testsuite'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/testsuite'
+Making all in examples
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/examples'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/examples'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/examples'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/examples'
+Making all in benchmarks
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/benchmarks'
+Making all in .
+make[2]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/benchmarks'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/benchmarks'
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/benchmarks'
+Making all in demos
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/demos'
+make[1]: Nothing to be done for `all'.
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/demos'
+<gingakogen|blitz-0.6> make check-testsuite
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/compiler'
+make[1]: Nothing to be done for `check-compiler'.
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/compiler'
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/src'
+make[1]: Nothing to be done for `lib'.
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/src'
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/testsuite'
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o Adnene-Ben-Abdallah-1.o `test -f 'Adnene-Ben-Abdallah-1.cpp' || echo './'`Adnene-Ben-Abdallah-1.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o Adnene-Ben-Abdallah-1  Adnene-Ben-Abdallah-1.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o Adnene-Ben-Abdallah-2.o `test -f 'Adnene-Ben-Abdallah-2.cpp' || echo './'`Adnene-Ben-Abdallah-2.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o Adnene-Ben-Abdallah-2  Adnene-Ben-Abdallah-2.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o arrayresize.o `test -f 'arrayresize.cpp' || echo './'`arrayresize.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o arrayresize  arrayresize.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o chris-jeffery-1.o `test -f 'chris-jeffery-1.cpp' || echo './'`chris-jeffery-1.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o chris-jeffery-1  chris-jeffery-1.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o chris-jeffery-2.o `test -f 'chris-jeffery-2.cpp' || echo './'`chris-jeffery-2.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o chris-jeffery-2  chris-jeffery-2.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o chris-jeffery-3.o `test -f 'chris-jeffery-3.cpp' || echo './'`chris-jeffery-3.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o chris-jeffery-3  chris-jeffery-3.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o complex-test.o `test -f 'complex-test.cpp' || echo './'`complex-test.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o complex-test  complex-test.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o constarray.o `test -f 'constarray.cpp' || echo './'`constarray.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o constarray  constarray.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o contiguous.o `test -f 'contiguous.cpp' || echo './'`contiguous.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o contiguous  contiguous.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o copy.o `test -f 'copy.cpp' || echo './'`copy.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o copy  copy.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o ctors.o `test -f 'ctors.cpp' || echo './'`ctors.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o ctors  ctors.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o derrick-bass-1.o `test -f 'derrick-bass-1.cpp' || echo './'`derrick-bass-1.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o derrick-bass-1  derrick-bass-1.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o derrick-bass-3.o `test -f 'derrick-bass-3.cpp' || echo './'`derrick-bass-3.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o derrick-bass-3  derrick-bass-3.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o exprctor.o `test -f 'exprctor.cpp' || echo './'`exprctor.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o exprctor  exprctor.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o extract.o `test -f 'extract.cpp' || echo './'`extract.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o extract  extract.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o free.o `test -f 'free.cpp' || echo './'`free.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o free  free.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o gary-huber-1.o `test -f 'gary-huber-1.cpp' || echo './'`gary-huber-1.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o gary-huber-1  gary-huber-1.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o initialize.o `test -f 'initialize.cpp' || echo './'`initialize.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o initialize  initialize.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o interlace.o `test -f 'interlace.cpp' || echo './'`interlace.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o interlace  interlace.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o iter.o `test -f 'iter.cpp' || echo './'`iter.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o iter  iter.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o Josef-Wagenhuber.o `test -f 'Josef-Wagenhuber.cpp' || echo './'`Josef-Wagenhuber.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o Josef-Wagenhuber  Josef-Wagenhuber.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o loop1.o `test -f 'loop1.cpp' || echo './'`loop1.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o loop1  loop1.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o matthias-troyer-1.o `test -f 'matthias-troyer-1.cpp' || echo './'`matthias-troyer-1.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o matthias-troyer-1  matthias-troyer-1.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o matthias-troyer-2.o `test -f 'matthias-troyer-2.cpp' || echo './'`matthias-troyer-2.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o matthias-troyer-2  matthias-troyer-2.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o mattias-lindstroem-1.o `test -f 'mattias-lindstroem-1.cpp' || echo './'`mattias-lindstroem-1.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o mattias-lindstroem-1  mattias-lindstroem-1.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o minmax.o `test -f 'minmax.cpp' || echo './'`minmax.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o minmax  minmax.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o minsumpow.o `test -f 'minsumpow.cpp' || echo './'`minsumpow.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o minsumpow  minsumpow.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o module1.o `test -f 'module1.cpp' || echo './'`module1.cpp
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o module2.o `test -f 'module2.cpp' || echo './'`module2.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o module  module1.o module2.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o newet.o `test -f 'newet.cpp' || echo './'`newet.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o newet  newet.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o Olaf-Ronneberger-1.o `test -f 'Olaf-Ronneberger-1.cpp' || echo './'`Olaf-Ronneberger-1.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o Olaf-Ronneberger-1  Olaf-Ronneberger-1.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o peter-bienstman-1.o `test -f 'peter-bienstman-1.cpp' || echo './'`peter-bienstman-1.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o peter-bienstman-1  peter-bienstman-1.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o peter-bienstman-2.o `test -f 'peter-bienstman-2.cpp' || echo './'`peter-bienstman-2.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o peter-bienstman-2  peter-bienstman-2.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o peter-bienstman-3.o `test -f 'peter-bienstman-3.cpp' || echo './'`peter-bienstman-3.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o peter-bienstman-3  peter-bienstman-3.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o peter-bienstman-4.o `test -f 'peter-bienstman-4.cpp' || echo './'`peter-bienstman-4.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o peter-bienstman-4  peter-bienstman-4.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o peter-bienstman-5.o `test -f 'peter-bienstman-5.cpp' || echo './'`peter-bienstman-5.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o peter-bienstman-5  peter-bienstman-5.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o peter-nordlund-1.o `test -f 'peter-nordlund-1.cpp' || echo './'`peter-nordlund-1.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o peter-nordlund-1  peter-nordlund-1.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o peter-nordlund-2.o `test -f 'peter-nordlund-2.cpp' || echo './'`peter-nordlund-2.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o peter-nordlund-2  peter-nordlund-2.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o peter-nordlund-3.o `test -f 'peter-nordlund-3.cpp' || echo './'`peter-nordlund-3.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o peter-nordlund-3  peter-nordlund-3.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o promote.o `test -f 'promote.cpp' || echo './'`promote.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o promote  promote.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o qcd.o `test -f 'qcd.cpp' || echo './'`qcd.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o qcd  qcd.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o reduce.o `test -f 'reduce.cpp' || echo './'`reduce.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o reduce  reduce.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o reindex.o `test -f 'reindex.cpp' || echo './'`reindex.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o reindex  reindex.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o reverse.o `test -f 'reverse.cpp' || echo './'`reverse.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o reverse  reverse.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o shapecheck.o `test -f 'shapecheck.cpp' || echo './'`shapecheck.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o shapecheck  shapecheck.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o shape.o `test -f 'shape.cpp' || echo './'`shape.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o shape  shape.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o storage.o `test -f 'storage.cpp' || echo './'`storage.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o storage  storage.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o stub.o `test -f 'stub.cpp' || echo './'`stub.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o stub  stub.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o theodore-papadopoulo-1.o `test -f 'theodore-papadopoulo-1.cpp' || echo './'`theodore-papadopoulo-1.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o theodore-papadopoulo-1  theodore-papadopoulo-1.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o tinymat.o `test -f 'tinymat.cpp' || echo './'`tinymat.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o tinymat  tinymat.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o tinyvec.o `test -f 'tinyvec.cpp' || echo './'`tinyvec.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o tinyvec  tinyvec.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o transpose.o `test -f 'transpose.cpp' || echo './'`transpose.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o transpose  transpose.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o troyer-genilloud.o `test -f 'troyer-genilloud.cpp' || echo './'`troyer-genilloud.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o troyer-genilloud  troyer-genilloud.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o Ulisses-Mello-1.o `test -f 'Ulisses-Mello-1.cpp' || echo './'`Ulisses-Mello-1.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o Ulisses-Mello-1  Ulisses-Mello-1.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o wei-ku-1.o `test -f 'wei-ku-1.cpp' || echo './'`wei-ku-1.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o wei-ku-1  wei-ku-1.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -g -DBZ_DEBUG -c -o where.o `test -f 'where.cpp' || echo './'`where.cpp
+g++  -ftemplate-depth-30 -g -DBZ_DEBUG   -o where  where.o -L../lib -lblitz -lm 
+Running test suite...
+Adnene-Ben-Abdallah-1
+Adnene-Ben-Abdallah-2
+arrayresize
+chris-jeffery-1
+chris-jeffery-2
+chris-jeffery-3
+complex-test
+constarray
+contiguous
+copy
+ctors
+derrick-bass-1
+derrick-bass-3
+exprctor
+extract
+free
+gary-huber-1
+initialize
+interlace
+iter
+Josef-Wagenhuber
+loop1
+matthias-troyer-1
+matthias-troyer-2
+mattias-lindstroem-1
+minmax
+minsumpow
+module
+newet
+Olaf-Ronneberger-1
+peter-bienstman-1
+peter-bienstman-2
+peter-bienstman-3
+peter-bienstman-4
+peter-bienstman-5
+peter-nordlund-1
+peter-nordlund-2
+peter-nordlund-3
+promote
+qcd
+reduce
+reindex
+reverse
+shapecheck
+shape
+storage
+stub
+theodore-papadopoulo-1
+tinymat
+tinyvec
+transpose
+troyer-genilloud
+Ulisses-Mello-1
+wei-ku-1
+where
+All tests passed.
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/testsuite'
+<gingakogen|blitz-0.6> make check-examples
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/compiler'
+make[1]: Nothing to be done for `check-compiler'.
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/compiler'
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/src'
+make[1]: Nothing to be done for `lib'.
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/src'
+make[1]: Entering directory `/home/piet/gravitylab/blitz/blitz-0.6/examples'
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o array.o `test -f 'array.cpp' || echo './'`array.cpp
+g++  -ftemplate-depth-30   -o array  array.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o cartesian.o `test -f 'cartesian.cpp' || echo './'`cartesian.cpp
+g++  -ftemplate-depth-30   -o cartesian  cartesian.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o cast.o `test -f 'cast.cpp' || echo './'`cast.cpp
+g++  -ftemplate-depth-30   -o cast  cast.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o cfd.o `test -f 'cfd.cpp' || echo './'`cfd.cpp
+g++  -ftemplate-depth-30   -o cfd  cfd.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o complex-test.o `test -f 'complex-test.cpp' || echo './'`complex-test.cpp
+g++  -ftemplate-depth-30   -o complex-test  complex-test.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o convolve.o `test -f 'convolve.cpp' || echo './'`convolve.cpp
+g++  -ftemplate-depth-30   -o convolve  convolve.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o curldiv.o `test -f 'curldiv.cpp' || echo './'`curldiv.cpp
+g++  -ftemplate-depth-30   -o curldiv  curldiv.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o deriv.o `test -f 'deriv.cpp' || echo './'`deriv.cpp
+g++  -ftemplate-depth-30   -o deriv  deriv.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o diff.o `test -f 'diff.cpp' || echo './'`diff.cpp
+g++  -ftemplate-depth-30   -o diff  diff.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o erf.o `test -f 'erf.cpp' || echo './'`erf.cpp
+g++  -ftemplate-depth-30   -o erf  erf.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o fixed.o `test -f 'fixed.cpp' || echo './'`fixed.cpp
+g++  -ftemplate-depth-30   -o fixed  fixed.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o indirect.o `test -f 'indirect.cpp' || echo './'`indirect.cpp
+g++  -ftemplate-depth-30   -o indirect  indirect.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o io.o `test -f 'io.cpp' || echo './'`io.cpp
+g++  -ftemplate-depth-30   -o io  io.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o iter.o `test -f 'iter.cpp' || echo './'`iter.cpp
+g++  -ftemplate-depth-30   -o iter  iter.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o matmult.o `test -f 'matmult.cpp' || echo './'`matmult.cpp
+g++  -ftemplate-depth-30   -o matmult  matmult.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o nested.o `test -f 'nested.cpp' || echo './'`nested.cpp
+g++  -ftemplate-depth-30   -o nested  nested.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o numinquire.o `test -f 'numinquire.cpp' || echo './'`numinquire.cpp
+g++  -ftemplate-depth-30   -o numinquire  numinquire.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o outer.o `test -f 'outer.cpp' || echo './'`outer.cpp
+g++  -ftemplate-depth-30   -o outer  outer.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o pauli.o `test -f 'pauli.cpp' || echo './'`pauli.cpp
+g++  -ftemplate-depth-30   -o pauli  pauli.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o pick.o `test -f 'pick.cpp' || echo './'`pick.cpp
+g++  -ftemplate-depth-30   -o pick  pick.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o polymorph.o `test -f 'polymorph.cpp' || echo './'`polymorph.cpp
+g++  -ftemplate-depth-30   -o polymorph  polymorph.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o prettyprint.o `test -f 'prettyprint.cpp' || echo './'`prettyprint.cpp
+g++  -ftemplate-depth-30   -o prettyprint  prettyprint.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o qcd.o `test -f 'qcd.cpp' || echo './'`qcd.cpp
+g++  -ftemplate-depth-30   -o qcd  qcd.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o rand2.o `test -f 'rand2.cpp' || echo './'`rand2.cpp
+g++  -ftemplate-depth-30   -o rand2  rand2.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o random.o `test -f 'random.cpp' || echo './'`random.cpp
+g++  -ftemplate-depth-30   -o random  random.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o rangexpr.o `test -f 'rangexpr.cpp' || echo './'`rangexpr.cpp
+g++  -ftemplate-depth-30   -o rangexpr  rangexpr.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o reduce.o `test -f 'reduce.cpp' || echo './'`reduce.cpp
+g++  -ftemplate-depth-30   -o reduce  reduce.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o simple.o `test -f 'simple.cpp' || echo './'`simple.cpp
+g++  -ftemplate-depth-30   -o simple  simple.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o slicing.o `test -f 'slicing.cpp' || echo './'`slicing.cpp
+g++  -ftemplate-depth-30   -o slicing  slicing.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o stencil2.o `test -f 'stencil2.cpp' || echo './'`stencil2.cpp
+g++  -ftemplate-depth-30   -o stencil2  stencil2.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o stencil3.o `test -f 'stencil3.cpp' || echo './'`stencil3.cpp
+g++  -ftemplate-depth-30   -o stencil3  stencil3.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o stencil.o `test -f 'stencil.cpp' || echo './'`stencil.cpp
+g++  -ftemplate-depth-30   -o stencil  stencil.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o stencilet.o `test -f 'stencilet.cpp' || echo './'`stencilet.cpp
+g++  -ftemplate-depth-30   -o stencilet  stencilet.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o storage.o `test -f 'storage.cpp' || echo './'`storage.cpp
+g++  -ftemplate-depth-30   -o storage  storage.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o tiny.o `test -f 'tiny.cpp' || echo './'`tiny.cpp
+g++  -ftemplate-depth-30   -o tiny  tiny.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o transform.o `test -f 'transform.cpp' || echo './'`transform.cpp
+g++  -ftemplate-depth-30   -o transform  transform.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o useret.o `test -f 'useret.cpp' || echo './'`useret.cpp
+useret.cpp: In function `typename blitz::promote_trait<T1_orig, 
+T2_orig>::T_promote foobar_impl<T_numtype1, T_numtype2>::apply 
+(T_numtype1, T_numtype2) [with T_numtype1 = int, T_numtype2 = int]':
+../blitz/array/expr.h:397:   instantiated from `blitz::_bz_ArrayExprOp<P_expr1, P_expr2, P_op>::operator() (const blitz::TinyVector<int, N_rank> &) [with int N_rank = 2, P_expr1 = blitz::IndexPlaceholder<0>, P_expr2 = blitz::IndexPlaceholder<1>, P_op = foobar_impl<int, int>]'
+../blitz/array/expr.h:187:   instantiated from `blitz::_bz_ArrayExpr<P_expr>::operator() (const blitz::TinyVector<int, N_rank> &) [with int N_rank = 2, P_expr = blitz::_bz_ArrayExprOp<blitz::IndexPlaceholder<0>, blitz::IndexPlaceholder<1>, foobar_impl<int, int> >]'
+../blitz/array/eval.cc:710:   instantiated from `blitz::Array<T, N>::evaluateWithIndexTraversal1 (T_expr, T_update) [with T_expr = blitz::_bz_ArrayExpr<blitz::_bz_ArrayExprOp<blitz::IndexPlaceholder<0>, blitz::IndexPlaceholder<1>, foobar_impl<int, int> > >, T_update = blitz::_bz_update<double, int>, P_numtype = double, int N_rank = 2]'
+../blitz/array/eval.cc:211:   instantiated from `blitz::Array<T, N>::evaluate (T_expr, T_update) [with T_expr = blitz::_bz_ArrayExpr<blitz::_bz_ArrayExprOp<blitz::IndexPlaceholder<0>, blitz::IndexPlaceholder<1>, foobar_impl<int, int> > >, T_update = blitz::_bz_update<double, int>, P_numtype = double, int N_rank = 2]'
+../blitz/array/ops.cc:71:   instantiated from `blitz::Array<T, N>::operator= (const blitz::ETBase<T_expr> &) [with T_expr = blitz::_bz_ArrayExpr<blitz::_bz_ArrayExprOp<blitz::IndexPlaceholder<0>, blitz::IndexPlaceholder<1>, foobar_impl<int, int> > >, P_numtype = double, int N_rank = 2]'
+useret.cpp:38:   instantiated from here
+useret.cpp:16: warning: return to `int' from `double'
+useret.cpp:16: warning: argument to `int' from `double'
+g++  -ftemplate-depth-30   -o useret  useret.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o where.o `test -f 'where.cpp' || echo './'`where.cpp
+g++  -ftemplate-depth-30   -o where  where.o -L../lib -lblitz -lm 
+g++ -DPACKAGE_NAME=\"\" -DPACKAGE_TARNAME=\"\" -DPACKAGE_VERSION=\"\" -DPACKAGE_STRING=\"\" -DPACKAGE_BUGREPORT=\"\" -DPACKAGE=\"Blitz++\" -DVERSION=\"0.5\" -DHAVE_LIBM=1  -I. -I. -I..    -ftemplate-depth-30 -c -o whitt.o `test -f 'whitt.cpp' || echo './'`whitt.cpp
+g++  -ftemplate-depth-30   -o whitt  whitt.o -L../lib -lblitz -lm 
+Running examples...
+array
+cartesian
+cast
+cfd
+complex-test
+convolve
+curldiv
+deriv
+diff
+erf
+fixed
+indirect
+io
+iter
+matmult
+nested
+numinquire
+outer
+pauli
+pick
+polymorph
+prettyprint
+qcd
+rand2
+random
+rangexpr
+reduce
+simple
+slicing
+stencil2
+stencil3
+stencil
+stencilet
+storage
+tiny
+transform
+useret
+where
+whitt
+All tests passed.
+make[1]: Leaving directory `/home/piet/gravitylab/blitz/blitz-0.6/examples'
+<gingakogen|blitz-0.6> h
+   347	20:57	tar xvf *
+   348	20:58	ls
+   349	20:58	rm *tar
+   350	20:58	cd b*
+   351	20:58	ls
+   352	20:59	cat INSTALL
+   353	21:00	br
+   354	21:00	./configure --with-cxx=gcc
+   355	21:01	make
+   356	21:02	which perl
+   357	21:02	which automake
+   358	21:03	which autoconf
+   359	21:04	/usr/bin/autoconf --help
+   360	21:04	/usr/bin/autoconf --version
+   361	21:05	touch configure
+   362	21:05	make
+   363	21:06	make
+   364	21:06	make check-testsuite
+   365	21:13	make check-examples
+   366	23:19	h
+<gingakogen|blitz-0.6> 
+cd
+<gingakogen|blitz-0.6> <gingakogen|/home/piet> i2l tmp.unix .
+scptmp.unix               0% |                             |     0       --:-- ETA: warning: Executing scp1 compatibility.
+tmp.unix               0% |                             |     0       --:-- ETAtmp.unix             100% |*****************************|  2806       00:01    
+<gingakogen|/home/piet> 

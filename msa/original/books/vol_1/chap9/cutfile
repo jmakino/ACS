@@ -1,0 +1,7 @@
+#
+# cutfile: invokes cutfile.awk
+#
+# usage: cutfile filename.C [other_filename.C . . . ]
+#
+#
+awk -f cutfile.awk $1

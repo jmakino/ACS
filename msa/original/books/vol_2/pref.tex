@@ -1,0 +1,31 @@
+\newpage           % blank page, to force preface to start on a right hand page
+\thispagestyle{empty}      % suppresses page numbering of the blank second page
+\mbox{}                    % dummy content; otherwise \newpage has no effect
+\newpage                   % on to third page, to start the preface
+\pagenumbering{roman}      % with a roman numbering system, starting here at i
+
+%%\chapter{Preface} %% this replace the four lines below, but at the
+                    %% cost (currently) of two extra pages
+
+\addcontentsline{toc}{chapter}{Preface}
+
+\begin{center}
+{\lgb Preface}
+\end{center}
+
+The {\it Pure Gravity} book series, of which this is the second volume,
+\dots\dots\dots
+
+%\bigskip
+%\bigskip
+%{\it Acknowledgments:}
+%xxx
+%We thank xxx, xxx and xxx for valuable
+%discussions.  This work is supported in part by the Research for the
+%Future Program of Japan Society for the Promotion of Science
+%(JSPS-RFTP97P01102).
+
+\tableofcontents
+
+\listoffigures
+

@@ -1,0 +1,98 @@
+%
+%  macros for ph and jm to communicate recent or future changes:
+%
+\def\piet#1{{\bf[#1 -- piet]}}
+\def\jun#1{{\bf[#1 -- jun]}}
+%
+%  macros for the frequent dialogues between the three players in the book.
+%  note: each use of \alice or \bob or \carol has to be sandwiches in between
+%        a starting \abc and an ending \cba
+%
+\def\abc{\begin{description}}
+\def\alice{\item[Alice:]}
+\def\bob{\item[Bob:]}
+\def\carol{\item[Carol:]}
+\def\cba{\end{description}}
+%
+%  macros for printing computer code and computer input and output;
+%  these looks better in a somewhat smaller font.
+%  0) here is the one for printing a short inline piece of text,
+%     where `st' stands for `small typewriter font':
+%
+\def\st{\small \tt}
+%
+%  1) here is the one for code:
+%
+\def\code#1{{\small\verbatiminput{#1}}}
+%
+%  2) here should be the one for I/O, but it doesn't work; verbatim is just
+%     to stubborn!  --  Piet
+%
+%\def\io#1{\begin{small}\begin{verbatim}#1\end{verbatim}\end{small}}
+%
+\font\lggggb=cmbx10 scaled \magstep5
+\font\lgggb=cmbx10 scaled \magstep4
+\font\lggb=cmbx10 scaled \magstep3
+\font\lgb=cmbx10 scaled \magstep2
+\font\lggr=cmr10 scaled \magstep3
+\font\lgr=cmr10 scaled \magstep2
+\font\lr=cmr10
+%
+% ...........................................................................
+%
+\def\simlt{\hbox{ \rlap{\raise 0.425ex\hbox{$<$}}\lower 0.65ex\hbox{$\sim$} }}
+\def\simgt{\hbox{ \rlap{\raise 0.425ex\hbox{$>$}}\lower 0.65ex\hbox{$\sim$} }}
+\def\sub#1{_{\rm #1}}
+\def\sup#1{^{\rm #1}}
+\def\undertext#1{{$\underline{\hbox{#1}}$}}
+\def\doubleundertext#1{{$\underline{\underline{\hbox{#1}}}$}}
+\def\ie{{\it {\frenchspacing i.{\thinspace}e. }}}
+\def\eg{{\frenchspacing e.{\thinspace}g. }}
+\def\cf{{\frenchspacing\it cf. }}
+\def\etal{{\frenchspacing\it et al.}}
+\def\etc{{\frenchspacing\it etc.}}
+\def\et{{\etal}}
+\def\simlt{\hbox{ \rlap{\raise 0.425ex\hbox{$<$}}\lower 0.65ex\hbox{$\sim$} }}
+\def\simgt{\hbox{ \rlap{\raise 0.425ex\hbox{$>$}}\lower 0.65ex\hbox{$\sim$} }}
+\def\solar{\odot}
+\def\msun{\ifmmode{M_\solar}\else{$M_\solar$}\fi}
+\def\rsun{\ifmmode{R_\solar}\else{$R_\solar$}\fi}
+\def\Rf{\parindent=0pt\smallskip\hangindent=3pc\hangafter=1}
+\def\pc{{\rm pc}}
+\def\kpc{{\rm kpc}}
+\def\Mpc{{\rm Mpc}}
+\def\yr{{\rm yr}}
+\def\Myr{{\rm Myr}}
+\def\Gyr{{\rm Gyr}}
+\def\kT{\ifmmode{kT}\else{$kT$}\fi}
+\def\N{{\ifmmode{N}\else{$N$}\fi}}
+\def\fb{{\ifmmode{f_B}\else{$f_B$}\fi}}
+\def\emax{{\ifmmode{E_{max}}\else{$E_{max}$}\fi}}
+\def\td{{\ifmmode{t_d}\else{$t_d$}\fi}}
+\def\tcr{{\ifmmode{t_{cr}}\else{$t_{cr}$}\fi}}
+\def\tr{{\ifmmode{t_r}\else{$t_r$}\fi}}
+\def\trh{\ifmmode{t_{rh}}\else{$t_{rh}$}\fi}
+\def\vv{{\ifmmode{\langle v^2\rangle}\else{$\langle v^2 \rangle$}\fi}}
+\def\v{{\ifmmode{\langle v^2\rangle^{1/2}}
+                \else{$\langle v^2 \rangle^{1/2}$}\fi}}
+\def\half{{\ifmmode{{1 \over 2}}\else{${1 \over 2}$}\fi}}
+\def\dhalf{{\textstyle {1 \over 2}}}
+\def\threehalf{{\ifmmode{{3 \over 2}}\else{${3 \over 2}$}\fi}}
+\def\dthreehalf{{\textstyle {3 \over 2}}}
+\def\dfivehalf{{\textstyle {5 \over 2}}}
+\def\dfivethree{{\textstyle {5 \over 3}}}
+\def\kms{\ifmmode{\rm km\,s^{-1}}\else{$\rm km\,s^{-1}$}\fi}
+\def\kmps{{\rm km/s}}
+\def\bx{{\bf x}}
+\def\br{{\bf r}}
+\def\bv{{\bf v}}
+\def\ba{{\bf a}}
+\def\bj{{\bf j}}
+\def\bs{{\bf s}}
+\def\bc{{\bf c}}
+\def\bp{{\bf p}}
+\def\badot{{\bf \dot a}}
+\def\batwo{{{\bf  a}^{(2)}}}
+\def\bathree{{{\bf  a}^{(3)}}}
+\def\bR{{\bf R}}
+\def\bV{{\bf V}}

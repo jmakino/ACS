@@ -1,0 +1,772 @@
+\chapter{A General $N$-Body Hermite Code}
+
+\section{A Wish List}
+
+In the first part of this book, we have offered a few quick-and-dirty
+programs that work fine for initial explorations.  We were able to
+study stability aspects of various 2-body and 3-body systems, both
+with respect to numerical instabilities as well as physical
+instabilities.  Many more situations could be easily explored, using
+these programs, and we hope that the readers will have tried their hand
+at some other configurations, starting from different initial conditions,
+for 2 or 3 or more bodies.  Starting from {\st hermite2.C}, for example,
+it is easy to change the value of {\st n} in the first line, and to
+replace the explicit assignment of positions and velocities by other
+values for all {st n} particles.
+
+However, it quickly becomes tedious to have to change the program,
+each time we want to integrate from a different starting position.
+Also, there are many other improvements that can be made to the code,
+as anyone with even modest programming experience will have noticed.
+In this second part of our book, we will begin to add more structure.
+Once we have structured our codes in a more modular and flexible way,
+we are in a position to carry out some real research projects with
+astrophysical implications.  While simulating some real stars systems,
+we will soon realize that we will have to extend the complexity of our
+codes.  While we will make the switch to variable time steps already
+in this chapter, we will later find a need to assigning individual time
+steps to each star.  Also, we will introduce special coordinate
+patches for interacting group of stars.  We will take these two steps
+in later volumes in our book series.
+
+Here is a quick overview of a wish list for improving the structure of
+our computer codes.  We will address some of them fully in this book,
+while we leave other items partly or completely to other volumes.
+
+\begin{description}
+
+\item[comments]
+So far, we have not included any comments in our codes.  In an attempt
+to keep the codes short and uncluttered, we wanted to show the flow of
+the statements directly, given that most codes could fit on one or two
+pages.  But when the codes became longer, it was high time to put in
+comments, and we will do so from now on.
+
+\item[functions]
+So far, we have written each program as a single function call to {\st
+main()}, without trying to split up the program into smaller pieces.
+For the first few codes, this was fine, and it kept everything light
+weight.  But for the later codes, spanning a few pages, it would have
+been better to start dividing the functionality over separate functions.
+For example, in {\st leapfrog2.C}, we calculate the accelerations early
+on in the code, and then in the same way at the end of the main
+integration loop.  Putting those statements in a function, and calling
+that function once before the loop and once in the loop makes the code
+both easier to understand and easier to debug.  In addition, it is
+likely that we will use such a function in other codes as well.
+
+\item[structured I/O]
+In our examples so far we have used only a very rudimentary form of
+I/O (input/output).  We wrote our results in the form of a list of
+positions and velocities to the standard output stream, and we wrote
+some energy diagnostics to the error output stream.  And we used input
+only interactively, to prompt the user to provide a few parameters.
+It is much better to define a unique $N$-body data format, which
+includes other variables besides $\br$ and $\bv$, such as masses,
+time, and perhaps additional information.  Once we write the results
+from an integration into a file, we can then read in that file again
+when we want to continue that run.  This leads us to:
+
+\item[pipes]
+The notion of pipes in Unix allows one to redirect the output of
+one program as the input of another program (`piping' the results from
+one program to the other, as it is called).  For example, it would be
+nice to pipe the results of a program generating initial conditions
+directly into an integrator, and to pipe the results of the latter
+into an analysis program.
+
+\item[command line arguments]
+Typing in parameters by hand, after being prompted by a program,
+gets tedious very soon.  It is also inflexible, in that it doesn't fit
+very well if we want to write shell scripts to run a bunch of programs
+in laboratory fashion.  A better way to pass parameters to a program
+is by providing arguments directly on the command line.  Unix has a
+default protocol for doing this, and we adapt that usage in the
+following programs.
+
+\item[using a Makefile]
+When the number of files in our working directory grows, we may lose
+track of which program needs to be recompiled.  To automate this
+process, we introduce the notion of a Makefile below.  The real
+strength of Makefiles will become apparent only later, but already at
+this stage is can be helpful.
+
+\item[test facilities]
+Soon our codes will reach a level of complexity where it becomes
+difficult to convince ourselves that the code is really doing the
+right thing everywhere, giving the correct answers in the end.
+The best approach is to develop a slew of standard tests, together
+with a form of scaffolding that enables these tests to be run
+automatically, each time we make changes to our code.
+
+\item[using the C++ STL]
+So far, we have used only the bare bones part of the C++ language.  In
+some of the programs below we will introduce a convenient extension to
+the C++ core language, in the form of the Standard Template Library
+(STL), which is included in every modern C++ compiler.  It gives us a
+quick and well-debugged and often (but not always) efficient way to
+get standard tasks done quickly.
+
+\item[C++ classes]
+The central feature of C++, as an object-oriented language, is the use
+of classes, ways to encapsulate objects.  Since we need to build up
+some considerable experience with $N$-body codes in order to know what
+type of objects to construct, we postpone the introduction of classes
+until later in this book.
+
+\item[error checking]
+Any robust code will do lots of error checking.  Ideally, every
+function should make sure that the data it gets fed are of a form that
+is valid for the operations that it wants to do on them.  Since error
+checking, and even better, error handling (following up an error in
+the proper way, once it occurs) complicates a code considerably, we
+postpone this until somewhat later.
+
+\item[more flexible data format]
+As we discussed earlier, it would be nice to give each star
+considerable autonomy by building in some form of artificial
+intelligence to let stars decide when to do what and how to
+report on it.  For this to work, a minimal requirement is a
+flexible way for reporting unforeseen events, and this requires
+considerable flexibility in the data formats used.  We will
+later give an example later of `stories' that are attached to
+each star's data.
+
+\item[more flexible command line options]
+The Unix-based one-letter-only style of command line options that we
+introduce below is far from ideal.  Later we will provide a more
+flexible way of handling arguments on the command line.
+
+\item[more detailed help facility]
+For now, asking for help will result only in a list of command line
+options, together with a brief indication of what they do.  It would
+be better to provide several levels of help, allowing the user to get
+more detailed information when needed.  This leads to:
+
+\item[documentation]
+At a minimum, a good software environment should have a manual page
+for each program.  Even better, groups of programs should be described
+as to their purposes and the way they can work together.  This leads to:
+
+\item[construction of a software environment]
+At some point, when we have written various integrators and a number
+of programs to generate initial conditions and to analyse data, it
+will become too much of a clutter to keep everything in a single
+directory.  We will need to provide more structure for the way in
+which we store our tools, and the way we intend them to be used.  This
+leads to:
+
+\item[multiple files]
+We mentioned under `functions' above the desirability to recycle code
+by creating functions that can be used for different applications.  If
+we compile such a function in a separate file, it will be easier to
+link it to other codes that use it.  This leads to:
+
+\item[libraries]
+An extension of the previous concept, in which a group of related
+functions is compiled into a library, which can then be linked to
+other codes that use some of the functions collected there.  Having
+various libraries and many files requires significant bookkeeping to
+be done to guarantee that everything is consistent and up to date.
+This leads to:
+
+\item[version control]
+For a software environment under development (and every healthy
+environment is constantly under development!), it is useful to be able
+to reconstruct older versions, and to keep track of the latest
+developments.  CVS, short for Concurrent Versions System, is a useful
+package for doing all this.  It also allows several people to write
+code asynchronously within the same software environment, since it
+will flag any collisions stemming from potential multiple edits.  More
+recent alternatives are available as well, such as SVN, short for
+Subversion, which allows more flexible ways to rename files and whole
+directory structuress.
+
+\item[autoconfig]
+A related useful facility is `autoconfig', which allows a user to
+install a software environment on an (almost) arbitrary platform,
+without any trouble.  As the name implies, this program does an
+automated check to see how your particular system is configured, and
+it then sets up your copy of the software environment in such a way
+that it fits your environment.
+
+\item[parallelization]
+With most modern computers distributing the running of a
+time-intensive program over several processors, it is important to
+give guidance to the compiler as to how to break up a large program
+into chunks that can be executed safely in parallel.  Later we will
+discuss how to modify our $N$-body codes to make use of both
+small-scale and large-scale parallelism.
+
+\item[special-purpose hardware]
+Another way to greatly gain in speed is to use dedicated hardware,
+constructed specifically for the problem at hand.  For the
+gravitational $N$-body problem, the GRAPE hardware developed at the
+University of Tokyo, provide such a function.  We will discuss issues
+connected with the use of one or more GRAPE boards.
+
+\item[a dedicated plotting package]
+The time will come that the use of a canned plotting package, like
+gnuplot, is just too inflexible for our particular needs in analyzing
+the results of $N$-body runs.  At some stage we will introduce a
+version of a plotting package, dedicated to the analysis of
+stellar dynamics simulations of dense stellar systems.
+
+\item[a scripting language]
+Around that time, if not earlier, the need will be felt for a
+scripting language that is more powerful than the simple use of shell
+scripts.
+
+\item[archiving]
+Finally, when we have an efficient and detailed software environment
+for doing cutting-edge scientific research, we will want to perform
+large-scale simulations.  When some runs will take weeks or months to
+run on the world's fastest computers, it is important to have ways to
+store the massive amounts of data in such a way that we can later
+query those data in flexible and efficient ways.  Archiving and data
+retrieval as well as more fancy operations like data mining then
+become serious issues.
+
+\end{description}
+
+\section{A Standard $N$-Body Snapshot Format}
+
+Let us take a look at the last code from Part 1, {\st hermite2.C}.
+There we had the initial conditions for the three stars on a figure-8
+orbit included at the beginning of the code.  Clearly, this is not a
+very flexible approach.  It would be much better to write one $N$-body
+code which can start from an arbitrary $N$-body snapshot, for an
+arbitrary number of particles $N$.
+
+Before we adapt our code, we first have to agree upon a unique format
+for a realization of an $N$-body system.  If we stick with the same
+standard format, we can build a suite of programs that are compatible
+in that they all can read and write $N$-body snapshots in the same way.
+Some programs can set up initial conditions, others integrate the orbits,
+and yet others can analyze the resulting data.
+
+We will start with the following simple format, which is good enough
+for our current purposes.  Later we will introduce extensions when needed.
+On the first line we will print one number, an integer, $N$, the
+number of particles.  On the second line we will print the time $t$.
+These two lines will be followed by $N$ lines, one for each particle.
+Each of those lines will contain seven numbers: the mass of the particle,
+followed by the three Cartesian components of the position vector,
+followed similarly by the three components of the velocity vector.
+
+For example, to store the initial conditions for the figure-8
+orbits in a file, we need to write the following five lines:
+
+\begin{small}
+\begin{verbatim}
+3
+0
+1 0.9700436 -0.24308753 0 0.466203685 0.43236573 0
+1 -0.9700436 0.24308753 0 0.466203685 0.43236573 0
+1 0 0 0 -0.93240737 -0.86473146 0
+\end{verbatim}
+\end{small}
+
+The simplest way to read an $N$-body snapshot is to obtain the data
+from the standard input stream {\st cin}.  For example, when we put
+the above five lines in a file {\st figure8.in}, we can then run our
+new Hermite version as {\st hermite3 < figure8.in}.
+
+Let us see how many changes we have to make to {\st hermite2.C} in
+order to make it compatible with our new standard data format.  The
+first problem is that we can no longer use this stream to obtain the
+parameters for the integrator.  In {\st hermite2.C} we allowed the
+user to provide those parameters in the following lines:
+
+\begin{small}
+\begin{verbatim}
+    cerr << "Please provide a value for the time step" << endl;
+    cin >> dt;
+    cerr << "and for the duration of the run" << endl;
+    cin >> t_end;
+\end{verbatim}
+\end{small}
+
+An alternative is to write the parameters as command line arguments.
+C++ allows us to add the following optional arguments to {\st main():}
+
+\begin{small}
+\begin{verbatim}
+int main(int argc, char *argv[])
+\end{verbatim}
+\end{small}
+
+When we run the program, {\st argc}, the argument counter, will
+contain the number of arguments specified, while {\st argv[]}, the
+vector of arguments, will contain the command line options.  For
+example, if we want to run {\st hermite3} with a time step of
+{\st dt = 0.001} for a total duration of {\st t\_end = 10}, we could
+communicate this to the program by invoking it as:
+
+\begin{small}
+\begin{verbatim}
+hermite3 0.001 10 < figure8.in
+\end{verbatim}
+\end{small}
+
+As soon as our program starts its execution, entering {\st main()},
+the argument counter will be set to 3, since by convention the program
+name is the first argument.  The argument vector will contain the
+following values:
+
+\begin{small}
+\begin{verbatim}
+argv[0] = "hermite3"
+argv[1] = "0.001"
+argv[2] = "10"
+\end{verbatim}
+\end{small}
+
+At this point, the parameters are available for the program, but they
+are still written in the form of character strings.  Fortunately,
+there are convenient library function that will convert such a string
+into a number.  They are called {st atoi} for a conversion of an ASCII
+string to an integer, and  {st atof} for a conversion of an ASCII
+string to an floating point number.  We can get access to those
+functions by adding the line {\st \#include  <cstdlib>} to the
+beginning of the file.
+
+Below is the code listing.  The changes from {\st hermite2.C} are
+straightforward: as soon as we have determined the values of the
+command line arguments, we know the value of $N$ and we can allocate
+space for the $N$ particles.  Since $N$ is not known at compile time,
+we have to explicitly allocate space for the arrays, using the {\st new}
+operator.  For two-dimensional arrays, this requires the length of the
+second array dimension to be known at compile time; fortunately that
+is no problem for us, since its value is known to be 3, the number of
+spatial dimensions in our world.  Note the placement of the parentheses
+around {\st * r}, {\etc}, necessary because the array brackets {\st []}
+have a higher precendence as operators than the {\st *} operator.
+Omitting the parentheses, as in {\st double *r[3]}, would be interpreted
+by the compiler as {\st double *(r[3])}, which is not what we want.
+By the way, strictly speaking we should deallocate the dynamically
+created arrays at the end of our {\st main()} program.  However, since
+at that point the program exits and releases all its memory, we omit
+that here.  In general it is good form to use a {\st delete} statement
+for every {\st new} statement used, in order to free the memory allocated.
+We will make this a habit starting in the next chapter.
+
+The only other difference with {\st hermite2.C} is that we have to
+replace the value {\st m} for the mass which was shared for all
+particles by {\st m[i]} for the individual mass of particle {\st i}.
+
+\code{hermite3.C}{chap7/hermite3.C}
+
+\section{A More Modular Approach: Functions}
+
+Now that we have a general-purpose $N$-body integrator,
+it is high time to rewrite our code in more modular fashion.  The
+first step is to offload much of the work done in {\st main()} into a
+few functions.  Obvious candidates are the loop where we calculate the
+accelerations and jerks of all particles, and the loop where we
+determine the total energy of the system.  Both of these occur twice
+in {\st hermite3.C}, so by bundling each of these loops in a separate
+function we can shorten the length of the program.  More importantly,
+using functions makes the program easier to understand, and therefore
+also easier to extend.
+
+Here is the first part of our new version of the Hermite code,
+{\st hermite4.C}, which contains the first function that calculates
+the accelerations and jerks:
+
+\code{hermite4.C: first part}{chap7/hermite4.C.first_third}
+
+Note that we can pass the arrays for masses, positions, \etc, without
+having to specify the total length of these arrays.  This is a good
+thing, since at compile time we do not yet know the $N$ value(s) with
+which the program will be run.  In a two-dimensional array, however,
+we do have to specify the length of the second dimension, in order to
+allow the compiler to make the correct pointer calculations to map the
+memory.  Fortunately, we will almost always work in three dimensions,
+so that number can be specified in, \eg {\st r[][3]}.
+
+The type of the function {\st acc\_and\_jerk} is {\st void}, which means
+that the function does not provide a return value.  All the work done
+is stored in the arrays that contain the accelerations and jerks.
+Since in C++ array variables are effectively pointers, any change made
+locally in the function will directly affect the arrays with which the
+function is called further on in the program where we will see:
+
+\begin{small}
+\begin{verbatim}
+    acc_and_jerk(m, r, v, a, jk, n);
+\end{verbatim}
+\end{small}
+
+The first five arguments will be directly visible in the body of the
+function, and all changes made there will affect the five variables
+used to call the function.  The sixth and last variable {\st n} is
+passed by value.  This means that changes in {\st n} made in {\st
+acc\_and\_jerk()} will not affect the original value of {\st n} in the
+function {\st main()} that calls {\st acc\_and\_jerk()}.  In our
+particular case, there is no need to change {\st n}.  If there would
+be, we could have passed {\st n} by reference, rather than by value.
+We will see an instance of passing by reference in the next section.
+
+Here is the second function which calculates the total energy of the system:
+
+\code{hermite4.C: second part}{chap7/hermite4.C.middle_third}
+
+The return type is {\st double}, which means that calling the function
+gives an immediate handle on the returned value, the total energy.  When
+we call this function with
+
+\begin{small}
+\begin{verbatim}
+    double e_in = energy(m, r, v);
+\end{verbatim}
+\end{small}
+
+\noindent
+the result of the calculation is directly assigned to the variable
+{\st e\_in}.
+
+Why do we add so many arguments to our functions, six and four,
+respectively?  An alternative would have been to declare the five main
+data structures, from masses to jerks, as global variables at the top
+of our program, as follows.
+
+\begin{Code}[global variables]
+\begin{small}
+\begin{verbatim}
+//-----------------------------------------------------------------------------
+#include  <iostream>
+#include  <cmath>
+#include  <cstdlib>
+using namespace std;
+
+double * m = new double[n];
+double (* r)[NDIM] = new double[n][NDIM];
+double (* v)[NDIM] = new double[n][NDIM];
+double (* a)[NDIM] = new double[n][NDIM];
+double (* jk)[NDIM] = new double[n][NDIM];
+
+void acc_and_jerk()
+{
+. . . .
+}
+
+double energy()
+{
+. . . .
+}
+
+. . . .
+//-----------------------------------------------------------------------------
+\end{verbatim}
+\end{small}
+\end{Code}
+
+The use of global variables is considered bad form, for good reasons.
+The whole point of our exercise of splitting our program into
+functions is to isolate functionality.  This will make it easier to
+understand and debug the program, and to modify or extend it later.
+For now the program is small enough that it is easy to keep track of
+the global variables.  When we add more and more features, chances are
+that we lose track of exactly which global variables are floating
+around in the program.  Also, it will be easy to get name conflicts,
+since individual functions are likely to use similar names.  Finally,
+there is a very practical reason to stay with local variables only:
+some time soon we may well want to manipulate more than one $N$-body
+system, to compare and analyse them.  At that time it will be impossible
+to use a single global set of variables to store the data.  In
+anticipation of such complications, it is more prudent to stick to the
+use of local variables right from the beginning.
+
+Here is the remainder of the program, containing the {\st main()}
+function of {hermite4.C}, which is now shortened to half the length it
+was in {hermite3.C}:
+
+\code{hermite4.C: third part}{chap7/hermite4.C.last_third}
+
+\begin{Exercise}[Pythagorean problem: constant time steps]\label{ex:pp1}
+The Pythagorean problem was introduced in the late sixties, as a
+severe test for the $N$-body codes and the computer hardware available
+at that time, The name stems from the way the initial conditions are
+set up for the three particles involved: the particles are initially
+positioned in a right triangle, with masses and positions chosen such
+that the center of mass lies in the origin of the coordinate system.
+The velocities are all chosen to be zero.  The code {\st mk\_pyth.C}
+below generates the initial conditions.
+
+Experiment with the {\st hermite4.C} code, to see how small the step
+size has to be, in order to get reasonable results.  For example,
+starting with {\st dt=0.1}, while seemingly a small number, is clearly
+too large, given the large errors reported, below.  How small is small
+enough, for {\st dt}, if we want to follow the system for 10 time units?
+\end{Exercise}
+
+\begin{small}
+\begin{verbatim}
+|gravity> mk_pyth | hermite4 0.1 10
+Initial total energy E_in = -12.8167
+3
+0.1
+3 0.998076 2.99118 0 -0.0192721 -0.088297 0 
+4 -1.98742 -0.998076 0 0.126071 0.0192722 0 
+5 0.991091 -0.996247 0 -0.0892936 0.0375604 0 
+3
+0.2
+3 0.995662 2.98013 0 -0.0290448 -0.132818 0 
+4 -1.97162 -0.995662 0 0.190175 0.029046 0 
+5 0.979897 -0.991547 0 -0.134713 0.0564539 0 
+3
+ . . . .
+3
+10
+3 -1.74295 -7.58878 0 -0.307547 -1.1837 0 
+4 -353.379 265.193 0 -42.5655 31.6683 0 
+5 283.749 -207.601 0 34.2369 -24.6244 0 
+Final total energy E_out = 10077.9
+absolute energy error: E_out - E_in = 10090.7
+relative energy error: (E_out - E_in) / E_in = -787.31
+|gravity> 
+\end{verbatim}
+\end{small}
+
+Here is the code listing.
+
+\code{mk\_pyth.C}{chap7/mk_pyth.C}
+
+\section{Variable Time Steps: a Simple Collision Criterium}
+
+There is still one major shortcoming in {\st hermite4.C}, namely the
+use of a constant time step, which is determined at the beginning of
+the program, and then used unchanged during the whole orbit integration.
+For a specific application, where we want to follow the orbits of a
+small number of particles for a relatively short time, this limitation
+may not seem so terrible.  We can simply rerun the orbit calculations
+for shorter and shorter time steps, until we see that the orbits no
+longer change significantly.  In fact, this is what we have done with
+every application in part I.  In practice, however, this way of using
+an integration code is very unsatisfactory.
+
+It would be far better to use variable time steps.  If none of the
+particles is particularly close to any of its neighbors, there is no
+reason to waste computer time on letting the whole system crawl
+forwards with tiny time steps, just to prepare for a future time where
+two or more particles do swing by each other in a short time interval.
+On the other hand, during such brief periods of fast encounter activity,
+even a very small initial time step may prove to be not small enough:
+there is no way of knowing in advance how much we have to slow down in
+order to guarantee good performance of our integrator.  It would be
+far better to leave the decision concerning the size of the time step
+up to the computer.  An autonomous choice of time step allows us to
+let the computer time migrate to the `hot spots' in time where sudden
+fast changes demand higher time resolution.
+
+To add a simple form of this type of cleverness is surprisingly simple.
+Take each pair of particles $i$ and $j$, and determine the magnitudes
+of their separation in space, $|r_{ij}|$ as well as the magnitude of
+the difference between their velocities (their separation in velocity
+space), $|v_{ij}|$.  The time scale $t_{ij} = |r_{ij}|/|v_{ij}|$ gives
+an estimate of the minimum time it will take for these two particle to
+collide.  If their relative velocity vector $\bv_{ij}$ is not closely
+aligned with their relative position vector $\br_{ij}$ and pointing in
+the same direction, the magnitudes $|r_{ij}|$ and $|v_{ij}|$ may not
+become that much smaller during the next time interval $t_{ij}$, but
+certainly the direction of both $\br_{ij}$ and $\bv_{ij}$ will change
+significantly.  In either case, it is important that the integration
+time step during this period is chosen to be significantly smaller than
+$t_{ij}$, so that the change per time step in relative position and
+velocity, both with respect to magnitude and with respect to direction,
+remain small.  That way, our fourth-order integrator will be able to
+operate in a regime where further shrinking of the time step is
+guaranteed to give a shrinking of errors that is proportional
+to the fourth power of the time step size.
+
+We can implement this idea by taking the minimal value of $t_{ij}$,
+with respect to all $i$ and $j$ combinations.  It is not expensive to
+compute this minimum, since much of the work is already done anyway in
+the inner loop that computes accelerations and jerks.  Computing this
+minimum in the function {\st acc\_and\_jerk()} as a side effect, we
+can pass its value back to the {\sl main()} program.  The code
+{\st hermite5.C} does this by adding one extra variable to the list of
+arguments of {\st acc\_and\_jerk()}:
+
+\code{hermite5.C: acc\_and\_jerk}{chap7/hermite5.C.acc_and_jerk}
+
+Note that the extra argument is declared as {\st double \& coll\_time}.
+Here the symbol {\st \&} indicates that the variable {\st coll\_time}
+will be passed to the fuction {\st acc\_and\_jerk()} by reference, not
+by value.  This means that we can change {\st coll\_time} inside the
+function, while the change persists after we leave the function and
+return to the {\st main()} function that called the function
+{\st acc\_and\_jerk()}.  The variable name {\st coll\_time\_sq},
+declared in the first line of {\st acc\_and\_jerk()}, is short hand
+for ``collision time square''.  It is much cheaper and natural to
+calculate the squares of the magnitudes $|r_{ij}|$ and $|v_{ij}|$,
+stopping there rather than taking their square roots.  The latter
+choice would force us to calculate roughly $N^2$ square roots, which
+are expensive to calculate, since they take much more time than
+additions or multiplications on most machines.  All we want to know
+anyway is the minimum of their ratios.  The same $\{i, j\}$
+combination that minimizes $|r_{ij}|/|v_{ij}|$ will minimize
+$|r_{ij}|^2/|v_{ij}|^2$, and once we have determined that minimum,
+we perform the square root operation at the end of the function 
+{\st acc\_and\_jerk()}.
+
+Before we enter the $\{i, j\}$ loop, we have to set {\st coll\_time\_sq} to
+an arbitrary value that is high enough to guarantee that it exceeds
+the minimum value that we want to determine.  Setting it to $10^{300}$
+is surely overkill, but better safe than sorry, and according to the IEEE
+standard for double precision floating point numbers, this value does
+not yet lead to overflow.  Inside the loop, we let {\st coll\_time\_sq}
+become shorter and shorter, through the assignment:
+
+\begin{small}
+\begin{verbatim}
+coll_time_sq = coll_est_sq;
+\end{verbatim}
+\end{small}
+
+each time when we find that the estimated collision time for the $\{i, j\}$
+pair is shorter than the best estimate so far for {\st coll\_time\_sq}.
+The only other modification to {\st acc\_and\_jerk()} concerns the
+computation of {\st v2}, the square of the distance in velocity space
+between particles {\st i} and {\st j}.  
+
+The second function, {\st energy()}, remains unchanged.  In the {\st main()}
+part of the program, the changes are minor, as can be seen from the result
+of doing a {\st diff} on the {\st main()} functions of {\st hermite4.C}
+and {\st hermite5.C}:
+
+\begin{small}
+\begin{verbatim}
+61c71
+<     double dt = atof(argv[1]);
+---
+>     double dt_param = atof(argv[1]);
+81c91,93
+<     acc_and_jerk(m, r, v, a, jk, n);
+---
+>     double coll_time;
+>     acc_and_jerk(m, r, v, a, jk, n, coll_time);
+>     double dt = dt_param * coll_time;
+102c114
+<         acc_and_jerk(m, r, v, a, jk, n);
+---
+>         acc_and_jerk(m, r, v, a, jk, n, coll_time);
+110a123,124
+> 	dt = dt_param * coll_time;
+\end{verbatim}
+\end{small}
+
+Instead of reading in the pregiven value for {\st dt} from the first
+argument on the command line, we now read in the value of {\st dt\_param},
+the factor with which we will multiply the estimate for the smallest
+collision time, in order to determine the next time step, as can be
+seen in the middle as well as in the very last line of changes
+reported by {\st diff}.  The only other changes are the declaration of
+{\st double coll\_time}, and the addition of that variable to the
+list of arguments in the two calls of the function {\st acc\_and\_jerk()}.
+
+\section{Variable Time Steps: Better Collision Criteria}
+
+If we sprinkle stars into space, roughly in the shape of a star cluster,
+with random positions and velocities, the time step criterion which we
+just introduced works fine.  The chance that the relative velocities
+are all zero or extremely small is itself extremely small.  However,
+during a long run, with millions of time steps, highly unlikely cases
+are bound to occur occasionally, and we should worry about them.  In
+addition, it may happen that we start from initial conditions in which
+all velocities are zero.  This is termed a `cold collapse' type of
+initial condition, since the particle `temperature', measured by their
+kinetic energies, is zero, and the particles will start of by falling
+roughly towards the center of the particle distribution.  In such a
+case, {\st hermite5.C} would crash right at the beginning, during the
+attempt to calculate an infinitely long time step by dividing by zero.
+
+We can make our code more safe, and able to handle cold starts, by
+adding an extra criterion.  In addition to the time scale
+$t_{1ij} = |r_{ij}|/|v_{ij}|$, we introduce a second time scale
+$t_{2ij} = \sqrt{|r_{ij}|/|da_{ij}|}$, where $da_{ij}$ is the relative
+acceleration between particles $i$ and $j$, due to their mutual attraction.
+Since acceleration is the second derivative of position, we have to
+take a square root in order to wind up with a quantity that has the
+dimension of time.
+
+Note the notation used here: in analogy with the definitions of
+$r_{ij} = |\br_i - \br_j|$ and $v_{ij} = |\bv_i - \bv_j|$, we could
+introduce $a_{ij} = |\ba_i - \ba_j|$.  However, this last quantity
+would denote the difference between the {\it total} accelerations felt
+by particles $i$ and $j$ due to all other particles in the system.  In
+contrast, we are only interested in that part of the difference in
+their accelerations due to their own accelerations, $da_{ij}$, since
+it is that part that is most likely to be important for neighboring
+particles.  In other words, we neglect the gravitational tidal field
+contributions of all other particles while examining a particle pair.
+The alternative, of using $a_{ij}$ instead of $da_{ij}$, would be
+far more expensive.  We would have to compute all total accelerations
+first, and then do a pairwise comparison, which would entail a double
+pass over all particles, each with a computational cost of order $N$.
+
+Here is the implementation of {\st hermite6.C}.  With respect to
+{\st hermite5.C}, the differences are all limited to the first function,
+{\st acc\_and\_jerk}.
+
+\code{hermite6.C}{chap7/hermite6.C}
+
+\begin{Exercise}[Pythagorean problem: variable time steps]\label{ex:pp2}
+Repeat the previous exercise, starting again with the Pythagorean
+initial conditions, but now use {\st hermite6.C}.  In order to get
+good energy conservation, roughly how much time do you gain when using
+a variable integrator?
+\end{Exercise}
+
+\section{Further Improvements}
+
+That's all it took to change our code from a toy version of an integrator
+to a real $N$-body code with which we are ready to start doing production
+runs on concrete astrophysical problems.
+
+There are two caveats.  Although the {\st hermite6.C} code is fully able
+to tackle a number of small-to-moderate size $N$-body calculations in a
+reasonably efficient way, it is still possible to make significant
+additional speed-ups, which can make the program run orders of
+magnitude faster for reasonably large $N$ values.  One natural
+extension is to give each particle an individual time step.  When two,
+three, or more particles have a simultaneous close encounter, it is
+important that they slow down enough to resolve the curvature in their
+orbits, but there is no reason, really, to force the rest of the
+system to join in the slow crawl.  Efficient and accurate ways to
+implement individual time step schemes complicate the code
+significantly, and therefore we will postpone a treatment of that
+approach till a later volume in the current {\it Pure Gravity} series.
+
+The second caveat concerns the ease of use of {\st hermite6.C}.
+As it stands, the user only has two handles on the way the code runs,
+through the command line arguments that initialize the variables
+{\st dt\_param} and {\st t\_end}.  As soon as one starts performing
+laboratory experiments on $N$-body systems, the need will arise to have
+more control over, for example, the frequency of output of snapshots
+or the frequency of output of diagnostic information concerning energy
+conservation.  In addition, in some cases it is convenient to echo the
+initial snapshot to the output as the first snapshot reported by the
+integrator; in other cases we may only be interested in the final
+snapshot, without having the output file cluttered by an extra copy of
+the initial conditions.  Also, for debugging purposes, it would be
+nice to be able to specify on the command line that we would like to
+see information about accelerations and jerks, in addition to the
+standard information about positions and velocities.  Finally, a `help'
+option would be nice to remind us how to invoke all these options.
+
+There are other serious shortcomings in {\st hermite6.C}.  Although it
+has two functions, it is easy to make the whole code significantly
+more modular, and therefore easier to extend when we want to add extra
+functionality.  In addition, it is high time to add comments, so that
+other users (and we ourselves in the near future) will be reminded of
+what is going on, both in the flow of information and control throughout
+the whole file, as well as inside each function.
+
+In the next chapter, we will address this second caveat.  Without
+changing the overall functionality of {\st hermite6.C}, we will wind
+up with a far more robust, flexible, and extendible version of the
+program.  With that version in hand, we will then try our hand at
+experimentation, laboratory style, simulating the behavior of star
+clusters.

@@ -1,0 +1,857 @@
+                  Time-stamp: <2003-01-09 16:44:41 piet>
+
+   labnotes.txt                2001, Dec. 12                Piet Hut
+
+   This file contains notes taken while developing the first version
+   of gravitylab.  It will be much larger and more informal than the
+   summary version file `chronicles.txt' .
+
+   For now, Piet Hut will maintain this file, while Jun Makino will
+   send his comments by email, to be inserted by Piet.  For simplicity,
+   I will simply write "I" rather than "Piet".
+
+2001-12-12
+---- -- --
+
+I spent an unlikely amount of time (only unlikely for those who don't
+know me) on creating what I consider a nice logo to head the files in
+gravitylab.  I'm curious to see whether Jun will agree to its presence.
+
+I introduced a new-style C++ header file.
+Note: according to "The C++ standard library" by N.M.Josuttis (1999):
+      <cmath> contains the usual math functions like sqrt()
+      <cstdlib> contains abs(), srand(), and rand();
+                unlike C, there is no labs() or fabs, because in C++
+                abs() is already overloaded for int, long, and double.
+      However, using g++ it was enough to #include <cmath> to get
+      access to abs(), as I found using a test file `test_011212a.C' .
+
+In general, I plan to carry out very many tests at almost all stages
+of code development, following the XP paradigm.  I decided that I might
+as well save all test files, once I have written them.  I will give them
+names that include the year-month-day-letter after the original name, so
+that I can find back in this `labnotes.txt' file why I wrote them and
+what I learned from them; letters are alphabetic in order of file creation.
+
+I wrote mk_fig8_triple.C.
+
+Finally, I thought about adding three 3-vectors to the header picture of
+gravitylab, to represent the spatial configuration of the three particles.
+However, I decided that that was too much of a good thing, even for me.
+It would have used old-style C comments as follows:
+
+  /*\        //================================================================
+ { * }      //                                                                |
+  \*/      //           /__----__                         ........            |
+    /*\   //       .           \                     ....:        :.          |
+   { * } //       :                 _\|/_         ..:                         |
+    \*/ //       :                   /|\         :                     _\|/_  |
+ /*\   //  ___   ___                  _____                      ___    /|\   |
+{ * } //  /     |   \    /\ \     / |   |   \  / |        /\    |   \         |
+ \*/ //  |   __ |___/   /  \ \   /  |   |    \/  |       /  \   |___/         |
+    //   |    | |  \   /____\ \ /   |   |    /   |      /____\  |   \     \/  |
+   //     \___| |   \ /      \ V    |   |   /    |____ /      \ |___/     |   |
+  //                                                                      /   |
+ //              :                       _/|     :..                    |/    |
+//                :..               ____/           :....          ..         |
+/*   o   //          :.    _\|/_     /                   :........:           |
+ *  O  `//\                 /|\                                               |
+ *  |     /\                                                                  |
+ *=============================================================================
+
+2001-12-14
+---- -- --
+
+I added the emacs time stamping mechanism to all files.
+This requires two steps:
+
+1) add to the .emacs file the following line:
+     (add-hook 'write-file-hooks 'time-stamp)
+
+2) write somewhere in the first eight lines of a file a commented out form of
+     // Time-stamp: <>    or    # Time-stamp: <>    for file.C, Makefile, etc.
+
+I read up on makefiles, and started out with a very simple version.
+I decided to add the rather strict "-Wall -W -Werror" options to the g++
+compiler invocations, to force us to write really clean code.  The last 
+option treats treats warnings as errors, while the first two increase the
+number of warnings.  For example, leaving out "int" in declaring "int main()"
+will prevent compilation!
+
+I spent quite a bit of time reading up on the use of command line argument,
+the use of getopt(), the various new header file names, and other things 
+that have changed in C++ in the last decade.
+
+2001-12-15
+---- -- --
+
+I wrote the skeleton for the first leapfrog integrator leapfrog_pt1.C .
+I played with choices to read in an N-body snapshot.
+I decided to use an STL vector template of pointers to particle data
+arrays, and to pass snapshots by reference.
+
+2001-12-16
+---- -- --
+
+I finished the first general leapfrog version leapfrog_pt1.C .
+I decided the use a vector of vector of reals to implement the
+internal particle data {mass, position, velocity, acceleration}.
+
+I plotted the results using awk to filter out only the x and y
+positions (this was one reason to print N and time on two lines,
+rather than on one line; this way they get filtered out together
+with the particle masses in the awk script below):
+
+mk_circ_binary | leapfrog_pt1 -o 0.05 | awk '{print $2 " " $3}' > leap.out
+
+shows a circular binary orbit integration, while
+
+mk_fig8_triple | leapfrog_pt1 -o 0.05 | awk '{print $2 " " $3}' > leap.out
+
+shows a few orbits for the figure-8 triple configuration,
+both with the command in gnuplot " plot 'leap.out' " .
+
+An interesting case is the rather tight binary binary:
+
+mk_binary_binary | leapfrog_pt1 -o 0.05 | awk '{print $2 " " $3}' > leap.out
+
+which is remarkably stable, since the inner binaries are both counter
+rotating with respect to the outer orbital motion, as you can see from
+
+mk_binary_binary | leapfrog_pt1 -o 0.05 -e 1000 -d 0.001 -t 1000 | \
+  awk '{print $2 " " $3}' > leap.out
+
+2001-12-17
+---- -- --
+
+I added a "make clean" option to the Makefile, introduced a typedef in
+leapfrog_pt1 for a vector of vectors of real.  I took out what little
+error checking there was there, and then changed all bool functions to
+type void.  I also changed some names: "snap" seems like a better name
+for a full N-body snapshot than "part".
+
+2001-12-18
+---- -- --
+
+Just to make sure, I compiled everything succesfully on rogue, and
+used gnuplot there too, to check that everything was okay there as well.
+
+2001-12-19
+---- -- --
+
+I started with cleaning up leapfrog_pt2a.C, which is now the new name
+for what I used to call leapfrog_pt1.C, in preparation for making various
+different version for different internal data represenation and accessors
+as Jun and I discussed over the phone.  I carefully went over the text in
+the header of each function definition, and over the comments in the code
+itself, trying to make it all clear without becoming too verbose.
+
+I stumbled upon a nice way to slightly shorten the input routine.
+Instead of:
+
+    real part_data;                   // single real numbers read one at a time
+    for (int i = 0; i < n ; i++)
+  	for (int j = 0; j < IO_CNT; j++){
+  	    cin >> part_data;
+  	    snap[i].push_back(part_data);
+	}
+
+one can use the STL library to write:
+
+    istream_iterator < real > in(cin);
+    for (int i = 0; i < n ; i++)
+  	for (int j = 0; j < IO_CNT; j++)
+  	    snap[i].push_back(*in++);
+
+which I tested and gave the same result.  I tried to be even more
+clever with:
+
+    istream_iterator < real > in(cin);
+    for (int i = 0; i < n ; i++)
+	copy(in, in + IO_CNT, back_inserter(snap[i]));
+
+but that was too much too ask (to add a value to the input stream pointer),
+and I got the following error message:
+
+  g++ -Wall -W -Werror -o leapfrog_pt1 leapfrog_pt1.C
+  leapfrog_pt1.C: In function `void get_snapshot (real &, nbody &)':
+  leapfrog_pt1.C:205: no match for `istream_iterator<real, ptrdiff_t> & + int'
+  make: *** [leapfrog_pt1] Error 1
+
+I wish there were a copy_n() for copying n successive elements, just
+as there are fill_n() and other such functions.  Hmmm.  I wonder
+whether there is a way around my error above, while keeping the code
+down to three lines, using back_inserter().  Here is another attempt:
+
+    istream_iterator < real > in(cin), eos;
+    for (int i = 0; i < n ; i++)
+	copy(in, eos, back_inserter(snap[i]));
+
+What happens is that the default construction of an istream_iterator
+without any arguments produces an object that rejects to the end of
+the input stream (hence the mnemonic eos).  Now this doesn't work,
+since it would read all the remaining input data.  If there would be a
+way to tell istream_iterator() to stop when it encounters a new line,
+we would be in business!
+
+Another puzzle: the STL copy() seems to work fine, even though I originally
+did not include the line "#include <algorithm>", which is supposed to be 
+necessary.  I'm leaving that line in the code for now, since perhaps other
+compilers need it, but I puzzled as to how g++ recognizes copy() without 
+that include command.
+
+By the way, I also tested a similar variant for the output routine,
+but there the code became longer.  Instead of:
+
+    for (int i = 0; i < n ; i++)
+	for (int j = 0; j < IO_CNT; j++)
+	    cout << snap[i][j] << (j < IO_CNT - 1 ? ' ' : '\n');
+
+the following worked just as well:
+
+    for (int i = 0; i < n ; i++){
+	copy (snap[i].begin(), snap[i].begin() + IO_CNT,
+	      ostream_iterator<real>(cout, " "));
+	cout << endl;
+    }
+
+In any case, for an introductory example, it is probably better to
+stick with the first six-line version, which I have left in the code,
+ALTHOUGH I have used the ostream_iterator in write_diagnostics().
+We will have to decide, both in get_snapshot() and write_diagnostics(),
+whether or not to use these iterators.  I suggest that we use the first
+6-line version above for the leapfrog_pt1 code and the 4-line version
+for the leapfrog_pt2 and leapfrog_pt3 versions of the code, 
+
+Well, after a long day, I finally finished the five versions of the
+leapfrog code, leapfrog_ptX.C, with X = {1, 2a, 2b, 3a, 3b}, and I
+tested them all with the script "test_leapfrog_pt X".  It all worked!
+
+2001-12-21
+---- -- --
+
+I made a completely new directory structure under gravitylab, to
+incorporate both versions of the software, each in a separate
+directory, and book volumes that we are writing.
+
+After studying various latex books for a while, I rewrote v1.tex,
+using the nice \includeonly feature of latex to allow us to print and
+work on only one chapter at a time, while preserving the right page
+numbering and other information of the other chapters.
+
+I then started writing the first part of what has now become chapter 3.
+
+2001-12-28
+---- -- --
+
+I finished part I: chapter 3,4,5.  I started on chapter 6.
+
+2001-12-29
+---- -- --
+
+I wrote a mk_plummer.C, adapting it from the version I wrote in the eighties
+Note: useful (gnuplot) commands:
+
+    mk_plummer -n 5000 | awk '{print $2 " " $3}' > tmp.out
+    gnuplot> set xrange [-1:1]
+    gnuplot> set yrange [-1:1]
+    gnuplot> set size square
+    gnuplot> plot "tmp.out" notitle
+
+This produces something looking very much like a globular cluster!
+
+While debugging nbody_coll1.C, the following was useful:
+
+  rm tmp.out ; mk_plummer -n 10 | nbody_coll1 -r 0.1 > tmp.out ; tail tmp.out
+
+Finally, I finished debugging nbody_coll1.C .  It seems to work well, and
+it includes bookkeeping of energy lost through collisions (which can be 
+positive as well as negative, depending whether the collision was hyperbolic
+or elliptic).  While E_tot jumps at each merger, the value of "E_tot + E_lost"
+stays reasonably constant.  However, the jumps in "E_tot + E_lost" still seem
+just a wee bit large -- I'll have to check further, to make sure I understand
+what is going on.
+
+2001-12-30
+---- -- --
+
+I wrote hermite1.C and hermite2.C, after talkin with Jun on the phone.
+It seemed to be only third order.
+
+2001-12-31
+---- -- --
+
+Jun helped me find two bugs in hermite1.C, which I will work into the book.
+But then the program seemed to be fifth order, too much of a good thing???
+
+I started playing with Jun's awk script for splitting a C++ file into
+separate files for each functions.  I wanted to improve it, so . . . .
+I then emerged myself in a book on awk, and I went under for a while.
+Finally I found a way to improve the script (even) further, by splitting
+off separately the top and bottom logo parts, the initial comments, and
+the include/typedef/#define/declaration stuff, all in different files.
+
+note: I found "expand" on my system, as a way to replace tabs by spaces,
+      necessary for nice printing of inclusion of code into latex; I had
+      just made my own "untab" command.
+
+2002-1-14
+---- - --
+
+I have neglected writing much in my labnotes here, since I have spend
+most of the last two weeks writing and polishing text for part I.
+Today I started on part II, so I will finally develop new programs again.
+I wrote hermite3.C, like hermite2.C but with I/O in standard N-body
+snapshot format, and hermite4.C, where I introduced functions.
+
+-------------------
+INTERMEZZO
+INTERMEZZO
+Below is loose text that was left over in January 2002, for what it's worth
+-------------------
+
+BIG PROBLEM: pythagorean problem has v=0, so simple time step
+criterion blows up.
+
+use cerr for help etc leaving cout only for snapshots????
+
+three places in nbody_sh1 where I list usage: top comments, help, ?
+MAKE THIS ONE.
+
+In:
+const real acc[][NDIM]
+WHAT IS CONSTANT???  THE DATA, like acc[0][0], or acc[0], or acc ???
+
+NOTE: erratic growth in number of steps; clearly not reproducing same orbits.
+plum10s42 generated as 10-body system from seed 42.
+<yebisu|chap7> nbody_sh1 -d 0.05 -t 100 -e 100 < plum10s42 > /dev/null
+at time t = 100 , after 66330 steps :
+                absolute energy error: E_tot - E_init = -8.9554e-05
+<yebisu|chap7> nbody_sh1 -d 0.03 -t 100 -e 100 < plum10s42 > /dev/null
+at time t = 100.001 , after 53656 steps :
+                absolute energy error: E_tot - E_init = -7.82164e-07
+<yebisu|chap7> nbody_sh1 -d 0.01 -t 100 -e 100 < plum10s42 > /dev/null
+at time t = 100 , after 165055 steps :
+                absolute energy error: E_tot - E_init = -1.45889e-08
+<yebisu|chap7> nbody_sh1 -d 0.005 -t 100 -e 100 < plum10s42 > /dev/null
+at time t = 100 , after 348772 steps :
+                absolute energy error: E_tot - E_init = -3.34617e-10
+<yebisu|chap7> nbody_sh1 -d 0.003 -t 100 -e 100 < plum10s42 > /dev/null
+at time t = 100 , after 238993 steps :
+                absolute energy error: E_tot - E_init = -8.13211e-12
+<yebisu|chap7> nbody_sh1 -d 0.001 -t 100 -e 100 < plum10s42 > /dev/null
+at time t = 100 , after 1664494 steps :
+                absolute energy error: E_tot - E_init = 1.17254e-11
+<yebisu|chap7> 
+
+<yebisu|chap7> (nbody_sh1 -d 0.32 -t 10 -e 10 < plum10s42 > /dev/null) |& grep absolute |& grep -v "= 0"
+                absolute energy error: E_tot - E_init = -0.00147191
+<yebisu|chap7> (nbody_sh1 -d 0.16 -t 10 -e 10 < plum10s42 > /dev/null) |& grep absolute |& grep -v "= 0"
+                absolute energy error: E_tot - E_init = -4.8971e-05
+<yebisu|chap7> (nbody_sh1 -d 0.08 -t 10 -e 10 < plum10s42 > /dev/null) |& grep absolute |& grep -v "= 0"
+                absolute energy error: E_tot - E_init = -1.63072e-06
+<yebisu|chap7> (nbody_sh1 -d 0.04 -t 10 -e 10 < plum10s42 > /dev/null) |& grep absolute |& grep -v "= 0"
+                absolute energy error: E_tot - E_init = -5.74678e-08
+<yebisu|chap7> (nbody_sh1 -d 0.02 -t 10 -e 10 < plum10s42 > /dev/null) |& grep absolute |& grep -v "= 0"
+                absolute energy error: E_tot - E_init = -2.20181e-09
+<yebisu|chap7> (nbody_sh1 -d 0.01 -t 10 -e 10 < plum10s42 > /dev/null) |& grep absolute |& grep -v "= 0"
+                absolute energy error: E_tot - E_init = -9.46646e-11
+<yebisu|chap7> (nbody_sh1 -d 0.005 -t 10 -e 10 < plum10s42 > /dev/null) |& grep absolute |& grep -v "= 0"
+                absolute energy error: E_tot - E_init = -4.54298e-12
+<yebisu|chap7> (nbody_sh1 -d 0.0025 -t 10 -e 10 < plum10s42 > /dev/null) |& grep absolute |& grep -v "= 0"
+                absolute energy error: E_tot - E_init = -2.55601e-13
+<yebisu|chap7> (nbody_sh1 -d 0.00125 -t 10 -e 10 < plum10s42 > /dev/null) |& grep absolute |& grep -v "= 0"
+                absolute energy error: E_tot - E_init = 3.00038e-14
+<yebisu|chap7> (nbody_sh1 -d 0.000625 -t 10 -e 10 < plum10s42 > /dev/null) |& grep absolute |& grep -v "= 0"
+                absolute energy error: E_tot - E_init = 4.05509e-14
+<yebisu|chap7> 
+SUCCESSIVE IMPROVEMENTS:
+1.47191/4.8971
+30.056768291437789712
+4.8971/1.63072
+30.0302933673469387755
+1.63072/5.74678
+28.376238519657964982
+5.74678/2.20181
+26.1002538820334179606
+2.20181/9.46646
+23.259064106329081832
+9.46646/4.54298
+20.8375559654676005617
+4.54298/2.55601
+17.7737176302127143477
+2.55601/3.00038
+8.5189542657929995533
+3.00038/4.05509
+.73990466302844079909
+OR SIMPLER:
+30
+30
+28
+26
+23
+21
+18
+9
+.7
+
+CHANGE A NDIM bound to a N bound for a k loop, and introduce:
+<yebisu|chap7> gdb nbody_sh1
+(gdb) set args < plum10s42
+(gdb) run
+Starting program: /home/piet/gravitylab/vol_1/chap7/nbody_sh1 < plum10s42
+Starting a leapfrog integration for a 10-body system,
+  from time t = 0 with time step control parameter dt_param = 0.03  until time 10 ,
+  with diagnostics output interval dt_dia = 1,
+  and snapshot output interval dt_out = 1.
+at time t = 0 , after 0 steps :
+  E_kin = 0.270164 , E_pot = -0.40545 , E_tot = -0.135286
+10
+0
+0.1 -0.601906 -0.0457394 -0.0138164 -0.895257 -0.396008 -0.0137557
+0.1 -0.218265 0.0203594 0.261637 -0.143546 -0.687634 -0.765357
+0.1 -0.658749 0.089702 -0.40847 -0.478443 0.178725 0.978197
+0.1 -0.0904616 -0.553334 0.213556 0.137731 0.259475 0.345279
+0.1 -0.370872 0.556914 -0.378285 0.265823 0.197945 0.107039
+0.1 -0.986562 0.443868 0.048716 0.0489556 0.400349 -0.309168
+0.1 -1.39466 -0.226566 -0.082169 0.87234 0.142751 -0.08847
+0.1 0.709267 -0.531392 -0.401699 -0.284058 -0.255772 -0.615347
+0.1 1.67542 -0.0252481 0.159635 0.346022 0.134943 0.0627584
+0.1 1.93679 0.271436 0.600894 0.130433 0.025227 0.298823
+
+Program received signal SIGSEGV, Segmentation fault.
+0x08049629 in predict_step (pos=0xbffff8f0, vel=0xbffff800, acc=0x0, n=10, 
+    dt=0.010356284058582327) at nbody_sh1.C:389
+389	            vel[i][k] += 0.5 * dt * acc[i][k];
+Current language:  auto; currently c++
+(gdb) 
+
+
+SOME SERIOUS THINKING about side effects.  accelerations also computes
+potential energy also computes collision time scale . . . hmmm . . . .
+
+
+question: random number generator?
+
+question: encode particle radius in snapshot output ??  Not done so far.
+
+LET NBODY_SH1 RUN BACK IN TIME AS WELL:
+local void  leapfrog(gn, delta_t, eps, acc)
+gnodeptr  gn;
+real  delta_t;
+real  eps;
+real  acc;
+    {
+    real  dt;
+    real  t_end;
+    bool  forwards = TRUE;
+    
+    if (delta_t < 0.0)
+        {
+	forwards = FALSE;
+	acc *= -1.0;
+	}
+
+    t_end = Time(gn) + delta_t;
+    dt = acc;
+
+
+todo:
+hermite
+structured program: leapfrog fixed time steps
+structured program: hermite variable time steps
+variable time steps
+collisions
+classes
+stories
+
+TODO:
+On p. 33, 34: let them try to plot 40 Mbyte, 400 Mbytes, and see how
+postscript, etc., becomes very cumbersome.  Say that in the text, but
+don't provide the file.hs.
+TODO:
+On p. 46: more explanation about leapfrog background and choice of algorithm?
+Time-symmetric AND second order for velocity as well, although it may look
+like a first-order scheme.  (4.3) may look like first-oder, but interleaving
+makes it second-order.  Also add various names for leapfrog.
+TODO:
+Talk more about the notion of functions.  Many physicists use common
+blocks, not arguments, if they use functions as all.  Perhaps put back
+in an example of the use of functions.  Take the 3-body leapfrog, make
+it in N-body leapfrog with I/O, let's see.
+TODO:
+Jun to write an awk script to split a C++ source file into functions,
+each in a file with the function name attached.  The unique comment
+style will help to do that.
+TODO:
+We agreed to introduce a Plummer model at this point, to illustrate
+dynamical equilibrium.  This will require a separate chapter of
+explanation.  
+TODO:
+We agreed to show five programs, in three styles, as nbody_leap?*.C,
+assigned to Bob, Alice, Carol.
+
+todo: add a function compute_energy to nbody_leap?*.C
+
+todo: prograde version of mk_binary_binary -- unstable?
+
+todo: simplify makefile
+
+todo: change void types into bool in the nbody_leap family of codes
+
+
+klopt, je maakt een 'rule'. Trouwens, ik vind het nog steeds vervelend dat
+er geen standaard in C++ voor filename extensies.
+	.C
+	.cc
+	.cpp
+
+heb ik gezien. In aips++ gebruiken we .cc, in starlab .C, en daar lig
+ik dus vaak mee overhoop...
+anyways, een voorbeeld van zo'n rule is:
+
+.C:
+	$(CXX) $(CFLAGS) -o $@ $< $(MYLIBS)
+
+CXX is de standaard naam voor de C++ compiler, niet g++ gebruiken.
+Als je al iets wil doen, doe dan
+
+	CXX = g++
+
+in de top van de Makefile, later kun je dat altijd via een installatie
+programma besturen, zoals we dat in starlab doen.  Ik weet niet of je
+ook een MYLIBS nodig hebt, maar vast t.z.t. wel.
+
+peter
+
+
+Jun and Piet talked about the use of random number generators in
+constructing a Plummer model.  Jun suggest to use "drand48" or
+"random" to circumvent the problem of the machine dependence in
+the original unix "rand" and "srand" functions, which use a "rand_max"
+macro.  Jun also mentioned the use of an html reader in emacs, using
+the command "w3".  In mk_plummer, we agreed not to use mass layering,
+for simplicity, i.e. each next particle will be drawn anywhere from
+the distribution function.
+
+-------------------
+INTERMEZZO
+INTERMEZZO
+All kinds of things were discussed, at various times, between early
+February and mid November, but we did not keep track of the details.
+No new code or text was produced during this period.
+INTERMEZZO
+INTERMEZZO
+-------------------
+
+2002-11-15
+---- -- --
+
+We decided to add the density values on the same line, following the
+mass, positions and velocities of a particle, in our extended N-body
+snapshot format.  Of course, this makes such an output file unreadable
+for the N-body integrator, but at this point in the book, we do not
+worry about such compatibility issues.
+
+We had a terrible time trying to understand how to pass the correct
+type of pointers and references to pointers between our functions.
+This proves that using C++ in C mode without classes or structures
+results in code that is almost impossible to understand.  In a
+variation on the well-known book "pragmatic programming", we called
+ourselves the "empirical programmers".
+
+2002-11-16
+---- -- --
+
+We spent a long time trying to figure out exactly how Piet's version
+of "density.C" in starlab worked.  Finally, Piet wrote a lengthy set
+of comments in the code (see the file "02111616density.C").  Jun then
+suggested some simplifications, which Piet agreed with, which we
+implemented and commented.
+
+Typical test command:
+
+  ../chap9/mk_plummer -n 3000 -s 137 | density -k 100 | tail -500 | head -3
+
+Indeed, for higher k values there is less scatter in the density estimates.
+
+We first translated the starlab version, which included the trick of calling
+a particle its own 0th nearest neighbors, but then we decided to simplify the
+presentation, by pealing off the old neighbors on the list from the outside in.
+
+Jun did not like what Piet wrote:
+
+	    p = k;
+	    while (p-- && delr_sq < neighbor_dist_sq[p]){
+
+and insisted on the longer, but admittedly much clearer:
+
+	    p = k-1;
+	    while (p >= 0 && delr_sq < neighbor_dist_sq[p]){
+
+We decided not to use the shorter version:
+
+	    p = k-1;
+	    while (p >= 0 && delr_sq < neighbor_dist_sq[p]){
+	        if (p+1 < k){
+		    neighbor_dist_sq[p+1] = neighbor_dist_sq[p];
+		    neighbor_mass[p+1] = neighbor_mass[p];
+		}
+	        neighbor_dist_sq[p] = delr_sq;
+		neighbor_mass[p] = mass[j];
+		p--;
+	    }
+
+but instead the somewhat more clearer and faster, but longer version:
+
+	    p = k-1;
+	    while (p >= 0 && delr_sq < neighbor_dist_sq[p]){
+	        if (p+1 < k){
+		    neighbor_dist_sq[p+1] = neighbor_dist_sq[p];
+		    neighbor_mass[p+1] = neighbor_mass[p];
+		}
+		p--;
+	    }
+	    if (p+1 < k){
+	        neighbor_dist_sq[p+1] = delr_sq;
+		neighbor_mass[p+1] = mass[j];
+	    }
+
+We talked for a while about how to generalize the Casertano-Hut algorithm
+from number density to mass density, and finally decided to count the mass
+of all particles, including the central particle i itself and, up to the
+kth nearest neighbor, whose mass we count only for half.
+
+2002-11-17
+---- -- --
+
+We wrote density_center.C, scale_mass.C, add_snapshot.awk, and
+lagrangian_radii.C.
+
+Here are sample runs:
+
+<gingakogen|chap10> \rm tmp? ; ../chap9/mk_plummer -n 10 > tmp1 ;     \
+                    ../chap9/mk_plummer -n 1 > tmp2 ; cat tmp? |      \
+                    awk -f add_snapshot.awk | scale_mass |            \
+                    density -k 2 | density_center
+
+<gingakogen|chap10> \rm tmp? ; ../chap9/mk_plummer -n 10 > tmp1 ;     \
+                    ../chap9/mk_plummer -n 1 > tmp2 ; cat tmp? |      \
+                    awk -f add_snapshot.awk | scale_mass |            \
+                    density -k 4 | density_center | lagrangian_radii -t
+
+NOTE:
+When you leave out "density_center" in the pipeline of
+
+  ../chap9/mk_plummer -n 1000 | density -k 100 | density_center | \
+  lagrangian_radii -t
+
+you will get larger 10%-tile radii, but smaller 20%-tile radii.
+The reason is that k=100 covers 10% of the particles, so shifting
+to the density center is optimal for shrinking the first 10%-tile
+as much as possible.  However, doing so may cause the 20%-tile
+radii to be slightly off-balance.
+
+
+We used Steve's starlab setup at Drexel, by logging in as follows:
+
+  ssh -l starlab shiraz.physics.drexel.edu
+
+and we tried in ~starlab/data/piet :
+
+  makeplummer -n 128 -i -s 123 | ( kira -t 872 -d 10 -D 5 -n 0 | \
+  compute_density | to_cod | lagradplot -q > run128q.out ) > & run128q.log
+
+A very nice and smooth core collapse was visible, after a couple hours in:
+
+  makeplummer -n 512 -i -s 123 | ( kira -t 1000 -d 10 -D 0.1 -n 0 | \
+  compute_density | to_cod | lagradplot -q > run512q.out ) > & run512q.log
+
+followed by
+
+  lagradplotsmooth -w 100 < run512q.out
+
+2002-11-18
+---- -- --
+
+We found our first core collapse, for 128 particles:
+
+<gingakogen|chap10> ../chap9/mk_plummer -n 128 -s 1 |                  \
+                    ../chap8/nbody_sh1 -i -d 0.03 -o 1 -t 100 -e 10 |  \
+                    density -k 6 | density_center | lagrangian_radii -t
+seed = 1
+Starting a Hermite integration for a 128-body system,
+  from time t = 0 with time step control parameter dt_param = 0.03  until time 100 ,
+  with diagnostics output interval dt_dia = 10,
+  and snapshot output interval dt_out = 1.
+at time t =  0 , after 0 steps :      (E_tot - E_init) / E_init = -0
+0  0.358363  0.462622  0.578888  0.701384  0.84542  0.928456  1.17941  1.44163  2.18368
+
+at time t = 10 , after    32,056 steps :  (E_tot - E_init) / E_init = 6.61842e-07
+10  0.277784  0.419238  0.582336  0.706105  0.780193  1.06372  1.44066  1.8102  2.62711
+
+at time t = 20 , after   125,610 steps : (E_tot - E_init) / E_init = 1.68101e-06
+20  0.22723  0.315793  0.486936  0.747891  0.994292  1.16363  1.55522  2.00335  3.59398
+
+at time t = 30 , after   213,644 steps : (E_tot - E_init) / E_init = 3.28086e-06
+30  0.250344  0.38858  0.462765  0.626905  0.76176  1.07385  1.24683  2.03919  4.48664
+
+at time t = 40 , after   303,014 steps : (E_tot - E_init) / E_init = 9.11265e-06
+40  0.12644  0.294387  0.455237  0.601951  0.924169  1.35548  2.04056  2.92771  5.72172
+
+at time t = 50 , after 1,117,227 steps : (E_tot - E_init) / E_init = 2.76132e-05
+50  0.182905  0.340234  0.512939  0.705965  0.835071  1.16466  1.93424  3.58485  7.59741
+
+at time t = 60 , after 2,530,024 steps : (E_tot - E_init) / E_init = 5.70032e-05
+60  0.195415  0.365236  0.479629  0.775541  1.01267  1.29889  2.0015  3.20385  7.3512
+
+2002-12-28
+---- -- --
+
+Add two Plummer models:
+
+(../chap9/mk_plummer -n 2 -s 1 ; ../chap9/mk_plummer -n 16 -s 1 ) | awk -f add*awk
+
+then scale the mass back to unity, in order to obey the virial
+theorem, and run:
+
+( ../chap9/mk_plummer -n 2 -s 1 ; ../chap9/mk_plummer -n 16 -s 1 ) | awk -f add*awk | scale_mass | ../chap8/nbody_sh1 -i -d 0.03 -o 2 -t 100 -e 20 | density -k 3 | density_center | lagrangian_radii
+
+( ../chap9/mk_plummer -n 2 -s 1 | scale_mass -m 0.25 ; ../chap9/mk_plummer -n 16 -s 1 ) | awk -f add*awk | scale_mass | ../chap8/nbody_sh1 -i -d 0.03 -o 1 -t 100 -e 20 | density -k 3 | density_center | lagrangian_radii -t
+
+ xxx [to be filled in]
+
+todo: rewrite the density center finder, with the density center
+defined as the density weighted average position of all particles,
+to avoid the center from jumping around too much.
+
+2003-01-05
+---- -- --
+
+Jun and I talked for several hours about many levels of our writing approach.
+
+Science has a new component, simulation, besides theory and experimentation.
+Our main goal is to describe our approach to simulation.
+There are two novel aspects:
+1) on the level of hardware, we do something new, developing our own;
+2) on the level of software, we do something new, describing what everybody
+   does, but what nobody talks about (nuts and bolts, back in the kitchen).
+
+Perhaps we can combine education and entertainment, by asking Sony, say,
+to produce a combined grape/playstation, to be sponsored by government as
+well as business, as a non-violent educational game, which can be priced
+up because parents would be happy to buy it, seeing that it is produced
+by Todai professors, etc.
+
+We talked about ten forms of presentating material, in a 3x4 matrix,
+{book, web, home} x {theory, simulations, software, development}; see notes.
+
+We will write a white paper about all these notions.
+
+We will produce a provisional version of book 1.
+
+For book 2, we will start by defining data structures.
+There are two problems with current starlab data structures:
+1) it is difficult to extend the number of physical variables;
+2) it is difficult to provide parallel I/O.
+To address the first problem, we will experiment with a scripting
+language (like Ruby) in defining the C++ data structures and
+corresponding I/O function implementations.
+We will ignore the second problem, for now.
+
+We will use stories prominently.
+We will use XML to implement the data structures.
+This gives the following succession, for data structures in:
+Nemo: binary: machine readable
+Starlab: ascii: machine + human readable
+Gravitylab: XML: machine + human + robot readable
+
+Another major improvement over starlab: fully time symmetric
+integration scheme.
+
+This implies: using a tdyn-like internal representation.
+Abstractly, we are dealing with tree structures in
+space, time, and iteration-space (parallel universes).
+
+Each short time-step particle will redo its whole series of
+symmetrization corrections again, whenever a longer-time-step
+particle makes a step.  In practice, this needs to be done
+only when nearby particles have a longer time-step.  We can
+prune the tree of all possible recomputations by using a
+neighborlist, just as we do for tidal interactions on compact
+groups of particles.
+
+Conceptually, particles in a neigborlist want to open the black box
+around a binary or triple, when it is too large to treat as a point mass;
+similarly those particles want to open the error-box of a particle by
+making a time-symmetry-correction step, if the error-box is too large.
+Note: the GRAPE-8 might want to include extra hardware to support this,
+in addition to tree-code-support hardware.
+
+In principle, this approach will combine all the advantages
+of (spatial) tree codes, (temporal) Ahmed-Cohen codes, and
+(iterational) time-symmetrization codes.
+
+Can we write a multi-stage Ahmed-Cohen?  There will be a need to
+balance efficiency in minimizing the number of pairwise force
+calculations and the amount of administration, especially for
+pipe lines and parallel computation.  Block steps in time;
+Ahmed-Cohen uses two super blocks on top of the block-division
+in time; we could use a larger number of super blocks.
+
+Basically, we will write a rather complex relaxation method for
+integrating the N-body system.
+
+2003-01-07
+---- -- --
+
+container classes and iterators: arrays as well as linked lists;
+who knows what we'll need in the future, when doing, say, star formation.
+
+Do we need multiple levels?  Quandrupole precision might be okay.
+
+A tree on top of an array of physical particles, instead of hanging
+the particles of a top level, below?
+
+single precision factor = 10^7.5
+first: 10 km              Neutron Star diameter
+next: 3x10^8 km = 2 AU    1 kT binary in glob. cl.
+next: 300 pc		  globular cluster diameter
+next: 10^10 pc            size of visible universe
+
+We now have the Hermite code of chapter 8.
+What we want to upgrade are:
+-- version numbering mechanism: CVS
+-- XML file format
+-- C++ classes
+-- command line argument parser (later)
+-- variable order of integration
+-- time symmetrization
+-- block time steps
+-- Kepler regularization
+-- quadruple precision for positions and time
+-- individual time steps
+-- tree code + multiple Ahmed-Cohen
+-- stellar evolution
+
+First: XML file format
+
+What are ingredients:
+
+  for the relation to other system snapshots
+  for the whole system: compiled I/O data + scratch pad
+  for each particle: compiled I/O data + scratch pad
+
+  nodes?
+  relations between particles?
+  relations between variables within one particle.
+
+Program:
+
+Let us write a program to write I/O programs for information of the sort:
+"variable = value (type)", where type could be scalar, vector, class, etc.
+Perhaps use C++ templates?  Or something else?
+
+2003-01-09
+---- -- --
+

@@ -1,0 +1,45 @@
+2003-1-15
+
+This contains some of the codes developed in book 1.
+
+We choose new names for the integrator: "evolve_variable_timestep".
+When we write simpler or more complex versions we can use this nomenclature:
+
+  evolve_constant_timestep
+  evolve_variable_timestep
+  evolve_individual_timestep
+  evolve_partial_force  (for generalized Ahmed-Cohen schemes),
+  . . .
+
+We also choose a new name for the code that builds a Plummer model,
+simply "plummer".  Later we can provide a library function with a
+creator for a Plummer model, called "plummer()".  For a Plummer
+realization with 100 particles, say, we could then call "plummer(100)",
+while the default "plummer()" might provide the analytical expression
+of the potential-density pair instead (as a printout, or in other symbolic
+form; for now, the best default would probably be just an error message).
+
+---------
+
+   For now, we use as a licence for all our gravitylab software the
+   text provided in the MIT open source licence.  Here is the text:
+
+Copyright (c) 2003, Piet Hut and Jun Makino.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

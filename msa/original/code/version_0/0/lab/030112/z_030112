@@ -1,0 +1,192 @@
+<gingakogen|/home/piet/gravitylab> lt ~
+    4 -rw-r--r--    1 piet     sns          1176 Jan  7 16:52 tmp.mai
+   40 -rw-------    1 piet     sns         39424 Jan  8 09:45 tmp_rusty.doc
+   16 -rw-r--r--    1 piet     sns         15204 Jan  8 10:16 tmp_rusty.txt
+    4 -rw-------    1 piet     sns           775 Jan  8 16:40 tmp.uni
+    4 -rw-------    1 piet     sns           825 Jan  9 09:19 tmp.unix
+    4 -rw-r--r--    1 piet     sns          2481 Jan  9 16:06 tmp.txt
+    8 drwx------   14 piet     sns          8192 Jan  9 16:53 M/
+    4 drwxr-xr-x    2 piet     sns          4096 Jan  9 17:44 psgml/
+    4 drwx------    9 piet     sns          4096 Jan  9 18:15 gravitylab/
+    4 drwx------   14 piet     sns          4096 Jan  9 18:23 ref/
+<gingakogen|/home/piet/gravitylab> lt /tmp
+   1 drwx------    2 piet     sns          1024 Nov  1 13:24 mcop-piet/
+   1 drwx------    2 root     root         1024 Nov 25 08:15 mcop-root/
+   1 drwx------    2 root     root         1024 Nov 25 08:15 ksocket-root/
+   1 drwx------    2 piet     sns          1024 Dec  8 18:27 ssh-XXhzJge2/
+   1 drwx------    2 piet     sns          1024 Dec 12 20:25 ssh-XX3Vn9UC/
+   1 drwx------    2 piet     sns          1024 Dec 25 12:21 ssh-XX8JBLVH/
+   1 drwx------    2 piet     sns          1024 Jan  7 23:19 ssh-XXQmwrpo/
+   1 drwx------    2 piet     sns          1024 Jan  7 23:19 orbit-piet/
+  50 -rw-r--r--    1 piet     sns         49865 Jan  9 15:00 God in Relation to Nature by John Polkinghorne.htm
+ 368 -rw-------    1 piet     sns        373365 Jan  9 18:20 CPPXML.pdf
+<gingakogen|/home/piet/gravitylab> gv /tmp/CPPXML.pdf
+<gingakogen|/home/piet/gravitylab> cd b*/b*
+<gingakogen|/home/piet/gravitylab/blitz/blitz-0.6> lsd
+   4 drwxr-xr-x    2 piet     sns          4096 Jan  9 21:05 benchmarks/
+   4 drwxr-xr-x    2 piet     sns          4096 Jan  9 21:05 bin/
+   4 drwxr-xr-x    5 piet     sns          4096 Jan  9 21:05 blitz/
+   4 drwxr-xr-x    2 piet     sns          4096 Jan  9 21:05 compiler/
+   4 drwxr-xr-x    2 piet     sns          4096 Jan  9 21:05 demos/
+   4 drwxr-xr-x    2 piet     sns          4096 Jan  9 21:14 examples/
+   4 drwxr-xr-x    2 piet     sns          4096 Jan  9 21:05 lib/
+   4 drwxr-xr-x    4 piet     sns          4096 Jan  9 21:05 manual/
+   4 drwxr-xr-x    2 piet     sns          4096 Jan  9 21:05 random/
+   4 drwxr-xr-x    3 piet     sns          4096 Jan  9 21:05 src/
+   4 drwxr-xr-x    2 piet     sns          4096 Jan  9 21:12 testsuite/
+<gingakogen|/home/piet/gravitylab/blitz/blitz-0.6> cd man*
+<gingakogen|/home/piet/gravitylab/blitz/blitz-0.6/manual> ls 
+arrays-ctors.yo     blitz07.html	 Index.html	      random.yo
+arrays-debug.yo     blitz08.html	 INDEX.html	      range.html
+arrays-expr.yo	    blitz09.html	 index.m4	      sinsoid.eps
+arrays-globals.yo   blitz10.html	 Index-prologue.html  sinsoid.gif
+arrays-indirect.yo  blitz.gif		 indirect.eps	      slice.eps
+arrays-intro.yo     blitz.html		 indirect.fig	      slice.fig
+arrays-io.yo	    blitzmacros.yo	 indirect.gif	      slice.gif
+arrays-members.yo   blitz.ps		 install.yo	      stencils/
+arrays-multi.yo     blitztiny.jpg	 legal.yo	      strideslice.eps
+arrays-slicing.yo   blitz.yo		 makedatestring*      strideslice.fig
+arrays-stencils.yo  classref.html	 Makefile	      strideslice.gif
+arrays-storage.yo   compiling.yo	 Makefile.am	      tau.yo
+arrays-types	    constants.yo	 Makefile.in	      tensor1.eps
+arrays-usertype.yo  download.yo		 makeHTMLIndex.cpp    tensor1.fig
+blitz01.html	    examples/		 makeindex*	      tensor1.gif
+blitz02.html	    faq.yo		 numinquire.yo	      tinymatrix.yo
+blitz03.html	    Frames.html		 parallel.yo	      tinyvector.yo
+blitz04.html	    help.yo		 platforms.yo	      tuning.yo
+blitz05.html	    Index-epilogue.html  preview*	      update*
+blitz06.html	    index.html		 proc2e.sty	      vector.html
+<gingakogen|/home/piet/gravitylab/blitz/blitz-0.6/manual> ls *ps
+blitz.ps  indirect.eps	sinsoid.eps  slice.eps	strideslice.eps  tensor1.eps
+<gingakogen|/home/piet/gravitylab/blitz/blitz-0.6/manual> file *yo
+arrays-ctors.yo:    ASCII English text
+arrays-debug.yo:    ASCII English text
+arrays-expr.yo:     ASCII English text
+arrays-globals.yo:  ASCII English text
+arrays-indirect.yo: ASCII English text
+arrays-intro.yo:    ASCII English text
+arrays-io.yo:       ASCII English text
+arrays-members.yo:  ASCII English text
+arrays-multi.yo:    ASCII C++ program text
+arrays-slicing.yo:  ASCII English text
+arrays-stencils.yo: ASCII English text
+arrays-storage.yo:  ASCII English text
+arrays-usertype.yo: ASCII English text
+blitzmacros.yo:     ASCII text
+blitz.yo:           ASCII C++ program text
+compiling.yo:       ASCII English text
+constants.yo:       empty
+download.yo:        ASCII English text
+faq.yo:             ASCII English text
+help.yo:            ASCII English text
+install.yo:         ASCII English text
+legal.yo:           ASCII English text
+numinquire.yo:      ASCII English text
+parallel.yo:        ASCII English text
+platforms.yo:       ASCII English text
+random.yo:          ASCII English text
+tau.yo:             empty
+tinymatrix.yo:      empty
+tinyvector.yo:      ASCII English text
+tuning.yo:          empty
+<gingakogen|/home/piet/gravitylab/blitz/blitz-0.6/manual> head random.yo
+bzsect(Overview)
+
+These are the basic
+random number generators (RNGs):
+
+bzindex(RNGs)
+bzindex(Random Number Generators)
+bzindex(Random Number Generators!overview)
+
+startdit()
+<gingakogen|/home/piet/gravitylab/blitz/blitz-0.6/manual> head faq.yo
+
+bzindex(FAQ)
+
+bzsect(Questions about installation)
+
+bzindex(CRC error in .tar.gz)
+bzindex(invalid compressed data)
+
+bzfaq(I downloaded Blitz++, but when I try to gunzip it, I get
+"invalid compressed data--crc error".)
+<gingakogen|/home/piet/gravitylab/blitz/blitz-0.6/manual> gv blitz.ps
+<gingakogen|/home/piet/gravitylab/blitz/blitz-0.6/manual> sndgl
+building file list ... done
+blitz/
+blitz/blitz-0.6/
+blitz/blitz-0.6/benchmarks/
+blitz/blitz-0.6/bin/
+blitz/blitz-0.6/blitz/
+blitz/blitz-0.6/blitz/array/
+blitz/blitz-0.6/blitz/generate/
+blitz/blitz-0.6/.cvsignore
+blitz/blitz-0.6/COPYING
+blitz/blitz-0.6/ChangeLog
+blitz/blitz-0.6/blitz/meta/
+blitz/blitz-0.6/compiler/
+blitz/blitz-0.6/demos/
+blitz/blitz-0.6/examples/
+blitz/blitz-0.6/ChangeLog.1
+blitz/blitz-0.6/INSTALL
+blitz/blitz-0.6/LEGAL
+blitz/blitz-0.6/LICENSE
+blitz/blitz-0.6/Makefile
+blitz/blitz-0.6/lib/
+blitz/blitz-0.6/manual/
+blitz/blitz-0.6/manual/examples/
+blitz/blitz-0.6/manual/stencils/
+blitz/blitz-0.6/random/
+blitz/blitz-0.6/src/
+blitz/blitz-0.6/src/.deps/
+blitz/blitz-0.6/testsuite/
+history/
+vol_1/chap10/
+Killed by signal 2.
+
+<gingakogen|/home/piet/gravitylab/blitz/blitz-0.6/manual> sndgl
+building file list ... done
+history/chronicles.txt
+history/chronicles.txt~
+history/labnotes.txt
+history/labnotes.txt~
+peter.xml
+peter.xml~
+piet.xml
+vol_1/chap10/x_030107
+vol_1/chap10/x_030107~
+vol_1/chap10/y_030107
+vol_1/chap10/y_030107~
+vol_1/chap10/z_030107
+vol_1/chap10/z_030107~
+history/
+vol_1/chap10/
+wrote 28467 bytes  read 1010 bytes  966.46 bytes/sec
+total size is 137261230  speedup is 4656.55
+<gingakogen|/home/piet/gravitylab/blitz/blitz-0.6/manual> mj
+receiving file list ... done
+M/
+M/MODEST-3
+M/NY.research
+M/Rmail
+M/
+wrote 19468 bytes  read 104588 bytes  2787.78 bytes/sec
+total size is 192420988  speedup is 1551.08
+building file list ... done
+ja
+wrote 387 bytes  read 23264 bytes  1100.05 bytes/sec
+total size is 2710103  speedup is 114.59
+<gingakogen|/home/piet/gravitylab/blitz/blitz-0.6/manual> cd
+<gingakogen|/home/piet> lt
+    4 drwxr-xr-x    2 piet     sns          4096 Jan  9 17:44 psgml/
+    4 drwx------    2 piet     sns          4096 Jan  9 22:25 bin/
+  148 -rw-------    1 piet     sns        144384 Jan 11 06:54 tmp_rajesh.doc
+   24 -rw-r--r--    1 piet     sns         23121 Jan 11 06:55 tmp_rajesh.txt
+ 5228 -rw-r--r--    1 piet     sns       5339962 Jan 11 15:59 xerces-c2_1_0-linux7.2gcc31.tar.gz
+    4 drwx------   11 piet     sns          4096 Jan 12 09:48 gravitylab/
+    4 -rw-------    1 piet     sns          2806 Jan 12 10:03 tmp.unix
+    8 drwx------   14 piet     sns          8192 Jan 12 21:27 M/
+    4 drwx------    5 piet     sns          4096 Jan 12 21:40 modest/
+    4 drwx------   14 piet     sns          4096 Jan 13 14:12 ref/
+<gingakogen|/home/piet> 

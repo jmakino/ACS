@@ -1,0 +1,12 @@
+\contentsline {chapter}{Preface}{i}
+\contentsline {chapter}{\numberline {1}A Robust Gravity Laboratory for Dense Stellar Systems}{1}
+\contentsline {part}{I\hspace {1em}$N$-Body Codes with Recursive Coordinate Refinement}{3}
+\contentsline {chapter}{\numberline {2}Binary Trees and Local Coordinate Patches}{5}
+\contentsline {chapter}{\numberline {3}Weakly Perturbed Binaries and Triples}{7}
+\contentsline {part}{II\hspace {1em}Gravitylab}{9}
+\contentsline {chapter}{\numberline {4}Tools and Libraries}{11}
+\contentsline {chapter}{\numberline {5}Automatization of Laboratory Experiments}{13}
+\contentsline {part}{III\hspace {1em}Astrophysical Applications}{15}
+\contentsline {chapter}{\numberline {6}Core Collapse for Large $N$}{17}
+\contentsline {chapter}{\numberline {7}Post-Collapse Evolution}{19}
+\contentsline {chapter}{\numberline {8}Evaporation and Dissolution}{21}

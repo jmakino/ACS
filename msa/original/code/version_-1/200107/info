@@ -1,0 +1,6 @@
+<piet-lp|kitchen> ( forward_euler > for.out ) > & for.err
+<piet-lp|kitchen> gnuplot
+gnuplot> plot 'for.out'
+gnuplot> replot
+gnuplot> set terminal post eps 22
+gnuplot> set output "for001.ps"

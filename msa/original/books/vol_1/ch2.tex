@@ -1,0 +1,427 @@
+\chapter{Getting Started on the $N$-Body problem}
+
+Our goal is build a laboratory to study the interactions between stars.
+Since stars don't fit in traditional laboratories, we have no choice
+but to use virtual stars in virtual labs.  The computer provides us
+with the right virtual environment, and it is our task to write the
+software that will correctly simulate the behavior of the virtual stars
+and their interactions.  Once that software is in place, or at least
+enough of it to start playing, the user can provide a starting situation,
+after which our software will evolve the system, for a few billion years,
+say.
+
+In this book we will focus in detail on the whole process of developing
+the software needed.  We will aim at realistic detail, showing the way
+of thinking that underlies the construction of a complex and ever-growing
+software environment.  We will require patience from the reader, since it
+will take a while to have a full package in hand for modeling, say,
+the long-term behavior of a star cluster.  This drawback, we feel, is
+more than offset by the advantages of our approach:
+
+\begin{itemize}
+\item
+the reader will be fully empowered to customize {\it any}
+aspect of the software environment or {\it any} larger or smaller part of it;
+\item
+the reader will be able to use the package with complete
+understanding and appreciation of what are and are not reasonable ways
+to apply the tools;
+\item
+the reader will learn to embark on completely different large-scale
+software projects, be they in (astro)physics, other areas of science,
+or other fields altogether; 
+\item
+and in addition, we hope that reading these books will be as much fun
+for the reader as it was for us to write them.
+\end{itemize}
+
+\section{Our Setting}
+
+We want to convey some of the atmosphere in which large software
+environments are grown, in a dynamic and evolutionary way, often
+starting from very small beginnings -- and always surprising the
+original authors when they see in what unexpected ways others can
+and will modify their products in whole new directions.  Most of our
+narrative will follow this process step by step, but occasionally we
+will turn away from the process to the players: the developers writing
+the software.  We have chosen one representative of each of the three
+target groups mentioned in our preface, from natural science, business
+and computer science.
+
+The setting is an undergraduate lounge, where three friends occasionally
+hang out after dinner, and sometimes tell each other about the projects
+they are working on.  Tonight, Alice talks with great animation to her
+friends Bob and Carol.  Alice is an astrophysics major, Bob is preparing
+for business school, and Carol majors in computer science.
+
+\abc
+
+\alice
+Guess what!  Today I was asked to choose a junior project, for
+me to work on for half a year.  Many of the choices offered seemed to
+be interesting, but for me the most exciting opportunity was to work
+on the overhaul of a laboratory for interactions between stars.
+
+\bob
+What are the interactions that are so interesting?
+
+\alice
+Imagine this, the current software package allows you to create
+a star cluster and to let it evolve for billions of years, and then
+you can fly through the whole four-dimensional history in space and
+time to watch all the collisions and close encounters between normal
+stars and black holes and white dwarfs and you name it!
+
+\carol
+If that package already exists, what then is so exciting about
+an overhaul?
+
+\alice
+Yes, the package exists, but every large software package tends
+to grow and to become overweight.  As you both know, this is true in
+business-driven software projects, but it is even more true in science
+settings, where the value of clean software engineering is underrated
+even more than in more profit-oriented areas.  As a result, by far
+the most reasonable and efficient way to extend older packages is first
+to do a thorough overhaul.
+
+\bob
+I see.  You mean that rewriting a package is worth the time,
+presumably because you have already figured out the physics and you
+have similarly built up extensive experience with hooking everything
+together in various ways in software.
+
+\alice
+Exactly.  Rewriting a package takes far less time than writing
+it in the first place -- if we want to keep the same functionality.
+In practice, it may take longer than we think, since we will for sure
+find new extensions and more powerful ways to include more physics.
+As long as we don't get carried away, and keep our science goals in
+sight, this extra time is well spent and will lead to greater
+productivity.
+
+\carol
+I wonder, though, whether a complete overhaul is desirable.  I
+have just learned about a notion called {\it refactoring}.  The idea
+is to continuously refine and clean up code while you go along.
+
+\alice
+Yes, that would be better.  In fact, I already had a brief chat
+with my supervisor, and he mentioned just that.  He said that this was
+the last really major overhaul he hoped to do for his software
+environment.  The main reason for the planned overhaul is to make
+it flexible enough that the system from now on can grow more
+organically.
+
+\bob
+The overhaul that will be the end of all overhauls!
+
+\carol
+Well, maybe.  I've heard a lot of hype about programming, in
+the few years that I have been exposed to it.  But the basic idea
+sounds good.  And even if you will have to overhaul in the future, a
+cleaner and more modular code will surely be easier to understand and
+disentangle and hence to overhaul.
+
+\bob
+May I ask a critical question?  You have half a year to get your
+feet wet, doing a real piece of scientific research.  Would it really
+be prudent to spend that time overhauling someone else's code?
+
+\alice
+I asked that question, too.  My supervisor told me that a
+through-going attempt to improve a large software environment in a
+fundamental way from the bottom up is guaranteed to lead to new
+science.  Instead of overhauling, a better term might be fermenting.
+You will reap the benefits of all the years of experience that have
+gone into building the software, from working with the science to the
+figuring out of the architecture of the software environment.  Those
+who write the original code won't have the time to do a complete
+rewrite; they have become too engrossed in teaching and administration.
+But they will have time to share their experience, and they will
+gladly do so when they see someone seriously working on improvements.
+
+\carol
+In other words, during this coming half year you might find
+yourself engaging in actual research projects, as a form of spin-off
+of the overhauling, or fermenting as you just called it?
+
+\alice
+Exactly.
+
+\bob
+You know what?  Perhaps this is a silly thing to suggest, but I
+suddenly got an idea.  It seems that Alice today has started what
+amounts to an infinite task.  She will have her hands full at it, even
+if she could clone herself into several people working simultaneously,
+and she is not expected to reach anywhere near completion in half a year.
+At the same time, she is expected to start absolutely from start.  If
+she wouldn't do so, it wouldn't be a complete overhaul.  Here is my
+proposal: how about all three of us pitching in, a couple times a
+week, after dinner, using the time we tend to spend here anyway?
+
+\carol
+To keep Alice honest?
+
+\bob
+Exactly!  Of course, she may well get way ahead of us into all
+kind of arcane astrophysics applications, but even so, if we plod
+behind her, asking her questions about each and every decision she has
+made from the start, we will probably keep her more honest than any
+astrophysicist could -- simply because we know less about astrophysics
+than any astrophysicist!  And besides, for me too it would be a form of
+fun and profit.  I intend to focus on the software industry when I go
+to business school, and I might as well get some real sense of what is
+brewing in the kitchen, when people write non-trivial software systems.
+
+\carol
+Hmm, you have a point.  Obviously, something similar holds for
+me too, in that I can hone my freshly learned theoretical knowledge on
+realistic astrophysics problems.  What do you think, Alice, are we
+rudely intruding upon your new project?
+
+\alice
+No, on the contrary!  As long as I keep my actual project
+separated, as Bob stressed, I am more than happy to discuss the basics
+with you both during after-dinner sessions, as long as you have the
+stamina and interest to play with orbital dynamics of stars and star
+systems.  And I'm sure we will all three learn from the experience: I
+would be very surprised if you wouldn't inject new ideas I hadn't
+thought about, or notice old ideas of mine that can be improved.
+
+\bob
+Okay, we have a deal!  Let's get started right away, and get back
+here tomorrow, same time, same place.
+
+\carol
+Okay, but let's say almost the same place: next door is the
+computer center, where we will be able to find a big enough screen so
+that the three of us can gather around it, to start writing our first
+star-moving program.
+
+\alice
+An $N$-body code, that is what it is called.  Okay, I'm game too.
+See you both tomorrow!
+
+\cba
+
+\section{The Gravitational $N$-Body Problem}
+
+The next day, our three friends have gathered again, ready to go.
+
+\abc
+
+\alice
+Hi, you're all back, so I guess you were really serious.  Okay, let's
+write our first code for solving the gravitational $N$-body problem.
+
+\bob
+I understand that we are dealing with something gravitational
+attractions between celestial bodies, but what is the problem with that?
+
+\carol
+And why are you talking about $N$ bodies, and not $p$ bodies or
+anything else?
+
+\alice
+Traditionally, in mathematics and mathematical physics, when we pose a
+question, we call it a problem, as in a home work problem.  The
+gravitational 2-body problem is defined as the question: given the
+initial positions and velocities of two stars, together with their
+masses, describe their orbits.
+
+\bob
+What if the stars collide?
+
+\alice
+For simplicity, we treat the stars as if they are mass points, without
+any size.  In this case they will not collide, unless they happen to
+hit each other head-on.  Of course, we can set two point masses up
+such that they will hit each other, and we will have to take such
+possibilities into account (see volume 2).  However, when we start
+with random initial conditions, the chance of such a collision is
+negligible.
+
+\carol
+But real stars are not points?
+
+\alice
+True.  At the goal of building a laboratory for star cluster evolution
+is to introduce real stars with finite sizes, nuclear reactions, loss
+of radiation and mass, and all that good stuff.  But we have to start
+somewhere, and a convenient starting place is to treat stars as point
+masses.  In practice, to discriminate between the physical modeling of
+stars and the replacement of them with point masses, we often call
+those points `bodies'.
+
+This brings me to Carol's question: why do astrophysicists talk about
+$N$-body simulations?  This is simply a historical convention.  I
+would prefer the term many-body simulations, but somehow somewhere
+someone stuck in the variable $N$ as a place-holder for how many
+bodies where involved, and we seem to be stuck with that notation.
+
+\carol
+Fine.  Let's pick a language and start coding!  I bet you physics
+types insist on using fortran?
+
+\alice
+Believe it or not, most of the code to be overhauled has been written
+in C++, and I suggest that we adopt the same language.  It may not be
+exactly my favorite, but it is at least widely available, well
+supported, and likely to stay with us for decades.
+
+\bob
+What is C++, and why the obscure name?  Makes the notion of an $N$-body
+seem like clarity itself!
+
+\carol
+Long story.  I don't know whether there was ever a language A, but
+there certainly was a language B, which was followed alphabetically by
+a newer language C, which became quite popular \dots
+
+\bob
+\dots are you making a pun on our names?
+
+\carol
+No, I'm not kidding.  Then C was extended to a new language for
+object-oriented programming, something we'll talk about later.  In a
+nerdy pun, the successor operation ``++'' from the C language was used
+to indicate that C++ was the successor language to C.  Don't look at
+me, we'll have to live with it.
+
+\cba
+
+\section{The Gravitational $2$-Body Problem}
+
+A decision was made to let Carol take the controls, for now.  Taking
+the keyboard in front of a large computer screen, she opens a new file
+{\st nbody.C} in her favorite editor.  Expectantly, she looks at Alice,
+sitting to her left, for instructions, but Bob first raises a hand.
+
+\abc
+
+\bob
+I'm a big believer in keeping things simple.  Why not start by coding up
+the 2-body problem first, before indulging in more bodies?  Also, I
+seem to remember from an introductory physics class for poets that the
+2-body problem was solved, whatever that means.
+
+\alice
+Good point.  Let's do that.  It is after all the simplest case that is
+nontrivial: a 1-body problem would involve a single particle that is
+just sitting there, or moving in a straight line with constant velocity,
+since there would be no other particles to disturb its orbit.
+
+And yes, the 2-body problem can be solved analytically.  That means
+that you can write a mathematical formula for the solution.  For
+higher values of $N$, whether 3 or 4 or more, no such closed formulas
+are known, and we have no choice but to do numerical calculations in
+order to determine the orbits.  For $N=2$, we have the luxury of being
+able to test the accuracy of our numerical calculations by comparing
+our results with the formula that Newton discovered for the 2-body
+problem.
+
+Yet another reason to start with $N=2$ is that the description can be
+simplified.  Instead of giving the {\it absolute} positions and
+velocities for each of the two particles, with respect to a given
+coordinate system, it is enough to deal with the {\it relative}
+positions and velocities.  Instead of dealing with position $\br_1$
+for the first particle and $\br_2$ for the second particle, we can
+write down the gravitational attraction between the two in terms of
+the relative position, defined as:
+
+\begin{equation}
+\br = \br_2 - \br_1
+\end{equation}
+
+Newton's gravitational equation of motion then becomes:
+
+\begin{equation}
+\frac{d^2}{dt^2}\br = - G \frac{M_1 + M_2}{r^3}\br
+\end{equation}
+
+This is a second-order differential equation.  At the left-hand side
+you see the second derivative of position with respect to time $t$.  The
+first time derivative of position $\br$ is the velocity $\bv = d\br /dt$
+while the second derivative presented here is the acceleration
+$\ba = d\bv /dt = d^2\br /dt^2 $.  At the right hand side, the masses
+of the two particles are indicated by $M_1$ and $M_2$, respectively.
+$G$ is the value of Newton's gravitational constant.
+
+I'm glad you both have at least some familiarity with differential
+equations, in the context of classical mechanics.  It may not be a bad
+idea to brush up your knowledge, if you want to know more about the
+background of Newtonian gravity.  There are certainly plenty of good
+introductory books.  At this point it is not necessary, though, to go
+deep into all that.  I can just provide the few equations we need to
+get started, and for quite a while our main challenge will be to
+figure out how to solve these equations.
+
+\bob
+The differential equation does indeed look familiar, but why is there
+a power 3 in the denominator?  I thought that Newtonian gravity is an
+inverse square power, so I would have expected a power 2 down there.
+
+\alice
+Good question!  We are working here in three dimensions, because that
+is how many dimensions space in the universe has.  The bold-face
+notation $\br$ indicates that we are dealing with three-dimensional
+vectors.  If we name the components as follows,
+
+\begin{equation}
+\br = \{x, y, z\}
+\end{equation}
+
+then the scalar distance between the two particles is defined by
+
+\begin{equation}
+r = | \br | = \sqrt{x^2+y^2+z^2}
+\end{equation}
+
+And while it is true that Newtonian gravity is a $1/r^2$ force, we
+have to tell the particles not only the magnitude of their mutual
+attraction, but also the direction in which they pull each other.
+This is accomplished by adding the last factor $\br$.  To compensate
+for the fact that $\br$ grows linearly with the distance, we have to
+add an extra power in the denominator.
+
+\carol
+Is there no cleaner way to write this equation, making the $1/r^2$
+nature of the interaction more transparent?
+
+\alice
+Sure there is.  We can introduce a so-called unit vector, which by
+definition has a length of one unit in our coordinate system.  This
+is a good tool for dealing with directions without introducing changes
+in magnitude.  The unit vector corresponding to $\br$ is given as
+$ \hat\br = \br / r $, and the equation of motion for our 2-body
+problem now reads:
+
+\begin{equation}
+\frac{d^2}{dt^2}\br = - G \frac{M_1 + M_2}{r^2}\hat\br
+\end{equation}
+
+\bob
+That looks more like the real thing.
+
+\carol
+Yes, but it may be easier to program the previous expression, so let's
+keep both on the table for now, and see what's most convenient.
+
+\alice
+One more thing: let's make life as simple as we can, by choosing a
+system of physical units in which the gravitational constant and the
+total mass of the 2-body system are both unity:
+
+\begin{eqnarray}
+G & = & 1 \\
+M_1 + M_2 & = & 1
+\end{eqnarray}
+
+Our original equation of motion now becomes simply:
+
+\begin{equation}
+\frac{d^2}{dt^2}\br = - \frac{\br}{r^3} \label{newton-2-bodies}
+\end{equation}
+
+\cba

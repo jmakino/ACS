@@ -1,0 +1,575 @@
+\newpage           % blank page, to force preface to start on a right hand page
+\thispagestyle{empty}      % suppresses page numbering of the blank second page
+\mbox{}                    % dummy content; otherwise \newpage has no effect
+\newpage                   % on to third page, to start the preface
+\pagenumbering{roman}      % with a roman numbering system, starting here at i
+
+%%\chapter{Preface} %% this replace the four lines below, but at the
+                    %% cost (currently) of two extra pages
+
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+
+This book manuscript is a preliminary version of what will expand
+into the first three volumes of a ten-volume series {\it The Art of
+Computational Science}.  We decided to make this version available
+on the web, so that readers can start to play with the software, and
+we can get early feedback concerning the direction of our series.
+
+\section*{The Art of Computational Science}
+
+The Art of Computational Science series will provide a student with a
+hands-on guide to building a computational laboratory, and doing
+state-of-the-art research with it.  The series will be self-contained:
+a high-school student should be able to start at page 1, and work her
+way through the series.
+
+It may seem like a tall order, to use a series of books to lead a
+student through a process that normally takes five years, from
+entering college to being able to do research as a graduate student.
+What we offer here is a shortcut, not a replacement of a traditional
+curriculum.  A motivated high school student or undergraduate could
+set aside a summer for self-study, or even better, pair up with
+another student, to start working through this book series.  That way,
+the would quickly get a taste for conducting real independent research.
+Having acquired the taste and experience will be invaluable for them,
+no matter what speciality they would choose in the end.
+
+The problem with the hundreds of introductory text books to science is
+that they mostly provide summaries, highly distilled collections of
+knowledge that can only be internalized through a process of hands-on
+experience that is generally left out.  Even when detailed exercises
+are given, together with their solutions, this still leaves out the
+actual experience of anybody trying to solve a problem, and getting
+hopelessly astray.  Research is (much) more than 90\% about making
+mistakes, and (much) less than 10\% about finding something new and
+original.  Educational learning is no different.  We all learn from
+solving excercises, not by the answer we get, but by learning what not
+to do wrong in the process.
+
+Of course, there is a good reason that text books are presented in the
+style they are presented.  Giving the reader a real-life impression of
+all (or at least much) that can go wrong in solving problems would
+expand the size of a book by a factor of ten, if not more.  Therefore,
+it is certainly a good thing that most text books are as they are,
+providing reference material for a course, and providing the kernel of
+knowledge for gifted or already somewhat experienced students who are
+brave enough to try to learn the material on their own.
+
+However, we think there is room for a different approach, one that has
+not been attempted earlier, as far as we know.  We will try to follow
+a few individual students, getting occasional guidance from a teacher,
+in the actual process of learning through trial and error.  This
+choice dictates the format as that of a dialogue, in which we can
+overhear what goes wrong, and how the students sooner or later find
+out how to correct their errors and misunderstandings.
+
+Still, we are faced with the problem of cramming five years of student
+experience in only ten volumes.  Our solution has been to take as
+simple a problem we could think of within science.  In fact it is the
+oldest unsolved problem ever since the day Newton formulated
+mathematical physics, as the basis of modern science.  It is the
+gravitional many-body problem, in which a collection of celestial
+bodies move under the influence of their mutual gravitational
+interactions.
+
+An example of the two-body problem is the motion of the Moon around
+the Earth, or that of the Earth around the Sun.  An example of the
+three-body problem is that of the Earth, Moon, and Sun now taken
+together, with the perturbations of the Sun taking into account in
+following the Moon on its way around the earth.  The Sun and the major
+planets, from Mercury to Neptune, offers an example of a nine-body
+problem.  A rich star cluster, such as M15 or 47 Tuc, provides an
+example of a million-body problem.  And our whole galaxy, as well as
+our neighbor the Andromeda galaxy, can be modeled as a
+multi-billion-body gravitational problem.
+
+Having selected a problem that can be explained relatively easily, we
+plan to introduce the notion of a physical force, the notion of a
+gravitational force, the idea of a differential equation, as well as
+the concept of numerical approximations to its solution.  This will
+all appear in Volume 1.  Hands-on experience in simulating the dance
+of two or three bodies will be the topic of Volume 2, while the study
+of a 32-body system, as a model for a star cluster, will occupy Volume
+3.  The current manuscript provides a first draft for these three
+volumes combined, but as yet without the most introductory steps; we
+hope to provide those soon(ish), in the next few years.
+
+Volume 4 will introduce the notion of individual time steps, a crucial
+ingredient for simulating larger numbers of particles.  We will also
+focus on a number of technical details in computer science, such as
+the introduction of self-describing flexible data formats, the use of
+classes in C++, XML of I/O, more complex command-line arguments, etc.
+This approach will show how to build robust modules that are flexible
+enough to function as tools in a growing toolbox that can used to
+build your own software environment tailered to the type of scientific
+simulations you would like to perform.  We will use these tools to
+model 256-body systems.
+
+Volume 5 will introduce the last major ingredient needed to model
+large systems, namely special treatments of tight binaries.  With this
+in place, we can go to 2048-body systems (each increase of a factor
+eight in 3D doubles the number of particles in each spatial dimension).
+We will explore applications such as core collapse, and while doing
+so, we will find the need to add additional ingredients, such as a
+special treatments of triple star systems.
+
+Volume 6 will introduce a diversion: it will focus on three-body
+scattering experiments.  Just as high-energy particle accelerators
+probe the behavior of subatomic particles, we can probe the complex
+interactions between single stars and double stars in the virtual
+laboratory of the computer, by sending `beams' of single stars to
+(gravitationally) crash into `target plates' of double stars.  These
+experiments are useful to predict and analyse the `microscopic'
+processes that happen within a star cluster scales small with respect
+to that of the cluster as a whole.
+
+Volume 7 will continue the scattering treatment, but will handle the
+scattering of two double stars off each other, as well as the
+scattering of doubles and triples, and even more complex varieties,
+all of which occur within a large-scale simulation of a dense stellar
+system.  As we will see, the automatization of such experiments,
+together with the automated reporting of the many different outcomes,
+will provide quite a challenge.
+
+Volume 8 will pick up the main line of our series, the development of
+{\it N}-body codes with increasing sophistication (for historical
+reasons, the gravitional many-body problem is often called the
+{\it N}-body problem).  This time we will start from scratch, using all
+the experience we have collected in volumes 1 through 7, by making a
+top-down design in terms of modules, while giving a complete
+specification of the interfaces between all these modules.  This
+approach will allow us to mix and match different pieces written by
+different people, using different computer languages, and even adding
+different physical effects.
+
+Volume 9 will continue this quest, by showing how such a code can be
+made to deal with the challenge of following close encounters, as well
+as tight double stars.  Here we will learn to deal with various types
+of special treatments of neighboring particles, which is the main
+reasons that state-of-the-art {\it N}-body codes have grown so bulky.
+We will apply this code to some 16k-body systems.
+
+Volume 10 will wrap us the quest, by introducing a way to handle even
+collisions between stars, through simple forms of hydrodynamics and
+stellar evolution.  Depending on the speed of computers by the time we
+finish our series, we may be able to illustrate our code by taking two
+more steps of two in each dimension, leading us to the 128k-body system
+as well as the million-body system.
+
+\section*{Extreme Research}
+
+Our aim is to break down the barrier between research and education.
+From an educational point of view, our approach is unusual in that we
+lead a student along the shortest path from an elementary introduction
+to the cutting edge of research.  And from a research point of view,
+we illustrate how extensive documentation is beneficial for a research
+project.  To put it in a more radical form: we believe that education
+is the key to success in research.
+
+To express these ideas, we introduce the term {\it extreme research},
+in analogy of the term {\it extreme programming}, a methodology aimed
+at frequent testing and fast turn-around, in which there is much
+interaction between users and producers of the code being developed.
+Typically there is a tight coupling between the producers as well,
+through pair programming, in which two people sit behind a computer
+screen, developing a piece of code together.  In our case, extreme
+research indicates a similar type of interaction between students
+developing a simulation code, and between them and their supervisors
+and colleagues.
+
+A key idea in our notion of extreme research is what we call {\it
+variational programming}, which we will discuss below.  Briefly,
+variational programming invites a `slower but faster' approach, in
+which we first take our time, feeling our way around a solution path,
+before settling on a specific approach.  The familiarity with the
+local landscape of possible approaches typically speeds up the process
+of reaching a simple yet robust final product.  Experience has shown
+us that the time lost in looking around is more than made up by the
+fact that we thus avoid having to backtrack excessively in the final
+stages.
+
+A related example of a `slower but faster' approach is to make it a
+habit of writing extensive documentation.  This applies to adding
+detailed and frequent comments with the computer code itself, as well
+as writing manual pages and introductory and explenatory notes.  At
+first, this may seem to slow down the process of rapid prototyping.
+In fact, by having to explain what you are doing to an anonymous
+reader, you often reach a much deeper understanding of the problem at
+hand, by being forced to make your reasoning explicit.  In addition,
+you often find errors in your thinking as well as ways to improve
+aspects, even if they were correct.
+
+Actually, wide and deep documentation goes hand in hand with variational
+programming.  A description of anything is like drawing an outline around
+that thing, and the very process of doing so gives one many glimpses
+of the adjacent terrain.  Successful documentation of a code is a form
+of variational description.  And in our current series we have taken
+this approach to an extreme: one of our main motivations for writing
+an education ten-volume series was our desire to develop for ourselves
+a robust software environment for large-scale experiments in stellar
+dynamics, relying on a process of extreme documentation.
+
+The central engine of this environment would be an {\it N}-body code
+that would be completely documented, down to every decision made.
+This implies a description of not only what decision was made, made
+also how it was made, and why.  When we thought this true, we realized
+that we had no choice but to start from scratch.  Tempting as it had
+been to take a code such as the Kira code, the central engine of the
+starlab software environment (see {\tt
+http://www.manybody.org/manybody/starlab.html}), it would be
+impossible to reconstruct all the decisions that had gone into its ten
+year history.  The same considerations hold even more for NBODY4 and
+related codes in the NBODY{\it x} family, developed and maintained by
+Sverre Aarseth, author of {\it Gravitational N-Body Simulations :
+Tools and Algorithms} (Cambridge Univ. Pr., 2003), since these codes
+have grown over a forty-year period.
+
+We finally decided to accept the challenge we had posed for ourselves,
+and to test our notion of extreme programming in practice, by indeed
+starting from scratch.
+Here is a very brief outline of our plans.  The top view of our code
+would reveal four parts: a scheduler, a module for the global
+dynamics, one for the local dynamics, and one for stellar physics
+(stellar evolution and hydrodynamics).  Each of the latter three would
+be built from several modules.  At that level, we would thus have a
+dozen or more modules, each of which would ideally be so independent
+that they could be written by different people using different
+computer languages.  Most importantly, these different people would
+have no need even to communicate with each other, since the top-down
+specification would indeed be completely specific about how each
+module would talk to each other module, and what would be expected to
+be delivered by each one, in what way.
+
+\section*{Variational Programming}
+
+We have coined the term {\it Variational Programming} to describe our
+prefered approach to programming: to follow a path of least action.
+The name is borrow from physics, where Hamilton's variational
+principle states that a physical trajectory of a particle is given by
+a path along which the action is minimal.\footnote{
+  In physics, the concept of action has a precise mathematical
+  definition, as a time integral of the Lagrangian of a system; and
+  although in physics, too, Hamilton's principle is often called the
+  principle of least action, strictly speaking the action should only
+  be an extremum, so it could be a saddle point, for example, rather
+  than a minimum.  However, these technical considerations are not
+  relevant here, since we use the term only as a metaphor.}
+Our goal is to be lazy in the optimal sense: to minimize the amount of
+time and energy to along the path of writing a piece of software, from
+start to finish, \ie from the first idea to the completion of a robust
+and well-tested product, that can be easily and flexibly used in
+connection with other pieces of software.  
+
+As is the case in physics, the least action principle is a global one,
+not a local one.  The challenge is to minimize the total time required
+to put together a whole software package.  If we want to write the
+code for an individual model, it is by far the easiest to throw
+something together quickly and make it work.  However, after writing a
+few dozen modules that way, it quickly becomes clear that making them
+together smoothly requires more and more work, forcing a repeated
+rewrite of many of the pieces that originally were easy to dash of.
+
+Clearly, there is an optimum approach.  If you spend too much time
+polishing each module to make it really elegant and beautiful, you
+will spend (almost) forever before you finish your software package.
+If you rush each module writing too much, and don't think carefully
+about how they should fit together, you spend (almost) forever chasing
+bugs all over the place.  The question is: where, in between these two
+extremes, is the optimum approach, which minimizes the total amount of
+work?
+
+Finding the optimum is an art, not a science.  Hence the title of our
+series {\it The Art of Computational Science}.  But an art requires
+particular skills and can be learned, ideally by exposure to many
+hands-on examples, the more real-life-like the better.  And while
+being exposed to such examples, it does become clear that there are
+some general rules.
+
+In our experience, which between the two of us includes half a century
+of frequent scientific simulation code writing, the main rule is: try
+to make frequent variations.  Hence our term {\it Variational Programming},
+which we will now summarize.
+
+The first improvement over rushing into software writing is to test
+every step carefully, it to make sure it is correct.  While this is
+much better than a rush job, it still is no guarantee at all that the
+module one is working on will function optimally in a larger setting,
+connected to other modules.
+
+The next improvement is to look/feel/grope around a solution, looking
+at neighboring and slightly different approaches.  The goal of
+variational programming is: pragmatic simplicity, avoiding the
+rigidity of an approach that is too narrow, as well as the complexity
+of an approach that is too baroque and general-purpose.
+
+In summary: before writing anything, try to get a sense of the
+landscape of the problem.  Then come up with a tentative solution, a
+toy model.  This most likely will be wrong, the first time.  But if
+you don't try something, you'll never get there.  However, if you try
+something while building it in grandious ways, you will waste a lot of
+time if it turns out to be ill-directed.  So be pragmatic: try something
+complex enough that it can actually do something interesting, given
+the landscape of the problem, but not much more than that.  And above
+all, don't be attached to your first (few) attempt(s): be prepared to
+clean the decks and throw stuff away.
+
+After one or more tries, you will get a hands-on feel for the landscape,
+and you will get an idea how much work will be required to go from A
+to B along different paths.  Only then can you choose the path that
+(most likely) will require the least action.  And while exploring that
+path, it remains important to keep making local variations, to
+continue trying to find a more optimal solution.
+
+This holds on all levels, down to the smallest module.
+When you write something, first of all write in small
+chunks.  For each chunk, while writing and while testing, think about
+whether it makes sense to generalize it a bit more or streamline it a
+bit more.  Play around with it, both while writing and testing, rather
+than just following your first idea like an arrow let loose.  Arrows
+are bad at following corners in the road.
+
+So the principle of least action in programming means:
+Be comfortable and lazy, but only so in the long run.
+If you write quickly, you'll have to do a lot of nasty debugging later.
+For most people, this is less comfortable that writing new clean code.
+But even for those who like to both create and solve problems: you'll
+spend more time and therefore you'll have to work harder to get at
+your goal.  If you follow the path of least action, you'll introduce
+bugs, for sure, but they will be interesting complex bugs, since
+you've avoid the annoying ones (ever spent half an hour searching for
+a bug, only to find that it was a matter of misspelling something
+somewhere in an overly long function spilling out over a few pages?).
+
+Another way to characterize variational programming concerns the
+way to learn from errors.  The key is to let the problem tell you how
+it wants to be solved.  Of course, the problem won't talk to you, so
+you have to start with an initial attempt.  But rather than trying to
+solve a task in the first attempt like blasting a tunnel through
+all the problems, it often makes more sense to try to see whether the
+type of problem that comes up by itself can suggest how you can change
+your approach a bit.  That way, you often find opportunities to wind
+your way between the hills, rather than blasting tunnels in a straight
+line, as the crow flies or the mole bores, as the case may be.
+
+Finally, we call our approach variational because making variations is
+in fact the only way to find the path of least action.  If there where
+only a few paths, you could try all or most of them.  The problem with
+paths is, there are not only infinitely many of them, but the family
+of paths itself even has infinitely many degrees of freedom, or more
+strictly speaking, about as many degrees of freedom as there are key
+strokes in your code.  So the number of possibilities is, roughly
+speaking, infinity to the power infinity.  The only way to find a
+reasonably optimal choice in such a vast sea of possibilities is to:
+1) try a few global choices of different paths to see which one looks
+promising; 2) after settling on one, make very many local variations
+to explore in much greater detail the space of paths around the one
+you're beating.  Each local variation gives you a choice, and with
+sufficient experience your final result will be the product of all the
+choice you have made along the way, selecting your approach from among
+a very large number of ways to write your code: a factor of a few to
+the power of the number of choices you have made!
+
+\section*{An Open Source Project}
+
+Our book series explores a new approach to both research and education
+in computational science, bringing out simultaneously the science,
+arts and crafts aspects of research in the form of an the educational
+offering.  The whole series, together with the corresponding software,
+will be presented on the web as an open source project.  Others who
+share our enthusiasm are welcome to develop their own contributions.
+We sincerely hope that some of those will extend our approach both
+locally and globally: contributing modules to our problem at hand, in
+stellar dynamics, in stellar hydrodynamics and in stellar evolution;
+and starting new projects in other areas of astrophysics, indeed in
+other areas of science as a whole.
+
+It would be our greatest reward to see others complement our approach.
+Given our emphasis on modularity and clear specification of interface
+protocols, each contributor will be pretty free in her or his choice
+of approach, from the type of computer language used to the style of
+programming (while hopefully adhering to the principle of least action,
+a principle that certainly allows many different ways to implement it).
+With a modest amount of care, it should not be hard to let a community
+of programmers and programs sprout up, servicing many different areas
+of science in a way that follows a similar spirit.  In addition, an
+open source approach has proven to provide the best quality control.
+
+As an added benefit, this may make it easier to explore new scientific
+questions, by combining existing modules from different disciplines,
+something that is currently all but impossible, given the different
+ideosyncracies in the various legacy codes in each discipline.  We are
+in the process of setting up an open source framework for our book
+series and for the codes that go with it.  Further developments will
+be announced regularly on our web site {\tt http://www.ArtCompSci.org}.
+
+In the current concise version of the first three volumes, we have
+skipped a detailed explanation of many of the basic steps, such as
+introductions and precise definitions of the concepts of physical
+force and differential equations.  By forging ahead quickly in that
+way, we ourselves can get more of an idea of where we may be heading,
+and we can get feedback from our readers and especially from students
+who will actually attempt to learn computational science from our
+series, and who are willing to start with a not-yet-complete product.
+We therefore very much appreciate hearing from our readers what
+they like in this volume and where they encounter difficulties
+of which kind.  We can be reached through email at the address
+{\tt comments@ArtCompSci.org}.  We may not be able to answer each
+reaction personally; that will depend on how much time we have and on
+how many reactions we get.  But rest assured that we will read each
+email comment, and implement what we learn from that email in the
+actual volumes that will appear in this series.
+
+This book aims at three groups of readers.  For scientists, it gives a
+concrete example for setting up a full scientific simulation software
+environment.  Whether you are a biologist, physicist, psychologist, or
+working in another area of science, many of the issues discussed here
+will come up for you too, when you want to build a new software system,
+or what is often more challenging, when you want to fully overhaul and
+modernize an archaic existing system.  Because our scientific example
+has such a simple base, nothing more than Newton's laws of gravity, it
+is easy to grasp the underlying physics, after which you can focus on
+the complexity of managing a software laboratory.
+
+The second target group of readers are computer scientists, and in
+general everyone building complex software systems.  While we apply
+modern concepts such as the use of object-oriented languages and
+design patterns, and notions such as extreme programming, our main
+{\it forte} is that we fill a gap in the market, by providing a
+complete discussion of the process of constructing a large-scale
+software system.  Our gamble here is that the music of the spheres may
+attract an audience audacious enough to follow our cosmic exploration
+through the various volumes in this series.
+
+Readers in our third group neither work in natural science nor in
+computer science.  They are simply curious how a modern software
+system is set up.  For example, they may have read about the billions
+of dollars that are lost because of late delivery of software, or
+worse, delivery of faulty software.  Perfectly functioning rockets
+have been blown up because of glitches in complex software systems.
+Newly built airports have experienced very costly delays, simply
+because software for baggage transport was delivered a year late.
+Perhaps you are an average user of the internet, and just curious
+about what makes writing large software environments so hard.  Perhaps
+you are working in business or finance, and you are wondering whether
+to invest in a software company.  How are you going to judge the
+soundness of the company's approach?  Having a good look in the
+kitchen will help.  Even better, helping a hand as an apprentice in
+the kitchen would be even better.  This is exactly what this book offers.
+
+We hope that our choice of topic, the do-it-yourself modeling of the
+full ten-billion-year history of a dense star cluster, will be
+rewarding.  We offer you the controls of a state-of-the-art flight
+simulator that will allow you to travel through the four-dimensional
+space-time history of a star cluster.  After zooming forwards or
+backwards in time by a few billions of years, you will be able to
+visit an interacting triple or quadruple system somewhere in the
+history of the star cluster.  Slowing down simulated time by a factor
+of a trillion, you can watch the intricate and chaotic gravitational
+dance of the three or four stars, moving around each other in a matter
+of days.  If you are lucky you may find a couple of neutron stars or
+black holes among the interacting star group, but you will have to
+slow down simulated time by yet another five to eight orders of
+magnitude, since two neutron stars can pass by each other in matters
+of milliseconds.
+
+All of this and much more will be at your finger tips already through
+half-way the series of books we are currently writing.  You will be
+able to use cutting-edge astrophysics research tools, together with
+full access to every line of code.  And if you have worked your way
+through the books in this series, you will not only understand how the
+whole system works, but you will also understand and appreciate the
+motivation for every design and implementation decision.  From that
+point on, you will be in a position to extend the current system and
+to engage in original scientific software design yourself.  More
+importantly, you will have a complete software environment to inspire
+you if you want to set up your own virtual laboratory in your own
+scientific discipline, or your preferred business environment.
+
+\bigskip
+\bigskip
+{\it Acknowledgments:}
+We thank Atakan Gurkan, Douglas Heggie, Vicki Johnson, and Robert
+Vanderbei for their comments on the manuscript.
+
+% the following three lines are included only in order to force the
+% right page number for the listing of the Contents in the Contents.
+% It now works when the preface ends in the middle of a righthanded
+% page.  If the preface ends in the middle of a lefthandend page, then
+% remove the top line, and make sure the Contents are listed correctly
+% again in the Contents.  Something quite similar is the case for the
+% listing in the Contents of the various lists (of figures, codes,
+% output, exercices, etc.)
+
+\newpage
+
+\hbox{}
+
+\newpage
+
+\addcontentsline{toc}{chapter}{Contents}
+\tableofcontents
+
+\newpage
+
+%begin{latexonly}
+
+
+
+
+\hbox{}
+
+\newpage
+
+
+\addcontentsline{toc}{chapter}{List of Figures}
+\listoffigures
+
+\chapter*{List of Codes}
+\addcontentsline{toc}{chapter}{List of Codes}
+\theoremlisttype{allname}
+\listtheorems{Code}
+
+
+\chapter*{List of Output}
+\addcontentsline{toc}{chapter}{List of Output}
+
+\theoremlisttype{allname}
+\listtheorems{Output}
+
+
+\chapter*{List of Exercises}
+\addcontentsline{toc}{chapter}{List of Exercises}
+
+\theoremlisttype{allname}
+\listtheorems{Exercise}
+
+%end{latexonly}
+
+
+\begin{htmlonly}
+
+\addcontentsline{toc}{part}{List of Figures}
+\listoffigures
+
+ \part*{List of Codes}
+%\addcontentsline{toc}{part}{List of Codes}
+ \theoremlisttype{allname}
+ \listtheorems{Code}
+
+
+ \part*{List of Output}
+%\addcontentsline{toc}{part}{List of Output}
+
+ \theoremlisttype{allname}
+ \listtheorems{Output}
+
+ \part*{List of Exercises}
+%\addcontentsline{toc}{part}{List of Exercises}
+
+ \theoremlisttype{allname}
+ \listtheorems{Exercise}
+
+%\part{Background}
+
+\end{htmlonly}

@@ -1,0 +1,49 @@
+This is a readme file, for the maitainers (not for the readers)
+
+Time-stamp: <04/01/25 18:53:48 makino>
+
+To update the book 1, try:
+
+ssh -l acs grape.astron.s.u-tokyo.ac.jp update-web
+
+This will update the book at tmp
+(grape.astron.s.u-tokyo.ac.jp/~acs/tmp)
+
+After you check that the text is okay, try:
+
+ssh -l acs grape.astron.s.u-tokyo.ac.jp update-book
+
+which will update the real WWW pages.
+
+Top level HTML pages live in:
+
+:ext:acs@grape.astron.s.u-tokyo.ac.jp:/usr2/acs/cvs/artcompsci
+
+as CVS archives, and tex sources under
+:ext:glab@castor.sns.ias.edu:/home/glab/cvs
+
+-----------------------------------------------------
+The following is memo for JM
+
+update-web:
+
+ssh grape.astron.s.u-tokyo.ac.jp cat /usr2/acs/update-web
+#!/bin/csh -f
+cd ~/WWW/artcompsci
+cvs update
+cd ~/papers/gravitylab
+cvs update
+cd books
+cd vol_1
+make clean
+make weball
+
+
+ssh grape.astron.s.u-tokyo.ac.jp cat /usr2/acs/update-book
+#!/bin/csh -f
+cd ~/papers/gravitylab
+cvs update
+cd books
+cd vol_1
+make install
+

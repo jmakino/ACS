@@ -1,0 +1,155 @@
+\documentclass{article}[12pt]
+\usepackage{verbatim}\usepackage{epsf}
+
+\setlength{\textwidth}{16cm}            % default seems to be around 4.8 inch,
+\addtolength{\evensidemargin}{-0.2in}    % so we can devide the extra 0.4 inch
+\addtolength{\oddsidemargin}{-0.2in}     % equally over left and right margin
+
+\setlength{\parindent}{2.5em}
+\setlength{\parskip}{1.2 ex plus0.2ex minus 0.1ex}
+\renewcommand{\baselinestretch}{1.05}
+\renewcommand{\floatpagefraction}{1.0}
+\renewcommand{\topfraction}{1.0}
+
+\begin{document}
+\begin{itemize}
+
+\item for equal mass particles, two particles can be expected to
+   stay in a Kepler orbit reasonably long (and thus can be
+   analytically Kepler regularized) is there separation
+   $r_{ij}$ obeys $r_{ij} < r_K$ with $r_K \propto N^{-3/7}$.
+   This follows from the requirement that the Kepler orbital
+   time $T < \tau$ where $\tau = 1/(n \sigma v)$ is the
+   encounter time, with $\sigma$ the geometrical cross section
+   and $v$ the typical velocity.  Then $\tau = 1/(N.r_K^2.1)$
+   and $T=(N.r_K^3)^{-1/2}$, hence $r_K \propto N^{-3/7}$.
+
+\item for the Global-Local fusion triggering, the global interaction
+   module flags pairs of particles as candidates for merging, but
+   then the orbit module only sends two particles at a time to
+   the local module.  If one particle wants to consider two other
+   particles as candidates to be merged with, the orbit module
+   decides, perhaps just randomly, which of those candidates to
+   offer to the local module first.  Here is the scheduling:
+\begin{itemize}
+   \item do a block time step, which returns k particle pair candidates
+   \item send all nonoverlapping particle pairs to the local module
+   \item if none are accepted, send one or more remaining pairs
+   \item whenever a change is accepted, rerun the force calculator
+   \item if nothing new is accepted, and no pairs remain, take the
+      the next block time step.
+\end{itemize}
+
+\item each atom or molecule, whether it is a gravitational collection
+   of mass points within the local module, or an SPH region within
+   the stellar physics module, or a contact binary or single
+   star (with possibly tidal bulges), has a radius $R$ that is
+   defined exactly as the largest distance from the center of
+   mass of that atom or molecule of any bit of mass that is still
+   dynamically significant. The $f$ factor that determines whether
+   two (atom/molecule)s are candidates for merging is hardwired
+   to be a certain factor $f_{local}$, typically $1.2$ or $1.3$
+   or so, for conversion from the global to the local module.
+   For the conversion from the local to the stellar-physics module,
+   the $f$ factor is provided by the stellar-physics module, and
+   it is typically 3 to 10.  This same $f$ value will be used
+   whenever we consider the fusion of two stellar-physics objects,
+   independent of whether each object is a single star or a
+   contact binary or an SPH region.
+
+\item conceptually, the data tree of a star cluster is like what
+   we use in kira, where each kira leaf is a node with $10^{60}$
+   or more daughters, one for each nucleus or electron or photon
+   inside a star.  The top node has somewhat less than $N$
+   daughters, and the next level nodes are either single stars
+   or double stars or SPH regions, or they are gravitational
+   molecules, each of which has up to ten or so daughters in
+   the nearly equal mass case, or up to $10^4$ to $10^5$ daughters
+   in case of a very massive black hole.  A central point: we will
+   never do a complete treewalk as is done in kira, since we now
+   have strict abstraction boundaries between horizontal levels
+   in this tree; the implementer of one level does not need to
+   know how a deeper level is handled.
+
+\item how did we derive the loss-of-digits criterion of
+   $r_{ij} = \epsilon_{trigger}\sqrt{m_i+m_j}$, with 
+   $\epsilon_{trigger} \sim 10^{-2}$ ?
+        We start with the requirement that we want to protect
+   the energy conservation of the whole system, to within a small
+   error tolerance of, say, $10^{-11}$ in N-body units.
+        Note that by doing so, we sacrifice accuracy for
+   very very light particles.  For example, Earth and Moon
+   in a globular cluster of $10^6$ stars, have a total mass
+   of $10^{-12}$, so the criterion reads $r_{ij} = 10^{-8}$,
+   so you are reduced to single precision integration,
+   effectively.  Interestingly, $r_{ij} = 10^{-8}$ corresponds
+   to a distance ten times larger than the distance to the moon;
+   or anything within the current Hills sphere of the Earth is
+   regularized. The round-off distance, by the way, is a couple
+   hundred meters.
+        Anyway, the absolute energy error is $\epsilon \sim
+   \frac{m_j}{r_{ij}}\frac{r_{roundoff}}{r_{ij}} < \epsilon_{safe}$.
+   This implies $r_{ij}^2>m_j \frac{r_{roundoff}}{\epsilon_{safe}}$
+   or for the trigger radius to start fusion: $r_{trigger} 
+   = \sqrt{\frac{r_{roundoff}}{\epsilon_{safe}}}\sqrt{m_i+m_j}$
+   With $r_{roundoff} \sim 10^{-15}$ and $\epsilon_{safe}=10^{-11}$
+   we have $r_{trigger} = 10^{-2}\sqrt{m_i+m_j}$.
+
+\item how did we derive the Kepler integration accuracy criterion of
+   $r_{ij} = 10^{-1}\sqrt{m_i+m_j}$ ?  We start with the value
+   of $10^{-2}$ for the coefficient for a single close encounter.
+   Assuming that a Kepler orbit gets mostly regularized through
+   analytical Kepler integration, we have perhaps $10^4$ orbits
+   that need to be numerically integrated.  If the error adds
+   in square root fashion, it will grow only by a factor of
+   $10^{-2}$.  As we saw above, $\epsilon_{trigger}$ grows only
+   with the square root of the energy error, so it becomes only
+   $10$ times larger than the previous value of $10^{-2}$.
+
+\item strong perturbations from an external object on a molecule
+   would not necessarily cause that object to become part of
+   the molecule.  For example, a very heavy black hole with not
+   cause everything nearby to become part of one molecule unless
+   a loss-of-digit criterion or other criterion is triggered.
+\end{itemize}
+
+\clearpage
+\large
+\begin{minipage}[b]{7.9cm}
+
+\noindent
+Candidate:
+\begin{enumerate}
+\item $ r_{ij} < f(R_i+R_j)$
+\item $ r_{ij} < f{\rm max}[R_i(m_j/m_i)^{1/3},R_j(m_i/m_j)^{1/3}]$
+\item $ r_{ij} < R_i^{mol}+R_j^{mol})$
+\item $ r_{ij} < \epsilon_{trig}\sqrt{m_i+m_j}$, $\epsilon_{trig} \sim 10^{-2}$
+\item $ r_{ij} < \epsilon_{trig}^{kep}\sqrt{m_i+m_j}$ {\tt \&\&
+bound},
+
+$\epsilon_{trig}^{kep} \sim 10^{-1}$
+\end{enumerate}
+
+\end{minipage}
+\begin{minipage}[b]{7.9cm}
+Candidate:
+\begin{enumerate}
+\item $ r_{ij} < f(R_i+R_j)$
+\item $g(m_{1},r_{1},v_{1},R_{1}, m_{2},r_{2},v_{2},R_{2})$
+
+\end{enumerate}
+\end{minipage}
+
+
+\epsfxsize \columnwidth
+\epsffile{top_conversion.eps}
+
+\begin{center}
+check
+\begin{eqnarray}
+1\le f \le 10 & {\rm okay}\nonumber\\
+ f > 10 & {\rm warning}\nonumber\\
+ f < 1 & {\rm error}\nonumber
+\end{eqnarray}
+\end{center}
+\end{document}

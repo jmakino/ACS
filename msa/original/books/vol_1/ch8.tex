@@ -1,0 +1,611 @@
+\chapter{A More Modular $N$-Body Hermite Code}
+
+\section{Starting a Tool Box}
+
+In this chapter we will discuss in detail a more modular version of
+the Hermite code {\st hermite6.C}, developed in the previous chapter.
+The new version is called {\st nbody\_sh1.C}.  Here `sh' stands for the
+shared but variable time step choice, and the number 1 indicates again
+that this is the first version.  This code will be the first tool of a
+tool box that we will continue to develop in the rest of this book, as
+well as in following books in this series.  From now on, each tool
+will adhere to our $N$-body I/O format, specified in the previous
+chapter (and possibly more fancy formats as well, but we will keep
+those more advanced versions compatible with our current bare bones
+format).  In addition, each tool will have extensive comments,
+explaining both the usage and the internal structure of the code.
+
+The new code, {\st nbody\_sh1.C}, has roughly four times more lines
+than the previous version, {\st hermite6.C}.  Almost half of these
+lines are either comments of blank lines, both of which help to make
+the code more readable and more understandable.  The fact that the
+code itself still has more than twice the length of the previous
+version stems from several factors.  First, the new code has nine
+functions, besides {\st main()}, while the old code had only two.
+Second, there are seven command line options, rather than two.
+Third, we now declare all functions at the top of the file.
+Finally, there is more diagnostics output than we had before.
+
+Below, the full code is presented, one function at a time.
+
+\section{Gravitylab}
+
+Our aim is to build a powerful software environment for experiments
+in stellar dynamics of dense stellar systems.  The idea is to build
+a virtual laboratory, which we will call {\it gravitylab}.  
+From now on, each new tool in our tool box will have a distinctive
+`gravitylab' header:
+
+\code{nbody\_sh1.C: logo\_begin}{chap8/nbody_sh1.C.0_logo_begin}
+
+We will not show these headers in future code listings, but they will
+be there in the source code for other tools.  The three stars moving
+on a figure-8 orbit are inspired by the solution presented in chapter 5.
+They are being observed at bottom left by the small figure looking
+through a telescope.
+
+Note the time stamp at the very first line.  This is a handy feature
+of the {\it emacs} editor that we have used to write this book.  When
+you add the line ``{\st (add-hook 'write-file-hooks 'time-stamp)}'' to
+the {\st .emacs} startup file, the date and time and user name will be
+updated automatically each time you write the file to disk.
+
+\section{Introductory Comments}
+
+Immediately following the gravitylab header, we see a lengthy comment
+block:
+
+\code{nbody\_sh1.C: summary}{chap8/nbody_sh1.C.1_summary}
+
+It starts with the name of the file, a brief summary with a reference
+to the literature, followed by a detailed description of how to use
+the code.  For a typical user, this is all the information needed.  As
+long as the user combines {\st nbody\_sh1} with other tools from
+gravitylab, there is even no need to understand the external data
+format, in which the $N$-body snapshots are written to and read from
+files.  For those users interested in such details, as well as in the
+internal format in which the data are stored during the execution of
+the code, the comment block contains format information near the end.
+The last few lines list the history and version numbers of the code.
+
+\section{Include Statements, Function Declarations, etc.}
+
+The first lines of real code start right after the introductory comments:
+
+\code{nbody\_sh1.C: premain}{chap8/nbody_sh1.C.2_premain}
+
+We start with {\st \#include} statements to various libraries.  The comments 
+on each line mention some of the functions used from those libraries.
+If we would leave out one of these include statements, the corresponding
+functions listed could not be linked, and the compiler would issue an error.
+
+The next statement indicates that we used the standard C++ namespace.
+Later, when gravitylab will have grown sufficiently large, it may be
+useful to create our own namespaces, in order to avoid collisions with
+other programs that may use names that are the same as we have chosen.
+Right now it is too early to worry about such complications.
+
+The {\st typedef} statement defines the word {\st real} as an
+alternative for the build-in function type {\st double}.  From now on
+we will only use the name {\st real} to indicate the standard floating
+point type {\st double}.  It is far more logical to talk about real
+numbers of type {\st real}, together with the integers of type {\st int},
+without using the archaic term `double' that stems from the expression
+`double precision' (long ago, the standard precision for floating
+point calculations used four bytes per floating point word, leading to
+the expression double precision for the now-standard eight-byte word
+length).
+
+Next we introduce the symbol {\st NDIM} for the number of dimensions.
+So far we have simply used the number 3 in our loops over Cartesian
+coordinates, but it is much better not to have any magic numbers in a
+code, where a magic number is defined as anything that is not 0 or 1.
+The term ``NDIM'' for the number of dimensions is far clearer than a
+blind ``3'' in the middle of a piece of code.  A second advantage of
+introducing a symbol, rather than magic numbers, is that we can change
+the symbol at one place, while guaranteeing its substitution
+everywhere else in the code.  In the vast majority of cases, we will
+do our simulations in three spatial dimensions, hence the assignment
+here of the number 3 to {\st NDIM} here, but we will also encounter
+cases where we want to do some experimentation in one or two dimensions.
+In that case, changing 3 to 1 or 2 in this line is all we need to do
+(apart from making sure that we have not used uniquely three-dimensional
+constructs elsewhere in the code, such as for example the use of
+3D spherical harmonics).
+
+Note that older C-style usage would have defined {\st NDIM} through
+the macro definition ``{\st \#define NDIM 3}'' .  Nowadays, however,
+it is considered good form to use the C++ expression ``{\st const int
+NDIM = 3;}'' .  Although the use of a {\st \#define} macro in this
+case is quite innocent, there are many other cases where the use of
+macros can lead to code that is prone to confusing errors that are
+hard to debug.  Therefore, as a matter of style it is a good idea to
+avoid them as much as possible.
+
+The following nine function declarations are necessary if we want to
+have the freedom to define them in an arbitrary way in the rest of the
+file.  The problem is that the C compiler goes through the file in one
+single pass, from top to bottom.  As long as each function is invoked
+only after it has been seen by the compiler, there is no problem.  In
+the codes {\st hermite4.C} through {\st hermite6.C}, the two functions
+listed at the top of the files were invoked only by {\st main()},
+which was listed last.  In general, however, with many functions there
+may not be a unique flow of functions calls.  Besides, it is easier to
+follow the logic of the code if we can start with {\st main()} at the
+top of the file.  The latter immediately implies that we will have to
+declare all functions mentioned in {\st main()}.
+
+This need for redundant information in the form of declarations is a
+weakness of C++.  In general, any time that a computer language forces
+you to duplicate information, it brings with it the danger of errors
+creeping in.  It is easy to change the definition of a function
+without changing the declaration, or {\it vice versa.}  In some cases,
+the compiler may catch this, but there may be other cases where
+overloading of function names with different argument sets makes it
+impossible for the compiler to catch such mistakes.  Unfortunately, we
+will have to live with this situation.
+
+Another example of redundant information in our program is the
+description of the command line options.  Almost the same words appear
+once in the `usage' part of the initial commments, and twice in the
+function {\st read\_options()} (for the help option and the unknown
+option).  It is possible to capture that information in a string at
+the top of the program, and to echo that string in {\st read\_options()}.
+We will make such a modification later.
+
+\section{The Function {\tt main()}}
+
+\code{nbody\_sh1.C: main}{chap8/nbody_sh1.C.3_main}
+
+The first six variables declared at the top of {\st main()} receive
+their values from the function {\st read\_options()} which reads the
+Unix style command line arguments.  Note that each variable has a
+default value, which is retained unless it is changed explicitly by
+the corresponding command.  We discuss the usage of command line
+options in the next section.
+
+If the function {\st read\_options()} detects a request for help, or
+the invocation of a non-existent option, it will return the Boolean
+value {\st false}.  In that case the statement {\st !read\_options()}
+is true, and program execution is halted.  In C++, returning the value 0
+indicates normal successful completion of the {\st main()} program, while
+any other value indicates a failure of some kind or other.  For simplicity
+we return here the value 1.
+
+Once the options are interpreted, we are ready to read the $N$-body
+snapshot from the standard input (which typically is redirected to
+read either the contents of a file, as in {\st nbody\_sh1 < data.in}
+or to receive data from another program through a pipe, as in
+{\st generate\_data | nbody\_sh1}).  Once the number of particles {\st n}
+has been read in, we can allocate storage space to contain the masses
+and dynamical information for all {\st n} particles, as we have seen
+in the previous chapter.  The actual initialization of the arrays is
+carried out by the function {\st get\_snapshot()}.
+
+The real work is then delegated to the function {\st evolve()}, which
+oversees the evolution in time of the $N$-body system.  When the call
+to {\st evolve()} returns, there is nothing left to be done.  For good
+form we then deallocate the memory that we had dynamically allocated
+with the {\st new} operator.  Note the square brackets in {\st delete{}},
+which tell the compiler to delete the full memory assigned to the arrays.
+If we would leave this out, for example in a statement {\st delete[] mass},
+we would only free the memory for {\st mass[0]}.  This would
+constitute a memory leak, since the rest of the array will still be
+allocated, but it will be no longer usable in our program.  In our
+particular case, this is no problem since we are about to terminate
+the program anyway, but in more complex cases, such as we will
+encounter in the function {\st evolve()}, it will be important to not
+create memory leaks.
+
+\section{Command Line Options}
+
+There are six command line options, Unix style, from which we can choose.
+All essential options have default values, so it is perfectly possible to
+run our code without specifying any of them.  For example, if we start
+with an $N$-body snapshot in an input file {\st data.in}, we can run the
+code to produce a stream of snapshot data in the output file {\st data.out},
+by typing:
+
+\begin{small}
+\begin{verbatim}
+|gravity> nbody_sh1 < data.in > data.out
+\end{verbatim}
+\end{small}
+
+This will have the exact same effect as if we would have specified the
+default values for the four main options, namely the time step control
+parameter (0.03), the interval between diagnostics output (1 time
+unit), the interval between output of snapshots (1 time unit), and the
+duration of the integration (10 time units):
+
+\begin{small}
+\begin{verbatim}
+|gravity> nbody_sh1 -d 0.03 -e 1 -o 1 -t 10 < data.in > data.out
+\end{verbatim}
+\end{small}
+
+If we would like to have three times smaller time steps, twice as many
+diagnostics outputs and with additional information, snapshot output
+intervals of 5 time units but starting at {\st t = 0}, and a total run
+time of 30 time units, we have to give the following command:
+
+\begin{small}
+\begin{verbatim}
+|gravity> nbody_sh1 -d 0.01 -e 0.5 -x -o 5 -i -t 30 < data.in > data.out
+\end{verbatim}
+\end{small}
+
+The order of the arguments is unimportant, but each option that
+expects a value (the {\st -d, -e, -o, -t} options) should be
+immediately followed by its corresponding value.  By the way, the
+value {\st 0.03} as the default for the scale of the time step parameter
+is somewhat arbitrary.  In practice, a value of {\st 0.1} is often
+found to be too large, while {\st 0.01} is often overkill.  For example,
+when we start from the initial conditions for three stars on a figure
+8 orbit, running {\st nbody\_sh1} with all default values in place, we
+wind up at time {\st t = 10} with a relative energy error of order $10^{-7}$.
+
+Of course, the optimal choice of values depend strongly on the
+particular application, and the default values are only a hint, in a
+blind attempt to come up with at least somewhat reasonable starting
+values.  It is up to the user to make sure that these values are
+appropriate in a given situation, and if not, to supply a better value
+after some experimentation.
+
+The help option can be invoked by typing:
+
+\begin{small}
+\begin{verbatim}
+|gravity> nbody_sh1 -h
+\end{verbatim}
+\end{small}
+
+This will not result in program execution, only in the printing of a
+short message that lays out the various command line option choices.
+A similar message will appear when we attempt to supply an
+non-existent option, for example:
+
+\begin{small}
+\begin{verbatim}
+|gravity> nbody_sh1 -q
+nbody_sh1: invalid option -- q
+usage: nbody_sh1 [-h (for help)] [-d step_size_control_parameter]
+         [-e diagnostics_interval] [-o output_interval]
+         [-t total_duration] [-i (start output at t = 0)]
+         [-x (extra debugging diagnostics)]
+|gravity> 
+\end{verbatim}
+\end{small}
+
+All this behavior can be inspected in the function {\st read\_options()}:
+
+\code{nbody\_sh1.C: read\_options}{chap8/nbody_sh1.C.read_options}
+
+Note that the six variables corresponding to the command line arguments
+are all passed by reference, so that the results are available to the
+calling program {\st main()}.
+
+The function {\st getopt()} is a standard C library function that can
+be used equally well in C++ programs.  Its third argument is a string
+which lists all command line options.  Each option can only consist of
+a single letter.  Those letters that should be followed by a value to
+be read in are indicated by a colon immediately following the letter.
+The string {\st "hd:e:o:t:ix"} tells us that options {\st h, i} and
+{\st x} do not expect additional values, while options {\st d, e, o}
+and {\st t} are to be followed with an argument, all of which are of
+type {\st real} in our particle case.  All option arguments are by
+default passed as ASCII strings, so we need the function {\st atof()}
+to convert the ASCII information into the proper floating point value,
+as we already saw in the previous chapter.
+
+Notice that each {\st case} in the body of the {\st switch} statement
+is ended by either a {\st return} statement or a {\st break} statement.
+The latter is necessary, since the default behavior of {\st switch} is
+to `fall through' from one case to the next, something that is clearly
+not desirable here.  After we jump out of the {\st switch} statement
+through a {\st break} command, we encounter the last statement,
+``{\st return true;}'' which tells the calling program that all is well,
+and that execution can continue.
+
+\section{Snapshot Input}
+
+The code for snapshot input is straightforward:
+
+\code{nbody\_sh1.C: get\_snapshot}{chap8/nbody_sh1.C.get_snapshot}
+
+Note that we do not check here whether a complete snapshot is being
+offered on the standard input stream in the right format.  It would be
+better to verify, for example, that new lines {\st \\n} occur in the
+correct places, separating each particle, and that no end-of-file
+condition is encountered before the whole $N$-body snapshot is read in.
+In later versions we will provide more complete error checking.
+
+\section{Snapshot Output}
+
+The code for snapshot output is similarly simple:
+
+\code{nbody\_sh1.C: put\_snapshot}{chap8/nbody_sh1.C.put_snapshot}
+
+Note that the masses, positions, and velocities are all declared as
+{\st const} in the declaration of the function arguments.  This means
+that this function is not allowed to change the values of those
+particular arguments.  Being able to specify function arguments as
+{\st const} is a very useful C++ feature.  It can help the compiler by
+providing extra information; it allows the compiler to flag an error
+if in the body of the function an attempt is made to change one of
+those arguments erroneously; and most importantly, it gives the human
+reader useful information about the intentions of the programmer.
+
+For all these reasons, it is important to be consistent in the use of
+{\st const} specifications, and to always use {\st const} wherever we
+can.  When we do this, we thereby imply that the absence of a {\st const}
+specifier for an argument means that we do want to affect the value of
+that particular argument.  For example, in the previous function 
+{\st get\_snapshot()}, masses, positions, and velocities are not
+preceded by {\st const}.  Indeed, all three arrays are being initialized
+in that function, and it is useful to be able to anticipate that already
+from looking at the argument list, either here or at the top of the
+file where all functions are declared.
+
+The first line of the body of the function sets the precision for all
+subsequent output.  It turns out that eight-byte double precision
+corresponds to about 16 digits of relative accuracy.  If we would
+output less than 16 significant digits for each {\st real} variable, 
+we would lose information.  A subsequent program reading in the
+snapshot that we have just written out would not have access to the
+full information that we had before we wrote our data.  On the other
+hand, if we would output those numbers with more than 16 digits, the
+extra digits would be effective garbage.  While this doesn't hurt, it
+is a waste of space (and possibly later processing time) to go beyond
+16 digits.
+
+\section{Reporting Diagnostics}
+
+Here is the code for the function that writes diagnostics to the
+standard error stream.  Note the declarations of arguments: all arrays
+are specified to be {\st const}, which is appropriate since their
+values should only be reported, without changing them.  The argument
+{\st einit} is passed by reference, since it will hold the initial
+value of the total energy of the system, information that should be
+passed back to the calling function.  The other arguments are all
+passed by value.
+
+\code{nbody\_sh1.C: write\_diagnostics}{chap8/nbody_sh1.C.write_diagnostics}
+
+The only calculation performed in this function is that of the kinetic
+energy.  The potential energy is determined in the function {\st
+get\_acc\_jerk\_pot\_coll()}.  The {\st init\_flag} is set to {\st
+true} when {\st write\_diagnostics()} is evoked for the first time, at
+{\st t = 0}.  In that case, we want to pass the value of the initial
+total energy back to the calling function {\st evolve()}, which can
+use that information to compare it with later measured values of the
+total energy, in order to determine the absolute and relative amounts
+of energy drifts, which are a good measure of numerical accuracy.
+
+Note that we could have defined the initial energy {\st einit} as a
+static variable inside {\st write\_diagnostics()}.  For our present
+purpose that would be fine, but this type of programming may easily
+create a future limitation.  If some day we would like to compare two
+different $N$-body systems, each of which evolves, we would get into a
+conflict if both of them would try to access the same static variable.
+Therefore, for the same reason we don't use global variables in the
+first place, we prefer to pass {\st einit} as a function variable.
+
+\section{Orbit Integration}
+
+We now come to the function that manages the orbit evolution, driving
+the Hermite integrator and scheduling the various output operations:
+
+\code{nbody\_sh1.C: evolve}{chap8/nbody_sh1.C.evolve}
+
+Starting again with the argument list, we see that the mass array, as
+always, is defined as {\st const}, since we do not model a mechanism
+for mass loss for stars, nor do we (yet) allow collisions between
+stars, which could be followed by mergers that would produce a merger
+remnant with a mass equal to the sum of the masses of the two stars.
+The only place where we do not define the mass array as {\st const} is
+in the function {\st get\_snapshot}, where the mass values are read in
+from the standard input stream.  Note that the time {\st t} is passed
+by reference.  In our current program, this is not necessary, since
+the value of {\st t} is not used in {\st main()}, where execution is
+halted immediately upon completion of the call to {\st evolve()}.
+However, in future extensions we may well add further commands in {\st
+main()}, and in that case it would be useful to have the value of the
+current time available.
+
+As we have seen before, before we can enter the integration loop we
+have to start with an initial call to the function computing the
+accelerations and jerks.  This function, {\st get\_acc\_jerk\_pot\_coll()}
+does what its name suggest: besides calculating accelerations and jerks,
+it also reports the value of the total potential energy of the system
+as well as the value of the time scale on which a `collision' between
+particles can occur, \ie a significant change of order unity in the
+local configuration of at least two particles.  The latter information,
+stored in the variable {\st coll\_time}, will be needed in the main
+integration loop in order to determine the size of the first time step.
+Accelerations and jerks are needed for the first part of the first
+integration time step, and the potential energy is used in the initial
+call to {\st write\_diagnostics()}, following the first call to
+{\st get\_acc\_jerk\_pot\_coll()}.
+
+In addition, if the user has specified the {\st init\_out} flag to be
+true, the input values of the $N$-body system are echoed as they are
+on the output stream; the default behavior is to wait with output until
+some integration steps have been taken.  This is a sensible default,
+since in many cases we are only interested in one final output snapshot,
+which can then served as the input for a later invocation of the
+integrator.  If we invoke our program with the same value for the
+snapshot output interval as the duration of the run, we guarantee that
+only one final output will be made.  An example usage of this type is:
+
+\begin{small}
+\begin{verbatim}
+|gravity> nbody_sh1 -d 0.01 -e 2 -o 40 -t 40 < data.in > data.out
+\end{verbatim}
+\end{small}
+
+Before entering the main integration loop, we schedule the next
+times for diagnostics and snapshot output, as well as the final
+halting time.  The loop itself is an infinite loop, governed by
+the tautological {\st while (true)}, which is obviously always the
+case.  The standard C/C++ trick to define an infinite loop uses an
+empty for loop, in the form {\st for(;;)}, but that expression is
+less transparent, whereas {\st while (true)} leaves no doubt as to it
+being an infinite loop.  The only way to jump out of this infinite
+loop is at the end of the loop: when time progresses past the halting
+time {\st t\_end}, the {\st break} statement causes control flow to
+continue past the loop.
+
+The first time we enter the loop, the second {\st while} argument will
+be evaluated as {\st true}, unless one of the three values {\st dt\_dia,
+dt\_out} or {\st dt\_tot} would be zero or negative, which would be 
+nonsensical values.  Ideally, we should check somewhere that all
+command line option arguments fall within reasonable ranges.  Since in
+the present code we have already introduced so many new features, we
+will not include such a defensive programming style at this point.
+However, later on we will insist on checking all values which reach a
+program through an interface, such as presented by command line options.
+For now, we will live with the danger of a non-positive value for either
+{\st dt\_dia} or {\st dt\_out}, which combined with a positive value for
+{\st dt\_tot} would lead to an infinite number of output attempts,
+without the time ever advancing.
+
+With natural choices of parameters, the majority of loop cycles will
+not lead to any output.  In those cases a new time step size is
+determined, and the function {\st evolve\_step()} is called, which as
+the name implies will advance the system by one integration step, and
+in addition update the time by an amount {\st dt}.  Sooner or later it
+will be time for output or for ending the run.  In either case, the
+second {\st while} statement will evaluate as {\st false}, no
+integration time step will be taken and therefore the time will not be
+advanced either.  Instead, the required output will be done and/or the
+integration will be finished altogether.  If the run is not yet
+finished, the next cycle in the infinite loop will lead to another
+integration step, and so on.
+
+Note the freeing up of memory for acceleration and jerk arrays, at the
+end of {\st evolve()}.  As in the case of the memory allocation in
+{\st main()}, this is not strictly necessary, since the program is
+about to finish, but again it is certainly good form to include these
+statements here.
+
+\section{Taking a Single Integration Step}
+
+In the function {\st evolve\_step()}, we encounter the first case where
+specific memory allocation and deallocation occurs more often than once
+during a run:
+
+\code{nbody\_sh1.C: evolve\_step}{chap8/nbody_sh1.C.evolve_step}
+
+As we have seen already in chapter 6, the Hermite code requires
+knowledge of the values of all four dynamical variables at the
+previous time step, indicated here by the prefix {\st old\_}.  Since
+we do not want to introduce global variables, and since these
+variables are not needed outside the context of the current function,
+we allocate the memory in the first four lines, and free up those
+memory locations in the last four lines.  If we now would omit those
+last four lines, the resulting memory leak could let us run into
+serious trouble.  For example, taking a million time steps with a
+hundred-body system would cause us to loose $4*NDIM=12$ words or
+$12*8=96$ bytes for each particle for each time step, leading to a
+total memory loss of $96*10^2*10^6$ bytes or roughly ten Gbytes, which
+may well be larger than the core memory of the computer at hand.
+
+Again, it would be very good if we would check with each call to {\st
+new} whether there is still enough memory available.  Since we do not
+do that here, a memory leak will suddenly cause the program to crash,
+without giving us any clue of where to look.  Even using a debugger
+may not help, since the actual crash may well occur somewhere else,
+where a small amount of legitimate memory is requested, only to find
+out that all memory has just been exhausted elsewhere in the code.
+Once more, we will postpone but not neglect this type of defensive
+programming.
+
+After the current values of the dynamical variables have been passed
+to the {\st old\_} copies, we take the first half of a Hermite pass,
+in a call to {\st predict\_step()}, followed by a recalculation of
+accelerations and jerks, as well as potential energy and collision
+time scale.  We are then ready to complete the Hermite step through a
+call to {\st correct\_step()}, and update the time {\st t}.
+
+\section{The Predictor Step}
+
+The first half of a Hermite step is particularly simple, nothing more
+than a rather short Taylor series development:
+
+\code{nbody\_sh1.C: predict\_step}{chap8/nbody_sh1.C.predict_step}
+
+Notice how much we can already read off from the way the arguments to 
+{\st predict\_step()} are declared: accelerations and jerks are passed
+as {\st const} variables, whereas positions and velocities are not.
+This implies that the latter two are updated, whereas the former two
+are used to provide information for the update, without being changed
+themselves.  This of course is exactly what happens.
+
+\section{The Corrector Step}
+
+The second half of a Hermite step is again a Taylor series development,
+this time to a higher order than in the predictor step, even though
+this is not obvious from the way it is written.  We refer to the
+discussion in the beginning of chapter 6, where the Taylor series
+character of the corrector step is made explicit.  Here is the code:
+
+\code{nbody\_sh1.C: correct\_step}{chap8/nbody_sh1.C.correct_step}
+
+\section{Where All the Work is Done}
+
+We now arrive at the core function of {\st nbody\_sh1.C}, where all
+the hard work is being done.  In addition, this function is both the
+longest and the most complicated among the ten functions in the file.
+The main reason for the complexity is that we are trying to accomplish
+four things in one function, as the name indicates.  While calculating
+accelerations and jerks are logically related, the calculation of the
+potential energy and the collision time is more a matter of convenience
+with little natural or logical relation to the calculation of the
+first two.  The main reason for bundling these four operations is
+efficiency.  Here is the code:
+
+\code{nbody\_sh1.C: get\_acc\_jerk\_pot\_coll}{chap8/nbody_sh1.C.get_acc_jerk_pot_coll}
+
+Notice the distribution of {\st const} declarations here, which is
+just the opposite from what we saw in {\st predict\_step()} and 
+{\st correct\_step()}.  In the latter two accelerations and jerk were 
+{\st const} while positions and velocities were updated.  Here the
+roles are reversed.  In addition, there are two variables that are
+called by reference, {\st epot} and {\st coll\_time}, which enable the
+information about potential energy and collision time to flow back to
+the calling function {\st evolve\_step()} and from there back to
+{\st evolve()}, where they are used, as we have seen above.
+
+After preparing the proper initial values for the four variables of
+interest, we enter the $\{i,j\}$ loop running over all particle pairs.
+As we have seen in the previous two chapters, we first compute a
+number of auxiliary quantities before we are ready to calculate first
+the contribution of a pair of particles to the potential energy and
+then their mutual contributions to each others acceleration and jerk.
+
+At the end of the loop, we compute the two different collision time
+step estimates, in the same way we discovered at the end of the
+previous chapter.  The first estimate follows the approximate of
+unperturbed linear motion, extrapolating current separation and rate
+of change of separation in order to guess when the particles will
+change their relative configuration substantially.  The second estimate
+neglects the current rate of change of the pairwise separation,
+estimating instead the free-fall time of the two particles, in case
+they would start off at rest.  In practice, the smaller of the two
+estimates provides a reasonably safe estimate for the time scale on
+which significant changes in configuration can occur.
+
+\section{Closing Logo}
+
+At the very end of our file, we add a simpler version of the
+gravitylab logo that we encountered at the top of the file:
+
+\code{nbody\_sh1.C: logo\_end}{chap8/nbody_sh1.C.0_logo_end}
+
+It contains the name of the file, for consistency, and it guarantees
+that no part of the file has been truncated in a process of copying,
+editing or transmission over the net.  While such mishaps are very
+rare nowadays, they still can occur occasionally, and it seems prudent
+to mark the intended end of the file.  Meanwhile, our intrepid observer
+has changed directions from which to observe the world.

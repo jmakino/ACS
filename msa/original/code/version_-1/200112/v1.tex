@@ -1,0 +1,1584 @@
+\documentclass{book}
+\usepackage{verbatim}
+\usepackage{epsf}
+% ...........................................................................
+%
+% history:
+%
+% May 2001: ph and jm met in New York, where they wrote code and produced
+%           pictures for the two-body problem.
+%
+% July 2001: ph and jm met in Tokyo, where they wrote code and produced
+%            pictures for the figure-8 three-body problem.
+%
+% Nov. 2001: ph and jm met in New York, where they discussed how to structure
+%            the first three volumes.  Following their meeting, ph started to
+%            write draft text for the first part of volume 1.
+%
+% Dec. 2001: ph started to add introductory text in preface and early chapters
+%            and ph and jm began to experiment with joint code development and
+%            text writing across the internet
+%
+% ...........................................................................
+%
+\def\versiondate{{8 December 2001}}
+\def\titleabbrev{{Pure Gravity I}}
+\def\undertext#1{{$\underline{\hbox{#1}}$}}
+\def\doubleundertext#1{{$\underline{\underline{\hbox{#1}}}$}}
+%
+%  macros for ph and jm to communicate recent or future changes:
+%
+\def\piet#1{{\bf[#1 -- piet]}}
+\def\jun#1{{\bf[#1 -- jun]}}
+%
+%  macros for the frequent dialogues between the three players in the book.
+%  note: each use of \alice or \bob or \carol has to be sandwiches in between
+%        a starting \abc and an ending \cba
+%
+\def\abc{\begin{description}}
+\def\alice{\item[Alice:]}
+\def\bob{\item[Bob:]}
+\def\carol{\item[Carol:]}
+\def\cba{\end{description}}
+\it
+%
+%  macros for printing computer code and computer input and output;
+%  these looks better in a somewhat smaller font.
+%  1) here is the one for code:
+%
+\def\code#1{{\small\verbatiminput{#1}}}
+%
+%  2) here should be the one for I/O, but it doesn't work; verbatim is just
+%     to stubborn!  --  Piet
+%
+%\def\io#1{\begin{small}\begin{verbatim}#1\end{verbatim}\end{small}}
+%
+\renewcommand{\floatpagefraction}{0.9}
+%
+\def\simlt{\hbox{ \rlap{\raise 0.425ex\hbox{$<$}}\lower 0.65ex\hbox{$\sim$} }}
+\def\simgt{\hbox{ \rlap{\raise 0.425ex\hbox{$>$}}\lower 0.65ex\hbox{$\sim$} }}
+\def\sub#1{_{\rm #1}}
+\def\sup#1{^{\rm #1}}
+\def\undertext#1{{$\underline{\hbox{#1}}$}}
+\def\doubleundertext#1{{$\underline{\underline{\hbox{#1}}}$}}
+\def\half{{\scriptstyle {1 \over 2}}}
+\def\ie{{\it {\frenchspacing i.{\thinspace}e. }}}
+\def\eg{{\frenchspacing e.{\thinspace}g. }}
+\def\cf{{\frenchspacing\it cf. }}
+\def\etal{{\frenchspacing\it et al.}}
+\def\et{{\etal}}
+\def\simlt{\hbox{ \rlap{\raise 0.425ex\hbox{$<$}}\lower 0.65ex\hbox{$\sim$} }}
+\def\simgt{\hbox{ \rlap{\raise 0.425ex\hbox{$>$}}\lower 0.65ex\hbox{$\sim$} }}
+\def\solar{\odot}
+\def\msun{\ifmmode{M_\solar}\else{$M_\solar$}\fi}
+\def\rsun{\ifmmode{R_\solar}\else{$R_\solar$}\fi}
+\def\Rf{\parindent=0pt\smallskip\hangindent=3pc\hangafter=1}
+\def\pc{{\rm pc}}
+\def\kpc{{\rm kpc}}
+\def\Mpc{{\rm Mpc}}
+\def\yr{{\rm yr}}
+\def\Myr{{\rm Myr}}
+\def\Gyr{{\rm Gyr}}
+\def\kT{\ifmmode{kT}\else{$kT$}\fi}
+\def\N{{\ifmmode{N}\else{$N$}\fi}}
+\def\fb{{\ifmmode{f_B}\else{$f_B$}\fi}}
+\def\emax{{\ifmmode{E_{max}}\else{$E_{max}$}\fi}}
+\def\td{{\ifmmode{t_d}\else{$t_d$}\fi}}
+\def\tcr{{\ifmmode{t_{cr}}\else{$t_{cr}$}\fi}}
+\def\tr{{\ifmmode{t_r}\else{$t_r$}\fi}}
+\def\trh{\ifmmode{t_{rh}}\else{$t_{rh}$}\fi}
+\def\vv{{\ifmmode{\langle v^2\rangle}\else{$\langle v^2 \rangle$}\fi}}
+\def\v{{\ifmmode{\langle v^2\rangle^{1/2}}
+                \else{$\langle v^2 \rangle^{1/2}$}\fi}}
+\def\half{{\ifmmode{{1 \over 2}}\else{${1 \over 2}$}\fi}}
+\def\dhalf{{\textstyle {1 \over 2}}}
+\def\threehalf{{\ifmmode{{3 \over 2}}\else{${3 \over 2}$}\fi}}
+\def\dthreehalf{{\textstyle {3 \over 2}}}
+\def\dfivehalf{{\textstyle {5 \over 2}}}
+\def\dfivethree{{\textstyle {5 \over 3}}}
+\def\kms{\ifmmode{\rm km\,s^{-1}}\else{$\rm km\,s^{-1}$}\fi}
+\def\kmps{{\rm km/s}}
+\def\bx{{\bf x}}
+\def\br{{\bf r}}
+\def\bv{{\bf v}}
+\def\ba{{\bf a}}
+\def\badot{{\bf \dot a}}
+\def\batwo{{{\bf  a}^{(2)}}}
+\def\bathree{{{\bf  a}^{(3)}}}
+\font\lgggggb=cmbx20 scaled \magstep4
+\font\lggggb=cmbx10 scaled \magstep5
+\font\lgggb=cmbx10 scaled \magstep4
+\font\lggb=cmbx10 scaled \magstep3
+\font\lgb=cmbx10 scaled \magstep2
+\font\lb=cmbx10 scaled \magstep1
+\font\lgr=cmr10 scaled \magstep2
+%\font\lr=cmr10 scaled \magstep1
+\font\lr=cmr10
+\font\slgh=cmr10 scaled \magstep2
+\font\slggh=cmr10 scaled \magstep3
+\font\slgggh=cmr10 scaled \magstep4
+\font\sb=cmbx9
+\font\sr=cmr9
+%
+% ...........................................................................
+%
+\begin{document}
+
+\begin{center}
+
+	   \hbox to \hsize{\hfil draft version of}
+	   \hbox to \hsize{\hfil \undertext\versiondate}
+	   \hbox{ }
+	   \bigskip
+	   \bigskip
+
+{\lgggggb Pure Gravity}
+
+\bigskip
+
+{\lgggb or}
+
+\bigskip
+
+{\lggggb Particles at Play}
+
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+
+{\lgggb Vol. 1:}
+
+\bigskip
+\bigskip
+
+{\lgggb Writing an N-Body Code}
+
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+
+{\slgggh Piet Hut}
+
+\medskip
+{\slgh Institute for Advanced Study}
+
+\bigskip
+{\lr 1 Einstein Drive}
+
+{\lr Princeton, NJ 08540-0631}
+
+{\lr U.S.A.}
+
+{\lr piet@ias.edu}
+
+\bigskip
+\bigskip
+
+{\slgggh Jun Makino}
+
+\medskip
+{\slgh University of Tokyo, \ Dept. of Astronomy}
+
+\bigskip
+{\lr 7-3-1 Hongo, Bunkyo-ku}
+
+{\lr Tokyo 113-0033}
+
+{\lr JAPAN}
+
+{\lr makino@astron.s.u-tokyo.ac.jp}
+
+\end{center}
+
+%	   \nopagenumbers
+%	   \vfill\eject
+%	   \headline={\tenrm \doubleundertext\titleabbrev \hss
+%	     \undertext\versiondate} 
+%	   \footline={\hss \tenrm \folio \hss}
+
+\newpage
+\pagenumbering{roman}
+%
+% this probably should go somewhere else
+%
+\parskip 8pt plus 1pt
+%
+%
+
+\begin{center}
+{\lgb Preface}
+\end{center}
+
+The {\it Pure Gravity} book series, of which this is the first volume,
+will show the reader how to design, write and test a complete software
+environment for use in state-of-the-art scientific research.  While there
+are many existing books on algorithms and programming and systems design,
+it is very hard to find guidance in the literature for setting up your own
+full-fledged scientific laboratory, completely from scratch.  Our aim is
+to provide the first such guide.
+
+The research topic is the simulation of dense stellar systems.
+Most stars spend their life far removed from other stars; fortunately
+our Sun is one of them.  But there are crowded places in the Universe
+where stars live so close together that they frequently are engaged in
+close encounters, and sometimes even in physical collisions.  The
+dense nucleus of our own galaxy is one such place.  Other examples are
+dense star clusters, such as the globular clusters that circulate
+around our galaxy, and star forming regions, such as the Orion Nebula.
+
+This book series will provide a guide for the novice, who may have no
+experience at all in programming, nor in scientific research.  We take
+the reader on a leisurely tour in which at every step we stop to ask
+what will motivate the next step, in which direction that could go,
+and how we could implement that.  Then we show various
+implementations, tests, failures, and ultimately a robust working
+version of code, before we move on to the next step.
+
+Of course, more experienced readers can skip over the more pedestrian
+parts, but perhaps they, too, may want to read quickly over our
+hit-and-miss discussions.  Speaking for ourselves, we found we learned
+an enormous amount from going back to basics, asking ourselves
+critically why we tend to rely on certain assumptions or coding
+practices.  Even though we have worked on dense stellar systmes
+together during twenty years of continuous collaboration, we found
+that we could still make many improvements in robustness and
+flexibility in our own software environment, activities which are
+often put off indefinitely in the middle of an ongoing research program.
+
+This book aims at three groups of readers.  For scientists, it gives a
+concrete example for setting up a full scientific simulation software
+environment.  Whether you are a biologist, physicist, psychologist, or
+working in another area of science, many of the issues discussed here
+will come up for you too, when you want to build a new software system,
+or what is often more challenging, when you want to fully overhaul and
+modernize an archaic existing system.  Because our scientific example
+has such a simple base, nothing more than Newton's laws of gravity, it
+is easy to grasp the underlying physics, after which you can focus on
+the complexity of managing a software laboratory.
+
+The second target group of readers are computer scientists, and in
+general everyone building complex software systems.  While we apply
+modern concepts such as the use of object-oriented languages and design
+patterns, and notions such as extreme programming, our main {\it forte}
+is that we fill a gap in the market, by providing a complete discussion
+of the process of constructing a large-scale software system.  The main
+reason that most books on programming do not say much about large-scale
+software architecture, is that a really helpful discussion simply does
+not fit into a book!  No matter how many general pieces of advice one
+can cram into one book on architecture, that alone is not sufficient
+to build a house.  The same holds for building a real-world software
+system.  And even if writers would have the patience to write a
+multi-volume hands-on guide, if the application would be seen as being
+too narrow, few readers would have the courage to work their way
+through such a series.  Our gamble here is that the music of the spheres
+may attract an audience audacious enough to follow our cosmic exploration
+through the various volumes in this series.
+
+Readers in our third group neither work in natural science nor in
+computer science.  They are simply curious how a modern software
+system is set up.  For example, they may have read about the billions
+of dollars that are lost because of late delivery of software, or
+worse, delivery of faulty software.  Perfectly functioning rockets
+have been blown up because of glitches in complex software systems.
+Newly built airports have experienced very costly delays, simply
+because software for baggage transport was delivered a year late.
+Perhaps you are an average user of the internet, and just curious
+about what makes writing large software environments so hard.  Perhaps
+you are working in business or finance, and you are wondering whether
+to invest in a software company.  How are you going to judge the
+soundness of the company's approach?  Having a good look in the
+kitchen will help.  Even better, helping a hand as an apprentice in
+the kitchen would be even better.  This is exactly what this book offers.
+
+We hope that our choice of topic, the do-it-yourself modeling of the
+full ten-billion-year history of a dense star cluster, will be
+rewarding.  We offer you the controls of a state-of-the-art flight
+simulator that will allow you to travel through the four-dimensional
+space-time history of a star cluster.  After zooming forwards or
+backwards in time by a few billions of years, you will be able to
+visit an interacting triple or quadruple system somewhere in the
+history of the star cluster.  Slowing down simulated time by a factor
+of a trillion, you can watch the intricate and chaotic gravitational
+dance of the three of four stars, moving around each other in a matter
+of days.  If you are lucky you may find a couple of neutron stars or
+black holes among the interacting star group, but you will have to
+slow down simulated time by yet another five to eight orders of
+magnitude, since two neutron stars can pass by each other in matters
+of milliseconds.
+
+All of this and much more will be at your finger tips already half-way
+the series of books we are currently writing.  You will be able to use
+cutting-edge astrophysics research tools, together with full access to
+every line of code.  And if you have worked your way through the books
+in this series, you will not only understand how the whole system works,
+but you will also understand and appreciate the motivation for every
+design and implementation decision.  From that point on, you will be
+in a position to extent the current system and to engage in original
+scientific software design yourself.  More importantly, you will have
+a complete software environment example to inspire you if you want to
+set up your own virtual laboratory in your own scientific discipline,
+or your prefered business environment.
+
+\bigskip
+\bigskip
+{\it Acknowledgements:}
+xxx
+%We thank xxx, xxx and xxx for valuable
+%discussions.  This work is supported in part by the Research for the
+%Future Program of Japan Society for the Promotion of Science
+%(JSPS-RFTP97P01102).
+
+\newpage
+%
+% this probably should go somewhere else
+%
+\parskip 0pt
+%
+%
+
+\piet{I'll see how to automatically generate this in LaTeX}
+
+\medskip
+\medskip
+
+{\lgb $\;\;$ Table of Contents}
+
+\medskip
+
+$\;\;\;$ Preface
+
+\smallskip
+
+$\;\;\;$ 1. Astrophysical Background
+
+$\;\;\;\;\;\;$ 1.1. Globular Clusters
+
+$\;\;\;\;\;\;$ 1.2. Galactic Nuclei
+
+$\;\;\;\;\;\;$ 1.3. Star Forming Regions
+
+$\;\;\;\;\;\;$ 1.4. Galactic Clusters
+
+\smallskip
+
+$\;\;\;$ 2. Writing your own star cluster simulator
+
+$\;\;\;\;\;\;$ 2.1. It all looks so simple \dots
+
+$\;\;\;\;\;\;$ 2.2. \dots until you discover the burden of binaries \dots
+
+$\;\;\;\;\;\;$ 2.3. \dots and you start toiling over terribly triples \dots
+
+$\;\;\;\;\;\;$ 2.4. \dots and you find you want to set up an environment \dots
+
+$\;\;\;\;\;\;$ 2.5. \dots and you need customized interactive graphics \dots
+
+$\;\;\;\;\;\;$ 2.6. \dots and you start archiving really large runs \dots
+
+$\;\;\;\;\;\;$ 2.7. \dots and you want to deal with real stars, so \dots
+
+$\;\;\;\;\;\;$ 2.8. \dots you need more physics!
+
+\medskip
+
+Part I: N = 2
+
+\smallskip
+
+$\;\;\;$ 3. Getting Started
+
+$\;\;\;\;\;\;$ 3.1. Forward-Euler
+
+$\;\;\;\;\;\;$ 3.2. Leapfrog
+
+\smallskip
+
+$\;\;\;$ 4. xxxx
+
+$\;\;\;\;\;\;$ 4.1. yyyy
+
+\medskip
+
+Part II: N = 3
+
+\smallskip
+
+$\;\;\;$ 5. xxxx
+
+$\;\;\;\;\;\;$ 5.1. yyyy
+
+\smallskip
+
+$\;\;\;$ 6. xxxx
+
+$\;\;\;\;\;\;$ 6.1. yyyy
+
+\medskip
+
+Part III: N = 10
+
+\smallskip
+
+$\;\;\;$ 7. xxxx
+
+$\;\;\;\;\;\;$ 7.1. yyyy
+
+\smallskip
+
+$\;\;\;$ 8. xxxx
+
+$\;\;\;\;\;\;$ 8.1. yyyy
+
+\newpage
+\pagenumbering{arabic}
+%
+% this probably should go somewhere else
+%
+\parskip 8pt plus 1pt
+%
+%
+
+\section{Astrophysical Background}
+
+The Sun is safe: time scales in the bulk of the galaxy.
+
+\subsection{Globular Clusters}
+
+picture of M15.  M stands for Catalogue of Messier, in whose telescope
+this star cluster showed up like a blur, nothing like this gem of a
+picture taken by Space Telescope.  Messier was not very interested in
+these clusters, since they tended to confuse him in his search for
+comets.  Since clusters and comets looked alike in his telescope, he
+compiled his catalogue `cosmic rejects'.  For us, however, they take
+center stage.
+
+\subsection{Galactic Nuclei}
+
+Big Black Holes and all that good stuff.  Pictures of stars moving (in
+real time!) near our galactic center, with speeds of thousands of km/sec.
+
+\subsection{Star Forming Regions}
+
+Much progress recently.  We can begin to bridge the formation and
+evolution of interstellar gas clouds through the formation of stars
+and the interaction of the stellar embryos to the early stages of a
+star cluster.  While the stars are contracting, interactions are
+likely to be plenty, and in addition double stars and triples and so
+on may have a dynamic origin.  See picture of Orion Nebula.
+
+\subsection{Galactic Clusters}
+
+Some of the richer galactic or open clusters are dynamically old
+enough that they qualify as dense stellar systems.  See M67 picture.
+
+\newpage
+
+\section{Writing your own star cluster simulator}
+
+dense stellar systems
+
+\subsection{It all looks so simple \dots}
+
+Newton's inverse square laws of gravity
+
+\subsection{\dots until you discover the burden of binaries \dots}
+
+early sixties: already with a few bodies, programs came to a halt
+
+analytic regularization
+
+\subsection{\dots and you start toiling over terribly triples \dots}
+
+late eighties: promordial binaries tend to produce long-lived triple systems 
+
+\subsection{\dots and you find you want to set up an environment \dots}
+
+if a single program grows too complex, issues of robustness/verification
+and flexibility/modularity require setting up a software environment
+
+\subsection{\dots and you need customized interactive graphics \dots}
+
+Partiview, plus scripting language, in our case Ruby.
+
+\subsection{\dots and you start archiving really large runs \dots}
+
+Separate problems, normally not treated in text books, which seem to suggest
+that gigabyte files and terabyte files are just scaled up versions of what 
+is used in their sample exercises
+
+\subsection{\dots and you want to deal with real stars, so \dots}
+
+So far, we worked with point particles, hence the name of the series:
+Pure Gravity, or particles at play.  When stars come close, what happens?
+mass overflow, even physical collisions.  No more point particles.
+Then what?
+
+\subsection{\dots you need more physics!}
+
+stellar hydrodynamics and stellar evolution.  This will be treated in
+a second series: Applied Gravity, or stars at play.
+
+\newpage
+
+\begin{center}
+{\lggb Part I: N = 2}
+\end{center}
+
+\bigskip
+\bigskip
+
+\section{Getting Started}
+
+Our goal is build a laboratory to study the interactions between stars.
+Since stars don't fit in traditional laboratories, we have no choice
+but to use virtual stars in virtual labs.  The computer provides us
+with the right virtual environment, and it is our task to write the
+software that will correctly simulate the behavior of the virtual stars
+and their interactions.  Once that software is in place, or at least
+enough of it to start playing, the user can provide a starting situation,
+after which our software will evolve the system, for a few billion years,
+say.
+
+In this book we will focus in detail on the whole process of developing
+the software needed.  We will aim at realistic detail, showing the way
+of thinking that underlies the construction of a complex and ever-growing
+software environment.  We will require patience from the reader, since it
+will take a while to have a full package in hand for modeling, say,
+the long-term behavior of a star cluster.  This drawback, we feel, is
+more than offset by the advantages of our approach:
+
+\begin{itemize}
+\item
+the reader will be fully empowered to customize the {\it any}
+aspect of the software environment or {\it any} larger or smaller part of it;
+\item
+the reader will be able to use the package with a complete
+understanding and appreciation of what are and are not reasonable ways
+to apply the tools;
+\item
+the reader will learn to embark on completely different large-scale
+software projects, be they in (astro)physics, other areas of science,
+or other fields altogether; 
+\item
+and in addition, we hope that reading these books will be as much fun
+for the reader as it was for us to write them.
+\end{itemize}
+
+\subsection{Our Setting}
+
+We want to convey some of the atmosphere in which large software
+environments are grown, in a dynamic and evolutionary way, often
+starting from very small beginnings -- and always surprising the
+original authors when they see in what unexpected ways others can
+and will modify their products in whole new directions.  Most of our
+narrative will follow this process step by step, but occasionally we
+will turn away from the process to the players: the developers writing
+the software.  We have chosen one representative of each of the three
+target groups mentioned in our preface, from natural science, business
+and computer science.
+
+The setting is an undergraduate lounge, where three friends occasionally
+hang out after dinner, and sometimes tell each other about the projects
+they are working on.  Tonight, Alice talks with great animation to her
+friends Bob and Carol.  Alice is an astrophysics major, Bob is preparing
+for business school, and Carol majors in computer science.
+
+\abc
+
+\alice
+Guess what!  Today I was asked to choose a junior project, for
+me to work on for half a year.  Many of the choices offered seemed to
+be interesting, but for me the most exciting opportunity was to work
+on the overhaul of a laboratory for interactions between stars.
+
+\bob
+What are the interactions that are so interesting?
+
+\alice
+imagine this, the current software package allows you to create
+a star cluster and to let it evolve for billions of years, and then
+you can fly through the whole four-dimensional history in space and
+time to watch all the collisions and close encounters between normal
+stars and black holes and white dwarfs and you name it!
+
+\carol
+if that package already exists, what then is so exciting about
+an overhaul?
+
+\alice
+yes, the package exists, but every large software package tends
+to grow and to become overweight.  As you both know, this is true in
+business-driven software projects, but it is even more true in science
+settings, where the value of clean software engineering is underrated
+even more than in more profit-oriented areas.  As a result, by the far
+the most reasonable and efficient way to extend older packages is first
+to do a thorough overhaul.
+
+\bob
+I see.  You mean that rewriting a package is worth the time,
+presumably because you have already figured out the physics and you
+have similarly built up extensive experience with hooking everything
+together in various ways in software.
+
+\alice
+exactly.  Rewriting a package takes far less time than writing
+it in the first place -- if we want to keep the same functionality.
+In practice, it may take longer than we think, since we will for sure
+find new extensions and more powerful ways to include more physics.
+As long as we don't get carried away, and keep our science goals in
+sight, this extra time is well spent and will lead to greater
+productivity.
+
+\carol
+I wonder, though, whether a complete overhaul is desirable.  I
+have just learned about a notion called {\it refactoring}.  The idea
+is to continuously refine and clean up code while you go along.
+
+\alice
+Yes, that would be better.  In fact, I already had a brief chat
+with my supervisor, and he mentioned just that.  He said that this was
+the last really major overhaul he hoped to do for his software
+environment.  The main reason between the planned overhaul is to make
+it flexible enough that the system from now on can grow more
+organically.
+
+\bob
+the overhaul that will be the end of all overhauls!
+
+\carol
+well, maybe.  I've heard a lot of hype about programming, in
+the few years that I have been exposed to it.  But the basic idea
+sounds good.  And even if you will have to overhaul in the future, a
+cleaner and more modular code will surely be easier to understand and
+disentangle and hence to overhaul.
+
+\bob
+may I ask a critical question?  You have half a year to get your
+feet wet, doing a real piece of scientific research.  Would it really
+be prudent to spend that time overhauling someone else's code?
+
+\alice
+I asked that question, too.  My supervisor told me that a
+through-going attempt to improve a large software environment in a
+fundamental way from the bottom up is guaranteed to lead to new
+science.  Instead of overhauling, a better term might be fermenting.
+You will reap the benefits of all the years of experience that have
+gone into building the software, from working with the science to the
+figuring out of the architecture of the software environment.  Those
+who write the original code won't have the time to do a complete
+rewrite; they have become too engrossed in teaching and administration.
+But they will have time to share their experience, and they will
+gladly do so when they see someone seriously working on improvements.
+
+\carol
+in other words, during this coming half year you might find
+yourself engaging in actual research projects, as a form of spin-off
+of the overhauling, or fermenting as you just called it?
+
+\alice
+exactly.
+
+\bob
+you know what?  Perhaps this is a silly thing to suggest, but I
+suddenly got an idea.  It seems that Alice today has started what
+amounts to an infinite task.  She will have her hands full at it, even
+if she could clone herself into several people working simultaneously,
+and she is not expected to reach anywhere near completion in half a year.
+At the same time, she is expected to start absolutely from start.  If
+she wouldn't do so, it wouldn't be a complete overhaul.  Here is my
+proposal: how about all three of us pitching in, a couple times a
+week, after dinner, using the time we tend to spend here anyway?
+
+\carol
+to keep Alice honest?
+
+\bob
+exactly!  Of course, she may well get way ahead of us into all
+kind of arcane astrophysics applications, but even so, if we plod
+behind her, asking her questions about each and every decision she has
+made from the start, we will probably keep her more honest than any
+astrophysicist could -- simply because we know less about astrophysics
+than any astrophysicist!  And besides, for me too it would be a form of
+fun and profit.  I intend to focus on the software industry when I go
+to business school, and I might as well get some real sense of what is
+brewing in the kitchen, when people write non-trivial software systems.
+
+\carol
+hmm, you have a point.  Obviously, something similar holds for
+me too, in that I can hone my freshly learned theoretical knowledge on
+realistic astrophysics problems.  What do you think, Alice, are we
+rudely intruding upon your new project?
+
+\alice
+no, on the contrary!  As long as I keep my actual project
+separated, as Bob stressed, I am more than happy to discuss the basics
+with you both during after-dinner sessions, as long as you have the
+stamina and interest to play with orbital dynamics of stars and star
+systems.  And I'm sre we will all three learn from the experience: I
+would be very surprised if you wouldn't inject new ideas I hadn't
+thought about, or notice old ideas of mine that can be improved.
+
+\bob
+okay, we have a deal!  Let's get started right away, and get back
+here tomorrow, same time, same place.
+
+\carol
+okay, but let's say almost the same place: next door is the
+computer center, where we will be able to find a big enough screen so
+that the three of us can gather around it, to start writing our first
+star-moving program.
+
+\alice
+an $N$-body code, that is what it is called.  Okay, I'm game too.
+See you both tomorrow!
+
+\cba
+
+\subsection{The Gravitational $N$-Body Problem}
+
+The next day, our three friends have gathered again, ready to go.
+
+\abc
+
+\alice
+Hi, you're all back, so I guess you were really serious.  Okay, let's
+write our first code for solving the gravitational $N$-body problem.
+
+\bob
+I understand that we are dealing with something gravitational
+attractions between celestial bodies, but what is the problem with that?
+
+\carol
+And why are you talking about $N$ bodies, and not $p$ bodies or
+anything else?
+
+\alice
+Traditionally, in mathematics and mathematical physics, when we pose a
+question, we call it a problem, as in a home work problem.  The
+gravitational 2-body problem is defined as the question: given the
+initial positions and velocities of two stars, together with their
+masses, describe their orbits.
+
+\bob
+What if the stars collide?
+
+\alice
+For simplicity, we treat the stars as if they are mass points, without
+any size.  In this case they will not collide, until they happen they
+hit each other head-on.  Of course, we can set two point masses up
+such that they will hit each other, and we will have to take such
+possibilities into account (see volume 2).  However, when we start
+with random initial conditions, the chance of such a collision is
+negligible.
+
+\carol
+But real stars are not points?
+
+\alice
+True.  At the goal of building a laboratory for star cluster evolution
+is to introduce real stars with finite sizes, nuclear reactions, loss
+of radiation and mass, and all that good stuff.  But we have to start
+somewhere, and a convenient starting place is to treat stars as point
+masses.  In practice, to discriminate between the physical modeling of
+stars and the replacement of them with point masses, we often call
+those points `bodies'.
+
+This brings me to Carol's question: why do astrophysicists talk about
+$N$-body simulations?  This is simply a historical convention.  I
+would prefer the term many-body simulations, but somehow somewhere
+someone stuck in the variable $N$ as a place-holder for how many
+bodies where involved, and we seem to be stuck with that notation.
+
+\carol
+Fine.  Let's pick a language and start coding!  I bet you physics
+types insist on using fortran?
+
+\alice
+Believe it or not, most of the code to be overhauled has been written
+in C++, and I suggest that we adopt the same language.  It may not be
+exactly my favorite, but it is at least widely available, well
+supported, and likely to stay with us for decades.
+
+\bob
+What is C++, and why the obscure name?  Makes the notion of an $N$-body
+seem like clarity itself!
+
+\carol
+Long story.  Once upon a time there was a language A, then something
+with a B in it, then a popular language C \dots
+
+\bob
+\dots are you making a pun on our names?
+
+\carol
+No, I'm not kidding.  Then C was extended to a new language for
+object-oriented programming, something we'll talk about later.  In a
+nerdy pun, the successor operation ``++'' from the C language was used
+to indicate that C++ was the successor language to C.  Don't look at
+me, we'll have to live with it.
+
+\cba
+
+\subsection{The Gravitational $2$-Body Problem}
+
+A decision was made to let Carol take the controls, for now.  Taking
+the keyboard in front of a large computer screen, she opens a file
+``nbody.C''in her favorite editor.  Expectantly, she looks at Alice,
+sitting to her left, for instructions, but Bob first raises a hand.
+
+\abc
+
+\bob
+I'm a big believer in keeping things simple.  Why not start by coding up
+the 2-body problem first, before indulging in more bodies?  Also, I
+seem to remember from an introductory physics class for poets that the
+2-body problem was solved, whatever that means.
+
+\alice
+Good point.  Let's do that.  It is after all the simplest case that is
+nontrivial: a 1-body problem would involve a single particle that is
+just sitting there, or moving in a straight line with constant velocity,
+since there would be no other particles to disturb its orbit.
+
+And yes, the 2-body problem can be solved analytically.  That means
+that you can write a mathematical formula for the solution.  For
+higher values of $N$, whether 3 or 4 or more, no such closed formulas
+are known, and we have no choice but to do numerical calculations in
+order to determine the orbits.  For $N=2$, we have the luxury of being
+able to test the accuracy of our numerical calculations by comparing
+our results with the formula that Newton discovered for the 2-body
+problem.
+
+Yet another reason to start with $N=2$ is that the description can be
+simplified.  Instead of given the {\it absolute} positions and
+velocities for each of the two particles, with respect to a given
+coordinate system, it is enough to deal with the {\it relative}
+positions and velocities.  Instead of dealing with position $\br_1$
+for the first particle and $\br_2$ for the second particle, we can
+write down the gravitational attraction between the two in terms of
+the relative position, defined as:
+
+$$
+\br = \br_2 - \br_1
+$$
+
+Newton's gravitational equation of motion then becomes:
+
+$$
+\frac{d^2}{dt^2}\br = - G \frac{M_1 + M_2}{r^3}\br
+$$
+
+This is a second-order differential equation.  At the left-hand side
+you see the second derivative of position with respect to time $t$.  The
+first time derivative of position $\br$ is the velocity $\bv = d\br /dt$
+while the second derivative presented here is the acceleration
+$\ba = d\bv /dt = d^2\br /dt^2 $.  At the right hand side, the masses
+of the two particles are indicated by $M_1$ and $M_2$, respectively.
+$G$ is the value of Newton's gravitational constant.
+
+I'm glad you both have at least some familiarity with differential
+equations, in the context of classical mechanics.  It may not be a bad
+idea to brush up your knowledge, if you want to know more about the
+background of Newtonian gravity.  There are certainly plenty of good
+introductory books.  At this point it is not necessary, though, to go
+deep into all that.  I can just provide the few equations we need to
+get started, and for quite a while our main challenge will be to
+figure out how to solve these equations.
+
+\bob
+The differential equation does indeed look familiar, but why is there
+a power 3 in the denominator?  I thought that Newtonian gravity is an
+inverse square power, so I would have expected a power 2 down there.
+
+\alice
+Good question!  We are working here in three dimensions, because that
+is how many dimensions space in the universe has.  The bold-face
+notation $\br$ indicates that we are dealing with three-dimensional
+vectors.  If we name the components as follows,
+
+$$
+r = \{x, y, z\}
+$$
+
+then the scalar distance between the two particles is defined by
+
+$$
+r = | \br | = \sqrt{x^2+y^2+z^2}
+$$
+
+And while it is true that Newtonian gravity is a $1/r^2$ force, we
+have to tell the particles not only the magnitude of their mutual
+attraction, but also the direction in which they pull each other.
+This is accomplised by adding the last factor $\br$.  To compensate
+for the fact that $\br$ grows linearly with the distance, we have to
+add an extra power in the denominator.
+
+\carol
+Is there no cleaner way to write this equation, making the $1/r^2$
+nature of the interaction more transparent?
+
+\alice
+Sure there is.  We can introduce a so-called unit vector, which by
+definition has a length of one unit in our coordinate system.  This
+is a good tool for dealing with directions without introducing changes
+in magnitude.  The unit vector corresponding to $\br$ is given as
+$ \hat\br = \br / r $, and the equation of motion for our 2-body
+problem now reads:
+
+$$
+\frac{d^2}{dt^2}\br = - G \frac{M_1 + M_2}{r^2}\hat\br
+$$
+
+\bob
+That looks more like the real thing.
+
+\carol
+Yes, but it may be easier to program the previous expression, so let's
+keep both on the table for now, and see what's most convenient.
+
+\alice
+One more thing: let's make life as simple as we can, by choosing a
+system of physical units in which the gravitational constant and the
+total mass of the 2-body system are both unity:
+
+$$G=1$$
+
+$$M_1 + M_2 = 1$$
+
+Our original equation of motion now becomes simply:
+
+$$
+\frac{d^2}{dt^2}\br = - \frac{\br}{r^3}
+$$
+
+\cba
+
+\subsection{2-body problem, forward-Euler}
+
+\code{forward_euler1.C}
+
+\begin{small}
+\begin{verbatim}
+g++ forward_euler1.C -o forward_euler1
+\end{verbatim}
+\end{small}
+
+\begin{small}
+\begin{verbatim}
+|gravity> forward_euler1 > for.out
+|gravity> head for.out
+1 0.005 0 -0.01 0.5 0
+0.9999 0.01 0 -0.0199996 0.49995 0
+0.9997 0.0149995 0 -0.0300001 0.49985 0
+0.9994 0.019998 0 -0.0400027 0.4997 0
+0.999 0.024995 0 -0.0500088 0.4995 0
+0.9985 0.02999 0 -0.0600194 0.499249 0
+0.9979 0.0349825 0 -0.0700359 0.498948 0
+0.997199 0.039972 0 -0.0800595 0.498597 0
+0.996399 0.0449579 0 -0.0900916 0.498195 0
+0.995498 0.0499399 0 -0.100133 0.497742 0
+|gravity> tail for.out
+7.62061 -6.22601 0 0.812921 -0.574783 0
+7.62874 -6.23176 0 0.812841 -0.574718 0
+7.63687 -6.23751 0 0.812761 -0.574653 0
+7.645 -6.24325 0 0.812682 -0.574588 0
+7.65312 -6.249 0 0.812602 -0.574523 0
+7.66125 -6.25475 0 0.812523 -0.574458 0
+7.66937 -6.26049 0 0.812443 -0.574393 0
+7.6775 -6.26623 0 0.812364 -0.574329 0
+7.68562 -6.27198 0 0.812286 -0.574264 0
+7.69375 -6.27772 0 0.812207 -0.5742 0
+|gravity>
+\end{verbatim}
+\end{small}
+
+ast: Unexpected large!! What happened.
+
+comp: Perhaps a trap because you did not use ./forward\_euler1 ?
+
+ast: baka, why?
+
+comp: well, I'm not really serious about danger, but note that other
+programs with the same name may be picked up.  For example, beginners
+often call a program `test', which makes it quite likely that a
+who-knows-where program will be executed instead.
+
+ast: I doubt that there is a forward\_euler1 lurking somewhere in the
+operating system.
+
+comp: I think you're right -- now while we are writing this book.  But
+notice that the first reader, after downloading the book, will indeed
+have a program by that name somewhere on his or her system!  So I
+still vote for using ./forward\_euler1.  Oh well, go ahead and live
+dangerously if you want.  But don't tell me I didn't warn you!
+
+ast: Let's look at the real danger here -- let's look at what went
+wrong with the orbit.
+
+\begin{small}
+\begin{verbatim}
+|gravity> gnuplot
+gnuplot> set size square
+gnuplot> plot 'for.out'
+\end{verbatim}
+\end{small}
+
+Note that the sentence ``set size square'' can be included in a file
+called `.gnuplot'; we will not repeat this line here in further
+examples of the use of gnuplot; we will leave it to the reader to add
+this line to a `.gnuplot' file, or to add it manually at the beginning
+of each example below.
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm;
+\epsffile{for.ps}
+\caption{$dt = 0.01$}
+\label{fig:for}
+\end{center}
+\end{figure}
+
+ast: aha!
+
+comp: aha??
+
+ast: the time step must have been too large.
+
+(With this program, the orbit flies apart around the first pericenter
+passage, and the particles escape from each other.)
+
+ast: by the way, I'd like to print out a copy.  How do we do that?
+
+\begin{small}
+\begin{verbatim}
+gnuplot> set terminal post eps 22
+Terminal type set to 'postscript'
+Options are 'eps noenhanced monochrome dashed defaultplex "Helvetica" 22'
+gnuplot> set output "for.ps"
+gnuplot> replot
+gnuplot> 
+\end{verbatim}
+\end{small}
+
+comp: now you can simply plot the figure by giving the command:
+
+\begin{small}
+\begin{verbatim}
+|gravity> lpr for.ps
+|gravity>
+\end{verbatim}
+\end{small}
+
+So let's make the time step size something we can specify, to make it
+smaller:
+
+\code{forward_euler2.C}
+
+First repeat the previous disaster.
+
+For $dt = 0.01$, the same explosion happens.
+
+\begin{small}
+\begin{verbatim}
+g++ forward_euler2.C -o forward_euler2
+|gravity> forward_euler2 > for1.out
+1
+Etot [t = 0] = -0.875
+de = 6.24998e-05
+de = 0.000124996
+de = 0.000187497
+de = 0.000250011
+de = 0.000312547
+. . . . .
+de = 1.26899
+de = 1.26899
+de = 1.26899
+|gravity> forward_euler2 > for10.out
+10
+Etot [t = 0] = -0.875
+de = 6.25e-07
+de = 6.87512e-06
+de = 1.3126e-05
+de = 1.93786e-05
+. . . . .
+de = 0.425318
+de = 0.425319
+de = 0.425319
+|gravity> gnuplot
+gnuplot> plot 'for10.out'
+\end{verbatim}
+\end{small}
+
+For $dt = 0.001$, at least a few orbits are completed, but each orbit
+quickly grows.
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{for10.ps}
+\caption{$dt = 0.001$}
+\label{fig:for10}
+\end{center}
+\end{figure}
+
+For $dt = 0.0001$, the spiraling-out is calmer.
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{for100.ps}
+\caption{$dt = 0.0001$}
+\label{fig:for100}
+\end{center}
+\end{figure}
+
+For $dt = 0.00001$, the spiraling-out is still barely visible under gnuplot
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{for1000.ps}
+\caption{$dt = 0.00001$}
+\label{fig:for1000}
+\end{center}
+\end{figure}
+
+\subsection{2-body problem, leapfrog}
+
+\code{leapfrog1.C}
+
+\begin{small}
+\begin{verbatim}
+g++ leapfrog1.C -o leapfrog1
+|gravity> leapfrog1 > leap1.out
+1
+Etot [t = 0] = -0.875
+de = 1.17198e-09
+de = 4.68985e-09
+de = 1.05594e-08
+de = 1.87905e-08
+. . . . .
+de = 3.6141e-05
+de = 3.38728e-05
+de = 3.17741e-05
+|gravity> leapfrog1 > leap10.out
+10
+Etot [t = 0] = -0.875
+de = 1.1724e-13
+de = 1.41822e-11
+de = 5.17113e-11
+de = 1.12767e-10
+. . . . .
+de = 3.85679e-07
+de = 3.61152e-07
+de = 3.38488e-07
+|gravity> leapfrog1 > leap100.out
+100
+Etot [t = 0] = -0.875
+de = -1.11022e-16
+de = 1.20126e-13
+de = 4.74509e-13
+de = 1.06393e-12
+. . . . .
+de = 3.88014e-09
+de = 3.63308e-09
+de = 3.40483e-09
+|gravity> leapfrog1 > leap1000.out
+1000
+Etot [t = 0] = -0.875
+de = 0
+de = 5.55112e-16
+de = 2.88658e-15
+de = 9.10383e-15
+. . . . .
+de = 3.88177e-11
+de = 3.6344e-11
+de = 3.40558e-11
+|gravity> gnuplot
+gnuplot> plot 'leap1.out'
+\end{verbatim}
+\end{small}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{leap1.ps}
+\caption{$dt = 0.01$}
+\label{fig:leap1}
+\end{center}
+\end{figure}
+
+notice rotation of periastron: advance of apsidal nodes.
+In other words, in the previous picture the apastron part of the orbit
+was fattened; now the quadratures are the parts were the lines get thicker.
+
+\begin{small}
+\begin{verbatim}
+gnuplot> plot 'leap10.out'
+\end{verbatim}
+\end{small}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{leap10.ps}
+\caption{$dt = 0.001$}
+\label{fig:leap10}
+\end{center}
+\end{figure}
+
+Aha!  Now you cannot see the deviations anymore from orbit to orbit.
+
+\newpage
+
+\begin{center}
+{\lggb Part II: N = 3}
+\end{center}
+
+\bigskip
+\bigskip
+
+\section{3-body problem, leapfrog, circle}
+
+Now we put three particles on a circle.  We use the balance of
+centrifugal force $ \frac{v^2}{r} $ and the centripetal gravitational
+force to enforce a circular orbit.
+
+\code{leapfrog1a.C}
+
+\begin{small}
+\begin{verbatim}
+g++ leapfrog1a.C -o leapfrog1a
+|gravity> leapfrog1a > triple1a.out
+1
+Etot [t = 0] = -0.866025
+de = 1.0103e-14
+de = 4.16334e-14
+de = 9.34808e-14
+de = 1.66644e-13
+. . . . .
+de = 2.64304e-10
+de = 2.66949e-10
+de = 2.69598e-10
+\end{verbatim}
+\end{small}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1a.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1a}
+\end{center}
+\end{figure}
+
+Now add a 0.001 perturbation to the velocity of particle 1, and run
+for a longer time, 1000 instead of 10 time units:
+
+\code{leapfrog1b.C}
+
+\begin{small}
+\begin{verbatim}
+g++ leapfrog1b.C -o leapfrog1b
+|gravity> leapfrog1b > triple1b.out
+1
+Etot [t = 0] = -0.866025
+de = 8.33436e-11
+de = 1.66702e-10
+de = 2.50068e-10
+de = 3.33439e-10
+. . . . .
+de = 1.48837e-08
+de = 1.52172e-08
+de = 1.5549e-08
+\end{verbatim}
+\end{small}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1b.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1b}
+\end{center}
+\end{figure}
+
+The orbits begin to diverge.
+Now twice as long:
+
+\code{leapfrog1c.C}
+
+\begin{small}
+\begin{verbatim}
+g++ leapfrog1c.C -o leapfrog1c
+|gravity> leapfrog1c > triple1c.out
+1
+Etot [t = 0] = -0.866025
+de = 8.33436e-11
+de = 1.66702e-10
+de = 2.50068e-10
+de = 3.33439e-10
+. . . . .
+de = 8.25631e-06
+de = 8.1391e-06
+de = 8.02621e-06
+\end{verbatim}
+\end{small}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1c.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1c}
+\end{center}
+\end{figure}
+
+The orbits begin to get chaotic.
+Now four times as long:
+
+\code{leapfrog1d.C}
+
+\begin{small}
+\begin{verbatim}
+g++ leapfrog1d.C -o leapfrog1d
+|gravity> leapfrog1d > triple1d.out
+1
+Etot [t = 0] = -0.866025
+de = 8.33436e-11
+de = 1.66702e-10
+de = 2.50068e-10
+de = 3.33439e-10
+. . . . .
+de = 29.1127
+de = 29.1127
+de = 29.1127
+\end{verbatim}
+\end{small}
+
+Note that in gnuplot we want to give the extra commands:
+
+\begin{small}
+\begin{verbatim}
+set xrange [-5:5]
+set yrange [-5:5]
+\end{verbatim}
+\end{small}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1d.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1d}
+\end{center}
+\end{figure}
+
+Energy error causes explosion.
+Now with ten times smaller time steps:
+
+\begin{small}
+\begin{verbatim}
+|gravity> leapfrog1d > triple1d1.out
+10
+Etot [t = 0] = -0.866025
+de = 8.32667e-14
+de = 9.17044e-13
+de = 1.7506e-12
+de = 2.58327e-12
+. . . . .
+de = 1.60324e-06
+de = 1.91979e-06
+de = 2.29792e-06
+\end{verbatim}
+\end{small}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1d1.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1d1}
+\end{center}
+\end{figure}
+
+Great: decay of unstable triple.  But have we converged to reality?
+Now with again ten times smaller time steps:
+
+\begin{small}
+\begin{verbatim}
+|gravity> leapfrog1d > triple1d2.out
+100
+Etot [t = 0] = -0.866025
+de = 1.11022e-16
+de = 7.66054e-15
+de = 1.58762e-14
+de = 2.39808e-14
+. . . . .
+de = 1.84725e-08
+de = 2.07468e-08
+de = 2.3423e-08
+\end{verbatim}
+\end{small}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1d2.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1d2}
+\end{center}
+\end{figure}
+
+Great: We do seem to have converged to reality!
+Now ten times longer:
+
+\code{leapfrog1e.C}
+
+\begin{small}
+\begin{verbatim}
+g++ leapfrog1e.C -o leapfrog1e
+|gravity> leapfrog1e > triple1e.out
+100
+Etot [t = 0] = -0.866025
+de = 1.11022e-16
+de = 7.66054e-15
+de = 1.58762e-14
+de = 2.39808e-14
+. . . . .
+de = 1.88229e-09
+de = 1.96058e-09
+de = 2.04432e-09
+\end{verbatim}
+\end{small}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1e.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1e}
+\end{center}
+\end{figure}
+
+By the way, notice how leapfrog recovers from $10^{-5}$ back to
+$10^{-10}$ type errors.
+
+\subsection{3-body problem, leapfrog, figure-8}
+
+\code{leapfrog2.C}
+
+\begin{small}
+\begin{verbatim}
+g++ leapfrog2.C -o leapfrog2
+|gravity> leapfrog2 > triple1.out
+1
+Etot [t = 0] = -1.28705
+de = -3.95102e-08
+de = -1.58104e-07
+de = -3.55968e-07
+de = -6.33411e-07
+. . . . .
+de = -7.43225e-05
+de = -7.50071e-05
+de = -7.54851e-05
+\end{verbatim}
+\end{small}
+
+\begin{figure}
+\begin{center}
+\leavevmode
+\epsfxsize = 12 cm
+\epsffile{triple1.ps}
+\caption{$dt = 0.01$}
+\label{fig:triple1}
+\end{center}
+\end{figure}
+
+\subsection{modular leapfrog}
+
+now a more modular version.
+
+DO THIS WITH EXTREME PROGRAMMING: test and test and test after every
+modification.  To make this practical, write a program to measure the
+Euclidian distance, both in configuration space and in velocity space
+(and perhaps also information about the modal behavior and outliers?).
+Discuss briefly exponential divergence and show this in a resonant triple.
+
+Note: extra header file for width of output field:
+
+\begin{small}
+\begin{verbatim}
+#include  <iomanip.h>
+\end{verbatim}
+\end{small}
+
+\code{leapfrog2.C}
+
+But more compact, with the following input file:
+
+\code{triple.in}
+
+we can use:
+
+\code{leapfrog3.C}
+
+or slightly more compactly:
+
+\code{leapfrog4.C}
+
+todo:
+
+N = 2 --$>$ N
+
+softening
+
+refine --$>$ t\_out and t\_end
+
+subroutines
+
+initial conditions
+
+better output
+
+
+
+\bigskip
+
+\bigskip
+
+\bigskip
+
+\newpage
+
+\begin{center}
+{\lggb Part III: N = 10}
+\end{center}
+
+\bigskip
+\bigskip
+
+\section{xxxx}
+
+\end{document}

@@ -1,0 +1,4 @@
+$EXTERNAL_UP_LINK= "../../index.html" ;
+$EXTERNAL_UP_TITLE= "ACS Home Page" ;
+$TOC_STARS = 1;
+$PAPERSIZE = "A4nobi";

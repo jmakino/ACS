@@ -1,0 +1,10 @@
+*.aux
+*.lof
+*.lom
+*.toc
+*.log
+*.thm
+*.out
+*.dvi
+*.ps
+.web*
