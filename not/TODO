@@ -1,6 +1,6 @@
 = TODO for acs
 
-Time-stamp: <2004-01-20 11:32:01 piet>
+Time-stamp: <2004-01-20 12:21:17 piet>
 
 * in ch2.cp, in:
 
@@ -54,38 +54,6 @@ Time-stamp: <2004-01-20 11:32:01 piet>
 
 * in this same file, in <tt>5. Generation of Lab Notes</tt>
   mysteriously the number 5 becomes 1 !?!
-
-* we should implement Ato's errata in our first book:
-
-  .
- Dear Piet and Jun,
-  I have started reading "The Art of Computational Science". I do not know
-  if the version on the web is the latest and if you are interested in
-  hearing bug reports, but I thought I would let you know of some typos
-  I noticed in the book. 
-  
-  7.2 A Standard $N$-Body Snapshot Format
-   
-  after the paragraph that starts with "For example, to store the initial..."
-  the given example has one line too many.
-   
-  - - -
-   
-  after the paragraph that starts with "As soon as our program starts..."
-  the array indices are all 0, they should be 0, 1, and 2
-   
-  - - -
-   
-  11.4 Dynamically Produced Binaries
-   
- in Alice, starting with "You may not have heard of it...", says "Monte Carol",
-  should be "Monte Carlo", spoils the joke that comes afterward :-)
-  
-  I hope you find this useful,
-  
-  cheers,
-  
-  ato
 
 * in our book, we may want to say a few more words about the notion of
   the `order' of a differential equation?  This was the main point of
