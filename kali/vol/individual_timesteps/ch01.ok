@@ -241,7 +241,7 @@ And here is how I rewrote it for the individual time step case:
 
  :inccode:.nbody_ind1.rb+evolve
 
-== xxx
+== Back to How and Which
 
 *Alice*: What does +startup+ do?
 
@@ -267,8 +267,29 @@ That was quite a while ago.
 
 *Bob*: Well, we needed to lay some foundations.  Now I can show you.
 The _which_ part is decided right at the start of the +while+ loop,
-by a call to <tt>find_next_particle</tt>.  The _how_ part 
+by a call to <tt>find_next_particle</tt>.  The _how_ part is decided
+three lines further on: the particle +np+ that is found is being asked
+to take a time step, through its instance method <tt>autonomous_step</tt>.
 
+*Alice*: Why autonomous?
 
-*Alice*: 
+*Bob*: This is the generic situation, well after the start and well before
+the finish of a calculation.  As you can see from the +if+ condition
+one line earlier, an autonomous step is only allowed if the end of the step
+<tt>np.next_time</tt> is still earlier than the finishing time <tt>t_end</tt>.
+If that is not the case, we have to wrap it, and start synchronizing
+everything.
 
+*Alice*: Can you show me what happens in the generic case, with an autonomous
+step?
+
+*Bob*: For that, we have to go to the +Body+ class.
+
+*Alice*: It would be good to print out that whole class, 
+to get an idea of what is happening on the ground level.
+
+*Bob*: My pleasure!  Here it all is.
+
+== The <tt>Body</tt> Class
+
+ : inccode:.nbody_ind1.rb+Body

@@ -55,8 +55,8 @@ class Body
     time_scale_sq = VERY_LARGE_NUMBER
     body_array.each do |b|
       unless b == self
-        r = b.pred_pos - @pred_pos    # NOTE: we use only predicted pos & vel
-	v = b.pred_vel - @pred_vel
+        r = b.pred_pos - @pred_pos                                           #2
+	v = b.pred_vel - @pred_vel                                           #2
 	r2 = r*r
 	v2 = v*v
         estimate_sq = r2 / v2            # [distance]^2/[velocity]^2 = [time]^2
@@ -77,7 +77,7 @@ class Body
     a = j = @pos*0                         # null vectors of the correct length
     body_array.each do |b|
       unless b == self
-        r = b.pred_pos - @pred_pos    # NOTE: we use only predicted pos & vel
+        r = b.pred_pos - @pred_pos
         r2 = r*r
         r3 = r2*sqrt(r2)
         v = b.pred_vel - @pred_vel

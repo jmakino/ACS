@@ -14,8 +14,8 @@ class Body
     time_scale_sq = VERY_LARGE_NUMBER
     body_array.each do |b|
       unless b == self
-        r = b.pos - @pos
-	v = b.vel - @vel
+        r = b.pos - @pos                                                     #2
+	v = b.vel - @vel                                                     #2
 	r2 = r*r
 	v2 = v*v
         estimate_sq = r2 / v2            # [distance]^2/[velocity]^2 = [time]^2
