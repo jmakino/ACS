@@ -1,4 +1,4 @@
-#define  N  1000000
+#define  N  100000000
 
 int main()
 {

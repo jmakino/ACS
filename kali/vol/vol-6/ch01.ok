@@ -242,6 +242,8 @@ xxxx
 
 xxxxx
 
+Let's give Ruby a 100 times easier task:
+
  :inccode: test1.rb
 
  :commandoutput: time ruby test1.rb
