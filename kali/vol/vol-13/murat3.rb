@@ -203,12 +203,14 @@ class Nbody
         nsteps += 1
       end
       if @time >= t_dia
-        sync(t_dia, dt_param)       # NOTE: we should also update nsteps here!!
+        sync(t_dia, dt_param)
+        nsteps += @body.size
         write_diagnostics(nsteps, x_flag)
         t_dia += delta_dia
       end
       if @time >= t_out
-        sync(t_out, dt_param)
+        sync(t_out, dt_param)      # we are now syncing twice, if t_dia = t_out
+        nsteps += @body.size
         simple_print
         t_out += delta_out
       end
