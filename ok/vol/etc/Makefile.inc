@@ -34,3 +34,14 @@ clean :
 	    $(TARGET).log $(TARGET).ps $(TARGET).toc
 	-rm tmp.tex tmp.aux tmp.dvi tmp.log tmp.ps tmp.toc tmp.jpeg*
 
+%.tex : %.ok
+	ruby ../../../src/coherent_programming/acsdoc.rb  $< *.rb
+	ruby ../../../src/coherent_programming/acsdoc.rb --tolatex  $<
+%.dvi : %.tex
+	latex  $< 
+	latex  $< 
+	latex  $< 
+%.ps : %.dvi
+	dvips  $< 
+
+
