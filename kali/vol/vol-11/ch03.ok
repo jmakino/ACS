@@ -1,0 +1,76 @@
+= Checks
+
+== Energy
+
+== Quartiles
+
+round off, but in case of half-way, round up.
+
+Let Bob and Alice bicker about that.
+
+ :commandoutput: ruby mkplummer1.rb -n 100 | ruby quartiles1.rb
+
+ :commandoutput: ruby mkplummer1.rb -n 100 | ruby quartiles1.rb
+
+ :commandoutput: ruby mkplummer1.rb -n 100 | ruby quartiles1.rb
+
+xxxxx
+
+ :commandoutput: ruby mkplummer1.rb -n 10000 | ruby quartiles1.rb
+
+ :commandoutput: ruby mkplummer1.rb -n 10000 | ruby quartiles1.rb
+
+ :commandoutput: ruby mkplummer1.rb -n 10000 | ruby quartiles1.rb
+
+With
+
+<tex>$$
+r(m) \, = \, \left(m^{-2/3}-1\right)^{-1/2}
+$$</tex>
+
+we have
+
+<tex>$$
+r(1/4) \, = \, \left(2^{4/3}-1\right)^{-1/2} \approx 0.8111
+$$</tex>
+
+<tex>$$
+r(1/2) \, = \, \left(2^{2/3}-1\right)^{-1/2} \approx 1.305
+$$</tex>
+
+<tex>$$
+r(3/4) \, = \, \left(2^{4/3}3^{-2/3}-1\right)^{-1/2} \approx 2.175
+$$</tex>
+
+mkplummer wrong?
+Hmm, but how can energy be so correct then?
+Aha, quartiles: forget sqrt.
+Now with quartiles1.rb:
+
+ :commandoutput: ruby mkplummer1.rb -n 10000 | ruby quartiles.rb
+
+ :commandoutput: ruby mkplummer1.rb -n 10000 | ruby quartiles.rb
+
+ :commandoutput: ruby mkplummer1.rb -n 10000 | ruby quartiles.rb
+
+*Alice*: Still, we could have made the same mistake in coding and testing,
+converting <tex>$m(r)$</tex> to <tex>$r(m)$</tex>.  Let us do one final
+explicit check.  We have
+
+<tex>$$
+m(r) \, = \, \left(1 + r^{-2}\right)^{-3/2}
+$$</tex>
+
+So this means:
+
+<tex>$$
+m(r(1/4)) \, = \, \left(1+ 2^{4/3} - 1\right)^{-3/2} \, = \, 2^{-2} \, = \, 1/4
+$$</tex>
+
+Similarly with the half-mass radius <tex>$m(r(1/2)) = 1/2$</tex>, and:
+
+<tex>$$
+m(r(3/4)) \, = \, \left(1+ 3^{-2/3}2^{4/3} - 1\right)^{-3/2} \, = \, 
+  3.2^{-2} \, = \, 3/4
+$$</tex>
+

@@ -1,0 +1,46 @@
+= Scaling
+
+== Virial radius
+
+:equation:
+E_{pot} = -{3\pi\over32}{GM^2\over a}
+
+Standard Units:
+
+:equation:
+E_{pot} = -{3\pi\over32}{1\over a} = -{1 \over 2} \Rightarrow
+
+:equation:
+a = {3\pi\over16}
+
+We had:
+
+:equation:
+R_v = {16\over3\pi}a
+
+In standard units:
+
+R_v = 1
+
+Our previous results need to be renormalized:
+
+<tex>$$
+r(1/4) \, = \, {3\pi\over16}\left(2^{4/3}-1\right)^{-1/2} \approx 0.4778
+$$</tex>
+
+<tex>$$
+r(1/2) \, = \, {3\pi\over16}\left(2^{2/3}-1\right)^{-1/2} \approx 0.7686
+$$</tex>
+
+<tex>$$
+r(3/4) \, = \, {3\pi\over16}\left(2^{4/3}3^{-2/3}-1\right)^{-1/2} \approx 1.281
+$$</tex>
+
+Velocities need to be scaled too.
+
+ :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles.rb
+
+ :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles.rb
+
+ :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles.rb
+

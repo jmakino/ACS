@@ -1,6 +1,6 @@
 = A Sixth-Order Integrator
 
-== A Triple leapfrog
+== A Multiple leapfrog
 
 *Alice*: Hi, Bob!  To judge from the look at your face, I would bet you found
 a good recipe for a sixth-order Runge Kutta method.
@@ -37,7 +37,7 @@ is as long as the second-order Runge-Kutta?
 
  :inccode: .rk6body.rb+rk6
 
-*Alice*: Three leapfrog calls?  And that does it?
+*Alice*: Seven leapfrog calls?  And that does it?
 
 *Bob*: Yes, that does it, or so is the claim.  I haven't gotten the time to
 test it out yet.  I just finished it when you came in.
@@ -174,7 +174,7 @@ we get a ratio of 3.69.
 for a sixth-order integration scheme.  I think we can now officially declare
 your <tt>rk6</tt> to be worthy of the <tt>6</tt> in it's name!
 
-But I must say, I'm still deeply puzzled and surprised that three leapfrog
+But I must say, I'm still deeply puzzled and surprised that seven leapfrog
 calls, involving four rather funny numbers, can suddenly emulate a Runge-Kutta.
 
 *Bob*: According to my source, it is more than `emulate': this particular

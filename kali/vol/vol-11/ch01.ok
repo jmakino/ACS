@@ -5,25 +5,30 @@
 Start with softened potential:
 
 :equation:
-\phi(r) \, = \, -\,GM {1\over \,\left(r^2 + a^2\right)^{1/2}}
+U(r) \, = \, -\,GM {1\over \,\left(r^2 + a^2\right)^{1/2}}
 
 Apply Poisson's equation in spherical coordinates, under the
 assumption of spherical symmetry for the potential:
 
 :equation:
-\frac{d^2}{dr^2}\phi(r) \,+\, {2 \over r}\frac{d}{dr}\phi(r)
+{1\over r^2}{d\over dr}\left( r^2{d\over dr}U(r)\right) \,=\, 4\pi G\rho(r)
+
+or:
+
+:equation:
+\frac{d^2}{dr^2}U(r) \,+\, {2 \over r}\frac{d}{dr}U(r)
                         \,=\, 4\pi G\rho(r)
 
 
 With
 
 :equation:
-\frac{d}{dr}\phi(r) \,= \, GM {r \over \,\left(r^2 + a^2\right)^{3/2}}
+\frac{d}{dr}U(r) \,= \, GM {r \over \,\left(r^2 + a^2\right)^{3/2}}
 
 and 
 
 :equation:
-\frac{d^2}{dr^2}\phi(r) \, = \, GM \left\{
+\frac{d^2}{dr^2}U(r) \, = \, GM \left\{
   {1 \over \,\left(r^2 + a^2\right)^{3/2}}
   - {3r^2 \over \,\left(r^2 + a^2\right)^{5/2}}
 \right\} \, = \, GM {-2r^2 +a^2 \over \,\left(r^2 + a^2\right)^{5/2}}
@@ -33,8 +38,8 @@ So:
 :eqnarray:
 \rho(r) \, &=& \, {1 \over 4\pi G}
    \left\{
-   \frac{d^2}{dr^2}\phi(r) 
-   \,+\, {2 \over r}\frac{d}{dr}\phi(r)
+   \frac{d^2}{dr^2}U(r) 
+   \,+\, {2 \over r}\frac{d}{dr}U(r)
    \right\}                                                 \nonumber\\
 &=& \, {M \over 4\pi } \left\{
    {-2r^2 +a^2 \over \,\left(r^2 + a^2\right)^{5/2}}
@@ -46,7 +51,7 @@ So:
 We can also write:
 
 :equation:
-\phi(r) \, = \, -\,{GM\over a}\left(1+{r^2\over a^2}\right)^{-1/2}
+U(r) \, = \, -\,{GM\over a}\left(1+{r^2\over a^2}\right)^{-1/2}
 
 :equation:
 \rho(r) \, = \, {3M\over4\pi a^3}\left(1+{r^2\over a^2}\right)^{-5/2}
@@ -54,11 +59,16 @@ We can also write:
 Integrate density:
 
 :eqnarray:
-M(r) \, &=& \, \int_0^r 4 \pi r^2 \rho(r) dr                   \nonumber\\
+m(r) \, &=& \, \int_0^r 4 \pi r^2 \rho(r) dr                   \nonumber\\
   &=& \, \int_0^r {3M\over a^3}r^2\left(1+{r^2\over a^2}\right)^{-5/2}
 
 :equation:
-M(r) \, = \, M\left(1+{a^2\over r^2}\right)^{-3/2}
+m(r) \, = \, M\left(1+{a^2\over r^2}\right)^{-3/2}
+
+Then this, as the energy distribution function
+
+:equation:
+f(E) = {3.2^{7/2}\over7\pi^3}{a^2\over G^5M^4}(-E)^{7/2}
 
 Integrate potential energy:
 
@@ -80,20 +90,3 @@ Hence:
 :equation:
 R_v \, = \, {16\over3\pi}a
 
-== xxx
-
-Write simplest <tt>mkplummer1.rb</tt>
-
-learn to use (s)rand
-
-check energy
-
-check mass quartiles
-
-subtract c.o.m. motion
-
-cold start
-
-== xxx
-
- :inccode: .mkplummer1.rb

@@ -45,18 +45,16 @@ swapping of modules, while others have other advantages, such as more brevity.
 
  :commandoutput: ruby rknbody6b_driver.rb < figure8.in
 
-Now let us try the <tt>rk6</tt> version, for a ten times longer time step:
+Now let us try the <tt>rk6</tt> version:
 
  :commandoutput: ruby rk6nbody6a_driver.rb < figure8.in
 
-*Alice*: Wonderful.  Much more accurate, for a ten times smaller time step.
+*Alice*: Wonderful.  Much more accurate.
 
-*Bob*: Yes, but for a comparable amount of computing time.  In fact,
-<tt>rk6</tt> took even a bit longer, since it involves seven calls to
+*Bob*: Yes, but for a much larger amount of computing time.  The method
+<tt>rk6</tt> involves seven calls to
 the +leapfrog+ method, which itself is implemented in a rather inefficient
-method, with two calles to +acc+ where one would suffice.  However,
-note that it _would_ take much longer for the <tt>rk6</tt> code 
-to reach the same accuracy, machine accuracy in our case.
+method, with two calles to +acc+ where one would suffice.
 
 *Alice*: Well, we decided not to worry about efficiency, and we'll get back
 to that by the time we are ready to use our code for some more serious
@@ -83,7 +81,7 @@ cube.  For <tt>rk4</tt> we found for a softening length of 0.1 that we
 had to go to a time step of 0.001 to get a reasonable result.  Let us
 redo that particular run again:
 
- :commandoutput: ruby rknbody9a_driver.rb < cube1.in
+ :commandoutput: ruby rknbody9b_driver.rb < cube1.in
 
 I would like to see how our sixth-order version runs this collapse for
 the same parameter values.
