@@ -76,7 +76,7 @@ the strict pragma.</para>
 <src:fragref linkend="preamble"/>
 <src:fragref linkend="sub.fib"/>
 
-fibUpTo(1000) { |f| print t, " "}
+fibUpTo(1000) { |f| print f, " "}
 
 </src:fragment>
 </section>
