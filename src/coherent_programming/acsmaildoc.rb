@@ -59,6 +59,8 @@ module Acsmaildoc
 	  end
 	  print "open file ", dirname+   "/" + seqnum.to_s, "\n";
 	  outfile=open(dirname+ "/"+ seqnum.to_s, "w+")
+	  print "Date = ", time, "\n\n"
+	  print from, "\n\n"
 	end
       else
 	outfile.print s
