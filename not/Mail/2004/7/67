@@ -1,0 +1,128 @@
+Date: Tue Jul 06 12:02:57 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Hi Jun:
+
+I am writing this in the airplane back to New York.
+I'm making a large inventory of all the points that
+we need to take care of, at some point during the
+coming few months.  However, I will ask only a few
+questions now; I will leave the rest for Aug/Sept.
+
+In the last two emails to our lab notes, on June 28
+and July 1, we discussed how to make cross links
+between different volumes and also between the html
+pages and the volumes.  I have thought about the
+options you mentioned, and here is my response:
+
+ > > In general, we need a way to cross link between different volumes.
+ > > Did you get a chance to think about how to implement that in acsdoc?
+ > 
+ > Well, technically speaking it is easy. One problem is perhaps
+ > that you have been changing the volume number quite a bit.
+
+Sumimasen.  However, this time I *think* we can stay with the
+volume numbering of ACS 1.1.  I like the logic: One vision
+volume, four start-up volumes, seven foundation volumes, and
+then many research volumes.
+
+Of course, we *could* decide to use indirect addressing:
+for example, we could address the Plummer volume with a
+logical name "Plummer" or "vol-acs11-5" to indicate that
+during acs-1.1 it was called volume 5.  I would be happy
+with either choice: hard-wired "vol-5" and indirect
+addressing.  Do you have a preference?
+
+ > However, there are several practical
+ > implementation problems:
+ > 
+ > a) How to uniquely specify, for example, the section name. It is quite
+ >    possible that a same section or subsection name appears multiple
+ >    times in one volume.
+ > 
+ >    In latex the problem is solved by letting the user to specify a
+ >    unique label to anything to be referred. We can take that approach
+
+I do not like so much the idea of a global name space for all volumes,
+since later we may get 100 volumes.  On the other hand, perhaps this
+is the best solution.  Of course, we could use a label such as:
+"vol-acs11-5-binney-tremaine-appendix-chapter-section-bob-unhappy".
+Surely such a label will never be used elsewhere in the book, or at
+least it will be extremely unlikely.
+
+Another option would be to give a logical name (label) to each volume,
+and to each chapter, and to each section.  But perhaps that would be
+more work.  It would be a very Ruby-like approach though, using such
+indirect addressing.  Again, I do not have a strong preference.
+What do you think?
+
+ > c) How the link should appear in the text? I mean, what should we
+ >    specify for "X"  below? 
+ > 
+ >       <a href=....#Name-here-must-be-unique-over-entire-ACS-or-Kali>X</a>
+ >    
+ >    In latex, sections are numbered, so the solution was easy. In
+ >    acsdoc, sections are not numbered, nor the volumes (well, at least
+ >    not in a stable way). So it is not clear what to write at "X". We
+ >    could write:
+ > 
+ >       "Volume 1a, Chapter 01, Section  Setting the Stage"
+ >   
+ >   But I'm not sure if that is the best way or not.
+
+See above, my example of very-long-label.
+
+ > d) In PS or TeX version there is no way to cross referensing to other
+ >    books. So what should we do there? 
+
+Perhaps this would be an argument for giving all books a logical
+name, and also each chapter and each section.  We could then 
+`compile', I mean Latex, all .ok files of acs in one big pass,
+but that might be too huge a job.  However, I see no other way to
+get all the references consistent.  This is a very difficult point.
+
+
+Now let me switch to the last "not" lab note email message, of July 1:
+
+ > 1)
+ > 
+ > If I write something in a chapter to come out under html as:
+ > 
+ > <i>Programming Ruby -- The Pragmatic Programmer's Guide</i>, by
+ > David Thomas and Andrew Hunt, 2001 [Addison Wesley].  This is a
+ > great introduction to Ruby.  There is a complete <a href="xxx">online
+ > version</a> available for this book.
+ > 
+ > It would be nice if it would get under LaTeX as follows:
+ > 
+ > There is a complete <i>online
+ > version</i>(xxx) available for this book.
+ > 
+ > Could you design a form in which this information can be given,
+ > perhaps as "<acswebref>xxx,online version</acswebref>",
+ > which then will be translated in the above two ways for the
+ > html and ps/pdf versions?  Since there are never commas in
+ > URLs, I think, the first comma will signify the end of the URL.
+
+I suggest that we first implement this, perhaps already for ACS 1.1.1
+or otherwise for ACS 1.1.2 or so.  This is more straightforward.  As
+for the other questions above, we can exchange a few more emails, and
+if we don't converge quickly, we can leave a decision for late September.
+
+ > 2)
+ > 
+ > Could you replace tabs in code text (Ruby and C) with the right
+ > number of spaces?  Right now, I belive the tabs don't appear correctly
+ > in code mode under acsdoc.  I've been taking out tabs by hand, but
+ > whenever I make a modification, emacs tend to put some tabs back
+ > in again, with automatic identation.  It is better to automatize
+ > this.
+
+I checked, and indeed, this doesn't work yet.  So whenever it is
+convenient, it would be nice to add that feature to acsdoc.
+
+Thanks!
+
+Piet
+
