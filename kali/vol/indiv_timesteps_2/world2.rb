@@ -345,7 +345,7 @@ class WorldLine
     eval("#{@method}_startup_done?(era, dt_max)")
   end
 
-  def extend(era, dt_max)
+  def grow(era, dt_max)
     new_point = eval("take_#{@method}_step(era, dt_max)")
     @worldpoint.push(new_point)
   end
@@ -597,13 +597,13 @@ class WorldEra
     nsteps = 0
     while shortest_interpolated_worldline.worldpoint.last.time < @end_time
       unless shared_flag
-        shortest_extrapolated_worldline.extend(self, dt_max)
+        shortest_extrapolated_worldline.grow(self, dt_max)
         nsteps += 1
       else
         t = shortest_extrapolated_worldline.worldpoint.last.next_time
         @worldline.each do |w|
           w.worldpoint.last.next_time = t
-          w.extend(self, dt_era)
+          w.grow(self, dt_era)
           nsteps += 1
         end
       end

@@ -1,0 +1,79 @@
+= XXX
+
+== xxx
+
+In <tt>module Integrator_hermite</tt>:
+
+   def force(wl, era)
+ p "hermite_force" if $STARTUP
+     @acc, @jerk = era.acc_and_jerk(wl, @pos, @vel, @time)
+   end
+
+and in <tt>module Integrator_force_default</tt>
+
+   def startup_force(wl, era)
+ $STARTUP = true
+ p "entering startup_force"
+     force(wl, era)
+ p "exiting startup_force"
+ $STARTUP = false
+   end
+
+   def force(wl, era)
+ p "normal_force" if $STARTUP
+     @acc = era.acc(wl, @pos, @time)
+   end
+
+This shows that what we do here is safe:
+
+ <kamuy|indiv_timesteps_3> ruby mkplummer.rb -n 5 -s 1 | ruby world3.rb -t 1
+ ==> Plummer's Model Builder <==
+ Number of particles		: N = 5
+ pseudorandom number seed given	: 1
+ Floating point precision	: precision = 16
+ Incremental indentation		: add_indent = 2
+              actual seed used	: 1
+ ==> Individual Time Step, Individual Integration Scheme Code <==
+ Choice of integration method	: integration_method = hermite
+ Determines the time step size	: dt_param = 0.01
+ Initial timescale factor	: init_timescale_factor = 0.01
+ Duration of an era		: dt_era = 0.01
+ Maximum time step (units dt_era): dt_max_param = 1.0
+ Diagnostics output interval	: dt_dia = 1.0
+ Snapshot output interval	: dt_out = 1.0
+ Asynchronous output interval	: async_output_interval = 0
+ Duration of the integration	: t = 1.0
+ Floating point precision	: precision = 16
+ Incremental indentation		: add_indent = 2
+ "entering startup_force"
+ "hermite_force"
+ "exiting startup_force"
+ "entering startup_force"
+ "hermite_force"
+ "exiting startup_force"
+ "entering startup_force"
+ "hermite_force"
+ "exiting startup_force"
+ "entering startup_force"
+ "hermite_force"
+ "exiting startup_force"
+ "entering startup_force"
+ "hermite_force"
+ "exiting startup_force"
+ at time t = 0 (from interpolation after 0 steps to time 0):
+     E_kin = 0.376 ,     E_pot =  -0.351 ,      E_tot = 0.0255
+        E_tot - E_init = 0
+         (E_tot - E_init) / E_init = 0
+ at time t = 1 (from interpolation after 2300 steps to time 1):
+     E_kin = 0.295 ,     E_pot =  -0.269 ,      E_tot = 0.0255
+        E_tot - E_init = 1.04e-10
+         (E_tot - E_init) / E_init = 4.08e-09
+ ACS
+   NBody 
+     Array body
+       Body body[0]
+         Vector acc
+             -3.3926697902326147e-01  -3.5469282500536559e-01   3.3887816489405043e-01
+         Float dt_param
+              1.0000000000000000e-02
+ ....

@@ -31,7 +31,7 @@ class NBody
     if (n = other.body.size) != body.size
       raise "other.body.size = #{other.body.size} != #{body.size}"
     end
-    nb = Nbody.new
+    nb = NBody.new
     body.each_index do |i|
       ob = other.body.find{|oi| oi.body_id == body[i].body_id}
       if ob == nil

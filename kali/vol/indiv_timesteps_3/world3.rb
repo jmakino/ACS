@@ -19,8 +19,10 @@ end
 
 module Integrator_pec_mode
 
+include Integrator_force_default
+
   def integrator_step(wl, era)
-    new_point = extrapolate(@next_time)
+    new_point = predict(@next_time)
     new_point.force(wl, era)
     new_point.correct(self, new_point.time - @time)
     new_point
@@ -31,24 +33,16 @@ module Integrator_forward
 
   include Integrator_pec_mode
 
-  def setup_integrator
-    @acc = @pos*0
-  end
-
-  def force(wl, era)
-    @acc = era.acc(wl, @pos, @time)
-  end
-
-  def predict(dt)
+  def predict_pos_vel(dt)
     [ @pos + @vel*dt,  @vel + @acc*dt ]
   end
 
   def correct(old, dt)
-    @pos, @vel = predict(dt)
+    @pos, @vel = predict_pos_vel(dt)
   end
 
   def interpolate_pos_vel(wp, dt)
-    predict(dt)
+    predict_pos_vel(dt)
   end
 end
 
@@ -56,15 +50,7 @@ module Integrator_forwardplus
 
   include Integrator_pec_mode
 
-  def setup_integrator
-    @acc = @pos*0
-  end
-
-  def force(wl, era)
-    @acc = era.acc(wl, @pos, @time)
-  end
-
-  def predict(dt)
+  def predict_pos_vel(dt)
     [ @pos + @vel*dt + (1/2.0)*@acc*dt**2,  @vel + @acc*dt ]
   end
 
@@ -72,7 +58,7 @@ module Integrator_forwardplus
   end
 
   def interpolate_pos_vel(wp, dt)
-    predict(dt)
+    predict_pos_vel(dt)
   end
 end
 
@@ -82,15 +68,7 @@ module Integrator_adams2kana
 
   attr_reader :acc
 
-  def setup_integrator
-    @acc = @pos*0
-  end
-
-  def force(wl, era)
-    @acc = era.acc(wl, @pos, @time)
-  end
-
-  def predict(dt)
+  def predict_pos_vel(dt)
     [ @pos + @vel*dt + (1/2.0)*@acc*dt**2,  @vel + @acc*dt ]
   end
 
@@ -117,15 +95,7 @@ module Integrator_leapfrog
 
   attr_reader :acc
 
-  def setup_integrator
-    @acc = @pos*0
-  end
-
-  def force(wl, era)
-    @acc = era.acc(wl, @pos, @time)
-  end
-
-  def predict(dt)
+  def predict_pos_vel(dt)
     [ @pos + @vel*dt + (1/2.0)*@acc*dt**2,  @vel + @acc*dt ]
   end
 
@@ -155,19 +125,11 @@ module Integrator_multistep
     @acc = [@pos*0]
   end
 
-  def startup_force(wl, era)
-    force(wl, era)
-  end
-
-  def force(wl, era)
-    @acc[0] = era.acc(wl, @pos, @time)
-  end
-
   def intermediate_point(old_ip, i)
     nil
   end
 
-  def predict(dt)
+  def predict_pos_vel(dt)
     [ @pos + taylor_increment([@vel, *@acc], dt),
       @vel + taylor_increment(@acc, dt)          ]
   end
@@ -187,9 +149,9 @@ module Integrator_multistep
 
   def interpolate_pos_vel(wp, dt)
     if (wp.next_time - @time).abs < (@next_time - wp.time).abs
-      predict(dt)
+      predict_pos_vel(dt)
     else
-      wp.predict(dt + @time - wp.time)
+      wp.predict_pos_vel(dt + @time - wp.time)
     end
   end
 
@@ -247,7 +209,7 @@ module Integrator_hermite
     @acc, @jerk = era.acc_and_jerk(wl, @pos, @vel, @time)
   end
 
-  def predict(dt)
+  def predict_pos_vel(dt)
     [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3,
       @vel + @acc*dt + (1/2.0)*@jerk*dt**2                       ]
   end
@@ -272,6 +234,8 @@ end
 
 module Integrator_rk4
 
+  include Integrator_force_default
+
   attr_reader :acc, :jerk
   attr_writer :time
 
@@ -282,10 +246,6 @@ module Integrator_rk4
 
   def startup_force(wl, era)
     @acc, @jerk = era.acc_and_jerk(wl, @pos, @vel, @time)
-  end
-
-  def force(wl, era)
-    @acc = era.acc(wl, @pos, @time)
   end
 
   def force_on_pos_at_time(pos,time,wl, era)
@@ -317,7 +277,7 @@ module Integrator_rk4
     @jerk = (old.acc - @acc) / (old.time - @time)
   end
 
-  def predict(dt)
+  def predict_pos_vel(dt)
     [ @pos + @vel*dt + (1/2.0)*@acc*dt**2 + (1/6.0)*@jerk*dt**3,
       @vel + @acc*dt + (1/2.0)*@jerk*dt**2                       ]
   end
@@ -343,7 +303,8 @@ class Worldpoint
   attr_reader :mass, :time, :next_time,
               :nsteps, :minstep, :maxstep
 
-  def setup(dt_param, time)
+  def setup(method, dt_param, time)
+    extend(eval("Integrator_#{method}"))
     setup_integrator
     setup_admin(dt_param, time)
   end
@@ -390,9 +351,13 @@ class Worldpoint
     @next_time = @time + new_dt
   end
 
+  def predict(t)
+    extrapolate(t)
+  end
+
   def extrapolate(t)
     wp = deep_copy
-    wp.pos, wp.vel = predict(t - @time)
+    wp.pos, wp.vel = predict_pos_vel(t - @time)
     wp.extrapolate_admin(t)
     wp
   end
@@ -441,8 +406,7 @@ class Worldline
 
   def setup(b, method, dt_param, time)
     @worldpoint[0] = b.to_worldpoint
-    @worldpoint[0].extend(eval("Integrator_#{method}"))
-    @worldpoint[0].setup(dt_param, time)
+    @worldpoint[0].setup(method, dt_param, time)
   end
 
   def startup(era, dt_max, init_timescale_factor)
