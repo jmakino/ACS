@@ -469,7 +469,7 @@ options_text= <<-END
     ruby mkplummer3.rb -n 5 | ruby #{$0} -t 1
 
 
-  Short name: 		-s
+  Short name: 		-c
   Long name:		--step_size_control
   Value type:		float
   Default value:	0.01

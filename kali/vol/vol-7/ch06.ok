@@ -214,8 +214,8 @@ would have to first process this <tt>next_line</tt> before you can pick
 up more lines with <tt>file.gets</tt>
 
 *Bob*: I agree, that will make things ugly.  Hmmm again.  Well, perhaps
-we can invent more complex words that +begin+ and +end+.  If we write
-+acs_begin+ or even <tt>!@#*!!_acs_begin</tt> and similarly
+we can invent more complex words than +begin+ and +end+.  If we write
+<tt>acs_begin</tt> or even <tt>!@#*!!_acs_begin</tt> and similarly
 <tt>!@#*!!_acs_end</tt> we would be safe enough.  What is the chance
 that someone would type those combination of characters by chance in a
 chatty email?
@@ -230,7 +230,7 @@ person will have to write <i>exactly</i> the expressions
 *Bob*: Yes, that is a catch.  I don't see an way around that.  But hey,
 wait, there is a way!  We can ask this person to write something like
 <tt>\!@#*!!_acs_begin</tt>, and provide a way to translate that into the
-proper <tt>\!@#*!!_acs_begin</tt> when the story is being processed for
+proper <tt>acs_begin</tt> when the story is being processed for
 a human reader.
 
 But the more I think about that, the more I dislike the idea.  Who
@@ -243,7 +243,7 @@ bad reputation with what looks like curse words sprinkled in everywhere.
 *Alice*: It seems that we're running out of options.
 
 *Bob*: And yet we have to solve it, at least if we want to allow self-narrating
-data.  I must see, I got warmed to the idea, and I don't like to give
+data.  I must say, I got warmed to the idea, and I don't like to give
 that up, just because we have some difficulty figuring out how to implement
 it.
 
@@ -327,9 +327,9 @@ mini-language.  So we have just reinvented the wheel!  Now I can appreciate
 much better the role of comment conventions in computer languages.
 
 *Alice*: Of course, anyone using the data will still have to find a way
-to strip the comment symbols of, if they want to work with clean text.
+to strip the comment symbols off, if they want to work with clean text.
 
-*Bob*: However, it is less urgent.  In this last example, the leading periods
+*Bob*: However, that is less urgent.  In this last example, the leading periods
 are almost invisible.
 
 *Alice*: For some purposes, yes, but for other applications I'm sure that

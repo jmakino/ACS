@@ -13,16 +13,17 @@ class Worldpoint
     @maxstep = 0
   end
 
-  def propagate(era, wl, dt_param, init_flag = false)
+  def propagate(era, wl, dt_param, dt_max)
+    dt_old = @next_time - @time
     ss = era.take_snapshot(wl, @next_time)
     wp = ss.body.shift
-    wp = self if init_flag
     wp.acc, wp.jerk = wp.get_acc_and_jerk(ss)
     wp.correct(self)
     dt = wp.collision_time_scale(ss) * dt_param
+    dt = dt_max if dt > dt_max
     wp.next_time = wp.time + dt
-    wp.maxstep = dt if wp.maxstep < dt
-    wp.minstep = dt if wp.minstep > dt
+    wp.maxstep = dt_old if wp.maxstep < dt_old
+    wp.minstep = dt_old if wp.minstep > dt_old
     wp.nsteps = @nsteps + 1
     wp
   end
@@ -194,8 +195,18 @@ class Worldline
     @worldpoint = []
   end
 
-  def extend(era, dt_param)
-    @worldpoint.push(@worldpoint.last.propagate(era, self, dt_param))
+  def startup(era, dt_param, dt_max)
+    wp = @worldpoint[0]
+    ss = era.take_snapshot(self, wp.time)
+    ss.body.shift
+    wp.acc, wp.jerk = wp.get_acc_and_jerk(ss)
+    dt = wp.collision_time_scale(ss) * dt_param
+    dt = dt_max if dt > dt_max
+    wp.next_time = wp.time + dt
+  end
+
+  def extend(era, dt_param, dt_max)
+    @worldpoint.push(@worldpoint.last.propagate(era, self, dt_param, dt_max))
   end
 
   def valid_extrapolation?(time)
@@ -279,6 +290,14 @@ class Worldera
     @worldline = []
   end
 
+  def startup(dt_param, dt_max)
+    worldline.each do |wl|
+      wl.startup(self, dt_param, dt_max)
+    end
+    ss = take_snapshot(nil, @start_time)
+    ss.ekin + ss.epot
+  end
+
   def shortest_extrapolated_worldline
     t = VERY_LARGE_NUMBER
     wl = nil
@@ -303,18 +322,18 @@ class Worldera
     wl
   end
 
-  def evolve(dt_era, dt_param, shared_flag)
+  def evolve(dt_era, dt_param, dt_max, shared_flag)
     nsteps = 0
     @end_time = @start_time + dt_era
     while shortest_interpolated_worldline.worldpoint.last.time < @end_time
       unless shared_flag
-        shortest_extrapolated_worldline.extend(self, dt_param)
+        shortest_extrapolated_worldline.extend(self, dt_param, dt_max)
         nsteps += 1
       else
         t = shortest_extrapolated_worldline.worldpoint.last.next_time
         @worldline.each do |w|
           w.worldpoint.last.next_time = t
-          w.extend(self, dt_param)
+          w.extend(self, dt_param, dt_era)
           nsteps += 1
         end
       end
@@ -403,16 +422,9 @@ class World
 
   TAG = "world"
 
-  def startup(dt_param)
-    @era.worldline.each do |wl|
-      wl.worldpoint[0].propagate(@era, wl, dt_param, true)
-    end
-    ss = @era.take_snapshot(nil, @era.start_time)
-    ss.ekin + ss.epot
-  end
-
   def evolve(c)
-    initial_energy = startup(c.dt_param)
+    dt_max = c.dt_era * c.dt_max_param
+    initial_energy = @era.startup(c.dt_param, dt_max)
     time = @era.start_time
     nsteps = 0
     @era.write_diagnostics(time, nsteps, initial_energy, c.x_flag, true)
@@ -421,7 +433,8 @@ class World
     t_end = time + c.dt_end
     @era.write_snapshot(time) if c.init_out
     while @era.start_time < t_end
-      @new_era, dn = @era.evolve(c.dt_era, c.dt_param, c.shared_flag)
+      @new_era, dn = @era.evolve(c.dt_era, c.dt_param, dt_max,
+                                 c.shared_flag)
       nsteps += dn
       while t_dia <= @era.end_time and t_dia <= t_end
         @era.write_diagnostics(t_dia, nsteps, initial_energy, c.x_flag)
@@ -549,7 +562,7 @@ options_text= <<-END
     ruby mkplummer3.rb -n 5 | ruby #{$0} -t 1
 
 
-  Short name: 		-s
+  Short name: 		-c
   Long name:		--step_size_control
   Value type:		float
   Default value:	0.01
@@ -577,6 +590,18 @@ options_text= <<-END
     world line has an earliest world point before the beginning of the era,
     and a latest world point past the end of the era.  This guarantees
     accurate interpolation at each time within an era.
+
+
+  Short name: 		-m
+  Long name:		--max_timestep_param
+  Value type:		float
+  Default value:	1
+  Variable name:	dt_max_param
+  Description:		Maximum time step in units of dt_era
+  Long description:
+    This option sets an upper limit to the size dt of a time step,
+    as the product of the duration of an era and this parameter:
+    dt <= dt_max = dt_era * dt_max_param .
 
 
   Short name: 		-d

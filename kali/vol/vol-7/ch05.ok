@@ -150,7 +150,7 @@ space in between +begin+ and +particle+ but everything else is only
 allowed to follow those two words.
 
 What you see at the right hand side of the first line of the method is
-the +raise+ command, which raises and error if the +header+ does not
+the +raise+ command, which raises an error if the +header+ does not
 have the correct form.  In Ruby, +unless+ is the opposite of +if+, a
 nice feature, since otherwise we would have needed to say ``if not of
 the correct form'' and ``unless of the correct form'' is more natural.
@@ -206,7 +206,7 @@ floating point vector for position and velocity.  Here is the first one:
 This time we give +split+ an explicit argument.  The default has been
 to consider white space as the separator between words, but now we use
 an equal sign <tt>=</tt> as a separator.  The name of the variable, in
-our case the string +"mass"+ is returned as the value of
+our case the string <tt>"mass"</tt> is returned as the value of
 <tt>s.split("=")[0]</tt>.  Everything to the right of the equal sign,
 in our case the value of the mass, is returned as <tt>s.split("=")[0]</tt>,
 and promptly converted to floating point format with <tt>.to_f</tt>.
