@@ -1017,6 +1017,15 @@ module Acsdoc
     ofile.close
   end
 
+  def expand(s)
+    if s 
+      t=s.gsub(/([^\t]{8})|([^\t]*)\t/n){[$+].pack("A8")}
+    else
+      t=nil
+    end
+    t
+  end
+
   # :segment start: prep_rb
   def prep_rb(infile)
     # :segment start: open-input-file
@@ -1029,7 +1038,8 @@ module Acsdoc
     segment_level = 0
     ofile = Array.new;
     oname = Array.new;
-    while s = ifile.gets
+    while s = expand(ifile.gets)
+      
       if loc = s.index(":segment start:")  and s.index("\":segment start:\"")==nil
 	segment_name = s[loc,s.length].split[2];
 	print segment_name if $DEBUG
@@ -1067,7 +1077,7 @@ module Acsdoc
     end
     outfile = File.dirname(infile)+"/."+File.basename(infile)
     ofile = open(outfile,"w+")
-    while s = ifile.gets
+    while s = expand(ifile.gets)
       case s
       when /\#(\d+)(.*)/  
 	s = s.gsub(/\#(\d+)(.*)/,'')      
@@ -1110,7 +1120,7 @@ module Acsdoc
       raise "File name #{infile} has no extention part"
     end
     hashnames=[]
-    while s = ifile.gets
+    while s = expand(ifile.gets)
       if s  =~ @@hashtypes[extension]
 	segment_name = $1
 	s = s.gsub(/\#(\d+)(.*)/,'')
@@ -1136,7 +1146,7 @@ module Acsdoc
     oname = Array.new;
     olevel = Array.new;
     classname = "noname"
-    while s = ifile.gets
+    while s = expand(ifile.gets)
       s.gsub!(/([^\t]{8})|([^\t]*)\t/n){[$+].pack("A8")}
       if s.split[0]== "class"
 	classname = s.split[1]
@@ -1182,12 +1192,12 @@ module Acsdoc
     ifile = open(infile, "r")
     outfilenamebase = File.dirname(infile)+"/."+File.basename(infile) +
 	  "+" 
-    while s = ifile.gets
+    while s = expand(ifile.gets)
       s.gsub!(/([^\t]{8})|([^\t]*)\t/n){[$+].pack("A8")}
       if s =~ /\s*typedef\s+(struct|union)\s+(\w\S*)\{$/
 	name=$2
 	typedefstring = s
-	while (s = ifile.gets) !~ /^\s*\}.*;\s*$/
+	while (s = expand(ifile.gets)) !~ /^\s*\}.*;\s*$/
 	  typedefstring += s
 	end
 	typedefstring += s
@@ -1197,12 +1207,12 @@ module Acsdoc
 	print "#{infile}: #{s.chomp} : #{name}\n"
 	functionstring = s
 	while s !~ /(^\{)|(\);)/
-	  s = ifile.gets
+	  s = expand(ifile.gets)
 	  functionstring += s
 	end
 	if $1
 	  while s !~ /^}/
-	    s = ifile.gets
+	    s = expand(ifile.gets)
 	    functionstring += s
 	  end
 	  open(outfilenamebase+name,"w"){|f|f.print functionstring}
