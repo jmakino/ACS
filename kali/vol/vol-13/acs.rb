@@ -1,4 +1,9 @@
-require "clop.rb" if $0 != "clop.rb"
+include_files = %w{ vector clop }
+
+include_files.each do |f|
+  file = f + ".rb"
+  require file if $0 != file
+end
 
 include Math
 

@@ -1,15 +1,10 @@
-require "vector.rb"
-require "clop.rb"
+require "acs.rb"
 
 class Body
 
   attr_accessor :mass, :pos, :vel, :acc, :jerk,
                 :pred_pos, :pred_vel,
                 :time, :next_time
-
-  def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
-    @mass, @pos, @vel = mass, pos, vel
-  end
 
   def autonomous_step(ba, dt_param)
     take_one_step(ba, @next_time, dt_param)
@@ -273,7 +268,7 @@ options_text= <<-END
     (c) 2004, Piet Hut, Jun Makino, Murat Kaplan; see ACS at www.artcompsi.org
 
     example:
-    ruby mkplummer3.rb -n 5 | ruby sh1.rb -t 1
+    ruby mkplummer3.rb -n 5 | ruby #{$0} -t 1
 
 
   Short name: 		-d
