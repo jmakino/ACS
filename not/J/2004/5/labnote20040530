@@ -1,0 +1,22 @@
+
+== More on tarball for the versioned ACS site
+
+The tarball should contain
+
+* ALL files archived in svn
+* ALL files under doc directories
+* Some of specified files, such as vol/vol-1/volume1.ps (if exists)
+  etc.
+
+Anything else?
+
+== acsdoc more changes:
+
+Now it accepts two extentions (.cp and .ok) as the file name for the
+text files.
+
+
+
+  
+
+

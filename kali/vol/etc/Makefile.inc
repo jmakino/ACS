@@ -13,7 +13,7 @@ doc : $(SRC) .acsdocinitrc
 
 clean : 
 	-rm -r doc .imgs
-	-rm .[a-z]*\.rb[-+]* .[a-z]*\.rb .acsdoc.command-*
+	-rm .[a-z]*\.rb[-+]* .[a-z]*\.rb .acsdoc.command-* tmp.*
 	-rm $(TARGET).tex $(TARGET).aux $(TARGET).cp $(TARGET).dvi \
 	    $(TARGET).log $(TARGET).ps $(TARGET).toc
 

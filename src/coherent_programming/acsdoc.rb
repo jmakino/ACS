@@ -1059,7 +1059,7 @@ module Acsdoc
     toctext  = "ToC"
     toptext  = ""
     if @@toppagefilename
-      toptext = "<td> \n   <a href=#{uppath+@@toppagefilename}>Up</a>\n   </td>"
+      toptext = "<td> \n   <a href=#{uppath+@@toppagefilename} target=\"_top\">Up</a>\n   </td>"
     end
     prevtext = "<a href=#{uppath+prev}>Previous</a>" if prev    
     nexttext = "<a href=#{uppath+nex}>Next</a>" if nex
