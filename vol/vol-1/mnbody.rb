@@ -13,6 +13,7 @@ class Body
     @mass, @pos, @vel = mass, pos, vel
     @hist.set_last_rndot(0, @pos)
     @hist.set_last_rndot(1, @vel)
+    @acc_initializing = false
   end
 
   def rndot(n, time)
@@ -28,27 +29,41 @@ class Body
   end
 
   def pos(time)
+    unless @acc_initializing
+      @acc_initializing = true
+      @hist.set_last_rndot(2, calculate_acc(@hist.latest))
+    end
     rndot(0, time)
   end
 
   def vel(time)
+    unless @acc_initializing
+      @acc_initializing = true
+      @hist.set_last_rndot(2, calculate_acc(@hist.latest))
+    end
     rndot(1, time)
   end    
 
   def acc(time)
+    unless @acc_initializing
+      @acc_initializing = true
+      @hist.set_last_rndot(2, calculate_acc(@hist.latest))
+    end
     rndot(2, time)
   end    
 
   def integrate
-    if not @hist.last[0]
-      STDERR.print "error: last history slot is nil\n"
-      exit
-    end
-    if not @hist.last[1][0]
+    if @hist.predicting?
       propagate
     end
-    @hist.set_last_rndot(2, calculate_acc(time))
-    @hist.extend(@hist.latest + calculate_timestep(time))
+    if @hist.arrived?
+      time = @hist.latest
+      @hist.set_last_rndot(2, calculate_acc(time))
+      @hist.extend(time + calculate_timestep(time))
+    else
+      STDERR.print "error: integrate: history structure is `incomplete'\n"
+      exit
+    end
   end
 
   def calculate_acc(time)
@@ -86,6 +101,7 @@ class Body
         end
       end
     end
+    timestep*@nb.eta
   end
 
   def collision_time_by(other, time)

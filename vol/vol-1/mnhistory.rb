@@ -32,34 +32,39 @@
 ## 
 ##   h = [[0.0, []]]
 ## 
-## After creation, h can only grow.  At any given time, h can exist in various
-## degrees of completion.  
-one of two legal formats: a `potential' format and an `actual' format.
+## After creation, h can only grow.  Before doing anything dynamic, one has
+## to provide the particle with an initial position and velocity.  At any
+## given time after that, h can take on the following four forms:
+##
+## -- predicting: 
+##    the particle has a `latest sales date', h.last[0], up to which time
+##    it can predict its state, even though its actual state h.last[1] has
+##    not yet been computed: h.last[1] = [], an empty array.  Note that its
+##    penultimate state includes at least an acceleration h[h.size-2][1][2]
+##    and possibly higher derivatives, such as jerk h[h.size-2][1][3], etc.
+##
+## -- arrived: 
+##    the particle position and velocity have been updated to its latest time
+##    h.last[0], and so h has no future `shelf life': it can only postdict its
+##    state, since it has not yet received values for acceleration, jerk, etc.:
+##    h.last[1] = [pos, vel].
 ## 
-## In the potential format, the last h entry contains a time, but no state,
-## while the penultimate h entry contains a time and a state with at least
-## an acceleration (and possibly higher derivatives, such as a jerk, etc.).
+## -- incomplete: 
+##    while moving between the two stable states `predicting' and `arrived',
+##    the particle may call other particles that in turn may call the particle
+##    itself, and find it in an incomplete state; I'm not yet sure whether and
+##    if so, how often and how this may happend, but it would be prudent to
+##    allow for this possibility in designing the History class.
 ## 
-## In the actual format, the last h entry contains a time, and 
-## 
-## 
-## 
-## 
-## 
-## 
-## 
-## 
-## 
-## 
-## 
-## 
-## 
-## 
-## 
-## 
-## 
-## 
-## 
+## After reading in the initial position and velocity, h takes on the form of
+## an `arrived' structure.  After calculating the higher derivates and the
+## time step deduced from that, h takes the `predicted' form.  The particle
+## can then use the prescribed integration algorithm to step forwards, to reach
+## again at an `arrived' structure, and so on.
+##
+## Note: there is one extra twist: we need to give all particles an acc before
+##       any body can determine a time step (which asks other particles for
+##       their acc); this is done with an "acc_initializing" flag in Body.new
 
 require "mnvector.rb"
 
@@ -81,6 +86,12 @@ class History
   end
   def set_last_rndot(n, rndot)             # rndot = d^n r / dt^n
     @history.last[1][n] = rndot
+  end
+  def arrived?
+    @history.last[1][0] and @history.last[1][1]
+  end
+  def predicting?
+    (not @history.last[1][0]) and @history[@history.size-2][1][2]
   end
   def ndim
     @history[0][1][0].size
@@ -148,7 +159,7 @@ class History
       # evaluate Taylor series, starting with the highest derivative
       # example: r + v.dt + a.dt^2/2 + j.dt^3/6 =
       #          r + (v + (a + (j + 0) * dt / 3) * dt /2) * dt / 1
-      increment = 0
+      increment = Vector.new(ndim, 0.0)
       while (dn > 0)
         increment += @history[i][1][n+dn]
         increment *= dt/dn
