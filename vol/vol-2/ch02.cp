@@ -126,15 +126,15 @@ grow fruit.
 
 *Alice*: Did you just make that up?
 
-*Bob*: I just thought about it, as a warning against too much abstraction,
-modularity, cleanliness, and all that stands in the way of optimized code.
-But for now, as long as we are still working on a toy project, I really
-don't mind.
+*Bob*: I just thought about balancing roots and fruits, as a warning
+against too much abstraction, modularity, cleanliness, and all that
+stands in the way of optimized code.  But for now, as long as we are
+still working on a toy project, I really don't mind.
 
 == Tidying Up
 
 *Alice*: You have told us how you wrote your first leapfrog version of
-+evolve_step+; and now I can see what you did in the much more condensed
+<tt>evolve_step</tt>; and now I can see what you did in the much more condensed
 version in your code:
 
  :inccode:.lbody.rb+leapfrog
@@ -149,7 +149,7 @@ and +epot+ that we saw before.
 
 *Bob*: I know you would like that.  I'm curious, how would your version
 of the leapfrog look, in this notation?  You start by introducing variables
-+old_acc+ and +new_acc+, so that must then become:
+<tt>old_acc</tt> and <tt>new_acc</tt>, so that must then become:
 
   def leapfrog(dt)
     old_acc = acc
@@ -172,28 +172,115 @@ I wouldn't have thought about your way of writing the leapfrog, and
 it is nice to try different variations, in order to see which one you
 like best.
 
+== A Subtle Bug
+
 *Alice*: So I agree: we'll stick with yours.  And your forward Euler now
-also looks very short, just one line short of being a one-liner!
+also looks very short.
 
  :inccode:.lbody.rb+forward
 
-*Bob*: I suppose I could have put the position and velocity into a vector,
-a higher-order vector really, and the velocity and the acceleration as well.
-In that way I could have presented you with the type of one-liner you seem
-to like so much.
+*Bob*: In fact, my first try was even one line shorter:
 
-*Alice*: Seriously, when we're going to explore very high-order integrators,
-a notation like that might well come in handy.  But not right now.
+  def forward(dt)
+    @pos += vel*dt
+    @vel += acc*dt
+  end
+
+*Alice*: That looks beautifully symmetric.  I see that you left out
+the <tt>@</tt> sign at the right in front of +vel+; it doesn't make
+a difference, since +vel+ is a method returning <tt>@vel</tt> anyway,
+and this way the symmetry between the two lines comes out better.
+
+I like this form!  What is wrong with it?  You're not the type of
+person who likes to add an extra line without a good reason!
+
+*Bob*: It is totally wrong.  But it took me quite a while to figure
+that out.  Can you guess what is wrong?
+
+*Alice*: It looks right to me.  In fact, it is classic forward Euler.
+The position gets increased by the velocity times time step, and the
+velocity gets increased by the acceleration times time step.  What
+can be wrong with that?
+
+*Bob*: Let me give you a hint.  You praised the symmetry of the two lines.
+But are they <i>really</i> symmetric?
+
+*Alice*: Is that a trick question?  In both lines literally all characters
+are the same, except that +pos+ above is replaced by its derivative +vel+
+below, and +vel+ above is also replaced by its derivative +acc+ below.
+
+*Bob*: And in both cases the left-hand side of the equation contains an
+instance variable, and the right-hand side contains a method . . .
+
+*Alice*: Yes, I had already commented on that, praising you!  The left hand
+side is symmetric, because the variable holding <tt>@vel</tt> is exactly of
+the same sort of thing as the variable holding <tt>@pos</tt>.  How much
+further do you want to push me to spell everythign out?  Okay.  The right
+hand side is symmetric, because the method +acc+ . . .
+
+*Bob*: You see!  I can see from your face that you got it.
+
+*Alice*: Well, now that <i>is</i> a subtle bug.  What a beauty!
+
+*Bob*: Yeah, I agree, I first felt rather stupid, but now that I see your
+reaction, I think that I may have stumble upon an interesting variation
+of stupidity.
+
+*Alice*: I can't wait to show this to the students, and let them figure
+it out.
+
+*Bob*: In a class full of them, there may be a few that get it more quickly
+than we did.
+
+*Alice*: So much the better, more power to them!  What a tricky situation.
+So yes, thanks to your prodding I saw it all as in a flash.  They two lines
+are <i>not</i> symmetric.  In the first line, +vel+ just reads out a stored
+value, while in the second line, +acc+ computes a value on the fly.  And it
+does so using the +pos+ value at that time, a value that has just been
+changed prematurely in the previous line.  So the velocity increment
+will be wrong!  And what is worse, you can't repair the damage by changing 
+the order of the two lines:
+
+  def forward(dt)
+    @vel += acc*dt
+    @pos += vel*dt
+  end
+
+In that case, the velocity gets updated correctly, with the
+acceleration based on the old <tt>@pos</tt> value, but now the
+position increment gets wrongly calculated, since it uses the new
+value for <tt>vel</tt>, while I should have used the old.  A lose-lose
+situation, whatever order you give these two lines.
+
+*Bob*: So I had to add a third line, introducing a temporary variable,
+<tt>old_acc</tt>, the acceleration at the beginning of the step.
+
+*Alice*: I'm impressed that you found this bug at all.
+
+*Bob*: Well, if you stare at something long enough, chances are that you
+stumble upon a moment of clarity.
+
+*Alice*: But no guarantee.  And even testing would not have revealed that
+bug, since the bug introduces a second-order error, and the error in a
+first-order method is second-order anyway.  To be explicit, in the last
+version, the position increment would use a velocity value +vel+ that
+would be off by an amount proportional to +dt+, so the product <tt>vel*dt</tt>
+would introduce an error in <tt>@pos</tt> that would be proportional to
+<tt>dt*dt</tt>.  So the method would still be first-order accurate!
+
+*Bob*: But it would no longer be a forward Euler method.  Yes, it is tricky.
+It makes you wonder how many hidden bugs there are still lurking in
+even well-tested codes, let alone the many codes that are not-so-well
+tested . . . 
 
 == Ordering an Integrator
 
-*Bob*: Agreed.
-
-*Alice*: Okay, I like your two integrator methods, while seperating
-out the acceleration, but where is the magic that enables you to call
-the shots, when you call +evolve+.  How does evolve know that a first
-argument of the string <tt>"forward"</tt> directs it to execute the method
-+forward+, and similarly that a first argument of the string
+*Alice*: Back to your two integrator methods.  I very much like the idea
+of seperating out the acceleration as a calculation that gets done in
+a separate method.  But where is the magic that enables you to call
+the shots, when you call +evolve+?  How does +evolve+ know that a first
+argument of the string <tt>"forward"</tt> directs it to execute the
+method +forward+, and similarly that a first argument of the string
 <tt>"leapfrog"</tt> directs it to execute the method +leapfrog+?
 
 *Bob*: That happens through the +send+ method.
@@ -238,35 +325,55 @@ This was the smallest time step for which we did not get an explosion:
 
  :inccode: .integrator_driver1a.rb-barebones
 
- :command: cp -f integrator_driver1a.rb test.rb
- :commandoutput: ruby test.rb < euler.in
- :command: rm -f test.rb
+ :commandoutput: ruby integrator_driver1a.rb < euler.in
 
-And here is the same run with a ten times smaller time step.
+*Alice*: That is a horrible error in the energy.  But we have seen before
+that the positions get more accurate with a smaller time step, in such
+a way that the error in the position goes down linearly with the time
+step size.  We can expect the energy error to scale in a similar way.
 
- :command: cp -f integrator_driver1b.rb test.rb
- :commandoutput: ruby test.rb < euler.in
- :command: rm -f test.rb
+*Bob*: Here is the same run with a ten times smaller time step.
 
-As expected for a first order method, we got a ten times smaller error.
-Now let us try the leapfrog method:
+ :commandoutput: ruby integrator_driver1b.rb < euler.in
 
- :inccode: .integrator_driver1c.rb-barebones
+In fact, the energy went down by less than a factor ten, but that may
+well be because we have not yet reached the linear regime.  
 
- :command: cp -f integrator_driver1c.rb test.rb
- :commandoutput: ruby test.rb < euler.in
- :command: rm -f test.rb
+*Alice*: That is probably the reason.  With errors
+this large, you cannot expect an asymptotic behavior.
 
-*Alice*: Ah, already _much_ better.  What will happen with a ten times
+*Bob*: We'll just have to take an even smaller time step.  Here goes:
+
+ :commandoutput: ruby integrator_driver1c.rb < euler.in
+
+*Alice*: That is going in the right direction at least, creeping closer
+to a factor ten in decrease of the energy errors.
+
+*Bob*: But creeping very slowly.  Before I'll be convinced, I want to see
+the time step shrinking by another factor of ten:
+
+ :commandoutput: ruby integrator_driver1d.rb < euler.in
+
+*Alice*: Ah, finally!  Now we're in the linear regime.
+
+*Bob*: Meanwhile, I am really curious to see
+what the leapfrog method will give us.  Let's have a look:
+
+ :inccode: .integrator_driver1e.rb-barebones
+
+ :commandoutput: ruby integrator_driver1e.rb < euler.in
+
+*Alice*: Ah, _much_ better.  A thousand times longer time step, and yet
+an enormously better accuracy already!  What will happen with a ten times
 smaller time step?
 
- :command: cp -f integrator_driver1d.rb test.rb
- :commandoutput: ruby test.rb < euler.in
- :command: rm -f test.rb
+== Scaling
+
+ :commandoutput: ruby integrator_driver1f.rb < euler.in
 
 *Bob*: A hundred times smaller error, as is appropriate for a second order
-method.  What a relief, after this slooooow convergence of forward Euler!
-Clearly leapfrog is a much much better integrator.
+method.  What a relief, after the earlier slooooow convergence of
+forward Euler!  Clearly leapfrog is a much much better integrator.
 
 *Alice*: Yes, to get such a high accuracy would have taken forever with
 a forward Euler integrator.  Congratulations, Bob!
@@ -286,9 +393,7 @@ conserve energy.  Clearly it conserves energy better than position.
 position should increase by a factor hundred when we decrease the time
 step by a factor ten.  Let's try and see.
 
- :command: cp -f integrator_driver1e.rb test.rb
- :commandoutput: ruby test.rb < euler.in
- :command: rm -f test.rb
+ :commandoutput: ruby integrator_driver1g.rb < euler.in
 
 *Alice*: You are right.  The difference between the _x_ component of the
 position in the last two runs is <tex>$2.10^{-6}$</tex>, while the

@@ -66,8 +66,9 @@ velocity output, so that we don't get too distracted.
 
  :inccode: .euler0d.rb-barebones
 
-I have given +dt_out+ a value larger than the total run time +dt_end+,
-so we won't get the regular particle poutput, only the diagnostics.
+I have given <tt>dt_out</tt> a value larger than the total run time
+<tt>dt_end</tt>, so we won't get the regular particle poutput, only
+the diagnostics.
 
  :command: cp -f euler0d.rb test.rb
  :commandoutput: ruby test.rb < euler.in

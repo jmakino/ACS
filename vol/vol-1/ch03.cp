@@ -109,9 +109,9 @@ contents from an object printed out.  Let's check the book again.
 == A Body-to-String Converter
 
 *Bob*: Ah, here is a hint.  The manual page for +print+ states: "Objects
-that aren't strings will be converted by calling their +to_s+ method."
+that aren't strings will be converted by calling their <tt>to_s</tt> method."
 
-*Alice*: But our +Body+ class does not have an +to_s+ method.  Does that
+*Alice*: But our +Body+ class does not have an <tt>to_s</tt> method.  Does that
 mean that we have to write one?
 
 *Bob*: I bet we do.  And this book gives us some examples, so it will
@@ -147,17 +147,17 @@ well.  Those three internal variables will quickly become floating point
 variables, as soon as we initialize them properly, since they represent
 physical quantities.  Fortunately, Ruby knows how to convert floating point
 variables, or integers for that matter, to strings.  The method that does
-this is called +to_s+, consistent in name with what we are trying to
+this is called <tt>to_s</tt>, consistent in name with what we are trying to
 write now.
 
-*Alice*: This +to_s+ seems to be the opposite of +atof+ in C; what does
+*Alice*: This <tt>to_s</tt> seems to be the opposite of +atof+ in C; what does
 +a+ that stand for, perhaps ASCII to floating point?
 
 *Bob*: Yes, but you don't have the reverse, an +ftoa+, in C, let alone
 a generic version +toa+ that can convert any object to ASCII so that
 it can be printed out.  In Ruby you do have such a generic tool, and
 instead of +a+ for ASCII, Ruby uses the more appropriate +s+ for string,
-in naming it +to_s+.
+in naming it <tt>to_s</tt>.
 
 *Alice*: With generic, you really mean that <tt>to_s</tt> can convert
 _any_ object to a string?
@@ -169,7 +169,7 @@ our responsibility, and I have just done that.  Ruby's task is to sow
 it altogether seemlessly.
 
 *Alice*: Which it can do well, because it is designed in such a modular
-way: there is a nice hierarchy of separate +to_s+'s that are calling
+way: there is a nice hierarchy of separate <tt>to_s</tt>'s that are calling
 each other down the chain of command.
 
 == Taming the Arrays

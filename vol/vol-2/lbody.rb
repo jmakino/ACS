@@ -40,8 +40,9 @@ class Body
   end    
 
   def forward(dt)
+    old_acc = acc
     @pos += @vel*dt
-    @vel += acc*dt
+    @vel += old_acc*dt
   end
 
   def leapfrog(dt)
@@ -51,11 +52,11 @@ class Body
   end
 
   def ekin                        # kinetic energy
-    @ek = 0.5*(@vel*@vel)         # per unit of reduced mass
+    0.5*(@vel*@vel)               # per unit of reduced mass
   end
 
   def epot                        # potential energy
-    @ep = -@mass/sqrt(@pos*@pos)  # per unit of reduced mass
+    -@mass/sqrt(@pos*@pos)        # per unit of reduced mass
   end
 
   def e_init                      # initial total energy

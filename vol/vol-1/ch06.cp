@@ -4,7 +4,7 @@
 
 *Bob*: Time to test our Forward Euler code!
 
-*Alice*: I see there is a call to +simple_read+, so I presume we have
+*Alice*: I see there is a call to <tt>simple_read</tt>, so I presume we have
 to provide an input file.
 
 *Bob*: Let's call it <tt>euler.in</tt>; how about this one?

@@ -377,7 +377,7 @@ vector <tex>${\bf r}$</tex>.  What you need for the acceleration is
 the 3/2 power, so you compute that in the next line.
 
 Finally, you solve the three pairs of equations I wrote above.  The
-array method +each_index+ presumably does what it says, it executes the
+array method <tt>each_index</tt> presumably does what it says, it executes the
 next block of code once for each possible value of the index of the array?
 
 *Bob*: Yes.  In the case of a two-dimensional array +a+, the two components

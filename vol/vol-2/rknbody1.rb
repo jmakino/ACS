@@ -9,16 +9,13 @@ class Body
   end
 
   def acc
-    a = @pos*0                          # null vector of the correct length
-#    a = ([0]*@pos.size).to_v            # null vector of the correct length
-##    vector_size = @pos.size
-##    a = ([0]*vector_size).to_v
+    a = @pos*0                          # null vector of the correct length  #5
     @nb.body.each do |b|
-      unless b == self
-        r = b.pos - @pos
+      unless b == self                                                       #2
+        r = b.pos - @pos                                                     #3
         r2 = r*r
         r3 = r2*sqrt(r2)
-        a += r*(b.mass/r3)
+        a += r*(b.mass/r3)                                                   #4
       end
     end
     a
@@ -74,13 +71,13 @@ class Nbody
     @body = []
     for i in 0...n
       @body[i] = Body.new
-      @boby[i].nb = self
+      @boby[i].nb = self                                           #1
     end
   end
 
   def evolve(integration_method, dt, dt_dia, dt_out, dt_end)
     nsteps = 0
-    @e0 = ekin + epot                      # initial total energy
+    e_init
     write_diagnostics(nsteps)
 
     t_dia = dt_dia - 0.5*dt
@@ -103,8 +100,11 @@ class Nbody
   end
 
   def forward(dt)
-    @body.each{|b| b.vel += b.acc*dt}
+    old_acc = []
+    @body.each_index{|i| old_acc[i] = @body[i].acc}
     @body.each{|b| b.pos += b.vel*dt}
+    @body.each_index{|i| @body[i].vel += old_acc[i]*dt}
+    @body.each{|b| b.vel += b.acc*dt}
   end
 
   def leapfrog(dt)
@@ -152,6 +152,10 @@ class Nbody
     e = 0
     @body.each{|b| e += b.epot}
     e/2                           # pairwise potentials were counted twice
+  end
+
+  def e_init                      # initial total energy
+    @e0 = ekin + epot
   end
 
   def write_diagnostics(nsteps)

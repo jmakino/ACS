@@ -23,7 +23,7 @@ it anymore.  From then on we will work on <tt>iobody2.rb</tt>, and so on.
 *Bob*: So here is our starting point, a copy of what we did before, which
 we can call <tt>iobody0.rb</tt>:
 
- :inccode: iobody0.rb
+ :inccode: .iobody0.rb
 
 == A Single Write Method
 
@@ -292,4 +292,4 @@ can you show me what the file <tt>iobody1.rb</tt> looks like now?
 
 *Bob*: My pleasure:
 
- :inccode: iobody1.rb
+ :inccode: .iobody1.rb

@@ -154,9 +154,10 @@ backward, the cancellations become manifest.
 *Alice*: Now show me your leapfrog, I'm curious.
 
 *Bob*: I wrote two new drivers, each with its own extended +Body+ class.
-Let me show you the simplest one first.  Here is the leapfrog driver:
+Let me show you the simplest one first.  Here is the leapfrog driver
+<tt>integrator_driver1.rb</tt>:
 
- :inccode: integrator_driver1.rb
+ :inccode: .integrator_driver1.rb
 
 Same as before, except that now you can choose your integrator.
 The method +evolve+, at the end, now has an extra parameter,
@@ -172,11 +173,17 @@ when integrating, such as time step size, and so on.
 one moment you calculate with one method, the next moment with another.
 You don't even have to type in the name of the method: I have written
 it so that you can switch from leapfrog back to forward Euler with two
-key strokes: you uncomment the line that now starts with
-<tt>#method = "forward"</tt> and comment out the line that now starts
-with <tt>method = "leapfrog"</tt>.
+key strokes: you uncomment the line
 
-*Alice*: I'm curious to see how you let Ruby make that switch.  
+ :inccode: .integrator_driver1.rb-1
+
+and comment out the line
+
+ :inccode: .integrator_driver1.rb-2
+
+*Alice*: It is easy to switch lines in the driver, but I'm really curious
+to see how you let Ruby actually make that switch in executing the code
+differently, replacing one integrator by another!
 
 == An Extended Body Class
 
@@ -184,12 +191,12 @@ with <tt>method = "leapfrog"</tt>.
 <tt>lbody.rb</tt> with +l+ for leapfrog.  It is not much longer than 
 the previous file <tt>body.rb</tt>, so let me show it again in full:
 
- :inccode: lbody.rb
+ :inccode: .lbody.rb
 
 == Minimal Changes
 
 *Alice*: Before you explain to me the details, remember that I challenged
-you to write a new code while changing or adding less than a doze lines?
+you to write a new code while changing or adding at most a dozen lines?
 How did you fare?
 
 *Bob*: I forgot all about that.  It seemed so unrealistic at the time.
@@ -197,7 +204,7 @@ But let us check.  I first corrected this mistake about the mass factor
 that I had left out in the file <tt>body.rb</tt>.  Then I wrote this
 new file <tt>lbody.rb</tt>.  Let's do a diff:
 
-    |gravity> diff body.rb
+    |gravity> diff body.rb lbody.rb
     11c11
     <   def evolve(dt, dt_dia, dt_out, dt_end)
     - -
@@ -205,31 +212,34 @@ new file <tt>lbody.rb</tt>.  Let's do a diff:
     22c22
     <       evolve_step(dt)
     - -
-    >       self.send(integration_method,dt)
+    >       send(integration_method,dt)
     36c36
     <   def evolve_step(dt)
     - -
     >   def acc
-    39c39,42
+    39c39,49
     <     acc = @pos*(-@mass/r3)
     - -
     >     @pos*(-@mass/r3)
     >   end    
     > 
     >   def forward(dt)
-    43a47,52
+    >     old_acc = acc
+    >     @pos += @vel*dt
+    >     @vel += old_acc*dt
+    >   end
+    > 
     >   def leapfrog(dt)
     >     @vel += acc*0.5*dt
-    >     @pos += @vel*dt
+    41c51
+    <     @vel += acc*dt
+    - -
     >     @vel += acc*0.5*dt
-    >   end
-    >
-    |gravity> 
 
-To wit: four lines from the old code have been left out, and eleven
+To wit: four lines from the old code have been left out, and twelve
 new lines appeared.
 
-*Alice*: Only eleven!  You did it, Bob, less than a dozen, indeed.
+*Alice*: Only twelve!  You did it, Bob, exactly one dozen, indeed.
 
 *Bob*: I had not realized that the changes were so minimal.  While
 I was playing around, I first added a whole lot more, but when I

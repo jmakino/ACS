@@ -108,18 +108,18 @@ the name of each element of the array, while the array is traversed.
 In this case, each element is printed in the same format as we printed
 the mass in the previous line.
 
-*Alice*: The +simple_read+ method puzzles me.  What is this +gets+ in the
-first line?
+*Alice*: The <tt>simple_read</tt> method puzzles me.  What is this +gets+
+in the first line?
 
 *Bob*: It is short for `get string': it reads in one line of input, and
 returns as its value the string of characters that it has read in.
 
-*Alice*: Ah, and +to_f+ converts the string, as a collection of characters,
-to a floating point value, just as +atof+ would do in C.
+*Alice*: Ah, and <tt>to_f</tt> converts the string, as a collection of
+characters, to a floating point value, just as +atof+ would do in C.
 
 *Bob*: Exactly.  And the important thing to notice here is that +gets+
 returns a string, which in Ruby is an instance of the class +String+.
-And this +to_f+ is a method associated with that class -- it plays the
+And this <tt>to_f</tt> is a method associated with that class -- it plays the
 role that a member function plays in C++, as we saw before.  You can
 ask an object to invoke one of its methods by putting a dot in between
 the object and a method.  And by implication this is what happens to
@@ -127,11 +127,11 @@ the object returned by +gets+.
 
 *Alice*: The principle of minimal surprise all right.
 
-*Bob*: As you can see in +simple_print+ I have chosen a data
-format in which a single particle prints its mass, position, and velocity
-on three consecutive lines.  To be compatible, +simple_read+ should perform
-a separate +gets+ for <tt>@mass</tt>, for <tt>@mpos</tt>, and for
-<tt>@vel</tt>.
+*Bob*: As you can see in <tt>simple_print</tt> I have chosen a data
+format in which a single particle prints its mass, position, and
+velocity on three consecutive lines.  To be compatible,
+<tt>simple_read</tt> should perform a separate +gets+ for
+<tt>@mass</tt>, for <tt>@mpos</tt>, and for <tt>@vel</tt>.
 
 The most tricky thing to get right was to read the three components
 from a vector.  Here I have used +split+ which is a string method that
@@ -268,7 +268,7 @@ returns a new array that contains the values resulting from the
 operations.  Be careful here: the bang sign "!" is _not_ an operator
 in itself, it is only an allowed character for the last part of the
 name of a command.  It is up to the code writer to choose sensible
-names such that +do_something+ and <tt>do_something!</tt> do the same
+names such that <tt>do_something</tt> and <tt>do_something!</tt> do the same
 thing, the first one producing a new array, and the second one
 changing the elements of the array that it was called by.
 

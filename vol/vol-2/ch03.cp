@@ -20,8 +20,9 @@ Here are the additions to the +Body+ class:
  :inccode:.rkbody.rb+rk4
 
 *Alice*: Even the fourth-order method is quite short.  But let me first
-have a look at your second-order Runge-Kutta.  I see you used an +old_pos+
-just like I used an +old_acc+ in my version of the leapfrog.
+have a look at your second-order Runge-Kutta.  I see you used an
+<tt>old_pos</tt> just like I used an <tt>old_acc</tt> in my version of
+the leapfrog.
 
 *Bob*: Yes, I saw no other way but to remember some variables before they
 were overwritten.
@@ -172,22 +173,18 @@ better indicator for the magnitude of the positional errors than it
 was in the leapfrog case.  Shall we try the same values as we used
 before, but now for the Runge-Kutta method?
 
-*Bob*: I'm all for it!
+*Bob*: I'm all for it!  Let me call the file <tt>integrator_driver2.rb</tt>:
 
  :inccode: .integrator_driver2a.rb-barebones
 
- :command: cp -f integrator_driver2a.rb test.rb
- :commandoutput: ruby test.rb < euler.in
- :command: rm -f test.rb
+ :commandoutput: ruby integrator_driver2a.rb < euler.in
 
 *Alice*: An energy error of order several time <tex>$10^{-5}$</tex>,
 that is more than a hundred times worse than we saw for the leapfrog,
 where we had an error of a few times <tex>$10^{-7}$</tex>, for the
 same time step value.  Let's try a ten times smaller time step:
 
- :command: cp -f integrator_driver2b.rb test.rb
- :commandoutput: ruby test.rb < euler.in
- :command: rm -f test.rb
+ :commandoutput: ruby integrator_driver2b.rb < euler.in
 
 *Bob*: That is a surprise: the energy error has become a thousand times
 smaller, instead of a hundred.  The Runge-Kutta seems to behave as if
@@ -208,9 +205,7 @@ accuracy of the positions, compared with the leapfrog.  Then, at a
 time step of 0.0001, the energy error lags only a factor ten behind
 the leapfrog.  Okay, let's go to a time step of 0.00001:
 
- :command: cp -f integrator_driver2c.rb test.rb
- :commandoutput: ruby test.rb < euler.in
- :command: rm -f test.rb
+ :commandoutput: ruby integrator_driver2c.rb < euler.in
 
 *Alice*: The third-order style behavior continues!  The energy error again
 shrunk by a factor a thousand.  Now the leapfrog and Runge-Kutta comparable
@@ -223,7 +218,7 @@ increases by a factor 1000.
 
 *Alice*: Let's shrink the step size by another factor of ten.
 
-    |gravity> ruby test.rb < euler.in
+    |gravity> ruby integrator_driver2.rb < euler.in
     dt = 1.0e-06
     dt_dia = 10
     dt_out = 10
@@ -265,12 +260,12 @@ lot faster.  But first let's see what we get here.
 
 == Reaching the Round-Off Barrier
 
-*Alice*: It has been a few hours now.  Surely the code must have run
+*Alice*: It has been quite a while now.  Surely the code must have run
 now.
 
 *Bob*: Indeed, here are the results.
 
-    |gravity> ruby test.rb < euler.in
+    |gravity> ruby integrator_driver2.rb < euler.in
     dt = 1.0e-07
     dt_dia = 10
     dt_out = 10

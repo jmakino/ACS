@@ -2,12 +2,6 @@
 
 == xxx
 
-
-
-
-
-
-
-
-TODO: HIGHER LEVEL ACS READ-IN, HASH TABLE, if __FILE__ == $0 for testing,
+TODO: HIGHER LEVEL ACS READ-IN, HASH TABLE,
+file testing appendices,
 XML versions of ACS format I/O, also HISTORY

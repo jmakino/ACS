@@ -86,7 +86,7 @@ class Nbody
 
   def evolve(integration_method, dt, dt_dia, dt_out, dt_end)
     nsteps = 0
-    @e0 = ekin + epot                      # initial total energy
+    e_init
     write_diagnostics(nsteps)
 
     t_dia = dt_dia - 0.5*dt
@@ -151,6 +151,10 @@ class Nbody
     e = 0
     @body.each{|b| e += b.epot(@body)}
     e/2                           # pairwise potentials were counted twice
+  end
+
+  def e_init                      # initial total energy
+    @e0 = ekin + epot
   end
 
   def write_diagnostics(nsteps)

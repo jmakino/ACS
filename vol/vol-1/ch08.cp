@@ -62,10 +62,11 @@ me a one-line integrator, just like you produced one-line read and write
 functions, earlier!
 
 *Bob*: Don't count on it; I think a five-line integrator is good enough
-already.  What a difference with +euler1.rb+!  Instead of asking
-<tt>b.pos</tt> to add the square of each of its components to +r2+,
-after setting +r2+ to zero, we simply order +r2+ to be the inner product
-of <tt>b.pos</tt> with itself, in the first line of the +do+ loop.
+already.  What a difference with <tt>euler1.rb</tt>!  Instead of asking
+<tt>b.pos</tt> to add the square of each of its components to
+<tt>r2</tt>, after setting <tt>r2</tt> to zero, we simply order
+<tt>r2</tt> to be the inner product of <tt>b.pos</tt> with itself, in
+the first line of the +do+ loop.
 
 The next line is unchanged.  But then the fun really starts: the
 acceleration vector is now directly given as the product of the
@@ -325,4 +326,4 @@ testing once we see this.
 
 *Bob*: <i>Voila!</i>
 
-*Alice*: <i>Tres bien</i>.  <i>Tres tres bien</i>.
+*Alice*: <i>Very</i> good.

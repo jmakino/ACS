@@ -8,7 +8,7 @@ dt_dia = 10           # diagnostics printing interval
 dt_out = 10           # output interval
 dt_end = 10           # duration of the integration
 method = "forward"    # integration method
-##method = "leapfrog"  # integration method
+#method = "leapfrog"   # integration method
 #:segment end:
 
 STDERR.print "dt = ", dt, "\n",
