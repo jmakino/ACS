@@ -198,11 +198,11 @@ If we have
 check_and_install.rb does the following things for each of files in
 LIBSRC. Here, we call aaa.rb
 
-1. First, it looks if there is a file 
+1. First, check_and_install.rb looks if there is a file 
 
      /home/foo/acs/lib/.sourcenames/aaa.rb
 
-   If it is there, then it contains the full path name of the file
+   If the file is there, then it contains the full path name of the file
    aaa.rb which was copied into /home/foo/acs/lib/aaa.rb in previous
    time check_and_install.rb was used to install aaa.rb. If that name
    is different from the full pathname of aaa.rb, this command aborts.
@@ -223,20 +223,20 @@ In order to use this versioning mechanism, you need to load the
 library file "acsrequire.rb", using usual load or require. If you load
 "asc.rb" in standard way,  "acsrequire.rb" is also loaded.
 
-Once acsrequire.rb is loaded, a top-level method acsreq is defined,
+Once acsrequire.rb is loaded, a top-level method acsrequire is defined,
 which you can use as
 
-    acsreq "aaa"
+    acsrequire "aaa"
 
-You should omit  ".rb" for acsreq.
+You should omit  ".rb" for acsrequire.
 
-By default, acsreq behaves similarly with standard "require", loading
+By default, acsrequire behaves similarly with standard "require", loading
 the newest version. To specify the version date, you need to write
 
    $acsdate = "20050401"
-   acsreq "aaa"
+   acsrequire "aaa"
 
-Then, acsreq tries to find the most recent aaa.rb, which is older
+Then, acsrequire tries to find the most recent aaa.rb, which is older
 than 20050401.
 
 If the current directry has aaa.rb, and if current directory is in the
