@@ -155,7 +155,7 @@ module Generators
       if (type == "http" || type == "link") && 
           url =~ /\.(gif|png|jpg|jpeg|bmp)$/
 
-        "<img src=\"#{url}\">"
+        "<img ALIGN=\"middle\" src=\"#{url}\">"
       else
         "<a href=\"#{url}\">#{url.sub(%r{^\w+:/*}, '')}</a>"
       end

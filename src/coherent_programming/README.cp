@@ -110,3 +110,9 @@ END
   If you try to do unnumbered list and numbered list at the same level
   without any intervening text, the generated tex source might have
   wrong nesting of begin{itemize} etc.
+
+== Changes made to rdoc itself
+
+We try as hard as possible not to change rdoc itself, but some things
+are hardcoded in rdoc which can only be changed by tweaking the source
+code of rdoc.  

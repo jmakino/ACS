@@ -25,4 +25,17 @@ Jun Makino 2003/12/30
 >  |--- 232 ----
 >  |+       add_html("name", :XNAME)
 
- 
+
+More change to rdoc, to show inline images to appear in more
+reasonable location
+
+Jun Makino 2004/3/29
+
+diff -C0  rdoc/generators/html_generator.rb    rdoc/generators/html_generator.rb.original
+*** rdoc/generators/html_generator.rb   2004-03-29 19:24:46.000000000 +0900
+--- rdoc/generators/html_generator.rb.original  2003-12-31 18:31:05.000000000 +0900
+***************
+*** 158 ****
+!         "<img ALIGN=\"middle\" src=\"#{url}\">"
+--- 158 ----
+!         "<img src=\"#{url}\">"
