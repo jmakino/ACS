@@ -21,15 +21,19 @@ def name_with_date(name)
   addzeros(4,Time.now.year.to_s)+ addzeros(2,Time.now.month.to_s)+
     addzeros(2,Time.now.day.to_s)+"_"+name
 end
-def store_file_with_date(sourcename, dirname)
+def store_file_with_date(sourcename, dirname,fullsourcename)
   subdirname = (sourcename.gsub(/\./,"_"))
   subdirpath = dirname+"/"+subdirname
   Dir.mkdir(subdirpath) unless File.exist?(subdirpath)
   targetname=name_with_date(sourcename)
+
   system "/bin/cp -p #{sourcename} #{subdirpath}/#{targetname}"
+  logfile= "#{subdirpath}/#{targetname}_log"
+  open(logfile,"w"){|f| f.print fullsourcename} 
   if $use_svn
     system "svn add -N #{subdirpath}"
     system "svn add -N #{subdirpath}/#{targetname}"
+    system "svn add -N #{logfile}"
   end
 end  
 
@@ -41,9 +45,9 @@ def check_and_install(sourcename, dirname)
     oldsource= open(checkfilename,"r"){|f| f.gets}.chomp
     if oldsource != fullsourcename
       print "#{__FILE__} error:" 
-      print "  Target file comes from #{oldsource}," 
+      print "  Target file comes from #{oldsource}, " 
       print "  different from #{fullsourcename}\n"
-      print "  If you want to overwrite , please remove file #{checkfilename}\n"
+      print "  If you want to overwrite, please remove file #{checkfilename}\n"
       print "  Also, make sure that you do not export file #{sourcename} from\n"
       print "  more than one place.\n"
       print "File #{sourcename} is not installed. Exiting...\n"
@@ -59,7 +63,7 @@ def check_and_install(sourcename, dirname)
   if copyfile==1
     STDERR.print "Installing file #{sourcename} to  #{dirname}" 
     system "/bin/cp -p #{sourcename} #{dirname}" 
-    store_file_with_date(sourcename,dirname)
+    store_file_with_date(sourcename,dirname,fullsourcename)
     STDERR.print " ... finished\n" 
   end
   Dir.mkdir(checkdirname) unless File.exist?(checkdirname)
