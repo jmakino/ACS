@@ -11,11 +11,12 @@ else
 endif
 
 ACSDOC = ruby ../../../src/coherent_programming/acsdoc.rb $(ACSDOCOPTIONS)
+GZIP = gzip --force
 
 all:  $(alldepends)
 $(TARGET).ps.gz: $(TARGET).dvi
 	dvips -o $(TARGET).ps $(TARGET)
-	gzip $(TARGET).ps 
+	$(GZIP) $(TARGET).ps 
 $(TARGET).pdf: $(TARGET).dvi
 	$(DVIPDF)  $(TARGET)
 $(TARGET).dvi: $(TARGET).tex

@@ -1,4 +1,5 @@
 all:
+	$(MAKE) -C etc
 	$(MAKE) -C vol-0
 	$(MAKE) -C vol-1
 clean:
