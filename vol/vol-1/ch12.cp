@@ -62,11 +62,11 @@ out.  It looks impressive.  But does it work?
 
 *Alice*: Now I'm really impressed!
 
-*Bob*: Your will is my command.
+*Bob*: Your wish is my command.
 
 *Alice*: Oh yeah?  Then let's make _everything_ modular.
 
-*Bob*: Not that will; don't push it!  Where were we?  Oh yes, Ruby seems
+*Bob*: Not that wish; don't push it!  Where were we?  Oh yes, Ruby seems
 to have a general command "+p+" for printing the contents of any object.
 Let's see what that gives us:
 

@@ -6,4 +6,6 @@ Chapter 11: Introducing the Players
 
 Chapter 12: Pretty Printing
 
-Chapter 13: Choosing an I/O Format
+Chapter 13: Input and Output
+
+Chapter 14: Choosing an I/O Format

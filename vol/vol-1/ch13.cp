@@ -1,4 +1,4 @@
-= Choosing an I/O Format
+= Input and Output
 
 == Double Precision Input/Output
 
@@ -158,7 +158,7 @@ k < NDIM, k++)</tt> followed by the block of code you would loop over
 containing expressions like <tt>pos[k]</tt> for the kth element of the
 position vector, after you had defined <tt>#define NDIM 3</tt>.
 
-== xxx
+== Tryting It Out
 
 *Alice*: Remarkable.  Once you gain familiarity with those notions such
 as +gets+ and +split+ and +collect+, it must become second nature to
@@ -251,6 +251,8 @@ names such that +do_something+ and +do_something!+ do the same thing,
 the first one producing a new array, and the second one changing the
 elements of the array that it was called by.
 
+== A Surprise
+
 *Alice*: So you managed to reduce the number of lines of your method
 by a factor three, presumably also in your write method.  Currently
 you have three lines left in each method.  Can I challenge you to
@@ -266,8 +268,8 @@ some more tea.
 
 Here's another cup.  WHAT?  Are you serious?  Does that work???
 
- :inccode: .body7.rb+simple_print
- :inccode: .body7.rb+simple_read
+ :inccode: .body8.rb+simple_print
+ :inccode: .body8.rb+simple_read
 
 *Bob*: Here is the key board.  Try it.
 
