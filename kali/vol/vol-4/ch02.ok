@@ -327,7 +327,7 @@ And come to think of it, let me put everything in one long `here document'.
 That will make it easy to pass this option block list around, as a single
 string.
 
- :inccode: .rkn2.rb-optionlist
+ :inccode: .rkn2a.rb-optionlist
 
 *Alice*: Wonderful!  That contains all the information needed for a computer
 as well as for a human reader.  How nice!  You can just go through it and

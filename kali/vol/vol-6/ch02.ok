@@ -1,0 +1,35 @@
+= xxx
+
+== xxx
+
+Now new code version:
+
+ :commandoutput: time ruby nb2.rb -t1 -d0.01 -s0.1 < plum.in
+
+Compare with previous version
+
+ :commandoutput: time ruby nb1.rb -t1 -d0.01 -s0.1  < plum.in
+
+and following version:
+
+ :commandoutput: time ruby nb3.rb -t1 -d0.01 -s0.1  < plum.in
+
+== xxx
+
+Adding the line
+
+ require "profile"
+
+at the top of a file gives profiling information when you run the file.
+
+ :commandoutput: time ruby nb3p.rb -t1 -d0.01 -s0.1  < plum.in
+
+Hey, this and that.
+
+Now all three:
+
+ :commandoutput: (ruby nb1p.rb -t1 -d0.01 -s0.1 < plum.in) | & head -25 | & tail -10
+
+ :commandoutput: (ruby nb2p.rb -t1 -d0.01 -s0.1 < plum.in) | & head -25 | & tail -10
+
+ :commandoutput: (ruby nb3p.rb -t1 -d0.01 -s0.1 < plum.in) | & head -25 | & tail -10

@@ -80,7 +80,7 @@ end
 
 options_text= <<-END
 
-  Description: Plummer's Model Builder, (c) 2004, Piet Hut & Jun Makino, ACS
+  Description: Plummer's Model Builder
   Long description:
     This program creates an N-body realization of Plummer's Model.
     (c) 2004, Piet Hut and Jun Makino; see ACS at www.artcompsi.org

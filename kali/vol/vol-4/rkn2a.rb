@@ -1,12 +1,15 @@
+#:segment start: head
 require "rknbody.rb"
 require "clop.rb"
+#:segment end:
 
+#:segment start: optionlist
 options_definition_string = <<-END
 
   Description:		The simplest ACS N-body code
   Long description:
     This is the simplest N-body code provided in the ACS environment
-    (c) 2004, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
+    (ACS: Art of Computational Science; cf. "http://www.ArtCompSci.org").
     It offers a choice of integrators, for constant shared time steps.
 
 
@@ -134,11 +137,14 @@ options_definition_string = <<-END
 
 
   END
+#:segment end:
 
-parse_command_line(options_definition_string)
+#:segment start: tail
+parse_command_line(options_definition_string)                                #9
 
 include Math
 
 nb = Nbody.new
 nb.simple_read
-nb.evolve($method, $eps, $dt, $dt_dia, $dt_out, $dt_end, $init_out, $x_flag)
+nb.evolve($method, $eps, $dt, $dt_dia, $dt_out, $dt_end, $init_out, $x_flag) #8
+#:segment end:

@@ -271,7 +271,7 @@ if __FILE__ == $0
 
   options_definition_string = <<-END
 
-  Description: Command line option parser, (c) 2004, Piet Hut & Jun Makino, ACS
+  Description: Command line option parser
   Long description:
     Test program for the class Clop (Command line option parser),
     (c) 2004, Piet Hut and Jun Makino; see ACS at www.artcompsi.org

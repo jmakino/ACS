@@ -1,14 +1,249 @@
 = Performance
 
-== xxx
+== A Matter of Speed
+
+*Alice*: Now that we can build a real star cluster model, with our Plummer's
+model generator <tt>mkplummer.rb</tt>, we're getting closer do some
+real physics.  I would love to use our N-body code to demonstrate
+gravitational thermodynamics effects, such as negative heat capacity.
+
+*Bob*: Before we can do that, we'll have to speed up our Ruby code
+significantly!  Right now, we don't stand a chance.  We can play with
+a few particles, but there is no way we can handle even a few hundred
+particles, at this moment.
+
+*Alice*: Is it that bad?
+
+*Bob*: It is that bad, yes.  Let's do a test, to see how long a single time
+step takes, say for 256 particles.  I like to run tests with particle
+numbers that are powers of 2, to make it easier to compare timings between
+different runs.
+
+*Alice*: Why don't we start more modestly, just to see whether the combination
+of our Plummer generator and our N-body code does what it is supposed
+to do, say for 8 particles.
+
+*Bob*: Okay, better safe than sorry.  Here we go, for one time unit.
+And I'll use a hefty dose of softening, just in case two of the particles
+happen to be born very close to each other.  Before too long, we should
+introduce variable time steps, to handle close encounters.  But until we
+can teach particles to shrink their time step when they meet each other,
+it is better to use an amount of softening that is an order of magnitude
+larger than the time step.  In that way, not much can change in the
+gravitational potential during one time step.
+
+*Alice*: As long as the velocities are of order one.  In practice, particles
+will speed up when they come close together.
+
+*Bob*: Yes, but only with the inverse square root of the distance.  So if
+we use a softening length of, say, 0.01, we can probably still use a time
+step of 0.1 -- but perhaps I'm too optimistic.  Let's try it:
+
+ :commandoutput: ruby mkplummer.rb -n 8 | ruby nb1.rb -t 1 -d 0.01 -s 0.1
+
+== Energy Conservation
+
+*Alice*: That's not bad, as far as energy conservation is concerned.  I see
+that you used a random seed for the random number generator.  Let's
+try another run, to see how large the variations in energy conservation
+are, for different Plummer's model realizations.
+
+*Bob*: I prefer to suppress the snapshot output, now that we have seen that
+reasonable numbers are produced.  I'll just ask for a snapshot output time
+that is longer than the run time:
+
+ :commandoutput: ruby mkplummer.rb -n 8 | ruby nb1.rb -t 1 -d 0.01 -s 0.1 -o2
+
+*Alice*: Indeed, a different energy error.  Let's try a few more.
+
+*Bob*: Fine, but all that output is too much of a good thing, for my taste.
+Let me suppress the initial state echo.  Since all that stuff appears on the
+standard error stream, I'll have to add a <tt>&</tt> symbol to a
+pipe, in order to get both streams through, the standard output and
+the standard error stream.  I'll then just ask for the very last line with
+<tt>tail -1</tt> :
+
+ :commandoutput: ruby mkplummer.rb -n8 | ruby nb1.rb -t1 -d0.01 -s0.1 -o2 |& tail -1
+
+Oops, I forget that the <tt>mkplummer</tt> command generates its own initial
+state messages.  But I can take care of that by wrapping both commands in
+a set of parentheses:
+
+ :commandoutput: (ruby mkplummer.rb -n8 | ruby nb1.rb -t1 -d0.01 -s0.1 -o2) |& tail -1
+
+Much better!
+
+*Alice*: Quite a bit of run-to-run variation of the energy errors.
+Can you try a few more?
+
+*Bob*: Now it's easy:
+
+ :commandoutput: (ruby mkplummer.rb -n8 | ruby nb1.rb -t1 -d0.01 -s0.1 -o2) |& tail -1
+ :commandoutput: (ruby mkplummer.rb -n8 | ruby nb1.rb -t1 -d0.01 -s0.1 -o2) |& tail -1
+ :commandoutput: (ruby mkplummer.rb -n8 | ruby nb1.rb -t1 -d0.01 -s0.1 -o2) |& tail -1
+ :commandoutput: (ruby mkplummer.rb -n8 | ruby nb1.rb -t1 -d0.01 -s0.1 -o2) |& tail -1
+ :commandoutput: (ruby mkplummer.rb -n8 | ruby nb1.rb -t1 -d0.01 -s0.1 -o2) |& tail -1
+
+*Alice*: Your abbreviation techniques do make it easier to see
+what is going on.  In any case, a time step of 0.01 does not seem to large
+for a softening of 0.1
+
+== Timing
+
+*Bob*: Let's create a standard input file, so that we can do some timings.
+
+*Alice*: Timing should be independent of energy error, since the number of
+integration steps are the same for different Plummer realizations.
+
+*Bob*: That's true, but I like to make the command line a bit shorter.
+Here is one standard input file, for 8 particles:
+
+ :commandoutput: ruby mkplummer.rb -n 8 -s 42 > plum8.in
+
+Let me try to obtain some timing information:
+
+ :commandoutput: time ruby nb1.rb -t1 -d0.01 -s0.1 -o2 < plum8.in
+
+Again, I prefer to suppress most of the information here:
+
+ :commandoutput: time ruby nb1.rb -t1 -d0.01 -s0.1 -o2 < plum8.in |& tail -2
+
+Ah, that threw away too much: the timing information went down the drain.
+
+*Alice*: Perhaps a matter of wrapping it up within parentheses again?
+
+*Bob*: That may wel work:
+
+ :commandoutput: (time ruby nb1.rb -t1 -d0.01 -s0.1 -o2 < plum8.in) |& tail -2
+
+*Alice*: And so it does.
+
+== The Next Step
+
+*Bob*: So now that we know that things are under control for
+<tex>$N = 8$</tex>, let us try the <tex>$N = 256$</tex> that I
+suggested earlier.
+
+*Alice*: How much longer would that take?  We increase the number of particles
+by a factor <tex>$32$</tex>, which means that the number of
+particle-particle interactions increase by a factor <tex>$1024$</tex>,
+the square of <tex>$32$</tex>.
+
+This estimate is not exact, since we don't have self-interactions between
+particles, so we should compare <tex>$N(N-1)$</tex>, which gives us a factor
+of <tex>$256(256-1) / 8(8-1) \approx 1166$</tex>.  And besides, there
+is the overhead of reading in the particles, printing them out, and various
+other overhead that is linear, rather than quadratic in <tex>$N$</tex>.
+
+But roughly speaking, I would guess your <tex>$N = 256$</tex> run to take
+a factor of a thousand more time.  So far, we have followed the
+<tex>$N = 8$</tex> run for 100 time steps.  So a single time step for a
+<tex>$N = 256$</tex> run should take about ten times longer than our
+<tex>$N = 8$</tex> runs.
+
+*Bob*: That must be about right.  Here is an input file with 256 particles:
+
+ :commandoutput: ruby mkplummer.rb -n 256 -s 137 > plum256.in
+
+And here is how long a single time step takes:
+
+ :commandoutput: (time ruby nb1.rb -t0.01 -d0.01 -e0.01 -s0.1 -o2 < plum256.in) |& tail -2
+
+*Alice*: A bit longer than I had guessed.
+
+*Bob*: But of course, there may be considerable start-up time, for loading
+the particles.  And, ah, don't forget that we determine the total energy at
+startup, which also takes a significant amount of time.
+
+Therefore, if we take two time steps, that should take significantly less
+than twice the time for one time step:
+
+ :commandoutput: (time ruby nb1.rb -t0.02 -d0.01 -e0.01 -s0.1 -o2 < plum256.in) |& tail -2
+
+*Alice*: You are right.  Let's do three time steps, to see whether each
+subsequent time step, after the first one, takes roughly the same
+amount of time.
+
+ :commandoutput: (time ruby nb1.rb -t0.03 -d0.01 -e0.01 -s0.1 -o2 < plum256.in) |& tail -2
+
+*Bob*: To a good approximation, yes.  And indeed, this shows us that a
+single time step for 256 particles does take about ten times longer than
+a run of 100 time steps took for 8 particles.
+
+== Two Orders of Magnitude Speedup?
+
+*Alice*: Yes, it is clear that we will have to do something about the speed
+of our code.  This is not going to make it easy to do thermodynamic
+experiments with 256 particles.
+
+*Bob*: To put it mildly!  If we want to have some fun running a 256-particle
+system for several relaxation times, in other words, for a few dozen
+crossing times, we would need to run the simulation for, say, thirty
+of forty time units.  A hundred time units would be even better.
+
+With a softening length of 0.1, that would already require 10,000 time steps.
+And if we take a smaller softening length, of 0.2, say, encounter velocities
+between particles go up, so we would probably need more like 100,000
+time steps.
+
+*Alice*: In other words, for every second that it takes to complete one time
+step, for <tex>$N = 256$</tex>, it would take a day to run a decent experiment.
+No, we can't wait that long.
+
+*Bob*: Even a speed-up of an order of magnitude wouldn't help enough.  We
+need at least two orders of magnitude: anything less than a factor of 100
+speedup just wouldn't cut the cake.  At the very least I want to be able
+to run several experiments in one day.
+
+There are two things we can do.  First of all, we can make our Ruby code
+itself faster.  So far, we haven't been careful at all about speed.  We
+even compute the inter-particle accelerations in <tex>$N(N-1)$</tex> fashion.
+We can already gain almost a factor of two by computing the acceleration
+of particle _i_ by particle _j_ at the same time that we compute the
+acceleration of particle _j_ by particle _i_ since the intermediate steps
+are the same.  This will reduce the number of square root calls from
+<tex>$N(N-1)$</tex> to <tex>$\half N(N-1)$</tex> per time step.  Since
+square roots are more expensive than additions and multiplications,
+this is bound to help.
+
+The second thing we can do is to write a version of the most
+compute-intensive inner loop in a faster language.  Since Ruby is written
+in C, it would be natural to write a C version for the pairwise
+acceleration calls, and to link that with our Ruby code.  That should
+make a significant difference.
+
+*Alice*: The first step may buy you a factor two, at most, and perhaps
+you can make some other improvements that also give you a factor two.
+The way we pass strings around to allow us to use arbitrary algorithms
+is probably not the most efficient way to integrate the equations of
+motion.  Finetuning may give us another factor of two, if we are lucky.
+But that wouldn't get us anywhere close to the factor of 100 that you
+would like to see.
+
+*Bob*: Indeed.  Most of the speedup will have to come from using C as
+a form of assembly language.
+
+*Alice*: Before launching into a long quest for speed-up, how about writing
+a simple test file, one which does a lot of floating point operations,
+in both Ruby and C?  That will give us an upper limit to the amount of
+speedup we might get from incorporating C into Ruby.
+
+== A Comparison between Ruby and C
+
+*Bob*: Good idea.
+
+xxxx
+
+ :inccode: test1.c
+
+ :commandoutput: gcc test1.c -lm -O -o test1
+
+ :commandoutput: time test1
+
+xxxxx
+
+ :inccode: test1.rb
+
+ :commandoutput: time ruby test1.rb
 
 
-
-
-== xxx
-
-Adding the line
-
- require "profile"
-
-at the top of a file gives profiling information when you run the file.

@@ -1,4 +1,4 @@
-= Implementation: Entry Points
+= Implementation: +Clop+ Entry Points
 
 == A New Driver
 
@@ -30,7 +30,7 @@ from the beginning.
 
 In my new driver, <tt>rkn2.rb</tt>, I now start as follows:
 
- :inccode: .rkn2.rb-head
+ :inccode: .rkn2a.rb-head
 
 You see, I'm including the +Body+ and +Nbody+ classes, as before, in
 the first line, and I'm including the new parser that I wrote, which
@@ -46,7 +46,7 @@ there appears this one long `here document' that we already wrote
 before, containing the full list of option blocks.  Then, the only
 thing left in this file <tt>rkn2.rb</tt>, are the following lines:
 
- :inccode: .rkn2.rb-tail
+ :inccode: .rkn2a.rb-tail
 
 So that is all there is to it!  This is the whole driver.  It contains
 a two lines at the start to specify what needs to be included, a few
@@ -94,7 +94,7 @@ everyone who doesn't shave himself.  But let's not get into that.
 
 *Alice*: Now all the magic occurs because of the one call
 
- :include: .rkn2.rb-9
+ :include: .rkn2a.rb-9
 
 I see that you take the one humongous `here document' string, and feed
 it into this method, that must be defined inside the file <tt>clop.rb</tt>.
@@ -173,7 +173,7 @@ the name that way, if you like.  In true object-oriented and modular
 way, the name of the class is not visible to the user.  Instead, the
 user just gives the command
 
- :include: .rkn2.rb-9
+ :include: .rkn2a.rb-9
 
 Still, as you know, I prefer more terse names, hence +Clop+.
 
@@ -201,7 +201,7 @@ started, with what set of initial parameters.
 It is just made visibly globally.  That's why the driver could simply give
 the command:
 
- :include: .rkn2.rb-8
+ :include: .rkn2a.rb-8
 
 *Alice*: Ah, yes, of course.  One more advantage of global variables.  Once
 you have decided to go that dangerous path, you might as well enjoy it.

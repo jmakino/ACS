@@ -6,7 +6,7 @@ options_definition_string = <<-END
   Description:		The simplest ACS N-body code
   Long description:
     This is the simplest N-body code provided in the ACS environment
-    (ACS: Art of Computational Science; cf. "http://www.ArtCompSci.org").
+    (c) 2004, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
     It offers a choice of integrators, for constant shared time steps.
 
 

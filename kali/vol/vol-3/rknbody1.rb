@@ -135,7 +135,7 @@ class Nbody
     @body.each_index{|i| a2[i] = @body[i].acc}
     @body.each_index{|i|
       @body[i].pos = old_pos[i] + @body[i].vel*dt +
-                                  (a0[i]+a1[i]*2)*(1/6.0)*dt*dt}
+                     (a0[i]+a1[i]*2)*(1/6.0)*dt*dt}
     @body.each_index{|i| @body[i].vel += (a0[i]+a1[i]*4+a2[i])*(1/6.0)*dt}
   end
 
