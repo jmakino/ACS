@@ -818,6 +818,33 @@ module Acsdoc
   end
   # :segment end: prep_rb
 
+
+  def prep_rb_hashes(infile)
+    begin
+      ifile = open(infile, "r")
+    rescue
+      raise "#{infile} does not exist"
+    end
+    hashnames=[]
+    while s = ifile.gets
+      if s  =~ /\#(\d+)/
+	segment_name = $1
+	s = s.gsub(/\#(\d+)/,'')
+	print segment_name if $DEBUG
+	outfile = File.dirname(infile)+"/."+File.basename(infile) +
+	  "-" + segment_name
+	if hashnames.index(outfile) 
+	  openmode= "a+" 
+	else
+	  openmode = "w+"
+	  hashnames.push(outfile)
+	  open(outfile,openmode){|f| f.print s}
+	end
+      end
+    end
+    ifile.close
+  end
+
   def prep_rb_defs(infile)
     ifile = open(infile, "r")
     method_level = 0
@@ -959,6 +986,7 @@ ARGV.collect! do |a|
     del_file_list.push(dot_a)
   elsif a =~ /\.rb$/
     prep_rb(a)
+    prep_rb_hashes(a)
     prep_rb_defs(a)
     a
   elsif a == "--keep-dot-files"
