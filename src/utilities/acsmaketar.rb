@@ -1,6 +1,8 @@
 #
 # acsmaketar.rb
 #
+# version 2005/1/29
+#
 # This will make two tarballs,
 #
 # acssrcs.tgz and acsall.tgz
