@@ -9,6 +9,12 @@
 # 
 # ruby mkplummer3.rb -s1 -n 128 | nbody_sh1 -t 50 -e 5 -o 50 | ruby report5.rb
 # 
+# (note 2004-9-16: ruby mkplummer3.rb -s1 -n 128 | ruby report5.rb > tmp.out
+#                  gave on the STDERR channel the {r,E} distribution; there
+#                  were two unphysical points outside the core radius which
+#                  had energy values much smaller than phi(r_c) = -1.4 ;
+#                  perhaps phi(0) was much smaller than Plummer, because of
+#                  fluctuations???
 
 require "vector.rb"
 
@@ -397,10 +403,11 @@ class Nbody
 # shrink the support of the kernel for particles close to the boundary
   def shrink_out_of_boundary_kernels
     @body.each_index do |i|
+STDERR.print @body[i].radius, " ", @energy_array[i], "\n" 
       if @energy_array[i] - @epsilon_array[i] < @phi0
 	@epsilon_array[i] = @energy_array[i] - @phi0	
       end
-      if @energy_array[i] + @epsilon_array[i] > 0
+      if @energy_array[i] < 0 and @energy_array[i] + @epsilon_array[i] > 0
 	@epsilon_array[i] = -@energy_array[i]
       end
     end
@@ -607,8 +614,8 @@ class Nbody
 ##-----------------------------------------------------------------------------
 
   def write_report
-    print "This is a ", body.size, "-body system,\n"
-    print "containing ", body.size - number_of_escapers,
+    STDERR.print "This is a ", body.size, "-body system,\n"
+    STDERR.print "containing ", body.size - number_of_escapers,
           " bound particles and ", number_of_escapers, " escapers\n"
   end
 
