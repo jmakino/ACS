@@ -582,7 +582,13 @@ module Acsdoc
     END_TEXSOURCE
     texsource.close
     system("cat "+texname)
-    system "latex #{texname}"
+    if  (ENV["LANG"] == "ja_JP.eucJP") or ($KCODE == "EUC") 
+      latexcommand = "platex"
+    else
+      latexcommand = "latex"
+    end
+
+    system "#{latexcommand} #{texname}"
     system "dvips -o #{texbase}.ps -l 1 -x 1900 -E #{texbase}"
     system "rm -f #{texbase}.jpeg; convert  #{texbase}.ps  #{texbase}.jpeg "
     imgname = imgbase + @@imgcount.to_s + ".jpeg"

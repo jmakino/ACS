@@ -1,0 +1,13 @@
+<?xml version='1.0'?><ACS>
+  <history>Sample history</history>
+  <particle type='star giant AGB' id='0'>
+    <mass>2</mass>
+    <pos>1.0 1.0 1.0</pos>
+    <vel>2.0 2.0 2.0</vel>Sample text</particle>
+  <particle id='1'>
+    <mass>0.0</mass>
+    <pos>1.0 1.0 99999</pos>
+    <vel>2.0 2.0 2.0</vel>
+    <story> I/O program does not know about this story</story>Sample text</particle>
+
+</ACS>
