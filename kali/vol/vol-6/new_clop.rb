@@ -3,7 +3,7 @@
 #
 # Jun Makino and Piet Hut 2004
 #
-require "vector.rb"
+require "new_vector.rb"
 
   class Clop_Option
 

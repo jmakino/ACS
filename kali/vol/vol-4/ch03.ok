@@ -102,8 +102,10 @@ is called here.
 
 == The Clop Class
 
-*Bob*: The file <tt>clop.rb</tt> contains two things: first the definition
-of a class called <tt>Clop</tt>, and then the following three line definition:
+*Bob*: The file <tt>clop.rb</tt> contains three things: there is the definition
+of a class called <tt>Clop</tt>, in front of that there is the definition
+of a helper calls <tt>Clop_Option</tt>, and after that there is a very short
+piece, namely the following three line definition:
 
  :inccode: .clop.rb+parse_command_line
 
@@ -395,7 +397,7 @@ and stops execution of the code.
 *Alice*: The call to <tt>find_option</tt> takes only one argument,
 while <tt>parse_option</tt> takes three arguments.  Why is that?
 
-*Bob*: The string +s+ should contain one or two minus signs, followed
+*Bob*: The string +s+ should contain one or two hyphens, followed
 by the name of the option, and that unique name is enough to determine
 which option we are dealing with.  Therefore <tt>find_option</tt>
 takes only one argument, namely +s+, and returns the number of the
@@ -422,8 +424,8 @@ other cases!
 
 *Alice*: I can see that you are proud of having find a clever solution
 for something.  But for what?  There are only two cases for _any_ option;
-either it is a one-letter option, starting with a single minus sign;
-or it is a multi-letter option, starting with a double minus sing.
+either it is a one-letter option, starting with a single hyphen;
+or it is a multi-letter option, starting with a two hyphens
 
 *Bob*: Right.
 

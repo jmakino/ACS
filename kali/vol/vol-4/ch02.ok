@@ -337,7 +337,7 @@ line of code yet.
 Just one question: why is there a minus sign before the +END+ in the 
 beginning of the specification of the `here document'?
 
-*Bob*: Oh, that means that we can put the +END+ anywhere on a line,
+*Bob*: Oh, hyphen means that we can put the +END+ anywhere on a line,
 not necessarily flush with the left margin.  In other words, it does
 not have to start in the first column, in the old language of punch cards,
 but it can appear indented and still be recognized as the proper +END+.

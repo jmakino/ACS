@@ -216,7 +216,7 @@ to read anything more from the command line, and we happily +return+.
 *Bob*: And if the option is not boolean, we take the other fork in the road,
 by continuing the travel through the method <tt>parse_option</tt>.
 
-== xxx
+== Extracting the Value: Normal Case
 
 *Alice*: Ah, I see, if the type of the option is _not_ boolean, you have
 to extract the value from the next little bit of command line information,
@@ -229,17 +229,150 @@ are special, in that their value can be spread out over different bits of
 string in the command line.  So let's leave that for later.  But what about
 these two assignments of <tt>@options[i].valuestring</tt> right in the middle?
 
-*Bob*: 
+*Bob*: The main assignment, the one you should look at first, is this one:
+
+ :include: .clop.rb-5
+
+In most cases, after encountering a new option name, you just read in the
+value corresponding to that option, as the next little string that came
+from the command line.  If there is nothing left to be parsed on the command
+line, that just means that the user has forgotten to provide a value: an
+error message is printed, and execution of the code is halted.
+
+*Alice*: But what happens if the user provides a next option, instead of the
+value for the previous option?  Imagine that the user writes <tt>-n -x</tt>.
+
+*Bob*: In that case, an attempt will be made to set the number of particles
+to <tt>-x</tt>, which will result in something silly.  But hey, we can't
+protect the user from all possible errors!  I don't know how to anticipate
+on this level what is and is not correct.  Others, using this code in
+the future, will undoubtedly use it for more general purposes than I
+can currently envision, so I don't want to constrain too much what can
+and cannot be said.
+
+*Alice*: Hmmm.  You could at least insist that a valid number would be
+provided when the type of a variable is given as an +int+ or +float+.
+
+*Bob*: Perhaps.  We could come back to those questions later, and try
+to make everything industrial-strength.  For the time being, I'm happy
+if everything works under reasonably normal circumstances with
+reasonably intelligent users.
+
+*Alice*: Well, if you talk about users that don't make errors, then
+I have to conclude that _nobody_ fits the criterion of being `reasonably
+intelligent'.  But okay, for now let's move on.  I'd probably want to
+come back to this point later, though.
+
+== Extracting the Value: Spaceless Case
+
+*Bob*: Now if you look just above the two lines I quoted above, you find:
+
+ :include: .clop.rb-6
+
+This addresses the case where a one-character option is used, without
+any space separating the option and the value, as in <tt>-n3</tt>,
+which we discussed before.
+
+*Alice*: What is the meaning of this funny looking repetition of the
+symbols <tt>^-</tt>?  They occur twice, with a square bracket in between,
+and a closing bracket at the end, as <tt>^-[^-]</tt>.
+
+*Bob*: This is one of the _most_ confusing aspects in the notation of regular
+expressions, this overloading of the meaning of the up-arrow
+<tt>^</tt>.  In fact, the two up-arrows here are two _completely_ different
+things.  In order to see this, let us inspect the whole regular
+expression:
+
+            /^-[^-]/
+
+The first <tt>^</tt> specifies the beginning of the string.  The presence
+of <tt>-</tt> immediately following means that the string has to start with
+a <tt>-</tt> sign.  Now the quare brackets are normally used to give
+you a choice, as in <tt>[aei]</tt> or <tt>[a-f]</tt>.  In <tt>[aei]</tt>
+it is understood that any of the three letters +a+ or +e+ or +i+ could be
+present and still form a match.  And in <tt>[a-f]</tt>, any letter in the
+range <tt>a, b, c, . . , f</tt> would form a valid match.
+
+*Alice*: Yes, that notation I am familiar with.  But how can you start
+at the beginning of a line for the second time.
+
+*Bob*: You don't.  Within square brackets, the up-arrow <tt>^</tt> has the
+effect of negating the meaning of the next character.  So the combination
+<tt>[^-]</tt> simply means: any character _but_ the <tt>-</tt> character!
+
+In other words, by writing
+
+    if s =~ /^-[^-]/
+
+we ask whether it is true that the string +s+ begins with a hyphen,
+but does not begin with two consequtive hyphens.  Let me show you:
+
+  |gravity> irb
+  irb(main):001:0> "-n" =~ /^-[^-]/
+  => 0
+  irb(main):002:0> "--nono" =~ /^-[^-]/
+  => nil
+
+*Alice*: Ah, very nice, though difficult to parse for a human like me.
+
+*Bob*: You'll get used to it.
+
+== Interesting or Confusing?
+
+*Alice*: Now that I understand the first half of the first line, let me
+stare at both lines again:
+
+ :include: .clop.rb-6
+
+You have told me that the variable <tt>$'</tt> contains the rest of the
+string, the part after the part which matched.  So if we start with the
+option <tt>"-n"</tt>, and if we insist that it should start with one and
+only one hyphen, then <tt>$' = n</tt>, right?
+
+*Bob*: Wrong.
+
+*Alice*: Huh?
+
+*Bob*: Try it!
+
+*Alice*: Okay:
+
+  |gravity> irb
+  irb(main):001:0> s = "-n"
+  => "-n"
+  irb(main):002:0> s =~ /^-[^-]/
+  => 0
+  irb(main):003:0> $'
+  => ""
+
+Hey, that is strange!  Why should it be the empty string?  What happened
+to +n+ ?
+
+*Bob*: Why don't you try the compact option-value notation <tt>-n3</tt>
+
+*Alice*: Here goes:
+
+  irb(main):004:0> s = "-n3"
+  => "-n3"
+  irb(main):005:0> s =~ /^-[^-]/
+  => 0
+  irb(main):006:0> $'
+  => "3"
 
 
 
 
 
+Alice: why not s =~ /^-\w/
+
+Bob: looks less interesting
+
+Alice: you mean: Bob: looks less confusing.
 
 
+== Extracting the Value: Vector Case
 
-
-
+xx
 
 
 == Inspecting <tt>initialize_global_variables</tt>
