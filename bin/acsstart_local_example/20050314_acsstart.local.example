@@ -1,0 +1,11 @@
+#
+# acsstart.local.sample
+#
+# copy this file to $ACSSCRIPTS/acsstart.local
+# and edit if necessary
+#
+#
+# set the following to "yes" if you want to add your things to SVN
+# repository. If you are in doubt, keep it "no".
+set ACSUSESVN=no
+

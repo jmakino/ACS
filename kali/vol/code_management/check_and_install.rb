@@ -27,8 +27,10 @@ def store_file_with_date(sourcename, dirname)
   Dir.mkdir(subdirpath) unless File.exist?(subdirpath)
   targetname=name_with_date(sourcename)
   system "/bin/cp -p #{sourcename} #{subdirpath}/#{targetname}"
-  system "svn add -N #{subdirpath}"
-  system "svn add -N #{subdirpath}/#{targetname}"
+  if $use_svn
+    system "svn add -N #{subdirpath}"
+    system "svn add -N #{subdirpath}/#{targetname}"
+  end
 end  
 
 def check_and_install(sourcename, dirname)
@@ -41,8 +43,13 @@ def check_and_install(sourcename, dirname)
       raise "Target file comes from #{oldsource}, different from #{fullsourcename}"
     end
   end
-  system "diff -q  #{sourcename} #{dirname}"
-  if $? != 0
+  copyfile=1
+  targetfile=dirname+"/"+sourcename
+  if File.exist?(targetfile)
+    system "diff -q  #{sourcename} #{targetfile}"
+    copyfile= ( $? != 0) ? 1:0
+  end
+  if copyfile==1
     STDERR.print "Installing file #{sourcename} to  #{dirname}" 
     system "/bin/cp -p #{sourcename} #{dirname}" 
     store_file_with_date(sourcename,dirname)
@@ -55,10 +62,21 @@ def check_and_install(sourcename, dirname)
 end
 
 dirvarname = ARGV.shift
-raise "#{$0}:Env var #{dirvarname} not defined" unless ENV.key?(dirvarname)
-dirname= ENV[dirvarname]
+if ENV.key?(dirvarname)
+  dirname= ENV[dirvarname]
+else
+  dirname=dirvarname
+end
 raise "#{$0}:#{dirname} does not exist" unless File.exist?(dirname)
 raise "#{$0}:#{dirname} is not a directory" unless File.stat(dirname).ftype == "directory"
+
+$use_svn=1
+svnenvname="ACSUSESVN"
+if  ENV.key?(svnenvname)
+   $use_svn= (ENV[svnenvname] == "yes") ?  1:nil
+end
+
+
 
 while sourcename = ARGV.shift
   check_and_install(sourcename, dirname)

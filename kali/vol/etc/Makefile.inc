@@ -12,8 +12,9 @@ endif
 
 ACSDOC = ruby ../../../src/coherent_programming/acsdoc.rb $(ACSDOCOPTIONS)
 GZIP = gzip --force
+LOCALDIR = kali
 
-all:  $(alldepends) scripts libs
+all:  $(alldepends) scripts libs localscripts locallibs
 $(TARGET).ps.gz: $(TARGET).dvi
 	dvips -o $(TARGET).ps $(TARGET)
 	$(GZIP) $(TARGET).ps 
@@ -35,6 +36,12 @@ scripts : $(SCRIPTSRCS)
 	
 libs : $(LIBSRCS)
 	ruby -S check_and_install.rb ACSLIBS $(LIBSRCS)
+
+localscripts : $(LOCALSCRIPTSRCS)
+	ruby -S check_and_install.rb $(ACSSCRIPTS)/$(LOCALDIR) $(LOCALSCRIPTSRCS)
+	
+locallibs : $(LOCALLIBSRCS)
+	ruby -S check_and_install.rb $(ACSLIBS)/$(LOCALDIR) $(LOCALLIBSRCS)
 
 clean : 
 	-rm -r doc .imgs .acsdoc.commandoutdir

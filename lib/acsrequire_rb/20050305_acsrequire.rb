@@ -40,7 +40,7 @@ class AcsRequire
     
   def acsrequire(name)
     $acsdate = datestring    if not defined? $acsdate
-    print "acsrequire date=#{$acsdate} file=#{name}\n" if verbose
+    print "Acsrequire date=#{$acsdate} file=#{name}\n" if verbose
     raise "Env. var ACSLIB need to be defined " if LIBDIR == nil
     require appropriate_filename(name, $acsdate, LIBDIR)
   end
