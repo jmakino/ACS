@@ -135,14 +135,10 @@ It works: I tested it out.
 
  :inccode: .mkplummer1.rb-driver
 
-It is mostly command line argument parser.  Then at the end I print the
-seed that was given, because it can be different from the seed that was
-used, if the given seed was zero.  If the given seed is non-zero, this
-is just a check, to make sure that what was given and what was used was
-indeed the same.
-
-Finally, all that is left to do is just the one line function call to
-the +mkplummer+ method.
+It is mostly command line argument parser, using our nifty new +Clop+
+class based parser.  It contains the `here document' that defines the
+options, followed first by the command <tt>parse_command_line</tt>
+that does what it says it does, and then by the command +mkplummer+.
 
 == The Basic Idea
 

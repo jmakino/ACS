@@ -2,7 +2,7 @@ require "vector.rb"
 
 class Body
 
-  attr_accessor :mass, :pos, :vel
+  attr_accessor :mass, :pos, :vel, :acc
 
   def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
     @mass, @pos, @vel = mass, pos, vel

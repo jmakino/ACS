@@ -139,7 +139,7 @@ started, it is easier to stick to classes for now.
 integration algorithm as a module, independent of the particular
 variables in the classes that define a body or an N-body system?  I
 mean, can you write a leapfrog module that can propagate particles,
-independently of there type?  You could have point particles in either
+independently of their type?  You could have point particles in either
 a two-dimensional of a three-dimensional world.  Or you could have
 particles with a finite radius, that stick together when they collide;
 as long as they are not too close, they could be propagated by the
@@ -298,8 +298,8 @@ of nesting of each expression.  It goes up by one, each time you enter
 a block of text that ends with +end+.
 
 *Bob*: And since you only give the definition of +Body+ without yet
-creating any instances, there is no value associated with it.  Here
-+nil+ means effectively `undefined'.
+creating any of its instances, there is no value associated with it.
+Here +nil+ means effectively `undefined'.
 
 *Alice*: But we have just defined the +Body+ class; why does Ruby
 claim it is undefined?
@@ -319,6 +319,6 @@ correct?
 that starts with <tt>class Body</tt>.  Note the grammatical rule that
 the name of a class such as +Body+ always starts with a capital
 letter.  The names of normal variables, in contrast, start with a
-lower case letters: we have three such variables, +mass+, +pos+, and
+lower case letter: we have three such variables, +mass+, +pos+, and
 +vel+.  All three are given here as possible parameters to the
 initialization function +initialize+.

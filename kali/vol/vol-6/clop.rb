@@ -1,8 +1,3 @@
-#
-# Command line option parser
-#
-# Jun Makino and Piet Hut 2004
-#
 require "vector.rb"
 
 class Clop_Option
@@ -12,10 +7,10 @@ class Clop_Option
   attr_accessor :valuestring
 
   def initialize(def_str)
-    parse_definition(def_str)
+    parse_option_definition(def_str)
   end
 
-  def parse_definition(def_str)
+  def parse_option_definition(def_str)
     while s = def_str.shift
       break if parse_single_lines_done?(s)
     end
@@ -26,8 +21,8 @@ class Clop_Option
   end
 
   def parse_single_lines_done?(s)
-    if s !~ /\s*(\w.*?)\:/                  # non-greedy: stops after 1st ":"
-      raise "option definition line has wrong format:\n==> #{s} <==\n"
+    if s !~ /\s*(\w.*?)\s*\:/
+      raise "\n  option definition line has wrong format:\n==> #{s} <==\n"
     end
     name = $1
     content = $'
@@ -52,7 +47,7 @@ class Clop_Option
         @longdescription = ""
         return true
       else
-        raise "option definition line unrecognized:\n==> #{s} <==\n"
+        raise "\n  option definition line unrecognized:\n==> #{s} <==\n"
     end
     return false
   end
@@ -74,7 +69,7 @@ class Clop_Option
       when /^float\s*vector$/
         @valuestring.gsub(/[\[,\]]/," ").split.map{|x| x.to_f}.to_v
       else
-        raise ": type \"#{@type}\" is not recognized"
+        raise "\n  type \"#{@type}\" is not recognized\n"
     end
   end
 
@@ -84,7 +79,7 @@ class Clop_Option
   end
 
   def to_s
-    if @type == nil                    # top level description of the program
+    if @type == nil
       s = @description + "\n"
     elsif @type == "bool"
       if eval(@valuestring)
@@ -105,7 +100,7 @@ class Clop_Option
       s += "\n  " if @type =~ /^float\s*vector$/
       s += "#{eval("$#{@globalname}")}\n"
     end
-    s
+    return s
   end
 
 end
@@ -121,13 +116,13 @@ class Clop
   end
 
   def parse_option_definitions(def_str)
-    a = def_str.split("\n")                                                  #1
+    a = def_str.split("\n")
     @options=[]
     while a[0]
-      if a[0] =~ /^\s*$/                                                     #2
-        a.shift                                                              #2
+      if a[0] =~ /^\s*$/
+        a.shift
       else
-        @options.push(Clop_Option.new(a))                                    #3
+        @options.push(Clop_Option.new(a))
       end
     end
   end
@@ -143,7 +138,7 @@ class Clop
       elsif i = find_option(s)
         parse_option(i, s, argv_array)
       else
-        raise "option \"#{s}\" not recognized"
+        raise "\n  option \"#{s}\" not recognized; try \"-h\" or \"--help\"\n"
       end
     end
     initialize_global_variables
@@ -158,7 +153,7 @@ class Clop
     @options.each_index do |x|
       i = x if s == @options[x].longname
       if @options[x].shortname
-        i = x if s =~ Regexp.new(@options[x].shortname) and $` == ""         #4
+        i = x if s =~ Regexp.new(@options[x].shortname) and $` == ""
       end
     end
     return i
@@ -169,16 +164,17 @@ class Clop
       @options[i].valuestring = "true"
       return
     end
-    if s =~ /^-[^-]/ and (value = $') =~ /\w/                                #6
-      @options[i].valuestring = value                                        #6
+    if s =~ /^-[^-]/ and (value = $') =~ /\w/
+      @options[i].valuestring = value
     else
-      unless @options[i].valuestring = argv_array.shift                      #5
-        raise "option \"#{s}\" requires a value, but no value given"         #5
+      unless @options[i].valuestring = argv_array.shift
+        raise "\n  option \"#{s}\" requires a value, but no value given;\n" +
+              "  option description: #{@options[i].description}\n"
       end
     end
     if @options[i].type =~ /^float\s*vector$/
       while (@options[i].valuestring !~ /\]/)
-        @options[i].valuestring += " " + argv_array.shift    # " " for -v [3 4]
+        @options[i].valuestring += " " + argv_array.shift
       end
     end
   end
@@ -191,7 +187,7 @@ class Clop
   def check_required_options
     options_missing = 0
     @options.each do |x|
-      if x.valuestring == "none"                 # e.g. none.rb would be okay !
+      if x.valuestring == "none"
         options_missing += 1
         STDERR.print "option "
         STDERR.print "\"#{x.shortname}\" or " if x.shortname
@@ -228,7 +224,7 @@ class Clop
 
   def help_string(option, long_flag)
     s = ""
-    if option.type                   # not top level description of the program
+    if option.type
       s += option_name_string(option)
     end
     if option.type or not long_flag
@@ -273,8 +269,11 @@ if __FILE__ == $0
 
   options_definition_string = <<-END
 
-  Description:		Test program for the Clop class
+  Description: Command line option parser, (c) 2004, Piet Hut & Jun Makino, ACS
   Long description:
+    Test program for the class Clop (Command line option parser),
+    (c) 2004, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
+
     This program appears at the end of the file "clop.rb" that contains
     the definition of the Clop class.
     By running the file (typing "ruby clop.rb"), you can check whether

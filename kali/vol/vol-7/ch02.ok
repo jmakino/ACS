@@ -7,8 +7,8 @@ Shall we code up an I/O implementation of our ACS data format we designed
 yesterday?
 
 *Alice*: Yes.  We definitely need to see a working model, before we can go
-any further.  Let's start with the <tt>body.rb</tt> file we created while
-we were experimenting with higher-order integrators, strip off everything
+any further.  Let's start with the +Body+ class we have been using so far
+for a single particle.  We may as well strip off everything
 but the I/O part, and see whether we can rewrite that into our new format.
 
 *Bob*: Okay.  Let's call it <tt>iobody.rb</tt>.  And since we will keep
@@ -47,7 +47,7 @@ let us follow the idea shown above with <tt>to_s</tt>, let us write the
 output data first onto a string.  We can then use another method to
 print out that string, or to write it to a file, as the case may be.
 
-*Alice*: Good idea.  And by called that method <tt>to_s</tt>, we can
+*Alice*: Good idea.  And by calling that method <tt>to_s</tt>, we can
 type <tt>print b</tt> for a particle +b+, since the Ruby command +print+
 by default looks for a member function <tt>to_s</tt>.
 
@@ -102,7 +102,7 @@ lines before the end.
 spaces.  Ruby, with the principle of least surprise, lets you do that by
 typing <tt>" " * base_indentation</tt>.
 
-*Alice*: I find it actually quite surprising that you can simply multiply
+*Alice*: I find it quite surprising that you can just multiply
 a string with a number in such a simple way, because I'm not used to that
 convenience in other languages.  But you're right, it does look very natural.
 

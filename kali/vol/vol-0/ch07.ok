@@ -7,11 +7,11 @@ be good to have a clear vision of what we want to accomplish, before
 we get started.  At the same time, it should be a minimal vision, to
 keep the software simple enough to serve as a toy model.  We can have
 some simple stellar dynamics as a backbone, but we should at least
-include some stellar dynamics and hydrodynamics.
+include some stellar evolution and hydrodynamics.
 
 *Bob*: That's asking a lot.  The simplest stellar evolution code
 will be huge, much larger than a small N-body program.  For
-hydrodynamics we can use SPH, that won't be much that large.  But in
+hydrodynamics we can use SPH, that won't be that large.  But in
 both cases we'll have a lot of explaining to do, if we really want to
 describe to the students what is going on in those codes.
 
@@ -30,9 +30,9 @@ and similarly for stellar hydrodynamics.
 *Alice*: Even simpler.  For example, we could let the evolution program
 determine everything just by giving it a mass.  It will then compute
 the ZAMS radius, as well as the lifetime, by a simple power law formula.
-It can keep the radius constant for the first 90% of its lifetime,
+It can keep the radius constant for the first 90 percent of its lifetime,
 and then linearly increase the radius to a 100 times larger radius
-during the giant face.  After that, the radius will go to zero, and
+during the giant phase.  After that, the radius will go to zero, and
 the mass becomes that of a typical white dwarf.  This is all at least
 qualitatively correct for relatively low-mass stars.
 
@@ -40,7 +40,7 @@ qualitatively correct for relatively low-mass stars.
 hydrodynamics?  Obviously something simpler than SPH.  Well, how about
 giving each star a radius, according to a recipe what you just outlined,
 and then stipulating that two stars stick and merge when they pass to
-within the some of their radii?
+within the sum of their radii?
 
 *Alice*: Good idea.  That is the right level of approximation: almost
 trivially simple, but still it will allow you to study the effect of
@@ -114,7 +114,7 @@ exactly what is being passed through the interface in what way.
 you are so serious about all this, and it is only a toy model, I don't
 mind trying it.  Once it works, I'd be more than happy to point out to
 you how inefficient such an approach will be.  But first I have to get
-a better idea of what you have in mind.  What so said so far sounds
+a better idea of what you have in mind.  What you said so far sounds
 just too abstract.
 
 *Alice*: Okay, let us do the exercise.  First let us see what happens
@@ -128,7 +128,7 @@ SH module decides to merge two stars, it has to tell this to both the
 SE and SD modules.  The SE module then has to construct a new module
 for the merger product, and independently the SD module will replace
 the two previous particles with one new particle, with a mass equal to
-that of the merger mass: the some of the previous two masses minus the
+that of the merger mass: the sum of the previous two masses minus the
 mass that may be lost in the process.
 
 *Bob*: I'm happy to leave out the hydro part of the story, for now,
@@ -262,7 +262,7 @@ there is a question of synchronizing that time, or at least to know
 whether the information you get across this interface barrier is up to
 date or slightly out of date, stemming from the last time step.
 
-*Alice*: I agree.  So we get already six functions then:
+*Alice*: I agree.  So we already get six functions then:
 
 - a star creation function
 

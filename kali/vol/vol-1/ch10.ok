@@ -181,9 +181,9 @@ in between.
 Time is used here only internally, for bookkeeping during a single
 invocation of +evolve+.  Of course, I could have introduced a time
 variable on the level of the driver.  But then I would have to pass
-that also to +evolve+ and I thought that four arguments was enough for
-a first attempt.  Anything can be made arbitrarily complex quickly, and
-I like to keep things simple.
+that also to +evolve+ and I thought that using already four arguments
+was enough for a first attempt.  Anything can be made arbitrarily
+complex quickly, and I like to keep things simple.
 
 *Alice*: That makes a lot of sense.  So all we have left to look at within
 +evolve+ is the +while+ loop, which keeps track of time.  When the time

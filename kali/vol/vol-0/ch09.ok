@@ -186,7 +186,7 @@ into being, the author of the language, Yukihiro Matsumoto, had the
 advantage of being able to learn from his experience with those other
 two languages.  It is in fact more fully object oriented than Python.
 It has iterators and all kind of neat stuff.  And very importantly,
-it is simple and natural.  It seems to be build on what is called the
+it is simple and natural.  It seems to be built on what is called the
 principle of least surprise: immediately after you get a quick and
 rough familiarity with Ruby, you will be able to guess in most cases
 what a given expression will do.  That sounds like a strong claim, but
@@ -198,8 +198,8 @@ don't care which one I will learn.  You choose.
 
 *Alice*: Same for me, it will be my first one too.  Okay, let's take Ruby.
 It is freely available on the web, all fully open source, and there
-are already a number of good books available.  The fist book to
-introduced it in the English language is in fact fully available on the
+are already a number of good books available.  The first book to
+introduce it in the English language is in fact fully available on the
 web, so we can get started immediately.
 
 *Bob*: Okay, Ruby it will be.
@@ -227,7 +227,7 @@ of a code directly in C, if you want to make your code run faster.
 *Bob*: That sounds much better already.  But as long as we want students
 to study the cold collapse of, say, a 25-body system, we can even live
 with a factor of 100.  What do I care?  People ran 25-body systems
-back in the sixties, when computers where much more than a million
+back in the sixties, when computers were much more than a million
 times slower than they are now, so we can loose a couple zeroes in
 factors of speed.  And it will prevent you from ever claiming that
 your toy model have much to do with the reality of production runs!

@@ -4,7 +4,7 @@ class Body
 
   TAG = "particle"                                              #1 vol 2, ch. 2
 
-  attr_accessor :mass, :pos, :vel, :type                                     #2
+  attr_accessor :mass, :pos, :vel, :acc, :type                               #2
 
   def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
     @mass, @pos, @vel = mass, pos, vel
@@ -16,7 +16,7 @@ class Body
 #:segment end:
     subtag = if @type then " "+@type else "" end
     indent = base_indentation + additional_indentation
-    " " * base_indentation + "begin " + TAG + subtag + "\n" +
+    return " " * base_indentation + "begin " + TAG + subtag + "\n" +
       f_to_s("mass", mass, precision, indent) +
       f_v_to_s("position", pos, precision, indent) +
       f_v_to_s("velocity", vel, precision, indent) +

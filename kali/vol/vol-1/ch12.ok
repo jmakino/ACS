@@ -7,7 +7,7 @@ analytically.  Let me try to remember my celestial mechanics.  I remember
 that there was one equation that had no factors of <tex>$\pi$</tex> or
 whatever in it.  Ah yes,
 
-<tex>$$G(M_1+M_2)=a^2\omega^3$$</tex>.
+<tex>$$G(M_1+M_2)=a^2\omega^3$$</tex>
 
 Here <tex>$a$</tex> is the semi-major axis, <tex>$\omega$</tex> is the
 angular frequency of the motion, in other words the period of the
@@ -241,7 +241,7 @@ of attraction.
 
 *Bob*: And I can see now what I have done in my code: I have given the
 kinetic and potential energy per unit reduced mass.  And I remember now
-why I have done that before, several years ago: there had chosen units
+why I have done that before, several years ago: there I had chosen units
 in which the total mass of the two-body system was unity.  In that case
 it would have been correct what I did.  But now I should go back and
 include the <tex>${M_1+M_2}$</tex> factor to my potential energy.

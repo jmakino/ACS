@@ -92,10 +92,10 @@ There is the instance of the vector class itself, called +self+,
 there is the other vector +a+ with which it can be multiplied in a
 inner product, and there is the temporary vector <tt>product[]</tt>.
 Neither of the first two are threatened anywhere with conversion
-into an integer.  Nor doe the third one.  Hmmm.
+into an integer.  Nor does the third one.  Hmmm.
 
 But wait.  I have tried to use the same name <tt>product[]</tt> for a
-vector, in the +else+ clause, and for a scaler, in the +if+ clause.
+vector, in the +else+ clause, and for a scalar, in the +if+ clause.
 I thought that Ruby was so clever that you could do that.  Because a
 type is determined only at run time, I thought that you could wait to
 see which branch of the +if+ statement would be actually traversed, to
@@ -111,7 +111,7 @@ complaining that a +Vector+ cannot be converted to an +Integer+?
 
 If my theory is right, I should be able to resolve it by giving two
 different names to the product, +iproduct+ for inner product, and
-+sproduct+ for scaler product.  Let me try that:
++sproduct+ for scalar product.  Let me try that:
 
  :inccode: vector2.rb
 

@@ -14,7 +14,7 @@ class Vector < Array
       product = 0
       self.each_index{|k| product += self[k]*a[k]}
     else
-      product = Vector.new           # scalar product
+      product = Vector.new            # scalar product
       self.each_index{|k| product[k] = self[k]*a}
     end
     product
@@ -28,10 +28,23 @@ class Vector < Array
     end
     quotient
   end
+  def to_s(name = nil, precision = 16, indentation = 0)
+    s = " " * indentation
+    s += name + " = " if name
+    s += self.map{|x| sprintf(" %#{precision+8}.#{precision}e", x)}.join
+  end
 end
 
 class Array
   def to_v
     Vector[*self]
+  end
+end
+
+class Float
+  def to_s(name = nil, precision = 16, indentation = 0)
+    s = " " * indentation
+    s += name + " = " if name
+    s += sprintf(" %#{precision+8}.#{precision}e", self.to_f)
   end
 end

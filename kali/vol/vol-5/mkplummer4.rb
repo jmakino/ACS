@@ -1,4 +1,5 @@
 require "vector.rb"
+require "clop.rb"
 
 class Body
 
@@ -78,51 +79,70 @@ def mkplummer(n, seed)
     velocity = x * sqrt(2.0) * ( 1.0 + radius*radius)**(-0.25)
     b.vel = spherical(velocity) * sqrt(scalefactor)
   end
-  STDERR.print "seed used = ", srand, "\n"
+  STDERR.print "             actual seed used\t: ", srand, "\n"
   nb.simple_print
 end
 
-def print_help
-  print "usage: ", $0,
-    " [-h (for help)] [-n particle_number] [-s seed]\n"
-end
+options_text= <<-END
 
-require "getoptlong"
+  Description: Plummer's Model Builder, (c) 2004, Piet Hut & Jun Makino, ACS
+  Long description:
+    This program creates an N-body realization of Plummer's Model.
+    (c) 2004, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
 
-parser = GetoptLong.new
-parser.set_options(
-  ["-n", "--particle_number", GetoptLong::REQUIRED_ARGUMENT],
-  ["-s", "--seed", GetoptLong::REQUIRED_ARGUMENT])
+    The algorithm used is described in Aarseth, S., Henon, M., & Wielen, R.,
+    Astron. Astroph. 37, 183 (1974).
 
-def read_options(parser)
-  n = 1
-  s = 0
 
-  loop do
-    begin
-      opt, arg = parser.get
-      break if not opt
+  Short name:		-n
+  Long name:            --n_particles
+  Value type:           int
+  Default value:        1
+  Global variable:      n_particles
+  Print name:           N
+  Description:          Number of particles
+  Long description:
+    Number of particles in a realization of Plummer's Model.
 
-      case opt
-      when "-n"
-	n = arg.to_i
-      when "-s"
-	s = arg.to_i
-      end
+    Each particle is drawn from the Plummer distribution, from successive
+    shells, in a layered manner, starting from the center.  The radial
+    distance from the center to the particles thus increases monotonically.
 
-    rescue => err
-      print_help
-      exit           # exit if option unknown
-    end
+    Standard Units are used in which G = M = 1 and E = -1/4, where
+      G is the gravitational constant
+      M is the total mass of the N-body system
+      E is the total energy of the N-body system
 
-  end
 
-  return n, s
-end
+  Short name:           -s
+  Long name:            --seed
+  Value type:           int
+  Default value:        0
+  Description:          pseudorandom number seed given
+  Print name:           
+  Global variable:      seed
+  Long description:
+    Seed for the pseudorandom number generator.  If a seed is given with
+    value zero, a preudorandom number is chosen as the value of the seed.
+    The seed value used is echoed separately from the seed value given,
+    to allow the possibility to repeat the creation of an N-body realization.
 
-n, s = read_options(parser)
+      Example:
 
-STDERR.print "N = ", n, "\n",
-      "seed given = ", s, "\n"
+        |gravity> ruby mkplummer1.rb -n 42 -s 0
+        . . .
+        pseudorandom number seed given	: 0
+                     actual seed used	: 1087616341
+        . . .
+        |gravity> ruby mkplummer1.rb -n 42 -s 1087616341
+        . . .
+        pseudorandom number seed given	: 1087616341
+                     actual seed used	: 1087616341
+        . . .
 
-mkplummer(n, s)
+
+  END
+
+  parse_command_line(options_text)
+
+mkplummer($n_particles, $seed)

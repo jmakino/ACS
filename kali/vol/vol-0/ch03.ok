@@ -30,7 +30,7 @@ star, it is possible to calculate the evolutionary history using only
 a rather small network of nuclear reactions.  Then, if you are
 interested in the amount of trace elements formed during the evolution,
 you can go over the whole history once again, in a second pass.  You
-then take the time dependence of of the structure of the star as given
+then take the time dependence of the structure of the star as given
 by the first pass, and against this background you compute the
 behavior of a much more detailed nuclear reaction network.
 
@@ -38,7 +38,7 @@ behavior of a much more detailed nuclear reaction network.
 of weird stars, affected by collisions, is small compared to the total
 number of stars, it may not be small compared to the number of stars
 in the core.  The densest cores in globular clusters contain only
-about 1% of the total mass of a cluster, if that much.  And a large
+about 1 percent of the total mass of a cluster, if that much.  And a large
 fraction of stars in such a core may have undergone a close stellar
 encounter during its lifetime.
 

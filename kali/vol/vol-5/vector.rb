@@ -14,7 +14,7 @@ class Vector < Array
       product = 0
       self.each_index{|k| product += self[k]*a[k]}
     else
-      product = Vector.new           # scalar product
+      product = Vector.new            # scalar product
       self.each_index{|k| product[k] = self[k]*a}
     end
     product
@@ -27,6 +27,11 @@ class Vector < Array
       self.each_index{|k| quotient[k] = self[k]/a}
     end
     quotient
+  end
+  def to_s
+    s = ""
+    self.each{|x| s += sprintf("%24.16e", x)}
+    s
   end
 end
 

@@ -4,7 +4,7 @@
 
 *Bob*: As for the stellar dynamics, how fancy shall we make our code?
 
-*Alice*: at least we should be able to handle core collapse for a small
+*Alice*: At least we should be able to handle core collapse for a small
 number of particles, say a few hundred or so, so that we can model a
 small cluster, and see the inner parts shrink gravothermally.
 
@@ -73,14 +73,14 @@ gentlemen you mentioned, let's leave them out for now.
 
 *Bob*: But we should do something, on the local level, to make the
 whole calculation meaningful.  The question is what we can introduce
-that goes partway toward full regularization.  One think we cannot get
+that goes partway toward full regularization.  One thing we cannot get
 around is to do the analytic regularization that I just mentioned.
 Perhaps that is good enough to get them started.  It will actually be
 instructive for the students to see how things fail, and then to see
 what solutions can be found to repair the situation.  The only way to
 do that, I think, would be to introduce the separate coordinate
 patches I talked about.  While that will rapidly get too complicated,
-it would be fun, and it would students give a more realistic sense
+it would be fun, and it would give students a more realistic sense
 of the complexities that a real code has to deal with.  Who knows,
 when we really get going, we might even want to give that a try.
 
@@ -140,7 +140,7 @@ local dynamics is a way to protect ourselves from the Kepler
 singularities, right?  I presume that is the meaning of the word
 regularization, removing the singularities.
 
-*Bob*: Yes, I think that is were the term comes from.
+*Bob*: Yes, I think that is where the term comes from.
 
 *Alice*: In that case, the SH module is also a form of regularization.
 When two point particles come close, the SH module will replace them
@@ -153,7 +153,7 @@ Strictly speaking, the mathematical term regularization implies that
 you do not change the underlying equations of motion, so in that sense
 hydro treatment and softening should not be called regularization.
 But we are not mathematicians.  In astrophysics, we start with
-extended objects.  The idealization of replacing a start by a point
+extended objects.  The idealization of replacing a star by a point
 mass is only a matter of convenience.  And when this replacement turns
 out to be inconvenient, in close approaches between stars, we are free
 to use other idealizations.  We are only `regularizing' what had been
@@ -182,7 +182,7 @@ small softening in itself is not necessarily wrong.
 similar, from the point of view of the GD module, which only deals
 with point particles?
 
-*Alice*: Yes.  And the interface between GD and LD can be similar as
+*Alice*: Yes.  And the interface between GD and LD can be similar to
 what we saw before.  We can specify a function to create a local clump
 of particles, and similarly we can specify a clump destructor function.
 We can have functions providing the mass and effective radius of a clump,
@@ -190,7 +190,7 @@ as a function providing the current time.  It all follows rather closely
 to what we just discussed for stellar evolution.
 
 *Bob*: Hmmm.  I still think it is like drawing a line in the water.
-But early on I agree to do the experiment, to write a modular toy model,
+But early on I agreed to do the experiment, to write a modular toy model,
 and if this is what you want, this is what we'll try to do.  But allow
 me to laugh loudly if your approach will result in an unwieldy code,
 with many extra lines to circumvent your interface restrictions, and
@@ -209,7 +209,7 @@ right.
 
 *Alice*: I can't wait either, and whatever the outcome will be, it
 will be a useful experiment.  Before we get started, though, there is
-one more thing we have to decided.  As long as we put all this
+one more thing we have to decide.  As long as we put all this
 wonderful stuff soon-to-come on the internet, it would be good to give
 it a name.  I wouldn't want to refer to it as `our kitchen sink toy
 model' all the time.

@@ -60,7 +60,7 @@ no remnant is left at all.  Yes, that can be done, but that will not
 get you very far.  Fiddling only with the masses of stars is not
 enough.  You would then be faced with the question: what to do with
 binary stars?  Take two stars in a binary with a semi-major axis that
-is much larger than the some of their radii while they are on the main
+is much larger than the sum of their radii while they are on the main
 sequence.  Soon before the heaviest star will end its life, it will
 want to evolve into a giant phase, and as a result, it may well dump
 much of its mass on its companion star.  How are you going to model
@@ -95,12 +95,12 @@ easily to create the right amount of energy in nuclear reactions.
 structure, but for me that is not good enough.  I am interested in
 predicting the number of X-ray binaries and millisecond pulsars and
 their binaries, as well as the physical characteristics of those
-systems.  They are important from an observational point of view.
-As you know, a significant fraction of X-ray binaries are located in
-globular clusters, even though these clusters contain much less than
-1% of all the stars in our galaxy.  It is clear that the vast majority
-of those X-ray binaries in clusters are formed through dynamical
-effects, as a result of the high density of stars.
+systems.  They are important from an observational point of view.  As
+you know, a significant fraction of X-ray binaries are located in
+globular clusters, even though these clusters contain much less than 1
+percent of all the stars in our galaxy.  It is clear that the vast
+majority of those X-ray binaries in clusters are formed through
+dynamical effects, as a result of the high density of stars.
 
 *Alice*: But you can do that in a two-step process.  First you make a good
 enough dynamical model of the dynamical evolution of a star cluster.
@@ -152,7 +152,7 @@ of globular clusters?
 
 == Tracks and Recipes for (Binary) Star Evolution
 
-*Bob*: It was only in the nineties that a few groups began to used
+*Bob*: It was only in the nineties that a few groups began to use
 look-up tables for single star stellar evolution, and simple recipes
 to describe what would happen to the evolution of binary stars.  While
 they followed the stellar dynamical evolution in the point mass
@@ -160,7 +160,7 @@ approximation, as before, their stars would loose mass, and their
 binary stars would exchange mass, in a roughly realistic fashion.
 
 Actually, it is pretty amazing that it took so long for stellar
-dynamics and stellar evolution to be come together, even in this
+dynamics and stellar evolution to come together, even in this
 rather rudimentary way.  It could easily have been done twenty years
 earlier.  After all, in the early seventies, single star evolution was
 well understood, at least in outline, and plenty of evolution tracks

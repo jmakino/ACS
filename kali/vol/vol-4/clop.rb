@@ -1,8 +1,3 @@
-#
-# Command line option parser
-#
-# Jun Makino and Piet Hut 2004
-#
 require "vector.rb"
 
 #:segment start: helperclass
@@ -28,7 +23,7 @@ class Clop_Option
 
   def parse_single_lines_done?(s)
     if s !~ /\s*(\w.*?)\s*\:/                                               #10
-      raise "option definition line has wrong format:\n==> #{s} <==\n"
+      raise "\n  option definition line has wrong format:\n==> #{s} <==\n"
     end
     name = $1
     content = $'
@@ -53,7 +48,7 @@ class Clop_Option
         @longdescription = ""                                               #13
         return true                                                         #13
       else
-        raise "option definition line unrecognized:\n==> #{s} <==\n"
+        raise "\n  option definition line unrecognized:\n==> #{s} <==\n"
     end
     return false
   end
@@ -75,7 +70,7 @@ class Clop_Option
       when /^float\s*vector$/
         @valuestring.gsub(/[\[,\]]/," ").split.map{|x| x.to_f}.to_v
       else
-        raise ": type \"#{@type}\" is not recognized"
+        raise "\n  type \"#{@type}\" is not recognized"
     end
   end
 
@@ -145,7 +140,7 @@ class Clop
       elsif i = find_option(s)
         parse_option(i, s, argv_array)
       else
-        raise "option \"#{s}\" not recognized"
+        raise "\n  option \"#{s}\" not recognized; try \"-h\" or \"--help\"\n"
       end
     end
     initialize_global_variables
@@ -175,12 +170,13 @@ class Clop
       @options[i].valuestring = value                                        #6
     else
       unless @options[i].valuestring = argv_array.shift                      #5
-        raise "option \"#{s}\" requires a value, but no value given"         #5
+        raise "\n  option \"#{s}\" requires a value, but no value given;\n" +#5
+              "  option description: #{@options[i].description}\n"           #5
       end
     end
     if @options[i].type =~ /^float\s*vector$/                                #7
       while (@options[i].valuestring !~ /\]/)                                #7
-        @options[i].valuestring += " " + argv_array.shift     # for -v [3 4] #7
+        @options[i].valuestring += " " + argv_array.shift                    #7
       end
     end
   end
@@ -193,7 +189,7 @@ class Clop
   def check_required_options
     options_missing = 0
     @options.each do |x|
-      if x.valuestring == "none"                 # e.g. none.rb would be okay !
+      if x.valuestring == "none"
         options_missing += 1
         STDERR.print "option "
         STDERR.print "\"#{x.shortname}\" or " if x.shortname
@@ -230,7 +226,7 @@ class Clop
 
   def help_string(option, long_flag)
     s = ""
-    if option.type                   # not top level description of the program
+    if option.type
       s += option_name_string(option)
     end
     if option.type or not long_flag                                         #20
@@ -275,8 +271,11 @@ if __FILE__ == $0
 
   options_definition_string = <<-END
 
-  Description:		Test program for the Clop class
+  Description: Command line option parser, (c) 2004, Piet Hut & Jun Makino, ACS
   Long description:
+    Test program for the class Clop (Command line option parser),
+    (c) 2004, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
+
     This program appears at the end of the file "clop.rb" that contains
     the definition of the Clop class.
     By running the file (typing "ruby clop.rb"), you can check whether

@@ -38,7 +38,7 @@ codes, you're inviting disaster.  Can you imaging handholding some of
 your stars, because they don't know how to complete their full stellar
 evolution track through difficult phases along the giant branch or
 horizontal branch?  With a few hundred thousand stars, you can't
-afford holding even 1% of them by the hand!
+afford holding even 1 percent of them by the hand!
 
 *Bob*: Your second point is certainly well taken.  Until recently, in
 fact no stellar evolution codes could really run by themselves, in a
@@ -256,7 +256,7 @@ that cross wires between your two neat local and global modules.
 *Alice*: No, they won't.  I won't let them.  One solution would be to
 introduce a separate perturber module, besides the local and global
 modules.  Another solution would be to include the perturber lists
-within the local module.  Yet another solution is to device a
+within the local module.  Yet another solution is to devise a
 different and novel algorithm that dispenses with the use of
 perturbers altogether.
 
@@ -301,7 +301,7 @@ Well, what type of benefit are you willing to give me?
 writing a toy model version of your grand vision.  You can have the
 satisfaction of seeing the first steps being taken toward your castle
 in the sky.  And I will then have the satisfaction of you realizing
-how much more complicated it will be than you know think, to get from
+how much more complicated it will be than you now think, to get from
 the toy model to reality.
 
 *Alice*: But if you don't believe me, why would you even go to the trouble

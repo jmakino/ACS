@@ -31,7 +31,7 @@ We have decided to present our initial codes in the Ruby language,
 rather than the more traditional choices of Fortran, C, or C++.
 Ruby is a fully object-oriented, flexible and extremely powerful
 scripting language.  Just like assembly language is far more
-expressive then machine language, and Fortran or C or C++ are in turn
+expressive than machine language, and Fortran or C or C++ are in turn
 far more expressive than assembly languages, Ruby is an example of a
 new generation of languages that occupies yet one level higher in the
 hierarchy of shifting the burden of programming from the programmer to

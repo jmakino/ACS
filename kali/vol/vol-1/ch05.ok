@@ -165,7 +165,7 @@ we are really happy, we can call the final version <tt>body.rb</tt>.
 on what you do with that stack of versions.  But I appreciate your
 attempt!
 
-*Bob*: Coming back to your suggestion, yes, you van put the +Body+
+*Bob*: Coming back to your suggestion, yes, you can put the +Body+
 class definition in a separate file.  This is similar as what you do
 in C and C++ with an include file -- only here it is more easy to do so.
 
@@ -305,7 +305,7 @@ save time by writing it only once as a subroutine, and calling it from
 three places.  But that is the _least_ important reason to use functions
 or subroutines in a program.
 
-Much more important reasons are the issue of code maintenance.  If the
+A much more important reason is the issue of code maintenance.  If the
 same piece of code occurs in more than one place, it becomes essentially
 impossible to maintain the code in a consistent way.  Change something
 in one place in someone's legacy code, and most likely you don't even
@@ -389,7 +389,7 @@ for <tt>k=1</tt>.
 *Alice*: And if we would have used three-dimensional arrays for positions
 and velocities and accelerations, the block would be executed also for
 <tt>k=2</tt>.  How neat to see an integrator without any need to remind
-the computer <i>ad nauseum</i> to go through an inner loop for +k+ is
+the computer <i>ad nauseam</i> to go through an inner loop for +k+ is
 1 to 3, or something like that -- just as we saw earlier when we wrote
 the I/O routines.
 

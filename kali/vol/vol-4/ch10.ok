@@ -23,6 +23,26 @@ that contains class definitions that will be used by other files.
 test driver?
 
 *Bob*: Here is the whole content of <tt>clop.rb</tt>, with the test
-driver at the end.
+driver at the end.  Note that the first four lines of the `here document'
+are:
+
+  Description: Command line option parser, (c) 2004, Piet Hut & Jun Makino, ACS
+  Long description:
+    Test program for the class Clop (Command line option parser),
+    (c) 2004, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
+
+*Alice*: Who are those two people?
+
+*Bob*: Oh, I just chose two pen names for us; as long as we are just building
+toy models, we may as well use toy names for our products, don't you think?
+
+*Alice*: But why a Dutch and a Japanese name?
+
+*Bob*: Why not?  I had to pick something.
+
+*Alice*: I might have picked a Liechtensteiner and a Fijian, but I won't
+argue with your taste.  Can you show me the code?
+
+*Bob*: Here it is:
 
  :inccode: .clop.rb

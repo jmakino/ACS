@@ -221,7 +221,7 @@ class definition.
     => nil
 
 *Alice*: Wait a minute!  You are now giving a new definition of the class
-+Body+.  Doesn't that override the older definition that we have give
++Body+.  Doesn't that override the older definition that we have given
 before?
 
 *Bob*: Ah, but that's the beauty of Ruby, one of its many beauties, that
@@ -386,7 +386,7 @@ that directly in a reader function, and presumably also in a writer:
     irb(main):005:0> b
     => #<Body:0x400d4930 @pos=[0, 0.5, 0], @mass=0, @vel=[0, 0, 0]>
 
-As expected.  And an array index in Ruby obviously start with a 0,
+As expected.  And an array index in Ruby obviously starts with a 0,
 as in C and C++, rather than with a 1, as in Fortran.  <tt>b.pos[1]</tt>
 is the second element of the array, while <tt>b.pos[0]</tt> is the
 first element.

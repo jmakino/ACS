@@ -79,7 +79,7 @@ can document what happened, and why, and how we learned from initially
 wrong assumptions.  We can later see what we do with that material.
 
 *Bob*: I'm glad we agree to disagree.  It's time to get our hands dirty
-doing some real programming.  Hey, I see that you have a copy of Knuth'
+doing some real programming.  Hey, I see that you have a copy of Knuth's
 book `The Art of Programming'.  He is one of my heroes.  Those books
 are great.  And without TeX and LaTeX, where would we be in writing
 articles?  That he singlehandedly invented TeX in the late seventies
@@ -133,7 +133,7 @@ order to produce the TeX executable.
 
 *Bob*: Why did he call the second one +tangle+?
 
-*Alice*: He literally wrote +tangle+ in such a way as to entangled the
+*Alice*: He literally wrote +tangle+ in such a way as to entangle the
 source code, in such a way that it was no longer human readable.
 
 *Bob*: Why would he do that??
@@ -157,7 +157,7 @@ the long run, or even in the medium run, his approach was more efficient.
 me with a story about Knuth that I didn't know about, are you going to force
 me to use literate programming?
 
-*Alice*: No, don't worry.  I don't think that literature programming is
+*Alice*: No, don't worry.  I don't think that literate programming is
 still the right answer, in this day and age.  It was a good thing at the
 time, a visionary move really.  But it was developed in the early days
 of line editors, even before screen editors came into being, let alone
@@ -170,7 +170,7 @@ weave them together.
 *Bob*: What would be a more modern equivalent?
 
 *Alice*: I have been thinking about that, off and on.  I think that
-the most important aspect of Knuth' idea, an aspect that will survive
+the most important aspect of Knuth's idea, an aspect that will survive
 his particular implementation, was the notion of coherence.  With his
 trick, he could keep source code and documentation text coherent.
 Everything was updated in step, and he leaned way over backward to
@@ -193,7 +193,7 @@ more inspiration in that direction.
 *Bob*: I'm glad you let me off the hook so easily, without converting
 me into a coherent programmer!  We can talk about those ideas later,
 over a drink, whenever you like, and yes, I'll probably have a look at
-those essays by Knuth.  I must say that you have peeked my curiosity.
+those essays by Knuth.  I must say that you have peaked my curiosity.
 But for now, let's get started doing some programming ourselves!
 
 == A Lab Note Mechanism
@@ -216,7 +216,7 @@ all virtual of course, but apart from that, the procedures and the
 skills needed are not that different from doing a lab experiment.
 
 *Bob*: I remember burning my fingers while learning how to blow glass
-during my freshman physics glass.  After glass stops to glow, it is
+during my freshman physics class.  After glass stops to glow, it is
 still incredibly hot.  I sure wished that I had infrared eyesight then.
 But okay, if you want to stretch metaphors, I've burned myself with
 hasty programming as well.  And there are parallels between lab work
