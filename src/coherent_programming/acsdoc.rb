@@ -885,16 +885,13 @@ module Acsdoc
 
   def prep_rb_special_comments_for_partfiles(file)
     basename =File.dirname(file)+"/."+File.basename(file) 
-    p basename+"{+,-}*"
-    p Dir[basename+"{+,-}*"]
     Dir[basename+"{+,-}*"].each{|f|
       newname =File.dirname(f)+"/."+File.basename(f) 
-      print "modifying #{f} through #{newname}\n" 
       prep_rb_special_comments(f)
       File.rename(newname,f)
-      system "cat #{f}"
     }
   end
+
   def prep_rb_hashes(infile)
     begin
       ifile = open(infile, "r")
@@ -914,8 +911,8 @@ module Acsdoc
 	else
 	  openmode = "w+"
 	  hashnames.push(outfile)
-	  open(outfile,openmode){|f| f.print s}
 	end
+	open(outfile,openmode){|f| f.print s}
       end
     end
     ifile.close
