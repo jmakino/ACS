@@ -248,9 +248,6 @@ class Worldline
     end
   end
 
-#  def read                               # for self-documenting data
-#  end
-
   def read_initial_worldpoint(time)
     wp = @worldpoint[0] = Worldpoint.new
     wp.read
@@ -265,8 +262,8 @@ class Worldera
 
   TAG = "worldera"
 
-  attr_accessor  :start_time, :end_time, # end of container, not necessarily of
-                 :worldline, :snap_time  # of the contents, i.e. the worldlines
+  attr_accessor  :start_time, :end_time,
+                 :worldline, :snap_time
 
   def initialize
     @worldline = []
@@ -361,9 +358,6 @@ class Worldera
     take_snapshot(t).write_diagnostics(initial_energy, x_flag)
   end
 
-#  def read          # for self-documenting data, either Worldera or Snapshot
-#  end
-
   def read_initial_snapshot(dt_era)
     ss = ACS_IO.acs_read(Worldsnapshot)
     @start_time = ss.time
@@ -386,28 +380,42 @@ class World
 
   def evolve(c)
     dt_max = c.dt_era * c.dt_max_param
-    initial_energy = @era.startup_and_report_energy(c.dt_param, dt_max)
+    if c.world_input_flag
+      @new_era = @era.next_era(c.dt_era)
+      @old_era = @era
+      @era = @new_era
+    else
+      @nsteps = 0
+      @initial_energy = @era.startup_and_report_energy(c.dt_param, dt_max)
+    end
     time = @era.start_time
-    nsteps = 0
-    @era.write_diagnostics(time, nsteps, initial_energy, c.x_flag, true)
+    @era.write_diagnostics(time, @nsteps, @initial_energy, c.x_flag, true)
     t_dia = time + c.dt_dia
     t_out = time + c.dt_out
     t_end = time + c.dt_end
-    @era.write_snapshot(time) if c.init_out
+    if c.init_out
+      if c.world_output_flag
+        acs_write($stdout, false, c.precision, c.add_indent)
+      else
+        @era.take_snapshot(t_out).acs_write($stdout, true,
+                                            c.precision, c.add_indent)
+      end
+    end
     while @era.start_time < t_end
       @new_era, dn = @era.evolve(c.dt_era, c.dt_param, dt_max,
                                  c.shared_flag)
-      nsteps += dn
+      @nsteps += dn
       while t_dia <= @era.end_time and t_dia <= t_end
-        @era.write_diagnostics(t_dia, nsteps, initial_energy, c.x_flag)
+        @era.write_diagnostics(t_dia, @nsteps, @initial_energy, c.x_flag)
         t_dia += c.dt_dia
       end
       while t_out <= @era.end_time and t_out <= t_end
-#        @era.write_snapshot(t_out)
-#        @snap_time = @era.snap_time = t_out               # KLUDGE !!!
-#        write($stdout, c.precision, c.add_indent)
-##        @era.acs_write("era", $stdout, c.precision, 0, c.add_indent)
-        @era.take_snapshot(t_out).acs_write($stdout, c.precision, c.add_indent)
+        if c.world_output_flag
+          acs_write($stdout, false, c.precision, c.add_indent)
+        else
+          @era.take_snapshot(t_out).acs_write($stdout, true,
+                                              c.precision, c.add_indent)
+        end
         t_out += c.dt_out
       end
       @old_era = @era
@@ -629,6 +637,30 @@ options_text= <<-END
       jerk (for the Hermite integrator)
 
 
+  Short name:		-q
+  Long name:  		--world_output
+  Value type:  		bool
+  Variable name:	world_output_flag
+  Description:		World output format, instead of snapshot
+  Long description:
+    If this flag is set to true, each output will take the form of a
+    full world dump, instead of a snapshot (the default).  Reading in
+    such an world again will allow an fully (?) accurate restart of the
+    integration,  since no information is lost in the process of writing
+    out and reading in in terms of world format.
+
+
+  Short name:		-r
+  Long name:  		--world_input
+  Value type:  		bool
+  Variable name:	world_input_flag
+  Description:		World input format, instead of snapshot
+  Long description:
+    If this flag is set to true, input data should have the form of a
+    full world dump, instead of a snapshot (the default).  See also the
+    option --world_output
+
+
   Short name:		-a
   Long name:  		--shared_timesteps
   Value type:  		bool
@@ -669,8 +701,10 @@ options_text= <<-END
 
 clop = parse_command_line(options_text, true)
 
-w = World.new
-w.read_initial_snapshot(clop)               # for now; "read" w. self-doc. data
-#w.write_snapshot(0)
-#w.write
+if (clop.world_input_flag)
+  w = ACS_IO.acs_read(World)
+else
+  w = World.new
+  w.read_initial_snapshot(clop)
+end
 w.evolve(clop)

@@ -60,10 +60,12 @@ class String
 end
 
 class Array
-  def to_acs_special_s(name, precision, indent, add_indent)
+  def to_acs_special_s(name, check_acs_output_name, precision, indent,
+                       add_indent)
     s = ""
     self.each_index do |i|
-      s += self[i].to_acs_s(name+"["+i.to_s+"]", precision, indent, add_indent)
+      s += self[i].to_acs_s(name+"["+i.to_s+"]", check_acs_output_name,
+                            precision, indent, add_indent)
     end
     s
   end
@@ -88,10 +90,10 @@ module ACS_IO
   BASE_INDENT = 0
   ADD_INDENT = 2
 
-  def to_acs_s(name, precision = PRECISION, base_indent = BASE_INDENT,
-               add_indent = ADD_INDENT)
+  def to_acs_s(name, check_acs_output_name, precision = PRECISION,
+               base_indent = BASE_INDENT, add_indent = ADD_INDENT)
     indent = base_indent + add_indent
-    if defined? self.class::ACS_OUTPUT_NAME
+    if defined? self.class::ACS_OUTPUT_NAME and check_acs_output_name
       tag = self.class::ACS_OUTPUT_NAME
     else
       tag = self.class.to_s
@@ -99,7 +101,8 @@ module ACS_IO
     s = " " * base_indent + tag + " " + name + "\n"
     if self.instance_variables.size > 0
       self.instance_variables.sort.each do |v|
-        s += eval(v).to_acs_s(v.delete("@"), precision, indent, add_indent)
+        s += eval(v).to_acs_s(v.delete("@"), check_acs_output_name,
+                              precision, indent, add_indent)
       end
       return s
     end
@@ -107,16 +110,19 @@ module ACS_IO
     when "String"
       return s.chomp + self.to_acs_special_s(indent, add_indent)
     when "Array"
-      return s + self.to_acs_special_s(name, precision, indent, add_indent)
+      return s + self.to_acs_special_s(name, check_acs_output_name,
+                                       precision, indent, add_indent)
     when /^(Float|Vector)$/
       return s + self.to_acs_special_s(precision, indent)
     end
     s += " " * indent + self.to_s + "\n"
   end
 
-  def acs_write(file = $stdout, precision = PRECISION, add_indent = ADD_INDENT)
+  def acs_write(file = $stdout, check_acs_output_name = false,
+                precision = PRECISION, add_indent = ADD_INDENT)
     file.print ACS_HEADER +
-               to_acs_s("", precision, add_indent, add_indent) +
+         to_acs_s("", check_acs_output_name, precision, add_indent,
+                  add_indent) +
                ACS_FOOTER
   end
 
