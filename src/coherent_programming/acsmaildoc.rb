@@ -55,7 +55,7 @@ module Acsmaildoc
 	  dirname = $docroot
 	  for subdirname in [year.to_s, month.to_s]
 	    dirname = dirname + "/" + subdirname
-	    mkdir(dirname) unless File.exist?(dirname)
+	    Dir.mkdir(dirname) unless File.exist?(dirname)
 	  end
 	  print "open file ", dirname+   "/" + seqnum.to_s, "\n";
 	  outfile=open(dirname+ "/"+ seqnum.to_s, "w+")
