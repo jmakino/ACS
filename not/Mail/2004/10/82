@@ -1,0 +1,90 @@
+Date: Sun Oct 03 08:31:42 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Gentlemen:
+
+As of today, we have a block time step version or world1.rb !
+It is called world1b.rb, and I just committed it to svn.
+
+I'm quite pleased that I could get it all to work.
+However, the speed is sloooooooooow: it is ten times slower
+than world1.rb -- of course, we can improve this by using a
+more clever block time step class.  It takes about 50% more
+steps, as you would expect, so each step is now slower by a
+factor of seven.
+
+I started with the "block_time.rb" file that Murat and I used
+for the files "murat6.rb" and "murat7.rb" (Murat: I renamed
+that old file "old_block_time.rb", so "murat[67].rb" now
+require "old_block_time.rb", as you can see).
+I added a scale factor to the data representation in the class
+Block_time : a time value is now represented by {float, int, binary},
+where float is a scale factor (typically the duration of an era), and
+int + binary are the integer number and the fraction of the scaled time.
+
+I had to make two extra changes to our file "world1.rb" .
+I'm sorry to keep changing that file, but I found two things that
+were not well designed and that really had to be changed (they showed
+up when I wrote the block time version, which didn't work because
+of those two problems).
+
+
+The first problem was that we had used a kludge in the definition of
+read_initial_snapshot:
+
+  @end_time = @start_time    # for now, to allow initial diagnostics output
+
+We documented it as a kludge by writing "for now": this was a silly
+way to force initial diagnostics output, and interfered with the block
+time step implementation.  I changed it by giving an extra init_flag to
+Worldera#write_diagnostics, which now reads:
+
+  def write_diagnostics(t, nsteps, initial_energy, x_flag, init_flag = false)
+    STDERR.print "at time t = #{sprintf("%g", t)} "
+    STDERR.print "(from interpolation after #{nsteps} steps "
+    if init_flag
+      STDERR.print "to time #{sprintf("%g", @start_time)}):\n"
+    else
+      STDERR.print "to time #{sprintf("%g", @end_time)}):\n"
+    end
+    take_snapshot(nil, t).write_diagnostics(initial_energy, x_flag)
+  end
+
+As you can see, no need anymore to change @end_time to @start_time .
+
+
+The second problem was a subtle bug that we would probably have never
+seen showing up if it were not for the block time steps.  Here is the
+corrected version of Worldline#next_worldline :
+
+  def next_worldline(time)
+    raise if not valid_interpolation?(time)
+    wl = Worldline.new
+    @worldpoint.each_index do |i|
+      if @worldpoint[i].time > time
+        wl.worldpoint = @worldpoint[i-1...@worldpoint.size]
+        break
+      elsif @worldpoint[i].time == time
+        wl.worldpoint = @worldpoint[i...@worldpoint.size]
+        break
+      end
+    end
+    wl
+  end
+
+Yesterday, we only wrote the first part of the "if", with the ">"
+check.  I now added the "elsif" part, with the "==" check, something
+that essentially never occurs for non-block floating point time values,
+but that always occurs at era boundaries for block time steps!  Without
+that second check, nil is returned -- it took me a while to debug that.
+
+So, all is well now, we have block time versions for individual time steps,
+and even for shared time steps, when you use "ruby world1b.rb -a" .
+
+I think I will stop here, and do something else for the rest of the weekend.
+
+See you Monday,
+
+Piet
+
