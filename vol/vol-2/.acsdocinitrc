@@ -1,0 +1,16 @@
+@@additional_commands_for_tex = <<END
+\\parindent 0pt
+\\parskip 5 pt
+\\title{The Art of Computational Science\\\\
+~\\\\
+The Kali code for Dense Stellar Systems\\\\
+~\\\\
+ Volume 2: Graphics
+}
+\\author{Piet Hut and Jun Makino}
+\\maketitle
+\\newpage
+\\tableofcontents
+
+END
+
