@@ -6,108 +6,108 @@ Email from Jun to Piet:
 
 \begincode
 
-Date: Wed, 10 Dec 2003 14:15:54 +0900 (JST)
-To: piet@ias.edu
-Subject: Ruby array
-From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
-
-Hi Piet,
-
-I made a simple benchmark of NArray. The code is the following
-
--------------------------------------
-require 'narray'
-
-print "\n With Ruby NArray\n"
-
-nmax=1000000
-m=10
-while m<nmax*10
-  n = nmax/m*10
-  print "N,M = #{n}, #{m} "
-  a = NArray.float(n)
-  b = NArray.float(n)
-  for i in 0...n
-    a[i]=i 
-  end
-  tstart =  Time.times.utime
-  for j  in 0..m
-  b = a+a
-  end
-  print "Time=  ", Time.times.utime-tstart, "\n"
-  m*= 10
-end
-
-print "\n With Ruby array\n"
-
-m=10
-while m<nmax*10
-  n = nmax/m*10
-  print "N,M = #{n}, #{m} "
-  a=[]
-  for i in 0...n
-    a[i]=i 
-  end
-  tstart =  Time.times.utime
-  for j  in 0..m
-    b = a.collect{ |x| x+x}
-  end
-  print "Time=  ", Time.times.utime-tstart, "\n"
-  m*= 10
-end
-
--------------------------------------
-It just performs element-wize add on array a, varying its length.
-The result is:
-
-<yebisu:/home/makino/src/test>ruby test1.rb
-
- With Ruby NArray
-N,M = 1000000, 10 Time=  0.2
-N,M = 100000, 100 Time=  0.15
-N,M = 10000, 1000 Time=  0.17
-N,M = 1000, 10000 Time=  0.23
-N,M = 100, 100000 Time=  0.69
-N,M = 10, 1000000 Time=  5.3
-
- With Ruby array
-N,M = 1000000, 10 Time=  20.15
-N,M = 100000, 100 Time=  18.29
-N,M = 10000, 1000 Time=  18.09
-N,M = 1000, 10000 Time=  18.07
-N,M = 100, 100000 Time=  18.29
-N,M = 10, 1000000 Time=  20.63
-
-Thus, for long array (size>1000), the speedup is about a factor of
-100. In other words, the speed for Ruby with NArray is essentially the
-same as that with C/C++. In fact, the achieved speed is 50 Mflops,
-which is quite good for a 600MHz cpu.
-
-However, as you shorten the array size the performance degrade, and
-with size=10 NArray is only 4 time faster. So we can guess that for
-NDIM=3 NArray would not be faster at all.
-
-Hmm, well, in principle we could do a bit better by designing and
-implementing a very specialized routine for 1D array of a fixed
-length, but even so the overhead of implementing any operation as a
-Ruby function would be significant.
-
-So I guess we need something either lower level or higher level.
-
-To go to lower level. we can write a function which calculate, for
-example, pairwize force calculation itself in C, or going 1-step
-higher and write a function which takes an array of particles and
-target particle to calculate the force from the array of particles to
-the target particle.
-
-In the higher level, we should design a "compiler", which generate
-such a C function and necessary interface to Ruby from some Ruby-like
-description...
-
-Well, I guess we first need to experiment with the low-level approach.
-
-Any idea?
-
-Jun
+ Date: Wed, 10 Dec 2003 14:15:54 +0900 (JST)
+ To: piet@ias.edu
+ Subject: Ruby array
+ From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+ 
+ Hi Piet,
+ 
+ I made a simple benchmark of NArray. The code is the following
+ 
+ -------------------------------------
+ require 'narray'
+ 
+ print "\n With Ruby NArray\n"
+ 
+ nmax=1000000
+ m=10
+ while m<nmax*10
+   n = nmax/m*10
+   print "N,M = #{n}, #{m} "
+   a = NArray.float(n)
+   b = NArray.float(n)
+   for i in 0...n
+     a[i]=i 
+   end
+   tstart =  Time.times.utime
+   for j  in 0..m
+   b = a+a
+   end
+   print "Time=  ", Time.times.utime-tstart, "\n"
+   m*= 10
+ end
+ 
+ print "\n With Ruby array\n"
+ 
+ m=10
+ while m<nmax*10
+   n = nmax/m*10
+   print "N,M = #{n}, #{m} "
+   a=[]
+   for i in 0...n
+     a[i]=i 
+   end
+   tstart =  Time.times.utime
+   for j  in 0..m
+     b = a.collect{ |x| x+x}
+   end
+   print "Time=  ", Time.times.utime-tstart, "\n"
+   m*= 10
+ end
+ 
+ -------------------------------------
+ It just performs element-wize add on array a, varying its length.
+ The result is:
+ 
+ <yebisu:/home/makino/src/test>ruby test1.rb
+ 
+  With Ruby NArray
+ N,M = 1000000, 10 Time=  0.2
+ N,M = 100000, 100 Time=  0.15
+ N,M = 10000, 1000 Time=  0.17
+ N,M = 1000, 10000 Time=  0.23
+ N,M = 100, 100000 Time=  0.69
+ N,M = 10, 1000000 Time=  5.3
+ 
+  With Ruby array
+ N,M = 1000000, 10 Time=  20.15
+ N,M = 100000, 100 Time=  18.29
+ N,M = 10000, 1000 Time=  18.09
+ N,M = 1000, 10000 Time=  18.07
+ N,M = 100, 100000 Time=  18.29
+ N,M = 10, 1000000 Time=  20.63
+ 
+ Thus, for long array (size>1000), the speedup is about a factor of
+ 100. In other words, the speed for Ruby with NArray is essentially the
+ same as that with C/C++. In fact, the achieved speed is 50 Mflops,
+ which is quite good for a 600MHz cpu.
+ 
+ However, as you shorten the array size the performance degrade, and
+ with size=10 NArray is only 4 time faster. So we can guess that for
+ NDIM=3 NArray would not be faster at all.
+ 
+ Hmm, well, in principle we could do a bit better by designing and
+ implementing a very specialized routine for 1D array of a fixed
+ length, but even so the overhead of implementing any operation as a
+ Ruby function would be significant.
+ 
+ So I guess we need something either lower level or higher level.
+ 
+ To go to lower level. we can write a function which calculate, for
+ example, pairwize force calculation itself in C, or going 1-step
+ higher and write a function which takes an array of particles and
+ target particle to calculate the force from the array of particles to
+ the target particle.
+ 
+ In the higher level, we should design a "compiler", which generate
+ such a C function and necessary interface to Ruby from some Ruby-like
+ description...
+ 
+ Well, I guess we first need to experiment with the low-level approach.
+ 
+ Any idea?
+ 
+ Jun
 
 \endcode
