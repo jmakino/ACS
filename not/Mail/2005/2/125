@@ -1,0 +1,37 @@
+Date: Wed Feb 23 20:10:44 JST 2005
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > Greetings from Kyoto.
+
+Hi from Nagoya...
+
+ > In the directory $ACSROOT/kali/vol we will create two new files:
+ > 
+ > -- one contains the information of the current volume numbers;
+ >    this information is read from the kali home page, and is then
+ >    automagically converted to the table in this new file.  This
+ >    information is then used in each directory, to write the
+ >    correct volume number on the title pages of the volumes, etc.
+ > 
+ > -- another file will contain the dependency of the volumes,
+ >    which volume needs knowledge of which other volume, in a type
+ >    of particl ordering (semi-ordering), like multiple inheritance.
+ >    This information will be used to automagically generate a type
+ >    of flow diagram, a graph that shows all dependencies, using
+ >    either abbreviated names of volumes and/or volume numbers from
+ >    the previous file.
+
+Okay, I'll try something when I find time...
+
+ > Another question we discussed was the question of how to implement
+ > pathname magic for library files.  I must say, I find this the
+ > most difficult, and I hope that you can find a way to make some
+ > sort of preliminary version for this.
+
+At least a preliminary version is already there....
+
+Jun
+
