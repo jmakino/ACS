@@ -1,0 +1,6 @@
+== Small changes for the release versions
+
+* rewrite the css file in rdoc: removed the font size specification
+  for PRE tag
+
+* rel/index.html   

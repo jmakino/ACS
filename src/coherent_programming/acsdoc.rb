@@ -56,12 +56,13 @@ module Rdoctotex
     [/\\</,"$<$"],
     [/\\>/,"$>$"],
     [/\\([^\$])/,'$\\backslash$\1'],
-    ["{","\\{"],
-    ["}","\\}"],
+    [/\{/,"\\{"],
+    [/\}/,"\\}"],
     ['&','\\\\&'],
     [/#/,"\\#"],
     [/~/,"$\\sim$"],
     [/\_/,"\\_"],
+    [/\%/,"\\%"],
     [/\^/,"$\\hat{\\ }$"]]
 
   @@basic_preambles_for_tex = "\\documentclass{book}\n\\usepackage{graphicx}"
@@ -70,7 +71,8 @@ module Rdoctotex
 
   def escapetexspecialcharacters(instring)
     s = instring
-    @@charstotexmath.each{|x| s=s.gsub(x[0],x[1])}
+    @@charstotexmath.each{|x|
+      s=s.gsub(x[0],x[1])}
     s
   end
   
@@ -142,7 +144,7 @@ module Rdoctotex
   def latex_process_tex_mathmarkup(instring)
     ostring=[]
     while s = instring.shift
-      ostring.push(s.gsub(/<\$(.+)\$>/){"<tex>$"+$1+"$</tex>"})
+      ostring.push(s.gsub(/<\$(.+?)\$>/){"<tex>$"+$1+"$</tex>"})
     end
     ostring
   end

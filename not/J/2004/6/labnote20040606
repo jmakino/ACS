@@ -1,0 +1,41 @@
+= Still more extension to acsdoc
+
+I think I need to write a similar thing to generate segments for C
+code as well Ruby code.
+
+Things needs to be understood:
+
+* typedef
+
+
+    typedef union float_and_uint{
+        float f;
+        unsigned int u;
+    }FLOAT_AND_UINT;
+
+* function definition
+
+    ULONG sub( ULONG in1, /* subtractor input 1 */
+    	    ULONG in2, /* subtractor input 2 */
+    	    ULONG in1bits, /* mantissa length for input 1 */
+    	    ULONG in2bits, /* mantissa length for input 2 */
+    	    ULONG outbits) /* mantissa length for output */
+    {
+      ULONG exp2, sign2,  zero2, mantissa2;
+    
+      decompose_float(in2, in2bits, &exp2, &sign2, &zero2, &mantissa2);
+      sign2 ^= ULONG_ONE;
+      in2 = compose_float(in2bits,  exp2, sign2, zero2, mantissa2);
+      return add(in1, in2, in1bits, in2bits, outbits);
+    }
+
+* secgment start/end, a la ruby version, but with // commend instead.
+* similarly, numbered comment "//1" etc, to extract single or multiple
+  lines.
+
+Should first start with segments, so that the present function can
+accept different files.
+
+These are implemented, except for the removal of special comments
+
+  

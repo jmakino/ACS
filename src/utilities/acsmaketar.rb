@@ -57,7 +57,7 @@ New release name (specify "1.0" for version 1.0). If not specified,
 
 END
 
-clop= Clop.new(optionstext,ARGV)
+clop= Clop.new(optionstext,ARGV,true)
 p $webonly
 p $localonly
 p $releasename
