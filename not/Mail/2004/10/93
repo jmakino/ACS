@@ -1,0 +1,195 @@
+Date: Wed Oct 20 22:42:12 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Jun,
+
+This is all very interesting!  Let's see how far we can get by email.
+
+
+1) Three levels.
+
+I like your idea of three levels: physics, (ideal) model, implementation.
+Perhaps we should write a few pages about that, after which I can work it
+into a discussion by Alice and Bob.  However, I'm not quite clear exactly
+where to make the cuts.  For example:
+
+  Physics:
+  A worldline is a 1-D time-like trajectory in a 4-D spacetime,
+  in the point-particle limit; it can acquire a finite radius,
+  as either a physical radius or a type of sphere of influence
+  within which a better approximation has to be used.  In either
+  case, we are then dealing with line x sphere = 4-D tube.
+
+This seems right, but it in fact describes the model already.
+In how far does the computational ideal differ from the physics
+picture given here?
+
+  Implementation:
+  A wordline is approximately represented by a series of worldpoints,
+  with a function that interpolates between the points, to give the
+  appearance of a continuous line.  Passive information can be obtained
+  from a worldline at any time, through this interpolation.  Active
+  extension of the line is done by asking the line to extend itself,
+  i.e. by creating a new point that is added to the series.
+
+I agree with you that there may be an intermediate level, between
+physical worldline and computational (ruby) array.  That might make
+the discussion easier, by providing more abstraction boundaries.  Hmm.
+Let me try:
+
+  Model:
+  A worldline segment consists of information that is available at
+  every choice of time, between the initial and final time of a
+  worldline segment.  A worldline is the ideal extension of a
+  worldline segment into the infinite past and future.  A model
+  computation starts with the information describing a set of
+  worldlines, in the form of a finite segment for each worldline
+  (some or all segments could be just points) with at least one
+  time value for which each segment is present.  The physical
+  equations of motion govern the way the wordline segments can
+  extend themselves.
+
+The question here is: where exactly draw the boundary between physics
+and model?  Put the force equations in the physics, and the algorithms
+for solving them in the model?  Or should algorithms, which deal with
+finite time intervals and actual world points, go to implementation?
+In fact, by asking this question, I can think of _four_ levels:
+physics - continuous (ideal) model - discrete (ideal) model - implementation.
+
+Hmmm.
+
+
+2) Era.
+
+You wrote:
+
+ > Conceptually, I think, there is really no difference between era and
+ > world, except that world can/should mean the time range of -infty to
+ > +infty, while we designed era so that it has finite start and end
+ > times, and the reason we introduced this is
+ > 
+ >   --- to limit the memory usage
+ >   --- to have a "convenient" way for I/O
+
+I agree with the first part.  I am not quite happy with the second part,
+as it is right now.  Yes, it works, but it is redundant.  What we need
+for a restart is much less than an era: we need a machine-snapshot at
+just one time, i.e. a collection of just one latest worldpoint for each
+worldline (or k for a k-step algorithm), that's all.  An era has more
+than that, in two different ways: a full chunk of time plus a considerable
+extension beyond the ending time, to provide accurate interpolation at the
+ending time.  In other words, currently an era provides three things:
+
+i) full information for a startup at time t1 (past points + extrapolation info)
+ii) in addition, full diagnostics capacity at t2 (interpolation info)
+iii) in addition, full time slice info with t1 < t < t2
+
+I think we should provide _three_ options, for each of these purposes:
+
+i) a `dump' at time t1 provides fully accurate restart capability, by giving
+   the latest worldpoint at each worldline with t(wp) < t1.
+
+ii) an `extended snapshot' at time t1 provides fully accurate information
+    about all quantities of interest at time t1, by giving for each
+    worldline the two worldpoints around it: tb(wp) < t1 < te(wp).
+
+iii) an `extended timeslice' between times t1 and t2 provides fully accurate
+     information for any time t1 < t < t2; it effectively provides an
+     extended snapshot for each of the times t in [t1, t2]
+
+So there is a strict ordering: iii) contains ii) contains i.
+Currently we use iii) for pruning and restart.
+We should use i) for restart.
+
+Now our snapshot falls in between i) and ii).  It is more than i), by
+giving an interpolated view of time t1, like ii), not an extrapolated
+one.  But it gives less than ii), since it does not provide earlier
+and later info and time step size for each particle.  So the
+information for a snapshot ss and i) to iii) is ordered like:
+
+  i)  
+       <  ii)  <   iii)
+  ss
+
+I mean here that iii) include ii) as a subset, and ii) includes  both
+i) and ss as subsets, but it is not the case that i) < ss or ss < i).
+We have a _partial_ordering_.   Ah, this makes it much clearer, I think,
+what the relation is between our current choices of snapshot output and
+era output.  We probably need four options for output:
+
+i) a dump, or corrugated snapshot, or snapshot predictor, or pre-snapshot
+ss) a snapshot
+ii) an extended snapshot
+iii) an extended snapslice, or snapshot-sandwiched history, or era
+
+
+3) Snapshot
+
+Next, in your email, you discuss the three ways that snapshots are used:
+
+ > a) calculate the force on a particle
+ > b) to make diagnostics
+ > c) to test for binaries..
+ > 
+ > For (a), it may be more natural to not to create a snapshot but let
+ > era (or world) calculates the force directly. For (b), snapshot is
+ > okay, but what we mean by snapshot for subclumps need to be clarified.
+ > For (c), I *think* we need something else...  
+
+Perhaps we can extend the partial ordering I gave above by giving
+snapshots several options, or arguments: they can range over all
+worldlines, or only over a specific set (a clump, perhaps, or a clump
+plus a perturbed neighbor region, if we want to implement that as a
+prototyping exercise); also they can treat a clump through its c.o.m.
+information, including multipoles, or they can provide all the information
+within a clump.  So taking a snapshot could be expressed as:
+
+  take_snapshot( worldbundle, level )
+
+Here `worldbundle' is just a shorthand notation for a collection of
+worldlines.  The default would be worldbundle = all worldlines.
+It could also be all worldlines in a clump. or clump+neighbors.
+And `level' means the number of levels to which you open a clump:
+level 0 means you see only the c.o.m. (clump as a single but perhaps
+rather complex worldline); at level 1 you see the worldlines in a
+clump but not the inside of a clump within a clump; etc.
+
+
+4) Worldsegments
+
+ > > Before I go on, does this sound like a good meta-level language?
+ > 
+ > I suppose so. A very important advantage of this approach is that you
+ > can keep the segments which correspond to vanished stars (either
+ > physically through SNe or virtually by binary treatment or whatever)
+ > in the data structure (at least to the next era boundary). I think
+ > this will make bookkeeping much simpler, since all necessary
+ > management information is just there.
+ > 
+ > In other words, we can effectively see the whole world as a "static"
+ > structure, which doe not change in time (since the time is just one
+ > dimention to which the worldline extends), and the time integration is
+ > just to extend the not-yet-calculated worldlines.
+
+Yes, definitely.  So the question is what to do with expired worldlines.
+I'm not sure whether eras should take care of that.  It seems more the
+job of World to keep track of the beginning and end of each worldsegment.
+Perhaps a world calculation should always keep a record of the beginning
+and end of each worldsegment, even if it discards the information: at a
+minimum the times of begin and end and the identities of the particles
+and nodes involved.
+
+How much information would that contain?   Let's see.  In an N-body
+calculation you will have of order 1 close encounter per relaxation
+time, and oof order 1 significant binary hardening per relaxation time.
+The coefficients can bee high, but the scaling seems to be like N,
+as opposed to the N^3 of the calculations.  So in fact the memoriy
+requirements are worst for small N.  So I guess we could keep quite a
+bit of information about each worldsegment start and finish, as a
+default, for each calculation.  It will certainly give us a good sense
+of the encounter activity in any simulation.
+
+
+Piet
+

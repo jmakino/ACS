@@ -1,0 +1,158 @@
+Date: Wed Oct 20 18:24:52 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > > My feeling is that Worldbundle class might not be necessary. Also,
+ > > Snapshot class is just a convenient way for the WorldEra to process
+ > > requests from outside, and in principle should not be visible from
+ > > outside....
+ > 
+ > Interesting point.  Perhaps we have to think about space and time and
+ > actual particles in different ways.  As long as we are talking about
+ > stars (or small gas clouds; not a global gas medium), we start with
+ > the identity of particles -- in other words, we take a look that is
+ > inherently Lagrangian, rather than Eulerian.  Next, for each particle,
+ > what counts is evolution in time.  Finally, in order to compute the
+ > details of evolution, we need to compute forces, which are dependent
+ > on spatial configurations.
+ > 
+ > Let's see whether we can paint a coherent meta-level picture.
+ > 
+ > Identity: each worldpoint is a (snapshot of an) object.
+ > Identity + time: each worldline gives the history of an object,
+ >                  a direct product of a single identity x time.
+ > Identity + time + space: a world: this gives room for many objects.
+ > 
+ > So the series worldpoint -> worldline -> world is very natural.
+ > Current implementation:
+ >   worldpoint -> worldline: actual: array
+ >                            virtual: continuous potential (virtual) cuts
+ >   worldline -> world: actual: array
+ >                       virtual: tree: some combinations of worldlines can
+ >                                be temporarily bundled (covered), showing
+ >                                itself to the world as just one bundle.
+
+Hmm, well, I think we need something like "physical", "computational
+ideal (=virtual)", "computational implementation (=actual?)".
+
+Worldline-> world would be
+
+Physical (in the level of Newtonian equation of motion): set of lines
+                                                         (equations) 
+
+computational ideal: ???
+
+computational implementation: currently a ruby array (which is not
+                          quite an array for any other language...)
+
+ > The notion of era and snapshot arecuts in time (with 2 or 1 time points),
+ > and they are largely for bookkeeping purpose: era to divide up the work,
+ > in order to manage it better; snapshot to give particles the information
+ > to calculate forces, and to determine isolation criteria for changing
+ > the tree of worldlines.
+
+Conceptually, I think, there is really no difference between era and
+world, except that world can/should mean the time range of -infty to
++infty, while we designed era so that it has finite start and end
+times, and the reason we introduced this is
+
+  --- to limit the memory usage
+  --- to have a "convenient" way for I/O
+
+It may be better to "hide" the existence of era in some way, so that
+the other modules need not care about the difference between worldera
+and world.
+
+Snapshot is a very different story. It is now used in two very
+different ways
+
+a) calculate the force on a particle
+b) to make diagnostics
+c) to test for binaries..
+
+For (a), it may be more natural to not to create a snapshot but let
+era (or world) calculates the force directly. For (b), snapshot is
+okay, but what we mean by snapshot for subclumps need to be clarified.
+For (c), I *think* we need something else...  
+
+ > For the next step, you wrote that it may not be necessary to introduce
+ > a worldbundle.  Does this mean that you prefer the starlab approach,
+ > with a tree for all particles, with the same basic structure for nodes
+ > and leaves -- the only difference being that inner nodes have pointers
+ > to other nodes (that may or may not be leaves)?
+
+No. I just meant that at the top level we could simply have
+Worldlines, some of them with some internal structures, of which
+implementation can be quite different from top-level Worldlines.
+
+The internal state can be tree, chain, Douglas's global
+regularization, or whatever.
+
+ >   I assume here that an interacting triple can be part of a tree
+ >   with three branches, not necessarily just in a binary tree.
+
+Or could be something else, like three regularized potentials...
+
+ > So the main question is: what to do with this type of "tdyn"
+ > structure, the cross section at fixed time (snapshot) is a tree,
+ > which is a single top node, a mostly flat layer that could be an
+ > array, and then small subtrees here and there.
+ > 
+ > One way to think about it, is to think it terms of worldlinesegments,
+ > let's call them segments for short.  Each worldline is a connection of
+ > segments, and each segment is a connection of worldpoints.  A segment
+ > begins and ends at a vertex, a place where the 3D tree structure changes.
+ > The picture will than be very much like a Feynman diagram, with a segment
+ > basically a propagator: a free particle moving in time as a noninteracting
+ > field, in between two interactions.  Let's call "segment" propagator.
+
+Ya. I think this is the right approach. Each worldline should have
+start (birth) time and end time. 
+
+ > So our first picture:
+ > 
+ >     worldpoint -> worldline
+ > 
+ > is replaced by
+ > 
+ >     worldpoint -> worldpropagator -> worldline
+ > 
+ > The vertices where the tree changes could then be called worldvertices.
+ > The implementation could be just like a worldpoint; not clear wether we
+ > want to use a different name (Worldvertex) for that class or just call
+ > it Worldpoint always.
+
+Well, vertices are just the initial and last point of a worldline. So
+I think the worldline itself should handle any special request related
+to them.
+
+ >    Strictly speaking, every worldpoint is an elementary vertex
+ >    connecting two propagators, and the elementary propagators are
+ >    just worldlinesegments connecting two successive worldpoints.
+ >    The term vertex and propagator, as I proposed them, simply apply
+ >    to non-trivial cases: a vertex is connected with k != 2 propagators
+ >    (k = 1,3,4,...), and a propagator has as its endpoints vertices that
+ >    have k != 2.
+ > 
+ > Before I go on, does this sound like a good meta-level language?
+
+I suppose so. A very important advantage of this approach is that you
+can keep the segments which correspond to vanished stars (either
+physically through SNe or virtually by binary treatment or whatever)
+in the data structure (at least to the next era boundary). I think
+this will make bookkeeping much simpler, since all necessary
+management information is just there.
+
+In other words, we can effectively see the whole world as a "static"
+structure, which doe not change in time (since the time is just one
+dimention to which the worldline extends), and the time integration is
+just to extend the not-yet-calculated worldlines.
+
+Well, I think I'm not clear enough here... Do you see what I mean?
+
+Jun
+
+
+

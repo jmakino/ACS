@@ -1,0 +1,79 @@
+Date: Wed Oct 20 07:04:25 JST 2004
+
+From: Jun Makino <makino@astron.s.u-tokyo.ac.jp>
+
+Piet,
+
+ > Ah, yes, that would be much better, of course, I agree.
+ > 
+ > I just wanted to whip something together quickly, so that I could
+ > start doing automatic 8-body runs.  I would like to automatize
+ > Casertano's 1985 paper, that would be a lot of fun, so I did not
+ > think very deeply about what to do.  In fact, I thought I could
+ > put it together in a few hours -- but it took me about two days
+ > instead, and I'm still finding some bugs.
+ > 
+ > I guess I will make this really work first, hopefully today, so that
+ > I can start production runs on a few computers here, to gather N=8
+ > statistics.  But yes, after that I will try to clean things up,
+ > along the lines you mentioned.
+
+Okay,
+
+ > > I think it is perhaps better to give any worldpoint to become
+ > > non-point, by having its internal state encapsulated in something like
+ > > a single variable @internal_state, which can keep whatever thing
+ > > necessary, like a binary orbital elements for two stars, or more
+ > > complex things for more complex clumps.
+ > 
+ > Yes, very good idea.
+ > 
+ > > I think we need to move the decision making to worldline level, so
+ > > that each worldline can decide what it want to do at any time. At
+ > > present I guess you can hide a binary only at era boundary.
+ > 
+ > It may be better to do this at the worldline level, I'm not sure yet.
+ > The main point is: we would like to make local decisions, but not so
+ > local that they involve only one worldline: they should involve a
+ > small bunch of worldlines -- a Worldlinebundle may be a good concept.
+
+At least, we need to be able to move between two state at any time,
+not only at the era boundary, just to make sure some hyperbolic
+encounters with very small periastron distance are handled
+correctly.  
+
+ > So the main question is: what are the interrelationships between the
+ > following classes:
+ > 
+ >   Worldline
+ >   Worldbundle
+ >   Worldsnapshot  and also some form of  Worldbundle-snapshot
+ >   Worldera
+ > 
+ > The role of era could be to guarantee to a wordbundle that it is
+ > isolated.  So era is invoked to make a global snapshot, and then,
+ > when it is clear that a clump (intersection of bundle and snapshot)
+ > is isolated, then the Worldbundle does the rest, without any need
+ > for era to step in.  Does that sound reasonable?
+
+My feeling is that Worldbundle class might not be necessary. Also,
+Snapshot class is just a convenient way for the WorldEra to process
+requests from outside, and in principle should not be visible from
+outside....
+
+ > > Well, problem is that these things we can do much faster while we are
+ > > at the same place...
+ > 
+ > Yes, indeed.  Let us see how far we get with a few email messages.
+ > I will forward the previous email messages to not, and this one as well.
+ > Perhaps in a few days we can have a phone discussion, if it gets too
+ > complicated for email.
+
+Okay,
+
+ > Are you back in Tokyo now?
+
+Not yet... I'll be leaving to Airport in a few minutes.
+
+Jun
+
