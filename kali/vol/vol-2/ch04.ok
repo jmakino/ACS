@@ -245,3 +245,12 @@ This proves it: we really have a fourth order integration scheme.
 
 *Bob*: And I can keep the name <tt>rk4</tt>, since it lives up to its
 claim.  Good!
+
+*Alice*: So, what's next?  A sixth order integrator?
+
+*Bob*: I hadn't thought about that, but given the speed-up we got with
+going from <tt>rk2</tt> to <tt>rk2</tt>, it would be interesting to
+see whether this happy process will continue when we would go to a
+<tt>rk6</tt> method, for a sixth-order Runge-Kutta method.  The
+problem is that Abramowitz and Stegun don't go beyond fourth order
+methods.  Hmm.  I'll look around, and see what I can find.

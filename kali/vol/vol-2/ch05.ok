@@ -1,58 +1,187 @@
 = A Sixth-Order Integrator
 
-[to be written]
+== A Triple leapfrog
+
+*Alice*: Hi, Bob!  To judge from the look at your face, I would bet you found
+a good recipe for a sixth-order Runge Kutta method.
+
+*Bob*: As a matter of ract, yes, I did.
+
+*Alice*: Let me guess how long the code will be.  The <tt>rk2</tt> method was
+five lines long, and the <tt>rk4</tt> method was eight lines long.  I seem to
+remember that the complexity of Runge-Kutta methods increases rapidly with
+order, so the new code must at least be twice as long, more likely a bit more.
+Okay, I'll bet on twenty lines.
+
+*Bob*: How much are you willing to bet?
+
+*Alice*: I'm not much of a gambler.  Let's say you'll get my admiration if
+you did it for less than twenty lines.
+
+*Bob*: How much admiration will I get if it would be less than ten lines?
+
+*Alice*: I don't know, since I wouldn't believe you.
+
+*Bob*: It that case you must be ready for a really wild move.  How much are
+you willing to bet against me having written a sixth-order Runge-Kutta code
+in five lines?
+
+*Alice*: Hahaha!  I will bet a good laugh.  You can't be serious.
+
+*Bob*: I am.
+
+*Alice*: Huh?  You're not going to tell me that your sixth-order Runge-Kutta
+is as long as the second-order Runge-Kutta?
+
+*Bob*: Seeing is believing.  Here it is:
+
+ :inccode: .rk6body.rb+rk6
+
+*Alice*: Three leapfrog calls?  And that does it?
+
+*Bob*: Yes, that does it, or so is the claim.  I haven't gotten the time to
+test it out yet.  I just finished it when you came in.
+
+== Great!
+
+*Alice*: I'm not sure whether to call this incredible, shocking, or what.
+But before I look for the right adjective, let me first see that it does
+what you claim it does.
+
+*Bob*: I'm curious too.  Let us take our good old Kepler orbit for a spin:
+ten time units, as before.  We will start with the fourth-order Runge-Kutta
+method:
 
  :commandoutput: ruby integrator_driver2g.rb < euler.in
 
-
-
-
-at ~/acs, give the command:  "make newversion".  It first tries to
-make all the documents.  Then it asks for the version number; you can
-just say "tmp" or whatever.  Than it creates an archive with that name
-in the "rel" directory, and then it asks you whether you want to
-update that to the web site, and you say "no".  [Jun will make a local
-version soonish]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+for which we found this reasonable result, with a relative accuracy in
+the conservation of the total energy of a few in a billion.
+Presumably the sixth-order method should do significantly better, for
+the same time step value:
 
  :commandoutput: ruby integrator_driver2k.rb < euler.in
 
+== Too Good?
+
+*Alice*: Significant, all right: almost machine accuracy.  Can you give a
+larger time step?  Make it ten times as large!  That may be way too large,
+but we can always make it smaller again.
+
+*Bob*: My pleasure!
+
  :commandoutput: ruby integrator_driver2l.rb < euler.in
+
+*Alice*: No!  This is too good to be true.  Still essentially machine
+accuracy, for only a thousand steps, while <tt>rk2</tt> with ten-thousand steps
+did far worse, by a whopping factor of a hundred thousand.  Well, let's
+really push it: can you make the time step yet again ten times larger?
+
+*Bob*: Going around a rather eccentric Kepler orbits a few times, with only
+a hundred steps in total?  Well, we can always try.
 
  :commandoutput: ruby integrator_driver2m.rb < euler.in
 
+== Spooky
+
+*Alice*: All good things come to an end.  We finally found the limit of your
+new code, but only barely: while the error is of order unity, the system
+hasn't really exploded numerically yet.
+
+*Bob*: Let's change time step values a bit more carefully.  How about
+something in between 0.1 and 0.01.  I'll take 0.04:
+
  :commandoutput: ruby integrator_driver2n.rb < euler.in
 
+*Alice*: Ah, good, less than a percent error in relative total energy
+conservations.  We're getting somewhere in our testing.  Let's halve
+the time step.  If you're <tt>rk6</tt> method is really sixth-order,
+halving the time step should make the result 64 times more accurate.
 
-
-
-
-
+*Bob*: Here we go:
 
  :commandoutput: ruby integrator_driver2o.rb < euler.in
 
+*Alice*: Hmm, that's much much more improvement than a factor 64.
+I guess the run with a time step of 0.04 was not yet in the linear regime.
+
+*Bob*: I'll halve the time step again, too 0.01:
+
+ :commandoutput: ruby integrator_driver2l.rb < euler.in
+
+*Alice*: Again an improvement of far far more than a factor of 64.  What
+is going on?
+
+*Bob*: This is almost spooky.  The integrator has no right to converge
+_that_ fast.
+
+== An Orbit Segment
+
+*Alice*: The problem may be that we follow a particle through pericenter
+with enormously long time steps, compared with the pericenter passage time.
+Who knows how all the local errors accumulate and/or cancel out.  It
+may be better to take only a small orbit segment.  If we integrate for
+less than one time unit, we know for sure that the two bodies have not
+reached each other at periastron, according to what we saw before.
+Remember, we start our integration at apastron.
+
+*Bob*: I'm happy to try that.  Let us take a total integration time of 0.2,
+and compare a few large time step choices.  Unless we make those steps pretty
+large, we will just get machine accuracy back, and we won't learn anything.
+Let's take a time step of 0.1 first:
+
  :commandoutput: ruby integrator_driver2p.rb < euler.in
+
+And then twice as long a time step, of 0.2.  Perhaps we will finally
+get a factor of 64 in degradation of energy conservation:
+
+ :commandoutput: ruby integrator_driver2q.rb < euler.in
+
+*Alice*: Much better this time.  A factor of 47, in between 32 and 64.
+This by itself would suggest that your new method is somewhere in
+between fifth order and sixth order in accuracy.
+
+*Bob*: And most likely sixth order: the ratio of 64/47=1.4 is smaller
+than the ratio of 47/32=1.5, so we are logarithmically closer to 64 than
+to 32.
+
+== Victory
+
+*Alice*: However, we should be able to settle this more unequivocally.
+The problem is, we don't have much wiggle room: we don't want the total
+time become so long that the particles reach pericenter, yet when we make
+the total integration time much shorter, we don't have room left for even
+a single time step -- unless we invite machine accuracy again.
+
+*Bob*: Of course, we can look for a different type of orbit, but then we
+have to start our analysis all over again.  How about this: let's take a
+total time of 0.5 units, while giving our particles the choice to cross
+this sea of time in either four or five time steps.  We can start with
+a time step of 0.1:
+
+ :commandoutput: ruby integrator_driver2r.rb < euler.in
+
+And then repeat the procedure for a time step of 0.125.
+
+*Alice*: Ah, before you start the run, let's make a prediction: the energy
+conservation degradation should be <tex>$(5/4)^6=3.81$</tex>.
+
+ :commandoutput: ruby integrator_driver2s.rb < euler.in
+
+*Bob*: And by dividing the total energy errors of the last two runs
+we get a ratio of 3.69.
+
+*Alice*: Not bad at all!  Just three percent short of what we had expected
+for a sixth-order integration scheme.  I think we can now officially declare
+your <tt>rk6</tt> to be worthy of the <tt>6</tt> in it's name!
+
+But I must say, I'm still deeply puzzled and surprised that three leapfrog
+calls, involving four rather funny numbers, can suddenly emulate a Runge-Kutta.
+
+*Bob*: According to my source, it is more than `emulate': this particular
+combination of leapfrog calls _is_ nothing else but a Runge-Kutta
+scheme.
+
+*Alice*: I want to know more about this.  What did you find out about the
+theory behind this curious precedure?
 
 
