@@ -1,0 +1,30 @@
+README for the language section of ACS
+
+Piet Hut and Jun Makino
+
+In the directory above this one, there are many subdirectories,
+each containing translations into different languages of the main
+ACS html pages.  If you like to help us translate these pages
+in a language not yet covered, we would greatly appreciate that.
+
+All you have to do is copy the pages that you can find here in this
+directory, and translate them in the new language.  These pages
+are almost the same as the html pages at the top level of ACS, the
+difference being that they contain the extra part in the path name
+that is needed to get back to the top level of the ACS directory tree,
+while starting on the "lan/some_language" level.
+
+Please send us an email message, to "comments@artcompsci.org", if you
+have translated some part of these html files, so that we can add your
+pages here.  Also, if you are interested to translate some part of
+the main text, we will be very glad to discuss with you what the best
+approach would be.
+
+Thank you!
+
+Piet Hut and Jun Makino
+
+Kyoto, July 2004
+
+
+    
