@@ -23,6 +23,9 @@ def name_with_date(name)
 end
 def store_file_with_date(sourcename, dirname,fullsourcename)
   subdirname = (sourcename.gsub(/\./,"_"))
+  if subdirname == sourcename
+    subdirname = sourcename + "_"
+  end
   subdirpath = dirname+"/"+subdirname
   Dir.mkdir(subdirpath) unless File.exist?(subdirpath)
   targetname=name_with_date(sourcename)
