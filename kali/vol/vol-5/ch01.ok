@@ -24,7 +24,5 @@ for short, since we are planning to invoke it often.
 
  :commandoutput: ruby rkn.rb -o 2.1088 -e 2.1088 -t 2.1088 -m rk2 < figure8.in
 
- :commandoutput: ruby rkn.rb -o 2.1088 -e 2.1088 -t 2.1088 -d 0.0001 -m rk2 < figure8.in
-
- :commandoutput: ruby rkn.rb -o 2.1088 -e 2.1088 -t 2.1088 < figure8.in
+ :commandoutput: ruby rkn.rb -o 2.1088 -e 2.1088 -t 2.1088 -d 0.0001 -m forward < figure8.in
 
