@@ -5,7 +5,7 @@
 *Alice*: Hi Bob, I guess we are now getting close to do some real stellar
 dynamics of star clusters!
 
-*Bob*: I just had the same thought.  We now have a individual time step
+*Bob*: I just had the same thought.  We now have a real N-body
 code, and it is high time that we use it for what it is designed to do:
 to follow the evolution of a collisional star system.
 
@@ -73,13 +73,12 @@ fundamental distinction.  Certainly someone specializing in hydrodynamics
 is likely to think so.  I guess you just betrayed your bias to stellar
 dynamics.  Oh well, classification will also cause heated debates.
 
-*Alice*: Which I'd rather avoid.  Anyway, we're getting to do simulating
+*Alice*: Which I'd rather avoid.  Anyway, we're setting out to simulate
 dense stellar systems, and we know that they have the tendency to show
 the effects of two-body relaxation: mass segregation, escapers, core
 collapse, all that good stuff.
 
-*Bob*: Now that we have an individual time step code, let's put up a good
-show!
+*Bob*: Now that we have an N-body code, let's put up a good show!
 
 == Initial Conditions
 
