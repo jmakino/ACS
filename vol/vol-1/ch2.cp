@@ -590,7 +590,7 @@ need right now to write down the other six functions.
 
 == Stellar Dynamics
 
-=== Stellar Dynamics
+=== Regularization
 
 *Bob*: As for the stellar dynamics, how fancy shall we make our code?
 
@@ -604,43 +604,67 @@ core collapse is completed.  In addition, we may want to study the
 effect of primordial binaries.
 
 *Alice*: But I would prefer not to get into regularization and all that.
+Whatever I have seen from special treatment of close encounters convinced
+me that that whole topic is rather specialized, and not something we want
+to throw at the students right away.  Wouldn't it be sufficient to use
+only one integration scheme globally, for all particles, without
+making any local exceptions?
 
-*Bob*: Yes, we'll have to make a number of decisions.  As for the global
-dynamics, we are pretty much forced to introduce an individual time step
-scheme.  That will require quite a bit of explaining to the students,
-since it goes way beyond what they can find in the standard text books
-on numerically solving differential equations, but we have little choice.
-If all particles would share the same time step size, the whole system
-would get down on its knees when somewhere two stars would come close
-together, or worse, would form a tight binary.
+*Bob*: As for the global dynamics, we are pretty much forced to
+introduce an individual time step scheme.  That will require quite a
+bit of explaining to the students, since it goes way beyond what they
+can find in the standard text books on numerically solving
+differential equations, but we have little choice.  If all particles
+would share the same time step size, the whole system would get down
+on its knees when somewhere two stars would come close together, or
+worse, would form a tight binary.
 
-*Alice*: Fair enough.  And for the local dynamics, do you see any need
-for a special treatment of binaries, without going all the way to a
-mapping of the three-dimensional Kepler problem onto a four-dimensional
-harmonic oscilator?
+However, if we just stick to one method, and use that for all
+particles, we will quickly run into trouble.  It can easily happen
+that two stars form a hard binary, with a semimajor axis that is a
+thousand times smaller than the size of the system.  The eccentricity
+_e_ will fluctuate, due to the perturbing forces from encounters with
+other stars, and occasionally, _e_ can get close to unity.  If, say,
+_e_ = 0.999, then at the distance of closest approach the stars will
+be a million times closer than the size of the system.  In order to
+calculate the force between the stars, we have to first subtract the
+position vectors of both stars, and this will lead to a loss of
+precision of at least six digits, reducing an original 64-bit double
+precision calculation almost to 32-bit single precision.  We simply
+cannot afford that, if we want to integrate the system in an accurate
+way.
 
-*Bob*: You mean the Kustaanheimo-Stiefel transformation?
+One way to overcome this problem is to introduce a special coordinate
+system.  Expressed in relative coordinates, with respect to the center
+of mass of the two stars, there is no longer any problem of round-off.
+Another way to solve it is to replace the orbit of a very tight binary
+star by the analytic solution of the Kepler problem: an elliptical
+orbit, for which we only have to solve Kepler's equation to know where
+the two particles are with respect to each other, at any given time.
+Of course, when a third particle approaches close to two particles on
+an eccentric tight orbit, that still will not be enough.  In general,
+the best solution is to use what is called a Kustaanheimo-Stiefel
+transformation, or other variants that have been introduced later.
 
-*Alice*: Yes, or the more elegant version based directly on quaternions.
-I love that stuff, it is so elegant to use a Hopf map and all that, but
-I'm afraid it will just be too complex for a first course in dense
-stellar systems.
+These of course are only the first steps.  There are many other very
+nice tricks of the trade.  If you use chain regularization and Stumpf
+. . . 
 
-*Bob*: Well, that is a difficult point.  If we don't do anything, and
-just let binaries form and harden, several problems may appear quite
-soon: there is the question of loss of accuracy, from subtracting the
-position vectors of stars in eccentric hard binaries; and there is the
-large amount of computer time that goes into following hard binaries,
-even after switching to individual time steps.  But I can think of
-various tricks that go partway toward full regularization.
+*Alice*: Yes, yes, I'm sure there are many wonderful tricks, but we
+have to offer your students something that they can understand and
+apply, all within half a year.  Whoever Stumpf is, or the other two
+gentlemen you mentioned, let's leave them out for now.
 
-One option would be to `collapse' a binary to a point mass, effectively,
-when there are no other stars nearby, letting it move internally in an
-unperturbed way.  That allows us to use a form of analytic regularization,
-using an analytic solution in terms of elliptic Kepler orbits.  Another
-option would be to use separate coordinate patches for two or more
-stars that come close together.  But that will rapidly get too complicated.
-It would be fun though, and it would students give a more realistic sense
+*Bob*: But we should do something, on the local level, to make the
+whole calculation meaningful.  The question is what we can introduce
+that goes partway toward full regularization.  One think we cannot get
+around is to do the analytic regularization that I just mentioned.
+Perhaps that is good enough to get them started.  It will actually be
+instructive for the students to see how things fail, and then to see
+what solutions can be found to repair the situation.  The only way to
+do that, I think, would be to introduce the separate coordinate
+patches I talked about.  While that will rapidly get too complicated,
+it would be fun, and it would students give a more realistic sense
 of the complexities that a real code has to deal with.  Who knows,
 when we really get going, we might even want to give that a try.
 
@@ -666,6 +690,8 @@ be able to guess what would and would not work well, under which
 conditions.  So I'll be learning quite a bit from this exercise, I
 think, even though it's only a toy model.  The more I think about it,
 the more it seems like a fun project.
+
+=== Local versus Global
 
 === The Kali code
 
