@@ -28,7 +28,7 @@ doc : $(SRC) .acsdocinitrc
 	touch doc
 
 clean : 
-	-rm -r doc .imgs
+	-rm -r doc .imgs .acsdoc.commandoutdir
 	-rm .[a-z]*\.rb[-+]* .[a-z]*\.rb .acsdoc.command-* 
 	-rm $(TARGET).tex $(TARGET).aux $(TARGET).cp $(TARGET).dvi \
 	    $(TARGET).log $(TARGET).ps $(TARGET).toc

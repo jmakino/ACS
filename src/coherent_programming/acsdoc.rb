@@ -467,14 +467,51 @@ module Acsdoc
   @@outputcount = 0
   @@reuseoutput = nil
 
+  @@oldoutputs={}
+
   def setreuseoutput(value)
     @@reuseoutput = value
   end
+
+  def readcommandfile(fname, dirname)
+    fid = fname.to_i
+    @@outputcount = fid if fid >   @@outputcount 
+    f=open(dirname+"/"+fname,"r")
+    while s = f.gets
+      p s
+      if s.chomp == "COMMAND"
+	command = f.gets.chomp
+      end
+      if s.chomp == "OUTPUT"
+	outputstr=""
+	while ss = f.gets
+	  outputstr += ss
+	end
+      end
+    end
+    
+    @@oldoutputs[command]=outputstr
+  end
+    
+  
+
+  @@commandoutputdir= ".acsdoc.commandoutdir"
+  def readin_commandoutputs
+    return unless File.exist?(@@commandoutputdir)
+    Dir.entries(@@commandoutputdir).each{|fname|
+      unless fname == "." or  fname == ".."
+	readcommandfile(fname, @@commandoutputdir)
+      end
+    }    
+  end
+
+
+    
 #
 # takes a single string which contains a command
 # and creates processed string which contain output
 #
-  def add_output(s,  dirname, tag)
+  def add_output(s,  dirname, tag,fname,lineno)
     ostring = "";
     a = s.split
     indent = s.index(tag) 
@@ -492,13 +529,34 @@ module Acsdoc
     else
       print "Executing command \"#{commandline}\"...\n" 
     end
-    print "command to run = ", fullcommand, "\n" if $DEBUG
-    open(tmpcommand,"w+"){ |f|  f.print fullcommand + "\n"}
-    system("cat  #{tmpcommand}") if $DEBUG
-    system("csh -f #{tmpcommand}");
+    reused = nil
+    reusedcommandid = commandline+"#"+fname+"-"+lineno.to_s
+    if @@reuseoutput 
+      if reusedoutput = @@oldoutputs[reusedcommandid]
+	reused = true
+      end
+    end
+    if reused
+      print "Output reused\n"
+      open(dirname+"/"+tmpname,"w"){|f| f.print reusedoutput}
+    else
+      open(tmpcommand,"w+"){ |f|  f.print fullcommand + "\n"}
+      system("cat  #{tmpcommand}") if $DEBUG
+      system("csh -f #{tmpcommand}");
+      @@outputcount += 1
+      Dir.mkdir(@@commandoutputdir) unless File.exist? @@commandoutputdir
+      outfile = open(@@commandoutputdir+"/"+ @@outputcount.to_s,"w")
+      outfile.print "COMMAND\n"
+      outfile.print reusedcommandid+"\n"
+    end
     unless noout
        ostring = ostring +  prompt + commandline + "\n" if tag == ":commandoutput:"
       output = `cat #{dirname}/#{tmpname}`
+      unless reused
+	outfile.print "OUTPUT\n"
+	outfile.print output
+	outfile.close
+      end
       output.each{|x| ostring+=  " "*indent + x}
       ostring+= "---\n"
     end
@@ -580,9 +638,11 @@ module Acsdoc
 # * "commandinputoutput args endtag" runs the command, taking the lines 
 #   as input, untill endtag is reached.
 # 
-  def prep_cp_string(instring,dirname)
+  def prep_cp_string(instring,dirname,fname)
     ostring = ""
+    lineno = 0
     while s = instring.shift
+      lineno += 1
       if s.index("#") == 0
         print "comment line skipped ",s, "\n"
       elsif s =~ /:in.*code:/ and s.index("\":inccode:\"")==nil
@@ -591,11 +651,13 @@ module Acsdoc
 	ostring = ostring +  s
 	ostring = ostring +  "---\n"
       elsif loc = check_tag(s,":output:")
-	ostring = ostring +  add_output(s, dirname, ":output:")
+	ostring = ostring +  add_output(s, dirname, ":output:",fname,lineno)
       elsif loc = s.index(":commandoutput:")  and s.index("\":commandoutput:\"")==nil
-	ostring = ostring +  add_output(s,  dirname, ":commandoutput:")
+	ostring = ostring +  add_output(s,  dirname, ":commandoutput:",
+					fname,lineno)
       elsif loc = s.index(":command:")  and s.index("\":command:\"")==nil
-	ostring = ostring +  add_output(s,  dirname, ":command:")
+	ostring = ostring +  add_output(s,  dirname, ":command:",
+					fname,lineno)
       elsif loc = s.index(":prompt:")  and s.index("\":prompt:\"")==nil
 	set_prompt(s)
       elsif loc = check_tag(s,":commandinputoutput:")
@@ -877,7 +939,7 @@ module Acsdoc
     else
       s = instring
     end
-    tmpstring=prep_cp_string(s,dirname).split("\n");
+    tmpstring=prep_cp_string(s,dirname,infile).split("\n");
     if tolatex_flag
       tmp2= Rdoctotex::convert_to_latex(tmpstring,dirname);
     else
@@ -1218,6 +1280,7 @@ ARGV.collect! do |a|
   elsif a == "--reuseoutput"
     print "reuse flag set\n"
     setreuseoutput true
+    readin_commandoutputs
     a = ""
   end
   a

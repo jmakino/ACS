@@ -10,6 +10,8 @@ else
    alldepends =  $(TARGET).ps.gz
 endif
 
+ACSDOC = ruby ../../../src/coherent_programming/acsdoc.rb $(ACSDOCOPTIONS)
+
 all:  $(alldepends)
 $(TARGET).ps.gz: $(TARGET).dvi
 	dvips -o $(TARGET).ps $(TARGET)
@@ -22,21 +24,21 @@ $(TARGET).dvi: $(TARGET).tex
 	latex $(TARGET)
 $(TARGET).tex: doc $(SRC) .acsdocinitrc
 	cat $(SRC) > $(TARGET).cp
-	ruby ../../../src/coherent_programming/acsdoc.rb --tolatex $(TARGET).cp
+	$(ACSDOC) --tolatex $(TARGET).cp
 doc : $(SRC) .acsdocinitrc 
-	ruby ../../../src/coherent_programming/acsdoc.rb  $(SRC) *.rb
+	$(ACSDOC)  $(SRC) *.rb
 	touch doc
 
 clean : 
-	-rm -r doc .imgs
+	-rm -r doc .imgs .acsdoc.commandoutdir
 	-rm .[a-z]*\.rb[-+]* .[a-z]*\.rb .acsdoc.command-* 
 	-rm $(TARGET).tex $(TARGET).aux $(TARGET).cp $(TARGET).dvi \
 	    $(TARGET).log $(TARGET).ps $(TARGET).toc
 	-rm tmp.tex tmp.aux tmp.dvi tmp.log tmp.ps tmp.toc tmp.jpeg*
 
 %.tex : %.ok
-	ruby ../../../src/coherent_programming/acsdoc.rb  $< *.rb
-	ruby ../../../src/coherent_programming/acsdoc.rb --tolatex  $<
+	$(ACSDOC)  $< *.rb
+	$(ACSDOC)  --tolatex  $<
 %.dvi : %.tex
 	latex  $< 
 	latex  $< 

@@ -165,7 +165,7 @@ system "(echo -n Date: ;date) >> #{releasefile}"
 system "(echo -n Person: ;whoami) >> #{releasefile}"
 open(releasefile,"a"){|f| f.print "Release: #{newversion}\n"}
 
-sendcommand="rsync -e ssh -avprog versions #{installuname}@#{installhost}:#{installdir}"
+sendcommand="rsync -e ssh -avprog #{storedir} #{installuname}@#{installhost}:#{installdir}"
 extractcommand="ssh -l #{installuname} #{installhost} \"cd #{installdir} ; tar xzf #{tarfilename}\""
 
 STDERR.print <<END
