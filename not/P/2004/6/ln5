@@ -1,0 +1,10 @@
+2004, June 5, Saturday, Kyoto: Piet
+
+I created a new directory, kali/vol/vol-11, for volume 11 with as title:
+<i>Plummer's Model</i>.  I plan to write the following contents:
+
+* an analytic derivation of the main expressions related to Plummer's model;
+
+* several versions of the code, including com adjustment, quiet start, etc.
+
+* diagnostic tools, such as energy check and Lagrangian quartiles check.
