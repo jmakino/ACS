@@ -41,6 +41,9 @@ environment for modeling dense stellar systems.  Where shall we start?
 just consider all stars to be point masses, and model their gravitational
 interactions.
 
+<b>[Piet, this is too far from the truce, or from what any experts
+would possibly  say -- JM]</b>
+
 *A*: Fine.  I guess this means we'll have to write a code to model the
 gravitational N-body problem.  And for that, we may as well start with
 the central engine: the integrator that provides numerical solutions

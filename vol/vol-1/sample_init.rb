@@ -5,7 +5,7 @@
 #* a file <i>triple.in</i> is created with the initial conditions for a
 #  triple in a figure-8 orbit
 
- # Jun, where shall we put this next line, in "body.rb" perhaps??
+# Jun, where shall we put this next line, in "body.rb" perhaps??
 
 include Math
 
