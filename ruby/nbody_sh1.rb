@@ -4,6 +4,10 @@
 #
 #==============================================================================
 
+#require 'profile'
+
+include Math
+
 class Body
 
   NDIM = 3
@@ -13,8 +17,8 @@ class Body
 
   def initialize(mass = 0, pos = [0,0,0], vel = [0,0,0])
     @mass, @pos, @vel = mass, pos, vel
-    @old_pos, @old_vel = [0, 0, 0], [0, 0, 0]   # necessary to give the correct
-    @old_acc, @old_jerk = [0, 0, 0], [0, 0, 0]  # type to old_something ???
+    @old_pos, @old_vel = [], []   # necessary to give the correct
+    @old_acc, @old_jerk = [], []  # type to old_something
   end
 
   def to_s
@@ -49,6 +53,7 @@ class Body
   def simple_read
     s = gets
     a = s.split
+    a.collect! { |x| x.to_f }
     @mass = a[0]
     @pos = a[1..NDIM]
     @vel = a[(NDIM+1)..(NDIM*2)]
@@ -94,12 +99,12 @@ class Body
   end
 
   def get_collision_time
-    Math.sqrt(Math.sqrt(@@coll_time_q))
+    sqrt(sqrt(@@coll_time_q))
   end
 
   def add_kin
     for k in 0...NDIM
-      @@ekin += 0.5 * @mass.to_f * @vel[k].to_f * @vel[k].to_f
+      @@ekin += 0.5 * @mass * @vel[k] * @vel[k]
     end
   end
 
@@ -114,21 +119,21 @@ class Body
 
   def predict_step(dt)
     for k in 0...NDIM
-      self.pos[k] = self.pos[k].to_f + self.vel[k].to_f*dt +
-	            self.acc[k].to_f*dt*dt/2 + self.jerk[k].to_f*dt*dt*dt/6
-      self.vel[k] = self.vel[k].to_f + self.acc[k].to_f*dt +
-	            self.jerk[k].to_f*dt*dt/2
+      @pos[k] = @pos[k] + @vel[k]*dt +
+	            @acc[k]*dt*dt/2 + @jerk[k]*dt*dt*dt/6
+      @vel[k] = @vel[k] + @acc[k]*dt +
+	            @jerk[k]*dt*dt/2
     end
   end
 
   def correct_step(dt)
     for k in 0...NDIM
-      self.vel[k] = self.old_vel[k].to_f +
-	            (self.old_acc[k].to_f + self.acc[k].to_f)*dt/2 +
-	            (self.old_jerk[k].to_f - self.jerk[k].to_f)*dt*dt/12
-      self.pos[k] = self.old_pos[k].to_f + 
-                    (self.old_vel[k].to_f + self.vel[k].to_f)*dt/2 +
-	            (self.old_acc[k].to_f - self.acc[k].to_f)*dt*dt/12
+      @vel[k] = @old_vel[k] +
+	            (@old_acc[k] + @acc[k])*dt/2 +
+	            (@old_jerk[k] - @jerk[k])*dt*dt/12
+      @pos[k] = @old_pos[k] + 
+                    (@old_vel[k] + @vel[k])*dt/2 +
+	            (@old_acc[k] - @acc[k])*dt*dt/12
     end
   end
 
@@ -136,8 +141,8 @@ class Body
     rji = Array.new(NDIM)
     vji = Array.new(NDIM)
     for k in 0...NDIM
-      rji[k] = other.pos[k].to_f - self.pos[k].to_f
-      vji[k] = other.vel[k].to_f - self.vel[k].to_f
+      rji[k] = other.pos[k] - @pos[k]
+      vji[k] = other.vel[k] - @vel[k]
     end
     r2 = v2 = rv_r2 = 0.0
     for k in 0...NDIM
@@ -146,10 +151,10 @@ class Body
       rv_r2 += rji[k] * vji[k]
     end
     rv_r2 = rv_r2 / r2
-    r = Math.sqrt(r2)
+    r = sqrt(r2)
     r3 = r * r2
 
-    @@epot -= self.mass.to_f * other.mass.to_f / r
+    @@epot -= @mass * other.mass / r
 
     da = Array.new(NDIM)
     dj = Array.new(NDIM)
@@ -158,10 +163,10 @@ class Body
       dj[k] = (vji[k] - 3 * rv_r2 * rji[k]) / r3
     end
     for k in 0...NDIM
-      self.acc[k] += other.mass.to_f * da[k]
-      other.acc[k] -= self.mass.to_f * da[k]
-      self.jerk[k] += other.mass.to_f * dj[k]
-      other.jerk[k] -= self.mass.to_f * dj[k]
+      @acc[k] += other.mass * da[k]
+      other.acc[k] -= @mass * da[k]
+      @jerk[k] += other.mass * dj[k]
+      other.jerk[k] -= @mass * dj[k]
     end
 
     coll_est_q = (r2*r2) / (v2*v2)
@@ -172,7 +177,7 @@ class Body
     for k in 0...NDIM
       da2 += da[k] * da[k]
     end
-    mij = self.mass.to_f + other.mass.to_f
+    mij = @mass + other.mass
     da2 = da2 * mij * mij
     coll_est_q = r2/da2;
     if @@coll_time_q > coll_est_q
@@ -186,7 +191,10 @@ def get_snapshot
   n = s.to_i
   s = gets
   nb = [Body.new]
-  nb[0].set_time(s.to_f)
+  nb[0].set_time(s.to_f)   # type set here; in principle it could be
+                           # single, double, or quadruple precision,
+                           # and it is better to keep the cllas definitions
+                           # the same in all cases
   i = 0
   while i < n
     nb[i] = Body.new
@@ -399,6 +407,4 @@ evolve(nb, dt_param, dt_dia, dt_out, dt_tot, init_out, x_flag)
 #b.pp
 #b.simple_print
 #b = Body.new
-#b.simple_read
 #b.pp
-#b.simple_print
