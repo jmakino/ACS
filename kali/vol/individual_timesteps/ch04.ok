@@ -124,3 +124,19 @@ our classes +World+, +WorldSnapshot+, +WorldEra+, +WorldLine+, and
 
 == xxxx
 
+ :commandoutput: mkplummer.rb -n 5 -s 1 | acsnumber.rb > test.in
+
+ :commandoutput: nbody_ind1.rb -t 1 -d 0.001 < test.in > tmpi.out
+
+ :commandoutput: world1.rb -t 1 -c 0.001 < test.in > tmpw.out
+
+ :commandoutput: cat tmpi.out tmpw.out | newacsdiff.rb
+
+Too good to be true?
+
+ :commandoutput: nbody_ind1.rb -t 1 -d 0.01 < test.in > tmpi.out
+
+ :commandoutput: world1.rb -t 1 -c 0.01 < test.in > tmpw.out
+
+ :commandoutput: cat tmpi.out tmpw.out | newacsdiff.rb
+
