@@ -12,31 +12,27 @@ class Body
     @story = []
   end
 
-  def real_to_s(name, value, precision, indentation)
+  def f_to_s(name, value, precision, indentation)  # from floating-point number
     " " * indentation +
-      name + " = " + sprintf(" %#{precision}.#{precision-8}e\n", value)
+      name + " = " + sprintf(" %#{precision+8}.#{precision}e\n", value)
   end
 
-  def vector_to_s(name, value, precision, indentation)
+  def f_v_to_s(name, value, precision, indentation)   # from floating-pt vector
     " " * indentation + name + " = " + 
-      value.map{|x| sprintf(" %#{precision}.#{precision-8}e", x)}.join + "\n"
+      value.map{|x| sprintf(" %#{precision+8}.#{precision}e", x)}.join + "\n"
   end
 
-  def to_s(precision = 24, base_indentation = 0, additional_indentation = 2)
-    if @type
-      subtag = " "+@type
-    else
-      subtag = ""
-    end
+  def to_s(precision = 16, base_indentation = 0, additional_indentation = 2)
+    subtag = if @type then " "+@type else "" end
     indent = base_indentation + additional_indentation
     " " * base_indentation + "begin " + TAG + subtag + "\n" +
-      real_to_s("mass", mass, precision, indent) +
-      vector_to_s("position", pos, precision, indent) +
-      vector_to_s("velocity", vel, precision, indent) +
+      f_to_s("mass", mass, precision, indent) +
+      f_v_to_s("position", pos, precision, indent) +
+      f_v_to_s("velocity", vel, precision, indent) +
       " " * base_indentation + "end" + "\n"
   end
 
-  def write(file = $stdout, precision = 24,
+  def write(file = $stdout, precision = 16,
             base_indentation = 0, additional_indentation = 2)
     file.print to_s(precision, base_indentation, additional_indentation)
   end
@@ -54,11 +50,11 @@ class Body
       name = s.split[0]
       case name
         when /^mass/
-          @mass = read_real(s)
+          @mass = s_to_f(s)
         when /^position/
-          @pos = read_vector(s)
+          @pos = s_to_f_v(s)
         when /^velocity/
-          @vel = read_vector(s)
+          @vel = s_to_f_v(s)
         when "begin"
           subread(file, s)
         when "end"
@@ -72,16 +68,16 @@ class Body
   def subread
   end
 
-  def read_real(s)
+  def s_to_f(s)                               # string to floating-point number
     s.split("=")[1].to_f
   end
 
-  def read_vector(s)
+  def s_to_f_v(s)                             # string to floating-point vector
     s.split("=")[1].split.map{|x| x.to_f}.to_v
   end
 
 end
 
-c = Body.new
-c.read("begin particle star giant AGB")
-c.write
+#c = Body.new
+#c.read("begin particle star giant AGB")
+#c.write

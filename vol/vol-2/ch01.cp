@@ -99,7 +99,7 @@ have something a bit more user friendly to work with.
 tree structure, like XML, by providing opening and closing tags.
 
 *Bob*: That would make sense.  The first thing I would vote for, is to
-leave out the full <tt><\something></tt> description after a
+leave out the full <tt></something></tt> description after a
 <tt><something></tt> opening, since that is certainly unnecessarily
 tedious.  And we can always automatically reconstruct the full ending
 tags, when we translate into XML.
