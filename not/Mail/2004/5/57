@@ -1,0 +1,25 @@
+Date: Tue May 04 00:26:18 JST 2004
+
+From: Piet Hut <piet@ias.edu>
+
+Jun:
+
+ > I added some more functionalities to acsdoc.rb.
+
+Thanks a lot!  Very nice to make equation writing more simple that way.
+And especially having equation numbers and figure numbers is great!
+
+ > I'm sure you'll find problems and bugs. So if you have time to try,
+ > try it and let me know what problems you see.
+
+I'll try to do so soon!
+
+By the way, would it be easy to allow an include file to appear
+somewhere with a collection of useful ACS Latex macros (like we had
+in gravitylab/books/vol_1/def.tex) ?
+
+Thanks!
+
+Piet
+
+
