@@ -1,0 +1,79 @@
+= xx
+
+== Testing
+
+*Bob*: And now it is time for Alice to say that it is time to test
+our codes, to see whether they still all give the same output.
+
+*Alice*: Let it be said.
+
+*Bob*: Three particles should be enough to check:
+
+ :commandoutput: ruby mkplummer.rb -n 3 -s 33 > plum3.in
+
+We'll first run the old version:
+
+ :commandoutput: time ruby nb1.rb -t1 -d0.01 -s0.1 < plum3.in
+
+Here is my newer and hopefully faster version:
+
+ :commandoutput: time ruby nb2.rb -t1 -d0.01 -s0.1 < plum3.in
+
+That looks good, no real changes here.  And yes, it is faster, but
+not by as much as I had hoped.  
+
+Here is your prettified brevity-rules version:
+
+ :commandoutput: time ruby nb3.rb -t1 -d0.01 -s0.1  < plum3.in
+
+*Alice*: Also no surprises.  Good!  The same results in all three cases.
+I'm happy.
+
+== Little Speedup, So Far
+
+*Bob*: But I'm not happy about the small speedup.  Maybe having three
+particles is too small a number.  Let's revisit the one time step that
+we did with 256 particles.  Or better both one and two time steps,
+given that the first time step had some extra overhead.
+
+With the earlier version we had:
+
+ :commandoutput: (time ruby nb1.rb -t0.01 -d0.01 -e0.01 -s0.1 -o2 < plum256.in) |& tail -2
+
+and
+
+ :commandoutput: (time ruby nb1.rb -t0.02 -d0.01 -e0.01 -s0.1 -o2 < plum256.in) |& tail -2
+
+With our latest prettified version we have
+
+ :commandoutput: (time ruby nb3.rb -t0.01 -d0.01 -e0.01 -s0.1 -o2 < plum256.in) |& tail -2
+
+and
+
+ :commandoutput: (time ruby nb3.rb -t0.02 -d0.01 -e0.01 -s0.1 -o2 < plum256.in) |& tail -2
+
+*Alice*: xxx
+
+== xxx
+
+ require "profile"
+
+at the top of a file gives profiling information when you run the file.
+
+ :commandoutput: time ruby nb3p.rb -t1 -d0.01 -s0.1  < plum.in
+
+Hey, this and that.
+
+Now all three:
+
+ :commandoutput: (ruby nb1p.rb -t1 -d0.01 -s0.1 < plum.in) | & head -25 | & tail -10
+
+and
+
+ (ruby nb2p.rb -t1 -d0.01 -s0.1 < plum.in) | & head -25 | & tail -10
+
+and
+
+ (ruby nb3p.rb -t1 -d0.01 -s0.1 < plum.in) | & head -25 | & tail -10
+
+so far.

@@ -7,11 +7,15 @@
 	
 <tex>
 
-\title{\bf The Art of Computational Science\\
+\title{{\sl The Art of Computational Science}\\
 \bigskip
-The Kali Code\\
-\medskip
- 15. Binary Formation
+{\sl The Kali Code}\\
+\bigskip
+\bigskip
+\bigskip
+\bf 5. The N-Body Problem:\\
+\bigskip
+Softening, Yoshida, Hermite, Aarseth
 }
 \author{\bf Piet Hut and Jun Makino}
 

@@ -2,7 +2,7 @@ require "vector.rb"
 
 class Body
 
-  attr_accessor :mass, :pos, :vel, :acc
+  attr_accessor :mass, :pos, :vel, :acc                                      #1
 
   def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
     @mass, @pos, @vel = mass, pos, vel
@@ -83,8 +83,8 @@ class Nbody
 
   def evolve(integration_method, eps, dt, dt_dia, dt_out, dt_end,
              init_out, x_flag)
-    @dt = dt                                                                 #1
-    @eps = eps                                                               #1
+    @dt = dt
+    @eps = eps
     nsteps = 0
     e_init
     write_diagnostics(nsteps, x_flag)

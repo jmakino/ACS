@@ -1,6 +1,6 @@
 = Tuning Ruby
 
-== xxx
+== Pairing Pairwise Calculations
 
 *Bob*: Before we start adding pieces of C code to our Ruby code, let us
 first see whether we can improve the speed of our N-body code purely
@@ -26,10 +26,10 @@ acceleration from particle _i_ on particle _j_:
 \ba_j(r_j, r_i) \,=\, G\, {m_i \over \left|\br_i - \br_j\right|^3}
 \left(\br_i - \br_j\right)
 
-Subtracting the two vectors, and determining the third power of
-the magnitude of the difference is what takes most of the computer
-time.  The minus sign and the different mass multiplication factor
-is peanuts, in comparison.
+Subtracting the two position vectors, and determining the third power
+of the magnitude of the difference is what takes most of the computer
+time.  The minus sign and the different mass multiplication factor is
+peanuts, in comparison.
 
 *Alice*: So you suggest rewriting our N-body code in such a way as
 to allow both calculations to be done simultaneously.
@@ -50,35 +50,401 @@ prettiness, however you may want to define that.
 
 *Alice*: Fair enough.
 
+== A Need for Library Structure
 
-Now new code version:
+*Bob*: I'll try to be careful with giving names to directories and files.
+I must admit, I'm getting a bit confused with all the different versions
+of N-body codes we now have lying around.
 
- :commandoutput: time ruby nb2.rb -t1 -d0.01 -s0.1 < plum.in
+*Alice*: We should soon decide upon a library structure, where we can
+store those versions we are really happy with.
 
-Compare with previous version
+*Bob*: Yes.  Now that we have a rather versatile N-body code, a general
+command line argument interpreter, and a generator for Plummer's model
+realizations, we are beginning to put together a real N-body toolbox.
 
- :commandoutput: time ruby nb1.rb -t1 -d0.01 -s0.1  < plum.in
+Well, one thing at a time.  It is crucial that we get good speed out
+of Ruby first.  And in order to keep track of our N-body versions,
+here is the file with the definitons of the +Body+ and +Nbody+ classes,
+which we called <tt>rknbody.rb</tt>, after we had finished our command
+line interpreter, in a directory I called <tt>vol-4</tt>.  Our Plummer's
+model building versions live in directory <tt>vol-5</tt>, so let me put
+a copy of <tt>vol-4/rknbody.rb</tt> in the current directory <tt>vol-6</tt>,
+and let me call it <tt>nbody1.rb</tt>, for short, with the <tt>1</tt>
+indicating that we'll probably make a few different versions, for our
+various attempts at speedup.
 
-and following version:
+Similarly, let me copy the driver from <tt>vol-4/rkn2.rb</tt> to the
+current directory, and call it <tt>vol-6/nb1.rb</tt>, with the one
+difference of course that the first line is no longer
 
- :commandoutput: time ruby nb3.rb -t1 -d0.01 -s0.1  < plum.in
+  require "rknbody.rb"
 
-== xxx
+but
 
-Adding the line
+  require "nbody1.rb"
 
- require "profile"
+since we just changed the name of that file, even though the contents
+are exactly the same.
 
-at the top of a file gives profiling information when you run the file.
+*Alice*: You'd better keep some good notes!  It is high time not only
+for making a good library structure, but also for organizing our notes.
+How are we ever going to present this to our students otherwise?
 
- :commandoutput: time ruby nb3p.rb -t1 -d0.01 -s0.1  < plum.in
+*Bob*: Yes, and we were going to define a good data format, remember, and
+there is graphics, something we talked about many times, but never got
+around too.  People have no idea how much work it is to build a good
+foundation for a software project.  They think that an N-body code is
+just integrating Newton's equations of motion, well, how complex can
+that bed.
 
-Hey, this and that.
+*Alice*: An understandable misunderstanding.  Well, let's hope we can get
+that misunderstanding out of the way, when we get our act together.
 
-Now all three:
+*Bob*: And no act without speedup.  Here we go!  I'm copying
+<tt>nbody1.rb</tt> now to <tt>nbody2.rb</tt>, and in parallel I'm copying 
+<tt>nb1.rb</tt> to <tt>nb2.rb</tt>, with one distinction . . . 
 
- :commandoutput: (ruby nb1p.rb -t1 -d0.01 -s0.1 < plum.in) | & head -25 | & tail -10
+*Alice*: . . . again the first line.
 
- :commandoutput: (ruby nb2p.rb -t1 -d0.01 -s0.1 < plum.in) | & head -25 | & tail -10
+*Bob*: Yes: instead of
 
- :commandoutput: (ruby nb3p.rb -t1 -d0.01 -s0.1 < plum.in) | & head -25 | & tail -10
+  require "nbody1.rb"
+
+in <tt>nb1.rb</tt>, it now reads
+
+  require "nbody2.rb"
+
+<tt>nb2.rb</tt>.  I agree, there ought to be a better way.  And I'm sure
+there is.  But first: speed!
+
+*Alice*: No stopping you at this point!
+
+*Bob*: I hope not.  Give me a few minutes, and let me see how I can implement
+a more economic pairwise acceleration calculation.
+
+== From +Body+ to +Nbody+
+
+*Alice*: Hi Bob!  How's your economic progress?
+
+*Bob*: Fairly well, I think I just got it working.  After scratching my head
+for a bit, I realized that I had to move the method +acc+, to calculate the
+acceleration between particles, from the +Body+ to the +Nbody+ class.
+
+*Alice*: That's interesting, and a big change.  But now that you mention it,
+yes, of course: a single body can only care about it's own business.
+It can calculate its own acceleration, but it wouldn't be able to help others.
+
+*Bob*: Unless it had double pointers.  Remember my first attempt at writing
+an N-body code, way back after we had finished playing with our 2-body version?
+You didn't like my backward pointers, but they would have enabled one particle
+to talk directly to another particle.
+
+*Alice*: Directly, you say?  You mean by pointing back to the parent +Nbody+
+class instance, and from ther to another particle, crossing boundaries twice!
+If you can that direct, that you may as well flatten the whole organization
+of the code into one big fat pancake . . .
+
+*Bob*: . . . how can the pancake be fat and flat?
+
+*Alice*: At partial _attempt_ at flattening can still look wobbly and fat.
+But my point is: such an approach would go against any attempt at modularity.
+
+*Bob*: Okay, okay, I wasn't proposing to go back to that idea.  For one thing,
+I didn't look forward to having to argue with you about double crossing
+pointers.
+
+*Alice*: So you decided to lift the acceleration calculation from the +Body+
+class to the +Nbody+ class.
+
+*Bob*: Yes.  I've called it <tt>nb_acc</tt> now, instead of +acc+,
+and it got a bit more complex, but not that much.  Let me show them
+side by side.  Here is the old <tt>Body#acc</tt>, a somewhat confusing
+Ruby notation meaning the +acc+ method belonging to the class +Body+,
+but we may as well get used to it, since it is in general use in the
+Ruby community.
+
+ :inccode: .nbody1.rb+acc
+
+And here is <tt>Nbody#nb_acc</tt>, my new variation:
+
+ :inccode: .nbody2.rb+nb_acc
+
+== Looping Options
+
+*Alice*: That's not much longer than what we had before.  I see that
+you start out by setting the acceleration to zero for each particle.
+This means that every body now has an instance variable <tt>@acc</tt>,
+on the same level as <tt>@pos</tt> and <tt>@vel</tt>, I take it?
+
+*Bob*: Yes, and before doing any acceleration calculation, each particle's
+<tt>@acc</tt> has to be set to zero, so that it can accumulate contributions.
+A particle cannot delay this action until it starts to calculate its own
+accelerations, since before doing so, it may already receive contributions
+from other particles, as side effects of _their_ calculations.
+
+*Alice*: Then you enter into a double loop over particles, something that you
+would normally code in an double for loop, using the traditional +i+ and +j+
+variables.
+
+*Bob*: Yes, just as in the C test program, where we used:
+
+    for (i = 0; i < n; i++)
+        for (j = i+1; j < n; j++)
+
+*Alice*: It's interesting to see the options that Ruby offers.  You could
+have used +for+ loops here too, of course.
+
+*Bob*: Yes, I could have used
+
+    for i in 0...@body.size
+      for j in i+1...@body.size
+
+instead of
+
+    @body.each_index do |i|
+      (i+1...@body.size).each do |j|
+
+I guess I'm growing fond of the +each+ method that lets Ruby do the
+counting, rather than having to worry explicitly about reminding myself
+and the computer how long an array is, where to stop, and whether or not
+to include the upper bound, using <tt>..</tt> notation, or leave that
+one out, using <tt>...</tt>.
+
+*Alice*: Remind me, what is the difference?
+
+*Bob*: <tt>1...3</tt> counts over <tt>1,2</tt> only, while
+<tt>1..3</tt> counts over <tt>1,2,3</tt>.  The more dots, the fewer points.
+I guess it the <tt>..</tt> notation was chosen first as the most obvious
+interpretation, and then <tt>...</tt> was added as a practical after thought,
+since it happens so often that we count through an array, starting at zero
+and taking N terms, which means that we have to count up to but
+excluding the Nth element.
+
+*Alice*: You could have avoided mentioning the size of the array by
+writing:
+
+    @body.each_index do |i|
+      @body.each_index do |j|
+        if j > i
+
+*Bob*: True, but since our aim is to speed up our calculations, I was
+afraid that would get unnecessary overhead.  Well, we can check later,
+when we do our timings.
+
+*Alice*: The rest of <tt>nb_acc</tt> is straightforward: after calculating
+the usual <tt>r</tt> vector and <tt>r3</tt> scalar values, you now get two
+accelerations for the price of one.  Can you show me what else you had to
+change in the program?
+
+== The +calc+ Methods
+
+*Bob*: I already mentioned the addition of an extra +Body+ variable:
+
+ :include: .nbody2.rb-1
+
+And the <tt>Body#calc</tt> method has simplified a lot.  It used to be:
+
+ :inccode: .nbody1.rb+calc+Body
+
+but in the new version it has become:
+
+ :inccode: .nbody2.rb+calc+Body
+
+The reason for this trimming down is that all the hard work of acceleration
+calculations are now done on the +Nbody+ level.  The only job left to do
+on the +Body+ level is to add, subtract terms containing
+<tt>@pos</tt> and <tt>@vel</tt> and <tt>@acc</tt>, and multiply those with
+coefficients and powers of the time step +dt+.
+
+Consequently, the <tt>Nbody#calc</tt> method got trimmed down as well.
+Instead of:
+
+ :inccode: .nbody1.rb+calc+Nbody
+
+we now have:
+
+ :inccode: .nbody2.rb+calc+Nbody
+
+== Integrators
+
+*Alice*: Can you show me how this affect a simple integrator, such as
+our forward Euler method?
+
+*Bob*: It used to be:
+
+ :inccode: .nbody1.rb+forward
+
+while now we have:
+
+ :inccode: .nbody2.rb+forward
+
+You see, the line containing the acceleration is now much simpler, and
+the whole expression is more homogeneous -- but of course you first have
+to give the instruction to do the global acceleration calculation, something
+that <tt>nb_acc</tt> takes care off.
+
+*Alice*: And the other methods are affected similarly.
+
+*Bob*: Yes, but with one exception.  The two Runge Kutta methods are
+changed the way would expect them to change.  Here is the second-order one:
+
+ :inccode: .nbody2.rb+rk2
+
+and here is the fourth-order version:
+
+ :inccode: .nbody2.rb+rk4
+
+== The Leapfrog
+
+The exception comes in with the +leapfrog+ method.  I could have made a
+similarly straightforward translation from the old version:
+
+ :inccode: .nbody1.rb+leapfrog
+
+But I did not like to ask the whole system to calculate all
+accelerations twice.  You see, at the end of each loop, we change only
+the velocity.  This means that the acceleration calculation at the
+beginning of the next step repeats exactly the same calculation as we
+already did at the end of the previous, since the acceleration is only
+dependent on the positions, not on the velocity.  If we are interested
+in speed-up, there is another potential factor of two in speed that we
+can gain.
+
+*Alice*: Let me try to remember, there must have been a reason that we
+wrote it that way in the first place.
+
+*Bob*: Yes, there was.  You can't skip the second call to +acc+, since
+otherwise <tt>@vel</tt> would not be properly updated at the end of the
+step.  But you can't skip the first call either, for two reasons.
+
+The first reason has to do with start-up.  When you take the very
+first step, there is no previous information yet, so you just _have_
+to calculate the acceleration at the beginning of the loop, in order
+to step the position forward.
+
+The second reason is connected with our previous approach of letting
+each particle calculate its own acceleration, whenever needed, without
+introducing extra variables unless we needed to do so.  That made sense,
+since we were aiming at clarity and brevity, rather than speed.  But now
+we have to reconsider those choices.
+
+If we were to speed up the old approach, we would have to do two things:
+acquire the initial acceleration in a special move at the start of an
+integration, and introduce an extra variable <tt>@old_acc</tt>.  However,
+in our new approach, where we determine the integration on the +Nbody+
+level for all particles at once, we already have the acceleration avaiable
+immediately after a call to <tt>nb_acc</tt>, for each particle in the
+variable <tt>@acc</tt>.  So the only thing left to do is to warm up the
+engine before getting into an integration loop.
+
+Here is how I implemented this:
+
+ :inccode: .nbody2.rb+leapfrog
+
+The flag <tt>init_flag</tt> tells you whether the acceleration variables
+<tt>@acc</tt> have to be initialized.  And that flag is set, you guessed
+it, in the initializer for the +Nbody+ system, since it is within the
++Nbody+ class that the +leapfrog+ method is used:
+
+ :inccode: .nbody2.rb+initialize+Nbody
+
+*Alice*: And in this way the initial <tt>nb_acc</tt> is invoked only
+one time.  That's a nice solution, which hardly complicates the
+algorithm.  And it is impressive that for the leapfrog we now have a
+factor four in speed-up, at least with respect to the calculation of
+pairwise gravitational attractions: we only visit each particle pair
+once, instead of twice; and apart from the first round, each time the
+frog leaps it calculations all accelarations only once.  Great!
+
+*Bob*: And that's it!  No further changes needed.
+
+*Alice*: You did not touch the calculation of the potential energy?
+That is the only other place where there are operations that scale with
+the square of the particle number.
+
+*Bob*: One thing at a time.  Normally we don't calculate the energy
+of the system at every time step, but only when we ask for a diagnostics
+output.  Even if we lose a factor of two or four there, it will really
+make no difference in the total speed.
+
+This may chance when we start using C modules.  If we really can get a
+speedup of a factor 100 there, we may well have to revisit the energy
+calculation too.  Even if we calculate the energy, say, once every
+thousand time steps, carelessness there could cost us a few tens of
+percent in total speed.
+
+== Brevity
+
+*Alice*: I have one more suggestion for a change.  Nothing to do with
+speedup, only with making things look prettier.  I bet you'll like it.
+
+*Bob*: What do you have in mind?
+
+*Alice*: Remember that you tried so hard to make the individual lines
+of the integrators look as simple as they did, back in the days that
+we were working on the two-body problem?  Well, now that you have
+brought the acceleration variables in line with the position and
+velocity variables, we can finally grant yuor wish!
+
+Let me try a bit of regular expression magic.  May I?
+
+*Bob*: Sure you may!  As you know, I _love_ brevity.  But let me call
+the new version <tt>nbody3.rb</tt>, to keep our versions separate.  Here
+is the keyboard.
+
+*Alice*: It is the <tt>Nbody#calc</tt> that I would like to make just
+a bit more smarter.  In your last version it looked like this:
+
+ :inccode: .nbody2.rb+calc+Nbody
+
+Are you ready for this?  Here is a +calc+ on steroids:
+
+ :inccode: .nbody3.rb+calc+Nbody
+
+*Bob*: Ah, good old regular expressions!  Let me see.  Everywhere in the
+string +s+ you do two global substitutions, using +gsub+.  First you take
+any substring that starts with a lower case letter, followed by an arbitrary
+number of alphanumeric characters -- the name of a variable, I take it.
+
+*Alice*: Precisely.
+
+*Bob*: Then you take that name, and you add a <tt>@</tt> symbol in front
+it in, because <tt>\&</tt> just echoes the previous match of what was
+found in between the parentheses there, namely the variable name.
+
+Ah, I get it!  You add all those annoying <tt>@</tt> signs that are
+needed to tell Ruby that we are dealing with instance variables.
+In that way we don't need to add those to the code of the integrators.
+Alice, you're a genius!
+
+*Alice*: maa, nee.
+
+*Bob*: What does that mean?
+
+*Alice*: Oh, I guess I didn't tell you that I started to take some
+Japanese classes, just for fun.  Occasionally I slip into classroom mode.
+Just ignore that.
+
+*Bob*: But then there is a second global substitution.  Why that?
+Let's see.  Wherever you encounter an expression <tt>@dt</tt>, you replace
+it by <tt>dt</tt>.  Ah, of course.  When you give _every_ variable an 
+<tt>@</tt> sign, it is all nice and well for <tt>pos</tt> to turn into
+<tt>@pos</tt>, and so on, but you will also turn <tt>dt</tt> into
+<tt>@dt</tt>, and that is too much of a good thing.  Got it!
+
+May I rewrite the integrators?  That will be fun!
+
+*Alice*: Go right ahead!
+
+*Bob*: Let's see, almost a global replace of <tt>@</tt> by nothing,
+except for the <tt>@init_flag</tt> in +leapfrog+, almost trimmed
+that one too, by mistake.  Ah, that looks wonderful.  Just look at
+the fourth-order Runge Kutta:
+
+ :inccode: .nbody3.rb+rk4
+
+What a beauty!
+
+*Alice*: Glad you like it!
+

@@ -5,7 +5,7 @@
 *Bob*: Yes, I would like to see the difference in raw speed between Ruby
 and C, for a few simple tasks.  How about this simple Ruby script:
 
- :inccode: test1.rb
+ :inccode: .test1.rb
 
 I will just let it do a million interations of some floating point
 calculations.
@@ -77,7 +77,7 @@ and other overhead.  Let's do the same thing through a function call.
 
 Here is the Ruby version:
 
- :inccode: test2.rb
+ :inccode: .test2.rb
 
 And here is the C version:
 
@@ -117,7 +117,7 @@ of which has at least one of our +Vector+ vectors, and then do some
 kind of +Vector+ operation.  How about this, inspired by the first
 step in a real pairwise gravity calculation:
 
- :inccode: test3.rb
+ :inccode: .test3.rb
 
 *Alice*: Good idea.  You are writing in the number of particles,
 before giving each a three-dimensional vector with some components
