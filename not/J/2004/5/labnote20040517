@@ -1,0 +1,32 @@
+= More changes to acsdoc.
+
+ What I did: convert "^" and "\" to "$\hat{\ }" and $\backslash" etc.
+
+This would allow us to write these symbols in normal, justified text.
+For codes ("verbatim" part), they are allowed by latex itself.
+
+A tricky problem is how we handle inequality signs, namely
+
+  < and >
+
+In typewriter  font (and perhaps therefore in verbatim mode),
+
+One bug fixed : decreasing indent for verbatim
+
+One bug created: In itemized or enumerate mode, if one goes to
+verbatim, decreasing the indentation cannot make it back to the
+original mode. Need some change in the logic to go back to the
+original mode.
+
+Table of content: where to put it?
+
+One possibility: If a title page file (title.cp) is there, put it at
+the last.
+
+But clearly not all documents contain title.cp. In fact, in standard
+usage you might have just a single file.
+
+The other possibility: the : tableofcontent : directive is used to
+insert it, to whatever file you like.
+
+This directive itself is already there. 

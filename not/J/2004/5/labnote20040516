@@ -1,0 +1,6 @@
+== subtle problems with acsdoc
+
+* names with two underscores is translated in a strange way
+
+* should have one less blank space after verbatim
+
