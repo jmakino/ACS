@@ -1,6 +1,58 @@
 = TODO for acs
 
-Time-stamp: <2005-01-09 12:41:37 piet>
+Time-stamp: <2005-02-18 11:00:17 piet>
+
+* code management
+
+  -- Jun's new start at implementation (Jun's mail, 15 Feb '05)
+
+  -- shall we install a systematic set of test suites everywhere?
+
+* links between volumes
+
+  -- implement Jun's suggestion (Jun's mail, 07 Feb '05)
+
+* History mechanism
+
+  -- implement Piet's suggestion (Jun's mail, 07 Feb '05) + svn version number
+
+  -- do we need to implement a special story mechanism?
+
+* Wiki
+
+  -- create a framework for students to show their codes
+
+* speed-up
+
+  -- start with a simple version, or directly with world4.rb?
+
+* graphics
+
+  -- make Jun's Ruby OpenGL package easy to install, describe it, use it
+
+  -- implement a type of "tdyn" for interface with Hans-Peter Bischof
+
+* worldx.rb
+
+  -- clean up the Integrator_pec_mode, predictor, etc (Jun's mail, 02 Feb '05)
+
+  -- era: interface, not class; garbage collection of worldline's worldpoints
+
+  -- I/O should output integrator info: clop to echo default values
+
+  -- control structures for dt_dia and dt_out
+
+  -- design timestep caculator based on predictor-corrector difference
+
+  -- more R-K; general order Hermite; collocation; Richardson extrapolation
+
+* new volumes
+
+  -- how about the start of the new volume 0b ?
+
+  -- how to present the Runge-Kutta survey in volume 1c?
+
+PREVIOUS NOTES, from 2005-01-09:
 
 * get kali1.rb working for N=128 particles:
 
@@ -16,7 +68,7 @@ Time-stamp: <2005-01-09 12:41:37 piet>
 
   -- start thinking about implementing a perturber implementation
 
-PREVIOUS NOTES, from 2004-06-17:
+PREVIOUS PREVIOUS NOTES, from 2004-06-17:
 
 * in volume 2
 
