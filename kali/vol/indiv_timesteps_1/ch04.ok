@@ -12,7 +12,7 @@ that we are not dealing with relativistic velocities?
 
 *Alice*: For one thing, a spacetime view puts our discussion of
 restarting a run from an output file in a clearer perspective.  If we
-create a new class +Worldline+ for each worldline, we can rename our
+create a new class +Worldline+ for each world line, we can rename our
 current class +Body+ to +Worldpoint+ and instead of +NBody+ we can
 talk about +World+, in order to point to the whole system.
 
@@ -22,7 +22,7 @@ top-level objects.  With a +Worldline+ class in between, we can
 separate many issues in a more fine-grained way.
 
 Look at it this way.  If you start in four dimensions, identities of
-objects are related to worldlines, while specific values of positions
+objects are related to world lines, while specific values of positions
 and velocities are related to worldpoints.  But as soon as you project
 that spacetime view into a single space view, you wind up with point
 particles that have position and velocity and identity, and these three
@@ -97,7 +97,7 @@ particles in this hierarchy.
 *Alice*: Good point.  The four world-related classes are all intrinsically
 temporal constructs.  We need a separate class for spatial information.
 This class should contain the results of taking a hypersurface cut through
-a bunch of worldlines.
+a bunch of world lines.
 
 *Bob*: You mean, the result of taking a snapshot of the system?
 

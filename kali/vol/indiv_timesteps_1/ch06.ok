@@ -5,7 +5,7 @@
 *Alice*: Although our new N-body code is written from an inherently
 four-dimensional perspective, we need to take three-dimensional slices
 in order to deal with input and output.  The +WorldSnapshot+ class allows
-us to do that, by taking a snapshot of all worldlines at a given point
+us to do that, by taking a snapshot of all world lines at a given point
 in time.  Here is the class code:
 
  :inccode:.world1.rb-WorldSnapshot
