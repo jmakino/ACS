@@ -34,8 +34,6 @@ particle, spans a unique plane.  The fact that the other particle
 moves in the (scaled) opposite way then implies that the other
 particle moves in the same plane as well.
 
-link:../vol/vol-1/twopfig2.gif
-
 *Bob*: Yes, even if you know the answer, it always requires some thinking
 to reconstruct the reason for the answer.  So because a two-body
 problem is inherently two-dimensional, we might as well start with
@@ -175,17 +173,21 @@ original time step of 0.01:
 
 For one time unit we got a position error of order of one percent, for
 a time step of 0.01.  For ten time units we may expect ten or twenty
-percent, I guess.  Let' see:
+percent, I guess.  But in order to get an estimate of our errors we
+have to do at least two runs, to compare.  So we'll do this run first,
+and then we'll do a run with much smaller time steps.  Here is the
+first run.
 
  :command: cp -f euler1d.rb test.rb
  :commandoutput: ruby test.rb < euler.in
  :command: rm -f test.rb
 
-*Alice*: Hmmm.  Quite a bit more than twenty percent, I'd say.  After
-you explained that the initial position was at apocenter, we should
-never encounter as situation where the particles are at a relative
-distance of more than unity.  And here we have a distance of more
-than 7, in fact almost a distance of ten units!
+*Alice*: Hmmm.  Whatever the second run will be, the error must be
+quite a bit more than twenty percent, I'd say.  After you explained
+that the initial position was at apocenter, we should never encounter
+as situation where the particles are at a relative distance of more
+than unity.  And here we have a distance of more than 7, in fact
+almost a distance of ten units!
 
 *Bob*: with expected errors of a few tens of percent it is easy to
 get into a nonlinear regime.  And come to think of it, our relative
@@ -257,7 +259,7 @@ This may take a while, ten times longer than the previous run!
 steps should take much less than a second.  There must be a huge
 efficiency factor involved.
 
-*Bob*: Perhaps not to surprising, given that Ruby is an interpreted
+*Bob*: Perhaps not too surprising, given that Ruby is an interpreted
 language.  And besides, the fact that it allows such short and
 powerful expression must mean that a lot is going on behind the
 scenes.  One of the books I looked at mentioned that almost everything

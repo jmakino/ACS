@@ -87,7 +87,7 @@ This can be visualized as a vector pointing from particle 1 to particle
 2, in other words with its head at the position of particle 2, and its
 tail at the position of particle 1.
 
-link:../vol/vol-1/twopfig.gif
+link:twopfig.gif
 
 Introducing <tex>$r = |{\bf r}_2 - {\bf r}_1|$</tex>, we then get:
 
@@ -146,7 +146,7 @@ to do now is to code it up.
 *Bob*: Shall we type the code in the same file <tt>test.rb</tt> where
 we put the +Body+ class?  We can still use the +Body+ format for our
 `relative' particle, as long as we remember that the mass of that
-partice corresponds to the sum of the masses of the original particle.
+particle corresponds to the sum of the masses of the original particle.
 
 *Alice*: We can certainly use the +Body+ class, but I suggest that we
 put the definition of the +Body+ class in a file <tt>body.rb</tt>, and
@@ -247,7 +247,7 @@ corresponding <tex>$z$</tex> component.
 To conclude the story, the forward Euler algorithm for the two-body
 problem can be summarized as follows.  Given the relative position and
 the relative velocity between the two particles at a given time
-<tex>$t_i$</tex>, first calculate the relative accelaration in terms
+<tex>$t_i$</tex>, first calculate the relative acceleration in terms
 of the relative position at <tex>$t_i$</tex>.  Then compute the new
 values for the relative positions at <tex>$t_{i+1}$</tex>, in terms of
 the relative positions and velocities at <tex>$t_{i}$</tex>.
@@ -273,7 +273,7 @@ to load +Math+ right at the beginning.
 
 *Alice*: Then you define the size of the time step and the number of
 steps you want to take.  That is a good idea, to introduce them as
-variables at the top of your program, instead of hardcoding them below
+variables at the top of your program, instead of hard coding them below
 inside the loops.  It will be much easier to change the values only
 once at the top, rather than having to inspect the whole program to see
 where the values might occur.
@@ -296,15 +296,15 @@ save time by writing it only once as a subroutine, and calling it from
 three places.  But that is the _least_ important reason to use functions
 or subroutines in a program.
 
-Much more important reasons are the issue of code maintainance.  If the
+Much more important reasons are the issue of code maintenance.  If the
 same piece of code occurs in more than one place, it becomes essentially
 impossible to maintain the code in a consistent way.  Change something
 in one place in someone's legacy code, and most likely you don't even
 know that it would have to be changed in the other place to.  Bugs
 appear, for no apparent reason, because you are _sure_ that you did
 the right thing; you just didn't know about the other place which now
-has become incompatible.  I bet that literally person-millennia have
-gone down the drain this way, during the last fifty years, chasing
+has become incompatible.  I bet that literally tens of person-millennia
+have gone down the drain this way, during the last fifty years, chasing
 those bugs.
 
 *Bob*: You mean more than 10,000 person-years?
@@ -332,7 +332,7 @@ would be all to easy to change the numerical value of one of them, and
 not the other.
 
 *Alice*: With the result of having the position and velocity stepping
-forwards in time at different speeds -- quite a nightmare, when you
+forward in time at different speeds -- quite a nightmare, when you
 want to debug it.  Most likely you will start your debugging on the
 assumption that you made a mistake in the physics of gravitational
 interaction, or in the mathematical equations, or in the way you solve

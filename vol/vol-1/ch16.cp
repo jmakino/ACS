@@ -10,7 +10,7 @@ components, remember?
 even on the code level?
 
 *Bob*: I think I do.  In a way, it is pure syntactic sugar, but then
-again, you may say that a compiler or intepretar is one giant heap of
+again, you may say that a compiler or interpreter is one giant heap of
 syntactic sugar on top of the machine language.  If it makes the code
 much easier to read, I'm happy with it.
 
@@ -46,7 +46,7 @@ another such collection.  The components can be apples and oranges.
 *Bob*: Yes.  Or numbers.  And the most sensible way to add those
 collections is to make one large ordered collection, in the order
 in which they were added.  Note that there is something interesting
-hore for a mathematician: addition suddenly has become noncommutative.
+here for a mathematician: addition suddenly has become noncommutative.
 
 *Alice*: I see what you mean.  Least surprise for most people.  How was
 that again, about striving for the largest happiness for the largest
@@ -354,7 +354,7 @@ into the file <tt>vector.rb</tt>.  Ahh, no, it is even easier!
 you know what?  I bet that was not necessary.  I got sidetracked, in
 the wrong direction.
 
-*Alice*: Sidetracking usually gets you in the wrong direction allright,
+*Alice*: Sidetracking usually gets you in the wrong direction all right,
 but what was it that was wrong?
 
 *Bob*: Ah, remember?  You said something about hearing me talking to
@@ -368,7 +368,7 @@ dynamically typed language that you can do that!
 
 So if I would have _really_ thought through what I was trying at the
 very start, while I was writing the +Vector+ class, I would have
-realized the cameleon behavior of Ruby variables.  The problem was
+realized the chameleon behavior of Ruby variables.  The problem was
 _not_ with switching color somewhere in the process, but the problem
 was to make sure that the right color was being returned at the end!
 Object oriented programming!  Epiphany!
@@ -453,7 +453,7 @@ was at MIT as a graduate student, I dropped in at the AI department
 quite frequently.  And everywhere I saw people coding together.  When
 I did a little project there, I also teamed up with one of my fellow
 students.  That was an eye opener for me, and ever since I have
-prefered to program together with someone else.  Besides, it is more
+preferred to program together with someone else.  Besides, it is more
 fun too!
 
 *Bob*: You're right.  Apart from my total annoyance at first with that

@@ -71,11 +71,9 @@ to have a general command "+p+" for printing the contents of any object.
 Let's see what that gives us:
 
     001:0> b1 = Body.new(0.1, [1.3, 0, 0], [0, 0.5, 0])
-    #<Body:0x400d11a4 @mass=0.1, @vel=[0, 0.5, 0], @pos=[1.3,
-      0, 0]>
+    #<Body:0x400d11a4 @mass=0.1, @vel=[0, 0.5, 0], @pos=[1.3,0, 0]>
     002:0> p b1
-    #<Body:0x400d11a4 @mass=0.1, @vel=[0, 0.5, 0], @pos=[1.3,
-       0, 0]>
+    #<Body:0x400d11a4 @mass=0.1, @vel=[0, 0.5, 0], @pos=[1.3, 0, 0]>
     nil
 
 *Alice*: I guess your +p+ command is effectively a dump command that
@@ -183,8 +181,7 @@ now, when we type +print+.
 
     |gravity> irb --prompt short_prompt -r body3.rb
     001:0> b1 = Body.new(0.1, [1.3, 0, 0], [0, 0.5, 0])
-    #<Body:0x400d0cf4 @mass=0.1, @vel=[0, 0.5, 0], @pos=[1.3,
-       0, 0]>
+    #<Body:0x400d0cf4 @mass=0.1, @vel=[0, 0.5, 0], @pos=[1.3, 0, 0]>
     002:0> print b1
       mass = 0.1
        pos = 1.300
@@ -214,8 +211,7 @@ I'll do the same exercise:
 
     |gravity> irb --prompt short_prompt -r body4.rb
     001:0> b1 = Body.new(0.1, [1.3, 0, 0], [0, 0.5, 0])
-    #<Body:0x400d0c7c @mass=0.1, @vel=[0, 0.5, 0], @pos=[1.3,
-       0, 0]>
+    #<Body:0x400d0c7c @mass=0.1, @vel=[0, 0.5, 0], @pos=[1.3, 0, 0]>
     002:0> print b1
       mass = 0.1
        pos = 1.3, 0, 0
@@ -284,8 +280,7 @@ are right.  That was very easy.  Let's check.
 
     |gravity> irb --prompt short_prompt -r body5.rb
     001:0> b1 = Body.new(0.1, [1.3, 0, 0], [0, 0.5, 0])
-    #<Body:0x400d0ad8 @mass=0.1, @vel=[0, 0.5, 0], @pos=[1.3,
-       0, 0]>
+    #<Body:0x400d0ad8 @mass=0.1, @vel=[0, 0.5, 0], @pos=[1.3, 0, 0]>
     002:0> b1.pp
       mass = 0.1
        pos = 1.3, 0, 0

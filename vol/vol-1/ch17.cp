@@ -196,7 +196,7 @@ string that +gets+ just returned, in the form of an array, and finally
 new array with the results.  And that last part is where the trouble
 arises: +map+ returns an array that is assigned to <tt>@pos</tt>.
 
-*Alice*: And poor <tt>@pos</tt>, Ruby cameleon that it is, instantly
+*Alice*: And poor <tt>@pos</tt>, Ruby chameleon that it is, instantly
 degrades into an array, forgetting its whole rich vectorness.  Of course.
 Well, when you get some more experience, debugging becomes a breeze,
 doesn't it?
@@ -233,7 +233,7 @@ square brackets, and pulling a +Vector+ spell on it?
 *Bob*: Another convenient Ruby trick.  It takes a while to learn all
 these tricks, but they sure are useful.  Here is what happened.  The
 <tt>*</tt> notation in front of an array effectively dissolves the
-outher <tt>[]</tt> brackets, turning an array into a comma separated
+outer <tt>[]</tt> brackets, turning an array into a comma separated
 list of its elements.
 
 *Alice*: Ah, and then you feed that list into the initializer of a new

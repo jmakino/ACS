@@ -52,7 +52,7 @@ not in binary form.
 
 *Alice*: Absolutely.  I am always happier when I can look into a file,
 and see the data there directly, without everything being incoded in
-some weird way.  Such incryptions are often machine dependent anyway, and
+some weird way.  Such encryptions are often machine dependent anyway, and
 ASCII characters are platform independent.
 
 But in that case, we'd better print everything out with enough digits.
@@ -125,9 +125,9 @@ ask an object to invoke one of its methods by putting a dot in between
 the object and a method.  And by implication this is what happens to
 the object returned by +gets+.
 
-*Alice*: The principle of minimal surprize all right.
+*Alice*: The principle of minimal surprise all right.
 
-*Bob*: As you can see in +simple_print+ I have choosen a data
+*Bob*: As you can see in +simple_print+ I have chosen a data
 format in which a single particle prints its mass, position, and velocity
 on three consecutive lines.  To be compatible, +simple_read+ should perform
 a separate +gets+ for <tt>@mass</tt>, for <tt>@mpos</tt>, and for
@@ -162,7 +162,7 @@ you even have freedom in spelling: <tt>a.indexes</tt> and
 freedom another friendly aspect of Ruby.
 
 *Alice*: The only drawback is that when you look at someone else's
-program, you might be suprised to see someone using unfamiliar
+program, you might be surprised to see someone using unfamiliar
 aliases.  However, I presume that you get used to that pretty quickly.
 
 What I am curious about is that you haven't specified anywhere that we
@@ -179,12 +179,12 @@ block of code you would loop over, containing expressions like
 <tt>pos[k]</tt> for the kth element of the position vector.  What a
 breeze this is, in comparison!
 
-== Tryting It Out
+== Trying It Out
 
 *Alice*: Remarkable.  Once you gain familiarity with those notions such
 as +gets+ and +split+ and +map+, it must become second nature to
 string a few together.  The result is a notation that is compact yet
-still imformative.  Can you show me that all this really works?
+still informative.  Can you show me that all this really works?
 
 *Bob*: Here is what I wrote in our test file
 <tt>test.rb</tt>, immediately following the +Body+ class definition:
@@ -193,7 +193,7 @@ still imformative.  Can you show me that all this really works?
 
 As you can see, I create a new blank Body, and I immediately perform
 an input.  This means that we have to put in the values by hand, on
-three consequtive lines, one for each internal variable.  The script
+three consecutive lines, one for each internal variable.  The script
 then performs an output, printing out the particle state.  Here is an
 example.
 
@@ -303,7 +303,7 @@ END
  :command: rm -f test.rb
 
 *Alice*: I'm shocked.  How can you do input in one line and output
-in one line for a whole particle, with a heterogenous data set?  Even
+in one line for a whole particle, with a heterogeneous data set?  Even
 writing down this question would take me more than one line of text!
 
 *Bob*: I must admit, I surprised myself.  But then again, you asked,

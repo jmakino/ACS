@@ -16,11 +16,9 @@ the name of the one method that we have defined in our +Body+ class.
 both!
 
     irb(main):012:0> b = Body.new
-    => #<Body:0x4008a1b0 @mass=0, @vel=[0, 0, 0], @pos=[0, 0,
-       0]>
+    => #<Body:0x4008a1b0 @mass=0, @vel=[0, 0, 0], @pos=[0, 0, 0]>
     irb(main):013:0> c = Body.initialize
-    NoMethodError: private method `initialize' called for Bod
-      y:Class
+    NoMethodError: private method `initialize' called for Body:Class
             from (irb):13
 
 *Alice*: I guess the writer of Ruby decided that typing +new+ is both
@@ -114,8 +112,7 @@ inspect the value that was echoed upon creation of a new body.  It
 looked quite complex.
 
     irb(main):012:0> b = Body.new
-    => #<Body:0x4008a1b0 @mass=0, @vel=[0, 0, 0], @pos=[0, 0,
-       0]>
+    => #<Body:0x4008a1b0 @mass=0, @vel=[0, 0, 0], @pos=[0, 0, 0]>
 
 I recognize the values of the mass, and the components of position and
 velocity, which are all zero by default.  But what is that hexadecimal
@@ -139,8 +136,7 @@ values 0.  At least that's what I read.
 *Alice*: easy enough to try:
 
     irb(main):014:0> c = Body.new(1)
-    => #<Body:0x401018b8 @mass=1, @vel=[0, 0, 0], @pos=[0, 0,
-       0]>
+    => #<Body:0x401018b8 @mass=1, @vel=[0, 0, 0], @pos=[0, 0, 0]>
 
 Good!  The mass is indeed 1, and this particle +c+ is distinct
 from our previous particle +b+, since it has a different +id+.
@@ -168,10 +164,8 @@ as I told you!
 I should have presented the positions and velocities as arrays.  That
 would indeed make 3 arguments in total, instead of 7.
 
-    irb(main):016:0> d = Body.new(1, [0.5, 0, 0], [0, 0.7, 0]
-      )
-    => #<Body:0x400df1f0 @mass=1, @vel=[0, 0.7, 0], @pos=[0.5
-      , 0, 0]>
+    irb(main):016:0> d = Body.new(1, [0.5, 0, 0], [0, 0.7, 0])
+    => #<Body:0x400df1f0 @mass=1, @vel=[0, 0.7, 0], @pos=[0.5, 0, 0]>
 
 So there.  It worked!
 
@@ -296,8 +290,7 @@ reading and writing:
     irb(main):033:0> d.mass = new_mass
     => 8
     irb(main):034:0> d
-    => #<Body:0x400df1f0 @mass=8, @vel=[0, 0.7, 0], @pos=[0.5
-      , 0, 0]>
+    => #<Body:0x400df1f0 @mass=8, @vel=[0, 0.7, 0], @pos=[0.5, 0, 0]>
 
 As it should be.  Now what about the position and velocity?
 
@@ -375,8 +368,7 @@ will be loaded when +irb+ starts up, as follows:
 
     |gravity> irb -r body2.rb
     irb(main):001:0> b = Body.new
-    => #<Body:0x400d4930 @pos=[0, 0, 0], @mass=0, @vel=[0, 0,
-       0]>
+    => #<Body:0x400d4930 @pos=[0, 0, 0], @mass=0, @vel=[0, 0, 0]>
     irb(main):002:0> b.mass
     => 0
 
@@ -392,8 +384,7 @@ that directly in a reader function, and presumably also in a writer:
     irb(main):004:0> b.pos[1] = 0.5
     => 0.5
     irb(main):005:0> b
-    => #<Body:0x400d4930 @pos=[0, 0.5, 0], @mass=0, @vel=[0, 
-      0, 0]>
+    => #<Body:0x400d4930 @pos=[0, 0.5, 0], @mass=0, @vel=[0, 0, 0]>
 
 As expected.  And an array index in Ruby obviously start with a 0,
 as in C and C++, rather than with a 1, as in Fortran.  <tt>b.pos[1]</tt>
@@ -406,8 +397,7 @@ thought you would type something like:
     irb(main):006:0> b.vel = [0.1, 0, 0]
     => [0.1, 0, 0]
     irb(main):007:0> b
-    => #<Body:0x400d4930 @pos=[0, 0.5, 0], @mass=0, @vel=[0.1
-      , 0, 0]>
+    => #<Body:0x400d4930 @pos=[0, 0.5, 0], @mass=0, @vel=[0.1, 0, 0]>
     irb(main):008:0> 
 
 which is an alternative but more clumsy way to change the element in
@@ -417,8 +407,7 @@ easier to use array notation:
     irb(main):008:0> b.vel = [1, 2, 3]
     => [1, 2, 3]
     irb(main):009:0> b
-    => #<Body:0x400d4930 @pos=[0, 0.5, 0], @mass=0, @vel=[1, 
-      2, 3]>
+    => #<Body:0x400d4930 @pos=[0, 0.5, 0], @mass=0, @vel=[1, 2, 3]>
 
 *Alice*: Yes, you read my mind.  I had understood that "<tt>b.pos =</tt>"
 is parsed by Ruby as an assignment operator "<tt>pos=</tt>"
