@@ -8,18 +8,19 @@ class Body
     @mass, @pos, @vel = mass, pos, vel
   end
 
-  def calc(body_array, time_step, s)
+  def calc(softening_parameter, body_array, time_step, s)
     ba  = body_array
     dt = time_step
+    eps = softening_parameter
     eval(s)
   end
 
-  def acc(body_array)
+  def acc(body_array, eps)
     a = @pos*0                              # null vector of the correct length
     body_array.each do |b|
       unless b == self
         r = b.pos - @pos
-        r2 = r*r
+        r2 = r*r + eps*eps
         r3 = r2*sqrt(r2)
         a += r*(b.mass/r3)
       end
@@ -27,16 +28,16 @@ class Body
     a
   end    
 
-  def ekin                        # kinetic energy
+  def ekin                         # kinetic energy
     0.5*@mass*(@vel*@vel)
   end
 
-  def epot(body_array)                  # potential energy
+  def epot(body_array, eps)        # potential energy
     p = 0
     body_array.each do |b|
       unless b == self
         r = b.pos - @pos
-        p += -@mass*b.mass/sqrt(r*r)
+        p += -@mass*b.mass/sqrt(r*r + eps*eps)
       end
     end
     p
@@ -48,8 +49,12 @@ class Body
     "   vel = " + @vel.join(", ") + "\n"
   end
 
-  def pp               # pretty print
+  def pp                           # pretty print
     print to_s
+  end
+
+  def ppx(body_array, eps)         # pretty print, with extra information (acc)
+    print to_s + "   acc = " + acc(body_array, eps).join(", ") + "\n"
   end
 
   def simple_print
@@ -78,21 +83,24 @@ class Nbody
     end
   end
 
-  def evolve(integration_method, dt, dt_dia, dt_out, dt_end)
+  def evolve(integration_method, eps, dt, dt_dia, dt_out, dt_end,
+             init_out, x_flag)
     nsteps = 0
-    e_init
-    write_diagnostics(nsteps)
+    e_init(eps)
+    write_diagnostics(eps, nsteps, x_flag)
     @dt = dt
     t_dia = dt_dia - 0.5*dt
     t_out = dt_out - 0.5*dt
     t_end = dt_end - 0.5*dt
 
+    simple_print if init_out
+
     while @time < t_end
-      send(integration_method)
+      send(integration_method, eps)
       @time += dt
       nsteps += 1
       if @time >= t_dia
-        write_diagnostics(nsteps)
+        write_diagnostics(eps, nsteps, x_flag)
         t_dia += dt_dia
       end
       if @time >= t_out
@@ -102,39 +110,39 @@ class Nbody
     end
   end
 
-  def calc(s)
-    @body.each{|b| b.calc(@body, @dt, s)}
+  def calc(eps, s)
+    @body.each{|b| b.calc(eps, @body, @dt, s)}
   end
 
-  def forward
-    calc(" @old_acc = acc(ba) ")
-    calc(" @pos += @vel*dt ")
-    calc(" @vel += @old_acc*dt ")
+  def forward(eps)
+    calc(eps, " @old_acc = acc(ba,eps) ")
+    calc(eps, " @pos += @vel*dt ")
+    calc(eps, " @vel += @old_acc*dt ")
   end
 
-  def leapfrog
-    calc(" @vel += acc(ba)*0.5*dt ")
-    calc(" @pos += @vel*dt ")
-    calc(" @vel += acc(ba)*0.5*dt ")
+  def leapfrog(eps)
+    calc(eps, " @vel += acc(ba,eps)*0.5*dt ")
+    calc(eps, " @pos += @vel*dt ")
+    calc(eps, " @vel += acc(ba,eps)*0.5*dt ")
   end
 
-  def rk2
-    calc(" @old_pos = @pos ")
-    calc(" @half_vel = @vel + acc(ba)*0.5*dt ")
-    calc(" @pos += @vel*0.5*dt ")
-    calc(" @vel += acc(ba)*dt ")
-    calc(" @pos = @old_pos + @half_vel*dt ")
+  def rk2(eps)
+    calc(eps, " @old_pos = @pos ")
+    calc(eps, " @half_vel = @vel + acc(ba,eps)*0.5*dt ")
+    calc(eps, " @pos += @vel*0.5*dt ")
+    calc(eps, " @vel += acc(ba,eps)*dt ")
+    calc(eps, " @pos = @old_pos + @half_vel*dt ")
   end
 
-  def rk4
-    calc(" @old_pos = @pos ")
-    calc(" @a0 = acc(ba) ")
-    calc(" @pos = @old_pos + @vel*0.5*dt + @a0*0.125*dt*dt ")
-    calc(" @a1 = acc(ba) ")
-    calc(" @pos = @old_pos + @vel*dt + @a1*0.5*dt*dt ")
-    calc(" @a2 = acc(ba) ")
-    calc(" @pos = @old_pos + @vel*dt + (@a0+@a1*2)*(1/6.0)*dt*dt ")
-    calc(" @vel += (@a0+@a1*4+@a2)*(1/6.0)*dt ")
+  def rk4(eps)
+    calc(eps, " @old_pos = @pos ")
+    calc(eps, " @a0 = acc(ba,eps) ")
+    calc(eps, " @pos = @old_pos + @vel*0.5*dt + @a0*0.125*dt*dt ")
+    calc(eps, " @a1 = acc(ba,eps) ")
+    calc(eps, " @pos = @old_pos + @vel*dt + @a1*0.5*dt*dt ")
+    calc(eps, " @a2 = acc(ba,eps) ")
+    calc(eps, " @pos = @old_pos + @vel*dt + (@a0+@a1*2)*(1/6.0)*dt*dt ")
+    calc(eps, " @vel += (@a0+@a1*4+@a2)*(1/6.0)*dt ")
   end
 
   def ekin                        # kinetic energy
@@ -143,32 +151,43 @@ class Nbody
     e
   end
 
-  def epot                        # potential energy
+  def epot(eps)                   # potential energy
     e = 0
-    @body.each{|b| e += b.epot(@body)}
+    @body.each{|b| e += b.epot(@body, eps)}
     e/2                           # pairwise potentials were counted twice
   end
 
-  def e_init                      # initial total energy
-    @e0 = ekin + epot
+  def e_init(eps)                 # initial total energy
+    @e0 = ekin + epot(eps)
   end
 
-  def write_diagnostics(nsteps)
-    etot = ekin + epot
+  def write_diagnostics(eps, nsteps, x_flag)
+    etot = ekin + epot(eps)
     STDERR.print <<END
 at time t = #{sprintf("%g", time)}, after #{nsteps} steps :
   E_kin = #{sprintf("%.3g", ekin)} ,\
- E_pot =  #{sprintf("%.3g", epot)},\
+ E_pot =  #{sprintf("%.3g", epot(eps))},\
  E_tot = #{sprintf("%.3g", etot)}
              E_tot - E_init = #{sprintf("%.3g", etot - @e0)}
   (E_tot - E_init) / E_init = #{sprintf("%.3g", (etot - @e0)/@e0 )}
 END
+    if x_flag
+      STDERR.print "  for debugging purposes, here is the internal data ",
+                   "representation:\n"
+      ppx(eps)
+    end
   end
 
-  def pp                                # pretty print
+  def pp                           # pretty print
     print "     N = ", @body.size, "\n"
     print "  time = ", @time, "\n"
     @body.each{|b| b.pp}
+  end
+
+  def ppx(eps)                     # pretty print, with extra information (acc)
+    print "     N = ", @body.size, "\n"
+    print "  time = ", @time, "\n"
+    @body.each{|b| b.ppx(@body, eps)}
   end
 
   def simple_print
@@ -276,5 +295,4 @@ include Math
 
 nb = Nbody.new
 nb.simple_read
-#nb.evolve(method, eps, dt, dt_dia, dt_out, dt_end, init_out, x_flag)
-nb.evolve(method, dt, dt_dia, dt_out, dt_end)
+nb.evolve(method, eps, dt, dt_dia, dt_out, dt_end, init_out, x_flag)

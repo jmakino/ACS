@@ -9,3 +9,14 @@
  :commandoutput: ruby rknbody.rb -h < figure8.in
 
  :commandoutput: ruby rknbody.rb -o 2.1088 -e 2.1088 -t 2.1088 < figure8.in
+
+ :commandoutput: ruby rknbody.rb -o 2.1088 -e 2.1088 -t 2.1088 -d 0.01 < figure8.in
+
+ :commandoutput: ruby rknbody.rb -o 2.1088 -e 2.1088 -t 2.1088 -d 0.1 < figure8.in
+
+ :commandoutput: ruby rknbody.rb -o 2.1088 -e 2.1088 -t 2.1088 -m rk2 < figure8.in
+
+ :commandoutput: ruby rknbody.rb -o 2.1088 -e 2.1088 -t 2.1088 -d 0.0001 -m rk2 < figure8.in
+
+ :commandoutput: ruby rknbody.rb -o 2.1088 -e 2.1088 -t 2.1088 < figure8.in
+
