@@ -1,8 +1,9 @@
-=README
+
+= README
 
 :tableofcontents:
 
-==Overview
+== Overview
 
 This is the readme file for the core of the cp system. The system
 itself is implemented as rather simple and minor modification of rdoc
@@ -202,3 +203,6 @@ something like:
    @@addtional_preambles_for_inline_tex = "\\usepackage{epsf}"
    @@addtional_commands_for_inline_tex = "\\input macros"
   
+This one allows the use of epsf package (style file), and macros.tex
+is included after \begin{document}.
+

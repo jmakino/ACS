@@ -51,12 +51,15 @@ module Rdoctotex
   @@imglinkcount = 0
   @@latexscalingforimage = 0.5
 
-  @@charstoescape =/(#)|(\{)|(\})|(\_)/
   @@charstotexmath =[
-    [/\\/,"$\\backslash$"],
+    [/\$/,"\\$"],
+    [/\\</,"$<$"],
+    [/\\>/,"$>$"],
+    [/\\([^\$])/,'$\\backslash$\1'],
     ["{","\\{"],
     ["}","\\}"],
     [/#/,"\\#"],
+    [/~/,"$\\sim$"],
     [/\_/,"\\_"],
     [/\^/,"$\\hat{\\ }$"]]
 
@@ -67,7 +70,6 @@ module Rdoctotex
   def escapetexspecialcharacters(instring)
     s = instring
     @@charstotexmath.each{|x| s=s.gsub(x[0],x[1])}
-#    s=s.gsub(@@charstoescape){|word| "\\"+word}
     s
   end
   
@@ -1049,11 +1051,16 @@ module Acsdoc
     end
   end
   
+@@toppagefilename= nil
   def navigation_string(prev,nex,filename)
     uppath = "../"* File.dirname(filename).split('/').size
     prevtext = "Previous"
     nexttext = "Next"
     toctext  = "ToC"
+    toptext  = ""
+    if @@toppagefilename
+      toptext = "<td> \n   <a href=#{uppath+@@toppagefilename}>Up</a>\n   </td>"
+    end
     prevtext = "<a href=#{uppath+prev}>Previous</a>" if prev    
     nexttext = "<a href=#{uppath+nex}>Next</a>" if nex
     toctext = "<a href=#{uppath+@@filefortoc[0]}#TOC>ToC</a>" if @@filefortoc[0]
@@ -1066,6 +1073,7 @@ module Acsdoc
   <td>
       #{toctext}
   </td>
+  #{toptext}
   <td>
       #{nexttext}
   </td>

@@ -82,4 +82,21 @@ Thus,
 would create the section "Preface", but without number, yet appearing
 in the table of content.
 
-   
+== tarball for the versioned ACS site
+
+The tarball should contain
+
+* ALL files archived in svn
+* ALL files under doc directories
+* Some of specified files, such as vol/vol-1/volume1.ps (if exists)
+  etc.
+
+Anything else?
+
+== acsdoc more changes:
+
+Pointer to the top level?
+
+  
+
+
