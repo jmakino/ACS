@@ -92,7 +92,7 @@ class Body
     @@epot
   end
 
-  VERY_LARGE_NUMBER = 1e300
+  VERY_LARGE_NUMBER = 1e100
 
   def reset_coll_time_q
     @@coll_time_q = VERY_LARGE_NUMBER
