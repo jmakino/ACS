@@ -2,9 +2,19 @@
 	
 = Preface
 
-== xxx
+The current version of this volume only contains an introduction of
+a N-body code with softening, and a simple application of a form of
+cold collapse.  Later in 2004, or early in 2005, we plan to finish
+this volume, by introducing some form of graphics, enough to let Alice
+and Bob realize that they have a lot of extra work to do, to provide
+the infrastructure necessary to run real N-body codes in a productive
+way.
+
+== Acknowledgments
 
 We thank xxx, xxx, and xxx for their comments on the
 manuscript.
 
 Piet Hut and Jun Makino
+
+Kyoto, July 2004
