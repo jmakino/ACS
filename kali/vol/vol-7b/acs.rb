@@ -15,29 +15,13 @@ class Object
   end
 end
 
-def min(a, b)
-  if a > b
-    return b
-  else
-    return a
-  end
-end
-
-def max(a, b)
-  if a < b
-    return b
-  else
-    return a
-  end
-end
-
 # for debugging, to see the value of a variable name:
 #
 #   acsp "some_name"
 #
 # will produce
 #
-#   some_name = {it's value}
+#   some_name = {its value}
 
 def acsp(s)
   STDERR.print s, " = ", eval(s), "\n"

@@ -1,3 +1,5 @@
+#!/usr/local/bin/ruby -w
+
 require "nbody.rb"
 
 class Body

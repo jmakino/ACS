@@ -1,3 +1,5 @@
+#!/usr/local/bin/ruby -w
+
 require "nbody.rb"
 
 module Integrator_pec_mode
@@ -165,7 +167,7 @@ module Integrator_multistep
   end
 
   def new_order(order)
-    min( order + 1, ORDER )
+    [order + 1, ORDER].min
   end
 
   def correct(old, dt)
@@ -404,9 +406,9 @@ class Worldpoint
   end
 
   def interpolate_admin(wp1, wp2, t)
-    @minstep = min(wp1.minstep, wp2.minstep)
-    @maxstep = max(wp1.maxstep, wp2.maxstep)
-    @nsteps = max(wp1.nsteps, wp2.nsteps)
+    @minstep = [wp1.minstep, wp2.minstep].min
+    @maxstep = [wp1.maxstep, wp2.maxstep].max
+    @nsteps = [wp1.nsteps, wp2.nsteps].max
     @time = t
   end
 
@@ -773,7 +775,6 @@ class Worldsnapshot < Nbody
 
   def initialize
     super
-    @time = 0.0
   end
 
   def get_snap_and_crackle(pos, vel, acc, jerk)

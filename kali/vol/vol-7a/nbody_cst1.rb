@@ -1,14 +1,8 @@
-require "vector.rb"
-require "clop.rb"
-require "acsio.rb"
+#!/usr/local/bin/ruby -w
+
+require "nbody.rb"
 
 class Body
-
-  attr_accessor :mass, :pos, :vel
-
-  def initialize(mass = 0, pos = Vector[0,0,0], vel = Vector[0,0,0])
-    @mass, @pos, @vel = mass, pos, vel
-  end
 
   def calc(softening_parameter, body_array, time_step, s)
     ba  = body_array
@@ -59,42 +53,19 @@ class Body
     p
   end
 
-  def to_s
-    "  mass = " + @mass.to_s + "\n" +
-    "   pos = " + @pos.join(", ") + "\n" +
-    "   vel = " + @vel.join(", ") + "\n"
-  end
-
-  def pp                           # pretty print
-    print to_s
-  end
-
-  def ppx(body_array, eps)   # pretty print, with extra information (acc, jerk)
-    STDERR.print to_s + "   acc = " + acc(body_array, eps).join(", ") + "\n"
-    STDERR.print to_s + "   jerk = " + jerk(body_array, eps).join(", ") + "\n"
-  end
-
 end
 
 class Nbody
 
-  attr_accessor :time, :body
-
-  def initialize
-    @body = []
-    @time = 0.0
-  end
-
-  def evolve(integration_method, eps, dt, dt_dia, dt_out, dt_end,
-             init_out, x_flag)
+  def evolve(integration_method, eps, dt, dt_dia, dt_out, dt_end, init_out)
     @dt = dt
     @eps = eps
     @nsteps = 0
     e_init
-    write_diagnostics(x_flag)
-    t_dia = dt_dia - 0.5*dt
-    t_out = dt_out - 0.5*dt
-    t_end = dt_end - 0.5*dt
+    write_diagnostics
+    t_dia = @time + dt_dia - 0.5*dt
+    t_out = @time + dt_out - 0.5*dt
+    t_end = @time + dt_end - 0.5*dt
 
     acs_write if init_out
 
@@ -103,7 +74,7 @@ class Nbody
       @time += dt
       @nsteps += 1
       if @time >= t_dia
-        write_diagnostics(x_flag)
+        write_diagnostics
         t_dia += dt_dia
       end
       if @time >= t_out
@@ -349,7 +320,7 @@ class Nbody
     @e0 = ekin + epot
   end
 
-  def write_diagnostics(x_flag)
+  def write_diagnostics
     etot = ekin + epot
     STDERR.print <<END
 at time t = #{sprintf("%g", time)}, after #{@nsteps} steps :
@@ -359,23 +330,6 @@ at time t = #{sprintf("%g", time)}, after #{@nsteps} steps :
              E_tot - E_init = #{sprintf("%.3g", etot - @e0)}
   (E_tot - E_init) / E_init = #{sprintf("%.3g", (etot - @e0)/@e0 )}
 END
-    if x_flag
-      STDERR.print "  for debugging purposes, here is the internal data ",
-                   "representation:\n"
-      ppx
-    end
-  end
-
-  def pp                           # pretty print
-    print "     N = ", @body.size, "\n"
-    print "  time = ", @time, "\n"
-    @body.each{|b| b.pp}
-  end
-
-  def ppx                          # pretty print, with extra information (acc)
-    print "     N = ", @body.size, "\n"
-    print "  time = ", @time, "\n"
-    @body.each{|b| b.ppx(@body, @eps)}
   end
 
 end
@@ -392,10 +346,10 @@ options_text= <<-END
     a constant time step code; the alternative, instead of softening, would
     be to use a variable time step algorithm.
 
-    (c) 2004, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
+    (c) 2005, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
 
     example:
-    ruby sim2acs < cube1.in | ruby #{$0} -t 1
+    ruby mkplummer.rb -n 5 -s 1 | ruby #{$0} -d 0.001 -t 1 > /dev/null
 
 
   Short name:		-m
@@ -429,8 +383,8 @@ options_text= <<-END
   Description:		Time step size
   Long description:
     This option sets the size of the time step, which is constant and
-    shared by all particles.  It is wise to use option -s to specify
-    a softening length that is at least as large as the time step size.
+    shared by all particles.  It is wise to use option -s to specify a
+    softening length that is significantly larger than the time step size.
 
 
   Short name: 		-e
@@ -456,7 +410,7 @@ options_text= <<-END
     standard output channel.
 
     The snapshot contains the mass, position, and velocity values
-    for all particles in an N-body system, in ACS format
+    for all particles in an N-body system, in ACS format.
 
 
   Short name: 		-t
@@ -483,24 +437,9 @@ options_text= <<-END
     on the standard output channel, before integration is started.
 
 
-  Short name:		-x
-  Long name:  		--extra_diagnostics
-  Value type:  		bool
-  Variable name:	x_flag
-  Description:		Extra diagnostics
-  Long description:
-    If this flag is set to true, the following extra diagnostics
-    will be printed: 
-
-      acceleration (for all integrators)
-      jerk (for the Hermite integrator)
-
-
   END
 
 parse_command_line(options_text, true)
 
-include Math
-
 nb = ACS_IO.acs_read(Nbody)
-nb.evolve($method, $eps, $dt, $dt_dia, $dt_out, $dt_end, $init_out, $x_flag)
+nb.evolve($method, $eps, $dt, $dt_dia, $dt_out, $dt_end, $init_out)

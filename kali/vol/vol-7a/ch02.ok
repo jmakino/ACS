@@ -1,0 +1,22 @@
+= 
+
+== xxx
+
+Start with the old rknbody8.rb code, for fixed time steps
+
+discuss how to extend it to variable time steps, then implement:
+nbody_cst1.rb
+
+nbody_sh1.rb
+
+nbody_ind1.rb
+
+nbody_ind2.rb
+
+nbody_ind3.rb
+
+world1.rb
+
+world2.rb
+
+world3.rb

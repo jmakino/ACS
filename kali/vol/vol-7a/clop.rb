@@ -88,12 +88,12 @@ class Clop_Option
       s = @description
       s = add_tabs(s, s.size, 4)
       s += ": "
-      if @printname
+      if defined? @printname
         s += @printname
       else
         s += @variablename
       end
-      s += " = " unless @printname == ""
+      s += " = " unless defined? @printname and @printname == ""
       s += "\n  " if @type =~ /^float\s*vector$/
       s += eval_value.to_s + "\n"
     end

@@ -20,6 +20,7 @@ class Nbody
 
   def initialize
     @body = []
+    @time = 0.0
   end
 
 end
