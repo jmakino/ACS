@@ -93,7 +93,8 @@ module Acsmaildoc
 
     if updated == 1 then
       print "Now runs update-lab etc"
-      system("update-lab")
+      bindir = ENV["ACSBIN"]
+      system("csh -f #{bindir}/update-lab")
       system("cd #{$docroot} ; svn commit --message Mails-added")
     end
   end
