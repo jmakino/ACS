@@ -478,6 +478,17 @@ class Worldline
     [ p.mass*r/r3 , p.mass*(v-3*(r*v/r2)*r)/r3 ]
   end
 
+  def prune(k)
+    new_worldpoint = []      # protect the original; not yet cleanly modular
+    @worldpoint.each_index do |i|
+      if i%k == 0 or i == @worldpoint.size - 1
+        new_worldpoint.push(@worldpoint[i])
+      end
+    end
+    @worldpoint = new_worldpoint
+    self
+  end
+
   def take_snapshot_of_worldline(time)
     if time >= @worldpoint.last.time
       valid_extrapolation?(time)
@@ -624,6 +635,15 @@ class Worldera
     e
   end
 
+  def prune(k)
+    new_worldline = []      # protect the original; not yet cleanly modular
+    @worldline.each do |w|
+      new_worldline.push(w.prune(k))
+    end
+    @worldline = new_worldline
+    self
+  end
+
   def take_snapshot(time)
     take_snapshot_except(nil, time)
   end
@@ -662,7 +682,11 @@ class World
         @era.write_diagnostics(@t_dia, @nsteps, @initial_energy)
         @t_dia += c.dt_dia
       end
-      if c.dump_flag
+      k = c.async_output_interval
+      if k > 0
+        @era.clone.prune(k).acs_write($stdout, false, c.precision,
+                                      c.add_indent)
+      elsif c.dump_flag
         @era.acs_write($stdout, false, c.precision, c.add_indent)
       else
         while @t_out <= @era.end_time and @t_out <= @t_end
@@ -716,7 +740,7 @@ class World
 
   def init_output(c)
     @era.write_diagnostics(@time, @nsteps, @initial_energy, true)
-    if c.init_out_flag and not c.dump_flag
+    if c.init_out_flag and not c.dump_flag and c.async_output_interval == 0
       if c.world_output_flag
         acs_write($stdout, false, c.precision, c.add_indent)
       else
@@ -880,9 +904,9 @@ options_text= <<-END
   Short name: 		-f
   Long name:		--init_timescale_factor
   Value type:		float
-  Default value:	1.0e-02
+  Default value:	0.01
   Variable name:	init_timescale_factor
-  Description:		Initial timescale shrinking factor
+  Description:		Initial timescale factor
   Long description:
     This option allows the user to determine how extra small the initial
     timesteps are, for all particles.  In order to allow a safe startup
@@ -945,6 +969,30 @@ options_text= <<-END
     for all particles in an N-body system, in ACS format
 
 
+  Short name: 		-y
+  Long name:		--asynchronous_output
+  Value type:		int
+  Default value:	0
+  Variable name:	async_output_interval
+  Description:		Asynchronous output interval
+  Long description:
+    If this option is invoked with a positive argument k = 1, then
+    the full information for a particle is printed as soon as it
+    makes a step.  If the asynchronous output interval is set to a
+    value k > 1, then the information is printed only for 1 out of
+    every k steps.  The output will appear in ACS format on the
+    standard output channel.  It is guaranteed that for each particle
+    the full information will be printed before the first step and
+    after the last step.  The resulting stream of outputs contains
+    information for different particles at different times, but the
+    particles are guaranteed to be time ordered.
+
+    If this option is not invoked, or if it is invoked with the default
+    value k = 0, no such action will be undertaken.  This option, when
+    invoked with k > 0, overrides the normal output options (a specified
+    value for the normal output interval will be ignored). 
+
+
   Short name: 		-t
   Long name:		--time_period
   Value type:		float
@@ -990,7 +1038,7 @@ options_text= <<-END
   Long description:
     If this flag is set to true, the full information of all worldpoints will
     be written out.  This option, when switched on, overrides the normal output
-    option (a specified value for the normal output interval will be ignored).
+    options (a specified value for the normal output interval will be ignored).
 
 
   Short name:		-a

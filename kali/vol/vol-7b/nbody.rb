@@ -1,4 +1,4 @@
-require "acs.rb"
+require "acs"
 
 class Body
 
