@@ -1064,16 +1064,21 @@ end
 
 module Output
 
-  def diagnostics_and_output(c)
-    t_target = [@t_end, @era.end_time].min
-    diagnostics(t_target, c.dt_dia)
-    output(c, t_target, false)
-  end
-
   def initial_diagnostics_and_output(c)
     t_target = @time
     diagnostics(t_target, c.dt_dia)
-    output(c, t_target, true)
+    if c.init_out_flag
+      timed_output(t_target, c.dt_out, c.world_output_flag, c.precision, c.add_indent)
+    else
+      prepare_for_timed_output(c.dt_out)
+    end
+  end
+
+  def diagnostics_and_output(c)
+    t_target = [@t_end, @era.end_time].min
+    diagnostics(t_target, c.dt_dia)
+    pruned_dump(c.prune_factor, c.precision, c.add_indent)
+    timed_output(t_target, c.dt_out, c.world_output_flag, c.precision, c.add_indent)
   end
 
   def diagnostics(t_target, dt_dia)
@@ -1083,32 +1088,24 @@ module Output
     end
   end
 
-  def output(c, t_target, initial_output)
-    if (k = c.prune_factor) > 0
-      pruned_dump(c, initial_output)
-    else
-      timed_output(c, t_target, initial_output)
-    end
-  end
-
-  def pruned_dump(c, initial_output)
-    unless initial_output
-      @era.clone.prune(c.prune_factor).acs_write($stdout, false, c.precision,
-                                                 c.add_indent)
-    end
-  end
-
-  def timed_output(c, t_target, initial_output)
+  def timed_output(t_target, dt_out, world_flag, prec, add_indent)
     while @t_out <= t_target
-      if not initial_output or c.init_out_flag
-        if c.world_output_flag
-          acs_write($stdout, false, c.precision, c.add_indent)
-        else
-          @era.take_snapshot(@t_out).acs_write($stdout, true,
-                                               c.precision, c.add_indent)
-        end
+      if world_flag
+        acs_write($stdout, false, prec, add_indent)
+      else
+        @era.take_snapshot(@t_out).acs_write($stdout, true, prec, add_indent)
       end
-      @t_out += c.dt_out
+      @t_out += dt_out
+    end
+  end
+
+  def prepare_for_timed_output(dt_out)
+    @t_out += dt_out
+  end
+
+  def pruned_dump(k, prec, add_indent)
+    if k > 0
+      @era.clone.prune(k).acs_write($stdout, false, prec, add_indent)
     end
   end
 end
