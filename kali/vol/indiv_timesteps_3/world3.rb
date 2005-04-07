@@ -1066,8 +1066,11 @@ module Output
 
   def initial_diagnostics_and_output(c)
     diagnostics(@time, c.dt_dia)
-    if c.init_out_flag
-      timed_output(@time, c.dt_out, c.world_output_flag, c.precision, c.add_indent)
+    if c.prune_factor > 0
+      @t_out = @t_end + VERY_SMALL_NUMBER
+    elsif c.init_out_flag
+      timed_output(@time, c.dt_out, c.world_output_flag,
+                   c.precision, c.add_indent)
     else
       prepare_for_timed_output(c.dt_out)
     end
@@ -1077,7 +1080,8 @@ module Output
     t_target = [@t_end, @era.end_time].min
     diagnostics(t_target, c.dt_dia)
     pruned_dump(c.prune_factor, c.precision, c.add_indent)
-    timed_output(t_target, c.dt_out, c.world_output_flag, c.precision, c.add_indent)
+    timed_output(t_target, c.dt_out, c.world_output_flag,
+                 c.precision, c.add_indent)
   end
 
   def diagnostics(t_target, dt_dia)

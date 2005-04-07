@@ -10,6 +10,7 @@ end
 include Math
 
 VERY_LARGE_NUMBER = 1e30
+VERY_SMALL_NUMBER = 1.0/VERY_LARGE_NUMBER
 
 class Object
   def deep_copy
