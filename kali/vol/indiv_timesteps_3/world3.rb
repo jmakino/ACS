@@ -1065,10 +1065,9 @@ end
 module Output
 
   def initial_diagnostics_and_output(c)
-    t_target = @time
-    diagnostics(t_target, c.dt_dia)
+    diagnostics(@time, c.dt_dia)
     if c.init_out_flag
-      timed_output(t_target, c.dt_out, c.world_output_flag, c.precision, c.add_indent)
+      timed_output(@time, c.dt_out, c.world_output_flag, c.precision, c.add_indent)
     else
       prepare_for_timed_output(c.dt_out)
     end
