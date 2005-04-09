@@ -702,7 +702,7 @@ class Worldpoint
     end
     @next_time = @time + new_dt
   end
-
+
   def predict(t)
     extrapolate(t)
   end
@@ -812,7 +812,7 @@ class Worldline
     a = - acc
     2*(p.mass/r3)*(a - 3*((r*a)/r2)*r)
   end
-
+
   def acc_and_jerk(pos, vel, t)
     p = take_snapshot_of_worldline(t)
     r = p.pos - pos
@@ -858,7 +858,7 @@ class Worldline
     @worldpoint = new_worldpoint
     self
   end
-
+
   def take_snapshot_of_worldline(time)
     if time >= @worldpoint.last.time
       valid_extrapolation?(time)
@@ -908,47 +908,11 @@ end
 class Worldera
 
   attr_accessor  :start_time, :end_time, :worldline
+  attr_reader :cpu_overrun_flag, :cpu_time_used_in_last_evolve_call
 
   def initialize
     @worldline = []
-  end
-
-  def acc(wl, pos, t)
-    acc = pos*0                            # null vectors of the correct length
-    @worldline.each do |w|
-      acc += w.acc(pos, t) unless w == wl
-    end
-    acc 
-  end
-
-  def gacc(wl, pos, acc, t)
-    gacc = pos*0                           # null vectors of the correct length
-    @worldline.each do |w|
-      gacc += w.gacc(pos, acc, t) unless w == wl
-    end
-    gacc 
-  end
-
-  def acc_and_jerk(wl, pos, vel, t)
-    acc = jerk = pos*0                  # null vectors of the correct length
-    @worldline.each do |w|
-      unless w == wl
-        da, dj = w.acc_and_jerk(pos, vel, t)
-        acc += da
-        jerk += dj
-      end
-    end
-    [acc, jerk]
-  end
-
-  def snap_and_crackle(wl, wp)
-    take_snapshot_except(wl, wp.time).get_snap_and_crackle(wp.pos, wp.vel,
-                                                           wp.acc, wp.jerk)
-  end
-
-  def timescale(wl, wp)
-    take_snapshot_except(wl, wp.time).collision_time_scale(wp.mass,
-                                                           wp.pos, wp.vel)
+    @cpu_overrun_flag = false
   end
 
   def setup(ss, method, dt_param, dt_era)
@@ -972,10 +936,96 @@ class Worldera
     end
   end
 
+  def evolve(dt_era, dt_max, cpu_time_max, shared_flag)
+    @cpu_overrun_flag = false
+    cpu_time = Process.times.utime
+    while wordline_with_minimum_interpolation.worldpoint.last.time < @end_time
+      unless shared_flag
+        wordline_with_minimum_extrapolation.grow(self, dt_max)
+      else
+        t = wordline_with_minimum_extrapolation.worldpoint.last.next_time
+        @worldline.each do |w|
+          w.worldpoint.last.next_time = t
+          w.grow(self, dt_era)
+        end
+      end
+      if Process.times.utime - cpu_time > cpu_time_max
+        @cpu_overrun_flag = true
+        return self
+      end
+    end
+    @cpu_time_used_in_last_evolve_call = Process.times.utime - cpu_time
+    next_era(dt_era)
+  end
+
+  def acc(wl, pos, t)
+    acc = pos*0                            # null vectors of the correct length
+    @worldline.each do |w|
+      acc += w.acc(pos, t) unless w == wl
+    end
+    acc 
+  end
+
+  def gacc(wl, pos, acc, t)
+    gacc = pos*0                           # null vectors of the correct length
+    @worldline.each do |w|
+      gacc += w.gacc(pos, acc, t) unless w == wl
+    end
+    gacc 
+  end
+
+  def acc_and_jerk(wl, pos, vel, t)
+    acc = jerk = pos*0                  # null vectors of the correct length
+    @worldline.each do |w|
+      unless w == wl
+        da, dj = w.acc_and_jerk(pos, vel, t)
+        acc += da
+        jerk += dj
+      end
+    end
+    [acc, jerk]
+  end
+
+  def snap_and_crackle(wl, wp)
+    take_snapshot_except(wl, wp.time).get_snap_and_crackle(wp.pos, wp.vel,
+                                                           wp.acc, wp.jerk)
+  end
+
+  def timescale(wl, wp)
+    take_snapshot_except(wl, wp.time).collision_time_scale(wp.mass,
+                                                           wp.pos, wp.vel)
+  end
+
+  def take_snapshot(time)
+    take_snapshot_except(nil, time)
+  end
+
+  def take_snapshot_except(wl, time)
+    ws = Worldsnapshot.new
+    ws.time = time
+    @worldline.each do |w|
+      s = w.take_snapshot_of_worldline(time)
+      ws.body.push(s) unless w == wl
+    end
+    ws
+  end
+
   def report_energy
     take_snapshot(@start_time).total_energy
   end
 
+  def write_diagnostics(t, initial_energy, unscheduled_output = false)
+#    STDERR.print "at "
+#    STDERR.print "unscheduled " if unscheduled_output
+#    STDERR.print "time t = #{sprintf("%g", t)} "
+    STDERR.print "  < unscheduled > " if unscheduled_output
+    STDERR.print "t = #{sprintf("%g", t)} "
+    cen = census(t)
+    STDERR.print "(after #{cen[0..2].inject{|n,dn|n+dn}}, "
+    STDERR.print "#{cen[3]}, #{cen[4]} steps <,=,> t}\n"
+    take_snapshot(t).write_diagnostics(initial_energy)
+  end
+
   def wordline_with_minimum_extrapolation
     t = VERY_LARGE_NUMBER
     wl = nil
@@ -998,21 +1048,6 @@ class Worldera
       end
     end
     wl
-  end
-
-  def evolve(dt_era, dt_max, shared_flag)
-    while wordline_with_minimum_interpolation.worldpoint.last.time < @end_time
-      unless shared_flag
-        wordline_with_minimum_extrapolation.grow(self, dt_max)
-      else
-        t = wordline_with_minimum_extrapolation.worldpoint.last.next_time
-        @worldline.each do |w|
-          w.worldpoint.last.next_time = t
-          w.grow(self, dt_era)
-        end
-      end
-    end
-    next_era(dt_era)
   end
 
   def next_era(dt_era)
@@ -1038,77 +1073,63 @@ class Worldera
     @worldline = new_worldline
     self
   end
-
-  def take_snapshot(time)
-    take_snapshot_except(nil, time)
-  end
-
-  def take_snapshot_except(wl, time)
-    ws = Worldsnapshot.new
-    ws.time = time
-    @worldline.each do |w|
-      s = w.take_snapshot_of_worldline(time)
-      ws.body.push(s) unless w == wl
-    end
-    ws
-  end
-
-  def write_diagnostics(t, initial_energy)
-    STDERR.print "at time t = #{sprintf("%g", t)} "
-    cen = census(t)
-    STDERR.print "(after #{cen[0..2].inject{|n,dn|n+dn}}, "
-    STDERR.print "#{cen[3]}, #{cen[4]} steps <,=,> t}"
-    take_snapshot(t).write_diagnostics(initial_energy)
-  end
 end
 
 module Output
 
-  def initial_diagnostics_and_output(c)
-    diagnostics(@time, c.dt_dia)
-    if c.prune_factor > 0
-      @t_out = @t_end + VERY_SMALL_NUMBER
-    elsif c.init_out_flag
-      timed_output(@time, c.dt_out, c.world_output_flag,
-                   c.precision, c.add_indent)
+  def diagnostics_and_output(c, at_startup)
+    if at_startup
+      t_target = @time
     else
-      prepare_for_timed_output(c.dt_out)
+      t_target = [@t_end, @era.end_time].min
     end
-  end
-
-  def diagnostics_and_output(c)
-    t_target = [@t_end, @era.end_time].min
+    output(c, t_target, at_startup)
     diagnostics(t_target, c.dt_dia)
-    pruned_dump(c.prune_factor, c.precision, c.add_indent)
-    timed_output(t_target, c.dt_out, c.world_output_flag,
-                 c.precision, c.add_indent)
   end
 
   def diagnostics(t_target, dt_dia)
+    dia_output = false
     while @t_dia <= t_target
       @era.write_diagnostics(@t_dia, @initial_energy)
       @t_dia += dt_dia
+      dia_output = true
+    end
+    dia_output
+  end
+
+  def unscheduled_diagnostics(dt_dia)
+    t_era = @era.wordline_with_minimum_interpolation.worldpoint.last.time
+    unless diagnostics(t_era, dt_dia)
+      @era.write_diagnostics(t_era, @initial_energy, true)
     end
   end
 
-  def timed_output(t_target, dt_out, world_flag, prec, add_indent)
+  def output(c, t_target, at_startup)
+    if (k = c.prune_factor) > 0
+      pruned_dump(c, at_startup)
+    else
+      timed_output(c, t_target, at_startup)
+    end
+  end
+
+  def pruned_dump(c, at_startup)
+    unless at_startup
+      @era.clone.prune(c.prune_factor).acs_write($stdout, false, c.precision,
+                                                 c.add_indent)
+    end
+  end
+
+  def timed_output(c, t_target, at_startup)
     while @t_out <= t_target
-      if world_flag
-        acs_write($stdout, false, prec, add_indent)
-      else
-        @era.take_snapshot(@t_out).acs_write($stdout, true, prec, add_indent)
+      if c.output_at_startup_flag or not at_startup
+        if c.world_output_flag
+          acs_write($stdout, false, c.precision, c.add_indent)
+        else
+          @era.take_snapshot(@t_out).acs_write($stdout, true,
+                                               c.precision, c.add_indent)
+        end
       end
-      @t_out += dt_out
-    end
-  end
-
-  def prepare_for_timed_output(dt_out)
-    @t_out += dt_out
-  end
-
-  def pruned_dump(k, prec, add_indent)
-    if k > 0
-      @era.clone.prune(k).acs_write($stdout, false, prec, add_indent)
+      @t_out += c.dt_out
     end
   end
 end
@@ -1154,15 +1175,26 @@ include Output
   def startup(c)
     @era.startup(@dt_max, c.init_timescale_factor)
     @initial_energy = @era.report_energy
-    initial_diagnostics_and_output(c)
+    diagnostics_and_output(c, true)
   end
 
   def evolve(c)
+    cpu_time_max = c.cpu_time_max
     while @era.start_time < @t_end
-      @new_era = @era.evolve(c.dt_era, @dt_max, c.shared_flag)
-      @time = @era.end_time
-      diagnostics_and_output(c)
-      @old_era, @era = @era, @new_era
+      tmp_era = @era.evolve(c.dt_era, @dt_max, cpu_time_max, c.shared_flag)
+      if tmp_era.cpu_overrun_flag
+        unscheduled_diagnostics(c.dt_dia)
+        cpu_time_max = c.cpu_time_max
+      else
+        @new_era = tmp_era
+        @time = @era.end_time
+        if diagnostics_and_output(c, false)
+          cpu_time_max = c.cpu_time_max
+        else
+          cpu_time_max -= @era.cpu_time_used_in_last_evolve_call
+        end
+        @old_era, @era = @era, @new_era
+      end
     end
   end
 end
@@ -1217,7 +1249,7 @@ class Worldsnapshot < NBody
     end
     sqrt(time_scale_sq)                  # time scale value
   end
-
+
   def kinetic_energy
     e = 0
     @body.each{|b| e += b.kinetic_energy}
@@ -1240,11 +1272,11 @@ class Worldsnapshot < NBody
     ep = potential_energy
     etot = ek + ep
     STDERR.print <<-END
-    E_kin = #{sprintf("%.3g", ek)} ,\
+          E_kin = #{sprintf("%.3g", ek)} ,\
      E_pot =  #{sprintf("%.3g", ep)} ,\
       E_tot = #{sprintf("%.3g", etot)}
-       E_tot - E_init = #{sprintf("%.3g", etot - e0)}
-        (E_tot - E_init) / E_init = #{sprintf("%.3g", (etot - e0)/e0 )}
+          E_tot - E_init = #{sprintf("%.3g", etot - e0)}
+          (E_tot - E_init) / E_init = #{sprintf("%.3g", (etot - e0)/e0 )}
     END
   end
 end
@@ -1408,10 +1440,21 @@ options_text = <<-END
     t_final = t_init + t.
 
 
+  Short name: 		-u
+  Long name:		--cpu_time_max
+  Value type:		int
+  Default value:	60
+  Variable name:	cpu_time_max
+  Description:		Max cputime diagnost. interval
+  Long description:
+    This option sets the maximum cpu time interval between diagnostics output,
+    in seconds.
+
+
   Short name:		-i
   Long name:  		--init_out
   Value type:  		bool
-  Variable name:	init_out_flag
+  Variable name:	output_at_startup_flag
   Description:		Output the initial snapshot
   Long description:
     If this flag is set to true, the initial snapshot will be output

@@ -153,19 +153,19 @@ snap, crackle and pop, respectively:
 :equation:
 \left\{ \begin{array}{lcl}
 v \equiv \dot x = {d \over dt}x(t)     &;&
-a \equiv \dot v = {d^2 \over dt^2}x(t)   \quad ; \quad
-j \equiv \dot a = {d^3 \over dt^3}x(t)   \\
+a \equiv \dot v = {d^{\,2} \over dt^2}x(t)   \quad ; \quad
+j \equiv \dot a = {d^{\,3} \over dt^3}x(t)   \\
 \phantom{1}&\phantom{1}&\phantom{1} \\
-s \equiv \dot j = {d^4 \over dt^4}x(t)   &;&
-c \equiv \dot s = {d^5 \over dt^5}x(t)   \quad ; \quad
-p \equiv \dot c = {d^6 \over dt^6}x(t)
+s \equiv \dot j = {d^{\,4} \over dt^4}x(t)   &;&
+c \equiv \dot s = {d^{\,5} \over dt^5}x(t)   \quad ; \quad
+p \equiv \dot c = {d^{\,6} \over dt^6}x(t)
 \end{array} \right.
 
 These expressions are especially useful for the type of second-order
 differential equation encountered in classical mechanics:
 
 :equation:
-\ddot x \equiv {d^2x \over dt^2} = f(x)
+\ddot x \equiv {d^{\,2}x \over dt^2} = f(x)
 
 which can be written as a system of two first-order differential equations:
 
@@ -277,18 +277,24 @@ can be found by differentiating both sides of the differential equation,
 one or more times.  This leads to expressions such as:
 
 :eqnarray:
-v_0 &=& f(x(0)) \ = \ f(x_0) \ = \ f_0      \label{v0}  \\
+\label{v0a0j0s0}
+v_0 &=& f(x(0)) \ = \ f(x_0) \ = \ f_0                         \nonumber\\
 \phantom{1}&\phantom{1}&\phantom{1}                    \nonumber\\
-a_0 &=& \dot v_0 \ = \ {d \over dt} f_0
-\ = \ {df_0 \over dx} {dx \over dt}
-\ = \ f_0' v_0 \ = \ f_0 f_0'               \label{a0} \\
+a_0 &=& \left.{d \over dt} v(t)\right|_{t=0}\!\! =
+ \left.{d \over dt} f(x(t))\right|_{t=0}\!\! =
+ \left.{df(x) \over dx}\right|_{x=x_0}
+ \left.{dx \over dt}\right|_{t=0}\!\! = f_0' v_0 =
+ f_0' f_0                                              \nonumber\\
 \phantom{1}&\phantom{1}&\phantom{1}                  \nonumber \\
-j_0 &=& \dot a_0 \ = \ f_0^2 f_0'' + f_0 (f_0')^2     \label{j0} \\
+j_0 &=& \dot a_0 \ = \ f_0^2 f_0'' + f_0 (f_0')^2               \nonumber\\
 \phantom{1}&\phantom{1}&\phantom{1}                  \nonumber \\
 s_0 &=& \dot j_0 \ = \ f_0^3 f_0''' + 4f_0^2f_0'f_0'' +
-(f_0')^3 f_0                                          \label{s0}
+(f_0')^3 f_0                                          
 
-*Alice*: Here, you see, the acceleration comes out nicely as the rate
+The last two lines can be derived in the same way as the second line,
+by fully writing out the differentiations, using the chain rule.
+
+By the way, here the acceleration comes out nicely as the rate
 of change of the force applied, as would happen for a spoon moving
 slowly through molasses.
 
@@ -389,7 +395,7 @@ We can compare this expression with our Taylor series:
 :equation:
 x_1 = x_0 + v_0\tau + \half a_0\tau^2 + O(\tau^3)
 
-Using Eqs. (ref(v0)) and (ref(a0)),
+Using Eqs. (ref(v0a0j0s0))
 we can write this as
 
 :equation:
@@ -523,8 +529,7 @@ the true orbit:
 x_1 = x_0 + v_0\tau + \half a_0\tau^2
 + \one{6} j_0\tau^3  + O(\tau^4)                
 
-Using Eqs. (ref(v0)), (ref(a0)), and (ref(j0)), 
-we can write this as
+Using Eq. (ref(v0a0j0s0)), we can write this as
 
 :equation:
 \label{taylor2}

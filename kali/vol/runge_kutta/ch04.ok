@@ -36,11 +36,9 @@ indeed it is a citizen of the Runge-Kutta world.
 So let us return to our special second-order differential equation
 
 :equation:
-{d^2x \over dt^2} = f(x).
+{d^{\,2}x \over dt^2} = f(x).
 
-Instead of simply treating it as a set of two coupled first-order
-differential equations, we can exploit the fact that the right-hand
-side does not depend on <tex>$v$</tex>.  Let us first gather
+Let us first gather
 some useful expressions, starting with the two first-order equations
 
 :equation:
@@ -64,16 +62,25 @@ and when we differentiate the set of differential equations several
 times, we obtain the following equations:
 
 :eqnarray:
-v_0 &=& v(0) \ \ = \ \ v_0 \\
-a_0 &=& f(x(0)) \ \ = \ \ f(x_0) \ \ = \ \ f_0 \\
-j_0 &=& \dot a_0 \ \ = \ \ {d \over dt} f_0
-\ \ = \ \ {df_0 \over dx} {dx \over dt}
-\ \ = \ \ f_0' v_0                         \\
-s_0 &=& \dot j_0 \ \ = \ \ f_0'' v_0^2 + f_0' f_0  \\
+a_0 &=& f(x(0)) \ \ = \ \ f(x_0) \ \ = \ \ f_0 \nonumber\\
+\phantom{1}&\phantom{1}&\phantom{1}                    \nonumber\\
+j_0 &=& \left.{d \over dt} a(t)\right|_{t=0}\!\! =
+\left.{d \over dt} f(x(t))\right|_{t=0}\!\! =
+\left.{df(x) \over dx}\right|_{x=x_0} \left.{dx \over dt}\right|_{t=0}\!\! =
+f_0' v_0                                               \nonumber\\
+\phantom{1}&\phantom{1}&\phantom{1}                    \nonumber\\
+s_0 &=& \dot j_0 \ \ = \ \ f_0'' v_0^2 + f_0' f_0  \nonumber\\
+\phantom{1}&\phantom{1}&\phantom{1}                    \nonumber\\
 c_0 &=& \dot s_0 \ \ = \ \ f_0''' v_0^3 + 3f_0'' f_0 v_0 +
-(f_0')^2 v_0   \\ 
+(f_0')^2 v_0                                           \nonumber\\ 
+\phantom{1}&\phantom{1}&\phantom{1}                    \nonumber\\
 p_0 &=& \dot c_0 \ \ = \ \ f_0'''' v_0^4 + 6f_0''' f_0 v_0^2 +
 f_0''\left\{3f_0^2 + 2f_0' v_0^2\right\} + (f_0')^2 f_0
+
+The last three lines can be derived in the same way as the second line,
+by fully writing out the differentiations, using the chain rule.  This
+derivation is completely analogous to what we did for our first-order
+differential equation.
 
 == One Force Evaluation per Step
 
@@ -84,7 +91,7 @@ step.  But we have another choice to make.
 
 In the case of a first-order differential equation, at the start of
 our integration we can only evaluate the right-hand side at time zero,
-at the beginning of the integration time step.  If we simply following
+at the beginning of the integration time step.  If we simply follow
 that example, we start with:
 
 :equation:
@@ -94,33 +101,118 @@ This leads to the following dimensionally correct expressions:
 
 :eqnarray:
 \label{array1a}
-x_1 &=& x_0 + v_0 \tau + \alpha_1 k_1\tau^2  \\
+x_1 &=& x_0 + \alpha_0 v_0 \tau + \alpha_1 k_1\tau^2  \\
 v_1 &=& v_0 + \beta_1 k_1\tau   
 
-Comparing this with
+We can write the expression for the position, substituting
+<tex>$k_1$</tex>, as
+
+:equation:
+\label{simplex}
+x_1 = x_0 + \alpha_0 v_0 \tau + \alpha_1 f_0\tau^2
+
+We have to compare this with the Taylor series
 
 :equation:
 \label{taylor4x}
 x_1 = x_0 + v_0\tau + \half a_0\tau^2
 + \one{6} j_0\tau^3  + O(\tau^4) 
 
+Using Eqs. (XXXXX)
+we can write this as
+
+:equation:
+\label{taylor4fx}
+x_1 = x_0 + v_0\tau + \half f_0\tau^2
++ \one{6} v_0f_0'\tau^3  + O(\tau^4)
+
+Comparing Eqs. (ref(simplex)) and (ref(taylor4fx)), we find:
+
+:equation:
+\label{samplebox}
+\fbox{
+$\displaystyle{
+\alpha_0 = 1
+}$
+}
+
 and
+
+:equation:
+\label{samplebox}
+\fbox{
+$\displaystyle{
+\alpha_1 = \half
+}$
+}
+
+We cannot satisfy the third order term in <tex>$\tau$</tex>, so as far
+as the expression for the position is concerned, we can make our scheme
+second-order accurate.
+
+Looking now at the velocity, we have
+
+:equation:
+\label{simplev}
+v_1 = v_0 + \beta_1 f_0\tau   
+
+We have to compare this with the Taylor series
 
 :equation:
 \label{taylor4v}
 v_1 = v_0 + a_0\tau + \half j_0\tau^2
 + \one{6} s_0\tau^3  + O(\tau^4) 
 
-we find for the <tex>$O(\tau)$</tex> terms that <tex>$\beta_1 = 1$</tex>.
+Using Eqs. (XXXXX)
+we can write this as
 
-Going to second order in <tex>$\tau$</tex> we require from Eq. (ref(taylor4x))
-that <tex>$\alpha_1 = \half$</tex>.  However, Eq. (ref(taylor4v)) tells us that
+:equation:
+\label{taylor4fv}
+v_1 = v_0 + f_0\tau + \half v_0f_0'\tau^2 + O(\tau^4)
+
+Comparing Eqs. (ref(simplev)) and (ref(taylor4fv)), we find from the
+terms that are first order in <tex>$\tau$</tex>:
+
+:equation:
+\label{samplebox}
+\fbox{
+$\displaystyle{
+\beta_1 = 1
+}$
+}
+
+Going to second order in <tex>$\tau$</tex> would require that
 
 :equation:
 j_0 = f_0' v_0 = 0
 
-which cannot be true for general <tex>$f$</tex> and <tex>$v_0$</tex>.  Our conclusion is
-that the standard treatment only leads to a first-order correct
+which cannot be true for general <tex>$f$</tex> and <tex>$v_0$</tex>.
+Even though we can construct a second-order algorithm for the position,
+we can only find a first-order algorithm for the velocity.
+
+*Bob*: And I presume that there is no point in using a higher-order algorithm
+for the position that for the velocity, since the overall order of the
+integration scheme must be the lowest order of that of the components.
+Hmmm.  Is that so?
+
+*Alice*: Yes, that is correct.  For the very first step, it is possible in
+this case to find a new position that is second-order accurate.  But
+as soon as we take the second step, we use the velocity that we arrived
+at in the first step, which is only first-order accurate.  The same is
+true for each subsequent step: we always use the velocity value from
+the previous step.
+
+*Bob*: But each time we multiply the velocity with <tex>$\tau$</tex>.
+So even though the velocity is first-order, the product of the velocity
+with <tex>$\tau$</tex> must be second-order correct, leading to an error
+term that is third-order in <tex>$\tau$</tex>.
+
+*Alice*: Yes, that is formally correct.  However, \dots
+
+
+
+
+We have to conclude that our approach only leads to a first-order correct
 algorithm, which is of course the forward Euler algorithm:
 
 :equation:
@@ -209,6 +301,8 @@ Comparing this with
 x_1 = x_0 + v_0\tau + \half a_0\tau^2
 + \one{6} j_0\tau^3  + O(\tau^4) 
 
+<b>EXPAND</b>
+
 let us first consider the <tex>$O(\tau^2)$</tex> terms, which leads to the
 requirement:
 
@@ -226,6 +320,8 @@ Similarly, we can use the Taylor series for <tex>$v$</tex>:
 \label{taylor3v}
 v_1 = v_0 + a_0\tau + \half j_0\tau^2
 + \one{6} s_0\tau^3  + O(\tau^4) 
+
+<b>EXPAND</b>
 
 Considering the <tex>$O(\tau)$</tex> term, we have:
 
@@ -526,6 +622,8 @@ x_1 &=& x_0 + v_0\tau + \half a_0\tau^2 + \one{6} j_0\tau^3 +
 \one{24} s_0\tau^4 + O(\tau^5) \ \ \ \ \ \ \ \    \\
 v_1 &=& v_0 + a_0\tau + \half j_0\tau^2 + \one{6} s_0\tau^3 +
 \one{24} c_0\tau^4 + O(\tau^5)
+
+<b>EXPAND</b>
 
 This leads to the following conditions:
 

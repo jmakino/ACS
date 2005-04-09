@@ -444,8 +444,7 @@ expressions in the Taylor series expansion
 x_1 = x_0 + v_0\tau + \half a_0\tau^2
 + \one{6} j_0\tau^3  + O(\tau^4)
 
-Using Eqs. (ref(v0)), (ref(a0)), (ref(j0)), and (ref(s0)), 
-we can now write this as
+Using Eqs. (ref(v0a0j0s0)), we can now write this as
 
 :equation:
 \label{taylor3}

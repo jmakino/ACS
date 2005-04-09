@@ -15,7 +15,8 @@ v_1 &=& v_0 + \left(\beta_1 k_1 + \beta_2 k_2\right) \tau
 
 3rd order not possible: in Eq. (ref(standard1)) we see that starting
 the first force calculation at time zero implies that the coefficient
-for <tex>$v_0$</tex> in <tex>$k_2$</tex> should be <tex>$2/3$</tex> , and not <tex>$1$</tex> as we insist upon above.
+for <tex>$v_0$</tex> in <tex>$k_2$</tex> should be <tex>$2/3$</tex> ,
+and not <tex>$1$</tex> as we insist upon above. <b>[EXPAND THIS]</b>
 
 This means that we only have to expand up to powers in <tex>$\tau^2$</tex>.
 
@@ -32,7 +33,7 @@ x_1 &=& x_0 + v_0 \tau + \left(\alpha_1 + \alpha_2 \right) f_0\tau^2
 v_1 &=& v_0 + \left(\beta_1 + \beta_2\right)f_0 \tau
 +\beta_2v_0f_0'\tau^2+ O(\tau^3)
 
-This has to be equal to
+This has to be equal to the Taylor series expansions:
 
 :eqnarray:
 x_1 &=& x_0 + v_0 \tau + \half f_0\tau^2 + O(\tau^3)           \nonumber \\
@@ -133,12 +134,14 @@ x_1 &=& x_0 + v_0 \tau
 &&+ \left(\alpha_2\eta_{21} + \alpha_3\right)v_0f_0'\tau^3
 + O(\tau^4)                
 
-This has to be equal to
+This has to be equal to the Taylor series expansions:
 
 :equation:
 x_1 = x_0 + v_0 \tau + \half f_0\tau^2
 +\one{6}v_0f_0'\tau^3
  + O(\tau^4)
+
+which implies
 
 :equation:
 \fbox{
@@ -164,12 +167,14 @@ v_1 &=& v_0 + \left(\beta_1 + \beta_2 + \beta_3\right)f_0 \tau
 \right\}\tau^3                                                   \nonumber \\
 &&+ O(\tau^4)
 
-This has to be equal to
+This has to be equal to the Taylor series expansions:
 
 :equation:
 v_1 = v_0 + f_0 \tau +\half v_0f_0'\tau^2
 +\one{6}\left\{f_0f_0' +v_0^2f_0''\right\}\tau^3
 + O(\tau^4)
+
+which implies
 
 :equation:
 \fbox{
@@ -294,7 +299,7 @@ k_2 &=& f(x_0 + \half v_0\tau + \one{8} k_1 \tau^2)    \\
 k_3 &=& f(x_0 + v_0\tau + \half k_1 \tau^2)
 \end{array} \right.
 
-Like trapezium rule for integration!
+Like Simpon's rule for velocity integration.
 
 Another example: for <tex>$\alpha = \zeta=0$</tex> , <tex>$\eta=\one{3}$</tex>:
 
@@ -315,7 +320,7 @@ k_3 &=& f(x_0 + v_0\tau + \half k_1 \tau^2)
 
 So far, only pseudo-FSAL, or better: pseudo Runge Kutta!
 
-Can we make it really FSAL Runge Kutta?
+Can we make it really FSAL Runge Kutta, to all orders?
 
 :equation:
 \half - \zeta = \one{3} - \alpha(\eta-1)

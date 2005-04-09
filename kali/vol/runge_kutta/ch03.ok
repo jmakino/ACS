@@ -7,7 +7,7 @@ can extend our methods immediately to treat the case of a general
 second-order differential equation
 
 :equation:
-{d^2x \over dt^2} = f\left(x, {dx \over dt}\right)
+{d^{\,2}x \over dt^2} = f\left(x, {dx \over dt}\right)
 
 Here the force per unit mass <tex>$f(x)$</tex> exerted on a particle depends
 explicitly on both the position and the velocity of that particle.
@@ -80,7 +80,7 @@ When written out, this leads to the two equations implicit in:
 velocity dependence, and study instead the simpler equation:
 
 :equation:
-{d^2x \over dt^2} = f(x)
+{d^{\,2}x \over dt^2} = f(x)
 
 or, equivalently
 
