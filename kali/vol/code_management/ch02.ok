@@ -255,3 +255,38 @@ In the directory $ACSROOT/bin. So you need to source this file in your
 
 Hope this is understandable...
    
+== more memo
+
+:label: morememo
+
+Here I test some equations etc.
+
+The following is the same as the above formula, but using : equation : 
+
+:equation:
+{\bf a}_i = G \sum_{j=1 \atop j \neq i}^N
+\frac{M_j}{r_{ji}^2} \,\hat{\bf r}_{ji}
+\label{newtonfull}
+
+The following is an equation array
+
+:eqnarray:
+\label{samplearray}
+a &=& b\nonumber\\
+b &=& c
+
+Equation (ref(newtonfull)) is the equation of motion for <i>N</i>-body
+problem. Equations (ref(samplearray)) just show two equations. Note
+that curently equation (or equnarray) can have only one number. So
+with eqnarray, all but one fomula must be used as "nonumber", as in
+the above example.
+
+Equation in the plummer volume can be referred to as Equation
+ref(../plummer#mrsymb).
+
+Section ref(sect:morememo) should be this section itself.
+
+Section ref(../code_management#sect:morememo) should also be this section
+itself, but with volume name.
+
+

@@ -98,7 +98,7 @@ The following is the same as the above formula, but using : equation :
 :equation:
 {\bf a}_i = G \sum_{j=1 \atop j \neq i}^N
 \frac{M_j}{r_{ji}^2} \,\hat{\bf r}_{ji}
-\label{newton}
+\label{newtonfull}
 
 The following is an equation array
 
@@ -107,7 +107,7 @@ The following is an equation array
 a &=& b\nonumber\\
 b &=& c
 
-Equation (ref(newton)) is the equation of motion for <i>N</i>-body
+Equation (ref(newtonfull)) is the equation of motion for <i>N</i>-body
 problem. Equations (ref(samplearray)) just show two equations. Note
 that curently equation (or equnarray) can have only one number. So
 with eqnarray, all but one fomula must be used as "nonumber", as in

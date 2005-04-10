@@ -9,8 +9,8 @@ ifdef DVIPDF
 else
    alldepends =  $(TARGET).ps.gz
 endif
-
-ACSDOC = ruby ../../../src/coherent_programming/acsdoc.rb $(ACSDOCOPTIONS)
+ACSDOCOPTIONS = --reuseoutput --keep-dot-files
+ACSDOC = ruby $(ACSROOT)/src/coherent_programming/acsdoc.rb $(ACSDOCOPTIONS)
 GZIP = gzip --force
 LOCALDIR = kali
 
@@ -49,6 +49,9 @@ clean :
 	-rm .[0-9]*\.rb[-+]* .[o-9]*\.rb .acsdoc.command-* 
 	-rm $(TARGET).tex $(TARGET).aux $(TARGET).cp $(TARGET).dvi \
 	    $(TARGET).log $(TARGET).ps $(TARGET).toc
+	-rm tmp.tex tmp.aux tmp.dvi tmp.log tmp.ps tmp.toc tmp.jpeg*
+cleandoc : 
+	-rm -r doc  $(TARGET).tex   $(TARGET).ps $(TARGET).ps.gz  $(TARGET).toc
 	-rm tmp.tex tmp.aux tmp.dvi tmp.log tmp.ps tmp.toc tmp.jpeg*
 
 %.tex : %.ok

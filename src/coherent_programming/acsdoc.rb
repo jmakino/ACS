@@ -102,15 +102,58 @@ module Rdoctotex
     instring.each{|s| ostring.push(tagmarkup(s))}
   end
 
+  def gettexauxlabel(dirname,label)
+    defaultlabel=dirname+"/"+label
+    dirname=dirname.gsub(/\\/,"")
+    label=label.gsub(/\\/,"")
+    aux_file_list=Dir[dirname+"/*.aux"].delete_if{|x| x=~ /tmp\.aux$/}
+    if aux_file_list.length > 1
+      STDERR.print "#{$0} found too many .aux files in directory #{dirname}\n"
+      STDERR.print "   Please remove all but one which is actually used.\n"
+      STDERR.print "   Files found are: #{aux_file_list.join(" ")}\n"
+      exit(-1)
+    elsif aux_file_list.length == 0
+      return defaultlabel
+    end
+    f=open(aux_file_list[0],"r")
+    while s = f.gets
+      if s.index("newlabel{#{label}")
+        newlabel=s.split("{")[3]
+        newlabel = newlabel[0,newlabel.length-1]
+        newtag=$volindex[dirname[3,dirname.length]]
+        newtag =  newtag ? "v"+newtag.to_s : dirname+"."
+        return newtag+newlabel
+      end
+    end
+    return defaultlabel
+  end
 
   def process_refmarkup(instring)
     ostring = []
     instring.each{|x| 
       y=x.gsub(/ref\(sect\:((\w|\d|\:)*)\)/){|s|  
-	"\\ref{sect:"+ @@latex_section_table[$1].to_s + "}"}
-      z=y.gsub(/ref\(((\w|\d|\:)*)\)/){|s|  "\\ref{"+ $1 + "}"}
+        labelbody = $1
+        print "LABELY = ",labelbody, "\n" 
+        if @@latex_section_table[labelbody]
+          labelbody =  @@latex_section_table[labelbody] 
+        end
+	"\\ref{sect:"+ labelbody.to_s + "}"
+      }
+#      z=y.gsub(/ref\(((\w|\d|\:)*)\)/){|s|  "\\ref{"+ $1 + "}"}
+      z=y.gsub(/ref\(((\w|\d|[:_#.\/\\])*)\)/){|s| 
+        label = $1
+        print "LABEL = ",label, "\n" 
+        if label =~ /(.*)\#(.*)/
+            dirname = $1
+          reallabel = $2
+          tag=gettexauxlabel(dirname,reallabel)
+        else
+          tag = "\\ref{#{label}}"
+        end
+        tag
+      }
       ostring.push(z)
-		 }
+    }
     ostring
   end
 
@@ -282,6 +325,8 @@ END
 	nosectionnumber = true
       elsif /^\s*:label:\s*$/ =~ header_candidate
 	labeltext=s.split[1]
+        labeltext = "sect:"+labeltext if labeltext !~ /^sect/
+	ostring.push("\\label{#{labeltext}}")
       else
 	ostring.push(s)
       end
@@ -504,6 +549,9 @@ end
 
 module Acsdoc
   include Rdoctotex
+
+  @@auxfilename = ".acsdoc.aux"
+  @@volindexfilename = "../volumetable.dat"
 
   @@prompt = "|gravity> "
 
@@ -825,6 +873,7 @@ module Acsdoc
 
   @@tex_equation_number = 0
   @@tex_labels = {}
+  @@tex_labels_filename = {}
 
   def process_tex_equations(s,instring,dirname)
     @@tex_equation_number += 1
@@ -834,6 +883,7 @@ module Acsdoc
     while (s = instring.shift ) =~ /\S/
       if s =~ /\\label\{(\S+)\}/ 
 	@@tex_labels[$1]=@@tex_equation_number
+        @@tex_labels_filename[$1]=$current_cp_filename
 	namelabel = "<name>" + $1 + "</name>\n"
       end
       texcode += s + "\n"
@@ -913,6 +963,7 @@ module Acsdoc
     a=s.chomp.split
     figurefilename,size,label = a[1],a[2],a[3]
     @@tex_labels[label]=@@figure_number
+    @@tex_labels_filename[label]=$current_cp_filename
     namelabel = "<name>" + label + "</name>\n"
     caption = ""
     while (s = instring.shift ) =~ /\S/
@@ -942,14 +993,63 @@ module Acsdoc
     ostring
   end
 
+  def to_rdocname(name)
+    "_"+name.gsub(/\./,"_")+".html"
+  end
+
+  def getauxlabel(dirname, label)
+    print "filename = "+dirname+"/"+@@auxfilename+"\n"
+    begin
+      x = Marshal.load(open(dirname+"/"+@@auxfilename,"r"))
+      tex_labels, tex_labels_filename,  section_label_table,  sectionheaders = x
+      if tex_labels[label]
+        location = "../../../"+dirname+"/doc/files/_/"+
+          to_rdocname(tex_labels_filename[label])
+        p dirname[3,dirname.length]
+        p @@volindex[dirname[3,dirname.length]]
+        newtag=@@volindex[dirname[3,dirname.length]]
+        tag =  newtag ? "v"+newtag.to_s : dirname+"."
+        p location
+        p tag
+        return [location,tag+tex_labels[label].to_s]
+      else
+        return [nil,nil]
+      end
+    rescue
+      print "aux file in dir #{dirname} does not exist. \n"
+      return [nil,nil]
+    end 
+  end
 
   def process_tex_labels(instring,dirname)
-    x=instring.gsub(/ref\(sect:((\w|\d)*)\)/){|s| 
-      "<ntaga>"+ @@section_label_table[$1] + "</ntaga><ntagb>"+
-       @@section_label_table[$1]+ "</ntagb>"
+    x = instring
+    x.gsub(/ref\(((\w|\d|[:_#.\/])*)\)/){|s| 
+      label = $1
+      print "LABEL = ",label, "\n" 
+      if label =~ /(.*)\#(.*)/
+          dirname = $1
+        reallabel = $2
+        filename, tag=getauxlabel(dirname,reallabel)
+        if filename
+          "("+tag+")["+filename+"\#"+reallabel+"]"
+        else
+          "(unknown label #{label})"
+        end
+      elsif @@tex_labels[label] 
+        if @@tex_labels_filename[label]==$current_cp_filename
+          "<ntaga>"+ label + "</ntaga><ntagb>"+ @@tex_labels[label].to_s+ "</ntagb>"
+        else
+          "("+@@tex_labels[label].to_s+")["+
+            to_rdocname(@@tex_labels_filename[label])+"\#"+label+"]"
+        end
+      elsif @@old_tex_labels[label]
+          "("+@@old_tex_labels[label].to_s+")["+
+            to_rdocname(@@old_tex_labels_filename[label])+"\#"+label+"]"
+      else
+        "(unknown label #{label})"
+      end
     }
-    x.gsub(/ref\(((\w|\d|\:)*)\)/){|s| 
-      "<ntaga>"+ $1 + "</ntaga><ntagb>"+ @@tex_labels[$1].to_s+ "</ntagb>"}
+
   end
 
 @@sectionheadercounter=0
@@ -968,24 +1068,40 @@ module Acsdoc
 
   @@section_label_table={}
 
+  @@section_counters=[]
   def process_section_headers(instring,filename)
     labeltext=nil
     ostring=""
+    lastsectionnumber=nil
     instring.each_line{|str|
       if str =~ /^\s*:label:\s/
 	labeltext=str.split[1]
-	print "Label #{labeltext} found\n"
+        labeltext = "sect:"+labeltext if labeltext !~ /^sect/
+        ostring+= "<name>#{labeltext}</name>"
+	@@tex_labels[labeltext]=lastsectionnumber
+        @@tex_labels_filename[labeltext]=$current_cp_filename
+	print "Label #{labeltext} as #{lastsectionnumber}\n"
+
       else
 	x=str.gsub(/^(=+)\s*(.+)$/){|s| 
 	  sectionlevel = $1.length
 	  sectionname = $2
+          if @@section_counters[sectionlevel]==nil
+            @@section_counters[sectionlevel]=1
+          else
+            @@section_counters[sectionlevel]+=1
+          end
+          @@section_counters= @@section_counters[0..sectionlevel]
+          number_label = @@section_counters[1..sectionlevel].join(".")+"."
+          sectionname = number_label+ " "+ sectionname if $numbersections
 	  sectionlabel="rdocsect"+@@sectionheadercounter.to_s
 	  @@sectionheaders.push [sectionlabel,sectionlevel,sectionname,filename]
 	  @@sectionheadercounter+= 1
 	  labeltext = sectionname if labeltext==nil
-	  @@section_label_table={labeltext,sectionlabel}
+	  @@section_label_table[labeltext]=sectionlabel
+          lastsectionnumber=number_label[0,number_label.length-1]
 	  labeltext=nil
-	  s+"\n<name>" + sectionlabel + "</name>\n"
+	  "="*sectionlevel+ " "+sectionname+ "\n<name>" + sectionlabel + "</name>\n"
 	} 
 	ostring +=x
       end
@@ -1410,12 +1526,54 @@ END
     f.close
     fout.close
   end
+
+  def dump_aux
+    f=open(@@auxfilename,"w+")
+    f.print Marshal.dump([@@tex_labels, 
+                           @@tex_labels_filename, 
+                           @@section_label_table,
+                           @@sectionheaders])
+    f.close
+  end
+
+  def load_old_aux
+    @@old_tex_labels= {}
+    @@old_tex_labels_filename= {}
+    @@old_section_label_table= {}
+    @@old_sectionheaders = {}
+    begin 
+      x = Marshal.load(open(@@auxfilename,"r"))
+      @@old_tex_labels, @@old_tex_labels_filename,  @@old_section_label_table,  @@old_sectionheaders = x
+      p @@old_tex_labels
+      p @@old_tex_labels_filename
+      p @@old_section_label_table
+      p @@old_sectionheaders
+    rescue
+      print "aux file does not exist. \n"
+    end 
+  end
+
+  def load_volindex
+    begin 
+      @@volindex = Marshal.load(open(@@volindexfilename,"r"))
+    rescue
+      print "volindex file does not exist. \n"
+      @@volindex={}
+    end 
+    $volindex = @@volindex
+  end
 end
 
 
 # :segment start: acsdoc
 include Acsdoc
+
+## define some global variables used as options, before reading in 
+## the initialization file 
+$numbersections=true
 initacs
+load_old_aux
+load_volindex
 del_flag = true
 del_file_list = Array.new
 tolatex_flag = false
@@ -1429,6 +1587,7 @@ ARGV.collect! do |a|
       else
 	dot_a = File.dirname(a)+"/"+File.basename(a,extention)+ ".tex"
       end
+      $current_cp_filename = a
       prep_cp(a, dot_a, tolatex_flag)
       a = dot_a
       del_file_list.push(dot_a)
@@ -1488,6 +1647,7 @@ unless tolatex_flag
   end
   add_toc
   process_css
+  dump_aux
 end
 
 create_navigations_for_cp_files(ARGV)
@@ -1495,7 +1655,6 @@ if del_flag
   del_file_list.each do |f|
     File.delete(f)
   end
-
-
 end
+
 # :segment end:

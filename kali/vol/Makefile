@@ -47,3 +47,27 @@ clean:
 	$(MAKE) -C symplectic clean
 	$(MAKE) -C vision clean
 	$(MAKE) -C documentation clean
+cleandoc:
+	$(MAKE) -C acs_data_format cleandoc
+	$(MAKE) -C binary_trees cleandoc
+	$(MAKE) -C black_hole_trees cleandoc
+	$(MAKE) -C code_management cleandoc
+	$(MAKE) -C command_line cleandoc
+	$(MAKE) -C command_line_b cleandoc
+	$(MAKE) -C graphics cleandoc
+	$(MAKE) -C indiv_timesteps_1 cleandoc
+	$(MAKE) -C indiv_timesteps_2 cleandoc
+	$(MAKE) -C indiv_timesteps_3 cleandoc
+	$(MAKE) -C lab_assistant cleandoc
+	$(MAKE) -C lab_tools cleandoc
+	$(MAKE) -C n_body_problem cleandoc
+	$(MAKE) -C plummer cleandoc
+	$(MAKE) -C polytropes cleandoc
+	$(MAKE) -C shared_timesteps cleandoc
+	$(MAKE) -C speedup cleandoc
+	$(MAKE) -C two_body_problem_1 cleandoc
+	$(MAKE) -C two_body_problem_2 cleandoc
+	$(MAKE) -C runge_kutta cleandoc
+	$(MAKE) -C symplectic cleandoc
+	$(MAKE) -C vision cleandoc
+	$(MAKE) -C documentation cleandoc

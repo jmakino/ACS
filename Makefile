@@ -5,6 +5,8 @@ clean:
 	$(MAKE) -C ok   clean
 	$(MAKE) -C kali clean
 
+cleandoc:
+	$(MAKE) -C kali cleandoc
 newversion: all
 	ruby src/utilities/acsmaketar.rb
 newversion_install: 

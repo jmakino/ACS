@@ -155,6 +155,16 @@ but equation number is maintained within acsdoc.rb. To refer to
 an equation, use ref(equation1)  (ref ( equation1 ), with no space). equation label must be composed of
 alphanumerics and ":". "_" or any other symbol is currently illegal.
 
+You should be able to refer to equations in other .cp/.ok file, when
+they are processed together. Equation (ref(newtonfull)) is in file
+sample2.cp.
+
+One should also be able to refer to equations in other
+volumes as Equation (ref(../coherent_programming#newtonfull)), but not
+sure...
+
+
+
 I also added numbered figures, in the form
 
   : figure : name_of_the_figure_file size label
@@ -182,6 +192,11 @@ One can add links to URL by using the specal form
 creates: 
 <web>http:www.artcompsci.org|ACS homepage</web>.
 
+
+== Section numbers
+
+By default (unless specified in some way), acsdoc.rb add
+chapter/section numbers in between "=*" and real title.
 
 
 == Changes made to rdoc itself
