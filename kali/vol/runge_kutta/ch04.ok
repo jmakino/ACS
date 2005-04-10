@@ -191,7 +191,7 @@ Even though we can construct a second-order algorithm for the position,
 we can only find a first-order algorithm for the velocity.
 
 *Bob*: And I presume that there is no point in using a higher-order algorithm
-for the position that for the velocity, since the overall order of the
+for the position than for the velocity, since the overall order of the
 integration scheme must be the lowest order of that of the components.
 Hmmm.  Is that so?
 

@@ -46,7 +46,7 @@ module Integrator_forward
   end
 end
 
-module Integrator_forwardplus
+module Integrator_forward_plus
 
   include Integrator_pec_mode
 
@@ -957,7 +957,7 @@ class Worldera
     @cpu_time_used_in_last_evolve_call = Process.times.utime - cpu_time
     next_era(dt_era)
   end
-
+
   def acc(wl, pos, t)
     acc = pos*0                            # null vectors of the correct length
     @worldline.each do |w|
@@ -973,7 +973,7 @@ class Worldera
     end
     gacc 
   end
-
+
   def acc_and_jerk(wl, pos, vel, t)
     acc = jerk = pos*0                  # null vectors of the correct length
     @worldline.each do |w|
@@ -1013,19 +1013,16 @@ class Worldera
   def report_energy
     take_snapshot(@start_time).total_energy
   end
-
+
   def write_diagnostics(t, initial_energy, unscheduled_output = false)
-#    STDERR.print "at "
-#    STDERR.print "unscheduled " if unscheduled_output
-#    STDERR.print "time t = #{sprintf("%g", t)} "
     STDERR.print "  < unscheduled > " if unscheduled_output
     STDERR.print "t = #{sprintf("%g", t)} "
     cen = census(t)
     STDERR.print "(after #{cen[0..2].inject{|n,dn|n+dn}}, "
-    STDERR.print "#{cen[3]}, #{cen[4]} steps <,=,> t}\n"
+    STDERR.print "#{cen[3]}, #{cen[4]} steps <,=,> t)\n"
     take_snapshot(t).write_diagnostics(initial_energy)
   end
-
+
   def wordline_with_minimum_extrapolation
     t = VERY_LARGE_NUMBER
     wl = nil
@@ -1177,7 +1174,7 @@ include Output
     @initial_energy = @era.report_energy
     diagnostics_and_output(c, true)
   end
-
+
   def evolve(c)
     cpu_time_max = c.cpu_time_max
     while @era.start_time < @t_end
