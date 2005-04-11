@@ -573,7 +573,7 @@ module Acsdoc
     @@outputcount = fid if fid >   @@outputcount 
     f=open(dirname+"/"+fname,"r")
     while s = f.gets
-      p s
+      p s if $DEBUG
       if s.chomp == "COMMAND"
 	command = f.gets.chomp
       end
@@ -741,8 +741,10 @@ module Acsdoc
     print "preprocess file #{name}\n" if $DEBUG
     dir=File.dirname(name)
     fname=File.basename(name)
+    p dir if $DEBUG
+    p fname if $DEBUG
     if fname[0]== "."[0]
-      if fname[1,fname.length-1] =~ /^(\w*\.(h|c|rb|C|cc))/
+      if fname[1,fname.length-1] =~ /^(\S*\.(h|c|rb|C|cc))/
         filename = dir+ "/"+$1
         raise "File #{filename} does not exist" unless File.exist?(filename)
         process_srcfile(filename)
@@ -775,7 +777,7 @@ module Acsdoc
         print "comment line skipped ",s, "\n"
       elsif s =~ /:in.*code:/ and s.index("\":inccode:\"")==nil
 	s.sub!(/:in.*code:/, ':include: ')
-        raise "#{s} failed to open file" unless file_is_there(s.split[1])
+        raise "failed to open file #{s.split[1]}" unless file_is_there(s.split[1])
 	ostring = ostring +  "---\n"
 	ostring = ostring +  s
 	ostring = ostring +  "---\n"
@@ -1036,12 +1038,8 @@ module Acsdoc
       if tex_labels[label]
         location = "../../../"+dirname+"/doc/files/_/"+
           to_rdocname(tex_labels_filename[label])
-        p dirname[3,dirname.length]
-        p @@volindex[dirname[3,dirname.length]]
         newtag=@@volindex[dirname[3,dirname.length]]
         tag =  newtag ? "v"+newtag.to_s : dirname+"."
-        p location
-        p tag
         return [location,tag+tex_labels[label].to_s]
       else
         return [nil,nil]
@@ -1152,7 +1150,7 @@ module Acsdoc
   def process_tex_weblinks(instring)
     ostring=instring.gsub(/(\s)<web>(.+?)<\/web>/m){ linktext = $2
       blank=$1
-      p linktext
+      p linktext  if $DEBUG
       if linktext =~ /(.*)\|(.*)/m
 	url=($1)
 	text=$2
@@ -1580,10 +1578,12 @@ END
     begin 
       x = Marshal.load(open(@@auxfilename,"r"))
       @@old_tex_labels, @@old_tex_labels_filename,  @@old_section_label_table,  @@old_sectionheaders = x
-      p @@old_tex_labels
-      p @@old_tex_labels_filename
-      p @@old_section_label_table
-      p @@old_sectionheaders
+      if $DEBUG
+        p @@old_tex_labels
+        p @@old_tex_labels_filename
+        p @@old_section_label_table
+        p @@old_sectionheaders
+      end
     rescue
       print "aux file does not exist. \n"
     end 
