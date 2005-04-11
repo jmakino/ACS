@@ -1134,7 +1134,9 @@ module Acsdoc
   end
 
 
-
+  def process_some_special_characters(instring)
+    instring.gsub(/\\>/m,">")
+  end
   def prep_cp(infile, outfile,tolatex_flag)
     $infile = infile
     begin
@@ -1168,6 +1170,7 @@ module Acsdoc
       tmp2= process_section_headers(tmp2,infile)
       tmp2= process_tex_labels(tmp2,dirname);
       tmp2= process_tex_weblinks(tmp2)
+      tmp2= process_some_special_characters(tmp2)
     end
     ofile.print tmp2
     ofile.close

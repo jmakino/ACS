@@ -29,6 +29,7 @@ The changes we made are
 
   This is made with "link: sample.gif" but without space after link:
 
+
 * added a pair of directives, ":segment start:" and ":segment end:".
   texts between  ":segment start: segment name" and corresponding
   ":segment end:" will be stored the file .foo.rb-segment.name, where
@@ -87,7 +88,7 @@ END
   :commandoutput: cat aho
   :command: rm aho
 
-I changed the prompt to "yebisu>" using ":prompt:" directive here.
+I changed the prompt to "yebisu\>" using ":prompt:" directive here.
 
 :prompt: yebisu>
  
@@ -154,13 +155,12 @@ but equation number is maintained within acsdoc.rb. To refer to
 an equation, use ref(equation1)  (ref ( equation1 ), with no space). equation label must be composed of
 alphanumerics and ":". "_" or any other symbol is currently illegal.
 
-You should be able to refer to equations in other .cp/.ok file, when
-they are processed together. Equation (ref(newtonfull)) is in file
-sample2.cp.
+You should be able to refer to equations in other .ok file, when
+they are processed together. 
+
 
 One should also be able to refer to equations in other
-volumes as Equation (ref(../documentation#equation1)), but not
-sure...
+volumes as Equation (ref(../runge_kutta#rk2)).
 
 
 
@@ -168,6 +168,11 @@ I also added numbered figures, in the form
 
   : figure : name_of_the_figure_file size label
   caption text for the figure.
+
+Figure ref(tiogaicon) is an example.
+
+:figure: tioga_icon.ps 8cm tiogaicon
+Icon for Tioga system
 
 
 == Table of contents
@@ -184,9 +189,9 @@ directive.
 == Links to other URL
 
 One can add links to URL by using the specal form
-\<web>url|linktext</web>. For example,
+\<web\>url|linktext\</web\>. For example,
 
-\<web>http: www. artcompsci.org|ACS homepage</web>
+\<web\>http: www. artcompsci.org|ACS homepage\</web\>
 
 creates: 
 <web>http:www.artcompsci.org|ACS homepage</web>.
@@ -237,7 +242,7 @@ This one allows the use of epsf package (style file), and macros.tex
 is included after \begin{document}.
 
 
-== Cros-file links etc and more on TeX equations
+== Cross-file links etc and more on TeX equations
 
 :label: test
 
@@ -281,7 +286,7 @@ source file to see how to do these stuff.
 
 Fonts: *bold*, +typewriter+, and _italic_
 
-The things should noe be interpreted: a_to_f_d.
+The things should not be interpreted: a_to_f_d.
 
 More experiments on fonts: <em>italic phrase</em>, <tt>typewriter
 words</tt>, and <b>boldface text</b>. How is this transformed?
