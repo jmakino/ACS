@@ -235,7 +235,7 @@ clearly yet.  I bet looking at the code will makes things clearer.
 heart of the matter, the method +evolve+.  For comparison, here is
 what +evolve+ looked like in the case of shared time steps:
 
- :inccode:.nbody_sh1.rb+evolve
+ :inccode:../shared_timesteps/.nbody_sh1.rb+evolve
 
 And here is how I rewrote it for the individual time step case:
 

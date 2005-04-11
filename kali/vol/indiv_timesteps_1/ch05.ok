@@ -102,8 +102,8 @@ we do with the option, well, . . . I've forgotten which option.  Let's
 ask Ruby to list, first, all the options, and then to explain what the
 output switch really does:
 
- :commandoutput: ruby world1.rb -h
- :commandoutput: ruby world1.rb --help -r
+ :commandoutput: Kali world1.rb -h
+ :commandoutput: Kali world1.rb --help -r
 
 Ah, yes, the <tt>-r</tt> option, or more descriptively, the
 <tt>--world_output</tt>.

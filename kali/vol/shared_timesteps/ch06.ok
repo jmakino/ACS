@@ -137,7 +137,7 @@ which shows the last three lines.
 
 *Bob*: Okay, let us call the file <tt>acstail.rb</tt>.  How about this?
 
- :inccode: .acstail.rb
+ :inccode: ../acs_data_format/.acstail.rb
 
 == Testing <tt>tail</tt>
 

@@ -239,33 +239,33 @@ results.
 
 *Bob*: Fine with me.  Let's start with the same initial conditions:
 
- :commandoutput: ruby mkplummer.rb -n 4 -s 1 | ruby nbody_set_id.rb > test.in
+ :commandoutput: Kali mkplummer.rb -n 4 -s 1 | Kali nbody_set_id.rb > test.in
 
 We will have to try a few different time step accuracy parameters, to
 get roughly the right relative energy conservation.  This may take a few
 repetitions.  I'll start with constant time steps:
 
- :commandoutput: ruby nbody_cst1.rb -t 1 < test.in > tmpc.out
- :commandoutput: ruby nbody_cst1.rb -t 1 -c 0.0001 < test.in > tmpc.out
+ :commandoutput: Kali nbody_cst1.rb -t 1 < test.in > tmpc.out
+ :commandoutput: Kali nbody_cst1.rb -t 1 -c 0.0001 < test.in > tmpc.out
 
 A bit better than needed, but this will do.  Now for shared time steps:
 
- :commandoutput: ruby nbody_sh1.rb -t 1 --exact_time < test.in > tmps.out
- :commandoutput: ruby nbody_sh1.rb -c 0.003 -t 1 --exact_time < test.in > tmps.out
- :commandoutput: ruby nbody_sh1.rb -c 0.002 -t 1 --exact_time < test.in > tmps.out
+ :commandoutput: Kali nbody_sh1.rb -t 1 --exact_time < test.in > tmps.out
+ :commandoutput: Kali nbody_sh1.rb -c 0.003 -t 1 --exact_time < test.in > tmps.out
+ :commandoutput: Kali nbody_sh1.rb -c 0.002 -t 1 --exact_time < test.in > tmps.out
 
 Okay, that one's below our <tex>$10^{-12}$</tex> threshold too.  Now
 for individual time steps:
 
- :commandoutput: ruby nbody_ind1.rb -t 1 < test.in > tmpi.out
- :commandoutput: ruby nbody_ind1.rb -c 0.002 -t 1 < test.in > tmpi.out
+ :commandoutput: Kali nbody_ind1.rb -t 1 < test.in > tmpi.out
+ :commandoutput: Kali nbody_ind1.rb -c 0.002 -t 1 < test.in > tmpi.out
 
 Perfect, just on the mark.
 
 *Alice*: And now let's check whether the results are really similar:
 
- :commandoutput: cat tmpc.out tmps.out | ruby nbody_diff.rb
- :commandoutput: cat tmps.out tmpi.out | ruby nbody_diff.rb
+ :commandoutput: cat tmpc.out tmps.out | Kali nbody_diff.rb
+ :commandoutput: cat tmps.out tmpi.out | Kali nbody_diff.rb
 
 *Bob*: There are larger than I would have expected.  Especially the constant
 time step run is off by an amount that is two orders of magnitude larger
@@ -280,13 +280,13 @@ the phase space distance should give the same result as the energy error.
 time step size.  That should increase the accuracy by more than an order
 of magnitude, bringing all three codes more in line:
 
- :commandoutput: ruby nbody_cst1.rb -t 1 -c 0.00005 < test.in > tmpc.out
+ :commandoutput: Kali nbody_cst1.rb -t 1 -c 0.00005 < test.in > tmpc.out
 
 And let's now compare all three pairs:
 
- :commandoutput: cat tmpc.out tmps.out | ruby nbody_diff.rb
- :commandoutput: cat tmpc.out tmpi.out | ruby nbody_diff.rb
- :commandoutput: cat tmps.out tmpi.out | ruby nbody_diff.rb
+ :commandoutput: cat tmpc.out tmps.out | Kali nbody_diff.rb
+ :commandoutput: cat tmpc.out tmpi.out | Kali nbody_diff.rb
+ :commandoutput: cat tmps.out tmpi.out | Kali nbody_diff.rb
 
 *Alice*: Now they are indeed all comparable.  Good!  I am beginning to believe
 that we may have done the right thing.

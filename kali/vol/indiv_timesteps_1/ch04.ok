@@ -147,20 +147,20 @@ that we get the same answers as before.  Let us apply our standard test
 again, using the by now familiar initial conditions for our 4-particle
 system:
 
- :commandoutput: ruby mkplummer.rb -n 4 -s 1 | ruby nbody_set_id.rb > test.in
+ :commandoutput: Kali mkplummer.rb -n 4 -s 1 | Kali nbody_set_id.rb > test.in
 
 Here is our comparison run for the older code:
 
- :commandoutput: ruby nbody_ind1.rb -t 1 -c 0.001 < test.in > tmpi.out
+ :commandoutput: Kali nbody_ind1.rb -t 1 -c 0.001 < test.in > tmpi.out
 
 And here is what our new code gives:
 
- :commandoutput: ruby world1.rb -t 1 -c 0.001 < test.in > tmpw.out
+ :commandoutput: Kali world1.rb -t 1 -c 0.001 < test.in > tmpw.out
 
 Aha, at least the number of time steps is very similar, and so is the
 total energy error.  Here is the distance in phase space
 
- :commandoutput: cat tmpi.out tmpw.out | ruby nbody_diff.rb
+ :commandoutput: cat tmpi.out tmpw.out | Kali nbody_diff.rb
 
 == Almost Perfect Scaling
 
@@ -172,15 +172,15 @@ distance will become larger.
 
 *Bob*: Why not.  When we take time steps that are ten times longer, we get:
 
- :commandoutput: ruby nbody_ind1.rb -t 1 -c 0.01 < test.in > tmpi.out
+ :commandoutput: Kali nbody_ind1.rb -t 1 -c 0.01 < test.in > tmpi.out
 
 I bet the new code will show a similar error:
 
- :commandoutput: ruby world1.rb -t 1 -c 0.01 < test.in > tmpw.out
+ :commandoutput: Kali world1.rb -t 1 -c 0.01 < test.in > tmpw.out
 
 *Alice*: And so it does.  So now let us see whether the phase space difference
 is also be comparable:
 
- :commandoutput: cat tmpi.out tmpw.out | ruby nbody_diff.rb
+ :commandoutput: cat tmpi.out tmpw.out | Kali nbody_diff.rb
 
 *Bob*: Which it is.  Okay, we seem to have done something right.

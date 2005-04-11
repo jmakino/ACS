@@ -17,7 +17,7 @@ for example.  There are only two lines that are not exactly the same as
 we had before, line four and five of the body of the definition.
 In the shared time step case, we had:
 
- :inccode:.nbody_sh1.rb-2
+ :inccode:../shared_timesteps/.nbody_sh1.rb-2
 
 where in the individual time step case, we have instead:
 
@@ -89,7 +89,7 @@ Hermite algorithm.  Let's compare this with the shared time step
 case.  There we sent the Hermite algorithm to individual particles
 using the following method on the +NBody+ level:
 
- :inccode:.nbody_sh1.rb+hermite
+ :inccode:../shared_timesteps/.nbody_sh1.rb+hermite
 
 Lines five and six of the body of this method do exactly what is now done
 in <tt>predict_step</tt>, which I will show here again:

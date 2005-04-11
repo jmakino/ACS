@@ -266,12 +266,12 @@ some particles, and hence different orbits.  The way to counter this
 would be to make that last option smaller, also by the same factor of two.
 Let me try it:
 
- :commandoutput: ruby mkplummer.rb -n 4 -s 1 | ruby nbody_set_id.rb > tmp.in
- :commandoutput: ruby world1.rb -t 1 < tmp.in > tmp1.out
- :commandoutput: ruby world1.rb -t 1 -e 0.02 < tmp.in > tmp2.out
- :commandoutput: ruby world1.rb -t 1 -e 0.02 -m 0.5 < tmp.in > tmp3.out
- :commandoutput: cat tmp1.out tmp2.out | ruby nbody_diff.rb
- :commandoutput: cat tmp1.out tmp3.out | ruby nbody_diff.rb
+ :commandoutput: Kali mkplummer.rb -n 4 -s 1 | Kali nbody_set_id.rb > tmp.in
+ :commandoutput: Kali world1.rb -t 1 < tmp.in > tmp1.out
+ :commandoutput: Kali world1.rb -t 1 -e 0.02 < tmp.in > tmp2.out
+ :commandoutput: Kali world1.rb -t 1 -e 0.02 -m 0.5 < tmp.in > tmp3.out
+ :commandoutput: cat tmp1.out tmp2.out | Kali nbody_diff.rb
+ :commandoutput: cat tmp1.out tmp3.out | Kali nbody_diff.rb
 
 *Alice*: Yes, that works, but a typical user is not likely to think about
 this, and anyway, modularity requires us to decouple the notions of

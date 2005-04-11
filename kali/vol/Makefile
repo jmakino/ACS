@@ -22,7 +22,30 @@ all:
 	$(MAKE) -C symplectic
 	$(MAKE) -C vision
 	$(MAKE) -C documentation
-
+acsdoc:
+	$(MAKE) -C acs_data_format acsdoc
+	$(MAKE) -C binary_trees acsdoc
+	$(MAKE) -C black_hole_trees acsdoc
+	$(MAKE) -C code_management acsdoc
+	$(MAKE) -C command_line acsdoc
+	$(MAKE) -C command_line_b acsdoc
+	$(MAKE) -C graphics acsdoc
+	$(MAKE) -C indiv_timesteps_1 acsdoc
+	$(MAKE) -C indiv_timesteps_2 acsdoc
+	$(MAKE) -C indiv_timesteps_3 acsdoc
+	$(MAKE) -C lab_assistant acsdoc
+	$(MAKE) -C lab_tools acsdoc
+	$(MAKE) -C n_body_problem acsdoc
+	$(MAKE) -C plummer acsdoc
+	$(MAKE) -C polytropes acsdoc
+	$(MAKE) -C shared_timesteps acsdoc
+	$(MAKE) -C speedup acsdoc
+	$(MAKE) -C two_body_problem_1 acsdoc
+	$(MAKE) -C two_body_problem_2 acsdoc
+	$(MAKE) -C runge_kutta acsdoc
+	$(MAKE) -C symplectic acsdoc
+	$(MAKE) -C vision acsdoc
+	$(MAKE) -C documentation acsdoc
 clean:
 	$(MAKE) -C acs_data_format clean
 	$(MAKE) -C binary_trees clean
