@@ -29,7 +29,7 @@ Long name:  --local_only
 Value type:  bool
 Default value: nil
 Description: if set, only the local archive file is made
-Global variable: localonly
+Variable name: localonly
 Long description:
 When this option is set, #{$0} does create a new release,
 but does not upload the release to the web server.
@@ -40,7 +40,7 @@ Long name:  --web_only
 Value type:  bool
 Default value: nil
 Description: if set, web update is run, from existing release
-Global variable: webonly
+Variable name: webonly
 Long description:
 When this option is set, #{$0} does not create a new release,
 but still uploads the existing release to the web server.
@@ -51,7 +51,7 @@ Long name:  --release_name
 Value type:  string
 Default value:NONE
 Description: New release name
-Global variable: releasename
+Variable name: releasename
 Long description:
 New release name (specify "1.0" for version 1.0). If not specified,
 #{$0} requests input from standard input.
@@ -71,7 +71,7 @@ p $releasename
 installhost="grape.astron.s.u-tokyo.ac.jp"
 installuname="acs"
 installdir="WWW/artcompsci"
-
+$toplevelname="acs/"
 #
 # filenames will be acs_(version).tgz acs_lite_(version).tgz
 # 
@@ -165,12 +165,15 @@ unless $webonly
   
   msafiles,excludefiles = all_files("msa", /^(\.svn|web_old)$/)
   STDERR.print "msa files finished ..."
-  
+  p svnlist[0]
+  [svnlist,doclist,excludefiles].each{|x|x.map!{|y| $toplevelname+y}
+  }
+  p svnlist[0]
   open("tmp.tarfilelist","w"){
     |f| f.print(svnlist.join("\n"))
   }
   open("tmp.tarfilelist2","w"){
-    |f| f.print((svnlist+doclist+["msa"]).join("\n"))
+    |f| f.print((svnlist+doclist+[$toplevelname+"msa"]).join("\n"))
   }
   open("tmp.tarfilelist3","w"){
     |f| f.print((excludefiles).join("\n"))
@@ -205,13 +208,15 @@ end
 tarfilename= storedir+"/acs-#{newversion}.tgz"
 tarlitefilename= storedir+"/acs-lite-#{newversion}.tgz"
 
+topd=$toplevelname
+
 unless $webonly
   STDERR.print "Creating  #{tarfilename}...."
-  system "tar czf #{tarfilename} -X tmp.tarfilelist3 `cat tmp.tarfilelist2`"
+  system "cd ../; tar czf #{topd}#{tarfilename} -X #{topd}tmp.tarfilelist3 `cat #{topd}tmp.tarfilelist2`"
   STDERR.print "finished\n"
   
   STDERR.print "Creating  #{tarlitefilename}...."
-  system "tar czf  #{tarlitefilename} `cat tmp.tarfilelist`"
+  system "cd ../; tar czf  #{topd}#{tarlitefilename} `cat #{topd}tmp.tarfilelist`"
   STDERR.print "finished\n"
   system "rm tmp.tarfilelist*"
   system "echo '' >> #{releasefile}"
