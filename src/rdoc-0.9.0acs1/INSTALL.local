@@ -1,0 +1,14 @@
+= Local installation instruction
+
+ P. Hut and J. Makino 2005-
+
+Just run
+
+  ruby install.rb
+
+as supersuser. Note that this will replace your installed rdoc (if you
+have any). This may result in some problem, since some of new rdoc
+document for some Ruby sources might work only with later versions of
+Rdoc.  We plan to become independent of rdoc in some future.
+
+
