@@ -338,13 +338,13 @@ END
     end
     ostring
   end
-  
+
   def process_include(instring)
     ostring=[] 
     while s=instring.shift
       if /^(\s*)\:include\:\s*(\S+)$/  =~ s
-	indent = $1
-	infile= open($2,"r")
+        indent = $1
+        infile= open($2,"r")
 #	print "indent = ", indent, "\n"
 	while ss=infile.gets
 	  ostring.push(indent+ss.chomp!)
@@ -721,6 +721,36 @@ module Acsdoc
     loc
   end
 
+  def process_srcfile(a)
+    if File.exist?(a)
+      if  a=~ /\.rb$/
+        prep_rb(a)
+        prep_rb_defs(a)
+        prep_rb_hashes(a)
+        prep_rb_special_comments(a)
+        prep_rb_special_comments_for_partfiles(a)
+      elsif a =~ /\.(h|C|c|cc)$/
+        prep_rb(a)
+        prep_c_defs(a)
+        prep_rb_hashes(a)
+      end
+    end
+  end
+  
+  def file_is_there(name)
+    print "preprocess file #{name}\n" if $DEBUG
+    dir=File.dirname(name)
+    fname=File.basename(name)
+    if fname[0]== "."[0]
+      if fname[1,fname.length-1] =~ /^(\w*\.(h|c|rb|C|cc))/
+        filename = dir+ "/"+$1
+        raise "File #{filename} does not exist" unless File.exist?(filename)
+        process_srcfile(filename)
+      end
+    end
+    return true if File.exist?(name)
+  end
+
 # prep_cp handles the following tags (in the form of, for example,
 # ":output:" in the case of "output" below: 
 
@@ -744,7 +774,8 @@ module Acsdoc
       if s.index("#") == 0
         print "comment line skipped ",s, "\n"
       elsif s =~ /:in.*code:/ and s.index("\":inccode:\"")==nil
-	s.sub!(/:in.*code:/, ':include:')
+	s.sub!(/:in.*code:/, ':include: ')
+        raise "#{s} failed to open file" unless file_is_there(s.split[1])
 	ostring = ostring +  "---\n"
 	ostring = ostring +  s
 	ostring = ostring +  "---\n"
@@ -1268,13 +1299,14 @@ module Acsdoc
     ".cc", /\/\/(\d+)(.*)/,
   }
   def prep_rb_hashes(infile)
+    print "prep_rb_hashes for file #{infile}\n" if $DEBUG
     begin
       ifile = open(infile, "r")
     rescue
       raise "#{infile} does not exist"
     end
 
-    if infile =~ /\.(\S+)$/
+    if infile =~ /\.(\w+)$/
       extension = "."+$1
     else
       raise "File name #{infile} has no extention part"
@@ -1287,6 +1319,7 @@ module Acsdoc
 	print segment_name if $DEBUG
 	outfile = File.dirname(infile)+"/."+File.basename(infile) +
 	  "-" + segment_name
+        print "prep_rb_hashed outfile = #{outfile}\n" if $DEBUG
 	if hashnames.index(outfile) 
 	  openmode= "a+" 
 	else
