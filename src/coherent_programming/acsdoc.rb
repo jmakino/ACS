@@ -1580,7 +1580,7 @@ load_volindex
 del_flag = true
 del_file_list = Array.new
 tolatex_flag = false
-reulse_fpag = false
+
 ARGV.collect! do |a|
   if a =~ /\.((cp)|(ok))$/
     extention = "."+$1
