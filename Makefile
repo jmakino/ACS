@@ -4,6 +4,9 @@ all:
 acsdoc:
 	$(MAKE) -C ok   acsdoc
 	$(MAKE) -C kali acsdoc
+acscode:
+	$(MAKE) -C ok   acscode
+	$(MAKE) -C kali acscode
 clean:
 	$(MAKE) -C ok   clean
 	$(MAKE) -C kali clean

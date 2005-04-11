@@ -94,3 +94,27 @@ cleandoc:
 	$(MAKE) -C symplectic cleandoc
 	$(MAKE) -C vision cleandoc
 	$(MAKE) -C documentation cleandoc
+acscode:
+	$(MAKE) -C acs_data_format acscode
+	$(MAKE) -C binary_trees acscode
+	$(MAKE) -C black_hole_trees acscode
+	$(MAKE) -C code_management acscode
+	$(MAKE) -C command_line acscode
+	$(MAKE) -C command_line_b acscode
+	$(MAKE) -C graphics acscode
+	$(MAKE) -C indiv_timesteps_1 acscode
+	$(MAKE) -C indiv_timesteps_2 acscode
+	$(MAKE) -C indiv_timesteps_3 acscode
+	$(MAKE) -C lab_assistant acscode
+	$(MAKE) -C lab_tools acscode
+	$(MAKE) -C n_body_problem acscode
+	$(MAKE) -C plummer acscode
+	$(MAKE) -C polytropes acscode
+	$(MAKE) -C shared_timesteps acscode
+	$(MAKE) -C speedup acscode
+	$(MAKE) -C two_body_problem_1 acscode
+	$(MAKE) -C two_body_problem_2 acscode
+	$(MAKE) -C runge_kutta acscode
+	$(MAKE) -C symplectic acscode
+	$(MAKE) -C vision acscode
+	$(MAKE) -C documentation acscode

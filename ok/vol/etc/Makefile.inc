@@ -20,9 +20,9 @@ TMPAUX = $(SRC:.ok=.aux)
 TMPDVI = $(SRC:.ok=.dvi)
 TMPTEX = $(SRC:.ok=.tex)
 
-all:  acsdoc acsbins
+all:  acsdoc acscode
 acsdoc:  $(alldepends)
-acsbins: scripts libs localscripts locallibs	
+acscode: scripts libs localscripts locallibs	
 $(TARGET).ps.gz: $(TARGET).dvi
 	dvips -o $(TARGET).ps $(TARGET)
 	$(GZIP) $(TARGET).ps 
