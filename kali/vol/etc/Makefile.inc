@@ -14,6 +14,12 @@ ACSDOC = ruby $(ACSROOT)/src/coherent_programming/acsdoc.rb $(ACSDOCOPTIONS)
 GZIP = gzip --force
 LOCALDIR = kali
 
+TMPPS = $(SRC:.ok=.ps)
+TMPLOG = $(SRC:.ok=.log)
+TMPAUX = $(SRC:.ok=.aux)
+TMPDVI = $(SRC:.ok=.dvi)
+TMPTEX = $(SRC:.ok=.tex)
+
 all:  $(alldepends) scripts libs localscripts locallibs
 $(TARGET).ps.gz: $(TARGET).dvi
 	dvips -o $(TARGET).ps $(TARGET)
@@ -44,15 +50,18 @@ locallibs : $(LOCALLIBSRCS) $(KALI_LIBSRCS)
 	ruby -S check_and_install.rb $(ACSLIBS)/$(LOCALDIR) $(LOCALLIBSRCS)
 
 clean : 
-	-rm -r doc .imgs .acsdoc.commandoutdir
-	-rm .[a-z]*\.rb[-+]* .[a-z]*\.rb .acsdoc.command-* 
-	-rm .[0-9]*\.rb[-+]* .[o-9]*\.rb .acsdoc.command-* 
+	-rm -r doc .imgs .acsdoc.commandoutdir >&/dev/null
+	-rm  .[a-z]*\.ok .[a-z]*\.rb[-+]* .[a-z]*\.rb .acsdoc.command-* >&/dev/null
+	-rm .[0-9]*\.rb[-+]* .[0-9]*\.rb .acsdoc.command-* >&/dev/null
 	-rm $(TARGET).tex $(TARGET).aux $(TARGET).cp $(TARGET).dvi \
-	    $(TARGET).log $(TARGET).ps $(TARGET).toc
-	-rm tmp.tex tmp.aux tmp.dvi tmp.log tmp.ps tmp.toc tmp.jpeg*
-cleandoc : 
+	    $(TARGET).log $(TARGET).ps $(TARGET).pdf $(TARGET).ps.gz \
+	    $(TARGET).toc >&/dev/null   
+	-rm tmp.tex tmp.aux tmp.dvi tmp.log tmp.ps tmp.toc tmp.jpeg* >&/dev/null	   
+	-rm $(TMPPS) $(TMPLOG) $(TMPAUX) $(TMPDVI) $(TMPTEX) >&/dev/null
+	    
+ cleandoc : 
 	-rm -r doc  $(TARGET).tex   $(TARGET).ps $(TARGET).ps.gz  $(TARGET).toc
-	-rm tmp.tex tmp.aux tmp.dvi tmp.log tmp.ps tmp.toc tmp.jpeg*
+	-rm tmp.tex tmp.aux tmp.dvi tmp.log tmp.ps tmp.toc tmp.jpeg* >&/dev/null
 
 %.tex : %.ok
 	    $(ACSDOC)  $< [a-z,A-Z]*.rb
