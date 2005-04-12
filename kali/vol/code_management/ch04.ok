@@ -1,0 +1,108 @@
+= Four Ways to Invoke Ruby
+
+== standard way:
+
+In order to run a program <tt>some_code.rb</tt>, type
+
+  ruby some_code.rb
+
+This will work for running files that are present in the current
+directory.
+
+The drawback is that invoking +ruby+ does not give you access to files
+that are installed in the source libraries such as <tt>$ACSROOT/bin</tt>
+and  <tt>$ACSROOT/bin/kali</tt>.
+
+== the acs and Kali commands:
+
+As an abbreviation for <tt>ruby -S</tt>, we have introduced the alternatives:
+
+  acs some_code.rb
+
+and
+
+  Kali some_code.rb
+
+The command <tt>acs</tt> includes a search for files in the general
+source directory <tt>$ACSROOT/bin</tt>.  In addition to that, the
+command <tt>Kali</tt> also includes a search for files in the Kali
+specific source directory <tt>$ACSROOT/bin/Kali</tt>.
+
+Note that, when using either of these two commands, you can leave out
+the <tt>.rb</tt> suffix.  The two commands
+
+  acs some_code
+
+and
+
+  Kali some_code
+
+give the same results as the two commands listed above.
+
+== executing the command directly:
+
+In most cases, the Ruby files have been made executable (and if not,
+you can make them executable by typing <tt>chmod +x some_code.rb</tt>).
+You can then run a code by directly type its file name:
+
+  some_code.rb
+
+If you want to run files in the source directories in this way, you
+have to add the appropriate directories, other than <tt>$ACSROOT/bin</tt>
+(such as <tt>$ACSROOT/bin/kali</tt>) explicitly to your command search path.
+
+== using a wrapper:
+
+Another way to execute the file <tt>some_code.rb</tt> is to write a one-line
+shell script, with the name <tt>some_code</tt> and containing just one line:
+
+  Kali $*
+
+which can then be invoked simply as
+
+  some_code
+
+The presence of <tt>$*</tt> in the one-liner will guarantee that all
+command line options will be passed on correctly, as in:
+
+  Kali some_code --help some_option other_option
+
+== Conclusions
+
+The first way doesn't work for files in source libraries.  The last
+two ways are dangerous, in the sense that they introduce the name of
+all our Ruby files into the global name space, where they can easily
+collide with other packages.  Therefore, our prefered way to run Ruby
+files in the Kali project is to use the second way:
+
+  Kali some_code
+
+Note that the command +Kali+ can be used everywhere where one can
+use +acs+ or just plain +ruby+.
+
+Note, however, that there are still occasions to use +ruby+ instead of
++Kali+ in some situations.  For example, when you are editing the
+file <tt>some_name.rb</tt> in a particular directory, and you want to
+test it out, you want to run it locally, ignoring the older official
+version in the Kali source directory.  In this case you can type:
+
+  ruby some_code.rb
+
+However, you can also type:
+
+  Kali some_code.rb
+
+or alternatively just
+
+  Kali some_code
+
+since the +Kali+ command is guaranteed to first look in the current
+directory for a file to execute.
+
+So it is up to the user, which one to use.  If you don't want to think
+about what file is located where, you can always use the +Kali+
+command, since that is always guaranteed to do the right thing.
+However, if the +ruby+ command can find the intended file, it would be
+perfectly fine to use the standard +ruby+ command instead.  And if you
+do not mind the potential hazards of using the global name space, you
+can of course use the third or fourth way listed above.
