@@ -1,0 +1,169 @@
+<html>
+
+<HEAD>
+<TITLE>The Art of Computational Science README page</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#EEFFEE" BACKGROUND=""
+      LINK="#0000CC" ALINK="#CCCCCC" VLINK="#000099">
+
+
+<table CELLSPACING=2 CELLPADDING=5 WIDTH="100%" NOSAVE >
+<tr VALIGN=TOP NOSAVE>
+
+
+<td ALIGN=CENTER  NOSAVE>
+      <IMG src=../img/acstitle-s2.gif> 
+</font>
+</td>
+
+<td NOSAVE>
+
+<center><h1>
+The Art of Computational Science
+</h1></center>
+
+<hr>
+<center><h3>
+README page:<br>
+Installation Instructions
+</h3></center>
+<hr>
+<br>
+
+</td>
+<td ALIGN=CENTER  NOSAVE>
+      <IMG src=../img/acstitle-s2rot.gif> 
+</td>
+</tr>
+
+</table>
+
+<table cellpadding=5 width="100%">
+<tr>
+<td align=left> 
+&#169;  2003-2005 <a href=http://www.ids.ias.edu/~piet/>Piet Hut</a> and
+<a href=http://jun.artcompsci.org>Jun Makino</a>
+</td>
+<td>
+</td>
+<td align=right>
+Back to <a href="../index.html">ACS home page</A>.
+</td>
+</tr>
+</table>
+
+<hr>
+You can read the many ACS volumes of dialogues directly on the
+<a href=../index.html>ACS web site</a>, and you can also copy
+one volume at a time, in postcript or pdf form, by clicking on the
+"ps" or "pdf" lines, listed after each volume, for example on the
+<a href=../kali/index.html>Kali home page</a>.  However, if you would
+like to use the computer codes that are discussed in those volumes,
+you will need to install a local version of ACS on your own computer.
+<p>
+To install an ACS version on your computer, follow the
+instructions below.  So far, we only have experience with installing
+ACS on Unix machines, where we depend on running a C shell.  We hope
+to extend this choice at some point in the future (and we invite
+others to help us to port ACS to different platforms and environments).
+<ul>
+<li>
+To start with, choose a tar ball corresponding to the
+<a href=index.html>latest ACS release</a>.
+There are typically two versions, a full `acs' version and a smaller
+`acs-lite' version.  For a discussion of the differences, see the
+description following our <a href=index.html#acs10>first release</a>.
+<p>
+<li>
+Go to the directory where you want to install the ACS
+package.  A typical choice would be just to go to your login directory
+"~name" if "name" is your login name.  For this choice, just type "cd".
+Then copy your prefered tar ball to this place.
+<p>
+<li>
+Untar the tar ball, by typing "tar zxf acs-xxx.tgz" or
+"tar zxf acs-lite-xxx.tgz" where xxx is the 
+version number of the tar ball you just copied in [note: this
+procedure is valid for ACS versions 1.2 or later].  After untarring
+has finished, if you type "ls" you will see that a new directory "acs"
+has been created.  All ACS files live in the directory tree starting
+at this directory.
+<p>
+<li>
+Now give the environment variable name ACSROOT to this new directory.
+For example, if your chosen directory was "~name", the acs root
+directory will be called "~name/acs", and in that case you have to add
+the following line to your .cshrc file:<br>
+<blockquote>
+setenv ACSROOT ~name/acs
+</blockquote>
+or whatever "~name/acs" expands to (perhaps "/home/name/acs").
+<p>
+<li>
+In addition, you should add the following line to your .cshrc file:
+<blockquote>
+source $ACSROOT/bin/acsstart.cshrc
+</blockquote>
+This will guarantee that your command search path will include
+the appropriate ACS files.
+<p>
+<li>
+Now type "make acscode".  This command will install the proper code
+files into the library and source directories (Note that there are
+different ways to run the Ruby codes, either by using the standard
+"<tt>ruby some_code.rb</tt>" command, or by using our special
+"<tt>Kali some_code</tt>" command -- see the discussion in the
+<a href=../kali/vol/code_management/doc/files/_/_title_ok.html>Code
+Management</a> volume).
+<p>
+<li>
+In general, each code file "xxx.rb" can be found in the directory
+where its use is first mentioned.  For example, "nbody_sh1.rb" can
+be found in directory "$ACSROOT/kali/vol/shared_timesteps", where
+the original file lives.  A copy of it will be automatically installed
+in "$ACSROOT/bin/kali".  It is this copy that is visible throughout the
+kali system, and that can be run using the command "Kali", which is a
+shorthand for "ruby" which tells Ruby where to look for the appropriate
+source and library files.
+<p>
+For example, the command: "Kali nbody_sh1.rb ---help"
+should produce a short description of the code.
+<p>
+<li>
+If you have choosen an "acs-lite" tar file, none of the documentation, in
+terms of the dialogue volumes in html, ps or pdf form, will be present.
+You can generate all documentation files, in all three forms, by following
+these steps -- but note that this may take a rather long time, and
+that it requires the presence on your computer of various other
+packages, such as ImageMagick; if you don't have those, or if you
+don't want to wait for hours, you may want
+to download the full "acs" version instead, in which all volumes have
+already been compiled.  The steps to compile the volumes from the
+"acs-lite" tar file are:
+<p>
+<ul>
+<li>
+Type "cd $ACSROOT/src/rdoc*"
+<p>
+<li>
+Become superuser, by typing "su", and as superuser, type "ruby install.rb"
+<p>
+<li>
+Return to the $ACSROOT directory, by typing "cd $ACSROOT"
+<p>
+<li>
+Type "make", which will construct the html, ps, and pdf
+versions of the manuscript.
+</ul>
+</ul>
+
+<hr>
+
+Back to the <a href="../index.html">ACS home page</A>.
+
+<hr>
+<hr>
+
+</BODY>
+
+</html>
