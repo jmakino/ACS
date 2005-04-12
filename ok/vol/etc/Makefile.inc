@@ -13,7 +13,9 @@ ACSDOCOPTIONS = --reuseoutput --keep-dot-files
 ACSDOC = ruby $(ACSROOT)/src/coherent_programming/acsdoc.rb $(ACSDOCOPTIONS)
 GZIP = gzip --force
 LOCALDIR = kali
-
+LOCALLIBDIR=$(ACSROOT)/$(LOCALDIR)/lib
+LOCALBINDIR=$(ACSROOT)/$(LOCALDIR)/bin
+       
 TMPPS = $(SRC:.ok=.ps)
 TMPLOG = $(SRC:.ok=.log)
 TMPAUX = $(SRC:.ok=.aux)
@@ -46,10 +48,10 @@ libs : $(LIBSRCS)
 	ruby $(ACSROOT)/bin/check_and_install.rb ACSLIBS $(LIBSRCS)
 
 localscripts : $(LOCALSCRIPTSRCS) $(KALI_SCRIPTSRCS)
-	ruby $(ACSROOT)/bin/check_and_install.rb $(ACSSCRIPTS)/$(LOCALDIR) $(LOCALSCRIPTSRCS)
+	ruby $(ACSROOT)/bin/check_and_install.rb $(LOCALBINDIR) $(LOCALSCRIPTSRCS)
 	
 locallibs : $(LOCALLIBSRCS) $(KALI_LIBSRCS)
-	ruby $(ACSROOT)/bin/check_and_install.rb $(ACSLIBS)/$(LOCALDIR) $(LOCALLIBSRCS)
+	ruby $(ACSROOT)/bin/check_and_install.rb $(LOCALLIBDIR) $(LOCALLIBSRCS)
 
 clean : 
 	-rm -r doc .imgs .acsdoc.commandoutdir >&/dev/null
