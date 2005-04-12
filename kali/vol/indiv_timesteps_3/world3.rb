@@ -490,7 +490,7 @@ module Integrator_rk3
 end
 
 module Integrator_cc # NOTE: ONLY WORKS NOW IF ALL BODIES USE THIS METHOD
-                     # since I haven't added acc extra/inter-polation elsewhere
+                     # since gforce is not (yet) implemented for other methods
   include Integrator_force_default
 
   attr_accessor :acc
@@ -568,7 +568,7 @@ module Integrator_cc # NOTE: ONLY WORKS NOW IF ALL BODIES USE THIS METHOD
 end
 
 module Integrator_cco # NOTE: ONLY WORKS NOW IF ALL BODIES USE THIS METHOD
-                     # since I haven't added acc extra/inter-polation elsewhere
+                      # since gforce is not (yet) implemented for other methods
   include Integrator_force_default
 
   attr_accessor :acc
@@ -808,7 +808,7 @@ class Worldline
     r = p.pos - pos
     r2 = r*r
     r3 = r2*sqrt(r2)
-#    a = p.acc - acc
+#    a = p.acc - acc    this is not correct; only works for shared time steps
     a = - acc
     2*(p.mass/r3)*(a - 3*((r*a)/r2)*r)
   end
