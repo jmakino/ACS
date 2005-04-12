@@ -424,7 +424,7 @@ options_text = <<-END
     (c) 2005, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
 
     example:
-    ruby #{$0} -t 1 < cube1.in
+    kali #{$0} -t 1 < cube1.in
 
 
   Short name:		-g

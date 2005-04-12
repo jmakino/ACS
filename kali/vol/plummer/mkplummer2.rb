@@ -108,12 +108,12 @@ options_text= <<-END
 
       Example:
 
-        |gravity> ruby mkplummer1.rb -n 42 -s 0
+        |gravity> kali mkplummer1.rb -n 42 -s 0
         . . .
         pseudorandom number seed given	: 0
                      actual seed used	: 1087616341
         . . .
-        |gravity> ruby mkplummer1.rb -n 42 -s 1087616341
+        |gravity> kali mkplummer1.rb -n 42 -s 1087616341
         . . .
         pseudorandom number seed given	: 1087616341
                      actual seed used	: 1087616341

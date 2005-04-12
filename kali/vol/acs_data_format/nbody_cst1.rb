@@ -349,7 +349,7 @@ options_text = <<-END
     (c) 2005, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
 
     example:
-    ruby sim2acs.rb < cube1.in | ruby #{$0} -t 1
+    kali sim2acs.rb < cube1.in | ruby #{$0} -t 1
 
 
   Short name:		-g
