@@ -10,6 +10,7 @@ if ( $?ACSROOT) then
    endif
    setenv ACSDOCOPTIONS --reuseoutput
    setenv ACSLIBS $ACSROOT/lib
+   setenv RUBYLIB .:${ACSLIBS}:${ACSLIBS}/kali
    if ( -e $ACSSCRIPTS/acsstart.local ) then
       source   $ACSSCRIPTS/acsstart.local
    endif
