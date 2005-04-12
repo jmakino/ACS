@@ -11,7 +11,7 @@ directory.
 
 The drawback is that invoking +ruby+ does not give you access to files
 that are installed in the source libraries such as <tt>$ACSROOT/bin</tt>
-and  <tt>$ACSROOT/bin/kali</tt>.
+and  <tt>$ACSROOT/kali/bin</tt>.
 
 == the acs and kali commands:
 
@@ -26,7 +26,7 @@ and
 The command <tt>acs</tt> includes a search for files in the general
 source directory <tt>$ACSROOT/bin</tt>.  In addition to that, the
 command <tt>kali</tt> also includes a search for files in the kali
-specific source directory <tt>$ACSROOT/bin/kali</tt>.
+specific source directory <tt>$ACSROOT/kali/bin</tt>.
 
 Note that, when using either of these two commands, you can leave out
 the <tt>.rb</tt> suffix.  The two commands
@@ -49,7 +49,7 @@ You can then run a code by directly type its file name:
 
 If you want to run files in the source directories in this way, you
 have to add the appropriate directories, other than <tt>$ACSROOT/bin</tt>
-(such as <tt>$ACSROOT/bin/kali</tt>) explicitly to your command search path.
+(such as <tt>$ACSROOT/kali/bin</tt>) explicitly to your command search path.
 
 == using a wrapper:
 

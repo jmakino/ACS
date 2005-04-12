@@ -112,7 +112,7 @@ Now type "make acscode".  This command will install the proper code
 files into the library and source directories (Note that there are
 different ways to run the Ruby codes, either by using the standard
 "<tt>ruby some_code.rb</tt>" command, or by using our special
-"<tt>Kali some_code</tt>" command -- see the discussion in the
+"<tt>kali some_code</tt>" command -- see the discussion in the
 <a href=../kali/vol/code_management/doc/files/_/_title_ok.html>Code
 Management</a> volume).
 <p>
@@ -121,12 +121,12 @@ In general, each code file "xxx.rb" can be found in the directory
 where its use is first mentioned.  For example, "nbody_sh1.rb" can
 be found in directory "$ACSROOT/kali/vol/shared_timesteps", where
 the original file lives.  A copy of it will be automatically installed
-in "$ACSROOT/bin/kali".  It is this copy that is visible throughout the
-kali system, and that can be run using the command "Kali", which is a
+in "$ACSROOT/kali/bin".  It is this copy that is visible throughout the
+kali system, and that can be run using the command "kali", which is a
 shorthand for "ruby" which tells Ruby where to look for the appropriate
 source and library files.
 <p>
-For example, the command: "Kali nbody_sh1.rb ---help"
+For example, the command: "kali nbody_sh1.rb ---help"
 should produce a short description of the code.
 <p>
 <li>
