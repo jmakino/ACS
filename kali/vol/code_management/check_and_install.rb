@@ -32,7 +32,7 @@ def store_file_with_date(sourcename, dirname,fullsourcename)
 
   system "/bin/cp -p #{sourcename} #{subdirpath}/#{targetname}"
   logfile= "#{subdirpath}/#{targetname}_log"
-  open(logfile,"w"){|f| f.print fullsourcename} 
+  open(logfile,"w"){|f| f.print fullsourcename+"\n"} 
   if $use_svn
     system "svn add -N #{sourcename}"
     system "svn add -N #{subdirpath}"

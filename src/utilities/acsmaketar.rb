@@ -22,6 +22,8 @@
 $LOAD_PATH.push(ENV["ACSROOT"]+"/src/utilities")
 require "clop.rb"
 
+ENV["LANG"]="C"
+
 optionstext= <<-END
 
 Short name: -l
