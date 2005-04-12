@@ -36,7 +36,7 @@ looks like, of Plummer's model?
 
 *Bob*: Sure.  Here is one:
 
- :commandoutput: ruby mkplummer2.rb -n 3
+ :commandoutput: kali mkplummer2.rb -n 3
 
 *Alice*: I see that you are echoing the seed from random number generator,
 as you explained before.  Let us check whether we indeed can repeat the
@@ -50,15 +50,15 @@ What value should we take for the seed of the random number generator?
 *Bob*: Different questions can have the same answer.
 Here is the first attempt:
 
- :commandoutput: ruby mkplummer2.rb -n 3 -s 42 | tail -2
+ :commandoutput: kali mkplummer2.rb -n 3 -s 42 | tail -2
 
 And now let me repeat the command with the same seed:
 
- :commandoutput: ruby mkplummer2.rb -n 3 -s 42 | tail -2
+ :commandoutput: kali mkplummer2.rb -n 3 -s 42 | tail -2
 
 And now with a different seed:
 
- :commandoutput: ruby mkplummer2.rb -n 3 -s 43 | tail -2
+ :commandoutput: kali mkplummer2.rb -n 3 -s 43 | tail -2
 
 *Alice*: Good!  And the full values from the first 3-body version look
 plausible.  But of course we cannot check, just by staring at them,
@@ -80,18 +80,18 @@ This is all very similar to what we did within our N-body integrators.
 fluctuations are from case to case, in the kinetic and potential energies,
 as well as the total energy.
 
- :commandoutput: ruby mkplummer2.rb -n 10 | ruby energy.rb
- :commandoutput: ruby mkplummer2.rb -n 10 | ruby energy.rb
- :commandoutput: ruby mkplummer2.rb -n 10 | ruby energy.rb
+ :commandoutput: kali mkplummer2.rb -n 10 | kali energy.rb
+ :commandoutput: kali mkplummer2.rb -n 10 | kali energy.rb
+ :commandoutput: kali mkplummer2.rb -n 10 | kali energy.rb
 
 *Bob*: Better to increase the number of particles, to see whether we
 actually converge to something reasonable.  An <tex>$N=1000$</tex>
 particle system should have <tex>$\sqrt{N}$</tex> deviations around
 three percent or so.
 
- :commandoutput: ruby mkplummer2.rb -n 1000 | ruby energy.rb
- :commandoutput: ruby mkplummer2.rb -n 1000 | ruby energy.rb
- :commandoutput: ruby mkplummer2.rb -n 1000 | ruby energy.rb
+ :commandoutput: kali mkplummer2.rb -n 1000 | kali energy.rb
+ :commandoutput: kali mkplummer2.rb -n 1000 | kali energy.rb
+ :commandoutput: kali mkplummer2.rb -n 1000 | kali energy.rb
 
 *Bob*: Good enough!  Also note that the virial theorem is obeyed
 quiet well: the total energy has a magnitude comparable to the kinetic
@@ -346,9 +346,9 @@ Why don't you create a few more 1000-particle realizations.
 
 *Bob*: Here are a few more.
 
- :commandoutput: ruby mkplummer2.rb -n 1000 | ruby energy.rb
- :commandoutput: ruby mkplummer2.rb -n 1000 | ruby energy.rb
- :commandoutput: ruby mkplummer2.rb -n 1000 | ruby energy.rb
+ :commandoutput: kali mkplummer2.rb -n 1000 | kali energy.rb
+ :commandoutput: kali mkplummer2.rb -n 1000 | kali energy.rb
+ :commandoutput: kali mkplummer2.rb -n 1000 | kali energy.rb
 
 You're right: the numbers work out beautifully.
 

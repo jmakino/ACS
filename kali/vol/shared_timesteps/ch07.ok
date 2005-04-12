@@ -1,0 +1,95 @@
+= Efficiency
+
+== Pure Thought
+
+*Bob*: There is one thing we haven't checked yet.  The whole motivation for
+going to variable time steps was to improve accuracy, for the same amount
+of computer time.  Or to put it differently, to save computer time, if the
+goal is to reach a certain accuracy.
+
+*Alice*: Good idea.  Let's check that.
+
+*Bob*: It is pretty clear, on general grounds, that an adaptive algorithm
+must be more accurate, but I like to see by how much.
+
+*Alice*: I don't think it is always clear, since there are algorithms that
+do a lot better for constant time steps than for variable time steps.  The
+leapfrog is an example of an algorithm that is almost unreasonably accurate
+in energy conservation, basically because it is time symmetric.  But that
+symmetry property is lost when you allow the time steps to become variable,
+unless you make sure that your time step criterion is again time symmetric,
+something we haven't done here.
+
+*Bob*: That may be, but in general, adaptive algorithms should do better,
+as a rule of thumb.
+
+*Alice*: Well, yes, in the limit of many particles and relatively large
+time steps you must be right, for sure.  And most importantly, an adaptive
+time step scheme is safer, since particles are guaranteed not to suddenly
+run into each other.  If you don't have softening, and you choose a fixed
+time step, you can never guarantee that you don't accidentally step on
+another particle.  I mean, you could reach another particle in one time
+step, which would result in a huge energy error.
+
+*Bob*: With all this pure thought, let's do a hard-nosed test.  I think
+we've done something like this already, but let's run it again, from the
+same initial conditions:
+
+ :commandoutput: kali mkplummer.rb -n 4 -s 1 | kali nbody_set_id.rb > test
+
+== Concrete Results
+
+*Alice*: And we may as well start with the same type of accuracy requirements
+as we did before.
+
+*Bob*: Here is the shared time step version:
+
+ :commandoutput: kali nbody_sh1.rb -t 1 -c 0.01 --exact_time -o 2 < test.in
+
+And here is the constant time step version:
+
+ :commandoutput: kali nbody_cst1.rb -c 0.001 -t 1 -o 2 < test.in
+
+*Alice*: Well, the constant time step version seems to do a somewhat better
+job!  I suggest you increase the timestep a bit, to bring out the difference
+more clearly.
+
+*Bob*: Okay, I'll make the timestep 0.00125 time units:
+
+ :commandoutput: kali nbody_cst1.rb -c 0.00125 -t 1 -o 2 < test.in
+
+*Alice*: With nearly the same number of time steps, the constant time step
+is scheme is more accurate by almost a factor two.
+
+*Bob*: Hmmm.  So much for all that hard work, to make the time step adaptive!
+
+== More is Different
+
+*Alice*: Well, we are dealing only with five particles, and we are running
+at relatively high accuracy.  I sugest we increase the number of particles
+and decrease the accuracy.  At some point the adaptive time step
+scheme should win out from the constant time step scheme.
+
+*Bob*: Okay, five times more particles:
+
+ :commandoutput: kali mkplummer.rb -n 25 -s 1 | kali nbody_set_id.rb > test2.in
+
+And a ten times longer time step.  The shared time step code should be able
+to handle that gracefully.
+
+ :commandoutput: kali nbody_sh1.rb -t 1 -c 0.1 --exact_time -o 2 < test2.in
+
+*Alice*: Indeed.  I'm not so sure about the constant time step scheme.
+
+*Bob*: Perhaps less gracefully, we have to see:
+
+ :commandoutput: kali nbody_cst1.rb -c 0.01 -t 1 -o 2 < test2.in
+
+Indeed, quite a bit less.  Let's bring the number of time steps in line
+with that of the shared time step code:
+
+ :commandoutput: kali nbody_cst1.rb -c 0.005 -t 1 -o 2 < test2.in
+
+Good.  The shared time step code is a lot better now, by orders of magnitude.
+
+*Alice*: So all the hard work _did_ pay off, after all!

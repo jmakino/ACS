@@ -1,6 +1,6 @@
 #!/usr/local/bin/ruby -w
 
-require "kali/nbody.rb"
+require "nbody.rb"
 require "clibs/pairwise"
 
 class Body

@@ -62,18 +62,18 @@ but as always, let's first do a couple checks.
 
 *Bob*: Never hurts.  Here they are.  First the energy:
 
- :commandoutput: ruby mkplummer5.rb -n 1000 | ruby energy.rb
+ :commandoutput: kali mkplummer5.rb -n 1000 | kali energy.rb
 
 That certainly looks fine.  Now the quartiles:
 
- :commandoutput: ruby mkplummer5.rb -n 100 | ruby quartiles.rb
+ :commandoutput: kali mkplummer5.rb -n 100 | kali quartiles.rb
 
 == A Bit Disquieting
 
 Hmm, a bit less quiet than before, it seems.  Let me try a few more:
 
- :commandoutput: ruby mkplummer5.rb -n 100 | ruby quartiles.rb
- :commandoutput: ruby mkplummer5.rb -n 100 | ruby quartiles.rb
+ :commandoutput: kali mkplummer5.rb -n 100 | kali quartiles.rb
+ :commandoutput: kali mkplummer5.rb -n 100 | kali quartiles.rb
 
 Definitely less quiet than before.  How can shifting . . . ah, shifting
 the center of mass also shifts the positions of my idealized mass shells
@@ -107,11 +107,11 @@ to repeat them for your shifted version.
 
 *Bob*: Okay, here is a one-body system without shifting:
 
- :commandoutput: ruby mkplummer3.rb -n 1
+ :commandoutput: kali mkplummer3.rb -n 1
 
 and here with the proper center of mass shifts:
 
- :commandoutput: ruby mkplummer5.rb -n 1
+ :commandoutput: kali mkplummer5.rb -n 1
 
 *Alice*: Proper indeed.
 
@@ -119,11 +119,11 @@ and here with the proper center of mass shifts:
 
 *Bob*: And here for the two-body system, unshifted:
 
- :commandoutput: ruby mkplummer3.rb -n 2
+ :commandoutput: kali mkplummer3.rb -n 2
 
 and shifted:
 
- :commandoutput: ruby mkplummer5.rb -n 2
+ :commandoutput: kali mkplummer5.rb -n 2
 
 *Alice*: Good!  I believe the code now.  We have acquired a well-adjusted
 codes that speaks in standard units.

@@ -16,7 +16,7 @@ fourth order Runge-Kutta scheme?
 is still fourth order, in constant as well as shared time step form.  First
 I'll prepare initial conditions with the particles all properly numbered:
 
- :commandoutput: ruby mkplummer.rb -n 4 -s 1 | ruby nbody_set_id.rb > test.in
+ :commandoutput: kali mkplummer.rb -n 4 -s 1 | kali nbody_set_id.rb > test.in
 
 Starting with the constant time step version, let's choose the
 <tt>rk4</tt> integrator, but what options did we use for algorithm
@@ -24,17 +24,17 @@ choice?  I always forget what names we gave our options.
 
 *Alice*: Let's ask our clop function to provide them:
 
- :commandoutput: ruby nbody_cst1.rb -h
+ :commandoutput: kali nbody_cst1.rb -h
 
 == Energy Scaling
 
 *Bob*: Aha, now I remember.  Okay, how about this?
 
- :commandoutput: ruby nbody_cst1.rb -g rk4 -t 1 < test.in > rk4cst.out
+ :commandoutput: kali nbody_cst1.rb -g rk4 -t 1 < test.in > rk4cst.out
 
 Now let's make the time step two times smaller
 
- :commandoutput: ruby nbody_cst1.rb -g rk4 -t 1 -c 0.0005 < test.in > rk4cst_half.out
+ :commandoutput: kali nbody_cst1.rb -g rk4 -t 1 -c 0.0005 < test.in > rk4cst_half.out
 
 == Phase Space Distance Scaling
 
@@ -46,8 +46,8 @@ thing.  We really should have used softening.
 
 *Bob*: That's easy to test.  Here you are:
 
- :commandoutput: ruby nbody_cst1.rb -s 0.01 -g rk4 -t 1 -c 0.001 < test.in > /dev/null
- :commandoutput: ruby nbody_cst1.rb -s 0.01 -g rk4 -t 1 -c 0.0005 < test.in > /dev/null
+ :commandoutput: kali nbody_cst1.rb -s 0.01 -g rk4 -t 1 -c 0.001 < test.in > /dev/null
+ :commandoutput: kali nbody_cst1.rb -s 0.01 -g rk4 -t 1 -c 0.0005 < test.in > /dev/null
 
 It still behaves like a fifth-order scheme, with an improvement of
 about a factor <tex>$2^5=32$</tex> instead of the expected <tex>$2^5=16$</tex>.
@@ -60,8 +60,8 @@ time integration ten times shorter?
 *Bob*: I'm all for speeding things up.  Here is the original set, now
 shortened:
 
- :commandoutput: ruby nbody_cst1.rb -g rk4 -t 0.1 -d 0.1 -o 0.1 < test.in > rk4cst.out
- :commandoutput: ruby nbody_cst1.rb -g rk4 -c 0.0005 -t 0.1 -d 0.1 -o 0.1 < test.in > rk4cst_half.out
+ :commandoutput: kali nbody_cst1.rb -g rk4 -t 0.1 -d 0.1 -o 0.1 < test.in > rk4cst.out
+ :commandoutput: kali nbody_cst1.rb -g rk4 -c 0.0005 -t 0.1 -d 0.1 -o 0.1 < test.in > rk4cst_half.out
 
 *Alice*: And now it scales indeed like fourth order.  I don't like the fact
 that we don't have a good explanation for this phenomenon, but I guess the
@@ -82,15 +82,15 @@ time step, and declare that the result should be close to `true'.  Or to
 speed things up a bit, we can take a higher-order integrator.  Why not
 throw the sixth-oder Yoshida version in, to help us:
 
- :commandoutput: ruby nbody_cst1.rb -g yo6 -t 0.1 -d 0.1 -o 0.1 < test.in > yo6cst.out
+ :commandoutput: kali nbody_cst1.rb -g yo6 -t 0.1 -d 0.1 -o 0.1 < test.in > yo6cst.out
 
 First we'll compare the first run with the `true' run:
 
- :commandoutput: cat rk4cst.out yo6cst.out | ruby nbody_diff.rb
+ :commandoutput: cat rk4cst.out yo6cst.out | kali nbody_diff.rb
 
 And then we'll take the second run, to compare it with the `true' one:
 
- :commandoutput: cat rk4cst_half.out yo6cst.out | ruby nbody_diff.rb
+ :commandoutput: cat rk4cst_half.out yo6cst.out | kali nbody_diff.rb
 
 *Alice*: Very nice indeed, almost exactly a factor <tex>$2^4$</tex> smaller.
 
@@ -99,7 +99,7 @@ And then we'll take the second run, to compare it with the `true' one:
 *Bob*: After all these preliminaries, we can finally test our shared time
 step code:
 
- :commandoutput: ruby nbody_sh1.rb -g rk4 -t 0.1 -d 0.1 -o 0.1 < test.in > rk4sh.out
+ :commandoutput: kali nbody_sh1.rb -g rk4 -t 0.1 -d 0.1 -o 0.1 < test.in > rk4sh.out
 
 Not quite as accurate as the comparable run for constant step size, even
 though we used slightly more steps.
@@ -127,7 +127,7 @@ for reducing efficiency!
 *Bob*: Only when necessary!  Now let's see whether we're getting equally
 close to the `true' run in phase space:
 
- :commandoutput: cat rk4sh.out yo6cst.out | ruby nbody_diff.rb
+ :commandoutput: cat rk4sh.out yo6cst.out | kali nbody_diff.rb
 
 *Alice*: What is that?!?
 
@@ -140,8 +140,8 @@ integrator instead.  And since we'll have lower accuracy, we may as well
 go to a comparison with time steps that are a factor of ten smaller; we
 won't have to be afraid to run into round-off errors:
 
- :commandoutput: ruby nbody_sh1.rb -g leapfrog -t 0.1 -d 0.1 -o 0.1 < test.in > leap_sh.out
- :commandoutput: ruby nbody_sh1.rb -g leapfrog -c 0.001 -t 0.1 -d 0.1 -o 0.1 < test.in > leap_sh_ten.out
+ :commandoutput: kali nbody_sh1.rb -g leapfrog -t 0.1 -d 0.1 -o 0.1 < test.in > leap_sh.out
+ :commandoutput: kali nbody_sh1.rb -g leapfrog -c 0.001 -t 0.1 -d 0.1 -o 0.1 < test.in > leap_sh_ten.out
 
 *Bob*: The energy scales like it should for a second-order integrator:
 a hundred times better accuracy for a ten times smaller time step.
@@ -149,8 +149,8 @@ a hundred times better accuracy for a ten times smaller time step.
 *Alice*: And, really, the phase space distance should also become a
 hundred times better.  Let's see whether it does:
 
- :commandoutput: cat leap_sh.out yo6cst.out | ruby nbody_diff.rb
- :commandoutput: cat leap_sh_ten.out yo6cst.out | ruby nbody_diff.rb
+ :commandoutput: cat leap_sh.out yo6cst.out | kali nbody_diff.rb
+ :commandoutput: cat leap_sh_ten.out yo6cst.out | kali nbody_diff.rb
 
 == Even more Basic
 
@@ -163,9 +163,9 @@ same way.  What is going on here?
 stick to the basics completely.  If we do a third leapfrog integration,
 we can use the result of that run as our yard stick:
 
- :commandoutput: ruby nbody_sh1.rb -g leapfrog -c 0.0001 -t 0.1 -d 0.1 -o 0.1 < test.in > leap_sh_hundred.out
- :commandoutput: cat leap_sh.out leap_sh_hundred.out | ruby nbody_diff.rb
- :commandoutput: cat leap_sh_ten.out leap_sh_hundred.out | ruby nbody_diff.rb
+ :commandoutput: kali nbody_sh1.rb -g leapfrog -c 0.0001 -t 0.1 -d 0.1 -o 0.1 < test.in > leap_sh_hundred.out
+ :commandoutput: cat leap_sh.out leap_sh_hundred.out | kali nbody_diff.rb
+ :commandoutput: cat leap_sh_ten.out leap_sh_hundred.out | kali nbody_diff.rb
 
 *Bob*: That doesn't make much difference.  Still no quadratic behavior.
 

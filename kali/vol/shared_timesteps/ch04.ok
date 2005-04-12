@@ -63,7 +63,7 @@ larger than <tt>t_out - 1.0/VERY_LARGE_NUMBER</tt>.
 And to make it complete, we should implement the option.  Here is the
 full new list: 
 
- :commandoutput: ruby nbody_sh1.rb -h
+ :commandoutput: kali nbody_sh1.rb -h
 
 == The Right Thing
 
@@ -71,7 +71,7 @@ full new list:
 
 *Bob*: Let's go back to our original Runge-Kutta tests.  Here you are:
 
- :commandoutput: ruby nbody_sh1.rb -g rk4 --exact_time -t 0.1 -d 0.1 -o 0.1 < test.in > rk4sh.out
+ :commandoutput: kali nbody_sh1.rb -g rk4 --exact_time -t 0.1 -d 0.1 -o 0.1 < test.in > rk4sh.out
  :commandoutput: cat rk4sh.out
 
 *Alice*: Good!  Indeed at time 1.  Let's repeat our
@@ -79,7 +79,7 @@ comparison with the constant time step run.
 
 *Bob*: That should come out a whole lot better now!  Here we go:
 
- :commandoutput: cat rk4sh.out rk4cst.out | ruby nbody_diff.rb
+ :commandoutput: cat rk4sh.out rk4cst.out | kali nbody_diff.rb
 
 *Alice*: And right you are.  That's more like it.  Wonderful!
 
@@ -93,9 +93,9 @@ integrator, since before you know it you are up to the round-off barrier.
 
 *Bob*: Here are the three output files, now finished at the exact time:
 
- :commandoutput: ruby nbody_sh1.rb -g leapfrog --exact_time -t 0.1 -d 0.1 -o 0.1 < test.in > leap_sh.out
- :commandoutput: ruby nbody_sh1.rb -g leapfrog --exact_time -c 0.001 -t 0.1 -d 0.1 -o 0.1 < test.in > leap_sh_ten.out
- :commandoutput: ruby nbody_sh1.rb -g leapfrog --exact_time -c 0.0001 -t 0.1 -d 0.1 -o 0.1 < test.in > leap_sh_hundred.out
+ :commandoutput: kali nbody_sh1.rb -g leapfrog --exact_time -t 0.1 -d 0.1 -o 0.1 < test.in > leap_sh.out
+ :commandoutput: kali nbody_sh1.rb -g leapfrog --exact_time -c 0.001 -t 0.1 -d 0.1 -o 0.1 < test.in > leap_sh_ten.out
+ :commandoutput: kali nbody_sh1.rb -g leapfrog --exact_time -c 0.0001 -t 0.1 -d 0.1 -o 0.1 < test.in > leap_sh_hundred.out
 
 == Testing the Leapfrog
 
@@ -103,8 +103,8 @@ integrator, since before you know it you are up to the round-off barrier.
 
 *Bob*: I think so to, but seeing is believing:
 
- :commandoutput: cat leap_sh.out leap_sh_hundred.out | ruby nbody_diff.rb
- :commandoutput: cat leap_sh_ten.out leap_sh_hundred.out | ruby nbody_diff.rb
+ :commandoutput: cat leap_sh.out leap_sh_hundred.out | kali nbody_diff.rb
+ :commandoutput: cat leap_sh_ten.out leap_sh_hundred.out | kali nbody_diff.rb
 
 *Alice*: We see, we believe, we are delighted!
 

@@ -84,11 +84,11 @@ one particle more or less, at least for <tex>$N \gg 1$</tex>.
 
 *Alice*: Let's try it out:
 
- :commandoutput: ruby mkplummer2.rb -n 100 | ruby quartiles1.rb
+ :commandoutput: kali mkplummer2.rb -n 100 | kali quartiles1.rb
 
- :commandoutput: ruby mkplummer2.rb -n 100 | ruby quartiles1.rb
+ :commandoutput: kali mkplummer2.rb -n 100 | kali quartiles1.rb
 
- :commandoutput: ruby mkplummer2.rb -n 100 | ruby quartiles1.rb
+ :commandoutput: kali mkplummer2.rb -n 100 | kali quartiles1.rb
 
 Quite noisy.  Not too surprising: for the inner quartile we are
 dealing with only 25 particles, so we should expect
@@ -97,11 +97,11 @@ about twenty percent in the first quartile.
 
 *Bob*: Let's try 10,000 particles instead:
 
- :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles1.rb
+ :commandoutput: kali mkplummer2.rb -n 10000 | kali quartiles1.rb
 
- :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles1.rb
+ :commandoutput: kali mkplummer2.rb -n 10000 | kali quartiles1.rb
 
- :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles1.rb
+ :commandoutput: kali mkplummer2.rb -n 10000 | kali quartiles1.rb
 
 Not bad!  Fluctuations of a few percent, at most, as it should be.
 Encouraging.
@@ -259,9 +259,9 @@ called <tt>quartiles.rb</tt>:
 
 And let's test it right away:
 
- :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles.rb
- :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles.rb
- :commandoutput: ruby mkplummer2.rb -n 10000 | ruby quartiles.rb
+ :commandoutput: kali mkplummer2.rb -n 10000 | kali quartiles.rb
+ :commandoutput: kali mkplummer2.rb -n 10000 | kali quartiles.rb
+ :commandoutput: kali mkplummer2.rb -n 10000 | kali quartiles.rb
 
 *Bob*: Wonderful!  So my Plummer code was correct after all.  But I'm
 glad we checked so thoroughly.

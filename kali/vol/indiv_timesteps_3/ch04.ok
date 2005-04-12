@@ -2,19 +2,19 @@
 
 == xxx
 
- :commandoutput: ruby mkplummer.rb -n 3 -s 1 | nbody_set_id.rb > tmp.in
+ :commandoutput: kali mkplummer.rb -n 3 -s 1 | kali nbody_set_id.rb > tmp.in
 
- :commandoutput: ruby world3.rb -t 0.1 -d 0.1 -o 0.1 < tmp.in > tmp.h
+ :commandoutput: kali world3.rb -t 0.1 -d 0.1 -o 0.1 < tmp.in > tmp.h
 
- :commandoutput: ruby world3.rb -t 0.1 -d 0.1 -g leapfrog -c 0.0001 -o 0.1 < tmp.in > tmp.l
+ :commandoutput: kali world3.rb -t 0.1 -d 0.1 -g leapfrog -c 0.0001 -o 0.1 < tmp.in > tmp.l
 
- :commandoutput: ruby world3.rb -t 0.1 -d 0.1 -g multistep -o 0.1 < tmp.in > tmp.m
+ :commandoutput: kali world3.rb -t 0.1 -d 0.1 -g multistep -o 0.1 < tmp.in > tmp.m
 
- :commandoutput: ruby world3.rb -t 0.1 -d 0.1 -g rk4 -o 0.1 < tmp.in > tmp.r
+ :commandoutput: kali world3.rb -t 0.1 -d 0.1 -g rk4 -o 0.1 < tmp.in > tmp.r
 
- :commandoutput: cat tmp.h tmp.l | nbody_diff.rb
+ :commandoutput: cat tmp.h tmp.l | kali nbody_diff.rb
 
- :commandoutput: cat tmp.h tmp.m | nbody_diff.rb
+ :commandoutput: cat tmp.h tmp.m | kali nbody_diff.rb
 
- :commandoutput: cat tmp.h tmp.r | nbody_diff.rb
+ :commandoutput: cat tmp.h tmp.r | kali nbody_diff.rb
 

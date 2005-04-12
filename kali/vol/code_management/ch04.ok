@@ -13,7 +13,7 @@ The drawback is that invoking +ruby+ does not give you access to files
 that are installed in the source libraries such as <tt>$ACSROOT/bin</tt>
 and  <tt>$ACSROOT/bin/kali</tt>.
 
-== the acs and Kali commands:
+== the acs and kali commands:
 
 As an abbreviation for <tt>ruby -S</tt>, we have introduced the alternatives:
 
@@ -21,12 +21,12 @@ As an abbreviation for <tt>ruby -S</tt>, we have introduced the alternatives:
 
 and
 
-  Kali some_code.rb
+  kali some_code.rb
 
 The command <tt>acs</tt> includes a search for files in the general
 source directory <tt>$ACSROOT/bin</tt>.  In addition to that, the
-command <tt>Kali</tt> also includes a search for files in the Kali
-specific source directory <tt>$ACSROOT/bin/Kali</tt>.
+command <tt>kali</tt> also includes a search for files in the kali
+specific source directory <tt>$ACSROOT/bin/kali</tt>.
 
 Note that, when using either of these two commands, you can leave out
 the <tt>.rb</tt> suffix.  The two commands
@@ -35,7 +35,7 @@ the <tt>.rb</tt> suffix.  The two commands
 
 and
 
-  Kali some_code
+  kali some_code
 
 give the same results as the two commands listed above.
 
@@ -56,7 +56,7 @@ have to add the appropriate directories, other than <tt>$ACSROOT/bin</tt>
 Another way to execute the file <tt>some_code.rb</tt> is to write a one-line
 shell script, with the name <tt>some_code</tt> and containing just one line:
 
-  Kali $*
+  kali $*
 
 which can then be invoked simply as
 
@@ -65,7 +65,7 @@ which can then be invoked simply as
 The presence of <tt>$*</tt> in the one-liner will guarantee that all
 command line options will be passed on correctly, as in:
 
-  Kali some_code --help some_option other_option
+  kali some_code --help some_option other_option
 
 == Conclusions
 
@@ -75,34 +75,35 @@ all our Ruby files into the global name space, where they can easily
 collide with other packages.  Therefore, our prefered way to run Ruby
 files in the Kali project is to use the second way:
 
-  Kali some_code
+  kali some_code
 
-Note that the command +Kali+ can be used everywhere where one can
+Note that the command +kali+ can be used everywhere where one can
 use +acs+ or just plain +ruby+.
 
 Note, however, that there are still occasions to use +ruby+ instead of
-+Kali+ in some situations.  For example, when you are editing the
++kali+ in some situations.  For example, when you are editing the
 file <tt>some_name.rb</tt> in a particular directory, and you want to
 test it out, you want to run it locally, ignoring the older official
-version in the Kali source directory.  In this case you can type:
+version in the kali source directory.  In this case you can type:
 
   ruby some_code.rb
 
 However, you can also type:
 
-  Kali some_code.rb
+  kali some_code.rb
 
 or alternatively just
 
-  Kali some_code
+  kali some_code
 
-since the +Kali+ command is guaranteed to first look in the current
+since the +kali+ command is guaranteed to first look in the current
 directory for a file to execute.
 
 So it is up to the user, which one to use.  If you don't want to think
-about what file is located where, you can always use the +Kali+
+about what file is located where, you can always use the +kali+
 command, since that is always guaranteed to do the right thing.
-However, if the +ruby+ command can find the intended file, it would be
+However, if the +ruby+ command can find the intended file (and the
+required files specified by +require+) it would be
 perfectly fine to use the standard +ruby+ command instead.  And if you
 do not mind the potential hazards of using the global name space, you
 can of course use the third or fourth way listed above.

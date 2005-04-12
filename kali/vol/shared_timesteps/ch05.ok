@@ -27,11 +27,11 @@ measuring rod.
 We may as well take the same case we tested before, starting from the
 file <tt>test.in</tt>, containing a Plummer model with five particles:
 
- :commandoutput: ruby nbody_cst1.rb -t 1 < test.in > test01.out
+ :commandoutput: kali nbody_cst1.rb -t 1 < test.in > test01.out
 
 Now I'll run it for another time unit, till time 2:
 
- :commandoutput: ruby nbody_cst1.rb -t 2 < test01.out > test12.out
+ :commandoutput: kali nbody_cst1.rb -t 2 < test01.out > test12.out
 
 Hey, that is strange, it ran all the way to time 3, even though I gave it
 the option <tt>-t 2</tt>.
@@ -42,21 +42,21 @@ the option <tt>-t 2</tt>.
 the argument for this option to be the time _difference_, not the target
 time of the integration.  Let's check:
 
- :commandoutput: ruby nbody_cst1.rb --help -t
+ :commandoutput: kali nbody_cst1.rb --help -t
 
 *Bob*: I really like our help facility.  Helpful for sure!  Okay, I'll
 try again:
 
- :commandoutput: ruby nbody_cst1.rb -t 1 < test01.out > test12.out
+ :commandoutput: kali nbody_cst1.rb -t 1 < test01.out > test12.out
 
 And now I'll run the whole show right through from the beginning:
 
- :commandoutput: ruby nbody_cst1.rb -t 2 < test.in > test02.out
+ :commandoutput: kali nbody_cst1.rb -t 2 < test.in > test02.out
 
 Now _if_ everything behaves as I expect it will, we should get zero
 distance in phase space:
 
- :commandoutput: cat test12.out test02.out | ruby nbody_diff.rb
+ :commandoutput: cat test12.out test02.out | kali nbody_diff.rb
 
 == Know Your Output File
 
@@ -78,18 +78,18 @@ explains!
 *Alice*: If it does, we should at least get a null result in a comparison
 with the first shorter run:
 
- :commandoutput: cat test01.out test02.out | ruby nbody_diff.rb
+ :commandoutput: cat test01.out test02.out | kali nbody_diff.rb
 
 *Bob*: And yes, that's obviously the correct explanation.  Well, let me
 repeat the longer run, but this time with only one output at the end.
 
- :commandoutput: ruby nbody_cst1.rb -t 2 -o 2 < test.in > test02.out
+ :commandoutput: kali nbody_cst1.rb -t 2 -o 2 < test.in > test02.out
 
 Wanna bet we'll get zero now?
 
 *Alice*: I won't hold my breath.  Let's check:
 
- :commandoutput: cat test12.out test02.out | ruby nbody_diff.rb
+ :commandoutput: cat test12.out test02.out | kali nbody_diff.rb
 
 *Bob*: You could have held your breath, and you wouldn't have suffered!
 Good, so we have reproducibility, at least for the constant time step scheme.
@@ -99,9 +99,9 @@ Good, so we have reproducibility, at least for the constant time step scheme.
 *Alice*: Let's do a similar thing for shared time steps, first with our
 <tt>exact_time</tt> option.
 
- :commandoutput: ruby nbody_sh1.rb -t 1 --exact_time < test.in > test01e.out
- :commandoutput: ruby nbody_sh1.rb -t 1 --exact_time < test01e.out > test12e.out
- :commandoutput: ruby nbody_sh1.rb -t 2 -o 2 --exact_time < test.in > test02e.out
+ :commandoutput: kali nbody_sh1.rb -t 1 --exact_time < test.in > test01e.out
+ :commandoutput: kali nbody_sh1.rb -t 1 --exact_time < test01e.out > test12e.out
+ :commandoutput: kali nbody_sh1.rb -t 2 -o 2 --exact_time < test.in > test02e.out
 
 == The Toll it Takes
 
@@ -109,7 +109,7 @@ Good, so we have reproducibility, at least for the constant time step scheme.
 runs should _not_ give exactly the same result as the longer runs.  Let's
 check:
 
- :commandoutput: cat test12e.out test02e.out | ruby nbody_diff.rb
+ :commandoutput: cat test12e.out test02e.out | kali nbody_diff.rb
 
 Indeed, the difference is slight, but clearly noticeable.
 

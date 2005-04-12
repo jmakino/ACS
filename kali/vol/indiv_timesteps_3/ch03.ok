@@ -26,7 +26,7 @@ and in <tt>module Integrator_force_default</tt>
 
 This shows that what we do here is safe:
 
- <kamuy|indiv_timesteps_3> ruby mkplummer.rb -n 5 -s 1 | ruby world3.rb -t 1
+ <kamuy|indiv_timesteps_3> kali mkplummer.rb -n 5 -s 1 | kali world3.rb -t 1
  ==> Plummer's Model Builder <==
  Number of particles		: N = 5
  pseudorandom number seed given	: 1

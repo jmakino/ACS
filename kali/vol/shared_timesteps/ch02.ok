@@ -70,9 +70,9 @@ You see, I even allowed for taste: the default is to start numbering at
 one, but you can start at zero as well, or at any other place you like.
 Let's test it with our Plummer Model:
 
- :commandoutput: ruby nbody_set_id.rb -h
- :commandoutput: ruby mkplummer.rb -n 2 | ruby nbody_set_id.rb -p 5
- :commandoutput: ruby mkplummer.rb -n 2 | ruby nbody_set_id.rb -p 5 -n 42
+ :commandoutput: kali nbody_set_id.rb -h
+ :commandoutput: kali mkplummer.rb -n 2 | kali nbody_set_id.rb -p 5
+ :commandoutput: kali mkplummer.rb -n 2 | kali nbody_set_id.rb -p 5 -n 42
 
 == Defensive Programming
 
@@ -146,8 +146,8 @@ for a circular binary, I believe.  Ah yes, here it is, in
 To start with, let's see whether two identical systems are assigned a
 distance of zero correctly:
 
- :commandoutput: ruby nbody_set_id.rb < circular_binary.in > tmp0.in
- :commandoutput: cat tmp0.in tmp0.in | ruby nbody_diff.rb
+ :commandoutput: kali nbody_set_id.rb < circular_binary.in > tmp0.in
+ :commandoutput: cat tmp0.in tmp0.in | kali nbody_diff.rb
 
 *Alice*: Good!  Let's perturb our binary slightly.  If we use the most
 popular Pythagorean triangle, we can immediately check whether our
@@ -158,11 +158,11 @@ Cartesian distances in phase space come out correctly.  Here is a file
 
 And here is our first real result:
 
- :commandoutput: ruby nbody_set_id.rb < pert_circ_binary.in > tmp1.in
- :commandoutput: cat tmp0.in tmp1.in | ruby nbody_diff.rb
+ :commandoutput: kali nbody_set_id.rb < pert_circ_binary.in > tmp1.in
+ :commandoutput: cat tmp0.in tmp1.in | kali nbody_diff.rb
 
 Just what it should be!  Now for positions only, and a higher precision:
 
- :commandoutput: cat tmp0.in tmp1.in | ruby nbody_diff.rb -r -p 5
+ :commandoutput: cat tmp0.in tmp1.in | kali nbody_diff.rb -r -p 5
 
 Perfect.  I think we're ready to move on.

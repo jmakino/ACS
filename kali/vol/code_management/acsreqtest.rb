@@ -1,5 +1,5 @@
   $acsreqverbosemode=1
   require "acs"
-  require "kali/testlocal"
+  require "testlocal"
   p "end"
 

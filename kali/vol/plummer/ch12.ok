@@ -17,10 +17,10 @@ we have made sure to use standard units.
 
 *Alice*: Well, let's see what happens for really low N values:
 
- :commandoutput: ruby mkplummer5.rb -n 3 -s 1 | ruby energy.rb
- :commandoutput: ruby mkplummer5.rb -n 3 -s 2 | ruby energy.rb
- :commandoutput: ruby mkplummer5.rb -n 3 -s 3 | ruby energy.rb
- :commandoutput: ruby mkplummer5.rb -n 3 -s 4 | ruby energy.rb
+ :commandoutput: kali mkplummer5.rb -n 3 -s 1 | kali energy.rb
+ :commandoutput: kali mkplummer5.rb -n 3 -s 2 | kali energy.rb
+ :commandoutput: kali mkplummer5.rb -n 3 -s 3 | kali energy.rb
+ :commandoutput: kali mkplummer5.rb -n 3 -s 4 | kali energy.rb
 
 *Bob*: Hmm, that doesn't look like the desired total energy value of minus
 one quarter.  And I certainly don't like the total energy to become positive!
@@ -160,8 +160,8 @@ prefered.  If you're dealing with only a thousand particles, you may
 not want double precision, if that will cut down your inital file
 length by a factor half.  How about this:
 
- :commandoutput: ruby mkplummer.rb -h
- :commandoutput: ruby mkplummer.rb -n 3 -p 7 --indentation 4
+ :commandoutput: kali mkplummer.rb -h
+ :commandoutput: kali mkplummer.rb -n 3 -p 7 --indentation 4
 
 *Alice*: Fine to have the extra freedom, but I doubt we'll ever use it;
 as soon as you start doing a run, you'll probably want to keep the output
@@ -182,17 +182,17 @@ like when you grew up.
 our way up.  And we might as well use your precision cap to keep it punched
 card printable:
 
- :commandoutput: ruby mkplummer.rb -n 0 -p 10
- :commandoutput: ruby mkplummer.rb -n 1 -p 10
- :commandoutput: ruby mkplummer.rb -n 2 -p 10
+ :commandoutput: kali mkplummer.rb -n 0 -p 10
+ :commandoutput: kali mkplummer.rb -n 1 -p 10
+ :commandoutput: kali mkplummer.rb -n 2 -p 10
 
 == Checking the Energy
 
 That all works as it should.  Now an energy check:
 
- :commandoutput: ruby mkplummer.rb -n 0 | ruby energy.rb
- :commandoutput: ruby mkplummer.rb -n 1 | ruby energy.rb
- :commandoutput: ruby mkplummer.rb -n 2 | ruby energy.rb
+ :commandoutput: kali mkplummer.rb -n 0 | kali energy.rb
+ :commandoutput: kali mkplummer.rb -n 1 | kali energy.rb
+ :commandoutput: kali mkplummer.rb -n 2 | kali energy.rb
 
 Looks good so far.  Even the zero-body behaves!  A single particle at
 rest in the center has neither potential nor kinetic energy.  And the
@@ -201,10 +201,10 @@ two-particle realization is nicely scaled to virial equilibrium.
 *Bob*: Let's try the same four realizations you made earlier, with
 the very same seeds:
 
- :commandoutput: ruby mkplummer.rb -n 3 -s 1 | ruby energy.rb
- :commandoutput: ruby mkplummer.rb -n 3 -s 2 | ruby energy.rb
- :commandoutput: ruby mkplummer.rb -n 3 -s 3 | ruby energy.rb
- :commandoutput: ruby mkplummer.rb -n 3 -s 4 | ruby energy.rb
+ :commandoutput: kali mkplummer.rb -n 3 -s 1 | kali energy.rb
+ :commandoutput: kali mkplummer.rb -n 3 -s 2 | kali energy.rb
+ :commandoutput: kali mkplummer.rb -n 3 -s 3 | kali energy.rb
+ :commandoutput: kali mkplummer.rb -n 3 -s 4 | kali energy.rb
 
 *Alice*: Good!  Believe it or not, we may not need to call this
 version <tt>mkplummer6.rb</tt>, after all.  It may remain

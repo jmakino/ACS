@@ -85,9 +85,9 @@ energy and the right quartiles again -- and this time in standard units.
 
 *Bob*: Let's start with the quartiles:
 
- :commandoutput: ruby mkplummer3.rb -n 10000 | ruby quartiles.rb
- :commandoutput: ruby mkplummer3.rb -n 10000 | ruby quartiles.rb
- :commandoutput: ruby mkplummer3.rb -n 10000 | ruby quartiles.rb
+ :commandoutput: kali mkplummer3.rb -n 10000 | kali quartiles.rb
+ :commandoutput: kali mkplummer3.rb -n 10000 | kali quartiles.rb
+ :commandoutput: kali mkplummer3.rb -n 10000 | kali quartiles.rb
 
 *Alice*: These are indeed what we had derived a bit earlier, in
 eqs. (ref(standardquantities)) and (ref(standardquartiles)):
@@ -113,9 +113,9 @@ Well done!
 That should be easy to verify: in the standard units, the total energy
 should be -1/4.  Let's check:
 
- :commandoutput: ruby mkplummer3.rb -n 1000 | ruby energy.rb
- :commandoutput: ruby mkplummer3.rb -n 1000 | ruby energy.rb
- :commandoutput: ruby mkplummer3.rb -n 1000 | ruby energy.rb
+ :commandoutput: kali mkplummer3.rb -n 1000 | kali energy.rb
+ :commandoutput: kali mkplummer3.rb -n 1000 | kali energy.rb
+ :commandoutput: kali mkplummer3.rb -n 1000 | kali energy.rb
 
 *Alice*: Just as it should be, within the expected statistical errors of a
 few percent.  Great!  Now we can generate a truly
@@ -193,21 +193,21 @@ random number generator here directly:
 
 *Bob*: The total energy should remain unchanged, still -1/4.  Here it is:
 
- :commandoutput: ruby mkplummer4.rb -n 1000 | ruby energy.rb
+ :commandoutput: kali mkplummer4.rb -n 1000 | kali energy.rb
 
 *Alice*: Fair enough.  And your quartiles should come out wonderfully
 accurate, even for, say, 100 particles, by construction.
 
 *Bob*: I hope so!  Let's try:
 
- :commandoutput: ruby mkplummer4.rb -n 100 | ruby quartiles.rb
- :commandoutput: ruby mkplummer4.rb -n 100 | ruby quartiles.rb
- :commandoutput: ruby mkplummer4.rb -n 100 | ruby quartiles.rb
+ :commandoutput: kali mkplummer4.rb -n 100 | kali quartiles.rb
+ :commandoutput: kali mkplummer4.rb -n 100 | kali quartiles.rb
+ :commandoutput: kali mkplummer4.rb -n 100 | kali quartiles.rb
 
 Indeed, as expected.  And of course it will be even more accurate
 for 10,000 particles:
 
- :commandoutput: ruby mkplummer4.rb -n 10000 | ruby quartiles.rb
+ :commandoutput: kali mkplummer4.rb -n 10000 | kali quartiles.rb
 
 *Alice*: Quiet indeed.  You have managed to shove the statistical noise
 under the rug.
