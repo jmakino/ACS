@@ -40,16 +40,16 @@ doc : $(SRC) .acsdocinitrc
 	touch doc
 
 scripts : $(SCRIPTSRCS)
-	ruby -S check_and_install.rb ACSSCRIPTS $(SCRIPTSRCS)
+	ruby $(ACSROOT)/bin/check_and_install.rb ACSSCRIPTS $(SCRIPTSRCS)
 	
 libs : $(LIBSRCS)
-	ruby -S check_and_install.rb ACSLIBS $(LIBSRCS)
+	ruby $(ACSROOT)/bin/check_and_install.rb ACSLIBS $(LIBSRCS)
 
 localscripts : $(LOCALSCRIPTSRCS) $(KALI_SCRIPTSRCS)
-	ruby -S check_and_install.rb $(ACSSCRIPTS)/$(LOCALDIR) $(LOCALSCRIPTSRCS)
+	ruby $(ACSROOT)/bin/check_and_install.rb $(ACSSCRIPTS)/$(LOCALDIR) $(LOCALSCRIPTSRCS)
 	
 locallibs : $(LOCALLIBSRCS) $(KALI_LIBSRCS)
-	ruby -S check_and_install.rb $(ACSLIBS)/$(LOCALDIR) $(LOCALLIBSRCS)
+	ruby $(ACSROOT)/bin/check_and_install.rb $(ACSLIBS)/$(LOCALDIR) $(LOCALLIBSRCS)
 
 clean : 
 	-rm -r doc .imgs .acsdoc.commandoutdir >&/dev/null
