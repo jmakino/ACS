@@ -94,6 +94,12 @@ class NBody
     calc(" @vel += @old_acc*dt ")
   end
 
+  def forward_plus
+    calc(" @old_acc = acc(ba,eps) ")
+    calc(" @pos += @vel*dt + @old_acc*0.5*dt*dt ")
+    calc(" @vel += @old_acc*dt ")
+  end
+
   def leapfrog
     calc(" @vel += acc(ba,eps)*0.5*dt ")
     calc(" @pos += @vel*dt ")
@@ -121,6 +127,20 @@ class NBody
 
   def yo2
     leapfrog
+  end
+
+  def su4
+    d = [0.414490771794376, -0.657963087177503]
+    old_dt = @dt
+    @dt = old_dt * d[0]
+    leapfrog
+    leapfrog
+    @dt = old_dt * d[1]
+    leapfrog
+    @dt = old_dt * d[0]
+    leapfrog
+    leapfrog
+    @dt = old_dt
   end
 
   def yo4
@@ -349,7 +369,7 @@ options_text = <<-END
     (c) 2005, Piet Hut and Jun Makino; see ACS at www.artcompsi.org
 
     example:
-    kali sim2acs.rb < cube1.in | ruby #{$0} -t 1
+    kali sim2acs.rb < cube1.in | kali #{$0} -t 1
 
 
   Short name:		-g

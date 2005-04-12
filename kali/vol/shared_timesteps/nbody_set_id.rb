@@ -13,7 +13,7 @@ options_text= <<-END
     (c) 2005, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
     example:
-               ruby #{$0} -n 0
+               kali #{$0} -n 0
 
 
   Short name: 		-n

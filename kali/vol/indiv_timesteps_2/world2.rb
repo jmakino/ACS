@@ -870,7 +870,7 @@ options_text = <<-END
     (c) 2004, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
     example:
-    ruby mkplummer.rb -n 4 -s 1 | ruby #{$0} -t 1
+    kali mkplummer.rb -n 4 -s 1 | kali #{$0} -t 1
 
 
   Short name: 		-g
