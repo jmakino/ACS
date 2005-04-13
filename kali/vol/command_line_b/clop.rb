@@ -454,7 +454,7 @@ if __FILE__ == $0
 
   END
 
-more_string=<<-END
+additional_definitions_string=<<-END
 
   Short name:		-a
   Long name:  		--shared_timesteps
@@ -468,8 +468,9 @@ more_string=<<-END
 
 END
 
-  Clop.add_defs(more_string)
-  Clop.add_to_initialize_action_list(Proc.new{|x| print "shared=",x.shared_flag,"\n"})
+  Clop.add_defs(additional_definitions_string)
+  Clop.add_to_initialize_action_list(lambda{|x|
+                                       print "shared=",x.shared_flag,"\n"})
   clop = parse_command_line(options_definition_string, false)
 
   print "\nclop.rb: testing automatic generation of attribute readers:\n"

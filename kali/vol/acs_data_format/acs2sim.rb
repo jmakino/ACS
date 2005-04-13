@@ -79,17 +79,6 @@ options_text= <<-END
     kali #{$0} < cube1_acs.in
 
 
-  Short name:           -p
-  Long name:            --precision
-  Value type:           int
-  Default value:        16
-  Description:          Floating point precision
-  Variable name:        precision
-  Long description:
-    The precision with which floating point numbers are printed in the output.
-    The default precision is comparable to double precision accuracy.
-
-
   Short name:           -f
   Long name:            --no_exponents
   Value type:           bool

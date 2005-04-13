@@ -26,17 +26,6 @@ options_text= <<-END
     systems using only particle information; velocity information is not used.
 
 
-  Short name:           -p
-  Long name:            --precision
-  Value type:           int
-  Default value:        2
-  Description:          Floating point precision
-  Variable name:        precision
-  Long description:
-    The precision with which the distance between the two N-body systems
-    is printed. 
-
-
   END
 
 c = parse_command_line(options_text)

@@ -173,32 +173,6 @@ options_text= <<-END
         . . .
 
 
-  Short name:           -p
-  Long name:            --precision
-  Value type:           int
-  Default value:        16
-  Description:          Floating point precision
-  Variable name:        precision
-  Long description:
-    The precision with which floating point numbers are printed in the output.
-    The default precision is comparable to double precision accuracy.
-
-
-  Long name:            --indentation
-  Value type:           int
-  Default value:        2
-  Description:          Incremental indentation
-  Variable name:        add_indent
-  Long description:
-    This option allows the user to set the incremental indentation, i.e.
-    the number of white spaces added in front of the output of data, for
-    each level that the data are removed from the top level.
-
-    Starting at zero indentation at the level of the top ACS structure,
-    one set of incremental indentation is added for each level down,
-    from ACS to DSS, from DSS to World, and so on.
-
-
   END
 
 mkplummer(parse_command_line(options_text))

@@ -95,8 +95,8 @@ module ACS_IO
     @@precision = c.precision
   end
 
-  def to_acs_s(name, check_acs_output_name, precision = @@precision,
-               base_indent = BASE_INDENT, add_indent = @@add_indent)
+  def to_acs_s(name, check_acs_output_name, precision = PRECISION,
+               base_indent = BASE_INDENT, add_indent = ADD_INDENT)
     indent = base_indent + add_indent
     if defined? self.class::ACS_OUTPUT_NAME and check_acs_output_name
       tag = self.class::ACS_OUTPUT_NAME
@@ -124,7 +124,7 @@ module ACS_IO
   end
 
   def acs_write(file = $stdout, check_acs_output_name = false,
-                precision = @@precision, add_indent = @@add_indent)
+                precision = PRECISION, add_indent = ADD_INDENT)
     file.print ACS_HEADER +
          to_acs_s("", check_acs_output_name, precision, add_indent,
                   add_indent) +
@@ -281,6 +281,7 @@ end
 
 additional_definitions_string=<<-END
 
+  Short name:           -p
   Long name:            --precision
   Value type:           int
   Default value:        16
@@ -310,5 +311,5 @@ END
 
 if defined? Clop
   Clop.add_defs(additional_definitions_string)
-  Clop.add_to_initialize_action_list(lambda{|x| ACS_IO.set_print_format(x)})
+  Clop.add_to_initialize_action_list(Proc.new{|x| ACS_IO.set_print_format(x)})
 end
