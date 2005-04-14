@@ -739,6 +739,8 @@ module Acsdoc
   
   def file_is_there(name)
     print "preprocess file #{name}\n" if $DEBUG
+    print "preprocess file #{name}\n" 
+    return true if File.exist?(name)
     dir=File.dirname(name)
     fname=File.basename(name)
     p dir if $DEBUG
@@ -946,11 +948,13 @@ module Acsdoc
   end
 
   def process_nosectionnumber(realtag,s,taggedstring,dirname)
-    print "Enter process_nosectionnumber\n"
-    p realtag
-    p s
-    p taggedstring
-    p dirname
+    if $DEBUG
+      print "Enter process_nosectionnumber\n"
+      p realtag
+      p s
+      p taggedstring
+      p dirname
+    end
     ""
   end
 
@@ -1408,7 +1412,6 @@ module Acsdoc
 	  end
 	  open(outfilenamebase+name,"w"){|f|f.print functionstring}
 	end
-	print functionstring
       end
     end
     ifile.close
