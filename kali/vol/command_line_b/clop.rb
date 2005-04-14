@@ -114,7 +114,11 @@ class Clop
     print_values
     eval(mk_reader,TOPLEVEL_BINDING)
     @@proclist.each{|x| x.call(self)}
+    @@the_only_instance
+  end
 
+  def Clop.option
+    @@the_only_instance
   end
 
   def Clop.add_to_initialize_action_list(x)

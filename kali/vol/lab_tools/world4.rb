@@ -1290,18 +1290,19 @@ class Worldsnapshot < NBody
     END
   end
 
-  def binary_diagnostics(max_semi_major_axis
+  def binary_diagnostics
+    v = 1 
+    c = Clop.option
     @body.each do |bi|
       @body.each do |bj|
         if bj.body_id > bi.body_id
           b = Binary.new(bi, bj)
-          if b.rel_energy < 0 and b.semi_major_axis <= max_semi_major_axis
-            STDERR.print "  [", i, ",", j, "] :  a = "
-            STDERR.printf("%.#{precision}f", b.semi_major_axis)
-            STDERR.print " ; e = "
-            STDERR.printf("%.#{precision}f", b.eccentricity)
-            STDERR.print " ; T = "
-            STDERR.printf("%.#{precision}f\n", b.period)
+          if b.rel_energy < 0 and b.semi_major_axis <= c.max_semi_major_axis
+            s = "  [", i, ",", j, "] :  "
+            s += sprintf("a = %.#{c.precision}f ; ", b.semi_major_axis)
+            s += sprintf("e = %.#{precision}f ; ", b.eccentricity)
+            s += sprintf("T = %.#{precision}f\n", b.period)
+            acs_log(v, s)
           end
         end
       end
