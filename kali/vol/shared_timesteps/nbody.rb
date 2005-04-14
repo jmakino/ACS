@@ -3,6 +3,7 @@ require "acs"
 class Body
 
   attr_accessor :mass, :pos, :vel
+  attr_reader :body_id
 
 end
 

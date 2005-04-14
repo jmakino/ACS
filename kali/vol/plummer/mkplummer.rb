@@ -6,7 +6,7 @@ require "acs"
 
 class Body
 
-  attr_accessor :mass, :pos, :vel
+  attr_accessor :body_id, :mass, :pos, :vel
 
   def ekin                         # kinetic energy
     0.5*@mass*(@vel*@vel)
@@ -89,9 +89,10 @@ def mkplummer(c)
     srand c.seed
   end
   nb = NBody.new
-  c.n.times do
+  c.n.times do |i|
     b = plummer_sample
     b.mass = 1.0/c.n
+    b.body_id = i
     nb.body.push(b)
   end
   nb.adjust_center_of_mass if c.n > 0

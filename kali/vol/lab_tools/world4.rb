@@ -1,6 +1,7 @@
 #!/usr/local/bin/ruby -w
 
 require "nbody.rb"
+require "binary.rb"
 
 module Integrator_force_default
 
@@ -1016,13 +1017,19 @@ class Worldera
   end
 
   def write_diagnostics(t, initial_energy, unscheduled_output = false)
-    v = unscheduled_output ? 2 : 1
+#    v = unscheduled_output ? 2 : 1
+    v = 1
     acs_log(v, "  < unscheduled > ") if unscheduled_output
     acs_log(v, "t = #{sprintf("%g", t)} ")
     cen = census(t)
     acs_log(v, "(after #{cen[0..2].inject{|n,dn|n+dn}}, ")
     acs_log(v, "#{cen[3]}, #{cen[4]} steps <,=,> t)\n")
     acs_log(v, take_snapshot(t).construct_diagnostics(initial_energy))
+  end
+
+  def binary_diagnostics(t)
+    v = 1
+    acs_log(v, take_snapshot(t).binary_diagnostics)
   end
 
   def wordline_with_minimum_extrapolation
@@ -1091,6 +1098,7 @@ module Output
     dia_output = false
     while @t_dia <= t_target
       @era.write_diagnostics(@t_dia, @initial_energy)
+      @era.binary_diagnostics(@t_dia)
       @t_dia += dt_dia
       dia_output = true
     end
@@ -1098,9 +1106,10 @@ module Output
   end
 
   def unscheduled_diagnostics(dt_dia)
-    t_era = @era.wordline_with_minimum_interpolation.worldpoint.last.time
-    unless diagnostics(t_era, dt_dia)
-      @era.write_diagnostics(t_era, @initial_energy, true)
+    t = @era.wordline_with_minimum_interpolation.worldpoint.last.time
+    unless diagnostics(t, dt_dia)
+      @era.write_diagnostics(t, @initial_energy, true)
+      @era.binary_diagnostics(t)
     end
   end
 
@@ -1279,6 +1288,24 @@ class Worldsnapshot < NBody
           E_tot - E_init = #{sprintf("%.3g", etot - e0)}
           (E_tot - E_init) / E_init = #{sprintf("%.3g", (etot - e0)/e0 )}
     END
+  end
+
+  def binary_diagnostics(max_semi_major_axis
+    @body.each do |bi|
+      @body.each do |bj|
+        if bj.body_id > bi.body_id
+          b = Binary.new(bi, bj)
+          if b.rel_energy < 0 and b.semi_major_axis <= max_semi_major_axis
+            STDERR.print "  [", i, ",", j, "] :  a = "
+            STDERR.printf("%.#{precision}f", b.semi_major_axis)
+            STDERR.print " ; e = "
+            STDERR.printf("%.#{precision}f", b.eccentricity)
+            STDERR.print " ; T = "
+            STDERR.printf("%.#{precision}f\n", b.period)
+          end
+        end
+      end
+    end
   end
 end
 
@@ -1483,6 +1510,19 @@ options_text = <<-END
   Long description:
     If this flag is set to true, all particles will march in lock step,
     all sharing the same time step.
+
+
+  Short name: 		-x
+  Long name:            --max_semi_major_axis
+  Value type:           float
+  Default value:        #{VERY_LARGE_NUMBER}
+  Description:          Maximum value of semi major axis
+  Variable name:        max_semi_major_axis
+  Long description:
+    This option allows the user to limit the number of binaries detected
+    by discarding binaries with a semi-major axis larger than the specified
+    number.  This is useful in situation such as the initial state for a cold
+    collapse situation, where every star is formally bound to every other star.
 
 
   END
