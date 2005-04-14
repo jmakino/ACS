@@ -35,3 +35,5 @@ def acsp(x, b)
   e = "[" + e.join(", ") + "]" if e.is_a? Array
   print x, " = ", e, "\n"
 end
+
+$0 = File.basename($0) if File.dirname($0) == "."
