@@ -155,14 +155,14 @@ class WorldLine
     if time >= @worldpoint.last.time
       valid_extrapolation?(time)
       wp = @worldpoint.last.extrapolate(time)
-      wp.body_id = @body_id
+      wp.body_id = @body_id if defined? @body_id
       wp
     else
       valid_interpolation?(time)
       @worldpoint.each_index do |i|
         if @worldpoint[i].time > time
           wp = @worldpoint[i-1].interpolate(@worldpoint[i], time)
-          wp.body_id = @body_id
+          wp.body_id = @body_id if defined? @body_id
           return wp
         end
       end
@@ -184,7 +184,7 @@ class WorldLine
 
   def setup_from_single_worldpoint(b, dt_param, time)
     @worldpoint[0] = b.to_worldpoint
-    @body_id = @worldpoint[0].body_id
+    @body_id = @worldpoint[0].body_id if @worldpoint[0].body_id
     @dt_param = dt_param
     setup(time)
   end

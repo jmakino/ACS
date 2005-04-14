@@ -20,12 +20,18 @@ class WorldPoint < Body
   def leapfrog_setup(time)
     @time = @next_time = time
     @acc = @pos*0
+    @nsteps = 0
+    @minstep = VERY_LARGE_NUMBER
+    @maxstep = 0
   end
 
   def hermite_setup(time)
     @time = @next_time = time
     @acc = @pos*0
     @jerk = @pos*0
+    @nsteps = 0
+    @minstep = VERY_LARGE_NUMBER
+    @maxstep = 0
   end
 
   def ms4_setup(time)
@@ -35,6 +41,9 @@ class WorldPoint < Body
     @snap = @pos*0
     @crackle = @pos*0
     @pop = @pos*0
+    @nsteps = 0
+    @minstep = VERY_LARGE_NUMBER
+    @maxstep = 0
   end
 
   def forward_startup(acc, timescale, dt_param, dt_max)
@@ -486,14 +495,14 @@ class WorldLine
     if time >= @worldpoint.last.time
       valid_extrapolation?(time)
       wp = @worldpoint.last.extrapolate(time, @method)
-      wp.body_id = @body_id
+      wp.body_id = @body_id if defined? @body_id
       wp
     else
       valid_interpolation?(time)
       @worldpoint.each_index do |i|
         if @worldpoint[i].time > time
           wp = @worldpoint[i-1].interpolate(@worldpoint[i], time, @method)
-          wp.body_id = @body_id
+          wp.body_id = @body_id if defined? @body_id
           return wp
         end
       end
@@ -518,7 +527,7 @@ class WorldLine
 
   def setup_from_single_worldpoint(b, method, dt_param, time)
     @worldpoint[0] = b.to_worldpoint
-    @body_id = @worldpoint[0].body_id
+    @body_id = @worldpoint[0].body_id if @worldpoint[0].body_id
     @method = method
     @dt_param = dt_param
     if eval("defined? #{@method}_number_of_steps")

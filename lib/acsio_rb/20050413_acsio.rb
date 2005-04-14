@@ -114,7 +114,7 @@ module ACS_IO
       self.instance_variables.sort.each do |v|
         s += eval(v).to_acs_s(v.delete("@"), check_acs_output_name,
                               precision, indent, add_indent)
-#        remove_instance_variable(:@story) if v == "@story"
+        remove_instance_variable(:@story) if v == "@story"
       end
       return s
     end

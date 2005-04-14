@@ -1,3 +1,21 @@
+class NilClass
+  def NilClass.acs_parse(s, indent)
+    nil
+  end
+end
+
+class FalseClass
+  def FalseClass.acs_parse(s, indent)
+    false
+  end
+end
+
+class TrueClass
+  def TrueClass.acs_parse(s, indent)
+    true
+  end
+end
+
 class Fixnum
   def Fixnum.acs_parse(s, indent)
 # check indentation here first
@@ -114,7 +132,7 @@ module ACS_IO
       self.instance_variables.sort.each do |v|
         s += eval(v).to_acs_s(v.delete("@"), check_acs_output_name,
                               precision, indent, add_indent)
-#        remove_instance_variable(:@story) if v == "@story"
+        remove_instance_variable(:@story) if v == "@story"
       end
       return s
     end
@@ -221,11 +239,18 @@ module ACS_IO
     loop do
       return self unless a[0]
       variable_name = a[0].split[1]
-      result = ACS_IO.acs_parse_manager(a, base_indent)
-      if result
-        eval("@#{variable_name} = result")
+      if a[0].split[0] =~ /^(NilClass|FalseClass)$/
+        val = a[0].split[0] == "NilClass" ? "nil" : "false"
+        a.shift
+        a.shift
+        eval("@#{variable_name} = #{val}")
       else
-        return self
+        result = ACS_IO.acs_parse_manager(a, base_indent)
+        if result
+          eval("@#{variable_name} = result")
+        else
+          return self
+        end
       end
     end
   end
@@ -242,7 +267,7 @@ module ACS_IO
       return String.acs_parse(a, indent + add_indent)
     when "Array"
       return Array.acs_parse(a, indent)
-    when /^(Fixnum|Bignum|Float|Vector)$/
+    when /^(TrueClass|Fixnum|Bignum|Float|Vector)$/
       return eval("#{class_name}.acs_parse(a.shift, indent)")
     else
       begin

@@ -1022,7 +1022,7 @@ class Worldera
     cen = census(t)
     acs_log(v, "(after #{cen[0..2].inject{|n,dn|n+dn}}, ")
     acs_log(v, "#{cen[3]}, #{cen[4]} steps <,=,> t)\n")
-    take_snapshot(t).write_diagnostics(v, initial_energy)
+    acs_log(v, take_snapshot(t).construct_diagnostics(initial_energy))
   end
 
   def wordline_with_minimum_extrapolation
@@ -1053,6 +1053,7 @@ class Worldera
     e = Worldera.new
     e.start_time = @end_time
     e.end_time = @end_time + dt_era
+    e.story = @story if defined? @story
     @worldline.each do |wl|
       e.worldline.push(wl.next_worldline(e.start_time))
     end
@@ -1082,8 +1083,8 @@ module Output
     else
       t_target = [@t_end, @era.end_time].min
     end
-    output(c, t_target, at_startup)
     diagnostics(t_target, c.dt_dia)
+    output(c, t_target, at_startup)
   end
 
   def diagnostics(t_target, dt_dia)
@@ -1153,7 +1154,7 @@ include Output
   end
 
   def continue_from_world(c)
-    initial_diagnostics_and_output(c)
+    diagnostics_and_output(c, true)
     @t_out += c.dt_out
     @t_end += c.dt_end
     @dt_max = c.dt_era * c.dt_max_param
@@ -1193,6 +1194,7 @@ include Output
           cpu_time_max -= @era.cpu_time_used_in_last_evolve_call
         end
         @old_era, @era = @era, @new_era
+        @era.story = @old_era.story if @old_era.story
       end
     end
   end
@@ -1265,19 +1267,18 @@ class Worldsnapshot < NBody
     kinetic_energy + potential_energy
   end
 
-  def write_diagnostics(v, initial_energy)
+  def construct_diagnostics(initial_energy)
     e0 = initial_energy
     ek = kinetic_energy
     ep = potential_energy
     etot = ek + ep
-    s <<-END
+    <<-END
           E_kin = #{sprintf("%.3g", ek)} ,\
      E_pot =  #{sprintf("%.3g", ep)} ,\
       E_tot = #{sprintf("%.3g", etot)}
           E_tot - E_init = #{sprintf("%.3g", etot - e0)}
           (E_tot - E_init) / E_init = #{sprintf("%.3g", (etot - e0)/e0 )}
     END
-    acs_log(v, s)
   end
 end
 

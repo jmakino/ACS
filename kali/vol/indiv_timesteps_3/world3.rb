@@ -1151,7 +1151,7 @@ include Output
   end
 
   def continue_from_world(c)
-    initial_diagnostics_and_output(c)
+    diagnostics_and_output(c, true)
     @t_out += c.dt_out
     @t_end += c.dt_end
     @dt_max = c.dt_era * c.dt_max_param
