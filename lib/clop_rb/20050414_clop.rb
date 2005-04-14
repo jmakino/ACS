@@ -114,7 +114,7 @@ class Clop
     print_values
     eval(mk_reader,TOPLEVEL_BINDING)
     @@proclist.each{|x| x.call(self)}
-    @@the_only_instance
+    @@the_only_instance = self
   end
 
   def Clop.option

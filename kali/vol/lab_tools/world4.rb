@@ -653,7 +653,7 @@ class Worldpoint
 
   attr_accessor :pos, :vel, :next_time
 
-  attr_reader :mass, :time,
+  attr_reader :body_id, :mass, :time,
               :nsteps, :minstep, :maxstep
 
   def setup(method, dt_param, time)
@@ -1293,20 +1293,22 @@ class Worldsnapshot < NBody
   def binary_diagnostics
     v = 1 
     c = Clop.option
+    prec = c.binary_diagnostics_precision
+    s = ""
     @body.each do |bi|
       @body.each do |bj|
         if bj.body_id > bi.body_id
           b = Binary.new(bi, bj)
           if b.rel_energy < 0 and b.semi_major_axis <= c.max_semi_major_axis
-            s = "  [", i, ",", j, "] :  "
-            s += sprintf("a = %.#{c.precision}f ; ", b.semi_major_axis)
-            s += sprintf("e = %.#{precision}f ; ", b.eccentricity)
-            s += sprintf("T = %.#{precision}f\n", b.period)
-            acs_log(v, s)
+            s += "  [#{bi.body_id}, #{bj.body_id}] :  "
+            s += sprintf("a = %.#{prec}e ; ", b.semi_major_axis)
+            s += sprintf("e = %.#{prec}e ; ", b.eccentricity)
+            s += sprintf("T = %.#{prec}e\n", b.period)
           end
         end
       end
     end
+    s
   end
 end
 
@@ -1524,6 +1526,16 @@ options_text = <<-END
     by discarding binaries with a semi-major axis larger than the specified
     number.  This is useful in situation such as the initial state for a cold
     collapse situation, where every star is formally bound to every other star.
+
+
+  Long name:            --binary_diagnostics_precision
+  Value type:           int
+  Default value:        4
+  Description:          Binary Diagnostics Precision
+  Variable name:        binary_diagnostics_precision
+  Long description:
+    This option allows the user to set the precision with which the binary
+    diagnostics are reported.
 
 
   END
