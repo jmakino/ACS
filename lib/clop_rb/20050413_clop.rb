@@ -469,7 +469,7 @@ additional_definitions_string=<<-END
 END
 
   Clop.add_defs(additional_definitions_string)
-  Clop.add_to_initialize_action_list(Proc.new{|x|
+  Clop.add_to_initialize_action_list(lambda{|x|
                                        print "shared=",x.shared_flag,"\n"})
   clop = parse_command_line(options_definition_string, false)
 

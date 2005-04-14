@@ -1003,6 +1003,7 @@ class Worldera
   def take_snapshot_except(wl, time)
     ws = Worldsnapshot.new
     ws.time = time
+    ws.story = @story if defined? @story
     @worldline.each do |w|
       s = w.take_snapshot_of_worldline(time)
       ws.body.push(s) unless w == wl
@@ -1015,12 +1016,13 @@ class Worldera
   end
 
   def write_diagnostics(t, initial_energy, unscheduled_output = false)
-    STDERR.print "  < unscheduled > " if unscheduled_output
-    STDERR.print "t = #{sprintf("%g", t)} "
+    v = unscheduled_output ? 2 : 1
+    acs_log(v, "  < unscheduled > ") if unscheduled_output
+    acs_log(v, "t = #{sprintf("%g", t)} ")
     cen = census(t)
-    STDERR.print "(after #{cen[0..2].inject{|n,dn|n+dn}}, "
-    STDERR.print "#{cen[3]}, #{cen[4]} steps <,=,> t)\n"
-    take_snapshot(t).write_diagnostics(initial_energy)
+    acs_log(v, "(after #{cen[0..2].inject{|n,dn|n+dn}}, ")
+    acs_log(v, "#{cen[3]}, #{cen[4]} steps <,=,> t)\n")
+    take_snapshot(t).write_diagnostics(v, initial_energy)
   end
 
   def wordline_with_minimum_extrapolation
@@ -1263,18 +1265,19 @@ class Worldsnapshot < NBody
     kinetic_energy + potential_energy
   end
 
-  def write_diagnostics(initial_energy)
+  def write_diagnostics(v, initial_energy)
     e0 = initial_energy
     ek = kinetic_energy
     ep = potential_energy
     etot = ek + ep
-    STDERR.print <<-END
+    s <<-END
           E_kin = #{sprintf("%.3g", ek)} ,\
      E_pot =  #{sprintf("%.3g", ep)} ,\
       E_tot = #{sprintf("%.3g", etot)}
           E_tot - E_init = #{sprintf("%.3g", etot - e0)}
           (E_tot - E_init) / E_init = #{sprintf("%.3g", (etot - e0)/e0 )}
     END
+    acs_log(v, s)
   end
 end
 

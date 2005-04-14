@@ -84,15 +84,21 @@ end
 
 module ACS_IO
 
+  attr_accessor :story
+
   ACS_HEADER = "ACS\n"
   ACS_FOOTER = "#{ACS_HEADER.chomp.reverse}\n"
   BASE_INDENT = 0
   @@add_indent = 2
   @@precision = 16
+  @@verbosity = 1
+  @@acs_verbosity = 1
 
-  def ACS_IO.set_print_format(c)
+  def ACS_IO.set_options(c)
     @@add_indent = c.add_indent
     @@precision = c.precision
+    @@verbosity = c.verbosity
+    @@acs_verbosity = c.acs_verbosity
   end
 
   def to_acs_s(name, check_acs_output_name, precision = @@precision,
@@ -108,6 +114,7 @@ module ACS_IO
       self.instance_variables.sort.each do |v|
         s += eval(v).to_acs_s(v.delete("@"), check_acs_output_name,
                               precision, indent, add_indent)
+#        remove_instance_variable(:@story) if v == "@story"
       end
       return s
     end
@@ -121,6 +128,14 @@ module ACS_IO
       return s + self.to_acs_special_s(precision, indent)
     end
     s += " " * indent + self.to_s + "\n"
+  end
+
+  def acs_log(v, s)
+    STDERR.print(s) unless v > @@verbosity
+    unless v > @@acs_verbosity
+      @story = "" unless defined? @story
+      @story += s
+    end
   end
 
   def acs_write(file = $stdout, check_acs_output_name = false,
@@ -281,6 +296,33 @@ end
 
 additional_definitions_string=<<-END
 
+  Long name:            --verbosity
+  Value type:           int
+  Default value:        1
+  Description:          Screen Output Verbosity Level
+  Variable name:        verbosity
+  Long description:
+    The verbosity level determines how much information is printed on the
+    screen, via the STDERR channel.  if the level is set to 0, no output
+    is printed.  On level 1, the normal amount of output is printed.  Level
+    2 functions effectively as a debug level, allowing a lot of extra stuff
+    to be printed.
+
+
+  Long name:            --acs_verbosity
+  Value type:           int
+  Default value:        1
+  Description:          ACS Output Verbosity Level
+  Variable name:        acs_verbosity
+  Long description:
+    The acs verbosity level determines how much information is printed along
+    with the regular particle output, within the same ACS data block that
+    contains the mass, positions, etc, of each particle.  If the level is set
+    to 0, no output is printed.  On level 1, the normal amount of output is
+    printed.  Level 2 functions effectively as a debug level, allowing a lot
+    of extra stuff to be printed.
+
+
   Long name:            --precision
   Value type:           int
   Default value:        16
@@ -310,5 +352,5 @@ END
 
 if defined? Clop
   Clop.add_defs(additional_definitions_string)
-  Clop.add_to_initialize_action_list(lambda{|x| ACS_IO.set_print_format(x)})
+  Clop.add_to_initialize_action_list(lambda{|x| ACS_IO.set_options(x)})
 end
