@@ -263,7 +263,7 @@ module ACS_IO
         end
       end
     end
-    @acsmixins.each{|x| extend(x)} if defined? @acsmixins
+    @acsmixins.each{|x| extend (x)} if defined? @acsmixins
     self
   end
 
