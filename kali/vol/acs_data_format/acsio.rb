@@ -101,7 +101,7 @@ class Array
 end
 
 class Object
-  def acsextend other
+  def acs_extend other
     (@acsmixins ||= []) << other
     @acsmixins.uniq!
    extend other

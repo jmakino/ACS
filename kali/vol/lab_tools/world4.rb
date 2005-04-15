@@ -657,7 +657,7 @@ class Worldpoint
               :nsteps, :minstep, :maxstep
 
   def setup(method, dt_param, time)
-    acsextend(eval("Integrator_#{method}"))
+    acs_extend(eval("Integrator_#{method}"))
     setup_integrator
     setup_admin(dt_param, time)
   end
