@@ -378,4 +378,9 @@ END
 if defined? Clop
   Clop.add_defs(additional_definitions_string)
   Clop.add_to_initialize_action_list(lambda{|x| ACS_IO.set_options(x)})
+  Clop.add_to_initialize_action_list(lambda{|x|
+                                       if x.verbosity == 0
+                                         x.do_not_print_values = true
+                                       end
+                                     })
 end

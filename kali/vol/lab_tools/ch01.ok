@@ -161,3 +161,88 @@ behavior, for example when you are debugging and want to keep the
 complete story, but making a backup pointer just before each acs_write,
 and restoring the story immediately afterwards from that pointer.
 
+== binary finding
+
+We implemented binary diagnostics, and found that it would be a nuisance
+to pass the clop parameters such as max_semi_major_axis and
+binary_diagnostics_precision down to the "binary_diagnostics" method
+deep inside WorldSnapshot.
+
+How to solve this?  We don't like to use global variables in clop.rb.
+We don't like to pass the clop object down through all levels.  Aha:
+as long as we want to use only one clop object, we can make that
+effectively a singleton, but giving it a class variable
+"@@the_only_instance" which is initialized as "@@the_only_instance = self".
+Adding then a method "Clop.option" allows us to call up the clop Object
+from anywhere in the program.
+
+Time for a slew of experiments!  First write "test1.rb" which detects
+the first binary, then halts:
+
+  kali mkplummer.rb -n 8 | kali world4.rb -t 1000 -x 0.1 | kali test1.rb
+
+Hm, too much noice: add "--verbosity 0" to world4.rb ; but still a lot
+of output of the command options.
+
+Aha: it would be good to store all that echoing of command line options
+in the acs stories anyway, so let us give acsio.rb the responsibility
+to take care of that for all programs.  Perhaps acsio.rb can overwrite
+the clop method "print_values".
+
+Alice: yappari, ruby is not only fast and flexible, but also fun!
+
+Bob: fast?
+
+Alice: fast to write.
+
+Bob: but still very slooooow to execute.
+
+Alice: Hmmm, still a lot of output.  I thought we'd pruned that in acsio.rb
+
+Bob: Only for world output; not (yet) for snapshots.
+
+in clop.rb we added to_s and then finished the initializer with
+
+    print_values unless defined? @do_not_print_values
+
+In acsio.rb we added at the end the following 
+
+  Clop.add_to_initialize_action_list(lambda{|x|
+                                       if x.verbosity == 0
+                                         x.do_not_print_values = true
+                                       end
+                                     })
+
+Then we tested:
+
+  <kamuy|lab_tools> mkplummer.rb --verbosity 0
+               actual seed used	: 1113540890
+  ACS
+    NBody 
+      Array body
+        Body body[0]
+          Fixnum body_id
+            0
+          Float mass
+               1.0000000000000000e+00
+          Vector pos
+               0.0000000000000000e+00   0.0000000000000000e+00   0.0000000000000000e+00
+          Vector vel
+               0.0000000000000000e+00   0.0000000000000000e+00   0.0000000000000000e+00
+  SCA
+
+AHA: in mkplummer.rb we have to change STDERR.print to acs_log
+
+Okay, let's try.  First make the mistake:
+
+  nb.acs_log(c.verbosity, "             actual seed used\t: #{srand}\n")
+
+that doesn't work!  grrr.  aha:
+
+  nb.acs_log(1, "             actual seed used\t: #{srand}\n")
+
+okay, let's try:
+
+  kali mkplummer.rb -n 8 --verbosity 0 | kali world4.rb -t 1000 -x 0.1 --verbosity 0 | kali test.rb --verbosity 0
+
+wonderful!

@@ -103,6 +103,8 @@ end
 
 class Clop
 
+  attr_writer :do_not_print_values
+
   @@proclist=[]
 
   def initialize(def_str, argv_array, global_variables_flag)
@@ -111,10 +113,10 @@ class Clop
     initialize_option_variables
     initialize_global_variables if global_variables_flag
     check_required_options
-    print_values
     eval(mk_reader,TOPLEVEL_BINDING)
     @@proclist.each{|x| x.call(self)}
     @@the_only_instance = self
+    print_values unless defined? @do_not_print_values
   end
 
   def Clop.option
@@ -161,11 +163,16 @@ class Clop
     end
   end
 
-  def print_values
-    STDERR.print "==> ", @options[0].description, " <==\n"
+  def to_s
+    s = "==> " + @options[0].description + " <==\n"
     for i in 1...@options.size - 2   # exclude header & help (first & last two)
-      STDERR.print @options[i].to_s
+      s += @options[i].to_s
     end
+    s
+  end
+
+  def print_values
+    STDERR.print to_s
   end
 
   def find_option(s)

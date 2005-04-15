@@ -97,7 +97,7 @@ def mkplummer(c)
   end
   nb.adjust_center_of_mass if c.n > 0
   nb.adjust_units if c.n > 1
-  STDERR.print "             actual seed used\t: ", srand, "\n"
+  nb.acs_log(1, "             actual seed used\t: #{srand}\n")
   nb.acs_write($stdout, false, c.precision, c.add_indent)
 end
 
