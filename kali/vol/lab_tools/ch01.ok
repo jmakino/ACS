@@ -246,3 +246,40 @@ okay, let's try:
   kali mkplummer.rb -n 8 --verbosity 0 | kali world4.rb -t 1000 -x 0.1 --verbosity 0 | kali test.rb --verbosity 0
 
 wonderful!
+
+== getting time out
+
+Now let's print the time of first binary formation: test2.rb
+
+Now let's finally run a series of experiments.
+
+In C shell?
+
+No, let's try ruby to give system calls to run commands.
+
+test4.rb
+
+ kali test4.rb -r 2 -n 3 -x 0.3 -s 42
+ x x x
+ times = 1.0, 52.0
+ t_average = 26.5
+
+Wow, it works!  Our first lab run.
+
+Bob: but is it true?  Let's change verbosity of world4.rb to verbosity
+of program
+
+Alice: no, let's add a verbosity level: run_verbosity
+
+Bob: sounds more like Alice's verbosity in suppressing verbosity.
+
+Alice: let's check and see:
+
+ kali test4.rb -r 2 -n 3 -x 0.3 -s 42 --run_verbosity 1
+ X X X 
+ times = 1.0, 52.0
+ t_average = 26.5
+
+Wonderful!
+
+
