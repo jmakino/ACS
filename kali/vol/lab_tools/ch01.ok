@@ -282,4 +282,21 @@ Alice: let's check and see:
 
 Wonderful!
 
+Bob: but the first binary was already there from the beginning!
+why reported at time 1?
+
+Alice: we didn't do particle output at time 0.  With option -i for
+world4.rb within test4.rb it would work.  Shall I make an option
+--run_init_out ?
+
+Bob: thanks, but no thanks.  Just change it by hand, to see whether it
+works.
+
+ kali test4.rb -r 2 -n 3 -x 0.3 -s 42 --run_verbosity 1
+ X X X 
+ times = 0.0, 52.0
+ t_average = 26
+
+And so it does.  Good night.
+
 
