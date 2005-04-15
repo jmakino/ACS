@@ -101,10 +101,10 @@ class Array
 end
 
 class Object
-  def acsextend other
+  def acs_extend(other)
     (@acsmixins ||= []) << other
     @acsmixins.uniq!
-   extend other
+   extend(other)
   end
   attr :acsmixins
 end
