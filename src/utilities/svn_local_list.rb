@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 #
 #  svn_local_list.rb
 #
@@ -9,7 +9,7 @@
 #  usage: ruby svn_local_list.rb
 #
 #==============================================================================
-
+filelists=ARGV
 fname = ".svn/entries"
 if FileTest.exist?(fname)
   entry_file = open(fname, "r")
@@ -24,7 +24,9 @@ while s = entry_file.gets
     file_name.chop!                                        # remove trailing "
 #    unless file_name == "svn:this_dir"   # older svn version
     unless file_name == ""               # new svn version
-      print file_name, "\n"
+      if filelists==[] or filelists.index(file_name)
+        print file_name, "\n"
+      end
     end
   end
 end
