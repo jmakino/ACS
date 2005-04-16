@@ -105,8 +105,16 @@ c = parse_command_line(options_text)
 times = []
 run_seed = c.seed
 c.n_runs.times do
-  times.push `kali mkplummer.rb -n #{c.n} -s #{run_seed} --verbosity 0 | kali world4.rb -t 1000 -x #{c.max_semi_major_axis} --verbosity #{c.run_verbosity} | kali test2.rb --verbosity 0`.chomp
+  times.push `kali mkplummer.rb -n #{c.n} -s #{run_seed} --verbosity #{c.run_verbosity} | kali world4.rb -t 1000 -x #{c.max_semi_major_axis} --verbosity #{c.run_verbosity} | kali test2.rb --verbosity 0`.chomp
   run_seed += 1
 end
 print "times = #{times.join(", ")}\n"
-print "t_average = #{times.map{|t| t.to_f}.inject{|n,dn| n+dn}/times.length}\n"
+times = times.map{|t| t.to_f}.sort!
+t_average = times.inject{|n,dn| n+dn}/times.size
+if times.size%2 == 1
+  t_median = times[times.size/2]
+else
+  t_median = (times[times.size/2] + times[times.size/2 - 1])/2.0
+end
+print "t_average = #{t_average}\n"
+print "t_median = #{t_median}\n"

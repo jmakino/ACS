@@ -232,6 +232,9 @@ module ACS_IO
   def ACS_IO.define_new_class(name)
     eval("class #{name} \nend", TOPLEVEL_BINDING)
   end   
+  def ACS_IO.define_empty_module(name)
+    eval("module #{name} \nend", TOPLEVEL_BINDING)
+  end   
 
   def io_name_okay?(w)
     if defined? ACS_OUTPUT_NAME
@@ -263,7 +266,7 @@ module ACS_IO
         end
       end
     end
-    @acsmixins.each{|x| extend(x)} if defined? @acsmixins
+    @acsmixins.each{|x| extend(x) } if defined? @acsmixins
     self
   end
 
@@ -282,7 +285,13 @@ module ACS_IO
     when /^(TrueClass|Fixnum|Bignum|Float|Vector)$/
       return eval("#{class_name}.acs_parse(a.shift, indent)")
     when /^(Module)$/
-      return eval(a.shift.split[0])
+      modulename = a.shift.split[0]
+      begin
+         return eval(modulename)
+      rescue
+        ACS_IO.define_empty_module(modulename)
+        retry
+      end
     else
       begin
         x = eval("#{class_name}.new")
