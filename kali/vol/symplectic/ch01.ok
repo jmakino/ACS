@@ -47,11 +47,11 @@ addition it should give a simple example invocation.
 *Alice*: Ah, yes, that's one of the nifty features we added.  We've sure done
 a lot!  Let's try:
 
- :commandoutput: Kali nbody_cst1a.rb ---help
+ :commandoutput: kali nbody_cst1a.rb ---help
 
 Well, let's follow the advice:
 
- :commandoutput: Kali mkplummer.rb -n 4 -s 1 | Kali nbody_cst1a.rb -t 1 > /dev/null
+ :commandoutput: kali mkplummer.rb -n 4 -s 1 | kali nbody_cst1a.rb -t 1 > /dev/null
 
 == The Chin and Chen paper
 
