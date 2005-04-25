@@ -1,0 +1,11 @@
+= XXX
+
+== xxx
+
+*Bob*: At first the Chin/Chen derivation seemed to work only if I would
+arbitrarily change forces into accelerations.  I thought that I might
+have made a mistake in my implementation, since I had only tested it
+for equal masses, but when I tested it for the Pythagorean problem, my
+old implementation was fourth-order, and the newly derived
+implementation was only second order.  I was baffled.
+
