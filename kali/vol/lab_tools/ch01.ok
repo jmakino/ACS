@@ -173,7 +173,7 @@ through the higher-level program.
 *Bob*: Exactly.  And before long, we will probably running programs that
 run programs that run programs, adding more meta levels.
 
-== Reporting
+== Running the Script
 
 *Alice*: Let me try out your nifty meta program.  How about starting with a
 leapfrog, with 5 particles, say, and a specific seed.  
@@ -182,6 +182,8 @@ leapfrog, with 5 particles, say, and a specific seed.
 
 *Bob*: As it should be: the leapfrog is clearly a second order
 integration scheme.
+
+== Too Much of a Good Thing
 
 *Alice*: I must admit, we are now getting too much diagnostics for my taste.
 
@@ -215,5 +217,3 @@ fourth-order method.  How about Yoshida's symplectic algorithm?
  :commandoutput: kali test0.rb -n 5 -s 42 -g yo4 |& tail
 
 *Bob*: Approximately fourth order, indeed.
-
-== xxx
