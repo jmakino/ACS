@@ -1069,12 +1069,12 @@ module Acsdoc
           "(unknown label #{label})"
         end
       elsif @@tex_labels[label] 
-        if @@tex_labels_filename[label]==$current_cp_filename
-          "<ntaga>"+ label + "</ntaga><ntagb>"+ @@tex_labels[label].to_s+ "</ntagb>"
-        else
-          "("+@@tex_labels[label].to_s+")["+
-            to_rdocname(@@tex_labels_filename[label])+"\#"+label+"]"
-        end
+#        if @@tex_labels_filename[label]==$current_cp_filename
+#          "<ntaga>"+ label + "</ntaga><ntagb>"+ @@tex_labels[label].to_s+ "</ntagb>"
+#        else
+        "("+@@tex_labels[label].to_s+")["+
+          to_rdocname(@@tex_labels_filename[label])+"\#"+label+"]"
+#        end
       elsif @@old_tex_labels[label]
           "("+@@old_tex_labels[label].to_s+")["+
             to_rdocname(@@old_tex_labels_filename[label])+"\#"+label+"]"

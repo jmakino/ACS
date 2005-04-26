@@ -236,7 +236,7 @@ k_{i,2} &=& f(x_i + k_{i,1} \tau)
 and with recycling as:
 
 :equation:
-\label{second2}
+\label{secondtwo}
 \left\{ \begin{array}{lcl}
 \tilde x_{i+1} &=&
 x_i + \half \left(\tilde k_{i-1,2} + \tilde k_{i,2}\right) \tau \\
@@ -339,10 +339,11 @@ again.
   recycle the last force calculation from the previous step, we have the
   best of both worlds: we obtain a second-order scheme for the same price
   in terms of number of force evaluations as the first-order scheme.  This
-  clever scheme is given in Eq. (ref(second2)), as the recycled version of
+  clever scheme is given in Eq. (ref(secondtwo)), as the recycled version of
   what otherwise be Eq. (ref(second1)), which is the same as
-  Eq. (ref(rk2alpha)) for <tex>$\alpha = \half$</tex> , also given above as
-  Eq.(ref(rk2alphahalf)).
+  Eq. (ref(rk2alpha))
+  for <tex>$\alpha = \half$</tex> , also given above as
+  Eq. (ref(rk2alphahalf)).
 
 == Two Force Evaluations per Step
 
