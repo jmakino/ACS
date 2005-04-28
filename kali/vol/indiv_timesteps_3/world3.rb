@@ -644,7 +644,7 @@ module Integrator_cco # NOTE: ONLY WORKS NOW IF ALL BODIES USE THIS METHOD
   end
 end
 
-class Worldpoint
+class WorldPoint
 
   ACS_OUTPUT_NAME = "Body"
 
@@ -762,7 +762,7 @@ class Worldpoint
   end
 end
 
-class Worldline
+class WorldLine
 
   attr_accessor  :worldpoint
 
@@ -897,7 +897,7 @@ class Worldline
     loop do
       i -= 1
       if @worldpoint[i].time <= time
-        wl = Worldline.new
+        wl = WorldLine.new
         wl.worldpoint = @worldpoint[i...@worldpoint.size]
         return wl
       end
@@ -905,7 +905,7 @@ class Worldline
   end
 end
 
-class Worldera
+class WorldEra
 
   attr_accessor  :start_time, :end_time, :worldline
   attr_reader :cpu_overrun_flag, :cpu_time_used_in_last_evolve_call
@@ -919,7 +919,7 @@ class Worldera
     @start_time = ss.time
     @end_time = @start_time + dt_era
     ss.body.each do |b|
-      wl = Worldline.new
+      wl = WorldLine.new
       wl.setup(b, method, dt_param, ss.time)
       @worldline.push(wl)
     end
@@ -1001,7 +1001,7 @@ class Worldera
   end
 
   def take_snapshot_except(wl, time)
-    ws = Worldsnapshot.new
+    ws = WorldSnapshot.new
     ws.time = time
     @worldline.each do |w|
       s = w.take_snapshot_of_worldline(time)
@@ -1048,7 +1048,7 @@ class Worldera
   end
 
   def next_era(dt_era)
-    e = Worldera.new
+    e = WorldEra.new
     e.start_time = @end_time
     e.end_time = @end_time + dt_era
     @worldline.each do |wl|
@@ -1136,11 +1136,11 @@ class World
 include Output
 
   def World.admit(file, c)
-    object = acs_read([self, Worldsnapshot], file)
+    object = acs_read([self, WorldSnapshot], file)
     if object.class == self
       object.continue_from_world(c)
       return object
-    elsif object.class == Worldsnapshot
+    elsif object.class == WorldSnapshot
       w = World.new
       w.setup(object, c)
       w.startup(c)
@@ -1160,7 +1160,7 @@ include Output
   end
 
   def setup(ss, c)
-    @era = Worldera.new
+    @era = WorldEra.new
     @era.setup(ss, c.integration_method, c.dt_param, c.dt_era)
     @dt_max = c.dt_era * c.dt_max_param
     @time = @era.start_time
@@ -1196,7 +1196,7 @@ include Output
   end
 end
 
-class Worldsnapshot < NBody
+class WorldSnapshot < NBody
 
   attr_accessor :time
 
@@ -1281,7 +1281,7 @@ end
 class Body
 
   def to_worldpoint
-    wp = Worldpoint.new
+    wp = WorldPoint.new
     wp.restore_contents(self)
   end
 end

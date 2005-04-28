@@ -645,7 +645,7 @@ module Integrator_cco # NOTE: ONLY WORKS NOW IF ALL BODIES USE THIS METHOD
   end
 end
 
-class Worldpoint
+class WorldPoint
 
   ACS_OUTPUT_NAME = "Body"
 
@@ -763,7 +763,7 @@ class Worldpoint
   end
 end
 
-class Worldline
+class WorldLine
 
   attr_accessor  :worldpoint
 
@@ -898,7 +898,7 @@ class Worldline
     loop do
       i -= 1
       if @worldpoint[i].time <= time
-        wl = Worldline.new
+        wl = WorldLine.new
         wl.worldpoint = @worldpoint[i...@worldpoint.size]
         return wl
       end
@@ -906,7 +906,7 @@ class Worldline
   end
 end
 
-class Worldera
+class WorldEra
 
   attr_accessor  :start_time, :end_time, :worldline
   attr_reader :cpu_overrun_flag, :cpu_time_used_in_last_evolve_call
@@ -920,7 +920,7 @@ class Worldera
     @start_time = ss.time
     @end_time = @start_time + dt_era
     ss.body.each do |b|
-      wl = Worldline.new
+      wl = WorldLine.new
       wl.setup(b, method, dt_param, ss.time)
       @worldline.push(wl)
     end
@@ -1002,7 +1002,7 @@ class Worldera
   end
 
   def take_snapshot_except(wl, time)
-    ws = Worldsnapshot.new
+    ws = WorldSnapshot.new
     ws.time = time
     ws.story = @story if defined? @story
     @worldline.each do |w|
@@ -1057,7 +1057,7 @@ class Worldera
   end
 
   def next_era(dt_era)
-    e = Worldera.new
+    e = WorldEra.new
     e.start_time = @end_time
     e.end_time = @end_time + dt_era
     e.story = @story if defined? @story
@@ -1148,11 +1148,11 @@ class World
 include Output
 
   def World.admit(file, c)
-    object = acs_read([self, Worldsnapshot], file)
+    object = acs_read([self, WorldSnapshot], file)
     if object.class == self
       object.continue_from_world(c)
       return object
-    elsif object.class == Worldsnapshot
+    elsif object.class == WorldSnapshot
       w = World.new
       w.setup(object, c)
       w.startup(c)
@@ -1172,7 +1172,7 @@ include Output
   end
 
   def setup(ss, c)
-    @era = Worldera.new
+    @era = WorldEra.new
     @era.setup(ss, c.integration_method, c.dt_param, c.dt_era)
     @dt_max = c.dt_era * c.dt_max_param
     @time = @era.start_time
@@ -1209,7 +1209,7 @@ include Output
   end
 end
 
-class Worldsnapshot < NBody
+class WorldSnapshot < NBody
 
   attr_accessor :time
 
@@ -1293,7 +1293,7 @@ class Worldsnapshot < NBody
   def binary_diagnostics
     v = 1 
     c = Clop.option
-    prec = c.binary_diagnostics_precision
+    prec = c.binary_diag_precision
     s = ""
     @body.each do |bi|
       @body.each do |bj|
@@ -1315,7 +1315,7 @@ end
 class Body
 
   def to_worldpoint
-    wp = Worldpoint.new
+    wp = WorldPoint.new
     wp.restore_contents(self)
   end
 end
@@ -1519,7 +1519,7 @@ options_text = <<-END
   Long name:            --max_semi_major_axis
   Value type:           float
   Default value:        #{VERY_LARGE_NUMBER}
-  Description:          Maximum value of semi major axis
+  Description:          Maximum semi-major axis
   Variable name:        max_semi_major_axis
   Long description:
     This option allows the user to limit the number of binaries detected
@@ -1528,11 +1528,11 @@ options_text = <<-END
     collapse situation, where every star is formally bound to every other star.
 
 
-  Long name:            --binary_diagnostics_precision
+  Long name:            --binary_diag_precision
   Value type:           int
   Default value:        4
   Description:          Binary Diagnostics Precision
-  Variable name:        binary_diagnostics_precision
+  Variable name:        binary_diag_precision
   Long description:
     This option allows the user to set the precision with which the binary
     diagnostics are reported.

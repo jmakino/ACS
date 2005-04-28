@@ -2,8 +2,7 @@ require "nbody.rb"
 
 class Binary
 
-  def initialize(body1, body2, init_time = 0)
-    @init_time = init_time
+  def initialize(body1, body2)
     @m1 = body1.mass
     @m2 = body2.mass
     @mass = @m1 + @m2
