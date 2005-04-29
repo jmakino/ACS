@@ -1,150 +1,309 @@
-= Old Notes from September 2004
+= Quick Notes
 
-== xxx
+== Moving precision and indentation and other options to acsio.rb
 
-The idea of taking an arbitrary N-body snapshot, and giving a short
-description of the most important characteristics.
+Now it's time to run a slew of simulations, rather than just one run.
 
-Normally you do: initial conditions, integration, data output,
-figures, interpretation.  The idea here is to get a summary form of
-interpretation immediately after the integration.
+How to automatize that?
 
-What should go in?
+Bob: automatize what?  I want to see a concrete example.
 
-N, time, {mass, pos, vel} and later type (single, binary, triple, ...)
+Alice: evaporation a la Casertano
 
-What should come out?
+Bob: takes too long.  How about first binary formation, then stop.
 
-are the units (close to) standard N-body units?
-total mass, energy, r_c, r_h, angular momentum vector, 
-is there once clump or are there several clumps,
-distance between c.o.m and center of density,
-2K/W (K = total kinetic energy; W = absolute value of total potential energy),
-2K_r/K_t (2x the radial kinetic energy divided by tangential kinetic energy),
-inertia tensor and its eigenvalues, number of bound stars, thermal radius
-(radius up to which a Maxwellian is a good approximation).
+Alice: fine.
 
-Then later temperature over spherical shells, and how many sigma away from
-isothermal.  Take k = 1/6N in standard N-body units.
+It would be nice to get the diagnostics inside the particle output data,
+as is done with the story mechanism in starlab.
 
-Also: recognition of being close to a polytrope or King model, etc,
-in terms of f(E), and perhaps rho(r), T(r), etc.
+The problem is: now each class within world4.rb has the freedom to
+report something: this means it will scribble that both in its own
+story and it should also report this information to the output module,
+somehow.  But if every class inside world4.rb is allowed to write
+something in its own story, how will that class know what precision
+and indentation to use?
 
-== xxx
+Bob: let's pick fixed values for those.
 
-Let's start with the question whether the system is close to dynamical
-equilibrium.
+Alice: baka.
 
-Musing: (thermal equilibrium, nuclear equilibrium, from binary
-energy generation???  actually in a star: global dynamical equilibrium,
-local thermal equilibrium, global thermal equilibrium includes the
-right amount of nuclear energy generation -- here binary energy generation;
-could check whether it is in post-core-collapse, only for very large N,
-and then core oscilations form a problem).
-Maybe leave this out.
+Bob: well, global variables?
 
-Let us start with the file <tt>energy.rb</tt> that we used when we
-built our Plummer models:
+Alice: baka.
 
- :inccode: .energy.rb
+Bob: how else can we do it?
 
-And then start with:
+Alice: somehow, ascwrite should know about the options.
 
-center of mass or center of density?
+Bob: but that means building it in.
 
-For determining the core structure, c.o.d. better, but for determining
-escaper, probably c.o.m. of bound particles (to be determined iteratively).
+Alice: if the user could give that information to acs_write,
+that would be great.  Ruby is interpreted after all, so the
+information has to be available only by the time acs_write is being
+used.
 
-Start with file <tt>report.rb</tt>
+Here is the situation.  We have the clop function that reads the def
+string from the user program, and that then parse the command line
+options.  Now we want to add a default set of defs to the def string,
+which determine precision, etc.  The only program that can know about
+that, is acsio.rb.
 
-Homework: can there be an oscilation in the number of escapers,
-preventing convergence?
+However, we don't want to entangle clop.rb and acsio.rb.  We want to
+be able to run clop.rb without acsio.rb present, and also we want to
+be able to run acsio.rb without clop.rb present.
 
-TEST: take a 300-particle system, and give one particle a position and
-velocity component with e+02.
+The way to do that is to give clop.rb the capability to add extra
+defs to a given def string.  In other words, the previously static
+def string now becomes a dynamic def string.  In this way, clop does
+not have to know about precision or whatever is given as addition to
+the def string.
 
-== xxx
+Now for acsio.rb, we can define the additional defs there, but if the
+class Clop is not defined, we won't use them, but instead we will use
+the internal default values for precision, etc.
 
-Idea [040909] we could average the absolute value of the velocity for
-each particle over a number of time steps, weighted with the length of
-the time step, over an interval before and after each snapshot
-output.  This could be done within the code itself.  Perhaps easiest
-to try this with the MSA C++ code.
+AHAHA: so far we have used the default precision of 16 as something
+that was specified BOTH in acsio.rb AND in world1.rb, etc.
 
-Stefano Casertano suggested to Michele that we may want to use the
-actual potential, rather than the spherically averaged one, in
-computing N(E).
+So we will succeed to keep clop and acsio independent.
 
-== xxx
+Now how to do that?
 
-Recipe for determining f(E)
+Proc and block and lambda and trying out various things:
 
-0) start with a snapshot of an N-body system: positions, velocities, masses
-   for each particle.
+ class X
+   @@plist=[]
+ 
+   attr_reader :a
+   def initialize(a)
+     @a=a
+     @@plist.each{|x| x.call(self)}
+   end
+   def X.register(x)
+     @@plist.push x
+   end
+   def X.hellow
+     print "Greetings from Mr. X \n"
+   end
+ end
+ 
+ X.register(Proc.new{|x| print x.class, " hellow world!\n"})
+ X.register(Proc.new{|x| x.class.hellow})
+ X.register(Proc.new{|x| print "a=", x.a, "\n"})
+ X.new(5)
 
-1) give each particle a density, using the Casertano-Hut algorithm.
+Okay, this works, so let's implement it in the clop.rb file first,
+by giving it the possibility to add definitions, in addition to those
+that a user function has in its own definition string.
 
-2) mark all particles as `true'.
+That works too, so then we go to acsio.rb and implement it there.
 
-3) determine the center-of-density, in analogogy to the center-of-mass:
-   the position and velocity of the c.o.d. is the density weighted average
-   of the positions and velocities of all particles marked `true'.
+So now acsio.rb has four options that are included in any file that includes
+acsio.rb: --precision, --indentation.
 
-4) mark all particles as `false'; determine which particles are bound
-   with respect to the c.o.d., and change their marking to `true'.
+== verbosity
 
-5) repeat step 3 and 4; iterate this loop until the identity of the
-   bound particles does not change anymore.  We will call the final
-   c.o.d. position the center of the snapshot.
+We could then use a
+verbosity level which determines how much, if any, will appear on the
+STDERR output.  By default we use "-v 1" which does what has been done
+so far.  With "-v 0" you don't get any information.  With "-v 2", if
+implemented, you'll get a lot of extra information; this is a type of
+debug option.
 
-6) replace each particle with an infinitesimally thin shell centered at 
-   the center, with radius equal to the distance between the particle
-   and the center.
+Maybe a --acs_output_verbosity option also with default value 1,
+which you can set to 0 or 2 if you want no or very much output in the
+particle output file.
 
-7') first determine the smoothing length, as a fixed fraction of the
-    core radius
+So now acsio.rb has four options that are included in any file that includes
+acsio.rb: --verbosity, --acs_verbosity, --precision, --indentation.
 
-7) determine the run of the potential phi(r) using this collection
-   of shells, but near the center replace the Kepler potential by
-   a smoothing kernel (both the procedure and the interpretation are
-   a bit tricky; see our longer notes).
+So we need a method in the ACS_IO module which recieves two parameters,
+a string that contains a form of internal output (like a virtual output),
+and the verbosity number.  Hmmm.  The options precision and indentation
+can and should also be treated automatically.  How to do that?
 
-8) determine N(E), the density of particles in one-dimensional E space;
-   this will be a sum of delta functions, since each particle has a
-   precise position and velocity, hence a precise potential energy and
-   kinetic energy.
+== writing to particle/whatever "stories"
 
-9) for each particle, determine the distance eta in energy space to its kth
-   nearest neighbor (k=4 is probably a good choice).
+Note: for now we will violate the DRY principle, by having at the top
+of <tt>module ACS_IO</tt> the following list:
 
-10) define an energy resolution value zeta (e.g. 1% of the absolute value
-    of the central potential).
+  @@add_indent = 2
+  @@precision = 16
+  @@verbosity = 1
+  @@acs_verbosity = 1
 
-11) for each particle, define the smoothing length epsilon as the maximum
-    of eta and zeta (eta is particle dependent but zeta is not).
+even though these same values appear in the additional defs at the end
+of the acsio.rb file.  You could argue that this list presents the
+values used if NO clop method is used, and that therefore IF you use
+the clop, you override those and you can forget about them.  This is
+the price we pay by having no entanglement between clop and acsio.rb
 
-12) smooth N(E), by replacing the delta function for each particle by
-    a smoothing kernel with compact support of radius epsilon; we will
-    use a quadratic generalization of a triangle (a `bell function',
-    but with  compact support).
+You _could_ argue, however, as a very fine point, that IF clop is
+present, it would be most ideal if it would set the default values
+of its additional defs equal to the default values that would be used
+if NO clop would be present.  But this is such a fine point that we
+will leave it as an exercise for the reader.
 
-13) for each particle with an energy distance to the central potential
-    less than epsilon, increase its distance to epsilon.  This is needed
-    to avoid particles growing wings in unphysical energy space below
-    the lowest point of the potential well.
+One problem: we have written clop.rb in such a way that we could have
+more than one clop object.  However, the function <tt>Clop.add_defs</tt>
+works only for a singleton Clop class with only a single instance.
+The problem arises from the fact that we address this object by using
+class variables, of which there is only one set.
+So the problem of the problem is: we don't know whether this is a problem.
+For now, let's just move ahead.
 
-14) determine f(E) for points between the central potential and E = 0,
-    where the points are spaced at distance zeta in energy.  For each
-    point, compute the conversion factor Omega(E), such that
-    f(E) = N(E) / Omega(E).  Omega(E) is an integral over r containing
-    a square root of E - Phi(r).
+Now what to do with story output?  If you let stories grow, then each
+particle output will put out more story items, and the number of story
+items printed will grow quadratically.  Solution: let acs_write erase
+a story immediately after it is printed.  You can circumvent this
+behavior, for example when you are debugging and want to keep the
+complete story, but making a backup pointer just before each acs_write,
+and restoring the story immediately afterwards from that pointer.
 
-Note that step 13 will give N(E) a quadratic dependence on the amount
-of energy above the central potential, which will lead to a locally
-constant value for f(E).  If we had use a simpler smoothing kernel,
-such as a triangle or tophat, we wound have found a divergent value
-for f(E) for E approaching the value of the central potential.
+== binary finding
 
-Note also that we may want to make a similar adjustment toward E = 0,
-either by shifting particles to slightly lower energy or by shrinking
-the zeta value there locally.  We will leave this for later.
+We implemented binary diagnostics, and found that it would be a nuisance
+to pass the clop parameters such as max_semi_major_axis and
+binary_diagnostics_precision down to the "binary_diagnostics" method
+deep inside WorldSnapshot.
+
+How to solve this?  We don't like to use global variables in clop.rb.
+We don't like to pass the clop object down through all levels.  Aha:
+as long as we want to use only one clop object, we can make that
+effectively a singleton, but giving it a class variable
+"@@the_only_instance" which is initialized as "@@the_only_instance = self".
+Adding then a method "Clop.option" allows us to call up the clop Object
+from anywhere in the program.
+
+Time for a slew of experiments!  First write "test1.rb" which detects
+the first binary, then halts:
+
+  kali mkplummer.rb -n 8 | kali world4.rb -t 1000 -x 0.1 | kali test1.rb
+
+Hm, too much noice: add "--verbosity 0" to world4.rb ; but still a lot
+of output of the command options.
+
+Aha: it would be good to store all that echoing of command line options
+in the acs stories anyway, so let us give acsio.rb the responsibility
+to take care of that for all programs.  Perhaps acsio.rb can overwrite
+the clop method "print_values".
+
+Alice: yappari, ruby is not only fast and flexible, but also fun!
+
+Bob: fast?
+
+Alice: fast to write.
+
+Bob: but still very slooooow to execute.
+
+Alice: Hmmm, still a lot of output.  I thought we'd pruned that in acsio.rb
+
+Bob: Only for world output; not (yet) for snapshots.
+
+in clop.rb we added to_s and then finished the initializer with
+
+    print_values unless defined? @do_not_print_values
+
+In acsio.rb we added at the end the following 
+
+  Clop.add_to_initialize_action_list(lambda{|x|
+                                       if x.verbosity == 0
+                                         x.do_not_print_values = true
+                                       end
+                                     })
+
+Then we tested:
+
+  <kamuy|lab_tools> mkplummer.rb --verbosity 0
+               actual seed used	: 1113540890
+  ACS
+    NBody 
+      Array body
+        Body body[0]
+          Fixnum body_id
+            0
+          Float mass
+               1.0000000000000000e+00
+          Vector pos
+               0.0000000000000000e+00   0.0000000000000000e+00   0.0000000000000000e+00
+          Vector vel
+               0.0000000000000000e+00   0.0000000000000000e+00   0.0000000000000000e+00
+  SCA
+
+AHA: in mkplummer.rb we have to change STDERR.print to acs_log
+
+Okay, let's try.  First make the mistake:
+
+  nb.acs_log(c.verbosity, "             actual seed used\t: #{srand}\n")
+
+that doesn't work!  grrr.  aha:
+
+  nb.acs_log(1, "             actual seed used\t: #{srand}\n")
+
+okay, let's try:
+
+  kali mkplummer.rb -n 8 --verbosity 0 | kali world4.rb -t 1000 -x 0.1 --verbosity 0 | kali test.rb --verbosity 0
+
+wonderful!
+
+== getting time out
+
+Now let's print the time of first binary formation: test2.rb
+
+Now let's finally run a series of experiments.
+
+In C shell?
+
+No, let's try ruby to give system calls to run commands.
+
+test4.rb
+
+ kali test4.rb -r 2 -n 3 -x 0.3 -s 42
+ x x x
+ times = 1.0, 52.0
+ t_average = 26.5
+
+Wow, it works!  Our first lab run.
+
+Bob: but is it true?  Let's change verbosity of world4.rb to verbosity
+of program
+
+Alice: no, let's add a verbosity level: run_verbosity
+
+Bob: sounds more like Alice's verbosity in suppressing verbosity.
+
+Alice: let's check and see:
+
+ kali test4.rb -r 2 -n 3 -x 0.3 -s 42 --run_verbosity 1
+ X X X 
+ times = 1.0, 52.0
+ t_average = 26.5
+
+Wonderful!
+
+Bob: but the first binary was already there from the beginning!
+why reported at time 1?
+
+Alice: we didn't do particle output at time 0.  With option -i for
+world4.rb within test4.rb it would work.  Shall I make an option
+--run_init_out ?
+
+Bob: thanks, but no thanks.  Just change it by hand, to see whether it
+works.
+
+ kali test4.rb -r 2 -n 3 -x 0.3 -s 42 --run_verbosity 1
+ X X X 
+ times = 0.0, 52.0
+ t_average = 26
+
+And so it does.  Good night.
+
+== xxxx
+
+xxx
+
+xxx
+
+
+

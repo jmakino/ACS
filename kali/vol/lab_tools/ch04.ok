@@ -1,0 +1,70 @@
+= XXX
+
+== xxx
+
+*Bob*: Enough with all these preparations!  My fingers are itching to do
+some lab experiments.
+
+*Alice*: Fair enough.  We have already decided to find the typical time
+of first binary formation, starting from a Plummer model.  We have learned
+how to let Ruby run a Ruby program, and we have taught our <tt>world4.rb</tt>
+work horse how to identify binaries.  Time to put it all together.
+
+*Bob*: You bet.  And this time I will make sure that we don't get drawn
+into niceties and generalities.  Let's be blunt and get results first.
+
+*Alice*: No more mister Nice Guy, you mean?
+
+*Bob*: I'm happy to be nice again in a little while, but for now, let's get
+moving.  First question: how to do a single run, and determine the
+time of first binary formation.
+
+*Alice*: I suppose we can let <tt>world4.rb</tt> run for a while, then analyse
+the output, restart <tt>world4.rb</tt> again if no binary of the right hardness
+has been formed, and so on.
+
+*Bob*: Too nice.  Too complicated.  Later on, fine, but let's make a shortcut.
+How about letting <tt>world4.rb</tt> run and run until the first binary
+appears, and then just kill the program?
+
+*Alice*: You are getting blunt, aren't you!
+
+*Bob*: I sure am.  Let me try something.  How about this, as a lovely short
+test program?  I'll call it <tt>test1.rb</tt>:
+
+ :inccode: .test1.rb
+
+*Alice*: A lovely program to kill our integrator?  Funny choice of phrase.
+
+*Bob*: But that's what it does.  It reads in whatever our integrator spits
+out, and as soon as it finds a diagnostics line reporting a binary being
+formed, it exits.
+
+*Alice*: And by doing so, it breaks the pipe between the integrator and the
+test program, rudely stopping the integrator in its tracks.  This is about
+the most unelegant way of programming I've every seen!
+
+*Bob*: So be it!  Let's see whether it works.  See, I even gave it a suggestion
+how to get started.  Let's try it:
+
+ :commandoutput: kali mkplummer.rb -n 4 -s 1 | kali world4.rb -t 1000 -x 0.25 | kali test1.rb
+
+*Alice*: It works all right!  That much I have to credit you for.  But I can't
+say I like it.
+
+*Bob*: We can do a mopping up operation later.  Let's move on.
+
+*Alice*: Okay.  So you have managed to wrestle the story with the binary
+formation information out of the integrator.  What we really need is not
+the story, but the time of first binary formation, given the specified limit
+on the size of the binary.  How do you propose to do that?
+
+*Bob*: Simple, just ask for it, that's the beauty of our ACS data format.
+Here it is, as <tt>test2.rb</tt>
+
+ :inccode: .test2.rb
+
+*Alice*: You see the payoff that we got for not being blunt, and taking the
+time to set up a well crafted ACS IO mechanism.
+
+*Bob*: That's true.  

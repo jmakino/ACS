@@ -14,7 +14,7 @@ options_text= <<-END
 
     example:
 
-        kali mkplummer.rb -n 8 | kali world4.rb -t 1000 -x 0.1 | kali #{$0}
+        kali mkplummer.rb -n 4 -s 1 | kali world4.rb -t 1000 -x 0.25 | kali #{$0}
 
 
   END
