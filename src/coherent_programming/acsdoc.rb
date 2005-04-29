@@ -515,6 +515,14 @@ END
     end
     ostring
   end
+
+  def process_ctrls(instring)
+    ostring=[]
+    while s=instring.shift
+      ostring.push(s.gsub(/[[:cntrl:]]/,""))
+    end
+    ostring
+  end
   
 
   
@@ -532,6 +540,7 @@ END
     s=process_headers(s)
     s=process_refmarkup(s)
     s=process_toc_latex(s)
+    s=process_ctrls(s)
     s = process_tagmarkup(s,dirname).join("\n")
     s= <<-END_TEXSOURCE
     #{@@basic_preambles_for_tex}
@@ -652,7 +661,7 @@ module Acsdoc
 	outfile.print output
 	outfile.close
       end
-      output.each{|x| ostring+=  " "*indent + x}
+      output.each{|x| ostring+=  " "*indent +x}
       ostring+= "\n"
       @previous_is_command = true;
     end
@@ -1213,6 +1222,7 @@ module Acsdoc
     if s 
       t=s.gsub(/([^\t]{8})|([^\t]*)\t/n){[$+].pack("A8")}
       t=t.gsub(/\f/,"")
+      t=t.gsub(/[:cntrl:]/,"")
     else
       t=nil
     end
