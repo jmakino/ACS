@@ -1090,8 +1090,9 @@ module Output
     else
       t_target = [@t_end, @era.end_time].min
     end
+    dia_output = diagnostics(t_target, c.dt_dia)
     output(c, t_target, at_startup)
-    diagnostics(t_target, c.dt_dia)
+    dia_output
   end
 
   def diagnostics(t_target, dt_dia)

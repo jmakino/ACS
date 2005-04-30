@@ -14,7 +14,7 @@ options_text= <<-END
 
     example:
 
-        kali #{$0} -n 3 -x 1.0 -s 42
+        kali #{$0} -n 4 -s 1 -x 0.25
 
 
   Short name:		-n
@@ -80,4 +80,5 @@ options_text= <<-END
 
 c = parse_command_line(options_text)
 
-print `kali mkplummer.rb -n #{c.n} -s #{c.seed} --verbosity 0 | kali world4.rb -t 1000 -x #{c.max_semi_major_axis} --verbosity 0 | kali test2.rb --verbosity 0`
+print `kali mkplummer.rb -n #{c.n} -s #{c.seed} --verbosity 0 | kali world4.rb \
+-t 1000 -x #{c.max_semi_major_axis} --verbosity 0 | kali test2.rb --verbosity 0`
