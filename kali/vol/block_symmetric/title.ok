@@ -1,0 +1,34 @@
+
+<b> </b>	
+
+<b> </b>
+
+<tt> </tt>
+	
+<tex>
+
+\title{{\sl The Art of Computational Science}\\
+\bigskip
+{\sl The Kali Code}\\
+\bigskip
+{\sl vol. 23}\\
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bf Time-Symmetric Time Steps:\\
+\medskip
+\medskip
+Block Time Steps
+\bigskip
+}
+\author{\bf Piet Hut and Jun Makino}
+
+
+\maketitle
+\thispagestyle{empty}
+</tex>
+
+:tableofcontents:
+

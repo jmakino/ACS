@@ -59,7 +59,7 @@ maximum semi-major axis that triggers binary reporting.
 
 In other words, if you want to detect when the first binary is formed
 that has a semi-major axis that is smaller than <tt>0.25</tt>, you should
-invoke the integrator as <tt>world4.rb -x 0.25<tt>.  Wider binaries will
+invoke the integrator as <tt>world4.rb -x 0.25</tt>.  Wider binaries will
 then go unreported, and only binaries of interest will trigger the collapse
 of the pipeline.
 
@@ -71,7 +71,7 @@ But for now, let's see whether it all works.
 *Bob*: It does, and I'll show you.  See, I even gave it a suggestion
 how to get started:
 
- :commandoutput: kali kali world4.rb ---help
+ :commandoutput: kali world4.rb ---help
 
 And here we go:
 
