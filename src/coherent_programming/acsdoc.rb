@@ -347,7 +347,7 @@ END
         infile= open($2,"r")
 #	print "indent = ", indent, "\n"
 	while ss=infile.gets
-	  ostring.push(indent+ss.chomp!)
+	  ostring.push(indent+ss.chomp)
 	end
 	infile.close
       else
