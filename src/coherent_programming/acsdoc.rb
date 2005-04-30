@@ -1222,7 +1222,7 @@ module Acsdoc
     if s 
       t=s.gsub(/([^\t]{8})|([^\t]*)\t/n){[$+].pack("A8")}
       t=t.gsub(/\f/,"")
-      t=t.gsub(/[:cntrl:]/,"")
+      t=t.gsub(/[[:cntrl:]]/,"")
     else
       t=nil
     end
