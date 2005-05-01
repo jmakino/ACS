@@ -7,4 +7,5 @@ END
 \\input ../etc/def
 END
 @@toppagefilename= "../../index.html"
+@@section_counters[1]=-1
 print "Common initialization file loaded from etc/acsdocinitrc\n"
