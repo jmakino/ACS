@@ -345,7 +345,6 @@ END
       if /^(\s*)\:include\:\s*(\S+)$/  =~ s
         indent = $1
         infile= open($2,"r")
-#	print "indent = ", indent, "\n"
 	while ss=infile.gets
 	  ostring.push(indent+ss.chomp)
 	end
@@ -1222,7 +1221,7 @@ module Acsdoc
     if s 
       t=s.gsub(/([^\t]{8})|([^\t]*)\t/n){[$+].pack("A8")}
       t=t.gsub(/\f/,"")
-      t=t.gsub(/[[:cntrl:]]/,"")
+      t=t.gsub(/[[:cntrl:]]/,"")+"\n"
     else
       t=nil
     end
