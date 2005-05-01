@@ -90,6 +90,14 @@ END
   :commandoutput: cat aho
   :command: rm aho
 
+Thus, you can use
+
+* ":output:"     produces output only
+* ":command:"    no output, but command is executed
+* ":commandoutput:"  both command line and output
+* ":commandnooutput:"  command line only
+
+
 I changed the prompt to "yebisu>" using ":prompt:" directive here.
 
 :prompt: yebisu>
