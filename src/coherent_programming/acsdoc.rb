@@ -1177,6 +1177,9 @@ module Acsdoc
 
   def process_some_special_characters(instring)
     instring.gsub(/\\>/m,">")
+    ostring=""
+    instring.each{|x| ostring += expand(x)}
+    ostring
   end
   def prep_cp(infile, outfile,tolatex_flag)
     $infile = infile
