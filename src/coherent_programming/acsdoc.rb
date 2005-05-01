@@ -620,13 +620,15 @@ module Acsdoc
     indent = s.index(tag) 
     noout = false
     noout = true if tag == ":command:" 
+    nooutput = false
+    nooutput = true if tag == ":commandnooutput:" 
     tmpname = ".acsdoc.command-out"
     tmpcommand = ".acsdoc.command-file"
     prompt = " "* indent + @@prompt
     commandline = a[1..a.size].join(" ").chomp
     ostring = ostring +  "---\n"     unless ( noout or @previous_is_command )
       fullcommand  = "cd #{dirname}; #{commandline}" 
-    unless noout
+    unless noout or nooutput
       fullcommand  = "cd #{dirname}; (#{commandline})>&  #{tmpname}" 
       print "Generating output of \"#{commandline}\"...\n" 
     else
@@ -653,14 +655,16 @@ module Acsdoc
       outfile.print reusedcommandid+"\n"
     end
     unless noout
-       ostring = ostring +  prompt + commandline + "\n" if tag == ":commandoutput:"
-      output = `cat #{dirname}/#{tmpname}`
-      unless reused
-	outfile.print "OUTPUT\n"
-	outfile.print output
-	outfile.close
+       ostring = ostring +  prompt + commandline + "\n" if tag =~ /command/
+      unless nooutput
+        output = `cat #{dirname}/#{tmpname}`
+        unless reused
+          outfile.print "OUTPUT\n"
+          outfile.print output
+          outfile.close
+        end
+        output.each{|x| ostring+=  " "*indent +x} 
       end
-      output.each{|x| ostring+=  " "*indent +x}
       ostring+= "\n"
       @previous_is_command = true;
     end
@@ -795,6 +799,9 @@ module Acsdoc
 	ostring = ostring +  add_output(s, dirname, ":output:",fname,lineno)
       elsif loc = s.index(":commandoutput:")  and s.index("\":commandoutput:\"")==nil
 	ostring = ostring +  add_output(s,  dirname, ":commandoutput:",
+					fname,lineno)
+      elsif loc = s.index(":commandnooutput:")  and s.index("\":commandnooutput:\"")==nil
+	ostring = ostring +  add_output(s,  dirname, ":commandnooutput:",
 					fname,lineno)
       elsif loc = s.index(":command:")  and s.index("\":command:\"")==nil
 	ostring = ostring +  add_output(s,  dirname, ":command:",
