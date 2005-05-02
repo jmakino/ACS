@@ -101,23 +101,24 @@ class NBody
     @nsteps = 0
     @e0 = ekin + epot
     write_diagnostics
-    t_dia = @time + c.dt_dia                                                 #1
-    t_out = @time + c.dt_out                                                 #1
-    t_end = @time + c.dt_end                                                 #1
+    t_dia = @time + c.dt_dia
+    t_out = @time + c.dt_out
+    t_end = @time + c.dt_end
     acs_write if c.init_out_flag
     istep = 0
     logfile = (c.logfilename != "nofile") ? open(c.logfilename, "w+"):nil
     nsymmax = c.nsym
+
     while @time < t_end
-      
       olddt = force_power_2(c.dt_param * collision_time_scale)
       @dt = olddt
       @oldbody = @body.deep_copy
-      nsymmax.times{|i|
+      send(c.method)
+      (nsymmax-1).times{|i|
+        newdt = force_power_2(c.dt_param * collision_time_scale)
+        @dt = (olddt+newdt)*0.5
         @body = @oldbody.deep_copy
         send(c.method)
-        newdt = force_power_2(c.dt_param * collision_time_scale)
-        @dt = (olddt+newdt)*0.5 if i < nsymmax - 1
       }
 #      @body = @oldbody.deep_copy
 #      send(c.method)
@@ -393,8 +394,6 @@ options_text = <<-END
     after which the integration will halt.  If the initial snapshot is
     marked to be at time t_init, the integration will halt at time
     t_final = t_init + t.
-
-
 
 
   Short name:		-i

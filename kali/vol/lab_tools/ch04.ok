@@ -99,7 +99,7 @@ time to set up a well crafted ACS IO mechanism.
 
 *Bob*: Noted.  Let's see whether this works, but let me spare you the lots
 and lots of output that we got in the previous run.  I'll just report the
-end of the story. Taking the same initial conditions, here we go once again:
+end of the story.  Taking the same initial conditions, here we go once again:
 
  :commandoutput: kali mkplummer.rb -n 4 -s 1 > tmp.in
  :commandnooutput: (kali world4.rb -t 1000 -x 0.25 < tmp.in | kali test2.rb > tmp.out) >& tmp.err
