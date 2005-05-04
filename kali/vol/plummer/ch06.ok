@@ -106,7 +106,7 @@ the expression for <tex>$f(x)$</tex>, given in eq. (ref(fx2)) into eq.
 
 *Bob*: Yes, and yes.  I agree.  That is much clearer, since there are only
 one <tex>$f(x)$</tex> and one <tex>$g(t)$</tex> and one <tex>$h(t)$</tex>
-in the game, rather than two different <tex>$g(t)$</tex>'s with different
+in the game, rather than two different <tex>$g(t)$'s</tex> with different
 status.  And ah, now I see why you would want to substitute
 eq. (ref(fx2)) into eq. (ref(ht2)).  Is that what they meant?
 
