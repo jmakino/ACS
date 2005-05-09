@@ -2,6 +2,7 @@ all:
 	$(MAKE) -C acs_data_format
 	$(MAKE) -C binary_trees
 	$(MAKE) -C black_hole_trees
+	$(MAKE) -C block_symmetric
 	$(MAKE) -C code_management
 	$(MAKE) -C command_line
 	$(MAKE) -C command_line_b
@@ -19,6 +20,7 @@ all:
 	$(MAKE) -C two_body_problem_1
 	$(MAKE) -C two_body_problem_2
 	$(MAKE) -C runge_kutta
+	$(MAKE) -C symmetric_timesteps
 	$(MAKE) -C symplectic
 	$(MAKE) -C vision
 	$(MAKE) -C documentation
@@ -26,6 +28,7 @@ acsdoc:
 	$(MAKE) -C acs_data_format acsdoc
 	$(MAKE) -C binary_trees acsdoc
 	$(MAKE) -C black_hole_trees acsdoc
+	$(MAKE) -C block_symmetric acsdoc
 	$(MAKE) -C code_management acsdoc
 	$(MAKE) -C command_line acsdoc
 	$(MAKE) -C command_line_b acsdoc
@@ -43,6 +46,7 @@ acsdoc:
 	$(MAKE) -C two_body_problem_1 acsdoc
 	$(MAKE) -C two_body_problem_2 acsdoc
 	$(MAKE) -C runge_kutta acsdoc
+	$(MAKE) -C symmetric_timesteps acsdoc
 	$(MAKE) -C symplectic acsdoc
 	$(MAKE) -C vision acsdoc
 	$(MAKE) -C documentation acsdoc
@@ -50,6 +54,7 @@ clean:
 	$(MAKE) -C acs_data_format clean
 	$(MAKE) -C binary_trees clean
 	$(MAKE) -C black_hole_trees clean
+	$(MAKE) -C block_symmetric clean
 	$(MAKE) -C code_management clean
 	$(MAKE) -C command_line clean
 	$(MAKE) -C command_line_b clean
@@ -67,6 +72,7 @@ clean:
 	$(MAKE) -C two_body_problem_1 clean
 	$(MAKE) -C two_body_problem_2 clean
 	$(MAKE) -C runge_kutta clean
+	$(MAKE) -C symmetric_timesteps clean
 	$(MAKE) -C symplectic clean
 	$(MAKE) -C vision clean
 	$(MAKE) -C documentation clean
@@ -74,6 +80,7 @@ cleandoc:
 	$(MAKE) -C acs_data_format cleandoc
 	$(MAKE) -C binary_trees cleandoc
 	$(MAKE) -C black_hole_trees cleandoc
+	$(MAKE) -C block_symmetric cleandoc
 	$(MAKE) -C code_management cleandoc
 	$(MAKE) -C command_line cleandoc
 	$(MAKE) -C command_line_b cleandoc
@@ -91,6 +98,7 @@ cleandoc:
 	$(MAKE) -C two_body_problem_1 cleandoc
 	$(MAKE) -C two_body_problem_2 cleandoc
 	$(MAKE) -C runge_kutta cleandoc
+	$(MAKE) -C symmetric_timesteps cleandoc
 	$(MAKE) -C symplectic cleandoc
 	$(MAKE) -C vision cleandoc
 	$(MAKE) -C documentation cleandoc
@@ -98,6 +106,7 @@ acscode:
 	$(MAKE) -C acs_data_format acscode
 	$(MAKE) -C binary_trees acscode
 	$(MAKE) -C black_hole_trees acscode
+	$(MAKE) -C block_symmetric acscode
 	$(MAKE) -C code_management acscode
 	$(MAKE) -C command_line acscode
 	$(MAKE) -C command_line_b acscode
@@ -115,6 +124,7 @@ acscode:
 	$(MAKE) -C two_body_problem_1 acscode
 	$(MAKE) -C two_body_problem_2 acscode
 	$(MAKE) -C runge_kutta acscode
+	$(MAKE) -C symmetric_timesteps acscode
 	$(MAKE) -C symplectic acscode
 	$(MAKE) -C vision acscode
 	$(MAKE) -C documentation acscode
