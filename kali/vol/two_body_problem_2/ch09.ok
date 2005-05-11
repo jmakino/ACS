@@ -211,7 +211,7 @@ previous second-order method <tt>ms2</tt>, for comparison:
 
 Our fourth-order multi-step method should be called <tt>ms4</tt>,
 clearly.  I'll use <tt>rk4</tt> to rev up the engine, something we'll
-have to do three times now.  And instead of use snap and crackle
+have to do three times now.  And instead of using snap and crackle
 out-of-the-box, so to speak, I'll use them with the appropriate factors
 of the time step, <tex>$\bs(\Delta t)^2$</tex> and
 <tex>$\bc(\Delta t)^3$</tex>, respectively.
@@ -363,9 +363,9 @@ What do you think of this:
 *Bob*: That ought to work, with a little bit of luck, if we didn't
 overlook any typos or logopos.
 
-*Alice*: logopos?
+*Alice*: Logopos?
 
-*Bob*: errors in logic, as opposed to typing.
+*Bob*: Errors in logic, as opposed to typing.
 
 *Alice*: Yes, both are equally likely to have slipped in.
 Let's try to run it and if it runs,

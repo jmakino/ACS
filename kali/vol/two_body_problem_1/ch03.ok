@@ -188,7 +188,7 @@ now, when we type +print+.
        vel = 00.50
     nil
 
-*Alice*: I looks nicer all right, but what happened to poor +pos+
+*Alice*: It looks nicer all right, but what happened to poor +pos+
 and +vel+?  The mass came out fine though.
 
 *Bob*: Ah, of course, look, the elements of each array are all
@@ -203,7 +203,7 @@ separate the fields?
 *Bob*: Guess what, we use a field separator.  The book tells me
 that we can define our own version.  Here it is: the method +join+
 converts an array to a string, and you can give a separator as an
-arguments.  Let's try.  Here is <tt>body4.rb</tt>:
+argument.  Let's try.  Here is <tt>body4.rb</tt>:
 
  :inccode: body4.rb
 

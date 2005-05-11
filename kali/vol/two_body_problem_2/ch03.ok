@@ -193,7 +193,7 @@ it is a third-order method, rather than a second order method.
 *Alice*: That is interesting.  I guess you could say that the errors of a
 second-order integrator are only guaranteed to be smaller than something
 that scales like the square of the time step, but still, this is a bit
-mysterious.  Shall we shrink the time step by another factor ten?
+mysterious.  Shall we shrink the time step by another factor of ten?
 
 == Accuracy in Position
 

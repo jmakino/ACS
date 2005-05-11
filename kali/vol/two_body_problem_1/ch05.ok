@@ -270,7 +270,7 @@ accelerations at <tex>$t_{i}$</tex>.
 
 *Bob*: And after you have once said that in words, it becomes obvious
 how much more compact and efficient equations are, already in
-component notion.  And then it is clear that vector notation is even
+component notation.  And then it is clear that vector notation is even
 more efficient than component notation.
 
 == Writing Clean Code
@@ -377,7 +377,7 @@ built in that takes the value of the instance of the class, here the
 value of +ns+, and iterates the following block of code +ns+ times.
 
 As often in the case of Ruby, the explanation of a construction sounds
-far more complicated that the way you use it.  As you already remarked,
+far more complicated than the way you use it.  As you already remarked,
 <tt>ns.times</tt> reads like English.  Another example of the principle
 of least surprise.
 

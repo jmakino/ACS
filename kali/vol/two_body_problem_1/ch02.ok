@@ -85,7 +85,7 @@ clear and consistent approach, once you see what is going on.
 *Bob*: Phew, yes, that was a long explanation, but I'm very glad you
 asked, and that we actually typed the wrong thing, since now I finally
 understand completely what I read yesterday in the introduction to
-Ruby.  And I also understand now why their are two types of internal
+Ruby.  And I also understand now why there are two types of internal
 variables within a class.  Just as there are <i>class methods</i> and
 <i>instance methods</i>, there are similarly <i>class variables</i>
 and <i>instance variables</i>.  Instance variables always start with a
@@ -118,10 +118,12 @@ I recognize the values of the mass, and the components of position and
 velocity, which are all zero by default.  But what is that hexadecimal
 number doing there on the left?
 
-*Bob*: After giving the class name of the object, it prints the id of
-the object, a unique integer that is associated with the specific object,
-which we called an instance of the class that it belongs to.
-Useful for debugging perhaps, but for now we can ignore that.
+*Bob*: After giving the class name of the object, it prints the value
+of the pointer to the object, a unique integer that is presumably
+somehow associated with the location in memory of the object.  The
+object is what we called an instance of the class that it belongs to.
+The pointer may be useful for debugging, perhaps, but for now we can
+ignore that number.
 
 *Alice*: A while ago you said that +mass+, +pos+, and +vel+ are possible
 parameters.  What do you mean with `possible'?
@@ -154,7 +156,7 @@ non-zero values for some of the position and velocity components:
 	    from (irb):15:in `new'
 	    from (irb):15
 
-*B*: How nice to get such clear instructions!  Quite a bit more helpful
+*Bob*: How nice to get such clear instructions!  Quite a bit more helpful
 than <i>segmentation fault</i> or something cryptic like that.  The
 debugger works its way out from the innermost nesting, back to its
 caller function +initialize+ that is in turn called by +new+ -- just

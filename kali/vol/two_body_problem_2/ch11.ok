@@ -91,7 +91,7 @@ position and velocity look like, in terms of those two quantities?
                 \one{12}(\bj_i - \bj_{i+1})(\Delta t)^2
 
 *Alice*: That looks like a direct generalization of the leapfrog!
-I had not expected such simplicity an elegance.
+I had not expected such simplicity and elegance.
 
 *Bob*: Yes, I think you can look at the Hermite scheme as a generalization
 of the leapfrog, in some sense.  If you neglect the

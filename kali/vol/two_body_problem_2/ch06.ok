@@ -2,7 +2,7 @@
 
 == A Multiple leapfrog
 
-*Alice*: Hi, Bob!  To judge from the look at your face, I would bet you found
+*Alice*: Hi, Bob!  To judge from the look on your face, I would bet you found
 a good recipe for a sixth-order Runge Kutta method.
 
 *Bob*: As a matter of fact, yes, I did.  But before I show it to you,
@@ -52,14 +52,14 @@ Okay, I'll bet on twenty lines.
 *Bob*: How much are you willing to bet?
 
 *Alice*: I'm not much of a gambler.  Let's say you'll get my admiration if
-you did it for less than twenty lines.
+you did it in less than twenty lines.
 
 *Bob*: How much admiration will I get if it would be less than ten lines?
 
 *Alice*: I don't know, since I wouldn't believe you.
 
 *Bob*: It that case you must be ready for a really wild move.  How much are
-you willing to bet against me having written a sixth-order Runge-Kutta code
+you willing to bet against my having written a sixth-order Runge-Kutta code
 in five lines?
 
 *Alice*: Hahaha!  I will bet a good laugh.  You can't be serious.
@@ -142,7 +142,7 @@ halving the time step should make the result 64 times more accurate.
 *Alice*: Hmm, that's much much more improvement than a factor 64.
 I guess the run with a time step of 0.04 was not yet in the linear regime.
 
-*Bob*: I'll halve the time step again, too 0.01:
+*Bob*: I'll halve the time step again, to 0.01:
 
  :commandoutput: ruby integrator_driver3b.rb < euler.in
 
@@ -186,7 +186,7 @@ to 32.
 
 *Alice*: However, we should be able to settle this more unequivocally.
 The problem is, we don't have much wiggle room: we don't want the total
-time become so long that the particles reach pericenter, yet when we make
+time to become so long that the particles reach pericenter, yet when we make
 the total integration time much shorter, we don't have room left for even
 a single time step -- unless we invite machine accuracy again.
 

@@ -30,7 +30,7 @@ it quite useful, and it is also well written.
 *Alice*: I'll have a look at it then as well.  Did you find enough to get
 started?
 
-*Bob*: I guess so.  Let's try and see.  Before getting to gravity,
+*Bob*: I guess so.  Let's try and see.  Before getting to gravity
 and equations of motion, how about building a simple skeleton first,
 something that just reads in the data and prints them out, without
 doing any integrating?
@@ -207,7 +207,7 @@ values.  You can let Ruby do that for you without even asking for it.
 
 Here is what you do.  The easiest way to work with Ruby is to use the
 command +irb+.  The acronym stands for <i>interactive Ruby</i>.  You
-invoke it by simply typing +irb+ on the command line.  Now As soon as
+invoke it by simply typing +irb+ on the command line.  Now as soon as
 you create an instance of a class in Ruby, the interpreter echoes the
 content to you, for free!
 
@@ -251,7 +251,7 @@ is called a scripting language, I thought it might work here too.
 
 *Bob*: Each scripting language has different conventions.  In your shell
 case, I bet you have to invoke the value of a variable +cat+ by typing
-<tt>cat</tt>, each time you use it.  Ruby has another solution: typing
+<tt>$cat</tt>, each time you use it.  Ruby has another solution: typing
 +cat+ echoes the value of +cat+.  When you want to introduce a string
 consisting of the three letters +c+, +a+, and +t+, you type <tt>"cat"</tt>.
 

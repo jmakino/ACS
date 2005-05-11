@@ -291,13 +291,13 @@ during the extrapolation step, we used information based on the last
 two accelerations, both of which are gained at the past side of that
 step.
 
-*Bob*: Yes, that is nice, to show that so explicitly.
+*Bob*: Yes, it is nice to show that so explicitly.
 
 == Wishful Thinking.
 
 *Alice*: Now let us engage in some wishful thinking.
-We start with Eq. (ref(ms2back)) with tells us that we return to the
-wrong starting point, when we go backward in time.  Wouldn't it be
+We start with Eq. (ref(ms2back)) which tells us that we return to the
+wrong starting point when we go backward in time.  Wouldn't it be
 nice if we somehow could find out at which point we should start so
 that we would be able to go backwards in time and return to the right
 spot?  Let us call these alternative position and velocity at time
@@ -424,7 +424,7 @@ And hey, there we have our old friend the leapfrog already!
 *Alice*: I guess your friendship with the frog is stronger than mine.
 Can you show it to me more explicitly?
 
-*Bob*: So that you can kiss to frog?
+*Bob*: So that you can kiss the frog?
 
 *Alice*: I'd rather not take my chances; I prefer to let it leap.
 

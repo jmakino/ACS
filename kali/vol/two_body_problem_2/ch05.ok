@@ -138,7 +138,7 @@ the oversight we made before, when we only considered a time expansion.
 you multiply the coefficients you would give to each dimension separately;
 in this case you would get a factor of one half, because of the second
 partial derivative with respect to space; the single time derivative
-just gives a factor one.  You can easily check how this work when you
+just gives a factor one.  You can easily check how this works when you
 look at a two-dimensional landscape, and you imagine how you pick up
 difference in height by moving North-South and East-West.  Anyway, here
 is the concrete example, for our case, where I use the abbreviation that

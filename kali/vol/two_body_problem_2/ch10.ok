@@ -14,7 +14,7 @@ I actually went to 6th _and_ 8th order.
 *Alice*: No!  That can't be, with your dislike for combinatorics.  You're
 pulling my leg.
 
-Bob: No, I did not do the combinatorics myself.  Instead, I used a
+*Bob*: No, I did not do the combinatorics myself.  Instead, I used a
 symbolic manipulation package.  When I saw you struggling with all those
 substitutions when we tracked the fourth-order nature of the
 Runge-Kutta integrator, I was already wondering whether we shouldn't
@@ -181,7 +181,7 @@ For an eighth-order scheme that should gain us an accuracy factor of
  :commandoutput: ruby integrator_driver4n.rb < euler.in
 
 *Bob*: That's getting closer to a factor 256, but we're not quite there yet.
-I'll try to shrink the time step by another factor two:
+I'll try to shrink the time step by another factor of two:
 
  :commandoutput: ruby integrator_driver4o.rb < euler.in
 

@@ -13,7 +13,7 @@
 *Alice*: That's quite a bit more complicated.  I see coefficients of
 1/6 and 1/3 and 2/3.  How did you determine those?
 
-*Bob*: I just looked them up from a book.  There are several ways to
+*Bob*: I just looked them up in a book.  There are several ways to
 choose those coefficients.  Runge-Kutta formulas form a whole family,
 and the higher the order, the more choices there are for the
 coefficients.  In addition, there are some extra simplifications that
@@ -24,7 +24,7 @@ there is no dependence on the first derivative.
 acceleration is dependent on the position, but not on the velocity.
 
 *Bob*: Exactly.  Here are the equations.  They can be found in that
-famous compendium of equations and tables and graphs: <i>Handbook of
+famous compendium of equations, tables and graphs: <i>Handbook of
 Mathematical Functions</i>, by M. Abramowitz and I. A. Stegun,
 eds. [Dover, 1965].  You can even find the pages on the web now.
 Here is what I copied from a web page:
@@ -34,7 +34,7 @@ link:rk4.gif
 *Alice*: Quite a bit more complex than the second order one.
 
 *Bob*: Yes, and of course it is written in a rather different form
-that the way I chose to implement it.  I preferred to stay close to the
+than the way I chose to implement it.  I preferred to stay close to the
 same style in which I had written the leapfrog and second-order Runge
 Kutta.  This means that I first had to rewrite the Abramowitz and
 Stegun expression.
@@ -127,18 +127,18 @@ And these correspond precisely to the last two lines in your
 not write it down as neatly and convincingly as you just did.
 
 *Alice*: So yes, you have indeed implemented Abramowitz and Stegun's
-fourth-order Runge Kutta scheme.  But wait a minute, what
+fourth-order Runge-Kutta scheme.  But wait a minute, what
 you found here, equation 22.5.22, shows a right-hand side with a
 stated position error of order <tex>$h^4$</tex> -- which would suggest
-that the scheme is is only third-order accurate.
+that the scheme is only third-order accurate.
 
 *Bob*: Hey, that is right.  If you make <tex>$h$</tex> smaller,
 the number of steps will go up according to <tex>$1/h$</tex>, and
-therefore the total error for a give problem will grow proportionally
-to <tex>$h^4.(1/h) \propto h^3$</tex>.  This would indeed imply that
+therefore the total error for a given problem will grow proportionally
+to <tex>$h^4(1/h) \propto h^3$</tex>.  This would indeed imply that
 this method is third-order.  But that would be very unusual.  In all
 text books I've seen, you mostly come across second-order and
-fourth-order Runge Kuttas.  While you certainly can construct a
+fourth-order Runge-Kuttas.  While you certainly can construct a
 third-order version, I wouldn't have expected Abramowitz and Stegun to
 feature one.  Besides, look at the last expression for the velocity.
 Doesn't that resemble Simpson's rule, suggesting fourth-order accuracy.
@@ -252,7 +252,7 @@ And then:
 
  :commandoutput: ruby integrator_driver2j.rb < euler.in
 
-*Alice*: The time step went down by a factor 10, and the energy
+*Alice*: The time step went down by a factor of 10, and the energy
 conservation got better by a factor of almost exactly <tex>$10^4$</tex>.
 We really seem to have a fourth order integration scheme.
 
@@ -376,7 +376,7 @@ method:
           + {\textstyle {1 \over 6}}(\ba_0+2\ba_1)(\Delta t)^2 \nonumber\\
 \bv_1 &=& \bv_0 + {\textstyle {1 \over 6}}(\ba_0+4\ba_1+\ba_2)\Delta t
 
-Upon substitution the first line becomes:
+Upon substitution, the first line becomes:
 
 :eqnarray:
 \br_1 &=& \br_0 + \bv_0 \Delta t
@@ -432,7 +432,7 @@ And at the same time it is also easy to make a mistake in doing
 analytical checks.  So I think it is only wise to do both, especially
 with something so fundamental as an N-body integrator.
 
-And I'm glad we did.  But something doesn't quite feel right.  Let me
+And I'm glad we did.  But something doesn't feel quite right.  Let me
 just review what we have done.  We first expanded the orbit in a Taylor
 series, writing everything as a function of time.  Then we showed that
 the orbit obeyed the equations of motion, and . . . .

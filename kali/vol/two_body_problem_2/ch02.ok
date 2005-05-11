@@ -107,7 +107,7 @@ more directly:
 Hey, it is even one line shorter than what you wrote!
 
 *Bob*: But it introduces an extra variable, so there is a trade off.
-Yes, that would be fine as well.  It depends what you find most elegant.
+Yes, that would be fine as well.  It depends on what you find more elegant.
 
 In fact, note that none of these methods are very efficient.  At the
 beginning of the next step, we will calculate the old acceleration,
@@ -163,7 +163,7 @@ So there: one line longer than my version, and with longer lines to boot.
 *Alice*: That is interesting, isn't it?  At first I really preferred my
 version, both because it was shorter and because it remained closer to
 the mathematical formulae that you had written down.  But I must admit
-that I like the way you encapsulated -- dear I say modularized -- the
+that I like the way you encapsulated -- dare I say modularized -- the
 acceleration into a separate method.  And now suddenly my version looks
 a bit clumsy and lengthy.
 
@@ -229,7 +229,7 @@ of stupidity.
 *Alice*: I can't wait to show this to the students, and let them figure
 it out.
 
-*Bob*: In a class full of them, there may be a few that get it more quickly
+*Bob*: In a class full of them, there may be a few that get it quicker
 than we did.
 
 *Alice*: So much the better, more power to them!  What a tricky situation.
@@ -336,7 +336,7 @@ step size.  We can expect the energy error to scale in a similar way.
 
  :commandoutput: ruby integrator_driver1b.rb < euler.in
 
-In fact, the energy went down by less than a factor ten, but that may
+In fact, the energy went down by less than a factor of ten, but that may
 well be because we have not yet reached the linear regime.  
 
 *Alice*: That is probably the reason.  With errors

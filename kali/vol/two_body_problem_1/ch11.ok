@@ -43,7 +43,7 @@ It has decreased by the predicted factor ten.  Let's do this:
 
  :inccode: .euler0c.rb-barebones
 
-making the time step smaller by a jump of a factor a hundred.
+making the time step smaller by a jump of a factor of a hundred.
 
  :command: cp -f euler0c.rb test.rb
  :commandoutput: ruby test.rb < euler.in

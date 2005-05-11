@@ -49,7 +49,7 @@ face sooner or later, when we start working with the dynamics of a thousand
 point masses, and we encounter frequent close encounters in tight
 double stars.
 
-*Bob*: There the trick seems to be to map the three-dimensional Kepler problem
+*Bob*: There, the trick seems to be to map the three-dimensional Kepler problem
 onto the four-dimensional harmonic oscillator.  I've never heard any mention
 of Lie or the BCH formula in that context.
 
@@ -64,12 +64,12 @@ involved in symplectic methods and Lie group applications.
 *Bob*: We'll see indeed.  At the end of Yoshida's paper, at least his
 techniques get more understandable for me: he solves rather
 complicated algebraic equations in order to get the coefficients for
-various integration schemes.  What I implemented for the six-th order
+various integration schemes.  What I implemented for the sixth order
 integrator before turns out to be based on just one set of his
 coefficients, in what I called the +d+ array, but there are two other
 sets as well, which seem to be equally good.
 
-What is more, he gives no less than _seven_ different sets of coefficient
+What is more, he gives no less than _seven_ different sets of coefficients
 for his eighth-order scheme!  I had no idea which of those seven to choose,
 so I just took the first one listed.  Here is my implementation, in the
 file <tt>yo8body.rb</tt>

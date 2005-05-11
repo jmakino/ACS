@@ -39,7 +39,7 @@ However, things are not as bad as they may seem.  If you make errors
 in your integration, and you always make errors at some level, those
 errors will let the simulated orbit drift away from the true orbit in
 a random fashion.  It would require a very clever conspiracy for those
-errors to work together in such a way as the keep the energy conserved
+errors to work together in such a way as to keep the energy conserved
 to a high degree of accuracy, while still introducing much larger errors
 elsewhere.  In practice, therefore, checking energy conservation in an
 N-body system has become the standard test to see how
@@ -70,7 +70,7 @@ hypersurface will typically be of the same order of magnitude as the
 total length of the drift of that master particle that symbolizes our
 whole N-body system.
 
-*Bob*: More mathematical minded students might prefer your explanation;
+*Bob*: More mathematically minded students might prefer your explanation;
 I think I'll just stick to my more lowbrow explanation.  But however
 we tell the story, we should of course warn them that this argument
 fails when we are dealing with an integrator that has a built-in type
@@ -104,7 +104,7 @@ are.
 How useful they may be for real 6N-body simulations,
 that is not too clear.  They are more accurate, for sure, but they
 are hard to generalize to individual time steps.  And for our game,
-we have no choice to go to individual time steps.  Perhaps we can
+we have no choice but to go to individual time steps.  Perhaps we can
 come back to this topic, some day, but not any time soon.  But just to
 give you one example of the simplest symplectic integrator: the good
 old leapfrog scheme, also known in some areas of physics as the Verlet
@@ -148,7 +148,7 @@ those four parameters you just mentioned.
 
 *Bob*: Exactly.  Ruby is _very_ economical!  And just as a courtesy, I
 decided to let the program print out the values of the four parameters.
-We can then change those parameters in the current file to our hearts
+We can then change those parameters in the current file to our hearts'
 content, and we can always check from earlier outputs what parameters were
 used for a given integration.
 

@@ -275,7 +275,7 @@ changing the elements of the array that it was called by.
 == A Surprise
 
 *Alice*: So you managed to reduce the number of lines of your method
-by a factor three, presumably also in your write method.  Currently
+by a factor of three, presumably also in your write method.  Currently
 you have three lines left in each method.  Can I challenge you to
 reduce it even further?
 
@@ -292,7 +292,7 @@ Here's another cup.  WHAT?  Are you serious?  Does that work???
  :inccode: .body8.rb+simple_print
  :inccode: .body8.rb+simple_read
 
-*Bob*: Here is the key board.  Try it.
+*Bob*: Here is the keyboard.  Try it.
 
  :command: cp -f body-simple-io-demo2.rb test.rb
  :commandinputoutput: ruby test.rb END

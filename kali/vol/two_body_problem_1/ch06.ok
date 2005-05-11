@@ -101,7 +101,7 @@ place, in each vector component.
 
 == Error Scaling
 
-How do we expect things to scale
+*Alice*: How do we expect things to scale
 when we will make the time step even smaller?  We are dealing with a
 first order integrator.  How did that go?
 

@@ -132,7 +132,7 @@ There is the instance of the vector class itself, called +self+,
 there is the other vector +a+ with which it can be multiplied in a
 inner product, and there is the temporary vector <tt>product[]</tt>.
 Neither of the first two are threatened anywhere with conversion
-into an integer.  Nor does the third one.  Hmmm.
+into an integer.  Nor is the third one.  Hmmm.
 
 But wait.  I have tried to use the same name <tt>product[]</tt> for a
 vector, in the +else+ clause, and for a scalar, in the +if+ clause.
