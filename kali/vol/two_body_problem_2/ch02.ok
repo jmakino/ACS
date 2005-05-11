@@ -121,8 +121,14 @@ only two bodies, there is really no need to optimize at this point.
 *Alice*: That reminds me of Alan Perlis' saying: ``premature optimization
 is the root of all evil''.
 
-*Bob*: He has a point.  But postponing optimization too long will never
-grow fruit.
+*Bob*: I thought that quote was from Hoare, the inventer of qsort; I came
+across it in some of the writings of Knuth.
+
+*Alice*: It is probably a sign of a a good idea that it gets attributed to
+different people.
+
+*Bob*: But every good idea has to be used sparingly.  Postponing optimization
+too long will never grow fruit.
 
 *Alice*: Did you just make that up?
 
