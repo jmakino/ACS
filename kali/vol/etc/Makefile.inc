@@ -11,7 +11,7 @@ else
 endif
 ACSDOCOPTIONS = --reuseoutput --keep-dot-files
 ACSDOC = ruby $(ACSROOT)/src/coherent_programming/acsdoc.rb $(ACSDOCOPTIONS)
-GZIP = gzip --force
+ACSGZIP = gzip --force
 LOCALDIR = kali
 LOCALLIBDIR=$(ACSROOT)/$(LOCALDIR)/lib
 LOCALBINDIR=$(ACSROOT)/$(LOCALDIR)/bin
@@ -27,7 +27,7 @@ acsdoc:  $(alldepends)
 acscode: scripts libs localscripts locallibs	
 $(TARGET).ps.gz: $(TARGET).dvi
 	dvips -o $(TARGET).ps $(TARGET)
-	$(GZIP) $(TARGET).ps 
+	$(ACSGZIP) $(TARGET).ps 
 $(TARGET).pdf: $(TARGET).dvi
 	$(DVIPDF)  $(TARGET)
 $(TARGET).dvi: $(TARGET).tex
