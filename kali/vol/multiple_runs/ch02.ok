@@ -1,0 +1,137 @@
+= A Story Mechanism
+
+== Accessing Diagnostics
+
+*Alice*: We've made a big step forward, by being able to run other Ruby
+programs from within a Ruby program.  But the example we started with
+leaves a lot to be desired.  Right now, there is far too much
+information coming out.  Using a +tail+ or +grep+ operation is not a
+very elegant way to do data reduction.  We should find a way to
+suppress the information that is not needed.
+
+And what is more, it would be nice to present the information
+that is needed in a more compact way.  For example, in our example of
+algorithm testing, it would be nice to get one number out: the
+approximate order of the algorithm.
+
+*Bob*: All of that can be taken care of, but let us do that with a more
+interesting example script.  I'd like to see some real physics coming
+out!  We talked about determining the time of first binary formation.
+Let's implement that.  It should be easy to extend the diagnostics of
+our integrator, to let it report not only energy change, but also
+changes in binary configurations.
+
+*Alice*: One problem I see is this.  It is all nice and well to print some
+information in human-readable form on the standard error stream, as we have
+done so far, but how are we going to parse that output?
+
+*Bob*: As we have seen, Ruby is good at parsing strings.  In fact, it is a
+lot better in doing this than +grep+ and +tail+ and the like are.  I suggest
+we just use the human-readable output, and interpret that with some clever
+Ruby pattern recognition moves.
+
+*Alice*: I don't see how that would work, in general.  As we have seen, when
+we run a Ruby script that runs Ruby programs, the diagnostics information
+still appears on the standard error stream, which is not directly available
+for analysis within the script.
+
+*Bob*: Well, we could capture it, by adding `` <tt>>& tmp</tt> '' at the
+end of each shell command.  We could then open the file +tmp+ after each
+command and inspect the messages left therein.  But I admit, that may not
+be the best solution.
+
+*Alice*: That is putting it mildly; it would be a terrible solution!  It
+would neither be elegant nor flexible.  We have to find a better way.
+
+*Bob*: At this point, I don't care much about elegance.  I want to see
+some results.  But I agree that using a temporary file is not a very good
+solution.  Another drawback is that the information gets overwritten each
+time.  For some applicaitons it would be nice to leave a trail of information
+that could be inspected if the need would arise, either for debugging or for
+further statistical analysis.
+
+I have encountered this problem before.  After spending a lot of time writing
+a complex program to do some hairy simulation, I find myself quickly
+doing a lot of different runs.  And for each run, there is a data file
+containing the particle positions and velocities and so on, but there
+is also a file containing the runtime diagnostics.  And after a few weeks
+of production runs, it is not alway easy to keep the particle data and the
+diagnostics data together.  I've found myself updating the name of the 
+particle output file but not the name of the diagnostics output file,
+and so on.
+
+== Capturing Diagnostics
+
+*Alice*: Keeping related data in two different places is in itself a bad idea.
+
+*Bob*: I agree, in principle.  In practice, though, sticking them together
+is not so easy.  We may be flexible and modular and all that, as you keep
+stressing, but look, our particle output always takes the form of an ACS data
+structure, appearing on the standard output stream, while our diagnostics
+output is just free-form, as a string of English sentences, appearing
+on the standard error stream.  I can't see hot to glue those together.
+
+*Alice*: Gluing is not the right metaphor; how about encapsulating?
+
+*Bob*: Sounds nice, but how?
+
+*Alice*: Of the two forms of output, the particle data are currently most
+structured, based on our ACS data format, as you just mentioned.  How about
+encapsulating the diagnostics information, as a form of short narative,
+and adding that to the particle data?  We can just call it a story.  Each
+snapshot could get an extra instance variable <tt>@story</tt> in the form
+of a single long string that contains all the sentences that are reported
+on the standard error stream.
+
+*Bob*: Hmmm, that's an idea.  So this would imply an extension of the
+snapshot data format.  Since <tt>WorldSnapshot</tt> is a subclass of
+<tt>Nbody</tt>, perhaps it would be better to introduce
+<tt>@story</tt> as an instance variable of <tt>NBody</tt> ?
+
+*Alice*: But why stop there?  I can imagine that we may want to report
+specific information about specific particles.
+
+*Bob*: I see, you want to allow a story for <tt>WorldPoint</tt> as well,
+or for <tt>Body</tt>.  That makes sense: a particle may want to report
+that it had an unusually strong encounter, or even a physical collision,
+when we implement that possibility.  How about other classes, such as
+<tt>WorldLine</tt> ?
+
+*Alice*: I suggest that we give every class the option to include a story,
+as a way to report diagnostics.  In that way, each class can keep its own
+diary or chronicles.
+
+*Bob*: But you still want to get the information out on the standard error
+stream, don't you?
+
+*Alice*: That depends.  The usual information about overall error behavior
+we probably want to keep on the error channel.  However, even that
+depends on the application.  When we start running 100 runs to determine
+first binary formation times, we may not want to see any diagnostics from
+any of the runs, unless we have an indication that something went wrong
+somewhere.
+
+Here is a bold idea, if I may say so myself.  Let us simply give the story
+option to <i>each and every</i> object.
+
+*Bob*: Hmmm, that may be overkill, but then again, it would be nice to
+implement it once and for all, and then to forget about it.  From then on
+it would be ready to use in any situation.  I like the idea.  Shall we
+implement it?
+
+Here is the file <tt>acsio.rb</tt>.  And here is <tt>module ACS_IO</tt>
+that is included in every object.  Well, let me add <tt>@story</tt> as
+a recognized instance variable for the top class <tt>Object</tt> by
+adding the information to <tt>module ACS_IO</tt>.  This won't take too
+long.
+
+== xxx
+
+Something about getting precision and offset automatically set
+
+Something about keeping clop and acsio independent, so that you can
+run one without having to know about the other
+
+using proc and lambda
+
+adding <tt>verbosity</tt> and <tt>acs_verbosity</tt>.

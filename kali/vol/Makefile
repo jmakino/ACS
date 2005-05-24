@@ -12,6 +12,7 @@ all:
 	$(MAKE) -C indiv_timesteps_3
 	$(MAKE) -C lab_assistant
 	$(MAKE) -C lab_tools
+	$(MAKE) -C multiple_runs
 	$(MAKE) -C n_body_problem
 	$(MAKE) -C plummer
 	$(MAKE) -C polytropes
@@ -38,6 +39,7 @@ acsdoc:
 	$(MAKE) -C indiv_timesteps_3 acsdoc
 	$(MAKE) -C lab_assistant acsdoc
 	$(MAKE) -C lab_tools acsdoc
+	$(MAKE) -C multiple_runs acsdoc
 	$(MAKE) -C n_body_problem acsdoc
 	$(MAKE) -C plummer acsdoc
 	$(MAKE) -C polytropes acsdoc
@@ -64,6 +66,7 @@ clean:
 	$(MAKE) -C indiv_timesteps_3 clean
 	$(MAKE) -C lab_assistant clean
 	$(MAKE) -C lab_tools clean
+	$(MAKE) -C multiple_runs clean
 	$(MAKE) -C n_body_problem clean
 	$(MAKE) -C plummer clean
 	$(MAKE) -C polytropes clean
@@ -90,6 +93,7 @@ cleandoc:
 	$(MAKE) -C indiv_timesteps_3 cleandoc
 	$(MAKE) -C lab_assistant cleandoc
 	$(MAKE) -C lab_tools cleandoc
+	$(MAKE) -C multiple_runs cleandoc
 	$(MAKE) -C n_body_problem cleandoc
 	$(MAKE) -C plummer cleandoc
 	$(MAKE) -C polytropes cleandoc

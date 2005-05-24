@@ -1,0 +1,197 @@
+= Finding Binaries
+
+== A <tt>Binary</tt> Class
+
+*Alice*: A job well done!  Now every ruby program that starts with
+<tt>require "acs"</tt> will automatically receive options for specifying
+precision, indentation, and verbosity levels for reporting diagnostics
+on the standard error channel as well as in the stories that appear on
+the standard output channel.
+
+*Bob*: I'm glad we have all that in place.  Now, _finally_ let's get back
+to our task: letting some real physics come out!  We've been talking about
+determining the time of first binary formation.
+
+In order to do so, we have to recognize binaries when they are formed.
+Well, I added a quick-and-dirty binary finding part to the diagnostics
+of our individual time step integrator.  I started with <tt>world3.rb</tt>,
+but I'm calling it <tt>world4.rb</tt> now, with that addition.
+
+At the top of <tt>world4.rb</tt>, I'm including a file,
+<tt>binary.rb</tt>, that contains a new class +Binary+.  Here it is:
+
+ :inccode: .binary.rb
+
+== Verbosity
+
+*Alice*: I see.  You create a new instance of the +Binary+ class by giving
+it two bodies.  The initializer then immediately determines the relative
+position and velocity as well as the total mass and the reduced mass.
+From that point on, you can ask the binary what its eccentricity or
+semi-major axis is, or its period, or some other piece of information.
+In each case, the answer is provided through a call to a method within the
++Binary+ class, where the method computes the answer on the fly.
+
+*Bob*: Indeed.  I could have done a more complete job, by adding information
+about all six orbital elements, preferably in various coordinate systems.
+For now, though, the main information we are interested in is the hardness
+of the binary, its internal energy.
+
+*Alice*: Which you call <tt>rel_energy</tt> to indicate that it is the energy
+in the relative motion of the two stars, independent of the energy in the
+center-of-mass motion of the binary.  And you provide the semi-major axis
+because that is directly related to the internal energy.
+
+*Bob*: Yes, the semi-major axis _a_ is inversely proportional to the binary
+binding energy <tt>rel_energy</tt>, for given values of the two masses.
+And once I had computed _a_ I thought I might as well also compute _e_,
+the eccentricity of the orbit, which has a simple relation with the
+relative angular momentum, as you can see in the <tt>binary.rb</tt> listing.
+
+*Alice*: Now how did you use this class to report binary diagnostics within
+the integrator?
+
+*Bob*: In <tt>world4.rb</tt>o, in the class <tt>WorldEra</tt>, I have added
+the following method:
+
+ :inccode: .world4.rb+binary_diagnostics+WorldEra
+
+*Alice*: So this method takes a snapshot at the requested time, asks the
+snapshot to return the binary diagnostics, and then reports that information
+with our new <tt>acs_log</tt> function.
+
+*Bob*: I could of course have given the value 1 directly to the first argument
+of <tt>acs_log</tt>, but I prefered to keep it a free variable, +v+, which
+is easier to notice and to chance later, if so desired.  For the time being,
+it will have the value 1, which means a verbosity level of 1.
+
+*Alice*: Let me see whether I got all this correctly now.  If the user invokes
+the integrator with
+
+  kali world4.rb --verbosity 0 --acs_verbosity 2
+
+no binary diagnostics will appear on the standard error stream, but it
+will be written in the story of <tt>WorldEra</tt>.  Similarly, running
+the code as
+
+  kali world4.rb --verbosity 1 --acs_verbosity 0
+
+will show binary diagnostics will on the standard error stream, but will
+not write anything in the stories that appear on the standard output stream.
+In general,
+
+  kali world4.rb --verbosity v1 --acs_verbosity v2
+
+will only show diagnostics information on the screen when <tex>$v1\ge v$</tex>
+and will only add the information to the <tt>WorldEra</tt> story when
+<tex>$v2\ge v$</tex>, where <tex>$v$</tex> is the first argument of
+<tt>acs_log</tt>.
+
+*Bob*: That is indeed correct.  And I must say, I'm really glad to have such
+a versatile and general tool for direction information where it is
+needed!
+
+== The <tt>WorldSnapshot</tt> Level
+
+*Alice*: Let me look how you have implemented the real work, in the
+<tt>binary_diagnostics</tt> method within the +WorldSnapshot+ class:
+
+ :inccode: .world4.rb+binary_diagnostics+WorldSnapshot
+
+As before, you introduce the variable _v_ right at the start and set it
+equal to 1, which is the normal verbosity level.  And then in the third
+line you introduce a measure of precision, +prec+.
+
+*Bob*: Yes.  I could have used the normal precision specified in our
+standard ACS precision, which by default is 16 digits long for floating
+point variables.  However, it would be destracting to list the semimajor
+axis of a binary in full double precision.  Therefore I introduced a
+special command line option to describe the binary diagnostics precision.
+Here, you can find it among the ever growing list of options for
+<tt>world4.rb</tt> :
+
+ :commandoutput: kali world4.rb -h
+
+*Alice*: That makes sense.  Reading further in <tt>binary_diagnostics</tt>,
+I see that you enter a double loop over all the bodies in a snapshot, and
+for each possible pair you check to see whether that pair of bodies is
+currently forming a binary.
+
+*Bob*: This is of course rather wastful of computer time, and not very
+efficient.  If we would be dealing with tens of thousands of
+particles, we may want to think of a more clever scheme.  But for now,
+this seems like the simplest way of doing things.
+
+*Alice*: I agree.  Premature optimization is the root of all evil, as we
+already said!  So for each pair you first check whether it is bound.  Only
+if the relative energy is negative do you continue and check the semi-major
+axis.  And only if that value is smaller than the maximum value allowed,
+do you print diagnostics information.
+
+*Bob*: Well, +sprint+ diagnostics information, you mean; the information is
+printed on a string, and the string is passed back to the calling function.
+
+== The <tt>World</tt> Level
+
+*Alice*: And that calling function, also named <tt>binary_diagnostics</tt>
+within the +WorldEra+ class, can use that string both for printing on the
+standard error stream and for adding it to the total ACS wrapped output on
+the standard output stream.  Got ya!  And in the list of options above
+I already saw how the user can set the maximum semi-major axis value.
+
+Great!  It all seems to be quite transparent.  Last question: how and where
+does the <tt>WorldEra#binary_diagnostics</tt> method get invoked?  Most
+likely on the +World+ level, and close to the other diagnostics.  But I
+don't see the word binary in the listing of clas +World+.
+
+*Bob*: Almost correct.  You are right in that the calls indeed follow the
+calls to the <tt>WorldEra#write_diagnostics</tt> methods, literally
+so, but they occur in the module +Output+.  But then the module
++Output+ gets mixed into the class +World+, so a language lawyer might
+argue that the calls occur at the +World+ level.  Hera are the two
+places where it happens, first for normal diagnostics output:
+
+ :inccode: .world4.rb+diagnostics+Output
+
+and then for unscheduled diagnostics output, when a CPU limit is
+reached before a whole era is finished:
+
+ :inccode: .world4.rb+unscheduled_diagnostics+Output
+
+== Binary Diagnostics in Action
+
+*Alice*: No need for lawyers here; I think I was close enough.  Now I'd
+like to see your binary diagnostics in actions.  How shall I begin?
+
+*Bob*: Easy enough, why not just do what the programs suggest you do,
+when you use the <tt>---help</tt> option.
+
+*Alice*: I keep forgetting that we have such a nice way to do the
+hand-holding, for users and developers alike!  Here we are:
+
+ :commandoutput: kali world4.rb ---help
+
+So you suggest I literally do that?  Let me try:
+
+ :commandoutput: kali mkplummer.rb -n 4 -s 1 | kali world4.rb -t 1
+
+== Taming the Flow of Output
+
+*Bob*: I bet that's more than you wanted!
+
+*Alice*: Yeah, I have to learn to tame our programs.  But it is nice to
+see the same diagnostics appearing on the screen and within the story
+that now appears within the ACS wrapped particle output.
+
+Let me exercise your new options.  I will ask only for binaries that
+have a semimajor axis smaller than 0.5, and I want to know the results
+only to the first two significant digits.  And I certainly don't want
+all that output.  I could redirect it to <tt>/dev/null</tt>, but let
+me instead set the time of next output to, say, 1000, to make sure that
+we don't see it within our run.  Here goes:
+
+ :commandoutput: kali mkplummer.rb -n 4 -s 1 > tmp.in
+ :commandoutput: kali world4.rb -t 1 -o 1000 -x 0.5 --binary_diag_precision 2 < tmp.in
+
+*Bob*: Just what you ordered!
+
