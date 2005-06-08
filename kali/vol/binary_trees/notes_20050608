@@ -1,0 +1,124 @@
+Notes, Tokyo, 2005, June 8.  Jun, Piet, Michele.
+
+Why binary trees?  Deciding on an algorithm for when to do the
+splitting and merging of binary trees is difficult enough already.
+If you allow more general trees, there are far more ways to do this
+splitting and merging; it just becomes too complicated.
+
+Agenda:
+
+1) implement block time steps in world5.rb (the new version of the code here)
+2) implement binary trees
+3) implement the presence of a black hole, in an unbalanced binary tree,
+   where the black hole, surrounded by stars, is modeled like a planetary
+   system, with the sun surrounded by planets.
+
+Start with block time steps.  How?
+Let us use arbitrary precision integers, from Ruby.
+How to set the smallest time step?
+Dynamically.  Pick any value, and whenever that value turns out to be
+too large, half all the values everywhere.  This implies a rescaling
+of all the times in the system, but that's no problem; you only do
+this a logarithmic number of times per run.
+
+We then implemented block_time.rb
+The tricky thing was to make sure that we never worked with a negative
+exponent of 2, since that would cause a conversion from BigNum to Float:
+
+  <kamuy|binary_trees> irb -r block_time.rb
+  irb(main):001:0> a = 2**100
+  => 1267650600228229401496703205376
+  irb(main):002:0> b = a / 2**-1
+  => 2.5353012004564588e+30
+  irb(main):003:0> b = a / 2**1
+  => 633825300114114700748351602688
+  irb(main):004:0> x = 1/0.5
+  => 2.0
+  irb(main):005:0> x.class
+  => Float
+  irb(main):006:0> y = x.to_i
+  => 2
+  irb(main):007:0> y.class
+  => Fixnum
+
+We then tested block_time.rb :
+
+  <kamuy|binary_trees> irb -r block_time.rb
+  irb(main):001:0> b1 = Block_time.to_b(1.0)
+  => #<Block_time:0x400d1e24 @time=1>
+  irb(main):002:0> b42 = Block_time.to_b(42)
+  => #<Block_time:0x400cf390 @time=42>
+  irb(main):003:0> Block_time.scale_time_unit(1/4096.0)
+  => 2
+  irb(main):004:0> b1
+  => #<Block_time:0x400d1e24 @time=4096>
+  irb(main):005:0> b42
+  => #<Block_time:0x400cf390 @time=172032>
+  irb(main):007:0> bpi = Block_time.to_b(PI)
+  => #<Block_time:0x400bd1cc @time=12867>
+  irb(main):008:0> bpi.to_f - PI
+  => -0.000235231714793116
+
+Next step: adopt world5.rb to include these block time steps.
+
+Where are block time steps needed?  Really only for determining the
+precise time (without any round-off error) at which particles are
+stepped forward, so that we know which particles can be integrated
+in parallel at exactly the same time.  All other calculations can be
+done using floating-point presentations of time and time differences.
+
+Note: even if we work with an extremely small time step, say dt=10^-100,
+such a dt can be easily expressed as a floating point number, when we
+directly convert such a time step value from our Block_time class to
+Float class.  The problem comes in if we would try to determine such a
+small value by subtracting two floating values, say t_old = 10^5
+and t_new = 10^5 + dt; in that case, for any dt value smaller than 10^-10,
+the result would be meaningless.  This is the reason for introducing
+a Block_time class in the first place.
+
+Various options:
+
+1) in the integrator module, use expressions like:
+
+    jerk = (wp.acc - @acc) / (wp.time - @time).to_f
+
+   This is not very nice, since it forces a superfluous "to_f" also
+   for those cases where we don't use block time steps.
+   More abstractly speaking, "to_f" is not something that appears
+   in the formulae that we are implementing here.  It only comes in
+   because of the mixed use of different class representations in one
+   line -- this really should be taken care of in an invisible way.
+
+2) we could define the - operator for the class Block_time so that it
+   would always return a Float object.
+
+   The problem here is that we still want to let the + operator for
+   the class Block_time to return a Block_time object.  Now it would
+   be extremely hard to understand, and potentially bug-inviting, for
+   a reader who would not expect such a very different behavior for
+   the - and + operator of the same class Block_time.
+
+3) we could let both the - and the + operator for the class Block_time
+   always return a Float object.
+
+   The problem here is that you then could no longer use the + operator
+   to advance time, with the practical problem that you would have to
+   modify the existing code wherever that happens.
+
+4) the right solution.  Just as Float is dominant over FixNum in
+   forcing a coercion to Float, we can make Float dominant over Block_time
+   in both directions (i.e. with a Float on the left-hand side of an
+   expression or on the right side).  We should do this for all binary
+   operations, +, -, *, / .
+
+Hmmmmm.
+Well, should we make Block_time a subclass of Numeric,
+just as we made Vector a subclass of Array?
+
+What other subclasses of Numeric are there?
+Aha, Rational, which may well do the job for us!
+And the best way to use Rational is by including mathn.
+
+
+
+
