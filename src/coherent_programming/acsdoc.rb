@@ -571,7 +571,9 @@ module Acsdoc
   @@reuseoutput = nil
 
   @@oldoutputs={}
+  @@section_label_table={}
 
+  @@section_counters=[]
   def setreuseoutput(value)
     @@reuseoutput = value
   end
@@ -1114,9 +1116,7 @@ module Acsdoc
     }
   end
 
-  @@section_label_table={}
 
-  @@section_counters=[]
   def process_section_headers(instring,filename)
     labeltext=nil
     ostring=""
