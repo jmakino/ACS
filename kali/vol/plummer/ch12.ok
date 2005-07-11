@@ -153,12 +153,12 @@ likely to wind up with unrealistic distributions . . .
 and the heavier ones outside.  Yes, I see what you mean.  Let's keep
 it simple and forget about being too quiet.
 
-*Bob*: Finally, I'll add some bells and whistles, by using the full power
-of our command line arguments and acs data format degrees of freedom,
-to let the user specify the number of digits accuracy and indentation
+*Bob*: Finally, we can use some of the bells and whistles that we have
+added before, when we wrote the ACS I/O routines.  There we allowed the
+user to specify the number of digits accuracy and indentation
 prefered.  If you're dealing with only a thousand particles, you may
 not want double precision, if that will cut down your inital file
-length by a factor half.  How about this:
+length by a factor half.  Let us test the options we have provided:
 
  :commandoutput: kali mkplummer.rb -h
  :commandoutput: kali mkplummer.rb -n 3 --precision 7 --indentation 4
