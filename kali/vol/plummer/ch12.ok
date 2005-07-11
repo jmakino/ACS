@@ -161,7 +161,7 @@ not want double precision, if that will cut down your inital file
 length by a factor half.  How about this:
 
  :commandoutput: kali mkplummer.rb -h
- :commandoutput: kali mkplummer.rb -n 3 -p 7 --indentation 4
+ :commandoutput: kali mkplummer.rb -n 3 --precision 7 --indentation 4
 
 *Alice*: Fine to have the extra freedom, but I doubt we'll ever use it;
 as soon as you start doing a run, you'll probably want to keep the output
@@ -182,9 +182,9 @@ like when you grew up.
 our way up.  And we might as well use your precision cap to keep it punched
 card printable:
 
- :commandoutput: kali mkplummer.rb -n 0 -p 10
- :commandoutput: kali mkplummer.rb -n 1 -p 10
- :commandoutput: kali mkplummer.rb -n 2 -p 10
+ :commandoutput: kali mkplummer.rb -n 0 --precision 10
+ :commandoutput: kali mkplummer.rb -n 1 --precision 10
+ :commandoutput: kali mkplummer.rb -n 2 --precision 10
 
 == Checking the Energy
 

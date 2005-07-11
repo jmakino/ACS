@@ -71,8 +71,8 @@ one, but you can start at zero as well, or at any other place you like.
 Let's test it with our Plummer Model:
 
  :commandoutput: kali nbody_set_id.rb -h
- :commandoutput: kali mkplummer.rb -n 2 | kali nbody_set_id.rb -p 5
- :commandoutput: kali mkplummer.rb -n 2 | kali nbody_set_id.rb -p 5 -n 42
+ :commandoutput: kali mkplummer.rb -n 2 | kali nbody_set_id.rb --precision 5
+ :commandoutput: kali mkplummer.rb -n 2 | kali nbody_set_id.rb --precision 5 -n 42
 
 == Defensive Programming
 
@@ -163,6 +163,6 @@ And here is our first real result:
 
 Just what it should be!  Now for positions only, and a higher precision:
 
- :commandoutput: cat tmp0.in tmp1.in | kali nbody_diff.rb -r -p 5
+ :commandoutput: cat tmp0.in tmp1.in | kali nbody_diff.rb -r --precision 5
 
 Perfect.  I think we're ready to move on.
