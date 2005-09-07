@@ -1,0 +1,18 @@
+2005-09-07:   Piet Hut
+
+Here are the data from the runs that we performed with ACS in April 2005,
+to determine the time of first hard binary formation.  Given here are for
+each particle number N the median time T for first binary formation, with
+Delta T which is the one-sigma error in T:
+
+
+  N       T    Delta T
+
+  3      72      13
+  4      16.0     2.8
+  5      17.0     3.0
+  6      20.0     3.5
+  7      15.5     2.7
+  8      11.0     1.9
+  9      11.5     2.0
+ 12      11.5     2.0
