@@ -6,6 +6,7 @@ all:
 	$(MAKE) -C code_management
 	$(MAKE) -C command_line
 	$(MAKE) -C command_line_b
+	$(MAKE) -C documentation
 	$(MAKE) -C graphics
 	$(MAKE) -C indiv_timesteps_1
 	$(MAKE) -C indiv_timesteps_2
@@ -23,8 +24,8 @@ all:
 	$(MAKE) -C runge_kutta
 	$(MAKE) -C symmetric_timesteps
 	$(MAKE) -C symplectic
+	$(MAKE) -C treecode
 	$(MAKE) -C vision
-	$(MAKE) -C documentation
 acsdoc:
 	$(MAKE) -C acs_data_format acsdoc
 	$(MAKE) -C binary_trees acsdoc
@@ -33,6 +34,7 @@ acsdoc:
 	$(MAKE) -C code_management acsdoc
 	$(MAKE) -C command_line acsdoc
 	$(MAKE) -C command_line_b acsdoc
+	$(MAKE) -C documentation acsdoc
 	$(MAKE) -C graphics acsdoc
 	$(MAKE) -C indiv_timesteps_1 acsdoc
 	$(MAKE) -C indiv_timesteps_2 acsdoc
@@ -50,8 +52,8 @@ acsdoc:
 	$(MAKE) -C runge_kutta acsdoc
 	$(MAKE) -C symmetric_timesteps acsdoc
 	$(MAKE) -C symplectic acsdoc
+	$(MAKE) -C treecode acsdoc
 	$(MAKE) -C vision acsdoc
-	$(MAKE) -C documentation acsdoc
 clean:
 	$(MAKE) -C acs_data_format clean
 	$(MAKE) -C binary_trees clean
@@ -60,6 +62,7 @@ clean:
 	$(MAKE) -C code_management clean
 	$(MAKE) -C command_line clean
 	$(MAKE) -C command_line_b clean
+	$(MAKE) -C documentation clean
 	$(MAKE) -C graphics clean
 	$(MAKE) -C indiv_timesteps_1 clean
 	$(MAKE) -C indiv_timesteps_2 clean
@@ -77,8 +80,8 @@ clean:
 	$(MAKE) -C runge_kutta clean
 	$(MAKE) -C symmetric_timesteps clean
 	$(MAKE) -C symplectic clean
+	$(MAKE) -C treecode clean
 	$(MAKE) -C vision clean
-	$(MAKE) -C documentation clean
 cleandoc:
 	$(MAKE) -C acs_data_format cleandoc
 	$(MAKE) -C binary_trees cleandoc
@@ -87,6 +90,7 @@ cleandoc:
 	$(MAKE) -C code_management cleandoc
 	$(MAKE) -C command_line cleandoc
 	$(MAKE) -C command_line_b cleandoc
+	$(MAKE) -C documentation cleandoc
 	$(MAKE) -C graphics cleandoc
 	$(MAKE) -C indiv_timesteps_1 cleandoc
 	$(MAKE) -C indiv_timesteps_2 cleandoc
@@ -104,8 +108,8 @@ cleandoc:
 	$(MAKE) -C runge_kutta cleandoc
 	$(MAKE) -C symmetric_timesteps cleandoc
 	$(MAKE) -C symplectic cleandoc
+	$(MAKE) -C treecode cleandoc
 	$(MAKE) -C vision cleandoc
-	$(MAKE) -C documentation cleandoc
 acscode:
 	$(MAKE) -C acs_data_format acscode
 	$(MAKE) -C binary_trees acscode
@@ -114,6 +118,7 @@ acscode:
 	$(MAKE) -C code_management acscode
 	$(MAKE) -C command_line acscode
 	$(MAKE) -C command_line_b acscode
+	$(MAKE) -C documentation acscode
 	$(MAKE) -C graphics acscode
 	$(MAKE) -C indiv_timesteps_1 acscode
 	$(MAKE) -C indiv_timesteps_2 acscode
@@ -130,5 +135,5 @@ acscode:
 	$(MAKE) -C runge_kutta acscode
 	$(MAKE) -C symmetric_timesteps acscode
 	$(MAKE) -C symplectic acscode
+	$(MAKE) -C treecode acscode
 	$(MAKE) -C vision acscode
-	$(MAKE) -C documentation acscode
