@@ -56,7 +56,7 @@ v1_web.dvi: v1_web.tex
 	csh -f makecutfiles.csh
 	latex v1_web
 	latex v1_web
-acscodes.tar: v1_web.tex
-	tar cvf acscodes.tar */*.C  */*.awk 
+acscodes.tar: v1_web.tex Makefile
+	tar cvf acscodes.tar */*.C  */*.awk  */*.csh
 clean:
 	-rm v1_web.dvi v1_web.tex
