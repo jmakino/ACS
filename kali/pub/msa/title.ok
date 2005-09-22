@@ -1,0 +1,29 @@
+
+<b> </b>	
+
+<b> </b>
+
+<tt> </tt>
+	
+<tex>
+
+\title{{\sl \huge The Art of Computational Science}\\
+\bigskip
+{\sl Volume 1}\\
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bf Moving Stars Around
+\bigskip
+}
+\author{\bf Piet Hut, Jun Makino and Peter Teuben}
+
+
+\maketitle
+\thispagestyle{empty}
+</tex>
+
+:tableofcontents:
+
