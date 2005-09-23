@@ -5,14 +5,15 @@ ACS
         Float mass
              5.0000000000000000e-01
         Vector pos
-            1 0 0
+            0.95 0 0
         Vector vel
-            0 0.1 0
+            0 0.11470786693528088295 0
       Body body[1]
         Float mass
              5.0000000000000000e-01
         Vector pos
-             -1 0 0
+             -0.95 0 0
         Vector vel
-             0 -0.1 0
+            0 -0.11470786693528088295 0
+
 SCA
