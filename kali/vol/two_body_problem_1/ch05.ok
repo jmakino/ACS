@@ -3,7 +3,7 @@
 == Equations of Motion
 
 *Alice*: That was great, to be able to do such rapid prototyping in a
-language we hardly knew.  I can see the advantages of an interpreted
+language we hardly knew.  I can see the advantages of an interpreted,
 dynamically typed computer language.  If we had tried to do this in C++,
 it would have taken quite a bit more time, and we would have had to write
 many more lines of code.
@@ -20,13 +20,13 @@ namely to solve the 2-body problem.
 
 *Bob*: The other day I was asked by a friend outside astronomy why we
 call it the N-body problem.  What was the problem with those bodies,
-she asked.  I had to think for a moment, because we are just in a
+she asked.  I had to think for a moment, because we are just in the
 habit to talk about it that way.
 
 *Alice*: We talk about solving the equations of motion; normally when
 you solve something, you solve a problem.  I guess the terminology
 comes from seeing a differential equation as posing a problem, that
-you then solve, either analytically of numerically.  Newton's equations
+you then solve, either analytically or numerically.  Newton's equations
 of motion for N bodies form a system of N differential equations, and
 the challenge to obtain solutions is called the N-body problem.
 
@@ -141,7 +141,7 @@ step has been taken: <tex>$dt = t_{i+1} - t_i$</tex>.
 Of course, we have to provide intial conditions for the position and
 velocity vectors, before we can solve the equations, and we will do
 that as soon as we have a working integrator.  For now, all we have
-to do now is to code up these equations.
+to do is to code up these equations.
 
 *Alice*: That was an even shorter lecture.  Yes, let's do it.
 
@@ -169,11 +169,11 @@ we are really happy, we can call the final version <tt>body.rb</tt>.
 on what you do with that stack of versions.  But I appreciate your
 attempt!
 
-*Bob*: Coming back to your suggestion, yes, you can put the +Body+
-class definition in a separate file.  This is similar as what you do
-in C and C++ with an include file -- only here it is more easy to do so.
+*Bob*: Coming back to your suggestion, yes, we can put the +Body+
+class definition in a separate file.  This is similar to what you do
+in C and C++ with an include file -- only here it is easier to do so.
 
-*Alice* I well remember those constructs in C where you had to write things
+*Alice* I remember well those constructs in C where you had to write things
 like <tt>#ifndef</tt> _this_ and <tt>#ifndef</tt> _that_ before you could
 be sure that it was safe to include a file without including it more than
 once?  You're saying that Ruby makes life easier?
@@ -253,7 +253,7 @@ those using the acceleration, which is the time derivative of the velocity:
 
 If we would do this calculation in three-dimensional space, all vectors
 would acquire a third component: <tex>${\bf r} = \{r_x, r_y, r_z\}$</tex>,
-and so one.  Each pair of equations above would then be replaced by a
+and so on.  Each pair of equations above would then be replaced by a
 triple of equations, because an extra equation would appear for the
 corresponding <tex>$z$</tex> component.
 
@@ -269,7 +269,7 @@ Similarly, compute the new values for the relative velocities at
 accelerations at <tex>$t_{i}$</tex>.
 
 *Bob*: And after you have once said that in words, it becomes obvious
-how much more compact and efficient equations are, already in
+how much more compact and efficient equations are in
 component notation.  And then it is clear that vector notation is even
 more efficient than component notation.
 
@@ -287,11 +287,11 @@ would have had to write <tt>Math.sqrt</tt> instead.  It is just more
 convenient to mixin +Math+ right at the beginning.
 
 *Alice*: Then you define the size of the time step and the number of
-steps you want to take.  That is a good idea, to introduce them as
+steps you want to take.  It is a good idea, to introduce them as
 variables at the top of your program, instead of hard coding them below
 inside the loops.  It will be much easier to change the values only
 once at the top, rather than having to inspect the whole program to see
-where the values might occur.
+where the values occur.
 
 *Bob*: You would be surprised how many scientists of the hard-coding
 type you can still find!
@@ -321,9 +321,9 @@ same piece of code occurs in more than one place, it becomes essentially
 impossible to maintain the code in a consistent way.  Change something
 in one place in someone's legacy code, and most likely you don't even
 know that it would have to be changed in the other place to.  Bugs
-appear, for no apparent reason, because you are _sure_ that you did
-the right thing; you just didn't know about the other place which now
-has become incompatible.  I bet that literally tens of person-millennia
+appear, for no apparent reason, while you are _sure_ that you did
+the right thing; you just didn't know about the other place which has
+now become incompatible.  I bet that literally tens of person-millennia
 have gone down the drain this way, during the last fifty years, chasing
 those bugs.
 
@@ -360,7 +360,7 @@ them numerically, or just a typo in the way you coded it all.  The
 last thing you suspect would be that you would update the position
 with time step 0.01 and the velocity with time step 0.001, say.
 
-*Bob*: I know it all too well, from past experience.  That's why I
+*Bob*: I know it all too well, from past experience.  That's why I've
 wizened up.
 
 == Where the Work is Done
@@ -376,7 +376,7 @@ class Integer.  And conveniently, this class has a method +times+
 built in that takes the value of the instance of the class, here the
 value of +ns+, and iterates the following block of code +ns+ times.
 
-As often in the case of Ruby, the explanation of a construction sounds
+As often is the case in Ruby, the explanation of a construction sounds
 far more complicated than the way you use it.  As you already remarked,
 <tt>ns.times</tt> reads like English.  Another example of the principle
 of least surprise.

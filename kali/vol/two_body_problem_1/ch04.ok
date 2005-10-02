@@ -125,15 +125,15 @@ ask an object to invoke one of its methods by putting a dot in between
 the object and a method.  And by implication this is what happens to
 the object returned by +gets+.
 
-*Alice*: The principle of minimal surprise all right.
+*Alice*: The principle of least surprise all right.
 
-*Bob*: As you can see in <tt>simple_print</tt> I have chosen a data
+*Bob*: As you can see in <tt>simple_print</tt>, I have chosen a data
 format in which a single particle prints its mass, position, and
 velocity on three consecutive lines.  To be compatible,
 <tt>simple_read</tt> should perform a separate +gets+ for
 <tt>@mass</tt>, for <tt>@mpos</tt>, and for <tt>@vel</tt>.
 
-The most tricky thing to get right was to read the three components
+The trickiest thing to get right was to read the three components
 from a vector.  Here I have used +split+ which is a string method that
 splits the string into smaller chunks, and then returns an array which
 contains each chunk as an element.  If you want, you can specify the
@@ -141,9 +141,9 @@ way a string is being split into such subarrays, by giving a parameter
 to +split+, but the default delimiter is white space.
 
 Now +map+ is an array method that takes each element of the array
-in turn, and executes a block of code for that element.  The notion is
+in turn, and executes a block of code for that element.  The syntax is
 the same as what we saw for +each+ above.  The block is delimited by
-parentheses, and the free variable that loops over the array elements
+curly braces, and the free variable that loops over the array elements
 is specified by the vertical bars.  The rest of the block contains the
 commands that are executed for each element.  In our case each component
 of the position is converted into a floating point number, and the same
@@ -151,7 +151,7 @@ happens for the velocity on the next line.
 
 By the way, +map+ is actually an alias for +collect+, and you can use
 both words interchangeably for the same method.  Because this method
-effectively `maps' and action onto each element and then `collects'
+effectively `maps' an action onto each element and then `collects'
 the results into a new array, each word describes part of the process.
 I prefer +map+ both because it is shorter and because it describes the
 step where the actual work is done.  In Ruby, there are many examples
@@ -168,22 +168,22 @@ aliases.  However, I presume that you get used to that pretty quickly.
 What I am curious about is that you haven't specified anywhere that we
 live in three dimensions.  I find that pretty remarkable: in Fortran
 or C or C++, you could not get away with that.  This must mean that
-the code will work equally well for a two-dimensional simulations,
+the code will work equally well for a two-dimensional simulation,
 where a body has position and velocity vectors with only two
 components, as for a three-dimensional simulation.
 
-*Bob*: Right you are, and that gives you indeed a wonderful flexibility.
+*Bob*: Right you are, and that indeed gives you a wonderful flexibility.
 In C you would first define <tt>#define NDIM 3</tt>, and then specify
 something like <tt>for (k = 0, k < NDIM, k++)</tt> followed by the
 block of code you would loop over, containing expressions like
 <tt>pos[k]</tt> for the kth element of the position vector.  What a
-breeze this is, in comparison!
+breeze this is, by comparison!
 
 == Trying It Out
 
 *Alice*: Remarkable.  Once you gain familiarity with those notions such
 as +gets+ and +split+ and +map+, it must become second nature to
-string a few together.  The result is a notation that is compact yet
+string a few together.  The result is a notation that is compact, yet
 still informative.  Can you show me that all this really works?
 
 *Bob*: Here is what I wrote in our test file
@@ -237,7 +237,7 @@ inappropriate.
 
 *Alice*: Before we get going with our particle pushing, I can't help
 wondering whether you can't further simplify your reading and writing
-routines.  I bet these where not what you first wrote down; you must
+routines.  I bet these were not what you first wrote down; you must
 have compactified things already.
 
 *Bob*: You're right.  My first attempt at the read method was a lot
@@ -256,8 +256,7 @@ longer.  Here, I still have it:
       @vel = a
     end
 
-*Alice*: Quite an amount of data reduction.  But why the exclamation
-marks after +map+?
+*Alice*: Quite a reduction.  But why the exclamation marks after +map+ ?
 
 *Bob*: In Ruby there is a general convention that a command followed
 by an exclamation mark in its name does the same thing as the command
@@ -270,7 +269,7 @@ in itself, it is only an allowed character for the last part of the
 name of a command.  It is up to the code writer to choose sensible
 names such that <tt>do_something</tt> and <tt>do_something!</tt> do the same
 thing, the first one producing a new array, and the second one
-changing the elements of the array that it was called by.
+changing the elements of the array on which it was called.
 
 == A Surprise
 
@@ -279,7 +278,7 @@ by a factor of three, presumably also in your write method.  Currently
 you have three lines left in each method.  Can I challenge you to
 reduce it even further?
 
-*Bob*: By another factor three?  But that would only leave one line
+*Bob*: By another factor of three?  But that would only leave one line
 for each method.  Are you serious?
 
 *Alice*: Well, not really.  But I'm still thirsty.  Let me get us
@@ -304,12 +303,12 @@ END
 
 *Alice*: I'm shocked.  How can you do input in one line and output
 in one line for a whole particle, with a heterogeneous data set?  Even
-writing down this question would take me more than one line of text!
+writing this question down would take more than one line of text!
 
 *Bob*: I must admit, I surprised myself.  But then again, you asked,
 and I like to take up a challenge.  Would you like to know how/why
 it works?
 
 *Alice*: Hmmm.  Perhaps not in detail yet.  Since I was going to look
-at the manual tonight, this will give me my own challenge, to figure
+at the manual tonight, this will give me my own challenge: to figure
 this one out.

@@ -195,8 +195,8 @@ you can access them from outside, either for reading or for writing.
 If I would have designed a language, I wouldn't have been so strict,
 but that's the way it is.
 
-*Alice*: I actually think that is a _very_ good feature of Ruby.  If
-you change some piece of code you or someone else has written a long
+*Alice*: I actually think that is a very _good_ feature of Ruby.  If
+you change some piece of code you or someone else wrote a long
 time ago, it is good to have a clear protocol about how to access
 internal data.  A house has walls, an animal has a skin, a cell has
 a cell wall, and there are good reasons for that!
@@ -299,8 +299,8 @@ As it should be.  Now what about the position and velocity?
 
 == Syntactic Sugar
 
-*Bob*: You may guess how we can give `get' and `set' functions for the
-other internal variables.  Here is how we deal with the position
+*Bob*: You may guess how we can provide `get' and `set' functions for the
+other internal variables.  Here is how we deal with the position:
 
     irb(main):035:0> class Body
     irb(main):036:1>   def pos
@@ -319,11 +319,11 @@ other internal variables.  Here is how we deal with the position
 *Alice*: The way you use the `set' function is different, in the sense
 that for the position you now provide a vector, rather than a scalar.
 But everything else is the same, in particular the definition.  It is
-nice that Ruby is so homogeneous in its notion: it doesn't care at the
+nice that Ruby is so homogeneous in its notation: it doesn't care at the
 level of the definition whether a variable describes a scalar or a vector.
 
 *Bob*: That is a nice aspect of dynamic typing.  And it also invites a
-more compact notion.  Rather than writing everything all over again for
+more compact syntax.  Rather than writing everything all over again for
 +vel+ instead of +pos+ above, you can use a convenient shorthand
 notation, a piece of syntactic sugar as these are sometimes called.
 The six lines above that define the two methods to read and write
@@ -394,7 +394,7 @@ as in C and C++, rather than with a 1, as in Fortran.  <tt>b.pos[1]</tt>
 is the second element of the array, while <tt>b.pos[0]</tt> is the
 first element.
 
-*Bob*: I saw you hesitating when you typed line 4.  I would have
+*Bob*: I saw you hesitating when you typed line four.  I would have
 thought you would type something like:
 
     irb(main):006:0> b.vel = [0.1, 0, 0]
@@ -418,5 +418,5 @@ associated with +b+ and frankly I did not expect that I could throw in
 the component selector "<tt>[1]</tt>" without complaints from the
 interpreter.
 
-*Bob*: but it did the right thing!  This must be what they mean when
-they say that Ruby is based on the principle of minimum surprise.
+*Bob*: But it did the right thing!  This must be what they mean when
+they say that Ruby is based on the principle of least surprise.

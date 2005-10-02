@@ -202,7 +202,7 @@ But aren't you cheating a bit?  That last part, with the +main+ function
 down below, does not occur in your short and sweet Ruby class definition.
 
 *Bob*: It doesn't occur there, because you don't need it.  All that
-+main+ does for you is creating an object and then printing its internal
++main+ does for you is create an object and then printing its internal
 values.  You can let Ruby do that for you without even asking for it.
 
 Here is what you do.  The easiest way to work with Ruby is to use the
@@ -232,7 +232,7 @@ that come from?
 
 *Bob*: Just like in C, variables are not the only things that have values.
 In fact, every expression has a value.  And +irb+ makes life more
-clear by echoing the value of each line as soon as you type it in.
+clear by echoing the value of each line as soon as you enter it.
 
 *Alice*: I like that.  It will make debugging a lot easier.  Okay, let
 me try to change the type of +id+.

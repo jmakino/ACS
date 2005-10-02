@@ -12,7 +12,7 @@ from which we can then start to integrate the equations of motion.
 
  :inccode: euler.in
 
-*Alice*: A nice example already for our dimensional freedom: a
+*Alice*: A nice example of our dimensional freedom: a
 two-body problem is intrinsically two-dimensional.  It was not just
 laziness that I showed the equations in component form only for two
 dimensions.  Even in three dimensions, a 2-body problem can always
@@ -97,7 +97,8 @@ And then we run it:
 the previous run are typically only one unit in the second decimal
 place, in each vector component.
 
-*Bob*: About all that I would have expected from such a simple integrator.
+*Bob*: That's about all that I would have expected from such a simple
+integrator.
 
 == Error Scaling
 
@@ -172,7 +173,7 @@ original time step of 0.01:
 
  :inccode: .euler1d.rb-barebones
 
-For one time unit we got a position error of order of one percent, for
+For one time unit we got a position error of order one percent, for
 a time step of 0.01.  For ten time units we may expect ten or twenty
 percent, I guess.  But in order to get an estimate of our errors we
 have to do at least two runs, to compare.  So we'll do this run first,
@@ -186,11 +187,11 @@ first run.
 *Alice*: Hmmm.  Whatever the second run will be, the error must be
 quite a bit more than twenty percent, I'd say.  After you explained
 that the initial position was at apocenter, we should never encounter
-as situation where the particles are at a relative distance of more
-than unity.  And here we have a distance of more than 7, in fact
+a situation where the particles are at a relative distance of more
+than unity.  And here we have a distance of more than seven, in fact
 almost a distance of ten units!
 
-*Bob*: with expected errors of a few tens of percent it is easy to
+*Bob*: With expected errors of a few tens of percent it is easy to
 get into a nonlinear regime.  And come to think of it, our relative
 particle motion was headed for pericenter, where the distance between
 the particles gets smaller, the inverse square law force increases even
@@ -201,7 +202,7 @@ expected to be quite a bit larger.
 *Alice*: How much larger?
 
 *Bob*: I'm sure we can derive that easily, but let's be lazy and ask
-the computer.  We can later be more systematic about all this, when we
+the computer.  Later we can be more systematic about all this, when we
 start implementing higher order integrators.  So let's go down with
 powers of ten again in time steps:
 
@@ -237,19 +238,19 @@ than two, but not as outrageous as before.  Another step of ten down?
 # :command: cp -f euler1g.rb test.rb
 # :commandoutput: ruby test.rb < euler.in
 # :command: rm -f test.rb
- |gravity> time ruby test.rb < euler.in
+ |gravity> ruby test.rb < euler.in
    mass = 1.0
     pos = 0.519970642634004, -0.376817992041834
     vel = 1.17126787143698, 0.114700879739653
 
 Ah, perhaps we are getting there.  Now we have a difference between runs
-that is closer to what I had hoped for, a few tens of percent.
+that is closer to what I had hoped for, a few tenths of percent.
 
 *Alice*: If we are really converging, with a first-order integrator,
-we should see the errors shrinking by a factor ten.
+we should see the errors shrinking by a factor of ten.
 
 *Bob*: Let's check.  But the computer sure took its time to give us
-that last result.  Something tells me that Ruby is not very fast in
+that last result.  Something tells me that Ruby is not very fast at
 numerical calculations
 
  :inccode: .euler1h.rb-barebones
@@ -268,11 +269,11 @@ in Ruby is done not just with one level of redirection, as you might
 expect, but with two levels of redirection!
 
 *Alice*: That makes you wonder about the wisdom of choosing Ruby for a
-computational intensive project.
+computationally intensive project.
 
 *Bob*: That's what I thought all along, but . . .
 
-*Alice*: . . . you mean, it's no problem for a student product, as a toy
+*Alice*: . . . you mean, it's no problem for a student project, as a toy
 model?
 
 *Bob*: No, it <i>is</i> a problem, even for a student project.  Which
@@ -341,5 +342,4 @@ about one percent in any of the position or velocity coordinates.
 *Bob*: Good!  Now I believe that we have done things correctly.  But boy,
 that took a long time to converge.  Two morals of the story: to do anything
 at all in orbit calculations, you must use a higher-order integrator, and
-you'd better speed up the speed of the inner loop if you are using an
-interpreted language.
+you'd better speed up its inner loop if you are using an interpreted language.
