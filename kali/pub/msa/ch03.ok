@@ -1294,7 +1294,25 @@ Happy dreams!
 
 <b>EXERCISES</b>
 
-Ex. 3.1.: convince yourself that the following program,
+<b>Ex. 3.1:</b>
+In a first-order algorithm, the error in position after one time
+step is quadratic in the size of the time step.  Yet Alice has stated that
+a first-order algorithm produces errors that are first-order in the size
+of the time step.  There seems to be a contradiction here.  What is going on?
+
+Hint: make a distinction between the local error produced after a
+single time step, and the global error that builds up after taking
+however many time steps are needed to cover a fixed interval in time,
+say from <tex>$t=0$</tex> to <tex>$t=1$</tex>.
+
+Using the same reasoning, convince yourself of the fact that an algorithm
+of order _k_ is accurate to that order _k_ per time step (i.e. has errors
+that are proportional to <tex>$(\Delta t)^{k+1}$</tex> per time step), and
+yet shows global errors for a fixed time interval that are of order _k_
+(proportional to <tex>$(\Delta t)^k$</tex>).
+
+<b>Ex. 3.2:</b>
+convince yourself that the following program,
 <tt>forward_euler1a.rb</tt>:
 
  :inccode: .forward_euler1a.rb
@@ -1302,3 +1320,4 @@ Ex. 3.1.: convince yourself that the following program,
 does the same thing as <tt>forward_euler1.rb</tt>.  Check
 this both by inspecting the logic of the new code, and by running the
 two codes to see whether you get the exact same answers in both cases.
+
