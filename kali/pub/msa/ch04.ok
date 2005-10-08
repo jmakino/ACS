@@ -1,0 +1,23 @@
+= Test
+
+<tex>\begin{eqnarray}
+\label{a1}
+a & = & b    \nonumber \\
+c & = & d
+\end{eqnarray}</tex>
+
+<tex>\begin{equation}
+\label{a2}
+a = b
+\end{equation}</tex>
+
+:eqnarray:
+\label{a3}
+a & = & b    \nonumber \\
+c & = & d
+
+:equation:
+\label{a4}
+a = b
+
+Let us look at Eqs. (ref(a1)), (ref(a2)), (ref(a3)), (ref(a4)).

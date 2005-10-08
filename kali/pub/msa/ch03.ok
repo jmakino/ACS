@@ -96,8 +96,9 @@ soon come to that, but for now let's keep it simple, and stay with
 first order.  Here is the mathematical notation:
 
 <tex>\begin{eqnarray}
-\br_{i+1} & = & \br_i + \bv_i dt \label{forward-euler-step1} \\
-\bv_{i+1} & = & \bv_i + \ba_i dt \label{forward-euler-step2}
+\label{forward-euler-step}
+\br_{i+1} & = & \br_i + \bv_i dt    \nonumber \\
+\bv_{i+1} & = & \bv_i + \ba_i dt
 \end{eqnarray}</tex>
 
 for the position <tex>$\br$</tex> and velocity <tex>$\bv$</tex> of an individual particle,
@@ -164,50 +165,31 @@ you want to read about Ruby in more systematic way, here is a
 is a web site specifically aimed at
 <web>http://sciruby.codeforpeople.com/|scientific applications</web>.
 
-The first two lines in the code block show how we first compute
+The first line in the code block shows how we compute <tt>r2</tt> ,
 the square of the scalar distance between the two particles by summing
-the squares of the Cartesian components.  The class +Array+ of which the
-object +r+ is an instance, has a method +each+ that loops over all elements
-of the array.  This is done in another short block, in which the variable
-between vertical lines stands for the successive array elements that are
-being invoked.  After this short block has been executed for each element
-of +r+ the variable <tt>r2</tt> contains the sum of the squares of the
-components of +r+.  Thus <tt>r2</tt> is a scalar with a value that is
-the square of the length of the vector +r+.
-
-We then take the square root, and multiply that with the square of the
-distance to get the third power of the distance, which we have seen in
-the denominator of Eq. (ref(Newton2bodysimple)), which we repeat here for
-convenience:
+the squares of the Cartesian components.  We then take the square
+root, and multiply that with the square of the distance to get
+<tt>r3</tt> , the third power of the distance, which we have seen
+in the denominator of Eq. (ref(Newton2bodysimple)), which we repeat
+here for convenience:
 
 <tex>\begin{equation}
 \frac{d^2}{dt^2}\br = - \frac{\br}{r^3}
 \end{equation}</tex>
 
-\noindent
-In our code we find this equation back in component form as:
-
-<tt>
-a[k] = - r[k] / (r2 * sqrt(r2))
-</tt>
+The next three lines express this separately for each Cartesian
+component.
 
 Finally, the integration step is completed by executing
-Eqs. \ref{forward-euler-step1}, \ref{forward-euler-step2} on
-p.~\pageref{forward-euler-step1} above, to update the relative
-position and velocity.  At the end of each time step, we print the
-three position and three velocity components, all on a single line.
+Eq. \ref{forward-euler-step} above, to update the relative position
+and velocity, again component-wise.  At the end of each time step, we
+print the three position and three velocity components, all on a
+single line.
 
-To compile the code, we must invoke a C++ compiler.  In a Linux
-environment, the natural compiler is the GNU C++ compiler that is
-called by the <tt>g++</tt> command:
-
-<tt>
-g++ -o forward_euler1 forward_euler1.C
-</tt>
-
-which will produce an executable file <tt>forward_euler1</tt>, if no
-errors are detected during compilation.  Let us follow the discussion
+Let us follow the discussion
 of our three friends, from the moment that their code first compiled.
+
+<b>so far</b>
 
 == Running a Code
 
