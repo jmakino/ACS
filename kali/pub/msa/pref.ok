@@ -2,7 +2,78 @@
 	
 = Preface
 
-== xxx
+We present an introduction to setting up, running and analyzing
+simulations of stellar system.  This description is self-contained:
+a high-school student should be able to start at page 1, and work her
+way through the series.  We believe that the current book is unique,
+in providing all the details needed, when starting from scratch.
+
+In many areas of science, computer simulations of complex physical
+systems cannot be performed with off-the-shelf software packages.
+Instead, computational scientists have to design and build their own
+software environment, just as experimental scientists have to design
+and build their own laboratories, before being able to use them.  For
+a long time, however, the know-how needed to construct computational
+laboratories has remained only a form of tacit knowledge.
+
+Unlike explicit knowledge that can be found in manuals, this type of
+implicit knowledge has been alive in conversations among experts, and
+has been passed down in that way only as a form of oral tradition.
+This kind of knowledge has not been written down anywhere in
+sufficient detail to allow it to be passed down without direct
+personal instructions, or indirect osmosis through personal
+participation in a joint project.
+
+The problem with the hundreds of introductory text books to science is
+that they mostly provide summaries, highly distilled collections of
+knowledge that can only be internalized through a process of hands-on
+experience that is generally left out.  We think there is room for a
+different approach, one that has not been attempted earlier, as far as
+we know.  We will try to follow a few individual students, getting
+occasional guidance from a teacher, in the actual process of learning
+through trial and error.  This choice dictates the format as that of
+a dialogue, in which we can overhear what goes wrong, and how the
+students sooner or later find out how to correct their errors and
+misunderstandings.
+
+This book aims at three groups of readers.  For scientists, it gives
+a concrete example for the first steps in setting up a scientific
+simulation software environment.  Whether you are a biologist,
+physicist, psychologist, or working in another area of science, many
+of the issues discussed here will come up for you too, when you want
+to build a new software system, or what is often more challenging,
+when you want to fully overhaul and modernize an archaic existing
+system.  Because our scientific example has such a simple base,
+nothing more than Newton's laws of gravity, it is easy to grasp the
+underlying physics, after which you can focus on the complexity of
+developing and managing a software laboratory.
+
+The second target group of readers are computer scientists, and in
+general everyone building complex software systems.  While we apply
+modern concepts such as the use of object-oriented languages and
+design patterns, and notions such as extreme programming, our main
+_forte_ is that we fill a gap in the market, by providing a
+complete discussion of the process of constructing a large-scale
+software system.
+
+Readers in our third group neither work in natural science nor in
+computer science.  They are simply curious how a modern software
+system is set up.  For example, they may have read about the billions
+of dollars that are lost because of late delivery of software, or
+worse, delivery of faulty software.  Perfectly functioning rockets
+have been blown up because of glitches in complex software systems.
+Newly built airports have experienced very costly delays because
+software for baggage transport was delivered way too late.  Perhaps
+you are an average user of the internet, and just curious about what
+makes writing large software environments so hard.  Perhaps you are
+working in business or finance, and you are wondering whether to
+invest in a software company.  How are you going to judge the
+soundness of the company's approach?  Having a good look in the
+kitchen will help.  Even better, helping a hand as an apprentice in
+the kitchen would be even better.  This is exactly what this book
+offers.
+
+== Acknowledgments
 
 We thank xxx, xxx, and xxx for their comments on the
 manuscript.

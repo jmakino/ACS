@@ -39,10 +39,10 @@ may well be optimal.  Since all planets follow well-separated orbits,
 there will be no sudden surprises there.  But when you integrate a
 star cluster, where some of the stars can come arbitrarily close to each
 other, experience shows that very high order integrators lose their edge.
-In practice, fourth-order integrators turn out to be optimal for the job.
+In practice, fourth-order integrators have been used most often for the job.
 
 *Bob*:
-How about starting with the lowest-order integrator we can think off?
+How about starting with the lowest-order integrator we can think of?
 A zeroth-order integrator would make no sense, since the error would
 remain constant, independent of the time step size.  So the simplest
 one must be a first-order integrator.
@@ -65,6 +65,8 @@ out of a number of straight line segments, where each one has the
 proper direction at the beginning of the segment, but the wrong one at
 the end.
 
+<b>[Peter, can you make a picture here?]</b>
+
 *Bob*:
 And the <i>backward Euler</i> algorithm must have the right direction
 at the end of a time step, and the wrong one at the beginning.  Let's
@@ -73,8 +75,10 @@ beginning of a time step in what direction to move so that you come
 out with the right direction tangential to a correct orbit at that
 point?
 
+<b>[Peter, can you make a picture here?]</b>
+
 *Alice*:
-You can only do that through iteration.  You guess a direction, and
+You do that through iteration.  You guess a direction, and
 then you correct for the mistake you find yourself making, so that
 your second iteration is much more accurate, in fact first-order
 accurate.  Given this extra complexity, I suggest that we start with
@@ -111,60 +115,70 @@ Alice, go for it!
 == Writing a Code
 
 After some further discussion among the three, here is the code that
-Alice typed in.  Actually, the first version contained a few errors,
-not surprisingly, but to speed up a bit, we will just show here the
-final product, by printing the file <tt>forward_euler1.C</tt>:
+Alice typed in.  Actually, the first version contained a few syntax errors,
+not surprisingly, but to move right along, we will just show here the
+final product, by printing the file <tt>forward_euler0.rb</tt>:
 
- :inccode: .forward_euler1.rb
+ :inccode: .forward_euler0.rb
 
-Let us look at each line in turn.  The first <tt>\#include</tt> statement
-is needed in C++ in order to gain access to the I/O library, to make
-sense of output statements like <tt>``cout <<''</tt> at the end of the
-code.  The second <tt>\#include</tt> statement gives access to the math
-library that contains functions such as the square root <tt>sqrt()</tt>.
-The third line is a default C++ way of indicating that we use the
-standard name space.  Later, when our software environment will have
-grown significantly, it will make sense to introduce our own name
-spaces, but for now the default choice suffices.
-
-There is only one function in this file, the <tt>main()</tt> function
-which has to be present in every C++ program.  It is defined as type
-<tt>int</tt>, which means that it returns an integer value (by default
-defined to be 0 upon successful completion, and nonzero otherwise).
-The three arrays <tt>r[3], v[3], a[3]</tt> store the values for the
-three Cartesian components of the relative position, velocity and
-acceleration of one particle with respect to the other.  These are
-declared as <tt>double</tt>, the C++ way to indicate 8-byte floating
-point variables.
+Let us look at each line in turn.  The first <tt>include</tt> statement
+is needed in order to gain access to the +Math+ module in Ruby, that
+contains, for example, the definition of the square root method +sqrt+
+(a method in Ruby is like a function in C or a subroutine in Fortran).
 
 In this simple program there is no need for any input: all initial
-values are chosen already in the program.  The time step <tt>dt</tt> is
-fixed to be <tex>$0.01$</tex>.  The relative position is chosen along the <tex>$x$</tex>
-axis at a distance of unity from the origin where the other particle
-resides in the relative coordinate system that we use.  The velocity
-is chosen to be <tex>$0.5$</tex> in the direction of the positive <tex>$y$</tex> axis.  This
-is less than the value <tex>$v_y = 1$</tex> needed to sustain a circular orbit,
-as you can check in any book on celestial mechanics or stellar
-dynamics.  The choice of a velocity less than the circular velocity
-means that we have captured the relative motion at apocenter, which is
-the point in the orbit at which the two particles are furthest away
-from each other.  The word is derived from the Greek <tex>$\alpha \pi o$</tex>
-<i>(apo)</i> meaning `far (away) from'.  The subsequent motion will
-bring the two particles closer together, until the pericenter is
-reached on the negative <tex>$x$</tex> axis, which is the point in the orbit at
-which the two particles are closest.  This word is derived from the
-Greek <tex>$\pi \epsilon \rho \iota$</tex> <i>(peri)</i> meaning `around' or
-`near'.  After passing through pericenter the particles will move away
-from each other again.
+values are chosen already in the program.  The time step <tt>dt</tt>
+is fixed to be <tex>$0.01$</tex>.  The relative position vector is
+chosen along the <tex>$x$</tex> axis at a distance of unity from the
+origin where the other particle resides in the relative coordinate
+system that we use: <tex>$\br = \{1, 0, 0\}$</tex>.  The relative
+velocity is chosen to be <tex>$0.5$</tex> in the direction of the
+positive <tex>$y$</tex> axis: <tex>$\bv = \{0, 0.5, 0\}$</tex>.  This
+is less than the value <tex>$v_y = 1$</tex> needed to sustain a
+circular orbit, as you can check in any book on celestial mechanics or
+stellar dynamics.
 
-The <tt>for</tt> loop takes 1000 time steps that are counted by the
-variable <tt>ns</tt>, covering a time interval of 10 units.  The body of
-the loop shows how we first compute the square of the scalar distance
-between the two particles by summing the squares of the Cartesian
-components.  We then take the square root, and multiply that with the
-square of the distance to get the third power of the distance, which
-we have seen in the denominator of Eq. \ref{newton-2-bodies} on
-p.~\pageref{newton-2-bodies}, which we repeat here for convenience:
+The choice of a velocity value less than the circular velocity means
+that we have captured the relative motion at apocenter, which is the
+point in the orbit at which the two particles are furthest away from
+each other.  The word is derived from the Greek <tex>$\alpha \pi
+o$</tex> <i>(apo)</i> meaning `far (away) from'.  The subsequent
+motion will bring the two particles closer together, until the
+pericenter is reached on the negative <tex>$x$</tex> axis, which is
+the point in the orbit at which the two particles are closest.  This
+word is derived from the Greek <tex>$\pi \epsilon \rho \iota$</tex>
+<i>(peri)</i> meaning `around' or `near'.  After passing through
+pericenter the particles will move away from each other again.
+
+The <tt>1000.times{...}</tt> expression implies that the body of the
+expression between curly brackets (called a block in Ruby) is executed
+1000 times.  The syntax here should be read as follows.  The number
+1000 is an object, and +times+ is a method that belongs to the class
+number, of which 1000 is an instance.  Since we have chosen a time
+step of length <tt>dt = 0.01</tt>, a thousand steps will cover a time
+interval of 10 units.
+
+We will introduce the main concepts of Ruby as we go along, but if
+you want to read about Ruby in more systematic way, here is a
+<web>http://www.rubycentral.com/|a good place to start</web>, and here
+is a web site specifically aimed at
+<web>http://sciruby.codeforpeople.com/|scientific applications</web>.
+
+The first two lines in the code block show how we first compute
+the square of the scalar distance between the two particles by summing
+the squares of the Cartesian components.  The class +Array+ of which the
+object +r+ is an instance, has a method +each+ that loops over all elements
+of the array.  This is done in another short block, in which the variable
+between vertical lines stands for the successive array elements that are
+being invoked.  After this short block has been executed for each element
+of +r+ the variable <tt>r2</tt> contains the sum of the squares of the
+components of +r+.  Thus <tt>r2</tt> is a scalar with a value that is
+the square of the length of the vector +r+.
+
+We then take the square root, and multiply that with the square of the
+distance to get the third power of the distance, which we have seen in
+the denominator of Eq. (ref(Newton2bodysimple)), which we repeat here for
+convenience:
 
 <tex>\begin{equation}
 \frac{d^2}{dt^2}\br = - \frac{\br}{r^3}

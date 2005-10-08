@@ -27,8 +27,7 @@ more than offset by the advantages of our approach:
   to apply the tools;
 
 - the reader will learn to embark on completely different large-scale
-  software projects, be they in (astro)physics, other areas of science,
-  or other fields altogether; 
+  software projects, be they in (astro)physics or other areas of scienc;
 
 - and in addition, we hope that reading these books will be as much fun
   for the reader as it was for us to write them.
@@ -278,10 +277,10 @@ problem seem like clarity itself!
 *Carol*:
 Long story.  I don't know whether there was ever a language A, but
 there certainly was a language B, which was followed alphabetically by
-a newer language C, which became quite popular \dots
+a newer language C, which became quite popular . . .
 
 *Bob*:
-\dots are you making a pun on our names?
+. . . are you making a pun on our names?
 
 *Carol*:
 No, I'm not kidding.  Then C was extended to a new language for
@@ -399,7 +398,6 @@ space with three dimensions.  If we name the components as follows,
 we can name the scalar distance between the two particles
 
 <tex>\begin{equation}
-\label{Newton2body}
 r = | \br | = \sqrt{x^2+y^2+z^2}
 \end{equation}</tex>
 
@@ -432,7 +430,7 @@ That looks more like the real thing.
 
 *Carol*:
 Yes, but it may be easier to program the expression Eq. (ref(Newton2body)),
-so let's keep both Eqs. (ref(Newton2bodyhat)) and (ref(Newton2body))
+so let's keep both Eqs. (ref(Newton2body)) and (ref(Newton2bodyhat))
 on the table for now, and see what's most convenient.
 
 *Alice*:
@@ -448,5 +446,6 @@ M_1 + M_2 & = & 1
 Our original equation of motion now becomes simply:
 
 <tex>\begin{equation}
-\frac{d^2}{dt^2}\br = - \frac{\br}{r^3} \label{newton-2-bodies}
+\label{Newton2bodysimple}
+\frac{d^2}{dt^2}\br = - \frac{\br}{r^3}
 \end{equation}</tex>
