@@ -96,7 +96,7 @@ soon come to that, but for now let's keep it simple, and stay with
 first order.  Here is the mathematical notation:
 
 <tex>\begin{eqnarray}
-\label{forward-euler-step}
+\label{ForwardEulerStep}
 \br_{i+1} & = & \br_i + \bv_i dt    \nonumber \\
 \bv_{i+1} & = & \bv_i + \ba_i dt
 \end{eqnarray}</tex>
@@ -173,15 +173,14 @@ root, and multiply that with the square of the distance to get
 in the denominator of Eq. (ref(Newton2bodysimple)), which we repeat
 here for convenience:
 
-<tex>\begin{equation}
+:equation:
 \frac{d^2}{dt^2}\br = - \frac{\br}{r^3}
-\end{equation}</tex>
 
 The next three lines express this separately for each Cartesian
 component.
 
 Finally, the integration step is completed by executing
-Eq. \ref{forward-euler-step} above, to update the relative position
+Eq. (ref(ForwardEulerStep)) above, to update the relative position
 and velocity, again component-wise.  At the end of each time step, we
 print the three position and three velocity components, all on a
 single line.
@@ -1077,11 +1076,10 @@ Here are the expressions for the kinetic energy <tex>$E_{\rm kin}$</tex> and the
 potential energy <tex>$E_{\rm pot}$</tex>.  The total energy is just the sum of
 both terms.
 
-<tex>\begin{eqnarray}
+:eqnarray:
 E_{\rm kin} & = & \half \frac{M_1 M_2}{M_1 + M_2} v^2 
 \label{two-body-E-kin-full} \\
 E_{\rm pot} & = & - \frac{M_1 M_2}{r} \label{two-body-E-pot-full}
-\end{eqnarray}</tex>
 
 *Alice*:
 So far, we have used units in which <tex>$M_1 + M_2 = 1$</tex>.  We have not
@@ -1144,17 +1142,15 @@ switch back again to our notation in which <tex>$M_1 + M_2 = 1$</tex>.
 Yes, and we can bring that out more clearly by introducing the notion
 of what is called the `reduced mass' <tex>$\mu$</tex> of a two-body system:
 
-<tex>\begin{equation}
+:equation:
 \mu = \frac{M_1 M_2}{M_1 + M_2}
-\end{equation}</tex>
 
 *Carol*:
 I see, if we define <tex>$M = M_1 + M_2$</tex> we then get:
 
-<tex>\begin{eqnarray}
+:eqnarray:
 E_{\rm kin} & = & \half \mu v^2 \\
 E_{\rm pot} & = & - \frac{\mu M}{r}
-\end{eqnarray}</tex>
 
 *Carol*:
 Nice and elegant!
