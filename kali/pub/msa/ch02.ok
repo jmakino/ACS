@@ -357,10 +357,10 @@ position, defined as:
 
 Newton's gravitational equation of motion then becomes:
 
-<tex>\begin{equation}
+:equation:
 \label{Newton2body}
 \frac{d^2}{dt^2}\br = - G \frac{M_1 + M_2}{r^3}\br
-\end{equation}</tex>
+
 
 This is a second-order differential equation.  At the left-hand side
 you see the second derivative of position with respect to time
