@@ -137,6 +137,25 @@ main()
 	    }
 	}
 #endif
+#ifdef MIN_BLOCKSTEP
+#define NSYM 5
+	{
+	    double steps[NSYM];
+	    dt = force2(dt);
+	    for (i=0;i<NSYM; i++){
+		leapfrog(x,v, &newx, &newv, dt);
+		newdt=timescale(newx, newv)*dtcoef;
+		if (i < NSYM-1){
+		    steps[i] = force2(0.5*(dt0+newdt));
+		    if (i < NSYM-2) {
+			dt = steps[i];
+		    }else{
+			dt = (steps[i]>steps[i-1])? steps[i-1]:steps[i];
+		    }
+		}
+	    }
+	}
+#endif
 	
 	time += dt;
 	x=newx;
