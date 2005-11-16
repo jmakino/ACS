@@ -349,9 +349,8 @@ position <tex>$\br_1$</tex> for the first particle and
 gravitational attraction between the two in terms of the relative
 position, defined as:
 
-<tex>\begin{equation}
+:equation:
 \br = \br_2 - \br_1
-\end{equation}</tex>
 
 <b>[Peter, can you make a picture here?]</b>
 
@@ -391,15 +390,13 @@ Good question!  The bold-face notation <tex>$\br$</tex> indicates that
 we are dealing with three-dimensional vectors, because we live in a
 space with three dimensions.  If we name the components as follows,
 
-<tex>\begin{equation}
+:equation:
 \br = \{x, y, z\}
-\end{equation}</tex>
 
 we can name the scalar distance between the two particles
 
-<tex>\begin{equation}
+:equation:
 r = | \br | = \sqrt{x^2+y^2+z^2}
-\end{equation}</tex>
 
 While it is true that Newtonian gravity is a <tex>$1/r^2$</tex> force, we
 have to tell the particles not only the magnitude of their mutual
@@ -420,10 +417,9 @@ in magnitude.  The unit vector corresponding to <tex>$\br$</tex> is given as
 <tex>$ \hat\br = \br / r $</tex>, and the equation of motion for our 2-body
 problem now reads:
 
-<tex>\begin{equation}
+:equation:
 \label{Newton2bodyhat}
 \frac{d^2}{dt^2}\br = - G \frac{M_1 + M_2}{r^2}\hat\br
-\end{equation}</tex>
 
 *Bob*:
 That looks more like the real thing.
@@ -438,14 +434,15 @@ One more thing: let's make life as simple as we can, by choosing a
 system of physical units in which the gravitational constant and the
 total mass of the 2-body system are both unity:
 
-<tex>\begin{eqnarray}
+:eqnarray:
 G & = & 1 \\
 M_1 + M_2 & = & 1
-\end{eqnarray}</tex>
 
 Our original equation of motion now becomes simply:
 
-<tex>\begin{equation}
+:equation:
 \label{Newton2bodysimple}
 \frac{d^2}{dt^2}\br = - \frac{\br}{r^3}
-\end{equation}</tex>
+
+*Bob*:
+I can't imagine anything simpler than that!

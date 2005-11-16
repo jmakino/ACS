@@ -95,11 +95,10 @@ errors.  Examples are second-order Runge Kutta, and leapfrog.  We'll
 soon come to that, but for now let's keep it simple, and stay with
 first order.  Here is the mathematical notation:
 
-<tex>\begin{eqnarray}
+:eqnarray:
 \label{ForwardEulerStep}
 \br_{i+1} & = & \br_i + \bv_i dt    \nonumber \\
 \bv_{i+1} & = & \bv_i + \ba_i dt
-\end{eqnarray}</tex>
 
 for the position <tex>$\br$</tex> and velocity <tex>$\bv$</tex> of an individual particle,
 where the index <tex>$i$</tex> indicates the values for time <tex>$t_i$</tex> and <tex>$i+1$</tex> for
@@ -189,6 +188,10 @@ Let us follow the discussion
 of our three friends, from the moment that their code first compiled.
 
 <b>so far</b>
+
+<b>to be discussed next:</b>
+
+ :inccode: .forward_euler1.rb
 
 == Running a Code
 
@@ -1164,13 +1167,12 @@ use a script <tex>$\mathcal{E}$</tex>, rather than roman E, for that notion.  In
 our notation, with unit total mass, we will have the following
 specific energies:
 
-<tex>\begin{equation}
+:equation:
 \mathcal{E}_{\rm kin} = \half v^2
 \qquad
 ;
 \qquad
 \mathcal{E}_{\rm pot} = - \frac{1}{r}
-\end{equation}</tex>
 
 *Carol*:
 So elegant and skinny that they almost disappear!  But I suggest that
