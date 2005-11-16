@@ -3,6 +3,6 @@ SRC =  title.ok pref.ok  ch01.ok  ch02.ok  ch03.ok  ch04.ok \
 
 LOCALLIBSRCS = nbody.rb
 
-TARGET = volume13
+TARGET = volume15
 
 include ../etc/Makefile.inc

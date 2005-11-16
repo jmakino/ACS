@@ -26,6 +26,7 @@ all:
 	$(MAKE) -C symplectic
 	$(MAKE) -C treecode
 	$(MAKE) -C vision
+	$(MAKE) -C visualization
 acsdoc:
 	$(MAKE) -C acs_data_format acsdoc
 	$(MAKE) -C binary_trees acsdoc
@@ -54,6 +55,7 @@ acsdoc:
 	$(MAKE) -C symplectic acsdoc
 	$(MAKE) -C treecode acsdoc
 	$(MAKE) -C vision acsdoc
+	$(MAKE) -C visualization acsdoc
 clean:
 	$(MAKE) -C acs_data_format clean
 	$(MAKE) -C binary_trees clean
@@ -82,6 +84,7 @@ clean:
 	$(MAKE) -C symplectic clean
 	$(MAKE) -C treecode clean
 	$(MAKE) -C vision clean
+	$(MAKE) -C visualization clean
 cleandoc:
 	$(MAKE) -C acs_data_format cleandoc
 	$(MAKE) -C binary_trees cleandoc
@@ -110,6 +113,7 @@ cleandoc:
 	$(MAKE) -C symplectic cleandoc
 	$(MAKE) -C treecode cleandoc
 	$(MAKE) -C vision cleandoc
+	$(MAKE) -C visualization cleandoc
 acscode:
 	$(MAKE) -C acs_data_format acscode
 	$(MAKE) -C binary_trees acscode
@@ -137,3 +141,4 @@ acscode:
 	$(MAKE) -C symplectic acscode
 	$(MAKE) -C treecode acscode
 	$(MAKE) -C vision acscode
+	$(MAKE) -C visualization acscode

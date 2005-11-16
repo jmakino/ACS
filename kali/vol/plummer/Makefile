@@ -3,6 +3,6 @@ SRC =  title.ok pref.ok  ch01.ok  ch02.ok  ch03.ok  ch04.ok ch05.ok \
 
 LOCALSCRIPTSRCS = mkplummer.rb energy.rb quartiles.rb
 
-TARGET = volume9
+TARGET = volume11
 
 include ../etc/Makefile.inc

@@ -24,12 +24,16 @@ it is not necessary to master the acsdoc format.  However, for those
 of you who are interested in writing a whole volume, either by yourself
 or in collaboration with us, it is important to do so in acsdoc.
 
-In order to write in acsdoc, not much more is needed than to go through
-the original <web>http://rdoc.sourceforge.net/doc|rdoc tutorial</web>,
-and to browse through the current volume to see what type of additions
-we have introduced for our specific needs.  Of course, if you really
-like to know what we did, how we did it, and most importantly, why we
-did it, by all means, read on, and follow all the details!
+xxx (to be written:)
+
+<b>[</b>
+In order to write in acsdoc, it is not necessary to go through this
+whole volume.  Instead, you can follow the instructions in
+<i>A Quick Introduction to Acsdoc</i>, which can be found at xxxxx.
+Of course, if you really like to know what we did, how we did it, and
+most importantly, why we did it, by all means, read on, and follow all
+the details!
+<b>]</b>
 
 == Acknowledgments
 
