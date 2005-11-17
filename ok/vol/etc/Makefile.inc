@@ -55,7 +55,7 @@ locallibs : $(LOCALLIBSRCS) $(KALI_LIBSRCS)
 
 clean : 
 	-rm -r doc .imgs .acsdoc.commandoutdir >&/dev/null
-	-rm  .[a-z]*\.ok .[a-z]*\.rb[-+]* .[a-z]*\.rb .acsdoc.command-* >&/dev/null
+	-rm  .[a-z]*\.ok .[a-z]*\.rb[-+]* .[a-z]*\.rb .acsdoc.aux .acsdoc.command-* >&/dev/null
 	-rm .[0-9]*\.rb[-+]* .[0-9]*\.rb .acsdoc.command-* >&/dev/null
 	-rm $(TARGET).tex $(TARGET).aux $(TARGET).cp $(TARGET).dvi \
 	    $(TARGET).log $(TARGET).ps $(TARGET).pdf $(TARGET).ps.gz \
