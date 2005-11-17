@@ -166,3 +166,16 @@ Index: acsdoc2.rb
 Adding         documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1371.
+
+<yebisu:/home/makino/acs/kali/vol/documentation>acsdoc2.rb ch02.ok
+acsdoc2.rb:491: warning: regexp has `}' without escape
+acsdoc2.rb:1424: warning: regexp has `}' without escape
+Loading initialization file .acsdocinitrc
+Common initialization file loaded from etc/acsdocinitrc
+acsdoc2.rb:1698: undefined local variable or method `del_file_list' for #<Object:0xb7d399c0 @previous_is_command=nil> (NameError)
+<yebisu:/home/makino/acs/kali/vol/documentation>up
+
+Fri Nov 18 07:02:51 JST 2005
+Sending        documentation/acsdoc-rev-memo
+Transmitting file data .
