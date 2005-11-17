@@ -1,17 +1,9 @@
 #!/usr/bin/ruby
 #
-# acsdoc.rb
+# acsdoc2.rb
 #
-# This script takes a number of files and runs rdoc ("rdoc.sourceforge.net")
-# on them.  All options normally given to rdoc on the command line are
-# passed on to rdoc.
-#
-# As an internal detail, this script generates for each .cp file "filename.cp"
-# a temporary file ".filename.cp", which is removed before the script finishes.
-# If acsdoc.rb is invoked with the option "--keep-dot-files", these temporary
-# files are not removed
-#    s
-# usage:  ruby acsdoc.rb [--keep-dot-files] [--tolatex]  [rdoc option]... [file]...
+# This script takes a number of files and make HTML or LaTeX files from them. 
+# usage:  ruby acsdoc.rb [--tolatex]   [file]...
 #
 # 2004/3/22 Major rewrite to make it more easily extensible.
 #
@@ -1637,7 +1629,6 @@ initacs
 load_old_aux
 load_volindex
 del_flag = true
-del_file_list = Array.new
 tolatex_flag = false
 
 ARGV.collect! do |a|
@@ -1645,14 +1636,13 @@ ARGV.collect! do |a|
     extention = "."+$1
     if FileTest.size?(a)
       unless tolatex_flag 
-	dot_a = File.dirname(a)+"/."+File.basename(a);
+	dot_a = File.dirname(a)+"/"+File.basename(a,extention)+ ".html"
       else
 	dot_a = File.dirname(a)+"/"+File.basename(a,extention)+ ".tex"
       end
       $current_cp_filename = a
       prep_cp(a, dot_a, tolatex_flag)
       a = dot_a
-      del_file_list.push(dot_a)
     else
       a = ""
     end
@@ -1679,9 +1669,6 @@ ARGV.collect! do |a|
       a = ""
     end
     a
-  elsif a == "--keep-dot-files"
-    del_flag = false
-    a = ""
   elsif a == "--tolatex"
     tolatex_flag = true
     del_flag = false
@@ -1701,22 +1688,11 @@ else
 end
 
 unless tolatex_flag
-  print "rdoc #{coptions} #{ARGV.join(" ")} \n" 
-  unless system("rdoc #{coptions} #{ARGV.join(" ")}") 
-# This part is to work around some unfixed bug in rdoc
-    system("touch .zdummy")
-    system("rdoc #{coptions} #{ARGV.join(" ")} .zdummy") 
-  end
-  add_toc
-  process_css
-  dump_aux
+#  add_toc
+#  process_css
+#  dump_aux
 end
 
-create_navigations_for_cp_files(ARGV)
-if del_flag
-  del_file_list.each do |f|
-    File.delete(f)
-  end
-end
+#create_navigations_for_cp_files(ARGV)
 
 # :segment end:
