@@ -19,6 +19,8 @@
 # that way) taking string(s) as an argument and output the processed
 # string as an argument
 #
+# 2005/11/17 created acsdoc2.rb
+#
 #==============================================================================
 #$DEBUG=1
 module Rdoctotex
