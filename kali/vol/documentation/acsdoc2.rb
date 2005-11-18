@@ -1634,24 +1634,7 @@ END
   def add_links(filename,prev,nex)
     navi = navigation_string(prev,nex,filename)
     instring = open(filename,"r"){|f| f.gets(nil)}.split("\n")
-    ostring=""
-    while s = instring.shift
-      if s =~ /^<body(.)*>/
-	ostring += s + "\n" + navi+ "\n"
-      elsif s =~ /^<\/body/
-	ostring +=   navi + "\n" + s + "\n"
-      elsif  s =~ /<!-- banner header -->/
-        # adding space after header table
-	ostring +=    s + "\n <p>&ensp;</p> \n"
-      elsif s =~ /^<table.*Information on file/
-	# skip the filename block created by rdoc
-	while s !~ /^<\/table>/
-	  s= instring.shift
-	end
-      else
-	ostring +=     s + "\n"
-      end
-    end
+    ostring= navi+ "\n" +instring +navi+ "\n" 
     open(filename,"w"){|f| f.puts(ostring)}
   end
   def add_navigation_links(rdochtmls)
@@ -1666,12 +1649,12 @@ END
       add_links(rdochtmls[i],prev,nex)
     }
   end
-  def convert_cpfilename_to_rdoc_htmlfilename(name)
-    'doc/files/'+name.gsub(/\./, '_')+ '.html'
+  def convert_cpfilename_to_htmlfilename(name)
+    to_htmlname(name)
   end
   def create_navigations_for_cp_files(args)
     cpfiles = args.select{|x| x =~/\.((cp)|(ok))$/}
-    cpfiles.collect!{|x|convert_cpfilename_to_rdoc_htmlfilename(x)}
+    cpfiles.collect!{|x|convert_cpfilename_to_htmlfilename(x)}
     add_navigation_links(cpfiles)
   end
 
@@ -1704,7 +1687,7 @@ END
   def add_toc
     @@filefortoc.collect!{|x|
       s=create_toc_string(x)
-      fname=convert_cpfilename_to_rdoc_htmlfilename(File.dirname(x)+
+      fname=convert_cpfilename_to_htmlfilename(File.dirname(x)+
 						    "/."+File.basename(x))
       instring=File.open(fname,"r").read.gsub(/TOCTOCTOCTOC/,s)
       f=File.open(fname,"w+")
