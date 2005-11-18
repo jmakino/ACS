@@ -1043,8 +1043,12 @@ module Acsdoc
     ostring
   end
 
-  def to_rdocname(name)
-    "_"+name.gsub(/\./,"_")+".html"
+#  def to_rdocname(name)
+#    "_"+name.gsub(/\./,"_")+".html"
+#  end
+
+  def to_htmlname(a)
+    File.dirname(a)+"/"+File.basename(a,extention)+ ".html"
   end
 
   def getauxlabel(dirname, label)
@@ -1053,8 +1057,8 @@ module Acsdoc
       x = Marshal.load(open(dirname+"/"+@@auxfilename,"r"))
       tex_labels, tex_labels_filename,  section_label_table,  sectionheaders = x
       if tex_labels[label]
-        location = "../../../"+dirname+"/doc/files/_/"+
-          to_rdocname(tex_labels_filename[label])
+        location = "../"+dirname+"/"+
+          to_htmlname(tex_labels_filename[label])
         newtag=@@volindex[dirname[3,dirname.length]]
         tag =  newtag ? "v"+newtag.to_s : dirname+"."
         return [location,tag+tex_labels[label].to_s]
@@ -1084,13 +1088,13 @@ module Acsdoc
       elsif @@tex_labels[label] 
 #        "("+@@tex_labels[label].to_s+")["+
 #          to_rdocname(@@tex_labels_filename[label])+"\#"+label+"]"
-          "<a href="+to_rdocname(@@tex_labels_filename[label])+"\#"+label+">"+
+          "<a href="+to_htmlname(@@tex_labels_filename[label])+"\#"+label+">"+
           @@tex_labels[label].to_s+">"
       elsif @@old_tex_labels[label]
 #          "("+@@old_tex_labels[label].to_s+")["+
 #            
           "<a href="+
-             to_rdocname(@@old_tex_labels_filename[label])+"\#"+label+">"+
+             to_htmlname(@@old_tex_labels_filename[label])+"\#"+label+">"+
           @@old_tex_labels[label].to_s+">"
       else
         "(unknown label #{label})"

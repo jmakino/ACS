@@ -445,8 +445,6 @@ Committed revision 1385.
 
 The form of the link looks okay. The file name is not.
 
-      tmp2= process_tex_weblinks(tmp2)
-      tmp2= process_some_special_characters(tmp2)
 Fri Nov 18 10:38:53 JST 2005
 Index: acsdoc2.rb
 ===================================================================
@@ -461,6 +459,63 @@ Index: acsdoc2.rb
  end
  
  #create_navigations_for_cp_files(ARGV)
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1386.
+
+local file names: to_rdocname
+nonlocal file names: getauxlabel?
+
+      tmp2= process_tex_weblinks(tmp2)
+      tmp2= process_some_special_characters(tmp2)
+Fri Nov 18 10:46:11 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1386)
++++ acsdoc2.rb	(working copy)
+@@ -1043,8 +1043,12 @@
+     ostring
+   end
+ 
+-  def to_rdocname(name)
+-    "_"+name.gsub(/\./,"_")+".html"
++#  def to_rdocname(name)
++#    "_"+name.gsub(/\./,"_")+".html"
++#  end
++
++  def to_htmlname(a)
++    File.dirname(a)+"/"+File.basename(a,extention)+ ".html"
+   end
+ 
+   def getauxlabel(dirname, label)
+@@ -1053,8 +1057,8 @@
+       x = Marshal.load(open(dirname+"/"+@@auxfilename,"r"))
+       tex_labels, tex_labels_filename,  section_label_table,  sectionheaders = x
+       if tex_labels[label]
+-        location = "../../../"+dirname+"/doc/files/_/"+
+-          to_rdocname(tex_labels_filename[label])
++        location = "../"+dirname+"/"+
++          to_htmlname(tex_labels_filename[label])
+         newtag=@@volindex[dirname[3,dirname.length]]
+         tag =  newtag ? "v"+newtag.to_s : dirname+"."
+         return [location,tag+tex_labels[label].to_s]
+@@ -1084,13 +1088,13 @@
+       elsif @@tex_labels[label] 
+ #        "("+@@tex_labels[label].to_s+")["+
+ #          to_rdocname(@@tex_labels_filename[label])+"\#"+label+"]"
+-          "<a href="+to_rdocname(@@tex_labels_filename[label])+"\#"+label+">"+
++          "<a href="+to_htmlname(@@tex_labels_filename[label])+"\#"+label+">"+
+           @@tex_labels[label].to_s+">"
+       elsif @@old_tex_labels[label]
+ #          "("+@@old_tex_labels[label].to_s+")["+
+ #            
+           "<a href="+
+-             to_rdocname(@@old_tex_labels_filename[label])+"\#"+label+">"+
++             to_htmlname(@@old_tex_labels_filename[label])+"\#"+label+">"+
+           @@old_tex_labels[label].to_s+">"
+       else
+         "(unknown label #{label})"
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
