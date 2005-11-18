@@ -570,6 +570,98 @@ module Acsdoc
   @@section_label_table={}
 
   @@section_counters=[]
+
+  @@listtypes=[
+    ["paragraph","p"],
+    ["ulist*","ul"],
+    ["ulist-","ul"],
+    ["nlist", "ol"],
+    ["verbatim","pre"]]
+
+
+  def process_single_paragraphs_lists_etc(instring,indent,type,new,vlimit)
+    s_prev = ""
+    ostr=[]
+    ostr.push("<"+@@listtypes[type][1]+">")  if new and (type >0)
+
+    intex = nil
+
+#
+# intex is used to suppress formatting. As you can see from the code below, 
+# suppression can take place only if "<tex>" appears as single item in one 
+# line, and suppression stops only of "</tex>" appears as single item in one
+# line. So if you use them in a more complex ways, it might cause strange 
+# problems.
+#
+    while s=instring.shift
+      header_candidate =s.split[0] 
+      new_item = nil
+      new_type = 1
+      if @@intex_state == 1
+	new_type = type
+	new_indet = indent
+	s1 = s
+      elsif (/^(\*|\-|\d+\.)$/ =~ header_candidate) 
+	new_type = 1+[/\*/,/\-/,/\d+\./].collect{
+	  |x| x=~ header_candidate}.index(0)
+
+	s1 = s.sub(/\S+\s/){|x| " "*x.length} 
+	new_indent = /\S/ =~ s1
+	new_item = 1
+      else
+	new_indent = /\S/ =~ s
+	new_indent = indent if /^\s*$/ =~s 
+	s1=s
+      end
+      if type == 4 and /^\s+/ =~s 
+	s1 = s
+	new_type=4
+	new_item = nil
+      end
+      if new_indent > indent and new_item == nil
+	new_type = 4 
+      end
+      s1= process_tex_special_chars(s1) unless new_type == 4
+      if new_indent > indent
+	instring.unshift(s)
+	new=1
+	new = nil if new_type == type and type == 4 
+	vlimit = indent+1 if new and new_type == 4
+	if new 
+	  ostr+= process_single_paragraphs_lists_etc(instring,new_indent,
+						     new_type,new,
+						     vlimit)
+	else
+	  ostr.push s1
+	  instring.shift
+	end
+      elsif new_indent == indent
+	if new_item
+	  if new_type != type
+	    ostr.push("</"+@@listtypes[type][1]+">")
+	    instring.unshift(s)
+	    ostr+= process_single_paragraphs_lists_etc(instring,new_indent,
+						       new_type,1,vlimit)
+	  end
+	  ostr.push("<li> ") if new_type < 4
+	end
+	ostr.push s1
+      else
+	if type == 4 and new_type==4 and new_indent > vlimit
+	  indent = new_indent
+	  ostr.push s1
+	else
+	  ostr.push("</"+@@listtypes[type][1]+">")
+	  instring.unshift(s)
+	  return ostr
+	end
+      end
+      s_prev = s
+    end	
+    ostr
+  end
+
+
   def setreuseoutput(value)
     @@reuseoutput = value
   end
@@ -1224,6 +1316,7 @@ module Acsdoc
       tmp2= process_tex_labels(tmp2,dirname);
       tmp2= process_tex_weblinks(tmp2)
       tmp2= process_some_special_characters(tmp2)
+      tmp2=process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
     end
     ofile.print tmp2
     ofile.close
