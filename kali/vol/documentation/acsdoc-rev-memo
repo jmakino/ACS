@@ -1427,3 +1427,20 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1418.
+Sat Nov 19 04:40:27 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1418)
++++ acsdoc2.rb	(working copy)
+@@ -1829,6 +1829,6 @@
+    dump_aux
+ end
+ 
+-#create_navigations_for_cp_files(ARGV)
++create_navigations_for_cp_files(ARGV)
+ 
+ # :segment end:
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

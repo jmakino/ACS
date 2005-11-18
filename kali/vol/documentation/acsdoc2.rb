@@ -1829,6 +1829,6 @@ unless tolatex_flag
    dump_aux
 end
 
-#create_navigations_for_cp_files(ARGV)
+create_navigations_for_cp_files(ARGV)
 
 # :segment end:
