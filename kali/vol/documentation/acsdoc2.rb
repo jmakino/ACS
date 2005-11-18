@@ -445,6 +445,7 @@ END
       if new_indent > indent and new_item == nil
 	new_type = 4 
       end
+      s1= process_tex_special_chars(s1) unless new_type == 4
       if new_indent > indent
 	instring.unshift(s)
 	new=1
@@ -669,7 +670,6 @@ module Acsdoc
       if new_indent > indent and new_item == nil
 	new_type = 4 
       end
-      s1= process_tex_special_chars(s1) unless new_type == 4
       if new_indent > indent
 	instring.unshift(s)
 	new=1

@@ -1134,3 +1134,28 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1406.
+Fri Nov 18 12:49:31 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1406)
++++ acsdoc2.rb	(working copy)
+@@ -445,6 +445,7 @@
+       if new_indent > indent and new_item == nil
+ 	new_type = 4 
+       end
++      s1= process_tex_special_chars(s1) unless new_type == 4
+       if new_indent > indent
+ 	instring.unshift(s)
+ 	new=1
+@@ -669,7 +670,6 @@
+       if new_indent > indent and new_item == nil
+ 	new_type = 4 
+       end
+-      s1= process_tex_special_chars(s1) unless new_type == 4
+       if new_indent > indent
+ 	instring.unshift(s)
+ 	new=1
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
