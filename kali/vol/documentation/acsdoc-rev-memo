@@ -1276,3 +1276,22 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1412.
+
+Equation should be a paragraph.Fri Nov 18 13:43:24 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1412)
++++ acsdoc2.rb	(working copy)
+@@ -1085,7 +1085,7 @@
+     end
+     texcode += "\\end{#{eqtype}}\n"
+     pp = process_texcode(texcode,dirname)
+-    namelabel = namelabel + pp+"\n\n"
++    namelabel +"<p>\n" pp+"</p>\n"
+   end
+ 
+ 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

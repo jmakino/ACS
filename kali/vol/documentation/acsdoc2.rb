@@ -1085,7 +1085,7 @@ module Acsdoc
     end
     texcode += "\\end{#{eqtype}}\n"
     pp = process_texcode(texcode,dirname)
-    namelabel = namelabel + pp+"\n\n"
+    namelabel +"<p>\n" pp+"</p>\n"
   end
 
 
