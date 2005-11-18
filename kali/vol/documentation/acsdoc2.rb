@@ -1654,13 +1654,7 @@ END
     name.gsub(/\.((cp)|(ok))$/,".html")
   end
   def create_navigations_for_cp_files(args)
-    print "Enter navigation\n"
-    p args
-    cpfiles = args.select{|x| x =~/\.((cp)|(ok))$/}
-    p cpfiles
-    cpfiles.collect!{|x|convert_cpfilename_to_htmlfilename(x)}
-    p cpfiles
-    add_navigation_links(cpfiles)
+    add_navigation_links(args)
   end
 
   
