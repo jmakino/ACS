@@ -1531,3 +1531,23 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1423.
+Sat Nov 19 04:56:58 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1423)
++++ acsdoc2.rb	(working copy)
+@@ -1656,7 +1656,9 @@
+   def create_navigations_for_cp_files(args)
+     print "Enter navigation\n"
+     cpfiles = args.select{|x| x =~/\.((cp)|(ok))$/}
+-    cpfiles.collect!{|x|p x; convert_cpfilename_to_htmlfilename(x)}
++    p cpfiles
++    cpfiles.collect!{|x|convert_cpfilename_to_htmlfilename(x)}
++    p cpfiles
+     add_navigation_links(cpfiles)
+   end
+ 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
