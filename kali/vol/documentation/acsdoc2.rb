@@ -648,7 +648,7 @@ module Acsdoc
     while s=instring.shift
       header_candidate =s.split[0] 
       new_item = nil
-      new_type = 1
+      new_type = 0
       if @@intex_state == 1
 	new_type = type
 	new_indet = indent
@@ -697,6 +697,7 @@ module Acsdoc
 	  end
 	  ostr.push("<li> ") if new_type < 4
 	end
+        ostr.push "<p>\n" if new_type == 0 and type==0 and s_prev == ""
 	ostr.push s1
       else
 	if type == 4 and new_type==4 and new_indent > vlimit
