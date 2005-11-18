@@ -1602,17 +1602,16 @@ module Acsdoc
   
 @@toppagefilename= nil
   def navigation_string(prev,nex,filename)
-    uppath = "../"* File.dirname(filename).split('/').size
     prevtext = "Previous"
     nexttext = "Next"
     toctext  = "ToC"
     toptext  = ""
     if @@toppagefilename
-      toptext = "<td> \n   <a href=#{uppath+@@toppagefilename} target=\"_top\">Up</a>\n   </td>"
+      toptext = "<td> \n   <a href=#{@@toppagefilename} target=\"_top\">Up</a>\n   </td>"
     end
-    prevtext = "<a href=#{uppath+prev}>Previous</a>" if prev    
-    nexttext = "<a href=#{uppath+nex}>Next</a>" if nex
-    toctext = "<a href=#{uppath+@@filefortoc[0]}#TOC>ToC</a>" if @@filefortoc[0]
+    prevtext = "<a href=#{prev}>Previous</a>" if prev    
+    nexttext = "<a href=#{nex}>Next</a>" if nex
+    toctext = "<a href=#{@@filefortoc[0]}#TOC>ToC</a>" if @@filefortoc[0]
     s = <<END
 <table border="0" width="70%">
 <tr>
