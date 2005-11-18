@@ -1573,7 +1573,7 @@ module Acsdoc
 	  functionstring += s
 	end
 	if $1
-	  while s !~ /^}/
+	  while s !~ /^\}/
 	    s = expand(ifile.gets)
 	    functionstring += s
 	  end
@@ -1872,14 +1872,16 @@ END
   def make_notice_for_old_page(newfile, oldfile)
     if File.exist?(oldfile)
       open(oldfile,"w"){|f| f.write <<-END
-<HTML>        
-<BODY>
-          This page is moved to <a href="../../../#{newfile}">here</a>.<p>
+        <HTML>        
+          <BODY>
+          This page has been moved to <a href="../../../#{newfile}">here</a>.<p>
 Please update your bookmarks.
 </BODY>
-</HTML>        
+          </HTML>        
 END
       }
+    end
+  end
 end
 
 
