@@ -1003,7 +1003,7 @@ module Acsdoc
     p imgname  if $DEBUG
     system "convert #{dirname}/#{figurefilename} #{imgname}"
     system "mv -f #{imgname}.0 #{imgname}"if File.exist?(imgname + ".0")
-    "../"+imgname
+    imgname
   end
 
   @@figure_number =0
@@ -1014,7 +1014,7 @@ module Acsdoc
     figurefilename,size,label = a[1],a[2],a[3]
     @@tex_labels[label]=@@figure_number
     @@tex_labels_filename[label]=$current_cp_filename
-    namelabel = "<name>" + label + "</name>\n"
+    namelabel = "<a name=#{label}>\n"
     caption = ""
     while (s = instring.shift ) =~ /\S/
       caption += s + "\n"
@@ -1023,8 +1023,8 @@ module Acsdoc
       end
     end
     filename_to_link = copy_figure_file(figurefilename,dirname,@@figure_number)
-    namelabel + "link:"+filename_to_link+"\n\n Figure " +
-      @@figure_number.to_s + ": " + caption + "\n\n"
+    "<p>"+namelabel + "<img ALIGN=\"middle\" src=\"filename_to_link\"></p>+
+    "\n<p> Figure " + @@figure_number.to_s + ": " + caption + "</p>"
   end
 
 

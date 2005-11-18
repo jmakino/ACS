@@ -271,7 +271,7 @@ making for example
 Next thing is  find_and_process_tex_equations. This seems to be done
 correctly by previous one. No changes made.
 
-Now figures:  find_and_process_figures. It should create
+Now figures:  find_and_process_figures. It should create something like:
 
 <p>
 <a name=tiogaicon> <img ALIGN="middle"
@@ -281,9 +281,45 @@ src="../../../.imgs/1_tioga_icon.ps.jpeg">
  Figure 1: Icon for Tioga system
 </pre>
 
-
-
-
 Fri Nov 18 09:35:06 JST 2005
 Sending        documentation/acsdoc-rev-memo
 Transmitting file data .
+Committed revision 1379.
+
+Need to change copy_figure_fileFri Nov 18 10:05:06 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1381)
++++ acsdoc2.rb	(working copy)
+@@ -1003,7 +1003,7 @@
+     p imgname  if $DEBUG
+     system "convert #{dirname}/#{figurefilename} #{imgname}"
+     system "mv -f #{imgname}.0 #{imgname}"if File.exist?(imgname + ".0")
+-    "../"+imgname
++    imgname
+   end
+ 
+   @@figure_number =0
+@@ -1014,7 +1014,7 @@
+     figurefilename,size,label = a[1],a[2],a[3]
+     @@tex_labels[label]=@@figure_number
+     @@tex_labels_filename[label]=$current_cp_filename
+-    namelabel = "<name>" + label + "</name>\n"
++    namelabel = "<a name=#{label}>\n"
+     caption = ""
+     while (s = instring.shift ) =~ /\S/
+       caption += s + "\n"
+@@ -1023,8 +1023,8 @@
+       end
+     end
+     filename_to_link = copy_figure_file(figurefilename,dirname,@@figure_number)
+-    namelabel + "link:"+filename_to_link+"\n\n Figure " +
+-      @@figure_number.to_s + ": " + caption + "\n\n"
++    "<p>"+namelabel + "<img ALIGN=\"middle\" src=\"filename_to_link\"></p>+
++    "\n<p> Figure " + @@figure_number.to_s + ": " + caption + "</p>"
+   end
+ 
+ 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
