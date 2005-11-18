@@ -1,0 +1,203 @@
+<html>
+
+<HEAD>
+<TITLE>The Maya Project: Revised Five-Year Plan</TITLE>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#EEFFEE" BACKGROUND=""
+      LINK="#0000CC" ALINK="#CCCCCC" VLINK="#000099">
+
+
+<table CELLSPACING=2 CELLPADDING=5 WIDTH="100%" >
+<tr VALIGN=TOP NOSAVE>
+
+
+<td ALIGN=CENTER  NOSAVE>
+      <IMG src=../img/acstitle-s2.gif> 
+</font>
+</td>
+
+<td NOSAVE>
+
+<center><h1>
+The Maya Project
+</h1></center>
+
+<hr>
+<center><h3>
+The first five-year plan (revised)
+</h3></center>
+<hr>
+<br>
+
+</td>
+<td ALIGN=CENTER  NOSAVE>
+      <IMG src=../img/acstitle-s2rot.gif> 
+</td>
+</tr>
+
+</table>
+
+<table cellpadding=5 width="100%">
+<tr>
+<td align=left> 
+&#169;  2003-2005 <a href=http://www.ids.ias.edu/~piet/>Piet Hut</a> and
+<a href=http://jun.artcompsci.org>Jun Makino</a>
+</td>
+<td>
+</td>
+<td align=right>
+Back to <a href="../index.html">ACS home page</A>.
+</td>
+</tr>
+</table>
+
+<hr>
+
+Here follows a combined report/plan for the initial five-year phase of
+the Maya project, to develop the Maya open lab, with the Kali
+code for simulating dense stellar systems as its center piece.
+
+<ul>
+<li>
+2003, July-Dec.:
+<ul>
+After a two-week design study for the Kali code, we started
+to explore how the Ruby language could be used for realistic large-scale
+simulation projects.  After extensive tests, we decided to go ahead with
+Ruby, and we wrote the basic software for the production of html and
+ps/pdf files directly from a shared source, in what we called the `ok'
+(open knowledge) format.  During this time, we also completed the C++
+based pilot project, that resulted in the volume
+<a href="../msa/web/vol_1/v1_web/v1_web.html">Moving Stars Around</a>.
+</ul>
+<li>
+2004, Jan-June:
+<ul>
+We wrote the first few volumes of dialogues in the Maya series
+(then called Kali series)
+and released our first product, <a href="../rel/index.html#acs10">ACS 1.0</a>.
+In <a href=vol/vision/doc/files/_/_title_ok.html>volume 0</a>, we
+presented the astrophysical motivation for the project, followed
+by an introduction to working with Ruby in
+<a href=vol/two_body_problem_1/doc/files/_/_title_ok.html>volume 1</a>.
+In addition we produced volumes describing simulations of the
+<a href=vol/two_body_problem_2/doc/files/_/_title_ok.html>2-body
+problem</a> and the
+<a href=vol/n_body_problem/doc/files/_/_title_ok.html>N-body
+problem</a>, and a step-by-step explanation of how
+to set up initial conditions, based on a
+<a href=vol/plummer/doc/files/_/_title_ok.html>Plummer model</a>.
+</ul>
+<li>
+2004, July-Dec.:
+<ul>
+Instead of writing more volumes, we concentrated on developing N-body
+codes using individual time steps, as prototypes for the Kali code.
+This gave us detailed practice in designing and developing highly
+modular codes, in which is was easy to swap integration schemes.
+We succeeded, as far as we know for the first time, to write a code
+in which individual particles can be given individual integration
+schemes, while still moving together under the influence of their
+mutual gravitational forces in the same simulation.
+</ul>
+<li>
+2005, Jan-June:
+<ul>
+We spent one week reviewing our progress so far, during which we
+returned to the ideas we originally developed in the summer of 2003.
+After considering various possibilities for a long-term strategy of
+code development, we decided to continue to follow our original plan,
+with some possible modifications to allow efficient inclusion of
+massive central black holes in simulations of galactic nuclei.
+We continued to develop our various prototypes, and we also started
+some simple lab experiments, to explore how we could use Ruby to run
+programs that in turn run slews of simulations.  We then went back to
+writing some volumes, about
+<a href=vol/shared_timesteps/doc/files/_/_title_ok.html>shared
+time-step codes</a> and
+<a href=vol/indiv_timesteps_1/doc/files/_/_title_ok.html>individual
+time-step codes</a>.
+Looking back on the progress we had made, we also realized that our
+volume writing had grown rather uneven, and we drew up a plan of action
+to guarantee a more sustainable development of documentation, in the
+form of dialogues.  This led to the
+<a href="first-five-year-plan.html">first five-year plan</a>.
+</ul>
+<li>
+2005, July-Dec.:
+<ul>
+Since we became increasingly dissatisfied with the loss of coherence
+of our codes and documentation, despite our best intentions, we decided
+to rethink our whole approach.  Our main conclusion was to introduce
+two parallel series of web volumes, a <i>development</i> series and a
+<i>school</i> series.  At the same time, we introduced the name
+<i>Maya</i> to indicate our whole project of providing modular tools
+for modeling dense stellar systems, in contrast to our main tool, the
+<i>Kali code</i>, which will form the center piece of the <i>Maya open
+lab</i>, which invites users to pick and choose what they find of
+their liking, and to combine what they like with their own software
+modules, in their own setting or in Maya, as they prefer.  From now
+on, the <i>development</i> series, the main <a href="index.html">Maya
+series</a> will continue to be the repository of the documentation of
+the history of the development of Maya.  Currently at already more
+than 1,000 pages, the Maya series is expected to reach some 10,000
+pages.  In contrast, the <i>school</i> series will be more compact,
+and will provide students will self-study material, as a relatively
+quick introduction to the Maya project.  We have now started to
+rewrite our first product,
+<a href="../msa/web/vol_1/v1_web/v1_web.html">Moving Stars Around</a>,
+into the first volume of the Maya school series.  Specifically, we
+will use a much more flexible plotting package, we will introduce a
+visualization tool, and all codes will be written in Ruby.
+
+</ul>
+<li>
+2006, Jan-June:
+<ul>
+Plan: write a first draft of the first volume of the Maya school series.
+</ul>
+<li>
+2006, July-Dec.:
+<ul>
+Plan: provide an ACS toolbox, containing the main products of the six
+foundation steps of the Maya project (documentation, command line
+interface, code management, data formats, plotting, and visualization),
+with a user-friendly set of introductions to each tool.  In addition,
+complete the first volume of the Maya school series.
+</ul>
+<li>
+2007, Jan-June:
+<ul>
+Plan: write the volumes that are needed for a treatment of the
+1000-body problem.  This will include some form of regularization of
+internal binary motions as well as the perturbations on and by those
+binary motions from and to the surrounding neighbors.
+</ul>
+<li>
+2007, July-Dec.:
+<ul>
+Plan: write volumes about astrophysical applications of the software
+developed in the first half of that year.
+</ul>
+<li>
+2008, Jan-June:
+<ul>
+Plan: write extra volumes, to describe the treatment of primordial
+binaries and massive black holes, to allow the simulation of realistic
+star clusters and galactic nuclei, at least on the point-particle level.
+In addition, start writing volumes about running the Kali code on the
+<a href="http://grape.astron.s.u-tokyo.ac.jp/grape/computer/grape-dr.html">GRAPE-DR</a>,
+predicted to be the first computer running at a speed of more than 1 Petaflops.
+</ul>
+</ul>
+
+<hr>
+
+Back to the <a href="../index.html">ACS home page</A>.
+
+<hr>
+<hr>
+
+</BODY>
+
+</html>
