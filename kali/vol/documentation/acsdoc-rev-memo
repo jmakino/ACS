@@ -1159,3 +1159,39 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1407.
+Fri Nov 18 13:25:36 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1408)
++++ acsdoc2.rb	(working copy)
+@@ -627,6 +627,9 @@
+     ["verbatim","pre"]]
+ 
+ 
++  def process_tex_specials(s)
++    s.gsub(/\\<tex>/,"&lt;tex>").gsub(/<\/tex>/,"&lt;/tex>")
++  end
+   def process_single_paragraphs_lists_etc(instring,indent,type,new,vlimit)
+     instring = instring.split("\n") if instring.class != Array
+     s_prev = ""
+@@ -670,6 +673,7 @@
+       if new_indent > indent and new_item == nil
+ 	new_type = 4 
+       end
++      s1= process_tex_specials(s1) unless new_type == 4
+       if new_indent > indent
+ 	instring.unshift(s)
+ 	new=1
+@@ -1361,7 +1365,7 @@
+       tmp2= process_tex_labels(tmp2,dirname);
+       tmp2= process_tex_weblinks(tmp2)
+       tmp2= process_some_special_characters(tmp2)
+-#      tmp2=process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
++      tmp2=process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
+       tmp2= process_link(tmp2)
+       tmp2=process_wordmarkup(tmp2)
+ 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
