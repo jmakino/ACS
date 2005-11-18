@@ -1495,3 +1495,21 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1421.
+Sat Nov 19 04:45:12 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1421)
++++ acsdoc2.rb	(working copy)
+@@ -1651,7 +1651,7 @@
+     }
+   end
+   def convert_cpfilename_to_htmlfilename(name)
+-    name.gsub(/\.((cp)|(ok))$/,".html)
++    name.gsub(/\.((cp)|(ok))$/,".html")
+   end
+   def create_navigations_for_cp_files(args)
+     print "Enter navigation\n"
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

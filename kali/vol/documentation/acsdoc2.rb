@@ -1651,7 +1651,7 @@ END
     }
   end
   def convert_cpfilename_to_htmlfilename(name)
-    name.gsub(/\.((cp)|(ok))$/,".html)
+    name.gsub(/\.((cp)|(ok))$/,".html")
   end
   def create_navigations_for_cp_files(args)
     print "Enter navigation\n"
