@@ -1656,7 +1656,7 @@ END
   def create_navigations_for_cp_files(args)
     print "Enter navigation\n"
     cpfiles = args.select{|x| x =~/\.((cp)|(ok))$/}
-    cpfiles.collect!{|x|convert_cpfilename_to_htmlfilename(x)}
+    cpfiles.collect!{|x|p x; convert_cpfilename_to_htmlfilename(x)}
     add_navigation_links(cpfiles)
   end
 
