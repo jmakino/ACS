@@ -2144,3 +2144,69 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1442.
+
+html headers and footers added, zero-length files (html files not
+made) are removed from the file list for postprocessing
+
+a) Remaining problem: What to do with the old file location?
+
+Old file is: doc/files/_/_ch01_ok.html
+
+
+b) Should I support the multiple independent documents in one
+   directory?
+
+First things first.
+
+Sat Nov 19 06:58:33 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1442)
++++ acsdoc2.rb	(working copy)
+@@ -1862,6 +1862,12 @@
+     end 
+     $volindex = @@volindex
+   end
++
++
++  def convert_cpfilename_to_rdoc_htmlfilename(name)
++    name = File.dirname(name)+"/."+File.basename(name)
++    'doc/files/'+name.gsub(/\./, '_')+ '.html'
++  end
+ end
+ 
+ 
+@@ -1877,6 +1883,7 @@
+ del_flag = true
+ tolatex_flag = false
+ 
++cpfiles = []
+ ARGV.collect! do |a|
+   if a =~ /\.((cp)|(ok))$/
+     extention = "."+$1
+@@ -1889,7 +1896,12 @@
+       end
+       $current_cp_filename = a
+       prep_cp(a, dot_a, tolatex_flag)
+-      a = File.exist?(dot_a) ? dot_a : nil
++      if File.exist?(dot_a)
++        cpfiles.push([a,dot_a, convert_cpfilename_to_htmlfilename(a)])
++        a = dot_a
++      else
++        a = nil
++      end
+     else
+       a = nil
+     end
+@@ -1934,6 +1946,7 @@
+   coptions = " "
+ end
+ 
++p cpfiles
+ ARGV.compact!
+ 
+ unless tolatex_flag
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

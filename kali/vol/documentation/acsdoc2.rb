@@ -1862,6 +1862,12 @@ END
     end 
     $volindex = @@volindex
   end
+
+
+  def convert_cpfilename_to_rdoc_htmlfilename(name)
+    name = File.dirname(name)+"/."+File.basename(name)
+    'doc/files/'+name.gsub(/\./, '_')+ '.html'
+  end
 end
 
 
@@ -1877,6 +1883,7 @@ load_volindex
 del_flag = true
 tolatex_flag = false
 
+cpfiles = []
 ARGV.collect! do |a|
   if a =~ /\.((cp)|(ok))$/
     extention = "."+$1
@@ -1889,7 +1896,12 @@ ARGV.collect! do |a|
       end
       $current_cp_filename = a
       prep_cp(a, dot_a, tolatex_flag)
-      a = File.exist?(dot_a) ? dot_a : nil
+      if File.exist?(dot_a)
+        cpfiles.push([a,dot_a, convert_cpfilename_to_htmlfilename(a)])
+        a = dot_a
+      else
+        a = nil
+      end
     else
       a = nil
     end
@@ -1934,6 +1946,7 @@ else
   coptions = " "
 end
 
+p cpfiles
 ARGV.compact!
 
 unless tolatex_flag
