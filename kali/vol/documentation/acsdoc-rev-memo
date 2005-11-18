@@ -219,7 +219,7 @@ generate HTML directly. I guess I just try that for now.
       tmp2= find_and_process_tex_inlines(tmp2,dirname);
 
 This one actually touch process_tex_inlines
-which then call process_texcode
+which then call process_texcod
 Fri Nov 18 09:21:37 JST 2005
 Index: acsdoc2.rb
 ===================================================================
@@ -231,6 +231,27 @@ Index: acsdoc2.rb
      @@imgcount+=1
 -    "link:../#{imgname}"
 +    "<IMG SRC=#{imgname}"
+   end
+ 
+   def process_tex_inlines(s,instring,dirname)
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1374.
+
+One bug found: IMG tag not closed.
+
+Fri Nov 18 09:23:46 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1374)
++++ acsdoc2.rb	(working copy)
+@@ -878,7 +878,7 @@
+       raise "Failed to create the jpeg file #{texbase}.jpeg"
+     end
+     @@imgcount+=1
+-    "<IMG SRC=#{imgname}"
++    "<IMG SRC=#{imgname}>"
    end
  
    def process_tex_inlines(s,instring,dirname)
