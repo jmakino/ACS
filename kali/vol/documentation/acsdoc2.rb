@@ -1660,9 +1660,6 @@ END
   def create_toc_string(filename)
     s = "<p><H1>Contents</H1><a name=TOC><p>"
     currentlevel=0
-    dirlevel=File.dirname(filename).split('/').size
-    p @@sectionheaders
-    uppath = "../"*dirlevel
     @@sectionheaders.each{|x|
       while x[1]>currentlevel
 	s += "<ul>\n"
@@ -1672,8 +1669,7 @@ END
 	s+=  "</ul>\n"
 	currentlevel -= 1
       end
-      basename =File.dirname(x[3])+"/."+File.basename(x[3]) 
-      fname =     uppath+basename.gsub(/\./, '_')+ '.html'
+      fname =  convert_cpfilename_to_htmlfilename(x[3])
       s+= "<li> <a href=#{fname}##{x[0]}>#{x[2]}</a></li>\n"
     }
     while 0<currentlevel
