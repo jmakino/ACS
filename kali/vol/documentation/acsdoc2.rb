@@ -1077,20 +1077,21 @@ module Acsdoc
         reallabel = $2
         filename, tag=getauxlabel(dirname,reallabel)
         if filename
-          "("+tag+")["+filename+"\#"+reallabel+"]"
+          "<a href=#{filename}\##{reallabel}>#{tag}>"
         else
           "(unknown label #{label})"
         end
       elsif @@tex_labels[label] 
-#        if @@tex_labels_filename[label]==$current_cp_filename
-#          "<ntaga>"+ label + "</ntaga><ntagb>"+ @@tex_labels[label].to_s+ "</ntagb>"
-#        else
-        "("+@@tex_labels[label].to_s+")["+
-          to_rdocname(@@tex_labels_filename[label])+"\#"+label+"]"
-#        end
+#        "("+@@tex_labels[label].to_s+")["+
+#          to_rdocname(@@tex_labels_filename[label])+"\#"+label+"]"
+          "<a href="+to_rdocname(@@tex_labels_filename[label])+"\#"+label+">"+
+          @@tex_labels[label].to_s+">"
       elsif @@old_tex_labels[label]
-          "("+@@old_tex_labels[label].to_s+")["+
-            to_rdocname(@@old_tex_labels_filename[label])+"\#"+label+"]"
+#          "("+@@old_tex_labels[label].to_s+")["+
+#            
+          "<a href="+
+             to_rdocname(@@old_tex_labels_filename[label])+"\#"+label+">"+
+          @@old_tex_labels[label].to_s+">"
       else
         "(unknown label #{label})"
       end

@@ -361,9 +361,7 @@ Currently it does not do anything. Seems to be okay to ignore it.
 This will create: TOCTOCTOCTOC, which should be post-processed (I think)
 
 tmp2= process_section_headers(tmp2,infile)
-      tmp2= process_tex_labels(tmp2,dirname);
-      tmp2= process_tex_weblinks(tmp2)
-      tmp2= process_some_special_characters(tmp2)
+
 Fri Nov 18 10:25:05 JST 2005
 Index: acsdoc2.rb
 ===================================================================
@@ -395,6 +393,50 @@ Index: acsdoc2.rb
 +	   "<h2> "+sectionname+ "</h2>\n<a name=" + sectionlabel + ">\n"
  	} 
  	ostring +=x
+       end
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1384.
+
+
+      tmp2= process_tex_labels(tmp2,dirname);
+      tmp2= process_tex_weblinks(tmp2)
+      tmp2= process_some_special_characters(tmp2)Fri Nov 18 10:33:52 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1384)
++++ acsdoc2.rb	(working copy)
+@@ -1077,20 +1077,21 @@
+         reallabel = $2
+         filename, tag=getauxlabel(dirname,reallabel)
+         if filename
+-          "("+tag+")["+filename+"\#"+reallabel+"]"
++          "<a href=#{filename}\##{reallabel}>#{tag}>"
+         else
+           "(unknown label #{label})"
+         end
+       elsif @@tex_labels[label] 
+-#        if @@tex_labels_filename[label]==$current_cp_filename
+-#          "<ntaga>"+ label + "</ntaga><ntagb>"+ @@tex_labels[label].to_s+ "</ntagb>"
+-#        else
+-        "("+@@tex_labels[label].to_s+")["+
+-          to_rdocname(@@tex_labels_filename[label])+"\#"+label+"]"
+-#        end
++#        "("+@@tex_labels[label].to_s+")["+
++#          to_rdocname(@@tex_labels_filename[label])+"\#"+label+"]"
++          "<a href="+to_rdocname(@@tex_labels_filename[label])+"\#"+label+">"+
++          @@tex_labels[label].to_s+">"
+       elsif @@old_tex_labels[label]
+-          "("+@@old_tex_labels[label].to_s+")["+
+-            to_rdocname(@@old_tex_labels_filename[label])+"\#"+label+"]"
++#          "("+@@old_tex_labels[label].to_s+")["+
++#            
++          "<a href="+
++             to_rdocname(@@old_tex_labels_filename[label])+"\#"+label+">"+
++          @@old_tex_labels[label].to_s+">"
+       else
+         "(unknown label #{label})"
        end
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
