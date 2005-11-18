@@ -1032,3 +1032,25 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1401.
+Fri Nov 18 12:05:20 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1401)
++++ acsdoc2.rb	(working copy)
+@@ -571,9 +571,9 @@
+ 
+   @@section_counters=[]
+   @@wordreplace=[
+-    [/(^|\W)\+([a-zA-Z_]+)\+($|\W)/,"{\\tt", "}"],
+-    [/(^|\W)\*(\w+)\*($|\W)/,"{\\bf", "}"],
+-    [/(^|\W)\\_(\w+)\\_($|\W)/,"{\\it", "}"]
++    [/(^|\W)\+([a-zA-Z_]+)\+($|\W)/,"<tt>", "</tt>"],
++    [/(^|\W)\*(\w+)\*($|\W)/,"<b>", "</b>"],
++    [/(^|\W)\\_(\w+)\\_($|\W)/,"<i>", "</i>"]
+   ]
+   
+   @@tagreplace=[
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
