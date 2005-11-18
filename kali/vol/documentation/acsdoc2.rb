@@ -1663,7 +1663,7 @@ PRE {
 }
 
 body,td,p { font-family: Verdana, Arial, Helvetica, sans-serif; 
-       color: #000040;
+       color: #000010;
 }
 
 .attr-rw { font-size: x-small; color: #444488 }

@@ -2048,3 +2048,21 @@ Committed revision 1438.
 Sat Nov 19 05:47:06 JST 2005
 Sending        documentation/acsdoc-rev-memo
 Transmitting file data .
+Committed revision 1439.
+Sat Nov 19 05:52:56 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1439)
++++ acsdoc2.rb	(working copy)
+@@ -1663,7 +1663,7 @@
+ }
+ 
+ body,td,p { font-family: Verdana, Arial, Helvetica, sans-serif; 
+-       color: #000040;
++       color: #000010;
+ }
+ 
+ .attr-rw { font-size: x-small; color: #444488 }
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
