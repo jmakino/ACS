@@ -571,6 +571,23 @@ module Acsdoc
 
   @@section_counters=[]
 
+  def process_link(instring)
+    instring = instring.split("\n") if instring.class != Array
+    ostring=[] 
+    while s=instring.shift
+      if /(^|\s)link\:(\S+)/  =~ s
+	imglinkfile = $2
+	s.sub!(/(^|\s)link\:(\S+)/,
+	       "\n<IMG src=#{imglinkfile}>\n")
+	@@imglinkcount+=1
+      end
+      ostring.push(s)
+    end
+    ostring
+  end
+
+
+
   @@listtypes=[
     ["paragraph","p"],
     ["ulist*","ul"],
@@ -1318,6 +1335,7 @@ module Acsdoc
       tmp2= process_tex_weblinks(tmp2)
       tmp2= process_some_special_characters(tmp2)
       tmp2=process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
+      tmp2= process_link(tmp2)
     end
     ofile.print tmp2
     ofile.close

@@ -700,23 +700,6 @@ These are done already
 
 What is this???
 
-
-    s=post_process_verbatim(s)
-    s=process_link(s)
-    s=process_wordmarkup(s,dirname)
-    s=process_headers(s)
-    s=process_refmarkup(s)
-    s=process_toc_latex(s)
-    s=process_ctrls(s)
-    s = process_tagmarkup(s,dirname).join("\n")
-    s= <<-END_TEXSOURCE
-    #{@@basic_preambles_for_tex}
-    #{@@additional_preambles_for_tex}
-    \\begin{document}
-       #{@@additional_commands_for_tex}
-       #{s}
-    \\end{document}
-    END_TEXSOURCE
 Fri Nov 18 11:19:45 JST 2005
 Index: acsdoc2.rb
 ===================================================================
@@ -891,6 +874,69 @@ Index: acsdoc2.rb
      s_prev = ""
      ostr=[]
      ostr.push("<"+@@listtypes[type][1]+">")  if new and (type >0)
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1397.
+
+    s=post_process_verbatim(s)
+
+Do something if the previous line is blank? Seems unnecessary?
+
+    s=process_link(s)
+
+
+    s=process_wordmarkup(s,dirname)
+    s=process_headers(s)
+    s=process_refmarkup(s)
+    s=process_toc_latex(s)
+    s=process_ctrls(s)
+    s = process_tagmarkup(s,dirname).join("\n")
+    s= <<-END_TEXSOURCE
+    #{@@basic_preambles_for_tex}
+    #{@@additional_preambles_for_tex}
+    \\begin{document}
+       #{@@additional_commands_for_tex}
+       #{s}
+    \\end{document}
+    END_TEXSOURCE
+Fri Nov 18 11:48:19 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1397)
++++ acsdoc2.rb	(working copy)
+@@ -571,6 +571,23 @@
+ 
+   @@section_counters=[]
+ 
++  def process_link(instring)
++    instring = instring.split("\n") if instring.class != Array
++    ostring=[] 
++    while s=instring.shift
++      if /(^|\s)link\:(\S+)/  =~ s
++	imglinkfile = $2
++	s.sub!(/(^|\s)link\:(\S+)/,
++	       "\n<IMG src=#{imglinkfile}>\n")
++	@@imglinkcount+=1
++      end
++      ostring.push(s)
++    end
++    ostring
++  end
++
++
++
+   @@listtypes=[
+     ["paragraph","p"],
+     ["ulist*","ul"],
+@@ -1318,6 +1335,7 @@
+       tmp2= process_tex_weblinks(tmp2)
+       tmp2= process_some_special_characters(tmp2)
+       tmp2=process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
++      tmp2= process_link(tmp2)
+     end
+     ofile.print tmp2
+     ofile.close
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
