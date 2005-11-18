@@ -1258,3 +1258,21 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1411.
+Fri Nov 18 13:40:55 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1411)
++++ acsdoc2.rb	(working copy)
+@@ -1022,7 +1022,7 @@
+       raise "Failed to create the jpeg file #{texbase}.jpeg"
+     end
+     @@imgcount+=1
+-    "<IMG SRC=#{imgname}>"
++    "<IMG ALIGN=\"middle\" SRC=#{imgname}>"
+   end
+ 
+   def process_tex_inlines(s,instring,dirname)
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
