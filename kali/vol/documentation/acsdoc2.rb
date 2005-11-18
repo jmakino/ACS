@@ -1023,7 +1023,7 @@ module Acsdoc
       end
     end
     filename_to_link = copy_figure_file(figurefilename,dirname,@@figure_number)
-    "<p>"+namelabel + "<img ALIGN=\"middle\" src=\"filename_to_link\"></p>+
+    "<p>"+namelabel + "<img ALIGN=\"middle\" src=\"filename_to_link\"></p>"+
     "\n<p> Figure " + @@figure_number.to_s + ": " + caption + "</p>"
   end
 

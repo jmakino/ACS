@@ -323,3 +323,21 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1382.
+Fri Nov 18 10:06:07 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1382)
++++ acsdoc2.rb	(working copy)
+@@ -1023,7 +1023,7 @@
+       end
+     end
+     filename_to_link = copy_figure_file(figurefilename,dirname,@@figure_number)
+-    "<p>"+namelabel + "<img ALIGN=\"middle\" src=\"filename_to_link\"></p>+
++    "<p>"+namelabel + "<img ALIGN=\"middle\" src=\"filename_to_link\"></p>"+
+     "\n<p> Figure " + @@figure_number.to_s + ": " + caption + "</p>"
+   end
+ 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
