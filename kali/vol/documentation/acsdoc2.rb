@@ -1213,6 +1213,7 @@ module Acsdoc
       tmp2= Rdoctotex::convert_to_latex(tmpstring,dirname);
     else
       tmp2= Rdoctotex::latex_process_tex_mathmarkup(tmpstring)
+      tmp2= Rdoctotex::process_include(tmp2)
       tmp2= find_and_process_tex_inlines(tmp2,dirname);
       tmp2= find_and_process_tex_equations(tmp2,dirname);
       tmp2= find_and_process_figures(tmp2,dirname);
@@ -1223,7 +1224,6 @@ module Acsdoc
       tmp2= process_tex_labels(tmp2,dirname);
       tmp2= process_tex_weblinks(tmp2)
       tmp2= process_some_special_characters(tmp2)
-      tmp2= Rdoctotex::process_include(tmp2)
     end
     ofile.print tmp2
     ofile.close

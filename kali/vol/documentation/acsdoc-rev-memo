@@ -681,3 +681,28 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1392.
+Fri Nov 18 11:08:01 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1392)
++++ acsdoc2.rb	(working copy)
+@@ -1213,6 +1213,7 @@
+       tmp2= Rdoctotex::convert_to_latex(tmpstring,dirname);
+     else
+       tmp2= Rdoctotex::latex_process_tex_mathmarkup(tmpstring)
++      tmp2= Rdoctotex::process_include(tmp2)
+       tmp2= find_and_process_tex_inlines(tmp2,dirname);
+       tmp2= find_and_process_tex_equations(tmp2,dirname);
+       tmp2= find_and_process_figures(tmp2,dirname);
+@@ -1223,7 +1224,6 @@
+       tmp2= process_tex_labels(tmp2,dirname);
+       tmp2= process_tex_weblinks(tmp2)
+       tmp2= process_some_special_characters(tmp2)
+-      tmp2= Rdoctotex::process_include(tmp2)
+     end
+     ofile.print tmp2
+     ofile.close
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
