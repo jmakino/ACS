@@ -1691,7 +1691,7 @@ end
 unless tolatex_flag
 #  add_toc
 #  process_css
-#  dump_aux
+   dump_aux
 end
 
 #create_navigations_for_cp_files(ARGV)

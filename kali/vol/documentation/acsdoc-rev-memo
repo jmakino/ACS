@@ -401,8 +401,8 @@ Committed revision 1384.
 
 
       tmp2= process_tex_labels(tmp2,dirname);
-      tmp2= process_tex_weblinks(tmp2)
-      tmp2= process_some_special_characters(tmp2)Fri Nov 18 10:33:52 JST 2005
+
+Fri Nov 18 10:33:52 JST 2005
 Index: acsdoc2.rb
 ===================================================================
 --- acsdoc2.rb	(revision 1384)
@@ -438,6 +438,29 @@ Index: acsdoc2.rb
        else
          "(unknown label #{label})"
        end
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1385.
+
+The form of the link looks okay. The file name is not.
+
+      tmp2= process_tex_weblinks(tmp2)
+      tmp2= process_some_special_characters(tmp2)
+Fri Nov 18 10:38:53 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1385)
++++ acsdoc2.rb	(working copy)
+@@ -1691,7 +1691,7 @@
+ unless tolatex_flag
+ #  add_toc
+ #  process_css
+-#  dump_aux
++   dump_aux
+ end
+ 
+ #create_navigations_for_cp_files(ARGV)
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
