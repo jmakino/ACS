@@ -1636,6 +1636,22 @@ END
     ostring= navi+ "\n" +instring +navi+ "\n" 
     open(filename,"w"){|f| f.puts(ostring)}
   end
+
+@@htmlheader = <<-END
+
+END
+
+@@htmlfooter = <<-END
+
+END
+
+  def add_html_headeretc(filenames)
+    filenames.each{|filename|
+      instring = open(filename,"r"){|f| f.gets(nil)}
+      ostring= @@htmlheader+ "\n" +instring +@@htmlfooter+ "\n" 
+      open(filename,"w"){|f| f.puts(ostring)}
+    }
+  end
   def add_navigation_links(rdochtmls)
     print "Enter add navigation for #{rdochtmls}\n"
     n=rdochtmls.size
@@ -1820,7 +1836,8 @@ unless tolatex_flag
   add_toc
 #  process_css
    dump_aux
+  create_navigations_for_cp_files(ARGV)
+  add_html_headeretc(ARGV)
 end
-create_navigations_for_cp_files(ARGV)
 
 # :segment end:
