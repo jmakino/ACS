@@ -560,3 +560,21 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1388.
+Fri Nov 18 10:51:46 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1388)
++++ acsdoc2.rb	(working copy)
+@@ -1057,7 +1057,7 @@
+       x = Marshal.load(open(dirname+"/"+@@auxfilename,"r"))
+       tex_labels, tex_labels_filename,  section_label_table,  sectionheaders = x
+       if tex_labels[label]
+-        location = "../"+dirname+"/"+
++        location = dirname+"/"+
+           to_htmlname(tex_labels_filename[label])
+         newtag=@@volindex[dirname[3,dirname.length]]
+         tag =  newtag ? "v"+newtag.to_s : dirname+"."
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

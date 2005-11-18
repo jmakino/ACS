@@ -1057,7 +1057,7 @@ module Acsdoc
       x = Marshal.load(open(dirname+"/"+@@auxfilename,"r"))
       tex_labels, tex_labels_filename,  section_label_table,  sectionheaders = x
       if tex_labels[label]
-        location = "../"+dirname+"/"+
+        location = dirname+"/"+
           to_htmlname(tex_labels_filename[label])
         newtag=@@volindex[dirname[3,dirname.length]]
         tag =  newtag ? "v"+newtag.to_s : dirname+"."
