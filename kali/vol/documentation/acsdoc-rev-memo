@@ -1109,7 +1109,9 @@ converted to \_ somewhere...
 
 Something is wrong after processing figure.
 
-File name becomes broken in process_single ...Fri Nov 18 12:48:59 JST 2005
+File name becomes broken in process_single ...
+
+Fri Nov 18 12:48:59 JST 2005
 Index: acsdoc2.rb
 ===================================================================
 --- acsdoc2.rb	(revision 1405)
@@ -1192,6 +1194,44 @@ Index: acsdoc2.rb
        tmp2= process_link(tmp2)
        tmp2=process_wordmarkup(tmp2)
  
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1409.
+
+added process_tex_specials which just takes care of \<tex> and
+remaining </tex>.
+
+Fri Nov 18 13:28:17 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1409)
++++ acsdoc2.rb	(working copy)
+@@ -1225,7 +1225,7 @@
+         reallabel = $2
+         filename, tag=getauxlabel(dirname,reallabel)
+         if filename
+-          "<a href=#{filename}\##{reallabel}>#{tag}>"
++          "<a href=#{filename}\##{reallabel}>#{tag}</a>"
+         else
+           "(unknown label #{label})"
+         end
+@@ -1233,13 +1233,13 @@
+ #        "("+@@tex_labels[label].to_s+")["+
+ #          to_rdocname(@@tex_labels_filename[label])+"\#"+label+"]"
+           "<a href="+to_htmlname(@@tex_labels_filename[label])+"\#"+label+">"+
+-          @@tex_labels[label].to_s+">"
++          @@tex_labels[label].to_s+"</a>"
+       elsif @@old_tex_labels[label]
+ #          "("+@@old_tex_labels[label].to_s+")["+
+ #            
+           "<a href="+
+              to_htmlname(@@old_tex_labels_filename[label])+"\#"+label+">"+
+-          @@old_tex_labels[label].to_s+">"
++          @@old_tex_labels[label].to_s+"</a>"
+       else
+         "(unknown label #{label})"
+       end
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..

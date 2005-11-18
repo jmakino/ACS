@@ -1225,7 +1225,7 @@ module Acsdoc
         reallabel = $2
         filename, tag=getauxlabel(dirname,reallabel)
         if filename
-          "<a href=#{filename}\##{reallabel}>#{tag}>"
+          "<a href=#{filename}\##{reallabel}>#{tag}</a>"
         else
           "(unknown label #{label})"
         end
@@ -1233,13 +1233,13 @@ module Acsdoc
 #        "("+@@tex_labels[label].to_s+")["+
 #          to_rdocname(@@tex_labels_filename[label])+"\#"+label+"]"
           "<a href="+to_htmlname(@@tex_labels_filename[label])+"\#"+label+">"+
-          @@tex_labels[label].to_s+">"
+          @@tex_labels[label].to_s+"</a>"
       elsif @@old_tex_labels[label]
 #          "("+@@old_tex_labels[label].to_s+")["+
 #            
           "<a href="+
              to_htmlname(@@old_tex_labels_filename[label])+"\#"+label+">"+
-          @@old_tex_labels[label].to_s+">"
+          @@old_tex_labels[label].to_s+"</a>"
       else
         "(unknown label #{label})"
       end
