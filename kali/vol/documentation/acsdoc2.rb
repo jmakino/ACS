@@ -1271,7 +1271,8 @@ module Acsdoc
 	@@tex_labels[labeltext]=lastsectionnumber
         @@tex_labels_filename[labeltext]=$current_cp_filename
 	print "Label #{labeltext} as #{lastsectionnumber}\n"
-
+      elsif /^---*$/ =~ str
+        ostring += "\n<hr>\n"
       else
 	x=str.gsub(/^(=+)\s*(.+)$/){|s| 
 	  sectionlevel = $1.length

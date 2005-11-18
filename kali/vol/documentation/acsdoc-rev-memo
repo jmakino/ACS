@@ -954,19 +954,7 @@ link: directly converted to IMG tag.
 
 
     s=process_wordmarkup(s,dirname)
-    s=process_headers(s)
-    s=process_refmarkup(s)
-    s=process_toc_latex(s)
-    s=process_ctrls(s)
-    s = process_tagmarkup(s,dirname).join("\n")
-    s= <<-END_TEXSOURCE
-    #{@@basic_preambles_for_tex}
-    #{@@additional_preambles_for_tex}
-    \\begin{document}
-       #{@@additional_commands_for_tex}
-       #{s}
-    \\end{document}
-    END_TEXSOURCE
+
 Fri Nov 18 12:02:31 JST 2005
 Index: acsdoc2.rb
 ===================================================================
@@ -1051,6 +1039,41 @@ Index: acsdoc2.rb
    ]
    
    @@tagreplace=[
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1402.
+
+wordmarkup added.
+
+    s=process_headers(s)   : already done
+    s=process_refmarkup(s) : already done
+    s=process_toc_latex(s) : already done
+    s=process_ctrls(s)     : already done
+    s = process_tagmarkup(s,dirname).join("\n") ???
+    s= <<-END_TEXSOURCE
+    #{@@basic_preambles_for_tex}
+    #{@@additional_preambles_for_tex}
+    \\begin{document}
+       #{@@additional_commands_for_tex}
+       #{s}
+    \\end{document}
+    END_TEXSOURCE
+Fri Nov 18 12:15:19 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1403)
++++ acsdoc2.rb	(working copy)
+@@ -1271,7 +1271,8 @@
+ 	@@tex_labels[labeltext]=lastsectionnumber
+         @@tex_labels_filename[labeltext]=$current_cp_filename
+ 	print "Label #{labeltext} as #{lastsectionnumber}\n"
+-
++      elsif /^---*$/ =~ str
++        ostring += "\n<hr>\n"
+       else
+ 	x=str.gsub(/^(=+)\s*(.+)$/){|s| 
+ 	  sectionlevel = $1.length
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
