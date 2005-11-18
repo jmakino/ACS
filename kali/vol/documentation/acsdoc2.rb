@@ -1685,8 +1685,7 @@ END
   def add_toc
     @@filefortoc.collect!{|x|
       s=create_toc_string(x)
-      fname=convert_cpfilename_to_htmlfilename(File.dirname(x)+
-						    "/."+File.basename(x))
+      fname=convert_cpfilename_to_htmlfilename(x)
       instring=File.open(fname,"r").read.gsub(/TOCTOCTOCTOC/,s)
       f=File.open(fname,"w+")
       f.write(instring)
@@ -1822,7 +1821,7 @@ else
 end
 
 unless tolatex_flag
-#  add_toc
+  add_toc
 #  process_css
    dump_aux
 end
