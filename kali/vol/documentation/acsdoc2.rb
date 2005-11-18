@@ -1313,11 +1313,7 @@ module Acsdoc
       instring.push(s)
     end
     ifile.close
-    unless tolatex_flag
-      s = convert_link_to_rdoc_style(instring,dirname)
-    else
-      s = instring
-    end
+    s = instring
     tmpstring=prep_cp_string(s,dirname,infile).split("\n");
     if tolatex_flag
       tmp2= Rdoctotex::convert_to_latex(tmpstring,dirname);

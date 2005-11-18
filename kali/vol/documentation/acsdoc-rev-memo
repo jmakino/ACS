@@ -940,3 +940,25 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1398.
+Fri Nov 18 11:52:58 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1398)
++++ acsdoc2.rb	(working copy)
+@@ -1313,11 +1313,7 @@
+       instring.push(s)
+     end
+     ifile.close
+-    unless tolatex_flag
+-      s = convert_link_to_rdoc_style(instring,dirname)
+-    else
+-      s = instring
+-    end
++    s = instring
+     tmpstring=prep_cp_string(s,dirname,infile).split("\n");
+     if tolatex_flag
+       tmp2= Rdoctotex::convert_to_latex(tmpstring,dirname);
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
