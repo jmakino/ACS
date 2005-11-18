@@ -258,3 +258,32 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1375.
+
+Now find_and_process_tex_inlines seems to do something reasonable,
+making for example 
+
+ It seems to fail in a strange way in some cases. This is apparently
+  a problem with rdoc. For example, <IMG SRC=.imgs/1.jpeg>
+  but I suspect after \<tex> this </tex>, the next thing will fail
+  <IMG SRC=.imgs/2.jpeg> for unknown reason.
+
+Next thing is  find_and_process_tex_equations. This seems to be done
+correctly by previous one. No changes made.
+
+Now figures:  find_and_process_figures. It should create
+
+<p>
+<a name=tiogaicon> <img ALIGN="middle"
+src="../../../.imgs/1_tioga_icon.ps.jpeg">
+</p>
+<pre>
+ Figure 1: Icon for Tioga system
+</pre>
+
+
+
+
+Fri Nov 18 09:35:06 JST 2005
+Sending        documentation/acsdoc-rev-memo
+Transmitting file data .
