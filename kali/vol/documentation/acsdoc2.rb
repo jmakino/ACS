@@ -878,7 +878,7 @@ module Acsdoc
       raise "Failed to create the jpeg file #{texbase}.jpeg"
     end
     @@imgcount+=1
-    "link:../#{imgname}"
+    "<IMG SRC=#{imgname}"
   end
 
   def process_tex_inlines(s,instring,dirname)

@@ -184,3 +184,56 @@ Committed revision 1372.
 Fri Nov 18 07:09:07 JST 2005
 Sending        documentation/acsdoc-rev-memo
 Transmitting file data .
+Committed revision 1373.
+
+Now HTML file is made, but with the old content of .foo.cp file
+
+Question is how to structure the source code. Current structure of the
+make code is:
+
+    unless tolatex_flag
+      s = convert_link_to_rdoc_style(instring,dirname)
+    else
+      s = instring
+    end
+    tmpstring=prep_cp_string(s,dirname,infile).split("\n");
+    if tolatex_flag
+b      tmp2= Rdoctotex::convert_to_latex(tmpstring,dirname);
+    else
+      tmp2= Rdoctotex::latex_process_tex_mathmarkup(tmpstring)
+      tmp2= find_and_process_tex_inlines(tmp2,dirname);
+      tmp2= find_and_process_tex_equations(tmp2,dirname);
+      tmp2= find_and_process_figures(tmp2,dirname);
+      tmp2= find_and_process_generic_tag(tmp2,dirname,"nosectionnumber",
+					 "process_nosectionnumber")
+      tmp2= process_toc(tmp2,infile);
+      tmp2= process_section_headers(tmp2,infile)
+      tmp2= process_tex_labels(tmp2,dirname);
+      tmp2= process_tex_weblinks(tmp2)
+      tmp2= process_some_special_characters(tmp2)
+    end
+
+So, basically by changing the functions in the last else block, I can
+generate HTML directly. I guess I just try that for now.
+
+      tmp2= find_and_process_tex_inlines(tmp2,dirname);
+
+This one actually touch process_tex_inlines
+which then call process_texcode
+Fri Nov 18 09:21:37 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1371)
++++ acsdoc2.rb	(working copy)
+@@ -878,7 +878,7 @@
+       raise "Failed to create the jpeg file #{texbase}.jpeg"
+     end
+     @@imgcount+=1
+-    "link:../#{imgname}"
++    "<IMG SRC=#{imgname}"
+   end
+ 
+   def process_tex_inlines(s,instring,dirname)
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
