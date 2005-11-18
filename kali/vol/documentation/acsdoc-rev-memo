@@ -2066,3 +2066,21 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1440.
+Sat Nov 19 05:53:16 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1440)
++++ acsdoc2.rb	(working copy)
+@@ -1658,7 +1658,7 @@
+ @@htmlcss = <<-END
+ 
+ PRE {
+-  background: #D0FFE0;
++  background: #E0FFE8;
+ 
+ }
+ 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

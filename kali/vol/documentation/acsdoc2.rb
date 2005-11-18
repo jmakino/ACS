@@ -1658,7 +1658,7 @@ END
 @@htmlcss = <<-END
 
 PRE {
-  background: #D0FFE0;
+  background: #E0FFE8;
 
 }
 
