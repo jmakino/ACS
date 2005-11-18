@@ -1661,7 +1661,7 @@ END
     s = "<p><H1>Contents</H1><a name=TOC><p>"
     currentlevel=0
     dirlevel=File.dirname(filename).split('/').size
-
+    p @@sectionheaders
     uppath = "../"*dirlevel
     @@sectionheaders.each{|x|
       while x[1]>currentlevel
