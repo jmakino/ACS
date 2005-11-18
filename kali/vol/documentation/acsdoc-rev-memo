@@ -1809,3 +1809,164 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1434.
+Sat Nov 19 05:39:54 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1434)
++++ acsdoc2.rb	(working copy)
+@@ -1641,7 +1641,7 @@
+ <html>
+ <head>
+   <title>File: .ch01.ok</title>
+-  <link rel=StyleSheet href=".acsdoc-style.css" type="text/css" media="screen" />
++  <link rel=StyleSheet href="#{@@stylefilename}" type="text/css" media="screen" />
+ </head>
+ 
+ <body bgcolor="white">
+@@ -1653,7 +1653,109 @@
+ </body>
+ </html>
+ END
++@@htmlcss = <<-END
+ 
++
++body,td,p { font-family: Verdana, Arial, Helvetica, sans-serif; 
++       color: #000040;
++}
++
++.attr-rw { font-size: x-small; color: #444488 }
++
++.title-row { background: #0000aa;
++             color:      #eeeeff;
++}
++
++.big-title-font { color: white;
++                  font-family: Verdana, Arial, Helvetica, sans-serif;
++                  font-size: large; 
++                  height: 50px}
++
++.small-title-font { color: aqua;
++                    font-family: Verdana, Arial, Helvetica, sans-serif;
++                    font-size: xx-small; }
++
++.aqua { color: aqua }
++
++.method-name, attr-name {
++      font-family: monospace; font-weight: bold;
++}
++
++.tablesubtitle, .tablesubsubtitle {
++   width: 100%;
++   margin-top: 1ex;
++   margin-bottom: .5ex;
++   padding: 5px 0px 5px 20px;
++   font-size: large;
++   color: aqua;
++   background: #3333cc;
++}
++
++.name-list {
++  font-family: monospace;
++  margin-left: 40px;
++  margin-bottom: 2ex;
++  line-height: 140%;
++}
++
++.description {
++  margin-left: 40px;
++  margin-top: -2ex;
++  margin-bottom: 2ex;
++}
++
++.description p {
++  line-height: 140%;
++}
++
++.aka {
++  margin-left: 40px;
++  margin-bottom: 2ex;
++  line-height: 100%;
++  font-size:   small;
++  color:       #808080;
++}
++
++.methodtitle {
++  font-size: medium;
++  text-decoration: none;
++  color: #0000AA;
++  background: white; 
++}
++
++.paramsig {
++   font-size: small;
++}
++
++.srcbut { float: right }
++
++
++pre.source {
++  border-style: groove;
++  background-color: #ddddff;
++  margin-left:  40px;
++  padding: 1em 0em 1em 2em;
++}
++
++.classlist {
++  margin-left: 40px;
++  margin-bottom: 2ex;
++  line-height: 140%;
++}
++
++li {
++  display:    list-item;
++  margin-top: .6em;
++}
++
++.kw { color: #3333FF; font-weight: bold }
++.cmt { color: green; font-style: italic }
++.str { color: #662222; font-style: italic }
++.re  { color: #662222; }
++END
++
++@@stylefilename = ".acsdoc-style.css"
++
+   def add_html_headeretc(filenames)
+     filenames.each{|filename|
+       instring = open(filename,"r"){|f| f.gets(nil)}
+@@ -1716,20 +1818,7 @@
+   end
+ 
+   def process_css
+-    cssbackupfilename = "doc/rdoc-style.css.orig"
+-    cssfilename = "doc/rdoc-style.css"
+-    File.rename(cssfilename,cssbackupfilename)
+-    f=open(cssbackupfilename,"r")
+-    fout=open(cssfilename,"w")
+-    while s=f.gets
+-      if s =~ /^\s*(pre|tt)\s*\{.*\}/
+-	print "line #{s} removed from CSS file"
+-      else
+-	fout.print s
+-      end
+-    end
+-    f.close
+-    fout.close
++    open(@@stylefilename"w"){|x| x.write @@htmlcss}
+   end
+ 
+   def dump_aux
+@@ -1843,8 +1932,8 @@
+ 
+ unless tolatex_flag
+   add_toc
+-#  process_css
+-   dump_aux
++  process_css
++  dump_aux
+   create_navigations_for_cp_files(ARGV)
+   add_html_headeretc(ARGV)
+ end
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
