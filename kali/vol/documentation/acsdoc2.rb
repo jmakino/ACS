@@ -488,7 +488,7 @@ END
   def post_process_verbatim(instring)
     ostr=[]
     while s=instring.shift
-      if s =~ /\\end\{verbatim}/
+      if s =~ /\\end\{verbatim\}/
 	unless (last = ostr.pop) =~ /^\s*$/
 	  ostr.push last
 	end
@@ -1637,6 +1637,8 @@ END
     open(filename,"w"){|f| f.puts(ostring)}
   end
 
+@@stylefilename = ".acsdoc-style.css"
+
 @@htmlheader = <<-END
 <html>
 <head>
@@ -1754,7 +1756,6 @@ li {
 .re  { color: #662222; }
 END
 
-@@stylefilename = ".acsdoc-style.css"
 
   def add_html_headeretc(filenames)
     filenames.each{|filename|

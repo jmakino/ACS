@@ -1988,3 +1988,38 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1436.
+Sat Nov 19 05:42:44 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1436)
++++ acsdoc2.rb	(working copy)
+@@ -488,7 +488,7 @@
+   def post_process_verbatim(instring)
+     ostr=[]
+     while s=instring.shift
+-      if s =~ /\\end\{verbatim}/
++      if s =~ /\\end\{verbatim\}/
+ 	unless (last = ostr.pop) =~ /^\s*$/
+ 	  ostr.push last
+ 	end
+@@ -1637,6 +1637,8 @@
+     open(filename,"w"){|f| f.puts(ostring)}
+   end
+ 
++@@stylefilename = ".acsdoc-style.css"
++
+ @@htmlheader = <<-END
+ <html>
+ <head>
+@@ -1754,7 +1756,6 @@
+ .re  { color: #662222; }
+ END
+ 
+-@@stylefilename = ".acsdoc-style.css"
+ 
+   def add_html_headeretc(filenames)
+     filenames.each{|filename|
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
