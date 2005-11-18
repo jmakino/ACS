@@ -608,9 +608,6 @@ This creates:
 
 <a href=http:www.artcompsci.org>ACS homepage>.
 
-
-
-  tmp2= process_some_special_characters(tmp2)
 Fri Nov 18 10:59:08 JST 2005
 Index: acsdoc2.rb
 ===================================================================
@@ -625,6 +622,62 @@ Index: acsdoc2.rb
        blank+s.gsub(/\s/m," ")
      }
    end
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1391.
+
+This creates:
+
+<a href=http:www.artcompsci.org>ACS homepage</a>.
+
+
+  tmp2= process_some_special_characters(tmp2)
+ This one looks at: expand()
+
+ Not sure if this is meaningful or not...
+
+Now, things which is done in tex conversion must be added:
+
+
+    s=process_include(instring)
+
+This is probably the same
+
+    s=latex_process_tex_mathmarkup(s)
+    s=latex_process_tex_equations(s)
+    s=latex_process_tex_weblinks(s)
+    s=latex_find_and_process_figures(s,dirname)
+    s=process_single_paragraphs_lists_etc(s,0,0,1,0)
+    s=post_process_verbatim(s)
+    s=process_link(s)
+    s=process_wordmarkup(s,dirname)
+    s=process_headers(s)
+    s=process_refmarkup(s)
+    s=process_toc_latex(s)
+    s=process_ctrls(s)
+    s = process_tagmarkup(s,dirname).join("\n")
+    s= <<-END_TEXSOURCE
+    #{@@basic_preambles_for_tex}
+    #{@@additional_preambles_for_tex}
+    \\begin{document}
+       #{@@additional_commands_for_tex}
+       #{s}
+    \\end{document}
+    END_TEXSOURCE
+Fri Nov 18 11:06:53 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1391)
++++ acsdoc2.rb	(working copy)
+@@ -1223,6 +1223,7 @@
+       tmp2= process_tex_labels(tmp2,dirname);
+       tmp2= process_tex_weblinks(tmp2)
+       tmp2= process_some_special_characters(tmp2)
++      tmp2= Rdoctotex::process_include(tmp2)
+     end
+     ofile.print tmp2
+     ofile.close
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
