@@ -1077,3 +1077,28 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1404.
+
+tried to change --- to hr
+
+BUGS:
+
+Link to figure is not quite right.
+
+Fri Nov 18 12:29:51 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1404)
++++ acsdoc2.rb	(working copy)
+@@ -1164,7 +1164,7 @@
+       end
+     end
+     filename_to_link = copy_figure_file(figurefilename,dirname,@@figure_number)
+-    "<p>"+namelabel + "<img ALIGN=\"middle\" src=\"filename_to_link\"></p>"+
++    "<p>"+namelabel + "<img ALIGN=\"middle\" src=\"#{filename_to_link}\"></p>"+
+     "\n<p> Figure " + @@figure_number.to_s + ": " + caption + "</p>"
+   end
+ 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
