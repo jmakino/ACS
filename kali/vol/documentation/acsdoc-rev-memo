@@ -1592,3 +1592,24 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1426.
+
+file names are already html. So no conversion necessary.
+
+Sat Nov 19 05:02:39 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1426)
++++ acsdoc2.rb	(working copy)
+@@ -1633,7 +1633,7 @@
+ 
+   def add_links(filename,prev,nex)
+     navi = navigation_string(prev,nex,filename)
+-    instring = open(filename,"r"){|f| f.gets(nil)}.split("\n")
++    instring = open(filename,"r"){|f| f.gets(nil)}
+     ostring= navi+ "\n" +instring +navi+ "\n" 
+     open(filename,"w"){|f| f.puts(ostring)}
+   end
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

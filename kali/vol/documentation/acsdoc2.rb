@@ -1633,7 +1633,7 @@ END
 
   def add_links(filename,prev,nex)
     navi = navigation_string(prev,nex,filename)
-    instring = open(filename,"r"){|f| f.gets(nil)}.split("\n")
+    instring = open(filename,"r"){|f| f.gets(nil)}
     ostring= navi+ "\n" +instring +navi+ "\n" 
     open(filename,"w"){|f| f.puts(ostring)}
   end
