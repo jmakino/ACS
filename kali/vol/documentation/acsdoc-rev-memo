@@ -577,13 +577,10 @@ Committed revision 1389.
 
 lables and filenames now looks okay.
 
-
 tmp2= process_tex_weblinks(tmp2)
 
 
 
-
-  tmp2= process_some_special_characters(tmp2)
 Fri Nov 18 10:57:30 JST 2005
 Index: acsdoc2.rb
 ===================================================================
@@ -599,6 +596,32 @@ Index: acsdoc2.rb
 +        url=text=linktext
        end
 +      s="<a href=#{url}>#{text}>"
+       blank+s.gsub(/\s/m," ")
+     }
+   end
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1390.
+
+This creates:
+
+<a href=http:www.artcompsci.org>ACS homepage>.
+
+
+
+  tmp2= process_some_special_characters(tmp2)
+Fri Nov 18 10:59:08 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1390)
++++ acsdoc2.rb	(working copy)
+@@ -1177,7 +1177,7 @@
+       else
+         url=text=linktext
+       end
+-      s="<a href=#{url}>#{text}>"
++      s="<a href=#{url}>#{text}</a>"
        blank+s.gsub(/\s/m," ")
      }
    end

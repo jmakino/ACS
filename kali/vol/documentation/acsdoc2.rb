@@ -1177,7 +1177,7 @@ module Acsdoc
       else
         url=text=linktext
       end
-      s="<a href=#{url}>#{text}>"
+      s="<a href=#{url}>#{text}</a>"
       blank+s.gsub(/\s/m," ")
     }
   end
