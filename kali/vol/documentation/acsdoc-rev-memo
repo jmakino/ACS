@@ -1779,3 +1779,33 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1433.
+Sat Nov 19 05:35:12 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1433)
++++ acsdoc2.rb	(working copy)
+@@ -1638,11 +1638,20 @@
+   end
+ 
+ @@htmlheader = <<-END
++<html>
++<head>
++  <title>File: .ch01.ok</title>
++  <link rel=StyleSheet href=".acsdoc-style.css" type="text/css" media="screen" />
++</head>
+ 
++<body bgcolor="white">
++
+ END
+ 
+ @@htmlfooter = <<-END
+ 
++</body>
++</html>
+ END
+ 
+   def add_html_headeretc(filenames)
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

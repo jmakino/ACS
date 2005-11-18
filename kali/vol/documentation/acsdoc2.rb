@@ -1638,11 +1638,20 @@ END
   end
 
 @@htmlheader = <<-END
+<html>
+<head>
+  <title>File: .ch01.ok</title>
+  <link rel=StyleSheet href=".acsdoc-style.css" type="text/css" media="screen" />
+</head>
+
+<body bgcolor="white">
 
 END
 
 @@htmlfooter = <<-END
 
+</body>
+</html>
 END
 
   def add_html_headeretc(filenames)
