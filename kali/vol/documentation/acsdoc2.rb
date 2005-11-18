@@ -445,7 +445,6 @@ END
       if new_indent > indent and new_item == nil
 	new_type = 4 
       end
-      s1= process_tex_special_chars(s1) unless new_type == 4
       if new_indent > indent
 	instring.unshift(s)
 	new=1
@@ -1362,7 +1361,7 @@ module Acsdoc
       tmp2= process_tex_labels(tmp2,dirname);
       tmp2= process_tex_weblinks(tmp2)
       tmp2= process_some_special_characters(tmp2)
-      tmp2=process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
+#      tmp2=process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
       tmp2= process_link(tmp2)
       tmp2=process_wordmarkup(tmp2)
 
