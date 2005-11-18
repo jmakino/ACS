@@ -1108,7 +1108,7 @@ module Acsdoc
       sectionlabel="rdocsect"+@@sectionheadercounter.to_s
       @@sectionheaders.push [sectionlabel,sectionlevel,sectionname,filename]
       @@sectionheadercounter+= 1
-      s+"\n<name>" + sectionlabel + "</name>\n"
+      s+"<name>" + sectionlabel + "</name>\n"
     }
   end
 
@@ -1121,7 +1121,7 @@ module Acsdoc
       if str =~ /^\s*:label:\s/
 	labeltext=str.split[1]
         labeltext = "sect:"+labeltext if labeltext !~ /^sect/
-        ostring+= "<name>#{labeltext}</name>"
+        ostring+= "<a name=#{labeltext}>"
 	@@tex_labels[labeltext]=lastsectionnumber
         @@tex_labels_filename[labeltext]=$current_cp_filename
 	print "Label #{labeltext} as #{lastsectionnumber}\n"
@@ -1145,7 +1145,7 @@ module Acsdoc
 	  @@section_label_table[labeltext]=sectionlabel
           lastsectionnumber=number_label[0,number_label.length-1]
 	  labeltext=nil
-	  "="*sectionlevel+ " "+sectionname+ "\n<name>" + sectionlabel + "</name>\n"
+	   "<h2> "+sectionname+ "</h2>\n<a name=" + sectionlabel + ">\n"
 	} 
 	ostring +=x
       end
