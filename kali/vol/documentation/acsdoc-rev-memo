@@ -1278,7 +1278,9 @@ Sending        documentation/acsdoc2.rb
 Transmitting file data ..
 Committed revision 1412.
 
-Equation should be a paragraph.Fri Nov 18 13:43:24 JST 2005
+Equation should be a paragraph.
+
+Fri Nov 18 13:43:24 JST 2005
 Index: acsdoc2.rb
 ===================================================================
 --- acsdoc2.rb	(revision 1412)
@@ -1313,3 +1315,11 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1414.
+
+Double newline in plain paragraph mode is not converted to <p></p>
+pair correctly.
+
+Sat Nov 19 04:07:15 JST 2005
+Sending        documentation/acsdoc-rev-memo
+Transmitting file data .
