@@ -1657,6 +1657,10 @@ END
 END
 @@htmlcss = <<-END
 
+PRE {
+  background: #D0FFE0;
+
+}
 
 body,td,p { font-family: Verdana, Arial, Helvetica, sans-serif; 
        color: #000040;
