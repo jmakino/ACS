@@ -1897,7 +1897,7 @@ ARGV.collect! do |a|
       $current_cp_filename = a
       prep_cp(a, dot_a, tolatex_flag)
       if File.exist?(dot_a)
-        cpfiles.push([a,dot_a, convert_cpfilename_to_htmlfilename(a)])
+        cpfiles.push([a,dot_a, convert_cpfilename_to_rdoc_htmlfilename(a)])
         a = dot_a
       else
         a = nil

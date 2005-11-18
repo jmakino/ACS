@@ -2210,3 +2210,21 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1443.
+Sat Nov 19 06:59:51 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1443)
++++ acsdoc2.rb	(working copy)
+@@ -1897,7 +1897,7 @@
+       $current_cp_filename = a
+       prep_cp(a, dot_a, tolatex_flag)
+       if File.exist?(dot_a)
+-        cpfiles.push([a,dot_a, convert_cpfilename_to_htmlfilename(a)])
++        cpfiles.push([a,dot_a, convert_cpfilename_to_rdoc_htmlfilename(a)])
+         a = dot_a
+       else
+         a = nil
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
