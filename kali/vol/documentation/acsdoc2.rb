@@ -1638,6 +1638,7 @@ END
     open(filename,"w"){|f| f.puts(ostring)}
   end
   def add_navigation_links(rdochtmls)
+    print "Enter add navigation for #{rdochtmls}\n"
     n=rdochtmls.size
     rdochtmls.each_index{|i|
       if i == 0 then
@@ -1653,6 +1654,7 @@ END
     to_htmlname(name)
   end
   def create_navigations_for_cp_files(args)
+    print "Enter navigation\n"
     cpfiles = args.select{|x| x =~/\.((cp)|(ok))$/}
     cpfiles.collect!{|x|convert_cpfilename_to_htmlfilename(x)}
     add_navigation_links(cpfiles)
@@ -1828,7 +1830,6 @@ unless tolatex_flag
 #  process_css
    dump_aux
 end
-
 create_navigations_for_cp_files(ARGV)
 
 # :segment end:

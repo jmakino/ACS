@@ -1444,3 +1444,36 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1419.
+Sat Nov 19 04:42:35 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1419)
++++ acsdoc2.rb	(working copy)
+@@ -1638,6 +1638,7 @@
+     open(filename,"w"){|f| f.puts(ostring)}
+   end
+   def add_navigation_links(rdochtmls)
++    print "Enter add navigation for #{rdochtmls}\n"
+     n=rdochtmls.size
+     rdochtmls.each_index{|i|
+       if i == 0 then
+@@ -1653,6 +1654,7 @@
+     to_htmlname(name)
+   end
+   def create_navigations_for_cp_files(args)
++    print "Enter navigation\n"
+     cpfiles = args.select{|x| x =~/\.((cp)|(ok))$/}
+     cpfiles.collect!{|x|convert_cpfilename_to_htmlfilename(x)}
+     add_navigation_links(cpfiles)
+@@ -1828,7 +1830,6 @@
+ #  process_css
+    dump_aux
+ end
+-
+ create_navigations_for_cp_files(ARGV)
+ 
+ # :segment end:
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
