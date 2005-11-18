@@ -1048,7 +1048,7 @@ module Acsdoc
 #  end
 
   def to_htmlname(a)
-    File.dirname(a)+"/"+File.basename(a,extention)+ ".html"
+    File.dirname(a)+"/"+File.basename(a,$current_extention)+ ".html"
   end
 
   def getauxlabel(dirname, label)
@@ -1639,6 +1639,7 @@ tolatex_flag = false
 ARGV.collect! do |a|
   if a =~ /\.((cp)|(ok))$/
     extention = "."+$1
+    $current_extention=extention
     if FileTest.size?(a)
       unless tolatex_flag 
 	dot_a = File.dirname(a)+"/"+File.basename(a,extention)+ ".html"

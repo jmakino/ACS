@@ -467,8 +467,6 @@ Committed revision 1386.
 local file names: to_rdocname
 nonlocal file names: getauxlabel?
 
-      tmp2= process_tex_weblinks(tmp2)
-      tmp2= process_some_special_characters(tmp2)
 Fri Nov 18 10:46:11 JST 2005
 Index: acsdoc2.rb
 ===================================================================
@@ -516,6 +514,49 @@ Index: acsdoc2.rb
            @@old_tex_labels[label].to_s+">"
        else
          "(unknown label #{label})"
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1387.
+
+    acsdoc2.rb:1051:in `to_htmlname': undefined local variable or method `extention' for #<Object:0xb7d399c0 @previous_is_command=nil> (NameError)
+        from acsdoc2.rb:1091:in `process_tex_labels'
+        from acsdoc2.rb:1076:in `gsub'
+        from acsdoc2.rb:1076:in `process_tex_labels'
+        from acsdoc2.rb:1223:in `prep_cp'
+        from acsdoc2.rb:1649
+        from acsdoc2.rb:1639:in `collect!'
+        from acsdoc2.rb:1639
+
+Error: $current_extention created to fix. Not quite clean...
+
+
+
+
+tmp2= process_tex_weblinks(tmp2)
+  tmp2= process_some_special_characters(tmp2)
+Fri Nov 18 10:49:37 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1387)
++++ acsdoc2.rb	(working copy)
+@@ -1048,7 +1048,7 @@
+ #  end
+ 
+   def to_htmlname(a)
+-    File.dirname(a)+"/"+File.basename(a,extention)+ ".html"
++    File.dirname(a)+"/"+File.basename(a,$current_extention)+ ".html"
+   end
+ 
+   def getauxlabel(dirname, label)
+@@ -1639,6 +1639,7 @@
+ ARGV.collect! do |a|
+   if a =~ /\.((cp)|(ok))$/
+     extention = "."+$1
++    $current_extention=extention
+     if FileTest.size?(a)
+       unless tolatex_flag 
+ 	dot_a = File.dirname(a)+"/"+File.basename(a,extention)+ ".html"
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
