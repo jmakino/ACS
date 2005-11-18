@@ -2228,3 +2228,43 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1444.
+Sat Nov 19 07:06:01 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1444)
++++ acsdoc2.rb	(working copy)
+@@ -1868,9 +1868,22 @@
+     name = File.dirname(name)+"/."+File.basename(name)
+     'doc/files/'+name.gsub(/\./, '_')+ '.html'
+   end
++
++  def make_notice_for_old_page(newfile, oldfile)
++    if File.exist?(oldfile)
++      open(oldfile,"w"){|f| f.write <<-END
++<HTML>        
++<BODY>
++          This page is moved to <a href="../../../#{newfile}">here</a>.<p>
++Please update your bookmarks.
++</BODY>
++</HTML>        
++END
++      }
+ end
+ 
+ 
++
+ # :segment start: acsdoc
+ include Acsdoc
+ 
+@@ -1955,6 +1968,7 @@
+   dump_aux
+   create_navigations_for_cp_files(ARGV)
+   add_html_headeretc(ARGV)
++  cpfiles.each{|x| make_notice_for_old_page(x[1],x[2])}
+ end
+ 
+ # :segment end:
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

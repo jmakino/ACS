@@ -1868,7 +1868,20 @@ END
     name = File.dirname(name)+"/."+File.basename(name)
     'doc/files/'+name.gsub(/\./, '_')+ '.html'
   end
+
+  def make_notice_for_old_page(newfile, oldfile)
+    if File.exist?(oldfile)
+      open(oldfile,"w"){|f| f.write <<-END
+<HTML>        
+<BODY>
+          This page is moved to <a href="../../../#{newfile}">here</a>.<p>
+Please update your bookmarks.
+</BODY>
+</HTML>        
+END
+      }
 end
+
 
 
 # :segment start: acsdoc
@@ -1955,6 +1968,7 @@ unless tolatex_flag
   dump_aux
   create_navigations_for_cp_files(ARGV)
   add_html_headeretc(ARGV)
+  cpfiles.each{|x| make_notice_for_old_page(x[1],x[2])}
 end
 
 # :segment end:
