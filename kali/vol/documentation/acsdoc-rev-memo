@@ -885,21 +885,6 @@ Do something if the previous line is blank? Seems unnecessary?
 
     s=process_link(s)
 
-
-    s=process_wordmarkup(s,dirname)
-    s=process_headers(s)
-    s=process_refmarkup(s)
-    s=process_toc_latex(s)
-    s=process_ctrls(s)
-    s = process_tagmarkup(s,dirname).join("\n")
-    s= <<-END_TEXSOURCE
-    #{@@basic_preambles_for_tex}
-    #{@@additional_preambles_for_tex}
-    \\begin{document}
-       #{@@additional_commands_for_tex}
-       #{s}
-    \\end{document}
-    END_TEXSOURCE
 Fri Nov 18 11:48:19 JST 2005
 Index: acsdoc2.rb
 ===================================================================
@@ -959,6 +944,91 @@ Index: acsdoc2.rb
      tmpstring=prep_cp_string(s,dirname,infile).split("\n");
      if tolatex_flag
        tmp2= Rdoctotex::convert_to_latex(tmpstring,dirname);
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1399.
+
+link: directly converted to IMG tag.
+
+
+
+    s=process_wordmarkup(s,dirname)
+    s=process_headers(s)
+    s=process_refmarkup(s)
+    s=process_toc_latex(s)
+    s=process_ctrls(s)
+    s = process_tagmarkup(s,dirname).join("\n")
+    s= <<-END_TEXSOURCE
+    #{@@basic_preambles_for_tex}
+    #{@@additional_preambles_for_tex}
+    \\begin{document}
+       #{@@additional_commands_for_tex}
+       #{s}
+    \\end{document}
+    END_TEXSOURCE
+Fri Nov 18 12:02:31 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1399)
++++ acsdoc2.rb	(working copy)
+@@ -570,7 +570,38 @@
+   @@section_label_table={}
+ 
+   @@section_counters=[]
++  @@wordreplace=[
++    [/(^|\W)\+([a-zA-Z_]+)\+($|\W)/,"{\\tt", "}"],
++    [/(^|\W)\*(\w+)\*($|\W)/,"{\\bf", "}"],
++    [/(^|\W)\\_(\w+)\\_($|\W)/,"{\\it", "}"]
++  ]
++  
++  @@tagreplace=[
++    ["<tt>","</tt>","{\\tt", "}"],
++    ["<b>","</b>","{\\bf", "}"],
++    ["<em>","</em>","{\\it", "}"],
++    ["<i>","</i>","{\\it", "}"],
++    ["<tex>","</tex>","", ""]
++  ]
++  
+ 
++  def wordmarkup(instr)
++    @@wordreplace.each do |x| instr.gsub!(x[0]) do |word|
++	$1 + x[1]+ " " + $2 +x[2] + $3
++      end
++    end
++    instr
++  end
++
++  def process_wordmarkup(instring)
++    instring = instring.split("\n") if instring.class != Array
++    ostring = []
++    instring.each{|s| ostring.push(wordmarkup(s))}
++    ostring.join("\n")
++  end
++
++
++
+   def process_link(instring)
+     instring = instring.split("\n") if instring.class != Array
+     ostring=[] 
+@@ -583,7 +614,7 @@
+       end
+       ostring.push(s)
+     end
+-    ostring
++    ostring.join("\n")
+   end
+ 
+ 
+@@ -1332,6 +1363,8 @@
+       tmp2= process_some_special_characters(tmp2)
+       tmp2=process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
+       tmp2= process_link(tmp2)
++      tmp2=process_wordmarkup(tmp2)
++
+     end
+     ofile.print tmp2
+     ofile.close
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..

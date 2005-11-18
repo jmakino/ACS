@@ -570,6 +570,37 @@ module Acsdoc
   @@section_label_table={}
 
   @@section_counters=[]
+  @@wordreplace=[
+    [/(^|\W)\+([a-zA-Z_]+)\+($|\W)/,"{\\tt", "}"],
+    [/(^|\W)\*(\w+)\*($|\W)/,"{\\bf", "}"],
+    [/(^|\W)\\_(\w+)\\_($|\W)/,"{\\it", "}"]
+  ]
+  
+  @@tagreplace=[
+    ["<tt>","</tt>","{\\tt", "}"],
+    ["<b>","</b>","{\\bf", "}"],
+    ["<em>","</em>","{\\it", "}"],
+    ["<i>","</i>","{\\it", "}"],
+    ["<tex>","</tex>","", ""]
+  ]
+  
+
+  def wordmarkup(instr)
+    @@wordreplace.each do |x| instr.gsub!(x[0]) do |word|
+	$1 + x[1]+ " " + $2 +x[2] + $3
+      end
+    end
+    instr
+  end
+
+  def process_wordmarkup(instring)
+    instring = instring.split("\n") if instring.class != Array
+    ostring = []
+    instring.each{|s| ostring.push(wordmarkup(s))}
+    ostring.join("\n")
+  end
+
+
 
   def process_link(instring)
     instring = instring.split("\n") if instring.class != Array
@@ -583,7 +614,7 @@ module Acsdoc
       end
       ostring.push(s)
     end
-    ostring
+    ostring.join("\n")
   end
 
 
@@ -1332,6 +1363,8 @@ module Acsdoc
       tmp2= process_some_special_characters(tmp2)
       tmp2=process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
       tmp2= process_link(tmp2)
+      tmp2=process_wordmarkup(tmp2)
+
     end
     ofile.print tmp2
     ofile.close
