@@ -1818,7 +1818,7 @@ END
   end
 
   def process_css
-    open(@@stylefilename"w"){|x| x.write @@htmlcss}
+    open(@@stylefilename,"w"){|x| x.write @@htmlcss}
   end
 
   def dump_aux

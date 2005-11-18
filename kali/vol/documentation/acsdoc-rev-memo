@@ -1970,3 +1970,21 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1435.
+Sat Nov 19 05:40:31 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1435)
++++ acsdoc2.rb	(working copy)
+@@ -1818,7 +1818,7 @@
+   end
+ 
+   def process_css
+-    open(@@stylefilename"w"){|x| x.write @@htmlcss}
++    open(@@stylefilename,"w"){|x| x.write @@htmlcss}
+   end
+ 
+   def dump_aux
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
