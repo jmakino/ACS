@@ -1076,7 +1076,7 @@ module Acsdoc
       if s =~ /\\label\{(\S+)\}/ 
 	@@tex_labels[$1]=@@tex_equation_number
         @@tex_labels_filename[$1]=$current_cp_filename
-	namelabel = "<name>" + $1 + "</name>\n"
+	namelabel = "<a name=" + $1 + ">\n"
       end
       texcode += s + "\n"
       if s == nil 

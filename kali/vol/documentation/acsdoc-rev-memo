@@ -1235,3 +1235,26 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1410.
+
+Equation tag was closed wrong. Fixed.
+
+Name tag for equation is not processed correctly.
+
+Fri Nov 18 13:31:45 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1410)
++++ acsdoc2.rb	(working copy)
+@@ -1076,7 +1076,7 @@
+       if s =~ /\\label\{(\S+)\}/ 
+ 	@@tex_labels[$1]=@@tex_equation_number
+         @@tex_labels_filename[$1]=$current_cp_filename
+-	namelabel = "<name>" + $1 + "</name>\n"
++	namelabel = "<a name=" + $1 + ">\n"
+       end
+       texcode += s + "\n"
+       if s == nil 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
