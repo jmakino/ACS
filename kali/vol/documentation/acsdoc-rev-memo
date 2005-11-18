@@ -876,3 +876,21 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1396.
+Fri Nov 18 11:35:08 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1396)
++++ acsdoc2.rb	(working copy)
+@@ -580,7 +580,7 @@
+ 
+ 
+   def process_single_paragraphs_lists_etc(instring,indent,type,new,vlimit)
+-    p instring
++    instring = instring.split("\n") if instring.class != Array
+     s_prev = ""
+     ostr=[]
+     ostr.push("<"+@@listtypes[type][1]+">")  if new and (type >0)
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

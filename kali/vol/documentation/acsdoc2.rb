@@ -580,7 +580,7 @@ module Acsdoc
 
 
   def process_single_paragraphs_lists_etc(instring,indent,type,new,vlimit)
-    p instring
+    instring = instring.split("\n") if instring.class != Array
     s_prev = ""
     ostr=[]
     ostr.push("<"+@@listtypes[type][1]+">")  if new and (type >0)
