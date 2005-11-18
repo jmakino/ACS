@@ -1769,7 +1769,6 @@ END
     }
   end
   def add_navigation_links(rdochtmls)
-    print "Enter add navigation for #{rdochtmls}\n"
     n=rdochtmls.size
     rdochtmls.each_index{|i|
       if i == 0 then
@@ -1890,9 +1889,9 @@ ARGV.collect! do |a|
       end
       $current_cp_filename = a
       prep_cp(a, dot_a, tolatex_flag)
-      a = dot_a
+      a = File.exist?(dot_a) ? dot_a : nil
     else
-      a = ""
+      a = nil
     end
     a
   elsif a =~ /\.rb$/
@@ -1914,18 +1913,18 @@ ARGV.collect! do |a|
 #      prep_rb_special_comments(a)
 #      prep_rb_special_comments_for_partfiles(a)
     else
-      a = ""
+      a = nil
     end
     a
   elsif a == "--tolatex"
     tolatex_flag = true
     del_flag = false
-    a = ""
+    a = nil
   elsif a == "--reuseoutput"
     print "reuse flag set\n"
     setreuseoutput true
     readin_commandoutputs
-    a = ""
+    a = nil
   end
   a
 end
@@ -1934,6 +1933,8 @@ if  (ENV["LANG"] == "ja_JP.eucJP") or ($KCODE == "EUC")
 else
   coptions = " "
 end
+
+ARGV.compact!
 
 unless tolatex_flag
   add_toc

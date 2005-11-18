@@ -2084,3 +2084,63 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1441.
+Sat Nov 19 06:14:42 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1441)
++++ acsdoc2.rb	(working copy)
+@@ -1769,7 +1769,6 @@
+     }
+   end
+   def add_navigation_links(rdochtmls)
+-    print "Enter add navigation for #{rdochtmls}\n"
+     n=rdochtmls.size
+     rdochtmls.each_index{|i|
+       if i == 0 then
+@@ -1890,9 +1889,9 @@
+       end
+       $current_cp_filename = a
+       prep_cp(a, dot_a, tolatex_flag)
+-      a = dot_a
++      a = File.exist?(dot_a) ? dot_a : nil
+     else
+-      a = ""
++      a = nil
+     end
+     a
+   elsif a =~ /\.rb$/
+@@ -1914,18 +1913,18 @@
+ #      prep_rb_special_comments(a)
+ #      prep_rb_special_comments_for_partfiles(a)
+     else
+-      a = ""
++      a = nil
+     end
+     a
+   elsif a == "--tolatex"
+     tolatex_flag = true
+     del_flag = false
+-    a = ""
++    a = nil
+   elsif a == "--reuseoutput"
+     print "reuse flag set\n"
+     setreuseoutput true
+     readin_commandoutputs
+-    a = ""
++    a = nil
+   end
+   a
+ end
+@@ -1935,6 +1934,8 @@
+   coptions = " "
+ end
+ 
++ARGV.compact!
++
+ unless tolatex_flag
+   add_toc
+   process_css
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
