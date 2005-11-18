@@ -530,11 +530,6 @@ Committed revision 1387.
 
 Error: $current_extention created to fix. Not quite clean...
 
-
-
-
-tmp2= process_tex_weblinks(tmp2)
-  tmp2= process_some_special_characters(tmp2)
 Fri Nov 18 10:49:37 JST 2005
 Index: acsdoc2.rb
 ===================================================================
@@ -575,6 +570,38 @@ Index: acsdoc2.rb
            to_htmlname(tex_labels_filename[label])
          newtag=@@volindex[dirname[3,dirname.length]]
          tag =  newtag ? "v"+newtag.to_s : dirname+"."
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1389.
+
+lables and filenames now looks okay.
+
+
+tmp2= process_tex_weblinks(tmp2)
+
+
+
+
+  tmp2= process_some_special_characters(tmp2)
+Fri Nov 18 10:57:30 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1389)
++++ acsdoc2.rb	(working copy)
+@@ -1174,10 +1174,10 @@
+       if linktext =~ /(.*)\|(.*)/m
+ 	url=($1)
+ 	text=$2
+-	s="(#{text})[#{url}]"
+       else
+-	s="(#{linktext})[#{linktext}]"
++        url=text=linktext
+       end
++      s="<a href=#{url}>#{text}>"
+       blank+s.gsub(/\s/m," ")
+     }
+   end
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..

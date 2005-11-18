@@ -1174,10 +1174,10 @@ module Acsdoc
       if linktext =~ /(.*)\|(.*)/m
 	url=($1)
 	text=$2
-	s="(#{text})[#{url}]"
       else
-	s="(#{linktext})[#{linktext}]"
+        url=text=linktext
       end
+      s="<a href=#{url}>#{text}>"
       blank+s.gsub(/\s/m," ")
     }
   end
