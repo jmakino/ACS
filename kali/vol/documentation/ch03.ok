@@ -282,7 +282,7 @@ This section is example of what is implemented. One should see the
 source file to see how to do these stuff.
 
 
-Fonts: *bold*, +typewriter+, and _italic_.
+Fonts: *bold*, +typewriter+, and _italic_. Are? _italic_ does not work?
 
 The things should not be interpreted: a_to_f_d.
 
