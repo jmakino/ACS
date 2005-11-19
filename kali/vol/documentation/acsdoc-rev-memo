@@ -2601,3 +2601,43 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1457.
+Sat Nov 19 12:55:59 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1457)
++++ acsdoc2.rb	(working copy)
+@@ -1652,17 +1652,18 @@
+ 
+ @@stylefilename = ".acsdoc-style.css"
+ 
+-@@htmlheader = <<-END
++  def htmlheader(name)
++    <<-END
+ <html>
+ <head>
+-  <title>File: .ch01.ok</title>
++  <title> #{name}</title>
+   <link rel=StyleSheet href="#{@@stylefilename}" type="text/css" media="screen" />
+ </head>
+ 
+ <body bgcolor="white">
+ 
+ END
+-
++  end
+ @@htmlfooter = <<-END
+ 
+ </body>
+@@ -1780,7 +1781,7 @@
+   def add_html_headeretc(filenames)
+     filenames.each{|filename|
+       instring = open(filename,"r"){|f| f.gets(nil)}
+-      ostring= @@htmlheader+ "\n" +instring +@@htmlfooter+ "\n" 
++      ostring= htmlheader(filename)+ "\n" +instring +@@htmlfooter+ "\n" 
+       open(filename,"w"){|f| f.puts(ostring)}
+     }
+   end
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

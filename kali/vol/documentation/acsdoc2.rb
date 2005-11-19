@@ -1652,17 +1652,18 @@ END
 
 @@stylefilename = ".acsdoc-style.css"
 
-@@htmlheader = <<-END
+  def htmlheader(name)
+    <<-END
 <html>
 <head>
-  <title>File: .ch01.ok</title>
+  <title> #{name}</title>
   <link rel=StyleSheet href="#{@@stylefilename}" type="text/css" media="screen" />
 </head>
 
 <body bgcolor="white">
 
 END
-
+  end
 @@htmlfooter = <<-END
 
 </body>
@@ -1780,7 +1781,7 @@ END
   def add_html_headeretc(filenames)
     filenames.each{|filename|
       instring = open(filename,"r"){|f| f.gets(nil)}
-      ostring= @@htmlheader+ "\n" +instring +@@htmlfooter+ "\n" 
+      ostring= htmlheader(filename)+ "\n" +instring +@@htmlfooter+ "\n" 
       open(filename,"w"){|f| f.puts(ostring)}
     }
   end
