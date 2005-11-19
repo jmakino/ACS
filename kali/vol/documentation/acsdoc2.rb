@@ -1179,8 +1179,9 @@ module Acsdoc
       end
     end
     filename_to_link = copy_figure_file(figurefilename,dirname,@@figure_number)
+    "<div class="center">"+
     "<p>"+namelabel + "<img ALIGN=\"middle\" src=\"#{filename_to_link}\"></p>"+
-    "\n<p> Figure " + @@figure_number.to_s + ": " + caption + "</p>"
+    "\n<p> Figure " + @@figure_number.to_s + ": " + caption + "</p></div>"
   end
 
 
@@ -1673,6 +1674,7 @@ PRE {
   background: #E0FFE8;
 
 }
+.center  { text-align: center; }
 
 body,td,p { font-family: Verdana, Arial, Helvetica, sans-serif; 
        color: #000010;

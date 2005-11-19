@@ -2436,3 +2436,33 @@ Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Sending        documentation/ch03.ok
 Transmitting file data ..
+
+More fix for removing trailing blank lines.
+
+Sat Nov 19 11:28:59 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1449)
++++ acsdoc2.rb	(working copy)
+@@ -1179,8 +1179,9 @@
+       end
+     end
+     filename_to_link = copy_figure_file(figurefilename,dirname,@@figure_number)
++    "<div class="center">"+
+     "<p>"+namelabel + "<img ALIGN=\"middle\" src=\"#{filename_to_link}\"></p>"+
+-    "\n<p> Figure " + @@figure_number.to_s + ": " + caption + "</p>"
++    "\n<p> Figure " + @@figure_number.to_s + ": " + caption + "</p></div>"
+   end
+ 
+ 
+@@ -1673,6 +1674,7 @@
+   background: #E0FFE8;
+ 
+ }
++.center  { text-align: center; }
+ 
+ body,td,p { font-family: Verdana, Arial, Helvetica, sans-serif; 
+        color: #000010;
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
