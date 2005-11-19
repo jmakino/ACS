@@ -2650,4 +2650,20 @@ Sending        documentation/ch03.ok
 Transmitting file data .Sat Nov 19 13:23:33 JST 2005
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/ch03.ok
-Transmitting file data .
+Transmitting file data .Sat Nov 19 13:27:13 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1460)
++++ acsdoc2.rb	(working copy)
+@@ -573,7 +573,7 @@
+   @@wordreplace=[
+     [/(^|\W)\+([a-zA-Z_]+)\+($|\W)/,"<tt>", "</tt>"],
+     [/(^|\W)\*(\w+)\*($|\W)/,"<b>", "</b>"],
+-    [/(^|\W)\\_(\w+)\\_($|\W)/,"<i>", "</i>"]
++    [/(^|\W)\_(\w+)\_($|\W)/,"<i>", "</i>"]
+   ]
+   
+   @@tagreplace=[
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
