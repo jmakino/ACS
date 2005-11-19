@@ -717,7 +717,7 @@ module Acsdoc
       end
       s_prev = s
     end	
-    ostr.join("\n")
+    ostr
   end
 
 
@@ -1379,7 +1379,7 @@ module Acsdoc
       tmp2= process_tex_labels(tmp2,dirname);
       tmp2= process_tex_weblinks(tmp2)
       tmp2= process_some_special_characters(tmp2)
-      tmp2=process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
+      tmp2=process_single_paragraphs_lists_etc(tmp2,0,0,1,0).join("\n")
       tmp2= process_link(tmp2)
       tmp2=process_wordmarkup(tmp2)
 
@@ -1919,8 +1919,6 @@ directory_arg  = false
 directory_name = nil
 cpfiles = []
 ARGV.collect! do |a|
-  p a
-  p directory_arg
   if a =~ /\.((cp)|(ok))$/
     extention = "."+$1
     $current_extention=extention
@@ -2009,7 +2007,6 @@ if directory_name
   Dir.mkdir(directory_name) unless File.exist?(directory_name)
   if  File.exist?(directory_name+"/.imgs")
     files = Dir.glob(directory_name+"/.imgs/*")
-    p files
     File.delete(*files) if files.size > 0
     Dir.rmdir(directory_name+"/.imgs") 
   end
