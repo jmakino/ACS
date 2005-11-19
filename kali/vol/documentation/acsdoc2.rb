@@ -1886,18 +1886,23 @@ END
     'doc/files/'+name.gsub(/\./, '_')+ '.html'
   end
 
+  def create_dir_recursively(name)
+    parent = File.dirname(name)
+    create_dir_recursively(parent) if not File.exist?(parent)
+    Dir.mkdir(name) if not File.exist?(name)
+  end
+
   def make_notice_for_old_page(newfile, oldfile)
-    if File.exist?(oldfile)
-      open(oldfile,"w"){|f| f.write <<-END
-        <HTML>        
-          <BODY>
-          This page has been moved to <a href="../../../#{newfile}">here</a>.<p>
+    create_dir_recursively(File.dirname(oldfile)) if not File.exist?(oldfile)
+    open(oldfile,"w"){|f| f.write <<-END
+      <HTML>        
+        <BODY>
+        This page has been moved to <a href="../../../#{newfile}">here</a>.<p>
 Please update your bookmarks.
 </BODY>
-          </HTML>        
+        </HTML>        
 END
       }
-    end
   end
 end
 

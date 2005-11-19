@@ -3072,7 +3072,11 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc.rb
 Sending        documentation/acsdoc2.rb
-Transmitting file data ..Sun Nov 20 04:02:41 JST 2005
+Transmitting file data ..
+
+Confusion between function names and class variable names resolved
+
+Sun Nov 20 04:02:41 JST 2005
 Index: acsdoc2.rb
 ===================================================================
 --- acsdoc2.rb	(revision 1469)
@@ -3095,6 +3099,51 @@ Index: acsdoc2.rb
    end
  
    def tagmarkup(instr)
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1470.
+
+Still more confusion. Fixed (hopefully)
+
+--tolatex version seems to make identical files with old acsdoc.rb
+
+Sun Nov 20 04:23:50 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1470)
++++ acsdoc2.rb	(working copy)
+@@ -1886,18 +1886,23 @@
+     'doc/files/'+name.gsub(/\./, '_')+ '.html'
+   end
+ 
++  def create_dir_recursively(name)
++    parent = File.dirname(name)
++    create_dir_recursively(parent) if not File.exist?(parent)
++    Dir.mkdir(name) if not File.exist?(name)
++  end
++
+   def make_notice_for_old_page(newfile, oldfile)
+-    if File.exist?(oldfile)
+-      open(oldfile,"w"){|f| f.write <<-END
+-        <HTML>        
+-          <BODY>
+-          This page has been moved to <a href="../../../#{newfile}">here</a>.<p>
++    create_dir_recursively(File.dirname(oldfile)) if not File.exist?(oldfile)
++    open(oldfile,"w"){|f| f.write <<-END
++      <HTML>        
++        <BODY>
++        This page has been moved to <a href="../../../#{newfile}">here</a>.<p>
+ Please update your bookmarks.
+ </BODY>
+-          </HTML>        
++        </HTML>        
+ END
+       }
+-    end
+   end
+ end
+ 
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
