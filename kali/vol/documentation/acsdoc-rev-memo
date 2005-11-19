@@ -3147,3 +3147,11 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1471.
+
+Added the capability to create "doc" directory always, even if it is
+not there.
+
+Sun Nov 20 04:47:56 JST 2005
+Sending        documentation/acsdoc-rev-memo
+Transmitting file data .
