@@ -2502,3 +2502,30 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1452.
+Sat Nov 19 11:39:11 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1452)
++++ acsdoc2.rb	(working copy)
+@@ -1097,7 +1097,7 @@
+     end
+     texcode += "\\end{#{eqtype}}\n"
+     pp = process_texcode(texcode,dirname)
+-    namelabel +"<div class=\"center\"><p>\n" +pp+"</p></div>\n"
++    namelabel +"<div class=\"equation\"><p>\n" +pp+"</p></div>\n"
+   end
+ 
+ 
+@@ -1676,6 +1676,8 @@
+ }
+ .center  { text-align: center; }
+ 
++.equation  { margine-left: auto;}
++
+ body,td,p { font-family: Verdana, Arial, Helvetica, sans-serif; 
+        color: #000010;
+ }
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

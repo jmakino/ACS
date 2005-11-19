@@ -1097,7 +1097,7 @@ module Acsdoc
     end
     texcode += "\\end{#{eqtype}}\n"
     pp = process_texcode(texcode,dirname)
-    namelabel +"<div class=\"center\"><p>\n" +pp+"</p></div>\n"
+    namelabel +"<div class=\"equation\"><p>\n" +pp+"</p></div>\n"
   end
 
 
@@ -1675,6 +1675,8 @@ PRE {
 
 }
 .center  { text-align: center; }
+
+.equation  { margine-left: auto;}
 
 body,td,p { font-family: Verdana, Arial, Helvetica, sans-serif; 
        color: #000010;
