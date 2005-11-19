@@ -2311,3 +2311,90 @@ Committed revision 1446.
 Sat Nov 19 07:12:36 JST 2005
 Sending        documentation/acsdoc-rev-memo
 Transmitting file data .
+Committed revision 1447.
+
+Sat Nov 19 10:21:02 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1447)
++++ acsdoc2.rb	(working copy)
+@@ -751,7 +751,11 @@
+     }    
+   end
+ 
+-
++  @@verbatim_separator = "---\n"
++  
++  def reset_verbatim_separator
++    @@verbatim_separator = ""
++  end
+     
+ #
+ # takes a single string which contains a command
+@@ -769,7 +773,7 @@
+     tmpcommand = ".acsdoc.command-file"
+     prompt = " "* indent + @@prompt
+     commandline = a[1..a.size].join(" ").chomp
+-    ostring = ostring +  "---\n"     unless ( noout or @previous_is_command )
++    ostring = ostring +  @@verbatim_separator     unless ( noout or @previous_is_command )
+       fullcommand  = "cd #{dirname}; #{commandline}" 
+     unless noout or nooutput
+       fullcommand  = "cd #{dirname}; (#{commandline})>&  #{tmpname}" 
+@@ -839,7 +843,7 @@
+     tmpcommand = ".acsdoc.command-file"
+     prompt = " "* indent + @@prompt
+     commandline = a[1..a.size].join(" ").chomp
+-    ostring = ostring +  "---\n"
++    ostring = ostring +  @@verbatim_separator
+     fullcommand = "cd #{dirname}; (" +commandline+ "<" + tmpinname + " )"
+     if showout
+ #      fullcommand  +=   " >& " + tmpname 
+@@ -859,7 +863,7 @@
+     output = indata 
+     output += `cat #{dirname}/#{tmpname}`  if  showout
+     output.each{|x| ostring = ostring +  " "*indent + x}
+-    ostring = ostring +  "---\n"
++    ostring = ostring +  @@verbatim_separator
+     @previous_is_command = nil if showout 
+     if showout then ostring else "" end
+   end
+@@ -935,9 +939,9 @@
+       elsif s =~ /:in.*code:/ and s.index("\":inccode:\"")==nil
+ 	s.sub!(/:in.*code:/, ':include: ')
+         raise "failed to open file #{s.split[1]}" unless file_is_there(s.split[1])
+-	ostring = ostring +  "---\n"
++	ostring = ostring +  @@verbatim_separator
+ 	ostring = ostring +  s
+-	ostring = ostring +  "---\n"
++	ostring = ostring +  @@verbatim_separator
+       elsif loc = check_tag(s,":output:")
+ 	ostring = ostring +  add_output(s, dirname, ":output:",fname,lineno)
+       elsif loc = s.index(":commandoutput:")  and s.index("\":commandoutput:\"")==nil
+@@ -958,7 +962,7 @@
+ 	ostring = ostring +  command_with_input(s,":commandinput:", instring,
+ 				      dirname,false)
+       else
+-	ostring += "---\n" if @previous_is_command
++	ostring += @@verbatim_separator if @previous_is_command
+ 	ostring += s 
+ 	@previous_is_command = nil 
+       end
+@@ -1350,6 +1354,7 @@
+     end
+     ifile.close
+     s = instring
++    reset_verbatim_separator    unless tolatex_flag
+     tmpstring=prep_cp_string(s,dirname,infile).split("\n");
+     if tolatex_flag
+       tmp2= Rdoctotex::convert_to_latex(tmpstring,dirname);
+@@ -1961,7 +1966,6 @@
+   coptions = " "
+ end
+ 
+-p cpfiles
+ ARGV.compact!
+ 
+ unless tolatex_flag
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
