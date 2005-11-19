@@ -189,7 +189,7 @@ directive.
 One can add links to URL by using the specal form
 \<web\>url|linktext\</web\>. For example,
 
-\<web\>http: www. artcompsci.org|ACS homepage\</web\>
+ \<web\>http: www. artcompsci.org|ACS homepage\</web\>
 
 creates: 
 <web>http:www.artcompsci.org|ACS homepage</web>.

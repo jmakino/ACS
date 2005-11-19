@@ -1326,17 +1326,22 @@ module Acsdoc
   end
 
   def process_tex_weblinks(instring)
-    ostring=instring.gsub(/(\s)<web>(.+?)<\/web>/m){ linktext = $2
+    ostring=instring.gsub(/(\s)(\\)<web>(.+?)<\/web>/m){ linktext = $3
       blank=$1
       p linktext  if $DEBUG
-      if linktext =~ /(.*)\|(.*)/m
-	url=($1)
-	text=$2
+      if $2 != ""
+        if linktext =~ /(.*)\|(.*)/m
+          url=($1)
+          text=$2
+        else
+          url=text=linktext
+        end
+        s="<a href=#{url}>#{text}</a>"
+        s=blank+s.gsub(/\s/m," ")
       else
-        url=text=linktext
+        s="&lt;web> #{linktext}&lt;/web>"
       end
-      s="<a href=#{url}>#{text}</a>"
-      blank+s.gsub(/\s/m," ")
+      s
     }
   end
 
