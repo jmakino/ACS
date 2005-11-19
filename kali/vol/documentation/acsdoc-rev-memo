@@ -2641,3 +2641,10 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1458.
+
+Figures are centered, equations are right-alighned.
+Sat Nov 19 13:22:15 JST 2005
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/ch03.ok
+Transmitting file data .
