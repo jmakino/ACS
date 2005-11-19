@@ -2732,3 +2732,21 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1462.
+Sun Nov 20 01:27:24 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1462)
++++ acsdoc2.rb	(working copy)
+@@ -2003,7 +2003,7 @@
+     raise "#{directory_name} is a file. Cannot move texts there"
+   end
+   Dir.mkdir(directory_name) unless File.exist?(directory_name)
+-  system("mv #{ARGV} .imgs #{directory_name}"
++  system "mv #{ARGV} .imgs #{directory_name}"
+ end
+ 
+ # :segment end:
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

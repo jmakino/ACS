@@ -2003,7 +2003,7 @@ if directory_name
     raise "#{directory_name} is a file. Cannot move texts there"
   end
   Dir.mkdir(directory_name) unless File.exist?(directory_name)
-  system("mv #{ARGV} .imgs #{directory_name}"
+  system "mv #{ARGV} .imgs #{directory_name}"
 end
 
 # :segment end:
