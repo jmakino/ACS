@@ -1915,10 +1915,12 @@ load_volindex
 del_flag = true
 tolatex_flag = false
 
-diretory_arg  = false
+directory_arg  = false
 directory_name = nil
 cpfiles = []
 ARGV.collect! do |a|
+  p a
+  p directory_arg
   if a =~ /\.((cp)|(ok))$/
     extention = "."+$1
     $current_extention=extention
@@ -1972,10 +1974,12 @@ ARGV.collect! do |a|
     readin_commandoutputs
     a = nil
   elsif a == "--directory"
+    print "Directory arg found\n"
     directory_arg = true        
     a = nil
-  elsif directory_arg
-    directory_name = a
+  elsif directory_arg == true
+    directory_name = a 
+    print "Directory to store: #{a}\n"
     directory_arg = false
     a=nil
   end
@@ -2003,7 +2007,13 @@ if directory_name
     raise "#{directory_name} is a file. Cannot move texts there"
   end
   Dir.mkdir(directory_name) unless File.exist?(directory_name)
-  system "mv #{ARGV} .imgs #{directory_name}"
+  if  File.exist?(directory_name+"/.imgs")
+    files = Dir(directory_name+"/.imgs/*")
+    p files
+    File.delete(files) if files.size > 0
+    Dir.rmdir(directory_name+"/.imgs") 
+  end
+  system "mv -f  #{ARGV.join(" ")} .imgs #{directory_name}"
 end
 
 # :segment end:
