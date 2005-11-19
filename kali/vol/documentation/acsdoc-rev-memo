@@ -2484,3 +2484,21 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1451.
+Sat Nov 19 11:30:29 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1451)
++++ acsdoc2.rb	(working copy)
+@@ -1097,7 +1097,7 @@
+     end
+     texcode += "\\end{#{eqtype}}\n"
+     pp = process_texcode(texcode,dirname)
+-    namelabel +"<p>\n" +pp+"</p>\n"
++    namelabel +"<div class=\"center\"><p>\n" +pp+"</p></div>\n"
+   end
+ 
+ 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
