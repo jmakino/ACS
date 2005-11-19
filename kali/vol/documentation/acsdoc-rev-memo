@@ -2936,6 +2936,8 @@ Sending        documentation/acsdoc2.rb
 Sending        documentation/sample.rb
 Transmitting file data ..
 
+removed .rb or other files from args to HTML editing functions.
+
 Sun Nov 20 03:52:20 JST 2005
 Index: acsdoc2.rb
 ===================================================================
@@ -3069,5 +3071,30 @@ Index: acsdoc2.rb
      s=process_ctrls(s)
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc.rb
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..Sun Nov 20 04:02:41 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1469)
++++ acsdoc2.rb	(working copy)
+@@ -72,7 +72,7 @@
+     s
+   end
+   
+-  def wordmarkup(instr)
++  def latexwordmarkup(instr)
+     @@latexwordreplace.each do |x| instr.gsub!(x[0]) do |word|
+ 	$1 + x[1]+ " " + $2 +x[2] + $3
+       end
+@@ -82,7 +82,7 @@
+ 
+   def latex_process_wordmarkup(instring,dirname)
+     ostring = []
+-    instring.each{|s| ostring.push(wordmarkup(s))}
++    instring.each{|s| ostring.push(latexwordmarkup(s))}
+   end
+ 
+   def tagmarkup(instr)
+Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..

@@ -72,7 +72,7 @@ module Rdoctotex
     s
   end
   
-  def wordmarkup(instr)
+  def latexwordmarkup(instr)
     @@latexwordreplace.each do |x| instr.gsub!(x[0]) do |word|
 	$1 + x[1]+ " " + $2 +x[2] + $3
       end
@@ -82,7 +82,7 @@ module Rdoctotex
 
   def latex_process_wordmarkup(instring,dirname)
     ostring = []
-    instring.each{|s| ostring.push(wordmarkup(s))}
+    instring.each{|s| ostring.push(latexwordmarkup(s))}
   end
 
   def tagmarkup(instr)
