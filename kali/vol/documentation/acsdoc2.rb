@@ -670,6 +670,12 @@ module Acsdoc
 	new_type=4
 	new_item = nil
       end
+      if type == 4 and s=="" 
+	s1 = s
+	new_type=0
+        new_indent=0
+	new_item = nil
+      end
       if new_indent > indent and new_item == nil
 	new_type = 4 
       end
@@ -812,9 +818,10 @@ module Acsdoc
         end
         output.each{|x| ostring+=  " "*indent +x} 
       end
-      ostring+= "\n"
+      ostring= ostring.chomp+"\n"
       @previous_is_command = true;
     end
+    p ostring
     ostring
   end
 

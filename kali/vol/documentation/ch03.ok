@@ -35,10 +35,8 @@ The changes we made are
   ":segment end:" will be stored the file .foo.rb-segment.name, where
   foo.rb is the source file. Here is a sample code segment included:
 
- :inccode: .acsdoc.rb-prep_rb
-
-
- :inccode: .acsdoc.rb-acsdoc
+   :inccode: .acsdoc.rb-prep_rb
+   :inccode: .acsdoc.rb-acsdoc
 
 Now, by using "." + filename + "+" methodname, you can show a method
 defined in a file: The following is an example, using
@@ -329,9 +327,7 @@ The above should show up as preformatted
       Simple list
    impossible next line   
 
----
  :include:sample.rb
----
 
 This is sample image link: link:sample.gif
 

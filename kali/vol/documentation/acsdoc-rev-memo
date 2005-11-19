@@ -2398,3 +2398,41 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1448.
+
+removed trailing blank lines after verbatim.
+
+Sat Nov 19 11:26:13 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1448)
++++ acsdoc2.rb	(working copy)
+@@ -670,6 +670,12 @@
+ 	new_type=4
+ 	new_item = nil
+       end
++      if type == 4 and s=="" 
++	s1 = s
++	new_type=0
++        new_indent=0
++	new_item = nil
++      end
+       if new_indent > indent and new_item == nil
+ 	new_type = 4 
+       end
+@@ -812,9 +818,10 @@
+         end
+         output.each{|x| ostring+=  " "*indent +x} 
+       end
+-      ostring+= "\n"
++      ostring= ostring.chomp+"\n"
+       @previous_is_command = true;
+     end
++    p ostring
+     ostring
+   end
+ 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Sending        documentation/ch03.ok
+Transmitting file data ..
