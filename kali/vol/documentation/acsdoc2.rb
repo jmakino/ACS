@@ -2008,7 +2008,7 @@ if directory_name
   end
   Dir.mkdir(directory_name) unless File.exist?(directory_name)
   if  File.exist?(directory_name+"/.imgs")
-    files = Dir(directory_name+"/.imgs/*")
+    files = Dir.glob(directory_name+"/.imgs/*")
     p files
     File.delete(files) if files.size > 0
     Dir.rmdir(directory_name+"/.imgs") 

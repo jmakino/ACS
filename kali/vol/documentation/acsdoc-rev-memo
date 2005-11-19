@@ -2803,3 +2803,21 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1464.
+Sun Nov 20 01:40:30 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1464)
++++ acsdoc2.rb	(working copy)
+@@ -2008,7 +2008,7 @@
+   end
+   Dir.mkdir(directory_name) unless File.exist?(directory_name)
+   if  File.exist?(directory_name+"/.imgs")
+-    files = Dir(directory_name+"/.imgs/*")
++    files = Dir.glob(directory_name+"/.imgs/*")
+     p files
+     File.delete(files) if files.size > 0
+     Dir.rmdir(directory_name+"/.imgs") 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
