@@ -2644,6 +2644,7 @@ Transmitting file data ..
 Committed revision 1458.
 
 Figures are centered, equations are right-alighned.
+
 Sat Nov 19 13:22:15 JST 2005
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/ch03.ok
@@ -2664,6 +2665,70 @@ Index: acsdoc2.rb
    ]
    
    @@tagreplace=[
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1461.
+
+Italic on HTML now correctly shown.
+
+Other things which need to be implemented
+
+--- table
+--- local directory
+
+Better to start with local directory.
+
+Sun Nov 20 01:26:58 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1461)
++++ acsdoc2.rb	(working copy)
+@@ -1915,6 +1915,8 @@
+ del_flag = true
+ tolatex_flag = false
+ 
++diretory_arg  = false
++directory_name = nil
+ cpfiles = []
+ ARGV.collect! do |a|
+   if a =~ /\.((cp)|(ok))$/
+@@ -1946,7 +1948,7 @@
+       prep_rb_special_comments(a)
+       prep_rb_special_comments_for_partfiles(a)
+     else
+-      a = ""
++      a = nil
+     end
+     a
+   elsif a =~ /\.(h|C|c|cc)$/
+@@ -1969,6 +1971,13 @@
+     setreuseoutput true
+     readin_commandoutputs
+     a = nil
++  elsif a == "--directory"
++    directory_arg = true        
++    a = nil
++  elsif directory_arg
++    directory_name = a
++    directory_arg = false
++    a=nil
+   end
+   a
+ end
+@@ -1989,4 +1998,12 @@
+   cpfiles.each{|x| make_notice_for_old_page(x[1],x[2])}
+ end
+ 
++if directory_name
++  if File.exist?(directory_name) and not File.directory?(directory_name)
++    raise "#{directory_name} is a file. Cannot move texts there"
++  end
++  Dir.mkdir(directory_name) unless File.exist?(directory_name)
++  system("mv #{ARGV} .imgs #{directory_name}"
++end
++
+ # :segment end:
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..

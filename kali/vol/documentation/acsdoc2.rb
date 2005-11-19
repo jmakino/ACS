@@ -1915,6 +1915,8 @@ load_volindex
 del_flag = true
 tolatex_flag = false
 
+diretory_arg  = false
+directory_name = nil
 cpfiles = []
 ARGV.collect! do |a|
   if a =~ /\.((cp)|(ok))$/
@@ -1946,7 +1948,7 @@ ARGV.collect! do |a|
       prep_rb_special_comments(a)
       prep_rb_special_comments_for_partfiles(a)
     else
-      a = ""
+      a = nil
     end
     a
   elsif a =~ /\.(h|C|c|cc)$/
@@ -1969,6 +1971,13 @@ ARGV.collect! do |a|
     setreuseoutput true
     readin_commandoutputs
     a = nil
+  elsif a == "--directory"
+    directory_arg = true        
+    a = nil
+  elsif directory_arg
+    directory_name = a
+    directory_arg = false
+    a=nil
   end
   a
 end
@@ -1987,6 +1996,14 @@ unless tolatex_flag
   create_navigations_for_cp_files(ARGV)
   add_html_headeretc(ARGV)
   cpfiles.each{|x| make_notice_for_old_page(x[1],x[2])}
+end
+
+if directory_name
+  if File.exist?(directory_name) and not File.directory?(directory_name)
+    raise "#{directory_name} is a file. Cannot move texts there"
+  end
+  Dir.mkdir(directory_name) unless File.exist?(directory_name)
+  system("mv #{ARGV} .imgs #{directory_name}"
 end
 
 # :segment end:
