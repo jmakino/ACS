@@ -2583,3 +2583,21 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1456.
+Sat Nov 19 11:44:45 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1456)
++++ acsdoc2.rb	(working copy)
+@@ -1676,7 +1676,7 @@
+ }
+ .center  { text-align: center; }
+ 
+-.equation  { margin-left: auto; margin-right: auto;}
++.equation  { text-align: right; }
+ 
+ body,td,p { font-family: Verdana, Arial, Helvetica, sans-serif; 
+        color: #000010;
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

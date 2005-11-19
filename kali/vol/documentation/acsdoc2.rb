@@ -1676,7 +1676,7 @@ PRE {
 }
 .center  { text-align: center; }
 
-.equation  { margin-left: auto; margin-right: auto;}
+.equation  { text-align: right; }
 
 body,td,p { font-family: Verdana, Arial, Helvetica, sans-serif; 
        color: #000010;
