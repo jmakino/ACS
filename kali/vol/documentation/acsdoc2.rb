@@ -19,13 +19,13 @@
 #$DEBUG=1
 module Rdoctotex
 
-  @@wordreplace=[
+  @@latexwordreplace=[
     [/(^|\W)\+([a-zA-Z_]+)\+($|\W)/,"{\\tt", "}"],
     [/(^|\W)\*(\w+)\*($|\W)/,"{\\bf", "}"],
     [/(^|\W)\\_(\w+)\\_($|\W)/,"{\\it", "}"]
   ]
   
-  @@tagreplace=[
+  @@latextagreplace=[
     ["<tt>","</tt>","{\\tt", "}"],
     ["<b>","</b>","{\\bf", "}"],
     ["<em>","</em>","{\\it", "}"],
@@ -37,7 +37,7 @@ module Rdoctotex
     "part","chapter","section","subsection","subsubsection",
     "subsubsubsection"]
 
-  @@listtypes=[
+  @@latexlisttypes=[
     ["paragraph",""],
     ["ulist*","itemize"],
     ["ulist-","itemize"],
@@ -73,20 +73,20 @@ module Rdoctotex
   end
   
   def wordmarkup(instr)
-    @@wordreplace.each do |x| instr.gsub!(x[0]) do |word|
+    @@latexwordreplace.each do |x| instr.gsub!(x[0]) do |word|
 	$1 + x[1]+ " " + $2 +x[2] + $3
       end
     end
     instr
   end
 
-  def process_wordmarkup(instring,dirname)
+  def latex_process_wordmarkup(instring,dirname)
     ostring = []
     instring.each{|s| ostring.push(wordmarkup(s))}
   end
 
   def tagmarkup(instr)
-    @@tagreplace.each do |x| 
+    @@latextagreplace.each do |x| 
       instr.gsub!(x[0]) { |word|x[2]+ " " }
       instr.gsub!(x[1]) { |word|x[3] }
     end
@@ -266,7 +266,7 @@ END
   @@latex_section_number = 0
   @@latex_section_table={}
   
-  def process_headers(instring)
+  def latex_process_headers(instring)
     
     nosectionnumber = nil
     
@@ -352,7 +352,7 @@ END
     ostring
   end
   
-  def process_link(instring)
+  def latex_process_link(instring)
     ostring=[] 
     while s=instring.shift
       if /(^|\s)link\:(\S+)/  =~ s
@@ -403,10 +403,10 @@ END
     ostring
   end
   
-  def process_single_paragraphs_lists_etc(instring,indent,type,new,vlimit)
+  def latex_process_single_paragraphs_lists_etc(instring,indent,type,new,vlimit)
     s_prev = ""
     ostr=[]
-    ostr.push("\\begin{"+@@listtypes[type][1]+"}")  if new and (type >0)
+    ostr.push("\\begin{"+@@latexlisttypes[type][1]+"}")  if new and (type >0)
 
     intex = nil
 
@@ -452,7 +452,7 @@ END
 	new = nil if new_type == type and type == 4 
 	vlimit = indent+1 if new and new_type == 4
 	if new 
-	  ostr+= process_single_paragraphs_lists_etc(instring,new_indent,
+	  ostr+= latex_process_single_paragraphs_lists_etc(instring,new_indent,
 						     new_type,new,
 						     vlimit)
 	else
@@ -462,9 +462,9 @@ END
       elsif new_indent == indent
 	if new_item
 	  if new_type != type
-	    ostr.push("\\end{"+@@listtypes[type][1]+"}")
+	    ostr.push("\\end{"+@@latexlisttypes[type][1]+"}")
 	    instring.unshift(s)
-	    ostr+= process_single_paragraphs_lists_etc(instring,new_indent,
+	    ostr+= latex_process_single_paragraphs_lists_etc(instring,new_indent,
 						       new_type,1,vlimit)
 	  end
 	  ostr.push("\\item ") if new_type < 4
@@ -475,7 +475,7 @@ END
 	  indent = new_indent
 	  ostr.push s1
 	else
-	  ostr.push("\\end{"+@@listtypes[type][1]+"}")
+	  ostr.push("\\end{"+@@latexlisttypes[type][1]+"}")
 	  instring.unshift(s)
 	  return ostr
 	end
@@ -528,11 +528,11 @@ END
     s=latex_process_tex_equations(s)
     s=latex_process_tex_weblinks(s)
     s=latex_find_and_process_figures(s,dirname)
-    s=process_single_paragraphs_lists_etc(s,0,0,1,0)
+    s=latex_process_single_paragraphs_lists_etc(s,0,0,1,0)
     s=post_process_verbatim(s)
-    s=process_link(s)
-    s=process_wordmarkup(s,dirname)
-    s=process_headers(s)
+    s=latex_process_link(s)
+    s=latex_process_wordmarkup(s,dirname)
+    s=latex_process_headers(s)
     s=process_refmarkup(s)
     s=process_toc_latex(s)
     s=process_ctrls(s)
