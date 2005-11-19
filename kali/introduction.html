@@ -52,7 +52,61 @@ Back to <a href="../index.html">ACS home page</A>.
 <hr>
 
 <h3>
-The Gravitational Million-Body Problem
+Goal: Modeling Dense Stellar Systems
+</h3>
+
+In the center of our galaxy resides a supermassive black hole,
+surrounded by a swarm of a few million stars, packed within a region
+with a size of only a few light years.  Similar stellar densities are
+reached in the cores of dense globular clusters.  In both cases, a
+significant fraction of the stars will undergo close encounters and
+even collisions.
+<p>
+When two or more stars in such a dense stellar system collide, their
+merger remnant looks and evolves quite different from garden variety
+stars.  While normal stars start there life at the main sequence, a
+merger remnant is born in a rather different part of the
+Hertzsprung-Russell diagram.  Even after an initial phase in which
+such a remnant settles into thermal equilibrium, the unusual mix of
+chemical composition as a function of radius will make such a stars
+markedly different in its evolution.
+<p>
+Observationally, some of these merger remnants will show up in the H-R
+diagram as blue stragglers: they are bluer than the turn-off, giving the
+semblance of being younger that the age of the other stars in their
+environment.  And in a sense, they are younger, as counted from their
+collisional formation, even though their progenitors (or in the case
+of multiple collisions, their ancestors) can share the same age as the
+majority of stars in the cluster.
+<p>
+There is great interest in studying the weird variety of single stars
+and especially binary stars, that can be formed in dense stellar
+systems.  Examples are Low-Mass X-ray Binaries and Millisecond Pulsars
+in orbit around other stars.  Both types of systems occur in globular
+clusters with a far larger abundance than in the rest of the galaxy,
+an indication that most of them are formed through collisions or at
+least close encounters.  In such encounters members in a binary can be
+swapped in a three-body or four-body encounter with other single stars
+or binaries.
+<p>
+The optical observations of blue stragglers, X-ray observations of
+compact binaries, and radio observations of millisecond pulsars,
+are just a few examples of the observational wealth of data that is
+currently available.  The obvious way to interpret these data is to
+model a dense stellar system in realistic detail, through large-scale
+simulations, taking into account all the relevant physics involved.
+<p>
+The main goal of the Maya project is to provide detailed models both
+for the way stars interact locally through encounters and collisions,
+and for the way a whole star cluster evolves under the influence of
+such processes.  In order to accomplish this, we will need to couple
+a rather heterogeneous collection of software modules, each describing
+different physical problems, such as stellar dynamics, stellar
+evolution, and stellar hydrodynamics.  Let us look at each of these
+three topics, in turn.
+
+<h3>
+Stellar Dynamics: The Gravitational Million-Body Problem
 </h3>
 
 When Newton developed classical mechanics, including the classical
@@ -117,9 +171,9 @@ task is to solve this problem very quickly.  Developing the software
 for running N-body simulations is equally challenging.  In globular
 cluster simulations, we are confronted with length scales spanning
 the range from kilometers to parsecs (a factor of more than
-10<sub>13</sub>), and with time scales spanning the range from
+10<sup>13</sup>), and with time scales spanning the range from
 milliseconds to the life time of the universe (a factor of more than
-10<sub>20</sub>).
+10<sup>20</sup>).
 <p>
 For mathematicians, there has been a steady flow of inspiration
 stemming from the N-body problem. When Newton laid the foundations of
@@ -130,13 +184,51 @@ foreshadowed by the work of C.L. Siegel in his book on Celestial
 Mechanics, a form of the gravitational N-body problem.
 
 <h3>
-Goal: Modeling Dense Stellar Systems
+History of Gravitational N-body Simulations
+</h3>
+
+Computer simulations of the gravitational N-body problem have a rich
+history.  The Figure below shows how the value of N has grown, from 16
+in the first publication by von Hoerner in 1960, till 128k, which is
+the state of the art at the moment.
+<p>
+<img hspace=3 src="dates.gif" align=left>
+Added to the figure are the predicted publication times for
+calculations with a quarter million, a half million and a million
+bodies, in 2010, 2015, and 2020, respectively, using future members of
+the GRAPE family.  The slope of the lines connecting the dots can be
+explained roughly by combining Moore's law, which tells us that
+computer speed increases by a factor ten every five years, and the
+fact that the cost of N-body simulations grows proportional to
+N<sup>3</sup>, implying a doubling in the maximum N value
+approximately every four years.
+<p>
+During the sixties, a type of Cambrian explosion of different
+approaching to simulating the N-body problem took place.  However,
+from 1970 onward, <a href="http://sverre.com/">Sverre Aarseth</a>'s
+programs, from Nbody1 through Nbody6, have dominated the field.
+For a detailed description of these programs, see his book
+<a href="http://www.cambridge.org/us/catalogue/catalogue.asp?isbn=0521432723">Gravitational
+N-Body Simulations</a>.
+<p>
+It took a quarter century for a competitor to appear, the Kira code
+in the <a href="">starlab</a>environment, which has been used from
+around 1995 onward, to simulate large N-body systems.  The current
+Maya project aims at developing the Kali code, as a third alternative
+to the Nbody6 and Kira codes.
+<p>
+The main difference between Kali and previous code will be the
+extremely modular nature of Kali, made possible in part by the fact
+that Kali is written in a modern scripting language, Ruby, whereas
+Nobody6 is written in Fortran, and Kira is written in C++.
+
+<h3>
+Stellar Evolution
 </h3>
 
 <h3>
-History
+Stellar Hydrodynamics
 </h3>
-NBODY6, Nemo, Starlab, ACS
 
 <h3>
 The Need for a New Approach
