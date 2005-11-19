@@ -1,3 +1,29 @@
+<html>
+<head>
+  <title> acsdoc.rb</title>
+  <link rel=StyleSheet href=".acsdoc-style.css" type="text/css" media="screen" />
+</head>
+
+<body bgcolor="white">
+
+
+<table border="0" width="70%">
+<tr>
+  <td>
+      Previous
+  </td>
+  <td>
+      <a href=title.html#TOC>ToC</a>
+  </td>
+  <td> 
+   <a href=../../index.html target="_top">Up</a>
+   </td>
+  <td>
+      <a href=acsdoc2.rb>Next</a>
+  </td>
+</tr>
+</table>
+
 #!/usr/bin/ruby
 #
 # acsdoc.rb
@@ -1716,3 +1742,24 @@ if del_flag
 end
 
 # :segment end:
+<table border="0" width="70%">
+<tr>
+  <td>
+      Previous
+  </td>
+  <td>
+      <a href=title.html#TOC>ToC</a>
+  </td>
+  <td> 
+   <a href=../../index.html target="_top">Up</a>
+   </td>
+  <td>
+      <a href=acsdoc2.rb>Next</a>
+  </td>
+</tr>
+</table>
+
+
+</body>
+</html>
+

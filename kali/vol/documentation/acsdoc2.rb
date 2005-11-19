@@ -1962,12 +1962,15 @@ ARGV.collect! do |a|
       a = nil
     end
     a
+  elsif a == "--keep-dot-files"
+    print "Obsolete option ignored:  --keep-dot-files\n"
+    a = nil
   elsif a == "--tolatex"
     tolatex_flag = true
     del_flag = false
     a = nil
   elsif a == "--reuseoutput"
-    print "reuse flag set\n"
+    print "reuse flag set\n" 
     setreuseoutput true
     readin_commandoutputs
     a = nil
@@ -1991,12 +1994,15 @@ end
 
 ARGV.compact!
 
+
 unless tolatex_flag
+  cplist = cpfiles.collect{|x| x[1]}
+  p cplist
   add_toc
   process_css
   dump_aux
-  create_navigations_for_cp_files(ARGV)
-  add_html_headeretc(ARGV)
+  create_navigations_for_cp_files(cplist)
+  add_html_headeretc(cplist)
   cpfiles.each{|x| make_notice_for_old_page(x[1],x[2])}
 end
 

@@ -2886,3 +2886,52 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1467.
+
+Bug for nested something... fixed hopefully.
+
+Sun Nov 20 03:35:47 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1467)
++++ acsdoc2.rb	(working copy)
+@@ -1962,12 +1962,15 @@
+       a = nil
+     end
+     a
++  elsif a == "--keep-dot-files"
++    print "Obsolete option ignored:  --keep-dot-files\n"
++    a = nil
+   elsif a == "--tolatex"
+     tolatex_flag = true
+     del_flag = false
+     a = nil
+   elsif a == "--reuseoutput"
+-    print "reuse flag set\n"
++    print "reuse flag set\n" 
+     setreuseoutput true
+     readin_commandoutputs
+     a = nil
+@@ -1991,12 +1994,15 @@
+ 
+ ARGV.compact!
+ 
++
+ unless tolatex_flag
++  cplist = cpfiles.collect{|x| x[1]}
++  p cplist
+   add_toc
+   process_css
+   dump_aux
+-  create_navigations_for_cp_files(ARGV)
+-  add_html_headeretc(ARGV)
++  create_navigations_for_cp_files(cplist)
++  add_html_headeretc(cplist)
+   cpfiles.each{|x| make_notice_for_old_page(x[1],x[2])}
+ end
+ 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc.rb
+Sending        documentation/acsdoc2.rb
+Sending        documentation/sample.rb
+Transmitting file data ..
