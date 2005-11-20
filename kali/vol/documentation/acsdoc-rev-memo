@@ -3687,3 +3687,24 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1482.
+
+listing in tex mode: Not quite okay for section headers.
+
+Sun Nov 20 18:26:21 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1482)
++++ acsdoc2.rb	(working copy)
+@@ -276,7 +276,7 @@
+     labeltext=nil
+     while s=instring.shift
+       header_candidate =s.split[0] 
+-      if /^=+$/ =~ header_candidate
++      if /^=+\s/ =~ s
+ 	header_text = s.sub(/=+/," ")
+ 	while /^\s+$/ =~ (s = instring.shift )
+ 	  header_text += s + " "
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

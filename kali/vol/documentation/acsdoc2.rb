@@ -276,7 +276,7 @@ END
     labeltext=nil
     while s=instring.shift
       header_candidate =s.split[0] 
-      if /^=+$/ =~ header_candidate
+      if /^=+\s/ =~ s
 	header_text = s.sub(/=+/," ")
 	while /^\s+$/ =~ (s = instring.shift )
 	  header_text += s + " "
