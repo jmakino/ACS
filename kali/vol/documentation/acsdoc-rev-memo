@@ -3731,3 +3731,20 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1484.
+Sun Nov 20 18:36:47 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1484)
++++ acsdoc2.rb	(working copy)
+@@ -438,6 +438,7 @@
+         if /^\s*$/ =~s 
+           new_indent = indent 
+           ostr.push(":modestart paragraph:")if type != 4
++        end
+         s1=s
+       end
+       if type == 4 and /^\s+/ =~s 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
