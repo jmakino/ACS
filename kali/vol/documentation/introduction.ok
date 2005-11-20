@@ -1,0 +1,642 @@
+	
+<tex>
+
+\title{{\sl Introduction to ACSDOC}\\
+\bigskip
+\bigskip
+}
+\author{\bf Piet Hut and Jun Makino}
+
+
+\maketitle
+\thispagestyle{empty}
+</tex>
+
+:tableofcontents:
+
+= Preface
+
+This is a short introduction to ACSDOC, a document-processing system
+which can generate latex or html files from a common, easy-to-write
+text.
+
+= Simple Example
+
+:command: cd examples; ../acsdoc2.rb simpleexample.ok
+:command: cd examples; ../acsdoc2.rb --tolatex simpleexample.ok
+:command: cd examples; latex simpleexample
+:command: cd examples; dvips -E -l 1 -x 1900 simpleexample
+:command: cd examples; convert simpleexample.ps simpleexample.jpeg
+
+The following is a simple example.
+
+  :include: examples/simpleexample.ok
+
+This one creates the output shown in figure ref(fig1)
+
+:figure: examples/simpleexample.jpeg 8cm fig1
+TeX output of simpleexample.ok
+
+Here, what is shown is the LaTeX output created by
+
+   acsdoc.rb --tolatex simplexample.ok
+   latex simplexample.tex
+
+You can also create an HTML page by
+
+   acsdoc.rb simpleexample.ok
+
+This command create a single HTML file, simpleexample.html, at the
+same directory as the source .ok file lives.
+
+<web>../examples/simpleexample.html|Here</web> is the created HTML
+file.
+
+= Installation and other requirements.
+
+== Installing acsdoc
+
+Acsdoc is provided as part of the ACS software system. It can be
+installed as a stand-alone software. acsdoc.rb is a single Ruby
+source program which require no other Ruby library files or
+whatsoever. So you can just copy it to your preferred location.
+
+Documents are all written in acsdoc format, and can be created by
+
+   make documents
+
+at the directory where the files are extracted from the archive.
+
+We plan to offer some more "packaged" way to install the command and
+documents.
+
+== System requirements
+
+Acsdoc has been tested on some distributions of Linux. It depends on
+UNIX operating system, and uses following commands/softwares
+
+* mv, rm, cp, cat, csh
+* convert from ImageMagic
+* latex, dvips
+* latex "subsubsection" package
+
+<tt>Dvips</tt> needs to understand options -E, -l, -x. If these
+options are not available with your dvips, well, you need to modify
+ascdoc.rb to supply appropriate options.
+
+= Tour over acsdoc funtionalities.
+
+Markups in acsdoc is largely similar to that of Rdoc or RD, but not
+exactly the same. Here we overview what is available with acsdoc.
+
+== Sections.
+
+One can start a new section (or subsection or chapter) by "="
+(multiple "=" such as "==" or "===" result in deeper level, like 1.1
+or 1.1.1)
+
+The following is a sample for deep sections.
+
+  :include: examples/sectionssample.ok
+
+:command: cd examples; ../acsdoc2.rb sectionssample.ok
+:command: cd examples; ../acsdoc2.rb --tolatex sectionssample.ok
+:command: cd examples; latex sectionssample
+:command: cd examples; dvips -E -l 1 -x 1900 sectionssample
+:command: cd examples; convert sectionssample.ps sectionssample.jpeg
+
+<web>../examples/sectionssample.html|Here</web> is the created HTML
+file.
+
+Up to five levels are supported, at least with HTML document. Latex
+support depends on what is available.
+
+== Itemized list
+
+What you can do with
+
+  <ul> or <ol>
+
+in HTML, or \begin{itemize} or
+\begin{enumerate} in Latex, you can do in a simpler way.
+
+For example,
+
+  Sample list
+  * Item 1.
+    More text for Item 1.
+  * Item 2
+    More on Item 2.
+
+gives
+
+---
+
+Sample list
+* Item 1.
+  More text for Item 1.
+* Item 2
+  More on Item 2.
+
+---
+
+A nested list can be made in the following way
+
+  Nested list
+  * Item 1.
+    More text for Item 1.
+    * nested item 1
+    * nested item 2
+  * Item 2
+    More on Item 2.
+
+gives
+
+---
+
+Nested list
+* Item 1.
+  More text for Item 1.
+  * nested item 1
+  * nested item 2
+* Item 2
+  More on Item 2.
+
+---
+
+  Numbered list
+  1. Item 1
+  2. Item 2
+
+gives:
+
+Numbered list
+1. Item 1
+2. Item 2
+
+Note that the identifier for numbered list is numnber + ".". The
+number itself is not used in actual numberiing. Thus,
+
+  Wrongly numbered list
+  1. Item 1
+  1. Item 2
+
+gives 
+
+
+Wrongly numbered list
+1. Item 1
+1. Item 2
+
+== "as is" text
+
+Texts which start with more than one space, if not starts with *, -,
+or number + ".", appear as is.
+
+Example:
+
+   This is as-is text
+
+This can be used to show program list etc.
+
+== Holizontal line
+
+Three or more  "-" characters 
+
+  ---
+
+will be converted to
+
+---
+
+Note that it should start at first column. If any space is before "-",
+it becomes "as is" text.
+
+== Including file
+
+  : include : test.rb
+
+without spaces between ":" and "include" gives:
+
+  :include: test.rb
+
+Note that this is exeption for the as-is text, since this :include:
+directive is interpreted even when it appears with preceeding space
+characters. Also, space characters before the :include: directive are
+added to each line of the included file. Thus
+
+               : include : test.rb
+
+gives
+
+               :include: test.rb
+
+== Including program listing
+
+You can use :inccode: in place of :include:. This may shows the
+included text in slightly different way.
+
+Include:
+
+  :include: test.rb
+
+Inccode:
+
+  :inccode: test.rb
+
+== Including  functions from source files
+
+For C/C++ or Ruby sources,  an automatic way to include one function
+from source code is provided. In Ruby, to include the listing of
+function buz fom class (or module)  Bar in file foo.rb, you can write
+
+  ##  :include: .foo.rb+buz+Bar
+
+For exaple, ":include: .acsdoc.rb+wordmarkup+Rdoctotex gives
+
+ :include: .acsdoc.rb+wordmarkup+Rdoctotex
+
+If buz is the only function with that name in that file, or if buz is
+the top-level function, you can omit the class name as
+
+  ##  :include: .foo.rb+buz
+
+The names of source files should be given to acsdoc.rb as command-line
+arguments. They should appear before real .ok files in the argument
+list.
+
+== Including code flagments.
+
+It is also possible to inclde a specified region from a source file.
+The region is (in the source file foo.rb) marked by "# :segment start: bar"
+and ""# :segment end: bar" (here, bar can be some arbitrary name,
+without space or other special characters), and is included by
+
+ ## :include: .foo.rb-bar
+
+For example, if the source file  segmentsample.rb is the following:
+
+ :include: segmentsample.rb
+
+By
+
+  ##  :include: .segmentsample.rb-body
+
+We can get the following:
+
+ :include: .segmentsample.rb-body
+
+== Including the output of some program
+
+There are followng five directives to run commands
+
+* :output: 
+* :command: 
+* :commandoutput:
+* :commandinput:
+* :commandinputoutput:
+
+and one additional directive
+
+* :prompt:
+
+
+Directive  :output: echo foo
+
+gives
+
+ :output: echo foo
+
+Directive  :commandoutput: setenv LANG C ; date
+ 
+ :commandoutput: setenv LANG C ; date
+
+Directive  :command: echo test
+
+gives nothint as output, but it is stull executed. Thus, it can be
+used to do whatever things you like.
+
+ :command: echo test
+
+Directive :commandoutput: echo test gives
+
+ :commandoutput: echo test
+
+Directive  :commandinput: cat > aho END
+requires actual input data followed by "END", like
+
+ #  :commandinput: cat > aho END
+ #aaa
+ #bbb
+ #ccc
+ #END
+
+Running this (without #) shows the input and in this case create a file "aho"
+
+  :commandinput: cat > aho END
+aaa
+bbb
+ccc
+END
+
+You can check if the file "aho" is made by:
+
+ #  :commandoutput: ls -al aho; pwd
+ #  :commandoutput: cat aho
+ # :command: rm aho
+
+The result is:
+
+  :commandoutput: ls -al aho; pwd
+  :commandoutput: cat aho
+  :command: rm aho
+
+Directive  :commandinputoutput: cat END is similar to :commandinput:,
+but shows the result in text.
+
+ # :commandinputoutput: cat END
+ # aaa
+ # bbb
+ # ccc
+ # END
+
+This (without #) gives you
+  :commandinputoutput: cat END
+aaa
+bbb
+ccc
+END
+
+Finally, :prompt: xxx> changes the prompt to "xxx>".
+
+Thus, 
+
+ # :prompt: yebisu>
+ # :commandoutput: echo test
+
+gives
+
+ :prompt: yebisu>
+ :commandoutput: echo test
+
+== Boldface, italic, and typewriter font
+
+<b>Boldface</b>, <em>italic</em>, and <tt>typewriter font</tt> are
+available. This part is generated from:
+
+  <b>Boldface</b>, <em>italic</em>, and <tt>typewriter font</tt>
+
+For single word (without no space), you can use a more compact form
+
+  Sample *boldface*, _italic_, and +typewriter+ fonts.
+
+which will look like:
+
+Sample *Boldface*, _italic_, and +typewriter+ fonts.
+
+These markups (probably) do not work within listing. It should work
+with itemized list.
+
+* *boldface* in an item.
+
+== Inline tex code.
+
+Any tex code fragment can be embedded using the following form
+
+   \<tex> tex codes </tex>
+
+It can span to multiple lines. For example,
+
+   Here, \<tex>$a= b$</tex> is a sample inline tex code.
+
+gives
+
+Here, <tex>$a= b$</tex> is a sample inline tex code.
+
+Since the use of tex codes is mostly to embed math formulae, one can
+write
+
+   <$ tex codes$>
+instead of
+
+   \<tex>$ tex codes $</tex>
+
+Thus,
+
+   Here, <$a= b$> is a sample inline tex code.
+
+gives
+
+Here, <$a= b$> is a sample inline tex code.
+
+
+
+== Numbered equations
+
+The following form:
+
+ #  :equation:
+ # \label{equationlabel}
+ # a=b.
+
+(without "#") gives 
+
+:equation:
+\label{equationlabel}
+a=b.
+
+The texts after :equation: directive (untill a blanck line) will be
+processed in Latex equation environment. Equation numbers are
+maintained within acsdoc. Anything which can be written in Latex
+equation environment can be used. To refer to the above equation, you
+can write
+
+   equation ref(equation label)
+which gives "equation ref(equationlabel)." The label cannot contain
+space.
+
+Latex eqnarray environment can be used as
+
+ # :eqnarray:
+ # \label{arrayeq}
+ # a &=& b,\nonumber\\
+ # c &=&d.
+
+:eqnarray:
+\label{arrayeq}
+a &=& b,\nonumber\\
+c &=&d.
+
+Note that the equation number counter of acsdoc assumes that only one
+number is used even when eqnarray is used. Thus, if you do
+
+ # :eqnarray:
+ # \label{arrayeq}
+ # a &=& b,\\
+ # c &=&d.
+
+You get:
+
+
+:eqnarray:
+\label{arrayeq}
+a &=& b,\\
+c &=&d.
+
+However, the next equation will have wrong number like:
+
+:equation:
+\label{testeq}
+E=mc^2.
+
+== Figures
+
+As in latex, one can make numbered figures. The syntax is
+
+ # :figure: sample.gif 5cm acslogo
+ # The ACS logo
+
+Which gives
+
+:figure: sample.gif 5cm acslogo
+The ACS logo
+
+Here, <em>sample.gif</em> is the name of the image file, which can have any
+format which is understood by "convert" command of ImageMagick. _5cm_
+is the horizontal size of the image (meaningful in Latex conversion
+only), and _acslogo_ is the label. The text in the next and following
+lines, untill a blank line appear, become the figure caption.
+Thus, this figure can be refereed to by
+
+      Figure ref (acslogo)
+(without space between ref and (acslogo)). 
+Here is reference to this figure: figure ref(acslogo).
+
+== More on references
+
+:label: moreonreferences
+
+A section (or chapter) can be labeled by the :label: directive as
+
+  #  :label: label
+
+For examle, this section is labeled as
+
+ # :label: moreonreferences
+
+And can be referenced as
+
+ # Section ref (sect:moreonreferences) is this section.
+
+Here is the output:
+
+Section ref(sect:moreonreferences) is this section.
+
+== Multiple input files
+
+When acsdoc is applied to multiple input (.ok) files, multiple HTML
+files (one for one .ok file) is created, but each file will have
+navigation links to "previous" and "next" files. The order of the
+files is simply the order given in the command line argument.
+
+The navigation link has "Up" entry, which by default does not point to
+an URL. It can be specified by setting a value in the initialization
+file as
+
+  @@toppagefilename= "some_file_name"
+For example,
+
+  @@toppagefilename= "../index.html"
+would point to <tt>index.html</tt> in the parent directory.
+
+
+== Table of conents
+
+The :tableofcontents: directive creates the table of contents. Example:
+
+ # :tableofcontents:
+It should appear as only word in one line.
+
+== Links to external URLs.
+
+One can use \<web> tag to make links to external URL. For example,
+
+
+ <web>http://www.artcompsci.org|ACS homepage</web>
+creates a link:  <web>http://www.artcompsci.org|ACS homepage</web>.
+
+== Inline image
+
+If you want to have an inline image, you can use the form
+
+  link: image_file
+(without space after ":"). For example,
+  link: sample.gif
+gives
+link:sample.gif
+
+Note that "link: ..." should appear as single line without other
+words.
+
+Note that here the link is a direct link to the image file. Thus, if
+you move the generated HTML file by "--directory" option or by hand,
+you need to guarantee that image files are in the correct location.
+
+
+
+= Initialization file
+
+Initialization file is searched in the order of $ACSDOCINITRC,
+./.acsdocinitrc, and ~/.acsdocinitrc. The things you can write in the
+initialization file is Ruby statement. A typical way to use is
+something like:
+
+   # acsdoc initialization file
+   print "Loading the initialization file for ascdoc\n"
+   @@addtional_preambles_for_inline_tex = "\\usepackage{epsf}"
+   @@addtional_commands_for_inline_tex = "\\input macros"
+This one allows the use of epsf package (style file), and macros.tex
+is included after \begin{document}.
+
+
+= Wish lists
+
+* citations
+* tables
+
+
+
+= Tips
+
+== Change the document class for Latex
+
+To change the document class, supply appropriate value to variables
+<tt>@@basic_preambles_for_tex</tt> and <tt>@@headers</tt>  in the initialization file
+(.acsdocinitrc). For example,
+
+  @@basic_preambles_for_tex = \<\<END
+  \\documentclass{article}
+  \\usepackage{graphicx}
+  END
+  @@header=[
+  "chapter","section","subsection","subsubsection",
+  "subsubsubsection", "subsubsubsubsection"]
+
+is appropriate for article class. First item of <tt>@@header</tt> is
+not used. Default is "book" class.
+
+= Sandbox
+
+Hmm,  $, ?, _ ...
+
+Are, does blank line still work as new paragraph?
+
+This should be a new paragraph.
+
+This also.
+
+
+   This is as-is text with some tags <xxx>, <tt>, <b>, \begin{xxx}
+
+Hmm.
+

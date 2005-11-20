@@ -3894,3 +3894,45 @@ word with preceeding space chars).
 Mon Nov 21 03:36:37 JST 2005
 Sending        documentation/acsdoc-rev-memo
 Transmitting file data .
+Committed revision 1490.
+Mon Nov 21 04:43:02 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1490)
++++ acsdoc2.rb	(working copy)
+@@ -183,7 +183,7 @@
+   def latex_process_tex_mathmarkup(instring)
+     ostring=[]
+     while s = instring.shift
+-      if s !~ /^(\s+)<\$(.+?)\$>/
++      if s !~ /^(\s+)(.+)<\$(.+?)\$>/
+         s.gsub!(/<\$(.+?)\$>/){"<tex>$"+$1+"$</tex>"}
+       end
+       ostring.push s
+@@ -534,7 +534,7 @@
+   def process_toc_latex(instring)
+     ostring=[]
+     while s=instring.shift
+-      if /:tableofcontents:/ =~ s
++      if /^(\s*):tableofcontents:/ =~ s
+ 	ostring.push("\\newpage\n\\tableofcontents\n\\newpage\n")
+       else
+ 	ostring.push(s)
+@@ -1383,8 +1383,8 @@
+ 
+ @@filefortoc = []
+   def process_toc(instring,filename)
+-    if instring =~ /:tableofcontents:/
+-      instring=instring.gsub(/:tableofcontents:/,"TOCTOCTOCTOC")
++    if instring =~ /^(\s*):tableofcontents:/
++      instring=instring.gsub(/^(\s*):tableofcontents:/,"TOCTOCTOCTOC")
+       @@filefortoc.push(filename)
+     end
+     instring
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Adding         documentation/examples
+Adding         documentation/examples/sectionssample.ok
+Adding         documentation/examples/simpleexample.ok
+Adding         documentation/introduction.ok
+Transmitting file data ...

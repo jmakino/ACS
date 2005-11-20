@@ -183,7 +183,7 @@ module Rdoctotex
   def latex_process_tex_mathmarkup(instring)
     ostring=[]
     while s = instring.shift
-      if s !~ /^(\s+)<\$(.+?)\$>/
+      if s !~ /^(\s+)(.+)<\$(.+?)\$>/
         s.gsub!(/<\$(.+?)\$>/){"<tex>$"+$1+"$</tex>"}
       end
       ostring.push s
@@ -534,7 +534,7 @@ END
   def process_toc_latex(instring)
     ostring=[]
     while s=instring.shift
-      if /:tableofcontents:/ =~ s
+      if /^(\s*):tableofcontents:/ =~ s
 	ostring.push("\\newpage\n\\tableofcontents\n\\newpage\n")
       else
 	ostring.push(s)
@@ -1383,8 +1383,8 @@ module Acsdoc
 
 @@filefortoc = []
   def process_toc(instring,filename)
-    if instring =~ /:tableofcontents:/
-      instring=instring.gsub(/:tableofcontents:/,"TOCTOCTOCTOC")
+    if instring =~ /^(\s*):tableofcontents:/
+      instring=instring.gsub(/^(\s*):tableofcontents:/,"TOCTOCTOCTOC")
       @@filefortoc.push(filename)
     end
     instring
