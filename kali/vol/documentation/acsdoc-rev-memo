@@ -3587,3 +3587,60 @@ Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Sending        documentation/sample.rb
 Transmitting file data ..
+
+Rev 1479 edited...
+Sun Nov 20 17:43:11 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1480)
++++ acsdoc2.rb	(working copy)
+@@ -655,8 +655,8 @@
+ 
+   @@htmllisttypes={
+     "paragraph"=>"p",
+-    "itemize"->"ul",
+-    "nlist"-> "ol",
++    "itemize"=>"ul",
++    "nlist"=> "ol",
+     "verbatim"=>"pre"}
+ 
+ 
+@@ -763,19 +763,19 @@
+     inlisting = false
+     while s=instring.shift
+       if s=~ /\:modestart (\S+)\:$/
+-        ostr.push "<#{@@htmllistyypes[$1]}>"
++        ostr.push "<#{@@htmllisttypes[$1]}>"
+         inlisting = ($1 == "verbatim") 
+-        print "Found  #{$1}, now inlisting=#{inlisting}\n"
+       elsif s=~ /\:modeend (\S+)\:$/
+         inlisting = false
+-        print "Found  #{$1}, now inlisting=#{inlisting}\n"
+-        ostr.push "</#{@@htmllistyypes[$1]}>"
++        ostr.push "</#{@@htmllisttypes[$1]}>"
+       elsif s=~ /\:item\:$/
+         ostr.push "<li> " if $1 != "paragraph"
+       else
+         ostr.push(inlisting ? process_tex_specials_in_listing(s): process_tex_special_chars(s))
++#        ostr.push(s)
+       end
+     end
++    p ostr
+     ostr
+   end
+ 
+@@ -1445,8 +1445,9 @@
+       tmp2= process_tex_labels(tmp2,dirname);
+       tmp2= process_tex_weblinks(tmp2)
+       tmp2= process_some_special_characters(tmp2)
+-      tmp2= latex_process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
+-      tmp2= post_process_paragraphs(instring).join("\n")
++      tmp2= process_single_paragraphs_lists_etc(tmp2,0,0,1,0).join("\n")
++#      tmp2= latex_process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
++#      tmp2= post_process_paragraphs(tmp2).join("\n")
+       tmp2= process_link(tmp2)
+       tmp2=process_wordmarkup(tmp2)
+ 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
