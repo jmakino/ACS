@@ -404,6 +404,8 @@ END
   end
 
   def latex_process_single_paragraphs_lists_etc(instring,indent,type,new,vlimit)
+    instring = instring.split("\n") if instring.class != Array
+
     s_prev = ""
     ostr=[]
     ostr.push(":modestart "+@@latexlisttypes[type][1]+":")  if new
@@ -419,6 +421,8 @@ END
       header_candidate =s.split[0] 
       new_item = nil
       new_type = 1
+      @@intex_state = 1 if s == "<tex>" 
+      @@intex_state = 0 if s == "</tex>" 
       if @@intex_state == 1
 	new_type = type
 	new_indet = indent
@@ -495,7 +499,7 @@ END
         print "Found  #{$1}, now inlisting=#{inlisting}\n"
         ostr.push "\\end{#{$1}}" if $1 != "paragraph"
       elsif s=~ /\:item\:$/
-        ostr.push "\\item" if $1 != "paragraph"
+        ostr.push "\\item " if $1 != "paragraph"
       else
         p s
         p process_tex_special_chars(s)
@@ -649,9 +653,18 @@ module Acsdoc
     ["nlist", "ol"],
     ["verbatim","pre"]]
 
+  @@htmllisttypes={
+    "paragraph"=>"p",
+    "itemize"->"ul",
+    "nlist"-> "ol",
+    "verbatim"=>"pre"}
+
 
   def process_tex_specials(s)
     s.gsub(/\\<tex>/,"&lt;tex>").gsub(/<\/tex>/,"&lt;/tex>")
+  end
+  def process_tex_specials_in_listing(s)
+    s.gsub(/</,"&lt;")
   end
   def process_single_paragraphs_lists_etc(instring,indent,type,new,vlimit)
     instring = instring.split("\n") if instring.class != Array
@@ -742,6 +755,30 @@ module Acsdoc
     end	
     ostr
   end
+
+
+
+  def post_process_paragraphs(instring)
+    ostr=[]
+    inlisting = false
+    while s=instring.shift
+      if s=~ /\:modestart (\S+)\:$/
+        ostr.push "<#{@@htmllistyypes[$1]}>"
+        inlisting = ($1 == "verbatim") 
+        print "Found  #{$1}, now inlisting=#{inlisting}\n"
+      elsif s=~ /\:modeend (\S+)\:$/
+        inlisting = false
+        print "Found  #{$1}, now inlisting=#{inlisting}\n"
+        ostr.push "</#{@@htmllistyypes[$1]}>"
+      elsif s=~ /\:item\:$/
+        ostr.push "<li> " if $1 != "paragraph"
+      else
+        ostr.push(inlisting ? process_tex_specials_in_listing(s): process_tex_special_chars(s))
+      end
+    end
+    ostr
+  end
+
 
 
   def setreuseoutput(value)
@@ -1408,7 +1445,8 @@ module Acsdoc
       tmp2= process_tex_labels(tmp2,dirname);
       tmp2= process_tex_weblinks(tmp2)
       tmp2= process_some_special_characters(tmp2)
-      tmp2=process_single_paragraphs_lists_etc(tmp2,0,0,1,0).join("\n")
+      tmp2= latex_process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
+      tmp2= post_process_paragraphs(instring).join("\n")
       tmp2= process_link(tmp2)
       tmp2=process_wordmarkup(tmp2)
 
