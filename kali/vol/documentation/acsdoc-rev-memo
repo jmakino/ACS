@@ -3751,6 +3751,7 @@ Transmitting file data ..
 Committed revision 1485.
 
 Fixed new paragraph.
+
 Sun Nov 20 18:40:26 JST 2005
 Sending        documentation/acsdoc-rev-memo
 Transmitting file data .
@@ -3882,3 +3883,14 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1489.
+
+changes not to run commands if :command: etc are not the first word of
+a line. Similar change for <$texcode$> (not processed if the first
+word with preceeding space chars).
+
+
+
+Mon Nov 21 03:36:37 JST 2005
+Sending        documentation/acsdoc-rev-memo
+Transmitting file data .
