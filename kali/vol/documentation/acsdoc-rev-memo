@@ -3644,3 +3644,46 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1481.
+
+Still not happy for special characters in HTML...
+
+Sun Nov 20 18:02:04 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1481)
++++ acsdoc2.rb	(working copy)
+@@ -656,7 +656,7 @@
+   @@htmllisttypes={
+     "paragraph"=>"p",
+     "itemize"=>"ul",
+-    "nlist"=> "ol",
++    "enumerate"=> "ol",
+     "verbatim"=>"pre"}
+ 
+ 
+@@ -771,7 +771,7 @@
+       elsif s=~ /\:item\:$/
+         ostr.push "<li> " if $1 != "paragraph"
+       else
+-        ostr.push(inlisting ? process_tex_specials_in_listing(s): process_tex_special_chars(s))
++        ostr.push(inlisting ? process_tex_specials_in_listing(s): process_tex_specials(s))
+ #        ostr.push(s)
+       end
+     end
+@@ -1445,9 +1445,9 @@
+       tmp2= process_tex_labels(tmp2,dirname);
+       tmp2= process_tex_weblinks(tmp2)
+       tmp2= process_some_special_characters(tmp2)
+-      tmp2= process_single_paragraphs_lists_etc(tmp2,0,0,1,0).join("\n")
+-#      tmp2= latex_process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
+-#      tmp2= post_process_paragraphs(tmp2).join("\n")
++#      tmp2= process_single_paragraphs_lists_etc(tmp2,0,0,1,0).join("\n")
++      tmp2= latex_process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
++      tmp2= post_process_paragraphs(tmp2).join("\n")
+       tmp2= process_link(tmp2)
+       tmp2=process_wordmarkup(tmp2)
+ 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
