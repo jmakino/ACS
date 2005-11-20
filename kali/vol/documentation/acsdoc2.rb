@@ -1326,10 +1326,10 @@ module Acsdoc
   end
 
   def process_tex_weblinks(instring)
-    ostring=instring.gsub(/(\s)(\\)<web>(.+?)<\/web>/m){ linktext = $3
+    ostring=instring.gsub(/(\s|^)(\\*)<web>(.+?)<\/web>/m){ linktext = $3
       blank=$1
       p linktext  if $DEBUG
-      if $2 != ""
+      if $2 == ""
         if linktext =~ /(.*)\|(.*)/m
           url=($1)
           text=$2
@@ -1339,7 +1339,7 @@ module Acsdoc
         s="<a href=#{url}>#{text}</a>"
         s=blank+s.gsub(/\s/m," ")
       else
-        s="&lt;web> #{linktext}&lt;/web>"
+        s=blank+"&lt;web>#{linktext}&lt;/web>"
       end
       s
     }
@@ -1347,7 +1347,8 @@ module Acsdoc
 
 
   def process_some_special_characters(instring)
-    instring.gsub(/\\>/m,">")
+    instring.gsub!(/\\>/m,">")
+    instring.gsub!(/\\</m,"&lt;")
     ostring=""
     instring.each{|x| ostring += expand(x)}
     ostring
@@ -1806,7 +1807,7 @@ END
     name.gsub(/\.((cp)|(ok))$/,".html")
   end
   def create_navigations_for_cp_files(args)
-    add_navigation_links(args)
+    add_navigation_links(args) if args.size > 1
   end
 
   
@@ -1909,8 +1910,20 @@ Please update your bookmarks.
 END
       }
   end
-end
 
+  def movetosubdirectory(cplist, directory_name)
+    if File.exist?(directory_name) and not File.directory?(directory_name)
+      raise "#{directory_name} is a file. Cannot move texts there"
+    end
+    Dir.mkdir(directory_name) unless File.exist?(directory_name)
+    if  File.exist?(directory_name+"/.imgs")
+      files = Dir.glob(directory_name+"/.imgs/*")
+      File.delete(*files) if files.size > 0
+      Dir.rmdir(directory_name+"/.imgs") 
+    end
+    system "mv -f  #{cplist.join(" ")} .imgs #{@@stylefilename} #{directory_name}"
+  end
+end
 
 
 # :segment start: acsdoc
@@ -2014,19 +2027,10 @@ unless tolatex_flag
   create_navigations_for_cp_files(cplist)
   add_html_headeretc(cplist)
   cpfiles.each{|x| make_notice_for_old_page(x[1],x[2])}
+  movetosubdirectory(cplist, directory_name) if directory_name
 end
 
-if directory_name
-  if File.exist?(directory_name) and not File.directory?(directory_name)
-    raise "#{directory_name} is a file. Cannot move texts there"
-  end
-  Dir.mkdir(directory_name) unless File.exist?(directory_name)
-  if  File.exist?(directory_name+"/.imgs")
-    files = Dir.glob(directory_name+"/.imgs/*")
-    File.delete(*files) if files.size > 0
-    Dir.rmdir(directory_name+"/.imgs") 
-  end
-  system "mv -f  #{ARGV.join(" ")} .imgs #{directory_name}"
-end
+
+
 
 # :segment end:

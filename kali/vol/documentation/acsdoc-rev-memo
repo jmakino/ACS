@@ -3202,3 +3202,133 @@ Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Sending        documentation/ch03.ok
 Transmitting file data ..
+
+Now \<web></web> is preserved, at least for HTML.
+
+Well, things like <<END does not work either. Some more care is
+necessary. It works for LateX.
+
+Problem: It is not clear how to avoid marking of proper tabs. Since we
+use
+
+  <tt>, <web>, <i>, <b> <$....$> <tex>
+
+There must be a way to control whether they are interpreted or not.
+
+Implicit rule: If not in the usual paragraph mode. markup is
+suppressed. (I.e., only in verbatim or preformatted mode,)
+
+Explicit way to do markup in listing mode (verbatim etc)
+
+:markuplisting:
+
+Implementation:
+
+Current scheme for latex:
+
+<tex>,<web> processed before putting paragraph mark
+other special characters as well.
+<tt> etc are processed after putting paragraph mark.
+
+
+
+
+
+
+Sun Nov 20 15:38:42 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1477)
++++ acsdoc2.rb	(working copy)
+@@ -1326,10 +1326,10 @@
+   end
+ 
+   def process_tex_weblinks(instring)
+-    ostring=instring.gsub(/(\s)(\\)<web>(.+?)<\/web>/m){ linktext = $3
++    ostring=instring.gsub(/(\s|^)(\\*)<web>(.+?)<\/web>/m){ linktext = $3
+       blank=$1
+       p linktext  if $DEBUG
+-      if $2 != ""
++      if $2 == ""
+         if linktext =~ /(.*)\|(.*)/m
+           url=($1)
+           text=$2
+@@ -1339,7 +1339,7 @@
+         s="<a href=#{url}>#{text}</a>"
+         s=blank+s.gsub(/\s/m," ")
+       else
+-        s="&lt;web> #{linktext}&lt;/web>"
++        s=blank+"&lt;web>#{linktext}&lt;/web>"
+       end
+       s
+     }
+@@ -1347,7 +1347,8 @@
+ 
+ 
+   def process_some_special_characters(instring)
+-    instring.gsub(/\\>/m,">")
++    instring.gsub!(/\\>/m,">")
++    instring.gsub!(/\\</m,"&lt;")
+     ostring=""
+     instring.each{|x| ostring += expand(x)}
+     ostring
+@@ -1806,7 +1807,7 @@
+     name.gsub(/\.((cp)|(ok))$/,".html")
+   end
+   def create_navigations_for_cp_files(args)
+-    add_navigation_links(args)
++    add_navigation_links(args) if args.size > 1
+   end
+ 
+   
+@@ -1909,10 +1910,22 @@
+ END
+       }
+   end
++
++  def movetosubdirectory(cplist, directory_name)
++    if File.exist?(directory_name) and not File.directory?(directory_name)
++      raise "#{directory_name} is a file. Cannot move texts there"
++    end
++    Dir.mkdir(directory_name) unless File.exist?(directory_name)
++    if  File.exist?(directory_name+"/.imgs")
++      files = Dir.glob(directory_name+"/.imgs/*")
++      File.delete(*files) if files.size > 0
++      Dir.rmdir(directory_name+"/.imgs") 
++    end
++    system "mv -f  #{cplist.join(" ")} .imgs #{@@stylefilename} #{directory_name}"
++  end
+ end
+ 
+ 
+-
+ # :segment start: acsdoc
+ include Acsdoc
+ 
+@@ -2014,19 +2027,10 @@
+   create_navigations_for_cp_files(cplist)
+   add_html_headeretc(cplist)
+   cpfiles.each{|x| make_notice_for_old_page(x[1],x[2])}
++  movetosubdirectory(cplist, directory_name) if directory_name
+ end
+ 
+-if directory_name
+-  if File.exist?(directory_name) and not File.directory?(directory_name)
+-    raise "#{directory_name} is a file. Cannot move texts there"
+-  end
+-  Dir.mkdir(directory_name) unless File.exist?(directory_name)
+-  if  File.exist?(directory_name+"/.imgs")
+-    files = Dir.glob(directory_name+"/.imgs/*")
+-    File.delete(*files) if files.size > 0
+-    Dir.rmdir(directory_name+"/.imgs") 
+-  end
+-  system "mv -f  #{ARGV.join(" ")} .imgs #{directory_name}"
+-end
+ 
++
++
+ # :segment end:
+Sending        documentation/Makefile
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

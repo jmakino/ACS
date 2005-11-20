@@ -4,3 +4,5 @@ SRC =  title.ok pref.ok  ch01.ok  ch02.ok  ch03.ok  ch04.ok \
 TARGET = volume5
 
 include ../etc/Makefile.inc
+
+include Makefile.local
