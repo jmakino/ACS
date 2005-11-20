@@ -38,7 +38,7 @@ module Rdoctotex
     "subsubsubsection"]
 
   @@latexlisttypes=[
-    ["paragraph",""],
+    ["paragraph","paragraph"],
     ["ulist*","itemize"],
     ["ulist-","itemize"],
     ["nlist", "enumerate"],
@@ -402,21 +402,19 @@ END
     end
     ostring
   end
-  
+
   def latex_process_single_paragraphs_lists_etc(instring,indent,type,new,vlimit)
     s_prev = ""
     ostr=[]
-    ostr.push("\\begin{"+@@latexlisttypes[type][1]+"}")  if new and (type >0)
-
+    ostr.push(":modestart "+@@latexlisttypes[type][1]+":")  if new
     intex = nil
-
-#
-# intex is used to suppress formatting. As you can see from the code below, 
-# suppression can take place only if "<tex>" appears as single item in one 
-# line, and suppression stops only of "</tex>" appears as single item in one
-# line. So if you use them in a more complex ways, it might cause strange 
-# problems.
-#
+    #
+    # intex is used to suppress formatting. As you can see from the code below, 
+    # suppression can take place only if "<tex>" appears as single item in one 
+    # line, and suppression stops only of "</tex>" appears as single item in one
+    # line. So if you use them in a more complex ways, it might cause strange 
+    # problems.
+    #
     while s=instring.shift
       header_candidate =s.split[0] 
       new_item = nil
@@ -425,27 +423,26 @@ END
 	new_type = type
 	new_indet = indent
 	s1 = s
-      elsif (/^(\*|\-|\d+\.)$/ =~ header_candidate) 
-	new_type = 1+[/\*/,/\-/,/\d+\./].collect{
-	  |x| x=~ header_candidate}.index(0)
-
-	s1 = s.sub(/\S+\s/){|x| " "*x.length} 
-	new_indent = /\S/ =~ s1
-	new_item = 1
+      elsif (header_candidate =~ /^(\*|\-|\d+\.)$/)
+        new_type = 1+[/\*/,/\-/,/\d+\./].collect{|x|
+          x=~ header_candidate}.index(0)
+        s1 = s.sub(/\S+\s/){|x| " "*x.length} 
+        new_indent = /\S/ =~ s1
+        new_item = 1
       else
-	new_indent = /\S/ =~ s
-	new_indent = indent if /^\s*$/ =~s 
-	s1=s
+        new_indent = /\S/ =~ s
+        new_indent = indent if /^\s*$/ =~s 
+        s1=s
       end
       if type == 4 and /^\s+/ =~s 
-	s1 = s
-	new_type=4
-	new_item = nil
+        s1 = s
+        new_type=4
+        new_item = nil
       end
       if new_indent > indent and new_item == nil
 	new_type = 4 
       end
-      s1= process_tex_special_chars(s1) unless new_type == 4
+#      s1= process_tex_special_chars(s1) unless new_type == 4
       if new_indent > indent
 	instring.unshift(s)
 	new=1
@@ -462,12 +459,12 @@ END
       elsif new_indent == indent
 	if new_item
 	  if new_type != type
-	    ostr.push("\\end{"+@@latexlisttypes[type][1]+"}")
+	    ostr.push(":modeend "+@@latexlisttypes[type][1]+":")
 	    instring.unshift(s)
 	    ostr+= latex_process_single_paragraphs_lists_etc(instring,new_indent,
 						       new_type,1,vlimit)
 	  end
-	  ostr.push("\\item ") if new_type < 4
+	  ostr.push(":item:") if new_type < 4
 	end
 	ostr.push s1
       else
@@ -475,7 +472,7 @@ END
 	  indent = new_indent
 	  ostr.push s1
 	else
-	  ostr.push("\\end{"+@@latexlisttypes[type][1]+"}")
+	  ostr.push(":modeend "+@@latexlisttypes[type][1]+":")
 	  instring.unshift(s)
 	  return ostr
 	end
@@ -484,6 +481,31 @@ END
     end	
     ostr
   end
+
+  def latex_post_process_paragraphs(instring)
+    ostr=[]
+    inlisting = false
+    while s=instring.shift
+      if s=~ /\:modestart (\S+)\:$/
+        ostr.push "\\begin{#{$1}}" if $1 != "paragraph"
+        inlisting = ($1 == "verbatim") 
+        print "Found  #{$1}, now inlisting=#{inlisting}\n"
+      elsif s=~ /\:modeend (\S+)\:$/
+        inlisting = false
+        print "Found  #{$1}, now inlisting=#{inlisting}\n"
+        ostr.push "\\end{#{$1}}" if $1 != "paragraph"
+      elsif s=~ /\:item\:$/
+        ostr.push "\\item" if $1 != "paragraph"
+      else
+        p s
+        p process_tex_special_chars(s)
+        p inlisting
+        ostr.push(inlisting ? s: process_tex_special_chars(s))
+      end
+    end
+    ostr
+  end
+
 
   def post_process_verbatim(instring)
     ostr=[]
@@ -529,6 +551,7 @@ END
     s=latex_process_tex_weblinks(s)
     s=latex_find_and_process_figures(s,dirname)
     s=latex_process_single_paragraphs_lists_etc(s,0,0,1,0)
+    s=latex_post_process_paragraphs(s)
     s=post_process_verbatim(s)
     s=latex_process_link(s)
     s=latex_process_wordmarkup(s,dirname)
