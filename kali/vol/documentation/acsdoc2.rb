@@ -435,7 +435,9 @@ END
         new_item = 1
       else
         new_indent = /\S/ =~ s
-        new_indent = indent if /^\s*$/ =~s 
+        if /^\s*$/ =~s 
+          new_indent = indent 
+          ostr.push(":modestart paragraph:")if type != 4
         s1=s
       end
       if type == 4 and /^\s+/ =~s 

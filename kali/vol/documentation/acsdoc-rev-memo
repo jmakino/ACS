@@ -3708,3 +3708,26 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1483.
+
+New paragraph does not start correctly within HTML.
+
+Sun Nov 20 18:35:54 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1483)
++++ acsdoc2.rb	(working copy)
+@@ -435,7 +435,9 @@
+         new_item = 1
+       else
+         new_indent = /\S/ =~ s
+-        new_indent = indent if /^\s*$/ =~s 
++        if /^\s*$/ =~s 
++          new_indent = indent 
++          ostr.push(":modestart paragraph:")if type != 4
+         s1=s
+       end
+       if type == 4 and /^\s+/ =~s 
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
