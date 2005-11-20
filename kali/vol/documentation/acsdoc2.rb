@@ -183,7 +183,10 @@ module Rdoctotex
   def latex_process_tex_mathmarkup(instring)
     ostring=[]
     while s = instring.shift
-      ostring.push(s.gsub(/<\$(.+?)\$>/){"<tex>$"+$1+"$</tex>"})
+      if s !~ /^(\s+)<\$(.+?)\$>/
+        s.gsub!(/<\$(.+?)\$>/){"<tex>$"+$1+"$</tex>"}
+      end
+      ostring.push s
     end
     ostring
   end
@@ -303,9 +306,9 @@ END
 	end
 	ostring.push(header)
 	@@latex_section_number+=1
-	print "label and section header ", labeltext, header_text,"\n"
+#	print "label and section header ", labeltext, header_text,"\n"
 	ss = labeltext ? labeltext : header_text
-	p ss
+#	p ss
 	@@latex_section_table.store(ss, @@latex_section_number)
 	ostring.push("\\label{sect:#{@@latex_section_number}}")
 	instring.unshift(s)
@@ -496,17 +499,17 @@ END
       if s=~ /\:modestart (\S+)\:$/
         ostr.push "\\begin{#{$1}}" if $1 != "paragraph"
         inlisting = ($1 == "verbatim") 
-        print "Found  #{$1}, now inlisting=#{inlisting}\n"
       elsif s=~ /\:modeend (\S+)\:$/
         inlisting = false
-        print "Found  #{$1}, now inlisting=#{inlisting}\n"
         ostr.push "\\end{#{$1}}" if $1 != "paragraph"
       elsif s=~ /\:item\:$/
         ostr.push "\\item " if $1 != "paragraph"
       else
-        p s
-        p process_tex_special_chars(s)
-        p inlisting
+        if $DEBUG
+          p s 
+          p process_tex_special_chars(s)
+          p inlisting
+        end
         ostr.push(inlisting ? s: process_tex_special_chars(s))
       end
     end
@@ -778,7 +781,7 @@ module Acsdoc
 #        ostr.push(s)
       end
     end
-    p ostr
+    p ostr if $DEBUG
     ostr
   end
 
@@ -884,7 +887,6 @@ module Acsdoc
       ostring= ostring.chomp+"\n"
       @previous_is_command = true;
     end
-    p ostring
     ostring
   end
 
@@ -1006,29 +1008,29 @@ module Acsdoc
       lineno += 1
       if s.index("#") == 0
         print "comment line skipped ",s, "\n"
-      elsif s =~ /:in.*code:/ and s.index("\":inccode:\"")==nil
+      elsif s =~ /^(\s*):in.*code:/ and s.index("\":inccode:\"")==nil
 	s.sub!(/:in.*code:/, ':include: ')
         raise "failed to open file #{s.split[1]}" unless file_is_there(s.split[1])
 	ostring = ostring +  @@verbatim_separator
 	ostring = ostring +  s
 	ostring = ostring +  @@verbatim_separator
-      elsif loc = check_tag(s,":output:")
+      elsif  s =~ /^(\s*):output:/
 	ostring = ostring +  add_output(s, dirname, ":output:",fname,lineno)
-      elsif loc = s.index(":commandoutput:")  and s.index("\":commandoutput:\"")==nil
+      elsif  s =~ /^(\s*):commandoutput:/  and s.index("\":commandoutput:\"")==nil
 	ostring = ostring +  add_output(s,  dirname, ":commandoutput:",
 					fname,lineno)
-      elsif loc = s.index(":commandnooutput:")  and s.index("\":commandnooutput:\"")==nil
+      elsif  s=~ /^(\s*):commandnooutput:/  and s.index("\":commandnooutput:\"")==nil
 	ostring = ostring +  add_output(s,  dirname, ":commandnooutput:",
 					fname,lineno)
-      elsif loc = s.index(":command:")  and s.index("\":command:\"")==nil
+      elsif  s=~ /^(\s*):command:/  and s.index("\":command:\"")==nil
 	ostring = ostring +  add_output(s,  dirname, ":command:",
 					fname,lineno)
-      elsif loc = s.index(":prompt:")  and s.index("\":prompt:\"")==nil
+      elsif  s=~/^(\s*):prompt:/ and s.index("\":prompt:\"")==nil
 	set_prompt(s)
-      elsif loc = check_tag(s,":commandinputoutput:")
+      elsif s=~ /^(\s*):commandinputoutput:/
 	ostring = ostring +  command_with_input(s,":commandinputoutput:", 
 				      instring,dirname,true)
-      elsif loc = check_tag(s,":commandinput:")
+      elsif s =~ /^(\s*):commandinput:/
 	ostring = ostring +  command_with_input(s,":commandinput:", instring,
 				      dirname,false)
       else
@@ -2085,7 +2087,7 @@ ARGV.compact!
 
 unless tolatex_flag
   cplist = cpfiles.collect{|x| x[1]}
-  p cplist
+  p cplist if $DEBUG
   add_toc
   process_css
   dump_aux
