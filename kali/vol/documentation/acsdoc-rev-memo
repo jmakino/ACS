@@ -3955,3 +3955,27 @@ Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Sending        documentation/introduction.ok
 Transmitting file data ..
+
+">" in text, in tex mode, is not quite properly treated yet. In
+listing, it should not be changed and that's okay. Current HTML
+conversion is also okay.
+
+Should be done in escapetexspecialchatacters...
+
+Tue Nov 22 01:20:27 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1493)
++++ acsdoc2.rb	(working copy)
+@@ -69,6 +69,8 @@
+     s = instring
+     @@charstotexmath.each{|x|
+       s=s.gsub(x[0],x[1])}
++    # additional change for ">"...
++    s=s.gsub(/((\\<\w*)|(\s[0-9A-Za-z_`"-+]+)|(\s+))>/){$1+"$>$"}
+     s
+   end
+   
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..

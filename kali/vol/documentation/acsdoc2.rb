@@ -69,6 +69,8 @@ module Rdoctotex
     s = instring
     @@charstotexmath.each{|x|
       s=s.gsub(x[0],x[1])}
+    # additional change for ">"...
+    s=s.gsub(/((\\<\w*)|(\s[0-9A-Za-z_`"-+]+)|(\s+))>/){$1+"$>$"}
     s
   end
   
