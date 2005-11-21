@@ -96,8 +96,19 @@ module Rdoctotex
   end
 
   def process_tagmarkup(instring,dirname)
+    instring = instring.split("\n") if instring.class != Array
     ostring = []
-    instring.each{|s| ostring.push(tagmarkup(s))}
+    inlisting = false
+    while s=instring.shift
+      inlisting = true if s =~ /\\begin\{verbatim\}/
+      inlisting = false if s =~ /\\end\{verbatim\}/
+      if inlisting
+        ostring.push(s)
+      else
+        ostring.push(tagmarkup(s))
+      end
+    end
+    ostring
   end
 
   def gettexauxlabel(dirname,label)
