@@ -3984,7 +3984,9 @@ Committed revision 1494.
 Rather dirty hack... but works for most cases.
 
 Next problem: tag replace must be suppressed in verbatim.
-This can be done in process_tagmarkup.Tue Nov 22 01:32:04 JST 2005
+This can be done in process_tagmarkup.
+
+Tue Nov 22 01:32:04 JST 2005
 Index: acsdoc2.rb
 ===================================================================
 --- acsdoc2.rb	(revision 1494)
@@ -4010,6 +4012,38 @@ Index: acsdoc2.rb
    end
  
    def gettexauxlabel(dirname,label)
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1495.
+
+This handled tags. Wordmarkups like *xxx* is not done yet.
+Tue Nov 22 01:34:09 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1495)
++++ acsdoc2.rb	(working copy)
+@@ -83,8 +83,19 @@
+   end
+ 
+   def latex_process_wordmarkup(instring,dirname)
++    instring = instring.split("\n") if instring.class != Array
+     ostring = []
+-    instring.each{|s| ostring.push(latexwordmarkup(s))}
++    inlisting = false
++    while s=instring.shift
++      inlisting = true if s =~ /\\begin\{verbatim\}/
++      inlisting = false if s =~ /\\end\{verbatim\}/
++      if inlisting
++        ostring.push(s)
++      else
++        ostring.push(latexwordmarkup(s))
++      end
++    end
++    ostring
+   end
+ 
+   def tagmarkup(instr)
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..

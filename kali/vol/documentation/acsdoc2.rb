@@ -83,8 +83,19 @@ module Rdoctotex
   end
 
   def latex_process_wordmarkup(instring,dirname)
+    instring = instring.split("\n") if instring.class != Array
     ostring = []
-    instring.each{|s| ostring.push(latexwordmarkup(s))}
+    inlisting = false
+    while s=instring.shift
+      inlisting = true if s =~ /\\begin\{verbatim\}/
+      inlisting = false if s =~ /\\end\{verbatim\}/
+      if inlisting
+        ostring.push(s)
+      else
+        ostring.push(latexwordmarkup(s))
+      end
+    end
+    ostring
   end
 
   def tagmarkup(instr)
