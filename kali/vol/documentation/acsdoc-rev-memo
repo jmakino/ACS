@@ -4069,3 +4069,22 @@ Index: acsdoc2.rb
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
+Committed revision 1497.
+Tue Nov 22 01:50:24 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1497)
++++ acsdoc2.rb	(working copy)
+@@ -114,7 +114,7 @@
+       inlisting = true if s =~ /\\begin\{verbatim\}/
+       inlisting = false if s =~ /\\end\{verbatim\}/
+       if inlisting
+-        ostring.push(s.gsub(/\\<tex>/,"<tex>"))
++        ostring.push(s.gsub(/\\<(tex|web)>/){"<"+$1+">"})
+       else
+         ostring.push(tagmarkup(s))
+       end
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Sending        documentation/introduction.ok
+Transmitting file data ..

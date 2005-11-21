@@ -564,10 +564,10 @@ It should appear as only word in one line.
 
 == Links to external URLs.
 
-One can use \<web> tag to make links to external URL. For example,
+One can use \<web\> tag to make links to external URL. For example,
 
 
- <web>http://www.artcompsci.org|ACS homepage</web>
+ \<web>http://www.artcompsci.org|ACS homepage</web>
 creates a link:  <web>http://www.artcompsci.org|ACS homepage</web>.
 
 == Inline image
