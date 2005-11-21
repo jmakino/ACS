@@ -313,7 +313,7 @@ END
 	ostring.push("\\label{sect:#{@@latex_section_number}}")
 	instring.unshift(s)
 	labeltext=nil
-      elsif /^---*$/ =~ header_candidate
+      elsif /^---*$/ =~ s
 	if afterverbatim
 	  ostring.push("\\hrule\n\n\\bigskip\n\n")
 	else

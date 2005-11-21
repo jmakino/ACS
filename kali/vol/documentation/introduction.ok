@@ -76,7 +76,7 @@ Acsdoc has been tested on some distributions of Linux. It depends on
 UNIX operating system, and uses following commands/softwares
 
 * mv, rm, cp, cat, csh
-* convert from ImageMagic
+* convert from ImageMagick
 * latex, dvips
 * latex "subsubsection" package
 
@@ -108,8 +108,10 @@ The following is a sample for deep sections.
 <web>../examples/sectionssample.html|Here</web> is the created HTML
 file.
 
-Up to five levels are supported, at least with HTML document. Latex
-support depends on what is available.
+Up to five levels are supported, at least with HTML document. Number
+of levels available in  Latex document depends on what is available on
+Latex. By default it is three.
+
 
 == Itemized list
 
@@ -214,20 +216,20 @@ it becomes "as is" text.
 
 == Including file
 
-  : include : test.rb
+  #:include: test.rb
 
-without spaces between ":" and "include" gives:
+(without <tt>"#"</tt>)  gives:
 
   :include: test.rb
 
-Note that this is exeption for the as-is text, since this :include:
+Note that this is exeption for the as-is text, since this <tt>:include:</tt>
 directive is interpreted even when it appears with preceeding space
 characters. Also, space characters before the :include: directive are
 added to each line of the included file. Thus
 
-               : include : test.rb
+               #:include: test.rb
 
-gives
+(without <tt>"#"</tt>) gives
 
                :include: test.rb
 
@@ -243,6 +245,9 @@ Include:
 Inccode:
 
   :inccode: test.rb
+In HTML, currently there is no difference. In Latex, :inccode: gives
+two horizontal lines marking the included code.
+
 
 == Including  functions from source files
 
@@ -252,11 +257,11 @@ function buz fom class (or module)  Bar in file foo.rb, you can write
 
   ##  :include: .foo.rb+buz+Bar
 
-For exaple, ":include: .acsdoc.rb+wordmarkup+Rdoctotex gives
+For exaple, <tt>":include: .acsdoc.rb+wordmarkup+Rdoctotex"</tt> gives
 
  :include: .acsdoc.rb+wordmarkup+Rdoctotex
 
-If buz is the only function with that name in that file, or if buz is
+If +buz+ is the only function with that name in that file, or if buz is
 the top-level function, you can omit the class name as
 
   ##  :include: .foo.rb+buz
@@ -268,8 +273,8 @@ list.
 == Including code flagments.
 
 It is also possible to inclde a specified region from a source file.
-The region is (in the source file foo.rb) marked by "# :segment start: bar"
-and ""# :segment end: bar" (here, bar can be some arbitrary name,
+The region is (in the source file foo.rb) marked by <tt>"# :segment start: bar"</tt>
+and <tt>"# :segment end: bar"</tt> (here, bar can be some arbitrary name,
 without space or other special characters), and is included by
 
  ## :include: .foo.rb-bar
@@ -280,11 +285,11 @@ For example, if the source file  segmentsample.rb is the following:
 
 By
 
-  ##  :include: .segmentsample.rb-body
+  #  :include: .segmentsample.rb-body
 
 We can get the following:
 
- :include: .segmentsample.rb-body
+  :include: .segmentsample.rb-body
 
 == Including the output of some program
 
