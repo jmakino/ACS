@@ -566,7 +566,6 @@ It should appear as only word in one line.
 
 One can use \<web\> tag to make links to external URL. For example,
 
-
  \<web>http://www.artcompsci.org|ACS homepage</web>
 creates a link:  <web>http://www.artcompsci.org|ACS homepage</web>.
 
@@ -619,7 +618,7 @@ To change the document class, supply appropriate value to variables
 <tt>@@basic_preambles_for_tex</tt> and <tt>@@headers</tt>  in the initialization file
 (.acsdocinitrc). For example,
 
-  @@basic_preambles_for_tex = \<\<END
+  @@basic_preambles_for_tex = <<END
   \\documentclass{article}
   \\usepackage{graphicx}
   END
