@@ -114,7 +114,7 @@ module Rdoctotex
       inlisting = true if s =~ /\\begin\{verbatim\}/
       inlisting = false if s =~ /\\end\{verbatim\}/
       if inlisting
-        ostring.push(s)
+        ostring.push(s.gsub(/\\<tex>/,"<tex>"))
       else
         ostring.push(tagmarkup(s))
       end

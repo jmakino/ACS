@@ -4018,6 +4018,7 @@ Transmitting file data ..
 Committed revision 1495.
 
 This handled tags. Wordmarkups like *xxx* is not done yet.
+
 Tue Nov 22 01:34:09 JST 2005
 Index: acsdoc2.rb
 ===================================================================
@@ -4044,6 +4045,27 @@ Index: acsdoc2.rb
    end
  
    def tagmarkup(instr)
+Sending        documentation/acsdoc-rev-memo
+Sending        documentation/acsdoc2.rb
+Transmitting file data ..
+Committed revision 1496.
+
+wordmarkup is also fine.
+
+Tue Nov 22 01:45:07 JST 2005
+Index: acsdoc2.rb
+===================================================================
+--- acsdoc2.rb	(revision 1496)
++++ acsdoc2.rb	(working copy)
+@@ -114,7 +114,7 @@
+       inlisting = true if s =~ /\\begin\{verbatim\}/
+       inlisting = false if s =~ /\\end\{verbatim\}/
+       if inlisting
+-        ostring.push(s)
++        ostring.push(s.gsub(/\\<tex>/,"<tex>"))
+       else
+         ostring.push(tagmarkup(s))
+       end
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/acsdoc2.rb
 Transmitting file data ..
