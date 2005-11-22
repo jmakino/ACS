@@ -1,0 +1,10 @@
+documents: introduction
+
+introduction: introduction.ok introduction.pdf
+	./acsdoc2.rb --directory introduction segmentsample.rb introduction.ok
+	touch introduction
+introduction.pdf: introduction.ok
+	./acsdoc2.rb --tolatex introduction.ok
+	latex introduction
+	dvipdfmx introduction
+

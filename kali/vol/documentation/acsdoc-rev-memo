@@ -4091,3 +4091,6 @@ Transmitting file data ..Tue Nov 22 01:54:01 JST 2005
 Sending        documentation/acsdoc-rev-memo
 Sending        documentation/introduction.ok
 Transmitting file data .
+
+<tex> and <web> are rather special... In listing mode they still
+require \<tex> to be shown correctly. 

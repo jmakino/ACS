@@ -84,7 +84,135 @@ UNIX operating system, and uses following commands/softwares
 options are not available with your dvips, well, you need to modify
 ascdoc.rb to supply appropriate options.
 
+= Running acsdoc.
+
+Syntax to invoke acsdoc is the following.
+
+  % acsdoc.rb [options] [source files] infile ...
+
+Here, <tt>[options]</tt> are command line options,  <tt>[source
+files]</tt> are name of the program source file used in listing,
+<tt>infile</tt> is the input text file.
+
+In the following I'll describe the meaning of command line arguments.
+
+== Input text file.
+
+<tt>Infile</tt> is the input text file. Its format is described in
+more details in chapter ref(sect:acsfunctionalities). One can supply
+multiple input files in the case of the HTML generation. For Latex,
+only one file can be used. The name of an input text file should end
+with <tt>.ok</tt>.
+
+== Source files.
+
+<tt>Source files</tt> are the files used in including partial
+codes. The use of them is described in sections
+ref(sect:includefragments) and ref(sect:includefunctions). Currently,
+files with extention <tt>.rb</rb> are recognized as Ruby source file,
+<tt>.c</tt> C program,
+<tt>.C</tt> and <tt>.cc</tt> C++ programs. Support on C/C++ programs
+is rather primitive and might not serve your need.
+
+== Options
+
+:label: options
+
+<tt> --directory dirname</tt>
+
+This option makes the generate HTML file and additional image files
+etc to be moved to directory +dirname+. Option argument +dirname+ must
+exist. If directory  +dirname+  does not exist, it is created.
+
+Note that this option is ignored if <tt>--tolatex</tt> option is
+specified.
+
+
+<tt> --keep-dot-files</tt>
+
+This option is retained for backward compatibility. It has no effect.
+
+
+<tt> --reuseoutput</tt>
+
+This option controls if the output of inline commands (see section 
+ref(sect:includecommand) for details) will be reused from previous run
+of acsdoc. If this option is not specified, all commands are newly ran
+on the fly. If this option is specified, and if the command appears in
+the same line of the text input file in the same form, the output of
+previous ran is reused.
+
+<tt> --tolatex</tt>
+
+Generate a Latex output instead of HTML. Default is HTML. If this
+option is specified with multiple text input files, the result might
+not correct. Latex mode is meant to be used with single input file.
+
+If you want to process  multiple input files for generating single
+Latex file, just create one input file by using +cat+. 
+
+== Output files.
+
+By default, one HTML file is created for each of one text input
+file. If <tt>--tolatex</tt> option is specified, one Latex file is
+created for one text input file, and you are not supposed to give
+multiple input files.
+
+There are quite a few other files generated. The image files will be
+stored in <tt>.imgs</tt> directory. Thus, if you have multiple input
+files which are processed separetely, <em>i.e.,</em> if you do
+
+   % acsdoc.rb text1.ok
+   % acsdoc.rb text2.ok
+
+In one directory, The content of <tt>.imgs</tt> directory created in
+the first command is overwritten by that of the second command. To
+avoid this, use <tt>--directory</tt> option (see section
+ref(sect:options) for more details) to put output files to
+subdirectories.
+
+Acsdoc also create a CSS file, <tt>.acsdoc-style.css</tt>, which is
+referenced from HTML file. By default, the content of this CSS file is
+the same for any output, but it would change when the version of
+acsdoc.rb changes.
+
+Finaly,  acsdoc creates a number of  fragment files from source files
+specified in the command line. For example, for file <tt>foo.rb</tt>,
+there will be a number of files with name starting with
+<tt>.foo.rb</tt> (since the name of generated files start with a ".",
+they do not appear when you do normal +ls+ without <tt>-a</tt>
+option).
+
+
+== Examples
+
+ % acsdoc.rb introduction.ok
+
+createss a single HTML file <tt>introduction.html</tt>. 
+
+ % acsdoc.rb -d documents introduction.ok
+
+creates a single HTML file <tt>introduction.html</tt> and store it to 
+directory <tt>documents</tt>.
+
+ % acsdoc.rb test.rb segmentsample.rb  introduction.ok
+process the source files 
+<tt>test.rb</tt> and <tt>segmentsample.rb</tt> to prepare fragment
+files used in introduction.ok, and then creates an HTML file.
+
+ % acsdoc.rb  introduction.ok sample.ok
+creates two HTML files,  introduction.html sample,html, and add
+navigation links to these HTML files. The section (or chapter) numbers
+are as if these two HTML files are part of a single document.
+
+
+
+
+
+
 = Tour over acsdoc funtionalities.
+
+:label: acsfunctionalities
 
 Markups in acsdoc is largely similar to that of Rdoc or RD, but not
 exactly the same. Here we overview what is available with acsdoc.
@@ -251,6 +379,8 @@ two horizontal lines marking the included code.
 
 == Including  functions from source files
 
+:label: includefunctions
+
 For C/C++ or Ruby sources,  an automatic way to include one function
 from source code is provided. In Ruby, to include the listing of
 function buz fom class (or module)  Bar in file foo.rb, you can write
@@ -272,6 +402,9 @@ list.
 
 == Including code flagments.
 
+:label: includefragments
+
+
 It is also possible to inclde a specified region from a source file.
 The region is (in the source file foo.rb) marked by <tt>"# :segment start: bar"</tt>
 and <tt>"# :segment end: bar"</tt> (here, bar can be some arbitrary name,
@@ -292,6 +425,8 @@ We can get the following:
   :include: .segmentsample.rb-body
 
 == Including the output of some program
+
+:label: includecommand
 
 There are followng five directives to run commands
 
@@ -586,6 +721,18 @@ Note that here the link is a direct link to the image file. Thus, if
 you move the generated HTML file by "--directory" option or by hand,
 you need to guarantee that image files are in the correct location.
 
+== Comments.
+
+Lines starting with <tt>#</tt> in the first colums are treated as
+comments and not further processed.
+
+# Sample comments (not shown in the processed documents)
+
+== Examples.
+
+All of the functionalities described in this document is used in this
+document. So the best place to look at examples is the
+<web>../introduction.ok|input  file itself</web>.
 
 
 = Initialization file
@@ -628,6 +775,27 @@ To change the document class, supply appropriate value to variables
 
 is appropriate for article class. First item of <tt>@@header</tt> is
 not used. Default is "book" class.
+
+
+= Known problems
+
+== tags in listing mode
+
+Most tags show themselves up correctly in listing (lines with
+preceeding space) mode, but
+
+ \<tex>
+and
+ \<web>
+are two exeptions, at
+least with current (as of Nov 21 2005) version of acsdoc.rb. You need
+to type
+ \\<tex>
+or
+ \\<web>
+even in listing mode.
+
+
 
 = Sandbox
 
