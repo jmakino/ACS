@@ -50,7 +50,7 @@ Back to <a href="../index.html">ACS home page</A>.
 
 <hr>
 
-<%=y["intro"]%>">
+<%=y["intro"]%>
 <p>
 We provide the following entry points, each roughly a factor ten
 longer than the previous one:
@@ -76,6 +76,7 @@ END
 %>
 <%=links%>
 
+</ul>
 <hr>
 
 Back to the <a href="../index.html">ACS home page</A>.
