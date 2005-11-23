@@ -10,11 +10,11 @@ intro: |
   in:
   <ul>
   <li>
-  <a href=vol/documentation/doc/files/_/_title_ok.html>5. Documentation:
-  Acsdoc </a>
+  <a href=../../kali/vol/documentation/doc/files/_/_title_ok.html>5.
+  Documentation: Acsdoc </a>
   &nbsp;&nbsp;
-  (<a href=vol/documentation/volume5.ps.gz>PS</a>
-  &nbsp;/&nbsp;&nbsp;<a href=vol/documentation/volume5.pdf>PDF</a>)
+  (<a href=../../kali/vol/documentation/volume5.ps.gz>PS</a>
+  &nbsp;/&nbsp;&nbsp;<a href=../../kali/vol/documentation/volume5.pdf>PDF</a>)
   &nbsp; &nbsp; <i>[incomplete]</i>
   </li>
   </ul>
