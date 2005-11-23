@@ -74,8 +74,8 @@ longer than the previous one:
 <%
    links=y["hierarchy"]["entries"].collect{|x|
    if x["pspdf"]
-     pspdf = "(<a href=< #{x["pspdf"]}.ps.gz>PS</a> "
-     pspdf += "/ <a href=< #{x["pspdf"]}.pdf>PDF</a>)"
+     pspdf = "(<a href=#{x["pspdf"]}.ps.gz>PS</a> "
+     pspdf += "/ <a href=#{x["pspdf"]}.pdf>PDF</a>)"
    else
      pspdf=""
    end
