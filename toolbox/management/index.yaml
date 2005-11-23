@@ -1,0 +1,53 @@
+titles:
+  html: Code management home page
+  top:  Code Management
+
+image:  ../../img/square_toolbox.jpg
+
+intro: |
+  We present here a code management system for Ruby, based on libraries
+  that maintain different file versions in parallel, and that can provide
+  the right version for each file, dependent on directives given in programs
+  that include that file.  Full information about the code management system
+  can be found in:
+  <ul>
+  <li>
+  <a href=../../kali/vol/code_management/doc/files/_/_title_ok.html>7.
+  Code Management:
+  Libraries, Versions, and Compatibility
+  </a>
+  &nbsp;&nbsp;
+  (<a href=../../kali/vol/code_management/volume7.ps.gz>PS</a>
+  &nbsp;/&nbsp;&nbsp;<a href=../../kali/vol/code_management/volume7.pdf>PDF</a>)
+  &nbsp; &nbsp; <i>[incomplete]</i>
+  </li>
+  </ul>
+
+hierarchy:
+  name: Code Management
+  title: |
+    Code management:
+    libraries, versions, and compatibility
+  description: |
+    The code management system is based on libraries that maintain
+    different file versions in parallel.  When a program includes a file
+    by a given name, the correct version of that file will be retrieved
+    from the library, based on the file date range specified in the program.
+  entries:
+  -
+      click:    Summary
+      address:  summary.html
+      nonclick: (1 page)
+  -
+      click:    Introduction
+      address:  introduction.html
+      nonclick: (10 pages)
+  -
+      click:    Primer
+      address:  primer.html
+      nonclick: (100 pages)
+
+back:
+  nonclick: back to the
+  address:  ../index.html
+  click:    ACS toolbox page

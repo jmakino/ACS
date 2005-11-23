@@ -1,0 +1,59 @@
+titles:
+  html: The clop home page
+  top:  Command Line Options
+
+image:  ../../img/square_toolbox.jpg
+
+intro: |
+  The <i>clop</i> program parses command line options, using a description
+  of each option that is given at the end of a Ruby code in yaml style
+  notation.  Full information about clop can be found in:
+  <ul>
+  <li>
+  <a href=../../vol/command_line/doc/files/_/_title_ok.html>6a.
+  User Interface:
+  Command Line Arguments I
+  </a>
+  &nbsp;&nbsp;
+  (<a href=../../vol/command_line/volume6a.ps.gz>PS</a>
+  &nbsp;/&nbsp;&nbsp;<a href=../../vol/command_line/volume6a.pdf>PDF</a>)
+  <li>
+  <a href=../../vol/command_line_b/doc/files/_/_title_ok.html>6b.
+  User Interface:
+  Command Line Arguments II
+  </a>
+  &nbsp;&nbsp;
+  (<a href=../../vol/command_line_b/volume6b.ps.gz>PS</a>
+  &nbsp;/&nbsp;&nbsp;<a href=../../vol/command_line_b/volume6b.pdf>PDF</a>)
+  &nbsp; &nbsp; <i>[in preparation]</i>
+  </li>
+  </ul>
+
+hierarchy:
+  name: Clop
+  title: |
+    Clop: a command line option parser
+  description: |
+    The clop function can be invoked from within a Ruby code, in order to
+    parse command line option values that are provided by the user of that
+    code.  The definitions of the options are specified in a series of blocks,
+    one for each option, at the end of the Ruby code in which the clop function
+    is invoked, in a style that is close to that used in yaml.
+  entries:
+  -
+      click:    Summary
+      address:  summary.html
+      nonclick: (1 page)
+  -
+      click:    Introduction
+      address:  introduction.html
+      nonclick: (10 pages)
+  -
+      click:    Primer
+      address:  primer.html
+      nonclick: (100 pages)
+
+back:
+  nonclick: back to the
+  address:  ../index.html
+  click:    ACS toolbox page

@@ -1,0 +1,51 @@
+titles:
+  html: ACS data format home page
+  top:  ACS Date Format
+
+image:  ../../img/square_toolbox.jpg
+
+intro: |
+  We present here the ACS data format, together with I/O functions to
+  read and write data in ACS data format.  Full information about the
+  acs data format and its I/O can be found in:
+  <ul>
+  <li>
+  <a href=../../kali/vol/acs_data_format/doc/files/_/_title_ok.html>8.
+  ACS Data Format:
+  Self-Describing Data Files
+  </a>
+  &nbsp;&nbsp;
+  (<a href=../../kali/vol/acs_data_format/volume8.ps.gz>PS</a>
+  &nbsp;/&nbsp;&nbsp;<a href=../../kali/vol/acs_data_format/volume8.pdf>PDF</a>)
+  &nbsp; &nbsp; <i>[incomplete]</i>
+  </li>
+  </ul>
+
+hierarchy:
+  name: Acsio
+  title: |
+    Acsio: ACS data format Input/Output
+  description: |
+    The ACS data format specifies self-describing data, which can be
+    read and written by the functions provided in the acsio package.
+    Currently, the data format closely resembles that of the yaml format,
+    and in the near future we will rewrite acsio to bring the ACS format
+    into full compliance with yaml.
+  entries:
+  -
+      click:    Summary
+      address:  summary.html
+      nonclick: (1 page)
+  -
+      click:    Introduction
+      address:  introduction.html
+      nonclick: (10 pages)
+  -
+      click:    Primer
+      address:  primer.html
+      nonclick: (100 pages)
+
+back:
+  nonclick: back to the
+  address:  ../index.html
+  click:    ACS toolbox page

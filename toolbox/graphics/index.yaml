@@ -1,0 +1,49 @@
+titles:
+  html: graphics home page
+  top:  virtual plotting
+
+image:  ../../img/square_toolbox.jpg
+
+intro: |
+  We present here a virtual plotting package.  Full information about this
+  package can be found in:
+  <ul>
+  <li>
+  <a href=../../kali/vol/graphics/doc/files/_/_title_ok.html>9.
+  Figures:
+  Virtual Plotting
+  </a>
+  &nbsp;&nbsp;
+  (<a href=../../kali/vol/graphics/volume9.ps.gz>PS</a>
+  &nbsp;/&nbsp;&nbsp;<a href=../../kali/vol/graphics/volume9.pdf>PDF</a>)
+  &nbsp; &nbsp; <i>[in preparation]</i>
+  </li>
+  </ul>
+
+hierarchy:
+  name: vp
+  title: |
+    vp: a virtual plotting package
+  description: |
+    The virtual plotting package vp forms a type of shell for a number
+    of different plotting packages, providing a uniform command language.
+    Each plotting command in vp is automatically translated into the
+    corresponding plotting command in the package specified.
+  entries:
+  -
+      click:    Summary
+      address:  summary.html
+      nonclick: (1 page)
+  -
+      click:    Introduction
+      address:  introduction.html
+      nonclick: (10 pages)
+  -
+      click:    Primer
+      address:  primer.html
+      nonclick: (100 pages)
+
+back:
+  nonclick: back to the
+  address:  ../index.html
+  click:    ACS toolbox page
