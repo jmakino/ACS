@@ -1,6 +1,6 @@
 titles:
   html: ACS data format home page
-  top:  ACS Date Format
+  top:  ACS Data Format
 
 image:  ../../img/square_toolbox.jpg
 
@@ -10,7 +10,7 @@ intro: |
   acs data format and its I/O can be found in:
   <ul>
   <li>
-  <a href=../../kali/vol/acs_data_format/doc/files/_/_title_ok.html>8.
+  <a href=../../kali/vol/acs_data_format/title.html>8.
   ACS Data Format:
   Self-Describing Data Files
   </a>
