@@ -6,3 +6,6 @@ TARGET = volume5
 include ../etc/Makefile.inc
 
 include Makefile.local
+
+SCRIPTSRCS = yacsdoc.rb acsdoc.rb
+
