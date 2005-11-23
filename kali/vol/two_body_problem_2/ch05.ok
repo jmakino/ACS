@@ -12,10 +12,9 @@ In the form given in their book, they are dealing with a force that
 has the most general form: it depends on position, velocity, and time.
 In our notation, their differential equation would read
 
-<tex>$$
+:equation:
 \frac{d^2}{dt^2}{\bf r} \, = \, {\bf f}(\br, \bv, t)\, =
  \, {\bf f}(\br(t), \bv(t), t)
-$$</tex>
 
 *Bob*: Fortunately, in our case, we only have to deal with a dependence
 on position, not on velocity or time.
@@ -36,9 +35,8 @@ And if you want a motivation: imagine that our star cluster is suspended
 within the background tidal field of the galaxy.  Such a field can be treated
 as a slowly varying, time-dependent perturbation, exactly of this form:
 
-<tex>$$
+:equation:
 \frac{d^2}{dt^2}{\bf r} \, = \, {\bf f}(\br, t)\, = \, {\bf f}(\br(t), t)
-$$</tex>
 
 *Bob*: Fair enough.  How shall we start?
 
