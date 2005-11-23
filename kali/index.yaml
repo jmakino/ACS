@@ -1,0 +1,53 @@
+titles:
+  html: The Maya Project home page
+  top:  Maya Open Lab
+
+image:  ../img/square_M80.jpg
+
+intro:
+  The <i>Maya</i> project is currently in a start-up phase, as
+  described in our <a href="revised-five-year-plan.html">revised
+  five-year plan</a>.
+  Full information about the Maya project can be found in
+  the <a href="development.html">Development Series</a>.
+  For a quicker and more structured inroad, see the
+  <a href="school.html">School Series</a>.
+
+hierarchy:
+  name:
+    Maya
+  title:
+    The Maya Open Lab For Dense Stellar Systems
+  description:
+    The Maya project is documented in the Maya Development Series,
+    centered around dialogues between two astrophysicists, Alice and
+    Bob, who are developing the Kali code for simulating dense stellar
+    systems.  In the process, they construct an open lab, Maya, to set
+    up initial conditions, run the Kali code, and analyze the results.
+    The Maya School Series provides students with self-study material,
+    as a more compact way to learn how to model dense stellar systems.
+  summary:
+    text:
+      click:    Summary
+      address:  summary.html
+      nonclick: (1 page)
+  introduction:
+    text:
+      click:    Introduction
+      address:  introduction.html
+      nonclick: (10 pages)
+  primer:
+    text:
+      click:    Primer
+      address:  primer.html
+      nonclick: (100 pages)
+  school:
+    text:
+      click:    School Series
+      address:  school.html
+      nonclick: (1,000 pages)
+  development:
+    text:
+      click:    Development Series
+      address:  development.html
+      nonclick: (10,000 pages)
