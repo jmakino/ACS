@@ -67,7 +67,6 @@ longer than the previous one:
 <%
    links=y["hierarchy"]["entries"].collect{|x|
       <<END
-</li>
 <p>
 <li><a href="#{x["address"]}">#{x["click"]}</a> #{x["nonclick"]}
 </li>
