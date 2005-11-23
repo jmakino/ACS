@@ -24,10 +24,9 @@ between, indicated by <tex>$t_{i-1/2}, t_{i+1/2}, t_{i+3/2}, \dots $</tex>,
 where <tex>$t_{i+1} - t_{i + 1/2} = t_{i + 1/2} - t_i = \Delta t / 2$</tex>.
 The leapfrog integration scheme then reads:
 
-<tex>\begin{eqnarray}
+:eqnarray:
 \br_{i} & = & {\bf r}_{i-1} + {\bf v}_{i-1/2} \Delta t \nonumber \\
 {\bf v}_{i+1/2} & = & {\bf v}_{i-1/2} + {\bf a}_i \Delta t \nonumber
-\end{eqnarray}</tex>
 
 Note that the accelerations <tex>${\bf a}$</tex> are defined only on integer
 times, just like the positions, while the velocities are defined only on
@@ -54,13 +53,12 @@ second equation above, and then we just march on.
 A second way to write the leapfrog looks quite different at first sight.
 Defining all quantities only at integer times, we can write:
 
-<tex>\begin{eqnarray}
+:eqnarray:
 \label{oldfriend}
 {\bf r}_{i+1} & = & {\bf r}_i + {\bf v}_{i} \Delta t + 
 {\bf a}_{i} (\Delta t)^2/2                                  \nonumber \\
 {\bf v}_{i+1} & = & {\bf v}_i + ({\bf a}_i +
 {\bf a}_{i+1})\Delta t / 2
-\end{eqnarray}</tex>
 
 This is still the same leapfrog scheme, although represented in a
 different way.  Notice that the increment in <tex>${\bf r}$</tex> is
@@ -105,7 +103,7 @@ indeed equal to their initial values
 <tex>$\{{\bf r}_i, {\bf v}_{i-1/2}\}$</tex>.  Here is the
 calculation, resulting from applying the first set of equation twice:
 
-<tex>\begin{eqnarray}
+:eqnarray:
 {\bf r}_f & = & {\bf r}_{i+1} - {\bf v}_{i+1/2} \Delta t \nonumber \\
       & = & \left[ {\bf r}_i + {\bf v}_{i+1/2} \Delta t \right]
             - {\bf v}_{i+1/2} \Delta t \nonumber \\
@@ -115,7 +113,6 @@ calculation, resulting from applying the first set of equation twice:
       & = & \left[ {\bf v}_{i-1/2} + {\bf a}_i \Delta t \right]
             - {\bf a}_i \Delta t \nonumber \\
       & = & {\bf v}_{i-1/2} \nonumber
-\end{eqnarray}</tex>
 
 In an almost trivial way, we can see clearly that time reversal causes
 both positions and velocities to return to their old values, not only
@@ -129,7 +126,7 @@ from possible round-off effects, due to limited machine accuracy.
 Now the real fun comes in, when we inspect the equal-time version, the
 second set of equations you presented:
 
-<tex>\begin{eqnarray}
+:eqnarray:
 {\bf r}_f & = & {\bf r}_{i+1} - {\bf v}_{i+1} \Delta t + 
 {\bf a}_{i+1} (\Delta t)^2/2 \nonumber \\
       & = & \left[ {\bf r}_i
@@ -143,7 +140,6 @@ second set of equations you presented:
       & = & \left[ {\bf v}_i + ({\bf a}_i + {\bf a}_{i+1})\Delta t / 2 \right]
             - ({\bf a}_{i+1} + {\bf a}_i)\Delta t / 2  \nonumber \\
       & = & {\bf v}_i  \nonumber
-\end{eqnarray}</tex>
 
 In this case, too, we have exact time reversibility.  Even though not
 immediately obvious from an inspection of your second set of

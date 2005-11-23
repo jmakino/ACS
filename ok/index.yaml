@@ -12,7 +12,7 @@ intro: |
 
 hierarchy:
   name: Open Knowledge
-  title: Open knowledge, a way to fully document open source
+  title: Open knowledge, a way to provide in-depth knowledge about an open source project
   description: |
     The know-how needed to construct a computational laboratory is largely
     a form of oral knowledge, known to a small group of practitioners, but
@@ -31,6 +31,7 @@ hierarchy:
       address:  introduction.html
       nonclick: (10 pages)
   -
-      click:    Primer
-      address:  primer.html
+      click:    Manifesto
+      address:  vol/vol-0/title.html
       nonclick: (100 pages)
+      pspdf:	vol/vol-0/volume0
