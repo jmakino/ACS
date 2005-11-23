@@ -34,4 +34,4 @@ hierarchy:
       click:    Manifesto
       address:  vol/vol-0/title.html
       nonclick: (100 pages)
-      pspdf:	vol/vol-0/volume0
+      pspdf:    vol/vol-0/volume0
