@@ -4,7 +4,7 @@ titles:
 
 image:  ../img/square_M80.jpg
 
-intro:
+intro: |
   The <i>Maya</i> project is currently in a start-up phase, as
   described in our <a href="revised-five-year-plan.html">revised
   five-year plan</a>.
@@ -14,11 +14,9 @@ intro:
   <a href="school.html">School Series</a>.
 
 hierarchy:
-  name:
-    Maya
-  title:
-    The Maya Open Lab For Dense Stellar Systems
-  description:
+  name: Maya
+  title: The Maya Open Lab For Dense Stellar Systems
+  description: |
     The Maya project is documented in the Maya Development Series,
     centered around dialogues between two astrophysicists, Alice and
     Bob, who are developing the Kali code for simulating dense stellar
