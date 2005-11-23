@@ -50,7 +50,7 @@ The Art of Computational Science
 <td>
 </td>
 <td align=right>
-Back to <a href="../index.html">ACS home page</A>.
+Back to <a href="<%=relpath%>/index.html">ACS home page</A>.
 </td>
 </tr>
 </table>
@@ -85,7 +85,19 @@ END
 </ul>
 <hr>
 
-Back to the <a href="../index.html">ACS home page</A>.
+<%
+   if  y["back"] 
+     up = "Back to <a href=#{y["back"]["address"]}>#{y["back"]["click"]}</a>.<br>"
+   else
+     up = ""
+   end
+%>
+<%= up%>
+ 
+
+
+
+Back to <a href="<%=relpath%>/index.html">ACS home page</A>.
 
 <hr>
 <hr>
