@@ -41,9 +41,8 @@ its first half-integer time step.  Starting with initial conditions
 we take the first term in the Taylor series expansion to compute the
 first leap value for <tex>${\bf v}$</tex>:
 
-<tex>$$
+:equation:
 {\bf v}_{i+1/2} = {\bf v}_i + {\bf a}_i \Delta t / 2.
-$$</tex>
 
 We are then ready to apply the first equation above to compute
 the new position <tex>${\bf r}_1$</tex>, using the first leap value for

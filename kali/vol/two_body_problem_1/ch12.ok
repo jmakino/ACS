@@ -7,7 +7,8 @@ analytically.  Let me try to remember my celestial mechanics.  I remember
 that there was one equation that had no factors of <tex>$\pi$</tex> or
 whatever in it.  Ah yes,
 
-<tex>$$G(M_1+M_2)=a^2\omega^3$$</tex>
+:equation:
+G(M_1+M_2)=a^2\omega^3
 
 Here <tex>$a$</tex> is the semi-major axis, <tex>$\omega$</tex> is the
 angular frequency of the motion, in other words the period of the
@@ -26,7 +27,8 @@ and the apocenter distance not much smaller than <tex>$2a$</tex>.
 I remember another handy formula: the total energy is a two-body system
 is equal to
 
-<tex>$$E = -G \frac{M_1M_2}{2a}$$</tex>.
+:equation:
+E = -G \frac{M_1M_2}{2a}.
 
 That is easy to
 remember, since the virial theorem tells you that the potential energy
@@ -49,11 +51,13 @@ it is <tt>E_tot = -0.875</tt>, initially.  In other words,
 
 *Alice*: Inverting my previous equation, we get
 
-<tex>$$a = -G \frac{M_1M_2}{2E}$$</tex>.
+:equation:
+a = -G \frac{M_1M_2}{2E}.
 
 With <tex>$G = M_1+M_2 = 1$</tex>, we get
 
-<tex>$$a = - \frac{1}{8E}$$</tex>.
+:equation:
+a = - \frac{1}{8E}.
 
 So with your value <tex>$E = 7/8$</tex>,
 that gives us <tex>$a = 1/7$</tex>.  But hey, that can't be right.  It
@@ -70,10 +74,9 @@ now on the level of the physics, rather than the numerics.  Let me just
 use pen and paper to determine the initial total energy.  Here are the
 equations:
 
-<tex>$$
+:equation:
 E = E_{kin} + E_{pot} = {\textstyle\frac{1}{2}} M_1v_1^2 +
 {\textstyle\frac{1}{2}} M_1v_1^2 - G\frac{M_1M_2}{r}
-$$</tex>
 
 with <tex>$G = 1$</tex> and <tex>$M_1 = M_2 = 0.5$</tex>, right?
 
@@ -85,19 +88,17 @@ original relative velocity was 1/2, so each of the two is 1/4, and
 make sure we don't drop some factor somewhere.  We have now for the
 initial total energy:
 
-<tex>$$
+:equation:
 E = {\textstyle\frac{1}{2}}{\textstyle\frac{1}{2}}{\textstyle\frac{1}{16}}
 + {\textstyle\frac{1}{2}}{\textstyle\frac{1}{2}}{\textstyle\frac{1}{16}}
 - \frac{{\textstyle\frac{1}{2}}{\textstyle\frac{1}{2}}}{1} =
 {\textstyle\frac{7}{32}}
-$$</tex>
 
 *Alice*: That is exactly four times smaller than the value that your
 program gave us.  And it would imply a semi-major axis of
 
-<tex>$$
+:equation:
 a = - \frac{1}{8E} = \frac{4}{7}
-$$</tex>
 
 Now that is a much more reasonable number!  Just as I had predicted:
 larger than 0.5, but not much larger.  Look:
@@ -138,18 +139,16 @@ and potential energy, but you don't have any mass factors in there.
 total mass of one, or perhaps I just forgot.  Can we correct that?
 The potential energy is
 
-<tex>$$
+:equation:
 E_{pot} = - G\frac{M_1M_2}{r}
-$$</tex>
 
 For our case, <tex>$M_1 = M_2 = 1/2$</tex>, so neglecting the mass
 factors, I have overestimated the potential energy by a factor of four.
 The kinetic energy is
 
-<tex>$$
+:equation:
 E_{kin} = {\textstyle\frac{1}{2}} M_1v_1^2 +
 {\textstyle\frac{1}{2}} M_1v_1^2
-$$</tex>
 
 In our equal mass case, the two velocities in the center of mass are each
 exactly half of the relative velocity, so their squares are four times
@@ -188,18 +187,16 @@ ourselves.
 in terms of relative coordinates, also in the center-of-mass frame.
 It is
 
-<tex>$$
+:equation:
 E_{pot} = - G\frac{M_1M_2}{r}
-$$</tex>
 
 What we have to do now is to rewrite the kinetic energy in relative
 coordinates.
 We know that in the center-of-mass frame the following lever-like relations
 hold:
 
-<tex>$$
+:equation:
 v_1 = \frac{M_2}{M_1+M_2}v  \qquad {\rm and} \qquad v_2 = \frac{M_1}{M_1+M_2}v
-$$</tex>
 
 where <tex>$v$</tex> is still the relative velocity between the two particles.
 
@@ -218,17 +215,15 @@ E_{kin} & = & {\textstyle\frac{1}{2}} M_1v_1^2
 
 The total energy can thus be written as
 
-<tex>$$
+:equation:
 E = E_{kin} + E_{pot} = \frac{M_1M_2}{M_1+M_2}\left[
 {\textstyle\frac{1}{2}} v^2 - \frac{M_1+M_2}{r}\right]
-$$</tex>
 
 You were right about the reduced mass: this is defined for two
 particles as:
 
-<tex>$$
+:equation:
 \mu = \frac{M_1M_2}{M_1+M_2}
-$$</tex>
 
 It has the physical dimensions of mass, and for a light particle in
 orbit around a heavy particle, it reduces to the mass of the light

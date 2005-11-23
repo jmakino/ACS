@@ -1,0 +1,36 @@
+titles:
+  html: The Open Knowledge home page
+  top:  Open Knowledge
+
+image:  ../img/ist.jpg
+
+intro: |
+  Having access to the source code is one thing.
+  Having access to the tacit knowledge that went into the process of
+  writing the source code is quite something else.  In our <i>Manifesto</i>
+  below, we describe the philosophy behind the ACS initiative.
+
+hierarchy:
+  name: Open Knowledge
+  title: Open knowledge, a way to fully document open source
+  description: |
+    The know-how needed to construct a computational laboratory is largely
+    a form of oral knowledge, known to a small group of practitioners, but
+    not written down explicitly anywhere.  We have started the <i>The Art
+    of Computational Science (ACS)</i> series with the aim of making explicit
+    the implicit knowledge of experts of scientific simulations.  In addition
+    to make our codes freely available as open source, we provide what we call
+    <i>open knowledge</i>, in the form of detailed background information.
+  entries:
+  -
+      click:    Summary
+      address:  summary.html
+      nonclick: (1 page)
+  -
+      click:    Introduction
+      address:  introduction.html
+      nonclick: (10 pages)
+  -
+      click:    Primer
+      address:  primer.html
+      nonclick: (100 pages)
