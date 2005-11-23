@@ -1,0 +1,47 @@
+titles:
+  html: The Acsdoc home page
+  top:  Acsdoc
+
+image:  ../../img/square_toolbox.jpg
+
+intro: |
+  The <i>acsdoc</i> program accepts a text file, and generates the equivalent
+  html, postscript, or pdf file.  Full information about acsdoc can be found
+  in:
+  <ul>
+  <li>
+  <a href=vol/documentation/doc/files/_/_title_ok.html>5. Documentation:
+  Acsdoc </a>
+  &nbsp;&nbsp;
+  (<a href=vol/documentation/volume5.ps.gz>PS</a>
+  &nbsp;/&nbsp;&nbsp;<a href=vol/documentation/volume5.pdf>PDF</a>)
+  &nbsp; &nbsp; <i>[incomplete]</i>
+  </li>
+  </ul>
+
+hierarchy:
+  name: Acsdoc
+  title: |
+    Acsdoc: The ACS document generation system
+  description: |
+    The acsdoc program accepts a text file, and generates the equivalent
+    html, postscript, or pdf file.  The syntax is based on the rdoc system,
+    developed by David Thomas, and is now part of the Ruby distribution.
+  entries:
+  -
+      click:    Summary
+      address:  summary.html
+      nonclick: (1 page)
+  -
+      click:    Introduction
+      address:  introduction.html
+      nonclick: (10 pages)
+  -
+      click:    Primer
+      address:  primer.html
+      nonclick: (100 pages)
+
+back:
+  nonclick: back to the
+  address:  ../index.html
+  click:    ACS toolbox page
