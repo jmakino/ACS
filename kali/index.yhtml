@@ -1,3 +1,10 @@
+<%
+require 'pathname'
+current = Pathname.new(".").realpath
+acsroot = Pathname.new(ENV["ACSROOT"])
+relpath = acsroot.relative_path_from(current)
+%>
+
 <HEAD>
 <TITLE><%=y["titles"]["html"]%></TITLE>
 </HEAD>
@@ -10,7 +17,7 @@
 
 
 <td ALIGN=CENTER  NOSAVE>
-      <IMG src=../img/acstitle-s2.gif>
+      <IMG src=<%=relpath%>/img/acstitle-s2.gif>
 </font>
 </td>
 
