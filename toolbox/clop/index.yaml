@@ -54,6 +54,5 @@ hierarchy:
       nonclick: (100 pages)
 
 back:
-  nonclick: back to the
-  address:  ../index.html
   click:    ACS toolbox page
+  address:  ../index.html
