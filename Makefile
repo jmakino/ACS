@@ -1,6 +1,9 @@
 all:
 	$(MAKE) -C ok
 	$(MAKE) -C kali
+	$(MAKE) -C toolbox
+web:
+	$(MAKE) -C toolbox web
 acsdoc:
 	$(MAKE) -C ok   acsdoc
 	$(MAKE) -C kali acsdoc
