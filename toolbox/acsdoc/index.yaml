@@ -6,18 +6,7 @@ image:  ../../img/square_toolbox.jpg
 
 intro: |
   The <i>acsdoc</i> program accepts a text file, and generates the equivalent
-  html, postscript, or pdf file.  Full information about acsdoc can be found
-  in:
-  <ul>
-  <li>
-  <a href=../../kali/vol/documentation/title.html>5.
-  Documentation: Acsdoc </a>
-  &nbsp;&nbsp;
-  (<a href=../../kali/vol/documentation/volume5.ps.gz>PS</a>
-  &nbsp;/&nbsp;&nbsp;<a href=../../kali/vol/documentation/volume5.pdf>PDF</a>)
-  &nbsp; &nbsp; <i>[incomplete]</i>
-  </li>
-  </ul>
+  html, postscript, or pdf file.
 
 hierarchy:
   name: Acsdoc
@@ -39,7 +28,12 @@ hierarchy:
   -
       click:    Primer
       address:  primer.html
-      nonclick: (100 pages)
+      nonclick: (< 100 pages)
+  -
+      click:    Development Volume
+      address:  ../../kali/vol/documentation/title.html
+      nonclick: (> 100 pages)
+      pspdf:    ../../kali/vol/documentation/volume5
 
 back:
   click:    ACS toolbox page
