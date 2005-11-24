@@ -191,6 +191,10 @@ of our three friends, from the moment that their code first compiled.
 
 <b>to be discussed next:</b>
 
+ :inccode: .forward_euler0a.rb
+
+and then
+
  :inccode: .forward_euler1.rb
 
 == Running a Code
