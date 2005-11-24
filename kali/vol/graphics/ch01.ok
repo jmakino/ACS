@@ -1,5 +1,62 @@
-= Introduction
+= VPL interface specification
 
-== xxx
+  Version 0.00
 
-xx
+   P. Hut and J. Makino
+   24 Nov 2005
+
+== Overview
+
+Currentl version of VPL defines a way to plot a two-dimentional array.
+
+== Class definition
+
+=== Name
+
+  VirtualPlotter
+
+=== Methods
+
+  VirtualPlotter#New(device)
+
+Create a VirtualPlotter object. The device argument is a text string
+which specifies the device (and maybe device-dependent arguments such
+as PS filename as well).
+
+  VirtualPlotter#data(ar)
+
++ar+ is two dimentional array of floating-point numbers. Returns self.
+
+  VirtualPlotter#plot
+
+Plot the data specified by   VirtualPlotter#data. In the current
+specification, aspect ratio of the plot area is 1:1. Coordinates are
+scaled automatically. Returns self.
+
+== Sample use
+
+  #!/usr/bin/env ruby
+  require "vpl"
+  a = open("sample.dat"){|x| x.gets(nil)}.collect{|x| x.split}
+  VirtualPlotter.new.data(a).plot
+
+Sample data <tt>sample.dat</tt> would look like
+
+   0 0
+   1 2
+   2 4
+   3 9
+   4 16
+   5 25
+
+== Todo
+
+More methods.
+
+  
+
+
+  
+
+
+
