@@ -10,7 +10,8 @@ else
    alldepends =  $(TARGET).ps.gz
 endif
 ACSDOCOPTIONS = --reuseoutput --keep-dot-files
-ACSDOC = ruby $(ACSROOT)/src/coherent_programming/acsdoc.rb $(ACSDOCOPTIONS)
+#ACSDOC = ruby $(ACSROOT)/src/coherent_programming/acsdoc.rb $(ACSDOCOPTIONS)
+ACSDOC = ruby $(ACSROOT)/kali/vol/documentation/acsdoc2.rb $(ACSDOCOPTIONS)
 ACSGZIP = gzip --force
 LOCALDIR = kali
 LOCALLIBDIR=$(ACSROOT)/$(LOCALDIR)/lib
@@ -38,7 +39,7 @@ $(TARGET).tex: doc $(SRC) .acsdocinitrc
 	cat $(SRC) > $(TARGET).cp
 	$(ACSDOC) --tolatex $(TARGET).cp
 doc : $(SRC) .acsdocinitrc 
-	$(ACSDOC)  $(SRC) [a-z,A-Z]*.rb
+	$(ACSDOC)  [a-z,A-Z]*.rb  $(SRC)
 	touch doc
 
 scripts : $(SCRIPTSRCS)
@@ -55,7 +56,7 @@ locallibs : $(LOCALLIBSRCS) $(KALI_LIBSRCS)
 
 clean : 
 	-rm -r doc .imgs .acsdoc.commandoutdir >&/dev/null
-	-rm  .[a-z]*\.ok .[a-z]*\.rb[-+]* .[a-z]*\.rb .acsdoc.command-* >&/dev/null
+	-rm  .[a-z]*\.ok .[a-z]*\.rb[-+]* .[a-z]*\.rb .acsdoc.aux .acsdoc.command-* >&/dev/null
 	-rm .[0-9]*\.rb[-+]* .[0-9]*\.rb .acsdoc.command-* >&/dev/null
 	-rm $(TARGET).tex $(TARGET).aux $(TARGET).cp $(TARGET).dvi \
 	    $(TARGET).log $(TARGET).ps $(TARGET).pdf $(TARGET).ps.gz \
@@ -68,7 +69,7 @@ clean :
 	-rm tmp.tex tmp.aux tmp.dvi tmp.log tmp.ps tmp.toc tmp.jpeg* >&/dev/null
 
 %.tex : %.ok
-	    $(ACSDOC)  $< [a-z,A-Z]*.rb
+	    $(ACSDOC)  [a-z,A-Z]*.rb  $<
 	$(ACSDOC)  --tolatex  $<
 %.dvi : %.tex
 	latex  $< 

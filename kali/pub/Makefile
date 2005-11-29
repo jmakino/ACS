@@ -1,4 +1,5 @@
 all:
+	$(MAKE) -C etc
 	$(MAKE) -C msa all
 acsdoc:
 	$(MAKE) -C msa acsdoc
