@@ -1397,7 +1397,8 @@ module Acsdoc
 	  @@section_label_table[labeltext]=sectionlabel
           lastsectionnumber=number_label[0,number_label.length-1]
 	  labeltext=nil
-	   "<h2> "+sectionname+ "</h2>\n<a name=" + sectionlabel + ">\n"
+#	   "<h2> "+sectionname+ "</h2>\n<a name=" + sectionlabel + ">\n"
+	   "<a name=" + sectionlabel + ">\n<h2> "+sectionname+ "</h2>\n"
 	} 
 	ostring +=x
       end
