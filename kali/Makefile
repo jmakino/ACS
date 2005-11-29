@@ -1,13 +1,18 @@
 all: volindex index.html
 	$(MAKE) -C vol
+	$(MAKE) -C pub
 acsdoc:
 	$(MAKE) -C vol acsdoc
+	$(MAKE) -C pub acsdoc
 clean:
 	$(MAKE) -C vol clean
+	$(MAKE) -C pub clean
 cleandoc:
 	$(MAKE) -C vol cleandoc
+	$(MAKE) -C pub cleandoc
 acscode:
 	$(MAKE) -C vol acscode
+	$(MAKE) -C pub acscode
 tar:
 	tar czf ../kali.tar.gz .
 volindex: development.html
