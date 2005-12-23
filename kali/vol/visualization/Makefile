@@ -3,4 +3,8 @@ SRC =  title.ok pref.ok  ch01.ok  ch02.ok  ch03.ok  ch04.ok \
 
 TARGET = volume10
 
+
+LOCALSCRIPTSRCS = gnuplot.rb handlers.rb  vp.rb vpclass.rb vpl.rb
+LOCALLIBSRCS =  testvp.rb 
+
 include ../etc/Makefile.inc
