@@ -49,8 +49,8 @@ making the time step smaller by a jump of a factor of a hundred.
  :commandoutput: ruby test.rb < euler.in
  :command: rm -f test.rb
 
-*Bob*: And the error comes down by yet another factor ten.  Note that the
-integrator halts after exactly 100,000 steps, not one more and not one
+*Bob*: And indeed the error comes down by a factor of a hundred.  Note that
+the integrator halts after exactly 100,000 steps, not one more and not one
 less.  Yesterday evening, when I tried it out, it kept overshooting to
 100,001 steps, so that was why I added that extra half step in the halting
 criteria.
