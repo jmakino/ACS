@@ -119,7 +119,7 @@ Alice typed in.  Actually, the first version contained a few syntax errors,
 not surprisingly, but to move right along, we will just show here the
 final product, by printing the file <tt>forward_euler0.rb</tt>:
 
-# :inccode: .forward_euler0.rb
+ :inccode: .euler.rb
 
 Let us look at each line in turn.  The first <tt>include</tt> statement
 is needed in order to gain access to the +Math+ module in Ruby, that
@@ -191,11 +191,11 @@ of our three friends, from the moment that their code first compiled.
 
 <b>to be discussed next:</b>
 
-# :inccode: .forward_euler0a.rb
+ :inccode: .euler_array.rb
 
 and then
 
-# :inccode: .forward_euler1.rb
+ :inccode: .euler_array_each.rb
 
 == Running a Code
 
@@ -1313,7 +1313,7 @@ yet shows global errors for a fixed time interval that are of order _k_
 convince yourself that the following program,
 <tt>forward_euler1a.rb</tt>:
 
-# :inccode: .forward_euler1a.rb
+ :inccode: .euler_array_inject.rb
 
 does the same thing as <tt>forward_euler1.rb</tt>.  Check
 this both by inspecting the logic of the new code, and by running the
