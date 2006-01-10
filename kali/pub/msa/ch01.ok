@@ -81,7 +81,7 @@ a brief look at four types of crowded neighborhoods.
 
 == Globular Clusters
 
- :figure: m15.jpg 8cm m15
+ :figure: m15.jpg 10 m15
  A snapshot of the globular cluster M15, taken with the Hubble Space
  Telescope.
 
@@ -135,20 +135,14 @@ each star, and the parameters of its orbit, such as the semimajor axis
 (a measure for the typical separation of the two stars) as well as the
 orbital eccentricity.
 
-One of the roles of the current book is to provide an introduction to
-the Kali code, and the other software tools that are part of the
-<web>http://www.ArtCompSci.org|Maya open lab</web>.  The Maya project
-will make it possible to simulate an entire star cluster such as M15,
-and to analyze the resulting behavior both locally and globally.
-
 == Galactic Nuclei
 
-In Fig. <b>xxx [Jun, how can we refer to a figure?]</b> we see an
+In Fig. ref(gc) we see an
 image of the very center of our galaxy.  This picture is taken with
 the Northern branch of the two Gemini telescopes, which is located in
 Hawaii on top of the mountain Mauna Kea.
 
- :figure: gc.jpg 8cm gc
+ :figure: gc.jpg 10 gc
  An image of the central region of our galaxy, taken with the Gemini
  North telescope.  The center is located on the right just above the
  bottom edge of the image.
@@ -201,7 +195,7 @@ steps toward a detailed modeling of galactic nuclei.
 
 == Star Forming Regions
 
- :figure: orion.jpg 8cm orion
+ :figure: orion.jpg 10 orion
  The Orion Nebula, as seen by the Subaru telescope.
 
 There are many other places in the galactic disk where the density of
@@ -244,7 +238,7 @@ the so-called open clusters, where there name indicates that they have
 central densities that are typically less than what we see in globular
 clusters.
 
- :figure: m67.jpg 8cm m67
+ :figure: m67.jpg 10 m67
  The open star cluster M67, in a picture taken by the Anglo-Australian
  Observatory.
 
@@ -357,3 +351,7 @@ steps involved, together with a discussion of the motivation for those
 steps.  In the last few chapters, we will embark on a research project
 featuring stellar collisions, in a simple gravity-only approximation.
 
+One of the roles of the current book is to provide an introduction to
+the Kali code, and the other software tools that are part of the
+<web>http://www.ArtCompSci.org|Maya open lab</web>.  The Maya project
+will make it possible to simulate an entire star cluster.
