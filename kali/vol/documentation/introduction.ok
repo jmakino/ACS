@@ -109,7 +109,7 @@ with <tt>.ok</tt>.
 <tt>Source files</tt> are the files used in including partial
 codes. The use of them is described in sections
 ref(sect:includefragments) and ref(sect:includefunctions). Currently,
-files with extention <tt>.rb</rb> are recognized as Ruby source file,
+files with extention <tt>.rb</tt> are recognized as Ruby source file,
 <tt>.c</tt> C program,
 <tt>.C</tt> and <tt>.cc</tt> C++ programs. Support on C/C++ programs
 is rather primitive and might not serve your need.
@@ -387,9 +387,9 @@ function buz fom class (or module)  Bar in file foo.rb, you can write
 
   ##  :include: .foo.rb+buz+Bar
 
-For exaple, <tt>":include: .acsdoc.rb+wordmarkup+Rdoctotex"</tt> gives
+For exaple, <tt>":include: .acsdoc.rb+wordmarkup+Acsdoc"</tt> gives
 
- :include: .acsdoc.rb+wordmarkup+Rdoctotex
+ :include: .acsdoc.rb+wordmarkup+Acsdoc
 
 If +buz+ is the only function with that name in that file, or if buz is
 the top-level function, you can omit the class name as
@@ -636,7 +636,7 @@ As in latex, one can make numbered figures. The syntax is
  # :figure: sample.gif 5cm acslogo
  # The ACS logo
 
-Which gives
+Which gives figure ref(acslogo).
 
 :figure: sample.gif 5cm acslogo
 The ACS logo
