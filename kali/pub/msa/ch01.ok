@@ -81,7 +81,11 @@ a brief look at four types of crowded neighborhoods.
 
 == Globular Clusters
 
-In Fig. <b>xxx [Jun, how can we refer to a figure?]</b> we see a
+ :figure: m15.jpg 8cm m15
+ A snapshot of the globular cluster M15, taken with the Hubble Space
+ Telescope.
+
+In Fig. ref(m15) we see a
 picture of the globular cluster M15, taken with the Hubble Space
 Telescope.  This cluster contains roughly a million stars.  In the
 central region typical distances between neighboring stars are only a
@@ -144,12 +148,10 @@ image of the very center of our galaxy.  This picture is taken with
 the Northern branch of the two Gemini telescopes, which is located in
 Hawaii on top of the mountain Mauna Kea.
 
-link:gc.jpg
-
-<b>[this should be the figure caption:]</b>
-An image of the central region of our galaxy, taken with the Gemini
-North telescope.  The center is located on the right just above the
-bottom edge of the image.
+ :figure: gc.jpg 8cm gc
+ An image of the central region of our galaxy, taken with the Gemini
+ North telescope.  The center is located on the right just above the
+ bottom edge of the image.
 
 In the very center of our galaxy, a black hole resides with a mass a
 few million times larger than the mass of our sun.  Although the black
@@ -159,9 +161,8 @@ which stars pass near the black hole.  In normal visible light it is
 impossible to get a glimpse of the galactic center, because of the
 obscuring gas clouds that are positioned between us and the center.
 Infrared light, however, can penetrate deeper in dusty regions.
-Fig. <b>xxx [Jun, how can we refer to a figure?]</b> is a false-color
-image, reconstructed from observations in different infrared
-wavelength bands.
+Fig. ref(gc) is a false-color image, reconstructed from observations
+in different infrared wavelength bands.
 
 In the central few light years near the black hole, the total mass of
 stars is comparable to the mass of the hole.  This region is
@@ -200,22 +201,19 @@ steps toward a detailed modeling of galactic nuclei.
 
 == Star Forming Regions
 
-link:orion.jpg
-
-<b>[this should be the figure caption:]</b>
-The Orion Nebula, as seen by the Subaru telescope.
+ :figure: orion.jpg 8cm orion
+ The Orion Nebula, as seen by the Subaru telescope.
 
 There are many other places in the galactic disk where the density of
 stars is high enough to make collisions likely, at least temporarily.
-These are the sites where stars are born.  Fig. <b>xxx [Jun, how can
-we refer to a figure?]</b> taken by the Japanese Subaru telescope in
-Hawaii shows the Orion Nebula, also known as M42, at a distance of
-1500 light years from the sun.  This picture, too, is taking in
-infrared light in order to penetrate the dusty regions surrounding the
-young stars.  The four brightest stars in the center, collectively
-known as the Trapezium, form the most massive stars of a larger
-conglomeration of stars, all recently formed from the gas and dust
-that still surrounds them.
+These are the sites where stars are born.  Fig. ref(orion) taken by
+the Japanese Subaru telescope in Hawaii shows the Orion Nebula, also
+known as M42, at a distance of 1500 light years from the sun.  This
+picture, too, is taking in infrared light in order to penetrate the
+dusty regions surrounding the young stars.  The four brightest stars
+in the center, collectively known as the Trapezium, form the most
+massive stars of a larger conglomeration of stars, all recently formed
+from the gas and dust that still surrounds them.
 
 In order to study collisions in these star forming regions, we can no
 longer treat the stars are point masses.  Many of the collisions take
@@ -246,19 +244,17 @@ the so-called open clusters, where there name indicates that they have
 central densities that are typically less than what we see in globular
 clusters.
 
-link:m67.jpg
-<b>[this should be the figure caption:]</b>
-The open star cluster M67, in a picture taken by the Anglo-Australian
-Observatory.
+ :figure: m67.jpg 8cm m67
+ The open star cluster M67, in a picture taken by the Anglo-Australian
+ Observatory.
 
-Fig. <b>xxx [Jun, how can we refer to a figure?]</b> shows one of the
-richest and densest open clusters, M67, as observed by the
-Anglo-Australian Observatory.  Since this cluster is old enough to
-have lost its gas and dust, all stars are visible at normal optical
-wavelengths, at which this image is taken.  In the central regions of
-this cluster, there are indications that some of the stars have
-undergone close encounters or even collisions.  Consequently, this
-star cluster qualifies as a dense stellar system.
+Fig. ref(m67) shows one of the richest and densest open clusters, M67,
+as observed by the Anglo-Australian Observatory.  Since this cluster
+is old enough to have lost its gas and dust, all stars are visible at
+normal optical wavelengths, at which this image is taken.  In the
+central regions of this cluster, there are indications that some of
+the stars have undergone close encounters or even collisions.
+Consequently, this star cluster qualifies as a dense stellar system.
 
 Open clusters typically have fewer members than globular clusters.
 Also, they are younger.  Both facts makes it easier to simulate open
