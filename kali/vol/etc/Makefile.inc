@@ -11,7 +11,7 @@ else
 endif
 ACSDOCOPTIONS = --reuseoutput --keep-dot-files
 #ACSDOC = ruby $(ACSROOT)/src/coherent_programming/acsdoc.rb $(ACSDOCOPTIONS)
-ACSDOC = ruby $(ACSROOT)/kali/vol/documentation/acsdoc2.rb $(ACSDOCOPTIONS)
+ACSDOC = ruby $(ACSROOT)/kali/vol/documentation/acsdoc.rb $(ACSDOCOPTIONS)
 ACSGZIP = gzip --force
 LOCALDIR = kali
 LOCALLIBDIR=$(ACSROOT)/$(LOCALDIR)/lib
