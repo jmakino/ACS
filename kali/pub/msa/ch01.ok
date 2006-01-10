@@ -81,12 +81,6 @@ a brief look at four types of crowded neighborhoods.
 
 == Globular Clusters
 
-link:m15.jpg
-
-<b>[this should be the figure caption:]</b>
-A snapshot of the globular cluster M15, taken with the Hubble Space
-Telescope.
-
 In Fig. <b>xxx [Jun, how can we refer to a figure?]</b> we see a
 picture of the globular cluster M15, taken with the Hubble Space
 Telescope.  This cluster contains roughly a million stars.  In the
@@ -138,10 +132,10 @@ each star, and the parameters of its orbit, such as the semimajor axis
 orbital eccentricity.
 
 One of the roles of the current book is to provide an introduction to
-the <web>http://www.ArtCompSci.org|Kali code</web>, and the software
-tools that are part of the Kali project.  This project will make
-it possible to simulate an entire star cluster such as M15, and to
-analyze the resulting behavior both locally and globally.
+the Kali code, and the other software tools that are part of the
+<web>http://www.ArtCompSci.org|Maya open lab</web>.  The Maya project
+will make it possible to simulate an entire star cluster such as M15,
+and to analyze the resulting behavior both locally and globally.
 
 == Galactic Nuclei
 
