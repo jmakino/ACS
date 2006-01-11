@@ -192,7 +192,7 @@ END
 
 code <tt>euler_0001.rb</tt>, with only these two lines different:
 
- :inccode: .euler_0001.rb+1
+ :inccode: .euler_0001.rb-1
 
 Let's run it:
 
@@ -216,7 +216,7 @@ END
 
 code <tt>euler_0001.rb</tt>, with only these two lines different:
 
- :inccode: .euler_0001.rb+1
+ :inccode: .euler_0001.rb-1
 
 Let's run it:
 
