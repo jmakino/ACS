@@ -114,10 +114,37 @@ Alice, go for it!
 
 == Writing a Code
 
+Buggy code <tt>euler0.rb</tt>, but we show it as if it is called
+<tt>euler.rb</tt>:
+
+ :inccode: .euler0.rb
+
+Let's run it:
+
+ :command: cp euler0.rb euler.rb
+ :commandoutput: ruby euler.rb > forward.out
+ :commandoutput: head -5 forward.out
+ :commandoutput: tail -5 forward.out
+
+Let's plot it:
+
+ :commandinput: gnuplot END
+set term post eps
+set output "forward.ps"
+set size ratio -1
+plot "forward.out"
+quit
+END
+
+ :figure: forward.ps 6cm euler0
+ First attempt at integrating the two-body problem.
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
 After some further discussion among the three, here is the code that
 Alice typed in.  Actually, the first version contained a few syntax errors,
 not surprisingly, but to move right along, we will just show here the
-final product, by printing the file <tt>forward_euler0.rb</tt>:
+final product, by printing the file <tt>euler.rb</tt>:
 
  :inccode: .euler.rb
 
@@ -187,148 +214,55 @@ single line.
 Let us follow the discussion
 of our three friends, from the moment that their code first compiled.
 
-<b>so far</b>
-
-<b>to be discussed next:</b>
-
- :inccode: .euler_array.rb
-
-and then
-
- :inccode: .euler_array_each.rb
-
 == Running a Code
 
 *Carol*:
-That's it, the last bug caught, our <tt>forward_euler1</tt> compiled at
+That's it, the last bug caught, our <tt>euler.rb</tt> compiled at
 last!  Let's see what it produces.  Since we asked for the output of
 positions and velocities for 10 time units at intervals <tt>dt = 0.01</tt>,
 our screen will be flooded by 1000 lines of output; better to redirect
 the output to a file.  Let's call it <tt>forward.out</tt>, and let's have
 a look at the beginning and the end of the file, say five lines each:
 
- :commandoutput: ruby forward_euler1.rb > forward.out
+ :commandoutput: ruby euler.rb > forward.out
  :commandoutput: head -5 forward.out
  :commandoutput: tail -5 forward.out
 
 \output{chap3/forward.output}
 
-*Bob*:
-Hey, Alice told us that our two particles were at apocenter initially,
-at distance 1, which meant that they could come closer but that they
-would never get further away from each other than unity in our length
-units.  And here we have distance vectors larger than 7, actually
-close to 10 if I remember my Pythagoras formula well enough, in the
-last line.
+*Erica*: So we've computed real positions and velocities, in the
+<tex>$\{x,y\}$</tex> plane.  We're gettings somewhere!  And the
+numbers look reasonable, as far as I can see.
 
-*Carol*:
-You are right, slightly more than 9.9:
+*Dan*: I can't see anything, frankly, by starting at a bunch of
+numbers.  Wouldn't it be better to make a picture of the orbit?
 
-<tt>
-|gravity> bc
-7.69375*7.69375 + 6.27772*6.27772
-98.6035574609
-sqrt(98.6035574609)
-9.92993239961380603154
-|gravity>
-</tt>
+*Carol*: I suggest using <tt>gnuplot</tt>, present on any Linux
+running system, and something that can be easily installed on many
+other systems as well.
 
-*Bob*:
-Unix takes a while to get used to!  What does the two-letter `word'
-<tt>bc</tt> mean?
+*Erica*: Fine.  But before doing that, I just noticed that the
+numbers in the first column at the end of the file are way too large.
+Our two particles were at apocenter initially, at distance 1, which
+meant that they could come closer but that they would never get
+further away from each other than unity in our length units.  And here
+we have distance vectors larger than 7, actually close to 10 if I
+remember my Pythagoras formula well enough, in the last line.
 
-*Carol*:
-Oh, <tt>bc</tt> is a more powerful version of <tt>dc</tt>, which stands for
-`desk calculator' and is a simple utility to quickly find arithmetic
-answers without writing a program.  Here is what the manual page for
-<tt>dc</tt> tells us:
+*Dan*: Whatever may have gone wrong is likely to show up in a plot.
+Carol, how do you invoke <tt>gnuplot</tt>?
 
-<tt>
-|gravity> man dc
-NAME
-     dc - desk calculator
-
-SYNOPSIS
-     dc  [ filename ]
-
-DESCRIPTION
-     dc  is an arbitrary  precision  arithmetic  package.   Ordi-
-     narily  it operates on decimal integers, but one may specify
-     an input base, output  base,  and  a  number  of  fractional
-     digits  to  be maintained. The overall structure of dc  is a
-     stacking (reverse Polish) calculator.   If  an  argument  is
-     given,  input  is  taken  from that file until its end, then
-     from the standard input.
-
-     bc  is a preprocessor for dc  that provides  infix  notation
-     and  a  C-like  syntax  that implements functions.  bc  also
-     provides reasonable control  structures  for  programs.  See
-     bc(1).
-|gravity>
-</tt>
-
-*Carol*:
-With <tt>dc</tt> we could not have used the <tt>sqrt()</tt> function, so we
-used <tt>bc</tt>; perhaps it stands for a `better calculator', who knows.
-
-*Bob*:
-Well, our program compiles and our program runs, so we have passed two
-barriers, but now it gives answers that are not sensible.  The third
-step that could have gone wrong is that we have somehow made a mistake
-in our algorithm, mistyping it, or even being misguided as to its
-structure.  But with the simplicity of Eqs. \ref{forward-euler-step1},
-\ref{forward-euler-step2} it seems clear that neither is the case here.
-The equations tell the particle to `follow its nose' in a straight
-line during each time step.  What could be simpler!
-
-*Alice*:
-You are right.  After syntactic compile time errors, dynamic run time
-errors, and semantic errors in coding up the algorithm correctly, the
-fourth potential source of errors lies in using the algorithm.  While
-it seems that we took an almost ridiculously small time step, the
-choice <tt>dt = 0.01</tt> may still be too large.  After all, <tt>dt</tt> is
-the only free parameter in our program.  The code is like a laboratory
-instrument, a black box with only one dial, so we may as well play
-with different settings of the dial.
-
-*Bob*:
-Indeed, we had no particular reason to choose the value we did, rather
-than any other.  But before we start playing, can we plot a picture of
-the orbit we just computed?  I'd rather have a real sense of what is
-going on, beyond staring at a few output numbers.
-
-*Carol*:
-Will do, but may I add another option to Alice's detective analysis?
-Apart from the four types of error that she mentioned, there is another
-possibility.  We are not really sure that the program we ran was the
-one we wrote.  The default search path on this computer may be set such
-that we wind up invoking another program with the same name.
-
-*Bob*:
-Also called <tt>forward_euler1</tt>?  That seems extremely unlikely!
-
-*Carol*:
-But as they say in the Hitchhiker's guide to the galaxy, not impossible.
-Let me try, and force execution from the current directory ``.'' by
-adding it to the name of our executable:
-
-\output{chap3/forward2.output}
-
-*Carol*:
-Okay, no problem here.  I just thought I'd bring up something I
-happened to learn in class today.  Now let's look at a picture of the
-orbit.  I suggest using <tt>gnuplot</tt>, present on any Linux running
-system, and something that can be easily installed on many other Unix
-systems as well.  To use it is quite simple, with only one command
+*Carol*: To use it is quite simple, with only one command
 needed to plot a graph.  In our case, however, I'll start with the
-command <tt>set size ratio -1</tt>.  A positive value for the size ratio
-scales the aspect ratio of the vertical and horizontal edge of the box
-in which a figure appears.  However, in our case we want to set the
-scales so that the unit has the same length on both the x and y axes.
-Gnuplot can be instructed to do so by specifying the ratio to be <tt>-1</tt>.
-In fact, let me write the line <tt>set size ratio -1</tt> in a file called
-<tt>.gnuplot</tt> in my home directory.  That way we don't have to type it
-each time we use gnuplot.  Okay, done.  Now let's have our picture:
+command <tt>set size ratio -1</tt>.  A positive value for the size
+ratio scales the aspect ratio of the vertical and horizontal edge of
+the box in which a figure appears.  However, in our case we want to
+set the scales so that the unit has the same length on both the x and
+y axes.  Gnuplot can be instructed to do so by specifying the ratio to
+be <tt>-1</tt>.  In fact, let me write the line <tt>set size ratio
+-1</tt> in a file called <tt>.gnuplot</tt> in my home directory.  That
+way we don't have to type it each time we use gnuplot.  Okay, done.
+Now let's have our picture:
 
 <tt>
 |gravity> gnuplot
@@ -349,7 +283,7 @@ forward-Euler integrator, with time step <tex>$dt = 0.01$</tex>}
 \end{center}
 \end{figure}
 
-*Bob*:
+*Dan*:
 Wow, the two stars were flung away as by a slingshot, after only
 slightly more than half an orbit.  I guess that indeed the time step
 was too large.
