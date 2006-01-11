@@ -130,13 +130,13 @@ Let's plot it:
 
  :commandinput: gnuplot END
 set term post eps
-set output "forward.ps"
+set output "forward_bug.ps"
 set size ratio -1
 plot "forward.out"
 quit
 END
 
- :figure: forward.ps 6cm euler_bug
+ :figure: forward_bug.ps 10cm euler_bug
  First attempt at integrating the two-body problem: failure.
 
 Corrected code <tt>euler_correct.rb</tt>, but we show it as if it is called
@@ -155,13 +155,13 @@ Let's plot it:
 
  :commandinput: gnuplot END
 set term post eps
-set output "forward.ps"
+set output "forward_correct.ps"
 set size ratio -1
 plot "forward.out"
 quit
 END
 
- :figure: forward.ps 6cm euler_correct
+ :figure: forward_correct.ps 10cm euler_correct
  Second attempt at integrating the two-body problem: still a failure.
 
 code <tt>euler_001.rb</tt>, but we show it as if it is called
@@ -173,20 +173,19 @@ Let's run it:
 
  :command: cp euler_001.rb euler.rb
  :commandoutput: ruby euler.rb > forward.out
- :commandoutput: head -5 forward.out
- :commandoutput: tail -5 forward.out
+ :commandoutput: tail -1 forward.out
 
 Let's plot it:
 
  :commandinput: gnuplot END
 set term post eps
-set output "forward.ps"
+set output "forward_001.ps"
 set size ratio -1
 plot "forward.out"
 quit
 END
 
- :figure: forward.ps 6cm euler_001
+ :figure: forward_001.ps 12cm euler_001
  Third attempt at integrating the two-body problem: at least a
  semblance of an elliptic orbit.
 
@@ -198,44 +197,42 @@ Let's run it:
 
  :command: cp euler_0001.rb euler.rb
  :commandoutput: ruby euler.rb > forward.out
- :commandoutput: head -5 forward.out
- :commandoutput: tail -5 forward.out
+ :commandoutput: tail -1 forward.out
 
 Let's plot it:
 
  :commandinput: gnuplot END
 set term post eps
-set output "forward.ps"
+set output "forward_0001.ps"
 set size ratio -1
 plot "forward.out"
 quit
 END
 
- :figure: forward.ps 6cm euler_0001
+ :figure: forward_0001.ps 12cm euler_0001
  Fourth attempt at integrating the two-body problem: a lot better already.
 
-code <tt>euler_0001.rb</tt>, with only these two lines different:
+code <tt>euler_00001.rb</tt>, with only these two lines different:
 
- :inccode: .euler_0001.rb-1
+ :inccode: .euler_00001.rb-1
 
 Let's run it:
 
- :command: cp euler_0001.rb euler.rb
+ :command: cp euler_00001.rb euler.rb
  :commandoutput: ruby euler.rb > forward.out
- :commandoutput: head -5 forward.out
- :commandoutput: tail -5 forward.out
+ :commandoutput: tail -1 forward.out
 
 Let's plot it:
 
  :commandinput: gnuplot END
 set term post eps
-set output "forward.ps"
+set output "forward_00001.ps"
 set size ratio -1
 plot "forward.out"
 quit
 END
 
- :figure: forward.ps 6cm euler_0001
+ :figure: forward_00001.ps 12cm euler_00001
  Fifth attempt at integrating the two-body problem: getting there, slowly.
 
 
