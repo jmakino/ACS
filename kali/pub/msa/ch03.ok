@@ -7,16 +7,16 @@ Now that we have the equations of motion for the relative position of
 one particle with respect to the other, I guess we need an algorithm
 to integrate these equations.
 
-*Alice*:
+*Erica*:
 Indeed, and there is a large choice!  If you pick up any book on
 numerical methods, you will see that you can select from a variety of
 lower-order and higher-order integrators, and for each one there are
 additional choices as to the precise structure of the algorithm.
 
-*Bob*:
+*Dan*:
 What is the order of an algorithm?
 
-*Alice*:
+*Erica*:
 It signifies the rate of convergence.  Since no algorithm with a
 finite time step size is perfect, they all make numerical errors.
 In a fourth-order algorithm, for example, this error scales as the
@@ -28,7 +28,7 @@ order algorithm.  By only slightly reducing the time step, we would
 read machine accuracy, of order <tex>$10^{-15}$</tex> for the usual double
 precision (8 byte, i.e. 64 bit) representation of floating point numbers.
 
-*Alice*:
+*Erica*:
 The drawback of using high-order integrators is two-fold: first, they
 are far more complex to code; and secondly, they do not allow arbitrarily
 large time steps, since their region of convergence is limited.  As a
@@ -41,21 +41,21 @@ star cluster, where some of the stars can come arbitrarily close to each
 other, experience shows that very high order integrators lose their edge.
 In practice, fourth-order integrators have been used most often for the job.
 
-*Bob*:
+*Dan*:
 How about starting with the lowest-order integrator we can think of?
 A zeroth-order integrator would make no sense, since the error would
 remain constant, independent of the time step size.  So the simplest
 one must be a first-order integrator.
 
-*Alice*:
+*Erica*:
 Indeed.  And the simplest version of a first-order integrator is
 called the <i>forward Euler</i> integrator.
 
-*Bob*:
+*Dan*:
 Was Euler so forward-looking, or is there also a <i>backward Euler</i>
 algorithm?
 
-*Alice*:
+*Erica*:
 There is indeed.  In the forward version, at each time step you simply
 take a step tangential to the orbit you are on.  After that, at the
 next step, the new value of the acceleration forces you to slightly
@@ -67,7 +67,7 @@ the end.
 
 <b>[Peter, can you make a picture here?]</b>
 
-*Bob*:
+*Dan*:
 And the <i>backward Euler</i> algorithm must have the right direction
 at the end of a time step, and the wrong one at the beginning.  Let's
 see.  That seems much harder to construct.  How do you know at the
@@ -77,7 +77,7 @@ point?
 
 <b>[Peter, can you make a picture here?]</b>
 
-*Alice*:
+*Erica*:
 You do that through iteration.  You guess a direction, and
 then you correct for the mistake you find yourself making, so that
 your second iteration is much more accurate, in fact first-order
@@ -88,7 +88,7 @@ the forward Euler algorithm.
 Can't we do both, _ie_ make half the mistakes of each of the two, while
 trying to strike the right balance between forward and backward Euler?
 
-*Alice*:
+*Erica*:
 Aha!  That is a good way to construct better algorithms, which then
 become second-order accurate, because you have canceled the first-order
 errors.  Examples are second-order Runge Kutta, and leapfrog.  We'll
@@ -106,13 +106,100 @@ the time <tex>$t_{i+1}$</tex> after one more time step has been taken:
 <tex>$dt = t_{i+1} - t_i$</tex>.  The acceleration induced on a particle by the
 gravitational forces of all other particles is indicated by <tex>$\ba$</tex>.
 So, all we have to do now is to code it up.  By the way, let's rename
-the file.  Rather than a generic name <tt>nbody.C</tt>, let's call it
-<tt>forward_euler1.C</tt>.
+the file.  Rather than a generic name <tt>nbody.rb</tt>, let's call it
+<tt>euler.rb</tt>.
 
-*Bob*:
-Alice, go for it!
+*Dan*:
+Erica, go for it!
 
 == Writing a Code
+
+*Carol*: In order to solve a differential equation, you have to provide
+initial conditions.
+
+*Erica*: 
+You mean we have to start by specifying the initial separation between
+the particles.  How about a simple choice like this?
+
+ :inccode: .euler_elliptic.rb-1
+
+*Dan*: Let me put this into words.  The relative position vector is
+chosen along the <tex>$x$</tex> axis at a distance of unity from the
+origin where the other particle resides in the relative coordinate
+system that we use: <tex>$\br = \{1, 0, 0\}$</tex>.  The relative
+velocity is chosen to be <tex>$0.5$</tex> in the direction of the
+positive <tex>$y$</tex> axis: <tex>$\bv = \{0, 0.5, 0\}$</tex>.
+This means that the initial motion is at right angles to initial separation.
+
+*Carol*: Does this mean that the two particles will move around each other
+in a circle?
+
+*Erica*: Probably not, unless we give exactly the right velocity
+<tex>$v_c$</tex> needed for circular motion.  In general, the orbit
+will take the shape of an ellipse, if the two particles are bound.
+If the initial speed is too high, the particles escape from each
+other, in a parabolic or hyperbolic orbit.
+
+*Carol*: What is the value of <tex>$v_c$</tex>?
+
+*Erica*: We can look it up in any text book on celestial mechanics,
+but I remember a quick way to derive the expression.  According to
+the virial theory, for a circular orbit, the kinetic energy
+<tex>$E_kin$</tex> is just one half of the potential energy
+<tex>$E_pot$</tex>, and opposite in sign.  This makes the magnitude
+of the total energy <tex>$E_tot$</tex> equal to that of the kinetic
+energy:
+
+:equation:
+E_tot = E_kin + E_pot = E_kin - 2 E_kin = - E_kin
+
+We have already derived
+
+:equation:
+E_kin = {1 \over 2}\ {M_1 M_2 \over M_1 + M_2} v^2
+
+and
+
+:equation:
+E_pot = -\ {M_1 M_2 \over r}
+
+So when we insist that <tex>$E_pot = -2 E_kin$</tex>, we get for the
+circular velocity
+
+:equation:
+v_c^2 = {M_1 + M_2 \over r}
+
+In our case, we have chosen <tex>$M_1 + M_2$</tex> to be unity, which
+means:
+
+:equation:
+v_c = {1 \over \sqrt r}
+
+*Dan*: So with your choice of an initial separation of <tex>$r=1$</tex>,
+we have <tex>$v_c = 1$</tex>.  Ah, you want to start the particles off
+with a velocity that is only half as large, which means that the two
+particles will start falling towards each other, because they don't
+have enough relative speed to keep them in a circular orbit?
+
+*Erica*: Yes, I guess that is what will happen.  I just typed in some
+simple numbers.
+
+*Carol*: Wouldn't it be better to start with the simplest case, that of a
+circular orbit, to test whether at least we can get that right?  There we
+know exactly what should happen, whereas with an elliptic orbit, it will
+be harder to see whether the ellipse has the exact right shape.
+
+*Erica*: You have a point there.  Okay, lets do that.
+
+
+
+
+
+
+
+
+
+*Erica*: 
 
 Buggy code <tt>euler0.rb</tt>, but we show it as if it is called
 <tt>euler.rb</tt>:
@@ -240,7 +327,7 @@ END
 xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 After some further discussion among the three, here is the code that
-Alice typed in.  Actually, the first version contained a few syntax errors,
+Erica typed in.  Actually, the first version contained a few syntax errors,
 not surprisingly, but to move right along, we will just show here the
 final product, by printing the file <tt>euler.rb</tt>:
 
@@ -386,7 +473,7 @@ Wow, the two stars were flung away as by a slingshot, after only
 slightly more than half an orbit.  I guess that indeed the time step
 was too large.
 
-*Alice*:
+*Erica*:
 I think you are right.  Notice that the artificial slingshot, caused
 by numerical errors, occurred just after pericenter, where the
 curvature of the orbit is highest.  Stepping along tangentially to the
@@ -405,7 +492,7 @@ this version:
 
 \code{forward_euler2a.C}{chap3/forward_euler2a.C}
 
-*Bob*:
+*Dan*:
 And even with a polite request to remind the user what is needed.
 Very nice.  Let's compile, run, and plot!
 
@@ -416,7 +503,7 @@ numbering system, where the number in the source file corresponds to
 the same number in the output file; the `a' after `2' is added here
 since different input options will produce different output files.
 
-*Bob*:
+*Dan*:
 How about making it even clearer and add the value of the time step
 that we input to the name?
 
@@ -431,11 +518,11 @@ whether we indeed get the same result.  Here goes:
 |gravity> forward_euler2 > forward2_0.01.out
 </tt>
 
-*Bob*:
+*Dan*:
 So much for the polite reminder.  What is happening, is the computer
 so slow?  Or is it just hanging?
 
-*Alice*:
+*Erica*:
 Ah, I see.  By redirecting the output to <tt>forward2_0.01.out</tt>, we are
 also redirecting our reminder to that file, spoiling the format of our
 nbody snapshot output, and losing our reminder.
@@ -448,7 +535,7 @@ provide a handy way to disentangle the snapshot output, meant to be
 read further by a computer, and the reminder output, aimed at human
 consumption.
 
-*Bob*:
+*Dan*:
 Good idea.  But while we do that, let's make another modification as
 well.  I just realized that our halting criterion is completely wrong.
 If we specify <tt>dt = 0.0001</tt>, the system would bail out after only
@@ -456,7 +543,7 @@ If we specify <tt>dt = 0.0001</tt>, the system would bail out after only
 enough to see the particles move, and far too little to complete even
 one orbit.
 
-*Alice*:
+*Erica*:
 Right you are.  Let's put in a time counter, so that we can keep
 integrating till time 10, for good measure.
 
@@ -488,7 +575,7 @@ And now let's try again:
   7.69375 -6.27772 0 0.812207 -0.5742 0
   7.70187 -6.28346 0 0.812128 -0.574136 0
 
-*Bob*:
+*Dan*:
 That's curious.  Almost the same results as before, but not quite.
 Remember, earlier we got:
 
@@ -497,7 +584,7 @@ Remember, earlier we got:
 
 \output{chap3/forward2b.output}
 
-*Bob*:
+*Dan*:
 Ah, I see: same results, after all, but one more time step.
 Our next to last line is identical to our previous last line.
 
@@ -513,14 +600,14 @@ check by doing a word count (actually a line-word-character count):
 
 \output{chap3/wc.output}
 
-*Alice*:
+*Erica*:
 Indeed: one line more and six words more, for the extra position and
 velocity components.  I guess our switch from integer book keeping
 with the number of time steps, to floating-point book keeping by using
 the time introduced some slight round-off which caused the program to
 do one more step.
 
-*Bob*:
+*Dan*:
 Sounds plausible, but let's check it out.  Seeing is believing!
 Shall we put in an extra output statement on <tt>cerr</tt>?  This time
 we're after errors after all, namely round-off errors.  Let's add
@@ -558,17 +645,17 @@ the screen.
 
 \output{chap3/forward2b_cerr.output}
 
-*Bob*:
-Hah!  So much for your clever theory, Alice.  It stopped at <tt>t = 10</tt>,
+*Dan*:
+Hah!  So much for your clever theory, Erica.  It stopped at <tt>t = 10</tt>,
 right on the mark.  So round-off cannot have been the reason.
 
-*Alice*:
-Not so quick in claiming victory, Bob.  Look at the code.  In the <tt>for</tt>
+*Erica*:
+Not so quick in claiming victory, Dan.  Look at the code.  In the <tt>for</tt>
 loop the halting criterion is <tt>t < 10</tt>.  If there would have been
 no round-off, the code should have stopped at <tt>t = 9.99</tt>, not at
 <tt>t = 10</tt>.
 
-*Bob*:
+*Dan*:
 That makes sense.  And yet there is no round-off.  It seems like we
 are both right, but that is impossible.  What gives?
 
@@ -600,15 +687,15 @@ our last error output line becomes:
 
 \output{chap3/forward2c_cerr.output}
 
-*Bob*:
-Okay, Alice was right after all.  Close but no cigar.  After 1,000
+*Dan*:
+Okay, Erica was right after all.  Close but no cigar.  After 1,000
 steps, the time is updated to a hair's breadth smaller than 10, and
 the code takes one extra step.  Clever detective work, Carol!
 
 *Carol*:
 I'm glad my course in numerical methods was good for something!
 
-*Bob*:
+*Dan*:
 By the way, returning to the commands you gave earlier, just before we
 spotted the extra output line, what was that all about, that you had
 to remove files by hand?
@@ -622,7 +709,7 @@ Similarly, when I gave the explicit command <tt>rm</tt> to remove the
 file, the system checked to make sure I knew what I was doing, and I
 answered <tt>y</tt> for yes.
 
-*Bob*:
+*Dan*:
 That seems like overkill to me.  You asked for a specific file to be
 deleted, and it checked to see whether you had learned to read and write??
 
@@ -632,7 +719,7 @@ such as <tt>rm tmp*</tt> if we want to remove all temporary files in a
 directory.  If you (or your cat) were to hit the space bar by mistake
 in the middle, you could wind up with <tt>rm tmp *</tt> \dots
 
-*Bob*:
+*Dan*:
 \dots I see, and thus deleting all files in that directory.  No, that
 would not be good, I agree.
 
@@ -643,7 +730,7 @@ for each file to be deleted.  Or simpler, you can add this to your
 shell definitions, for example to your <tt>.cshrc</tt> file if you use a
 C shell.
 
-*Bob*:
+*Dan*:
 And what about <tt>!\$</tt>?
 
 *Carol*:
@@ -674,7 +761,7 @@ have typed:
 
 == Plotting and Printing
 
-*Alice*:
+*Erica*:
 I have a different question.
 It was nice to see the orbit plotted on the screen, but I wonder how
 we can make a hard copy output.  I would like to start gathering
@@ -787,7 +874,7 @@ gnuplot> quit
 |gravity> 
 </tt>
 
-*Alice*:
+*Erica*:
 It is nice to have so much detailed information at your fingertips,
 but I'm glad you knew what to ask?  I would never have guessed that I
 would have to give an arcane command like <tt>set terminal</tt> before
@@ -805,7 +892,7 @@ Okay, let's make a postscript file <tt>forward2_0.01.ps</tt> so that we
 can print the orbit computed by invoking <tt>forward_euler2</tt> for
 step size <tt>0.01</tt>.
 
-*Alice*:
+*Erica*:
 Let's make it <tt>terminal postscript eps</tt>.  That way I can encapsulate
 the resulting postscript file directly into my working paper, as the
 help statement just told us.
@@ -841,12 +928,12 @@ Let's print it out:
 |gravity>
 </tt>
 
-*Alice*:
+*Erica*:
 Great!  My first figure for my working paper.  I wonder how long this
 paper is going to be.  I guess it depends on how much patience you
 both have -- if this is fun, I could even go on to make it a book!
 
-*Bob*:
+*Dan*:
 Or even a book series, for that matter?
 
 *Carol*:
@@ -854,7 +941,7 @@ Don't be ironic, who knows what our first baby steps will lead to.
 
 == Finding (slow) Convergence
 
-*Alice*:
+*Erica*:
 Ready for a ten times smaller time step?
 
 *Carol*:
@@ -870,7 +957,7 @@ We aim to please!
 
 \output{chap3/forward2c.output}
 
-*Bob*:
+*Dan*:
 Somewhat better, but still the separation vector has a length greater
 than unity, which is not physical.  Let's look at a picture.  I saw
 that you wrote this line <tt>set size ratio -1</tt> in <tt>.gnuplot</tt>, so
@@ -895,7 +982,7 @@ forward-Euler integrator, with time step <tex>$dt = 0.001$</tex>}
 \end{center}
 \end{figure}
 
-*Alice*:
+*Erica*:
 At least we got two revolutions this time.
 
 *Carol*:
@@ -911,7 +998,7 @@ I just noticed that our output files are growing alarmingly in size:
 |gravity> 
 </tt>
 
-*Bob*:
+*Dan*:
 I see!  Our last file had a size of 400 kbytes, which is not much of a
 problem.  But with two more steps of refinement we would wind up with
 a 40 Mbyte file.  Even though our disk space is large enough, it would
@@ -945,7 +1032,7 @@ whether the numbers at least look reasonable.
 
 \output{chap3/forward3.output}
 
-*Bob*:
+*Dan*:
 Ah, for the first time the separation vector is consistent, at least
 in principle, since now it is shorter than unity.
 
@@ -990,7 +1077,7 @@ another shrinking by ten of the time step?
 
 \output{chap3/forward3a.output}
 
-*Bob*:
+*Dan*:
 We are finally beginning to give the computer a workout, with our
 request to take a million steps!  But note that we are still not
 converging very quickly.  The numbers are once more quite different
@@ -1031,7 +1118,7 @@ convergence.
 
 \output{chap3/forward3b.output}
 
-*Bob*:
+*Dan*:
 Disappointing, I must say.  At least we got the first decimal right,
 more or less, but that's about it.  Let's see whether the figure
 finally looks like an honest ellipse.
@@ -1055,7 +1142,7 @@ forward-Euler integrator, with time step <tex>$dt = 0.000001$</tex>}
 \end{center}
 \end{figure}
 
-*Alice*:
+*Erica*:
 That looks more like it.  Interesting, by the way, to see the speed up
 of the relative motion of the two particles near pericenter, in the
 last three figures: you can see that from the wider spacing of the
@@ -1078,11 +1165,11 @@ let us directly look at the last lines of the output:
 \output{chap3/forward3c.output}
 
 *Carol*:
-There you go, Bob, convergence to two significant digits at least!
+There you go, Dan, convergence to two significant digits at least!
 Even so, I guess we are all convinced that first-order methods are not
 the way to go.  Time to go to second order!
 
-*Alice*:
+*Erica*:
 So let's write a leapfrog code.  But before doing so, there is still
 one addition I would like to make to our poorly performing forward
 Euler code.  You see, for the two-body problem we can get a pretty
@@ -1094,11 +1181,11 @@ orbit integration.  The point is that for an <tex>$N$</tex>-body system with
 <tex>$N>2$</tex> the orbits don't look recognizable at all, and we would be hard
 put to judge the performance of a code from staring at orbital figures.
 
-*Bob*:
+*Dan*:
 Ah, you mean that we should try to define, what did they call it in
 physics class, conserved quantities?
 
-*Alice*:
+*Erica*:
 Exactly.  And the simplest such quantity is the total energy of the
 <tex>$N$</tex>-body system.  We know that it is rigorously conserved, so any
 deviation between beginning and end of a numerical integration session
@@ -1110,7 +1197,7 @@ equations?
 
 == Checking Energy Conservation
 
-*Alice*:
+*Erica*:
 Here are the expressions for the kinetic energy <tex>$E_{\rm kin}$</tex> and the
 potential energy <tex>$E_{\rm pot}$</tex>.  The total energy is just the sum of
 both terms.
@@ -1120,7 +1207,7 @@ E_{\rm kin} & = & \half \frac{M_1 M_2}{M_1 + M_2} v^2
 \label{two-body-E-kin-full} \\
 E_{\rm pot} & = & - \frac{M_1 M_2}{r} \label{two-body-E-pot-full}
 
-*Alice*:
+*Erica*:
 So far, we have used units in which <tex>$M_1 + M_2 = 1$</tex>.  We have not
 specified the individual masses, since we did not have to; the
 equations of motion are invariant with respect to how we divide our
@@ -1133,7 +1220,7 @@ choose <tex>$M_2$</tex>, the mass of the other body is given as <tex>$M_1 = 1 - 
 I would not have guessed that the earlier invariance would be broken.
 Can you make that plausible by hand waving, without deriving equations?
 
-*Bob*:
+*Dan*:
 Let me try.  If we start with the Earth-Moon system, we know that the
 mass of the Moon is far smaller than the mass of the Earth.  Their
 mass ratio is roughly 1 : 81, so the Moon has not much more than one
@@ -1162,7 +1249,7 @@ limit where <tex>$M_2 \ll M_1$</tex>.  Indeed, that is what
 Eq. \ref{two-body-E-kin-full} tells us.  Now I feel comfortable with
 that result.
 
-*Alice*:
+*Erica*:
 If we continue like this, you'll both be turned into astronomers!
 Yes, it is always a good idea to look at a new formula, and to think
 of some limiting cases, to check whether the equation makes sense.  Of
@@ -1172,12 +1259,12 @@ on classical dynamics.  However, we are at least guarded against most
 typos, and more importantly, it gives us more of an idea of the
 physics behind the mathematics.
 
-*Bob*:
+*Dan*:
 It is interesting that Eqs. \ref{two-body-E-kin-full},
 \ref{two-body-E-pot-full} have the exact same mass dependence, if we
 switch back again to our notation in which <tex>$M_1 + M_2 = 1$</tex>.
 
-*Alice*:
+*Erica*:
 Yes, and we can bring that out more clearly by introducing the notion
 of what is called the `reduced mass' <tex>$\mu$</tex> of a two-body system:
 
@@ -1194,7 +1281,7 @@ E_{\rm pot} & = & - \frac{\mu M}{r}
 *Carol*:
 Nice and elegant!
 
-*Bob*:
+*Dan*:
 Let me try to make it more elegant.  I'm beginning to remember more
 and more now from my physics class.  There was this notion of specific
 something as something per unit mass.  How about defining those two
@@ -1216,7 +1303,7 @@ we keep calling those expressions simply kinetic and potential energy,
 since we all know what we're talking about, rather than the mouthful
 `specific kinetic and potential energy with respect to the reduced mass'.
 
-*Alice*:
+*Erica*:
 Agreed!  Time to code it up.
 
 *Carol*:
@@ -1224,7 +1311,7 @@ Does this look reasonable?
 
 \code{forward_euler4.C}{chap3/forward_euler4.C}
 
-*Bob*:
+*Dan*:
 Looks good to me.  Let's start with our good old <tt>dt = 0.01</tt>
 
   |gravity> g++ -o forward_euler4 forward_euler4.C
@@ -1239,7 +1326,7 @@ Looks good to me.  Let's start with our good old <tt>dt = 0.01</tt>
 
 \output{chap3/forward4.output}
 
-*Bob*:
+*Dan*:
 Well, we knew that it was bad, and the energy check confirms it.
 The energy even changes sign --- which of course we knew, since we saw
 the particle escaping, and only positive-energy orbits can show escape.
@@ -1256,7 +1343,7 @@ the same output in this case, after which I suggest we call our friend
 
 \output{chap3/forward4a.output}
 
-*Bob*:
+*Dan*:
 Good!  The same as before, with still the one step overshoot.  Let's
 look at the other cases.
 
@@ -1292,14 +1379,14 @@ look at the other cases.
 
 \output{chap3/forward4b.output}
 
-*Bob*:
+*Dan*:
 How nice to see the errors shrink as snow for the sun!
 
 *Carol*:
 On a rather cold day, with a very low sun.  Yes, it converges, but
 very sloooooowly.
 
-*Alice*:
+*Erica*:
 I'm glad we went all the way to ten million steps, in the last
 calculation, even though it took more than a minute to complete.
 In the last two runs we have just confirmed the first-order character
@@ -1315,18 +1402,18 @@ Great!  And a great point to stop.  This has been a far longer session
 than I had anticipated.  Let's get back tomorrow, and then someone
 else should take over the controls.
 
-*Bob*:
+*Dan*:
 I'd be happy to do so.  This has been fun, and I look forward to
 writing a second-order code.
 
-*Alice*:
+*Erica*:
 Happy dreams!
 
 <b>EXERCISES</b>
 
 <b>Ex. 3.1:</b>
 In a first-order algorithm, the error in position after one time
-step is quadratic in the size of the time step.  Yet Alice has stated that
+step is quadratic in the size of the time step.  Yet Erica has stated that
 a first-order algorithm produces errors that are first-order in the size
 of the time step.  There seems to be a contradiction here.  What is going on?
 

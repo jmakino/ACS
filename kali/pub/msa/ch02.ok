@@ -45,22 +45,23 @@ the software.  We have chosen one representative of each of the three
 target groups mentioned in our preface, from natural science, business
 and computer science.
 
-The setting is an undergraduate lounge, where three friends occasionally
-hang out after dinner, and sometimes tell each other about the projects
-they are working on.  Tonight, Alice talks with great animation to her
-friends Bob and Carol.  Alice is an astrophysics major, Bob is preparing
-for business school, and Carol majors in computer science.
+The setting is an undergraduate lounge, where three friends
+occasionally hang out after dinner, and sometimes tell each other
+about the projects they are working on.  Tonight, Erica talks with
+great animation to her friends Dan and Carol.  Erica is an
+astrophysics major, Dan is currently studying biology but preparing to
+go to business school, and Carol majors in computer science.
 
-*Alice*:
+*Erica*:
 Guess what!  Today I was asked to choose a student project, for
 me to work on for half a year.  Many of the choices offered seemed to
 be interesting, but for me the most exciting opportunity was to work
 on the overhaul of a laboratory for interactions between stars.
 
-*Bob*:
+*Dan*:
 What are the interactions that are so interesting?
 
-*Alice*:
+*Erica*:
 Imagine this, the current software package allows you to create
 a star cluster and to let it evolve for billions of years, and then
 you can fly through the whole four-dimensional history in space and
@@ -71,7 +72,7 @@ stars and black holes and white dwarfs and you name it!
 If that package already exists, what then is so exciting about
 an overhaul?
 
-*Alice*:
+*Erica*:
 Yes, the package exists, but every large software package tends
 to grow and to become overweight.  As you both know, this is true in
 business-driven software projects, but it is even more true in science
@@ -80,13 +81,13 @@ even more than in profit-oriented areas.  As a result, by far
 the most reasonable and efficient way to extend older packages is first
 to do a thorough overhaul.
 
-*Bob*:
+*Dan*:
 I see.  You mean that rewriting a package is worth the time,
 presumably because you have already figured out the physics and you
 have similarly built up extensive experience with hooking everything
 together in various ways in software.
 
-*Alice*:
+*Erica*:
 Exactly.  Rewriting a package takes far less time than writing
 it in the first place -- if we want to keep the same functionality.
 In practice, it may take longer than we think, since we will for sure
@@ -100,7 +101,7 @@ I wonder, though, whether a complete overhaul is desirable.  I
 have just learned about a notion called <i> refactoring</i>.  The idea
 is to continuously refine and clean up code while you go along.
 
-*Alice*:
+*Erica*:
 Yes, that would be better.  In fact, I already had a brief chat
 with my supervisor, and he mentioned just that.  He said that this was
 the last really major overhaul he hoped to do for his software
@@ -108,7 +109,7 @@ environment.  The main reason for the planned overhaul is to make
 it flexible enough that the system from now on can grow more
 organically.
 
-*Bob*:
+*Dan*:
 The overhaul that will be the end of all overhauls!
 
 *Carol*:
@@ -118,12 +119,12 @@ sounds good.  And even if you will have to overhaul in the future, a
 cleaner and more modular code will surely be easier to understand and
 disentangle and hence to overhaul.
 
-*Bob*:
+*Dan*:
 May I ask a critical question?  You have half a year to get your
 feet wet, doing a real piece of scientific research.  Would it really
 be prudent to spend that time overhauling someone else's code?
 
-*Alice*:
+*Erica*:
 I asked that question, too.  My supervisor told me that a
 thorough-going attempt to improve a large software environment in a
 fundamental way from the bottom up is guaranteed to lead to new
@@ -141,12 +142,12 @@ In other words, during this coming half year you might find
 yourself engaging in actual research projects, as a form of spin-off
 of the overhauling, or brewing as you just called it?
 
-*Alice*:
+*Erica*:
 Exactly.
 
-*Bob*:
+*Dan*:
 You know what?  Perhaps this is a silly thing to suggest, but I
-suddenly got an idea.  It seems that Alice today has started what
+suddenly got an idea.  It seems that Erica today has started what
 amounts to an infinite task.  She will have her hands full at it, even
 if she could clone herself into several people working simultaneously,
 and she is not expected to reach anywhere near completion in half a year.
@@ -156,9 +157,9 @@ proposal: how about all three of us pitching in, a couple times a
 week, after dinner, using the time we tend to spend here anyway?
 
 *Carol*:
-To keep Alice honest?
+To keep Erica honest?
 
-*Bob*:
+*Dan*:
 Exactly!  Of course, she may well get way ahead of us into all
 kind of arcane astrophysics applications, but even so, if we plod
 behind her, asking her questions about each and every decision she has
@@ -172,19 +173,19 @@ brewing in the kitchen, when people write non-trivial software systems.
 *Carol*:
 Hmm, you have a point.  Obviously, something similar holds for
 me too, in that I can hone my freshly learned theoretical knowledge on
-realistic astrophysics problems.  What do you think, Alice, are we
+realistic astrophysics problems.  What do you think, Erica, are we
 rudely intruding upon your new project?
 
-*Alice*:
+*Erica*:
 No, on the contrary!  As long as I keep my actual project
-separated, as Bob stressed, I am more than happy to discuss the basics
+separated, as Dan stressed, I am more than happy to discuss the basics
 with you both during after-dinner sessions, as long as you have the
 stamina and interest to play with orbital dynamics of stars and star
 systems.  And I'm sure we will all three learn from the experience: I
 would be very surprised if you didn't inject new ideas I hadn't
 thought about, or notice old ideas of mine that can be improved.
 
-*Bob*:
+*Dan*:
 Okay, we have a deal!  Let's get started right away, and get back
 here tomorrow, same time, same place.
 
@@ -194,7 +195,7 @@ computer center, where we will be able to find a big enough screen so
 that the three of us can gather around it, to start writing our first
 star-moving program.
 
-*Alice*:
+*Erica*:
 An N-body code, that is what it is called.  Okay, I'm game too.
 See you both tomorrow!
 
@@ -202,11 +203,11 @@ See you both tomorrow!
 
 The next day, our three friends have gathered again, ready to go.
 
-*Alice*:
+*Erica*:
 Hi, you're all back, so I guess you were really serious.  Okay, let's
 write our first code for solving the gravitational N-body problem.
 
-*Bob*:
+*Dan*:
 I understand that we are dealing with something like gravitational
 attractions between objects, but why is that a _problem_ and not, say,
 a system?
@@ -215,10 +216,10 @@ a system?
 And why are you talking about _N_ bodies, and not _p_ bodies or
 anything else?
 
-*Bob*:
+*Dan*:
 And why _bodies_ and not just objects?
 
-*Alice*:
+*Erica*:
 Traditionally, in mathematics and mathematical physics, when we pose a
 question, we call it a problem, as in a home work problem.  And stars
 and planets just happen to be called celestial bodies.  Specifically,
@@ -226,10 +227,10 @@ the gravitational 2-body problem is defined as the question: given the
 initial positions and velocities of two stars, together with their
 masses, describe their orbits.
 
-*Bob*:
+*Dan*:
 What if the stars collide?
 
-*Alice*:
+*Erica*:
 For simplicity, we treat the stars as if they are mass points, without
 any size.  In this case they will not collide, unless they happen to
 hit each other head-on.  Of course, we can set two point masses up
@@ -247,7 +248,7 @@ Don't worry, that's just a formal way of saying the same thing.  But I
 have a serious question: real stars are not points, so why can we
 treat them as such?
 
-*Alice*:
+*Erica*:
 The goal of building a laboratory for star cluster evolution is to
 introduce real stars with finite sizes, nuclear reactions, loss of
 radiation and mass, and all that good stuff.  But we have to start
@@ -264,13 +265,13 @@ bodies where involved, and we seem to be stuck with that notation.
 Fine.  Let's pick a language and start coding!  I bet you physics
 types insist on using fortran?
 
-*Alice*:
+*Erica*:
 Believe it or not, most of the code to be overhauled has been written
 in C++, and I suggest that we adopt the same language.  It may not be
 exactly my favorite, but it is at least widely available, well
 supported, and likely to stay with us for decades.
 
-*Bob*:
+*Dan*:
 What is C++, and why the obscure name?  Makes the notion of an N-body
 problem seem like clarity itself!
 
@@ -279,7 +280,7 @@ Long story.  I don't know whether there was ever a language A, but
 there certainly was a language B, which was followed alphabetically by
 a newer language C, which became quite popular . . .
 
-*Bob*:
+*Dan*:
 . . . are you making a pun on our names?
 
 *Carol*:
@@ -289,7 +290,7 @@ nerdy pun, the successor operation ``++'' from the C language was used
 to indicate that C++ was the successor language to C.  Don't look at
 me, we'll have to live with it.
 
-*Bob*:
+*Dan*:
 But everybody I know seems to be coding in Java.
 
 *Carol*:
@@ -299,7 +300,7 @@ course in which the instructor used a scripting language, Ruby was the
 name.  And I was surprised at the flexible way in which you could
 quickly express rather complex ideas in that language.
 
-*Alice*:
+*Erica*:
 Does Ruby have something like STL?
 
 *Carol*:
@@ -307,7 +308,7 @@ You mean the Standard Template Library in C++?  Ruby doesn't need any
 of those complications because it is already dynamically typed from
 the start!
 
-*Bob*:
+*Dan*:
 I have no idea what the two of you are talking about, but I agree with
 Carol, let's start coding, in whatever language!
 
@@ -315,16 +316,16 @@ Carol, let's start coding, in whatever language!
 
 A decision was made to let Carol take the controls, for now.  Taking
 the keyboard in front of a large computer screen, she opens a new file
-<tt>nbody.C</tt> in her favorite editor.  Expectantly, she looks at Alice,
-sitting to her left, for instructions, but Bob first raises a hand.
+<tt>nbody.rb</tt> in her favorite editor.  Expectantly, she looks at Erica,
+sitting to her left, for instructions, but Dan first raises a hand.
 
-*Bob*:
+*Dan*:
 I'm a big believer in keeping things simple.  Why not start by coding up
 the 2-body problem first, before indulging in more bodies?  Also, I
 seem to remember from an introductory physics class for poets that the
 2-body problem was solved, whatever that means.
 
-*Alice*:
+*Erica*:
 Good point.  Let's do that.  It is after all the simplest case that is
 nontrivial: a 1-body problem would involve a single particle that is
 just sitting there, or moving in a straight line with constant velocity,
@@ -354,6 +355,9 @@ position, defined as:
 
 <b>[Peter, can you make a picture here?]</b>
 
+<b>[add more text, including a derivation of <tex>$E_kin$</tex>
+and <tex>$E_pot$</tex>]</b>
+
 Newton's gravitational equation of motion then becomes:
 
 :equation:
@@ -380,12 +384,12 @@ deeply into all that.  I can just provide the few equations we need to
 get started, and for quite a while our main challenge will be to
 figure out how to solve these equations.
 
-*Bob*:
+*Dan*:
 The differential equation does indeed look familiar, but why is there
 a power 3 in the denominator?  I thought that Newtonian gravity is an
 inverse square power, so I would have expected a power 2 down there.
 
-*Alice*:
+*Erica*:
 Good question!  The bold-face notation <tex>$\br$</tex> indicates that
 we are dealing with three-dimensional vectors, because we live in a
 space with three dimensions.  If we name the components as follows,
@@ -409,7 +413,7 @@ add an extra power in the denominator.
 Is there no cleaner way to write this equation, making the <tex>$1/r^2$</tex>
 nature of the interaction more transparent?
 
-*Alice*:
+*Erica*:
 Sure there is.  We can introduce a so-called unit vector, which by
 definition has a length of one unit in our coordinate system.  This
 is a good tool for dealing with directions without introducing changes
@@ -421,7 +425,7 @@ problem now reads:
 \label{Newton2bodyhat}
 \frac{d^2}{dt^2}\br = - G \frac{M_1 + M_2}{r^2}\hat\br
 
-*Bob*:
+*Dan*:
 That looks more like the real thing.
 
 *Carol*:
@@ -429,7 +433,7 @@ Yes, but it may be easier to program the expression Eq. (ref(Newton2body)),
 so let's keep both Eqs. (ref(Newton2body)) and (ref(Newton2bodyhat))
 on the table for now, and see what's most convenient.
 
-*Alice*:
+*Erica*:
 One more thing: let's make life as simple as we can, by choosing a
 system of physical units in which the gravitational constant and the
 total mass of the 2-body system are both unity:
@@ -444,5 +448,5 @@ Our original equation of motion now becomes simply:
 \label{Newton2bodysimple}
 \frac{d^2}{dt^2}\br = - \frac{\br}{r^3}
 
-*Bob*:
+*Dan*:
 I can't imagine anything simpler than that!

@@ -4,7 +4,7 @@ x = 1
 y = 0
 z = 0
 vx = 0
-vy = 0.5
+vy = 1
 vz = 0
 dt = 0.01
 
@@ -16,10 +16,10 @@ dt = 0.01
   az = - z / r3
   x += vx*dt
   y += vy*dt
-  y += vz*dt
-  vx += ax*dt
-  vy += ay*dt
-  vz += az*dt
+  z += vz*dt
+  vx += ax*dt                                   #3
+  vy += ay*dt                                   #3
+  vz += az*dt                                   #3
   print(x, "  ", y, "  ", z, "  ")
   print(vx, "  ", vy, "  ", vz, "\n")
 }
