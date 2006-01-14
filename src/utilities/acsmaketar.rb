@@ -1,6 +1,7 @@
 #
 # acsmaketar.rb
 #
+# version 2006/1/14
 # version 2005/1/29
 #
 # This will make two tarballs,
@@ -161,7 +162,7 @@ unless $webonly
   
   STDERR.print "svn files finished ..."
   doclist = doc_directories(".", /.\/not$/)
-  doclist += add_files(doclist, ["v*.ps.gz",  "v*.pdf", ".imgs"])
+  doclist += add_files(doclist, ["v*.ps.gz",  "v*.pdf", ".imgs", "*.html"])
   #doclist.each{|x| print x,"\n"}
   STDERR.print "doc files finished ..."
   
