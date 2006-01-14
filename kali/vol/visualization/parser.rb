@@ -3,7 +3,7 @@
 
 class CLOption
   attr_accessor :opt_short, :opt_long, :desc, :req_arg, :num_args, 
-                :block
+  :block
   def initialize(opt_short=nil, opt_long=nil, desc=nil, 
                  block=nil, req_arg=true, num_args=1)
     @opt_short, @opt_long = opt_short, opt_long
@@ -12,10 +12,12 @@ class CLOption
   end
   
   def arg_req?
-    @req_arg end
+    @req_arg 
+  end
   
   def run(arg)
-    @block.call(arg) end
+    @block.call(arg) 
+  end
 end
 
 class Parser < Array
