@@ -9,7 +9,7 @@ intro: |
   large-scale simulations in any area of computational science.
   <p>
   These tools were developed within the context of the
-  <a href="../maya/index.html">Maya project</a>, but they are presented
+  <a href="../kali/index.html">Maya project</a>, but they are presented
   here as a standalone package.  In order to use these tools,
   the user does not need to know anything about the Maya project
   (this is our goal; the full decoupling from Maya will probably take
