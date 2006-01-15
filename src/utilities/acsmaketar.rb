@@ -113,6 +113,22 @@ def doc_directories(dirname,excludeexpression)
 end
 
 
+def sub_directories(dirname,excludeexpression)
+  return [] if dirname =~ excludeexpression 
+  docs = []
+  childdirs = Dir.entries(dirname)
+  childdirs =childdirs.collect{|x| 
+    x=nil if File.ftype(dirname+"/"+x) != "directory" or x == "." or  x == ".." 
+    x
+  }
+  childdirs.each{|x|
+    docs += sub_directories(dirname+"/"+x,excludeexpression ) if x
+  }
+  docs.push(dirname+"/x")
+  docs
+end
+
+
 def all_files(dirname,excludeexp)
   files = []
   excludefiles = []
@@ -161,9 +177,10 @@ unless $webonly
   svnlist = svn_files(".",/(^\.\/msa$)|(^\.\/not$)/)
   
   STDERR.print "svn files finished ..."
-  doclist = doc_directories(".", /.\/not$/)
-  doclist += add_files(doclist, ["v*.ps.gz",  "v*.pdf", ".imgs", "*.html"])
-  #doclist.each{|x| print x,"\n"}
+  dirlist = sub_directories(".", /.\/not$/)
+  dirlist.each{|x| print x,"\n"}
+  doclist = add_files(dirlist, ["v*.ps.gz",  "v*.pdf", ".imgs", "*.html"])
+  doclist.each{|x| print x,"\n"}
   STDERR.print "doc files finished ..."
   
   msafiles,excludefiles = all_files("msa", /^(\.svn|web_old)$/)
@@ -178,6 +195,9 @@ unless $webonly
   open("tmp.tarfilelist2","w"){
     |f| f.print((svnlist+doclist+[$toplevelname+"msa"]).join("\n"))
   }
+  system("split --lines=1024 tmp.tarfilelist2 tmp.tarfilelist2.part.")
+  $partfiles=Dir.glob("tmp.tarfilelist2.part.*").sort
+  p $partfiles
   open("tmp.tarfilelist3","w"){
     |f| f.print((excludefiles).join("\n"))
   }
@@ -208,14 +228,22 @@ if newversion=="NONE"
   end
 end
 
-tarfilename= storedir+"/acs-#{newversion}.tgz"
+tarfilename= storedir+"/acs-#{newversion}.tar"
+tgzfilename= storedir+"/acs-#{newversion}.tgz"
 tarlitefilename= storedir+"/acs-lite-#{newversion}.tgz"
 
 topd=$toplevelname
 
 unless $webonly
   STDERR.print "Creating  #{tarfilename}...."
-  system "cd ../; tar czf #{topd}#{tarfilename} -X #{topd}tmp.tarfilelist3 `cat #{topd}tmp.tarfilelist2`"
+  system "cd ../; tar cf #{topd}#{tarfilename} -X #{topd}tmp.tarfilelist3 `cat #{topd}tmp.tarfilelist2.part.aa`"
+  $partfiles.shift
+  $partfiles.each{|x|
+    system "cd ../; tar rf #{topd}#{tarfilename} -X #{topd}tmp.tarfilelist3 `cat #{topd}#{x}`"
+    STDERR.print "file #{x} finished\n"    
+  }
+  system "cd ../; gzip < #{topd}#{tarfilename} > #{topd}#{tgzfilename} "
+  system "cd ../; rm #{topd}#{tarfilename} "
   STDERR.print "finished\n"
   
   STDERR.print "Creating  #{tarlitefilename}...."
@@ -230,7 +258,7 @@ end
 
 unless $localonly
   sendcommand="rsync -e ssh -avprog #{storedir} #{installuname}@#{installhost}:#{installdir}"
-  extractcommand="ssh -l #{installuname} #{installhost} \"cd #{installdir} ; tar xzf #{tarfilename}\""
+  extractcommand="ssh -l #{installuname} #{installhost} \"cd #{installdir} ; tar xzf #{tgzfilename}\""
   
   STDERR.print <<-END
   Do you want to update the files on the ACS WEB SERVER now?

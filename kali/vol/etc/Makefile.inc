@@ -67,7 +67,7 @@ clean :
  cleandoc : 
 	-rm -r doc  $(TARGET).tex   $(TARGET).ps $(TARGET).ps.gz  $(TARGET).toc
 	-rm tmp.tex tmp.aux tmp.dvi tmp.log tmp.ps tmp.toc tmp.jpeg* >&/dev/null
-
+	if [ -e index.yaml ] ; then rm index.html ; fi
 %.tex : %.ok
 	    $(ACSDOC)  [a-z,A-Z]*.rb  $<
 	$(ACSDOC)  --tolatex  $<

@@ -5,6 +5,7 @@ acsdoc:
 	$(MAKE) -C vol acsdoc
 	$(MAKE) -C pub acsdoc
 clean:
+	-rm index.html
 	$(MAKE) -C vol clean
 	$(MAKE) -C pub clean
 cleandoc:
