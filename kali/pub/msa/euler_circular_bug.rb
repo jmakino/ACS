@@ -1,14 +1,16 @@
 include Math
 
-x = 1                                       #1
-y = 0                                       #1
-z = 0                                       #1
-vx = 0                                      #1
-vy = 1                                      #1
-vz = 0                                      #1
-dt = 0.01                                   #2
+x = 1
+y = 0
+z = 0
+vx = 0
+vy = 1
+vz = 0
+dt = 0.01
+print(x, "  ", y, "  ", z, "  ")
+print(vx, "  ", vy, "  ", vz, "\n")
 
-1000.times{
+1000.times{                                     #1
   r2 = x*x + y*y + z*z
   r3 = r2 * sqrt(r2)
   ax = - x / r3
@@ -17,9 +19,9 @@ dt = 0.01                                   #2
   x += vx*dt
   y += vy*dt
   z += vz*dt
-  vx += ax*dt                                   #3
-  vy += ax*dt                                   #3
-  vz += az*dt                                   #3
+  vx += ax*dt                                   #2
+  vy += ax*dt                                   #2
+  vz += az*dt                                   #2
   print(x, "  ", y, "  ", z, "  ")
   print(vx, "  ", vy, "  ", vz, "\n")
-}
+}                                               #1

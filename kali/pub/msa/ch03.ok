@@ -59,11 +59,11 @@ algorithm?
 There is indeed.  In the forward version, at each time step you simply
 take a step tangential to the orbit you are on.  After that, at the
 next step, the new value of the acceleration forces you to slightly
-change direction, and again you move for a time step <tex>$dt$</tex> in a straight
-line in that direction.  Your approximate orbit is thus constructed
-out of a number of straight line segments, where each one has the
-proper direction at the beginning of the segment, but the wrong one at
-the end.
+change direction, and again you move for a time step <tex>$dt$</tex>
+in a straight line in that direction.  Your approximate orbit is thus
+constructed out of a number of straight line segments, where each one
+has the proper direction at the beginning of the segment, but the
+wrong one at the end.
 
 <b>[Peter, can you make a picture here?]</b>
 
@@ -192,23 +192,261 @@ be harder to see whether the ellipse has the exact right shape.
 *Erica*: You have a point there.  Okay, lets do that.  Here is the starting
 point for a circular orbit:
 
+ :inccode: .euler_circular_step.rb-1
+
+*Dan*: And from this point on we have to step forward in time.
+I have no idea how large the time step +dt+ should be.  Certainly
+it should be very small compared to the time it will take for our two
+bodies to move around a circle.
+
+*Carol*: In other words, the distance +dr+ over which the particles travel
+during a time step +dt+ much be very small compared to the separation
+between the two particles:
+
+:equation:
+dr = v\ dt \ll r
+
+With <tex>$v=1$</tex> and <tex>$r=1$</tex>, this means
+<tex>$dt\ll 1$</tex>.
+
+*Erica*: We could take `much less than 1' to mean 0.1, for starters:
+
+ :inccode: .euler_circular_step.rb-2
+
+and now we are ready to let the particles move to their next position,
+from our starting point of time <tex>$t=0$</tex> to <tex>$t=0.1$</tex>,
+by solving the differential equation for the Newtonian two-body problem,
+Eq. (ref(Newton2bodysimple)).
+
+*Carol*: And we do so by using the forward Euler approximation
+(ref(ForwardEulerStep)).  How about coding up that equation first?
+
+*Erica*: That would be:
+
+ :inccode: .euler_circular_step.rb-3
+
+*Dan*: But we haven't calculated the acceleration +a+ yet.
+
+*Carol*: This is an important example of code writing, something called
+`wishful thinking' or `wishful programming'.  You start writing a code
+as if you already have the main ingredients in hand, and then you go
+back and fill in the commands needed to compute those ingredients.
+
+*Dan*: That sounds like a top-down programming approach, which makes sense:
+I like to start with an overview of what needs to be done.  It is all too
+easy to start from the bottom up, only to get lost while trying to put all
+the pieces together.
+
+*Erica*: To compute the acceleration, let me copy Eq. (ref(Newton2bodysimple))
+here:
+
+:equation:
+\ba = - \frac{\br}{r^3}
+
+*Dan*: Can you write it out in component notation?
+
+*Erica*: If I write <tex>$\ba=\{a_x,a_y,a_z\}$</tex> for the relative
+acceleration vector between the two and particles and
+<tex>$\br=\{x,y,z\}$</tex> for their separation vector, we get:
+
+:eqnarray:
+a_x &=& - \frac{x}{r^3}    \nonumber \\
+a_y &=& - \frac{y}{r^3}    \nonumber \\
+a_z &=& - \frac{z}{r^3}
+
+where the magnitude of the separation <tex>$r$</tex> is defined as
+
+:equation:
+r = \sqrt{x^2 + y^2 + z^2}
+
+Let me start with the last line:
+
+ :inccode: .euler_circular_step.rb-4
+
+*Carol*: Let's see whether I remember my vector analysis class.  The quantity
+<tex>$\br$</tex> is called a vector, and the quantity <tex>$r$</tex> is called
+a scalar, right?
+
+*Erica*: Indeed.  The last quantity is a scalar because it is independent of
+your choice of coordinate system.  If we rotate out coordinates, the values
+of <tex>$x$</tex> and of <tex>$y$</tex> and of <tex>$z$</tex> may all change,
+and therefore <tex>$\br$</tex> will change.  However, <tex>$r$</tex> will
+stay the same, and that is a good thing: it denotes the physical distance
+between the particles, something that you can measure.  When two people use
+two different coordinate systems, and both measure <tex>$r$</tex>, the value
+they find had better be the same.
+
+*Dan*: My Ruby book tells me that you must add the line
+
+ :inccode: .euler_circular_step.rb-5
+
+in order to use the square root method +sqrt+, where the term method
+is used in the same way the word function is used in C and the word
+subroutine is used in Fortran.  The <tt>include</tt> statement is
+needed in order to gain access to the +Math+ module in Ruby, where
+many of the mathematical methods reside.
+
+*Erica*: Thanks!  Now the rest is straightforward:
+
+ :inccode: .euler_circular_step.rb-6
+
+*Dan*: Shall we see whether the program works, so far?  Let's run it!
+
+*Carol*: Small point, but . . . perhaps we should add a print statement,
+to get the result on the screen?
+
+*Erica*: I guess that doesn't hurt!  The Ruby syntax for printing seems to be
+very intuitive, following what they call the `principle of least surprise':
+
+ :inccode: .euler_circular_step.rb-7
+
+*Carol*: I like that principle!  And indeed, this couldn't be simpler!
+
+*Dan*: Apart from this mysterious <tt>\n</tt> at the end.  What does that do?
+
+*Carol*: It prints a new line.  This notation is borrowed from the C language.
+
+*Erica*: So here it is, our first program, <tt>euler.rb</tt>, which is supposed
+to take one step in time:
+
+ :inccode: .euler_circular_step.rb
+
+As you can see, I decided to print the positions and velocities twice,
+just before and just after taking one integration step.  Well, let's
+see what happens:
+
+ :command: cp euler_circular_step.rb euler.rb
+ :commandoutput: ruby euler.rb
+
+*Dan*: That all looks very reasonable.  In fact, we can even check everything
+by hand.  Since we have initially
+
+:equation:
+\br(0) = \{x, y, z\} = \{1,0,0\}
+
+and
+
+:equation:
+\bv(0) = \{v_x, v_y, v_z\} = \{0,1,0}\}
+
+the new position must be:
+
+:equation:
+\br(dt) = \br + \bv dt = \{1,dt,0}\}
+
+*Carol*: And this is indeed what we see in the first half of the last output
+line.
+
+*Dan*: To compute the new velocity, we have to first compute the
+acceleration vector.  Let's see, Newton's equation of motion for the
+two-body problem, as written above in component form, gives simply:
+
+:equation:
+\ba = \{a_x, a_y, a_z\} = \{-1,0,0\}
+
+This means that
+
+:equation:
+\bv(dt) = \bv + \ba dt = \{-dt,1,0}\}
+
+*Erica*: And this is indeed what is printed in the last half of the last
+output line.
+
+*Dan*: Perfect!
+
+*Carol*: Well, sort-of.  We have verified that our program does what the
+algorithm intended, and that is certainly nice!  But this is only half
+of the work.  We now have to check whether this particular algorithm
+does indeed give a reasonable result.  For example, we can ask whether
+this first step keeps the two particles on a circular orbit.  After
+the first step, the new separation is:
+
+:equation:
+r(0.1) = \sqrt{x^2 + y^2 + z^2} = \sqrt{1 + 0.1^2} = \sqrt{1.01} \approx 1.005
+
+*Dan*: Instead of the correct value of <tex>$r(0.1)=1$</tex>, we are half a
+percent off.  Not bad, I would say.
+
+*Carol*: Not bad for one step, perhaps, but our orbit has a radius of unity,
+which means a circumference of <tex>$2\pi \approx 6.3$</tex>.  With a velocity
+of unity, it will take <tex>$63$</tex> steps to go around the circle,
+at the rate we are going.  And if every step introduces `only' half a percent
+error, and if the errors built up linearly, we wind up with a total error of
+more than 30\%, even during the first revolution!
+
+*Dan*: Good point.  Of course, we don't know whether the errors build up
+linearly, but for lack of a better idea, that would be the first guess.
+Perhaps we should take a smaller time step.  What would happen if we would
+use <tex>$dt = 0.01$</tex>?  Let's repeat your analysis.  After one step,
+we would have
+
+:equation:
+r(0.01) = \sqrt{x^2 + y^2 + z^2} = \sqrt{1 + 0.01^2} = \sqrt{1.0001}
+\approx 1.00005
+
+We now need roughly <tex>$630$</tex> steps to go around the circle,
+If the errors build up linearly, the radial separation will grow to
+something like <tex>$1 + 630*0.00005 \approx 1.03$</tex>.  Aha!  Only
+a 3\% error, instead of roughly 30\%.
+
+*Erica*: Bravo!  You have just proved that the forward Euler scheme is
+a first-order scheme!  Remember our discussion at the start?  For a
+first-order scheme, the errors scales like the first power of the time
+step.  You just showed that taking a time step that is ten times smaller
+leads to a ten times smaller error after completing one revolution.
+
+*Dan*: Great!  I thought that numerical analysis was a lot harder.
+
+*Carol*: Believe me, it {\it is} a lot harder for any numerical integration
+scheme that is more complex than first-order.  You'll see!
+
+*Dan*: I can wait.  For now I'm happy to work with a scheme which I can
+completely understand.  On to the next step!  And ah, yes, let us take
+steps with a size <tex>$dt = 0.01$</tex>, given what we've just learned.
+
+*Erica*: We'd better introduce a loop, since we'll need to take a lot of
+steps.  At the very least we want to move around the circle once, which
+would take a bit more than six time units.  Let's make it ten time units,
+for good measure.  With a step size of <tex>$dt = 0.01$</tex>, we'll have
+to take <tex>$1000$</tex> steps to reach <tex>$t = 10$</tex>.
+
+*Carol*: Let's have a look at the Ruby book.  How do you repeat the same
+thing +k+ times?  Ah, here it is.  That looks funny!  You write
+<tt>k.times</tt>!  So to traverse a piece of code <tex>$1000$</tex> times,
+you enclose that piece of code within the following loop wrapper:
+
  :inccode: .euler_circular_bug.rb-1
 
+*Dan*: Surely you are joking!  That is carrying the principle of least
+surprise a bit too far to believe.  How can that work?  Can a computer
+language really stay so close to English?
 
+*Carol*: The key seems to be that Ruby is an object-oriented language.
+Each `thing' is ruby is an object, which can have attributes such as
+perhaps internal data or internal methods, which may or may not be
+visible from the outside.
 
+*Erica*: I have heard the term `object-oriented programming.'  I really
+should browse through the Ruby book, to get a bit more familiar with that
+approach.
 
+*Dan*: We all should.  But for now, Carol, how does your key work?
+Is the number <tex>$1000$</tex> also an object?
 
+*Carol*: You guessed it!  And every number has by default various methods
+associated with it.  One method happens to be called +times+.
 
+*Erica*: And what +times+ does is repeat the contant of its argument,
+whatever is within the curly brackets, +k+ times, if the number is +k+.
 
+*Carol*: Precisely.
 
+*Dan*: Amazing.  Well, I would be even more amazed to see this work.
 
-
-
-
-*Erica*: 
-
-Buggy code <tt>euler_circular_bug.rb</tt>, but we show it as if it is called
-<tt>euler.rb</tt>:
+*Erica*: Why shouldn't it work?  Let's try it!  Telling the computer how
+to take the first step was hard, but letting it take another 999 steps
+should be easy, given this natural looping construct.  Here is the new
+version of the code:
 
  :inccode: .euler_circular_bug.rb
 
@@ -282,77 +520,7 @@ END
  :figure: euler_elliptic.ps 10cm euler_elliptic
  Third attempt at integrating the two-body problem: A different failure.
 
-code <tt>euler_001.rb</tt>, but we show it as if it is called
-<tt>euler.rb</tt>:
-
- :inccode: .euler_001.rb
-
-Let's run it:
-
- :command: cp euler_001.rb euler.rb
- :commandoutput: ruby euler.rb > euler.out
- :commandoutput: tail -1 euler.out
-
-Let's plot it:
-
- :commandinput: gnuplot END
-set term post eps
-set output "euler_001.ps"
-set size ratio -1
-plot "euler.out"
-quit
-END
-
- :figure: euler_001.ps 12cm euler_001
- Fourth attempt at integrating the two-body problem: at least a
- semblance of an elliptic orbit.
-
-code <tt>euler_0001.rb</tt>, with only these two lines different:
-
- :inccode: .euler_0001.rb-1
-
-Let's run it:
-
- :command: cp euler_0001.rb euler.rb
- :commandoutput: ruby euler.rb > euler.out
- :commandoutput: tail -1 euler.out
-
-Let's plot it:
-
- :commandinput: gnuplot END
-set term post eps
-set output "euler_0001.ps"
-set size ratio -1
-plot "euler.out"
-quit
-END
-
- :figure: euler_0001.ps 12cm euler_0001
- Fifth attempt at integrating the two-body problem: a lot better already.
-
-code <tt>euler_00001.rb</tt>, with only these two lines different:
-
- :inccode: .euler_00001.rb-1
-
-Let's run it:
-
- :command: cp euler_00001.rb euler.rb
- :commandoutput: ruby euler.rb > euler.out
- :commandoutput: tail -1 euler.out
-
-Let's plot it:
-
- :commandinput: gnuplot END
-set term post eps
-set output "euler_00001.ps"
-set size ratio -1
-plot "euler.out"
-quit
-END
-
- :figure: euler_00001.ps 12cm euler_00001
- Sixth attempt at integrating the two-body problem: getting there, slowly.
-
+[add: part_ch03.ok]
 
 
 xxxxxxxxxxxxxxxxxxxxxxxxxxxx
