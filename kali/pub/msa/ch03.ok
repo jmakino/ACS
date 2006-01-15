@@ -347,7 +347,7 @@ two-body problem, as written above in component form, gives simply:
 This means that
 
 :equation:
-\bv(dt) = \bv + \ba dt = \{-dt,1,0}\}
+\bv(dt) = \bv + \ba dt = \{-dt,1,0\}
 
 *Erica*: And this is indeed what is printed in the last half of the last
 output line.
