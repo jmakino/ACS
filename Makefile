@@ -13,6 +13,7 @@ acscode:
 clean:
 	$(MAKE) -C ok   clean
 	$(MAKE) -C kali clean
+	$(MAKE) -C toolbox clean
 
 cleandoc:
 	$(MAKE) -C kali cleandoc
