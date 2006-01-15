@@ -145,25 +145,25 @@ other, in a parabolic or hyperbolic orbit.
 *Erica*: We can look it up in any text book on celestial mechanics,
 but I remember a quick way to derive the expression.  According to
 the virial theory, for a circular orbit, the kinetic energy
-<tex>$E_kin$</tex> is just one half of the potential energy
-<tex>$E_pot$</tex>, and opposite in sign.  This makes the magnitude
-of the total energy <tex>$E_tot$</tex> equal to that of the kinetic
+<tex>$E_{kin}$</tex> is just one half of the potential energy
+<tex>$E_{pot}$</tex>, and opposite in sign.  This makes the magnitude
+of the total energy <tex>$E_{tot}$</tex> equal to that of the kinetic
 energy:
 
 :equation:
-E_tot = E_kin + E_pot = E_kin - 2 E_kin = - E_kin
+E_{tot} = E_{kin} + E_{pot} = E_{kin} - 2 E_{kin} = - E_{kin}
 
 We have already derived
 
 :equation:
-E_kin = {1 \over 2}\ {M_1 M_2 \over M_1 + M_2} v^2
+E_{kin} = {1 \over 2}\ {M_1 M_2 \over M_1 + M_2} v^2
 
 and
 
 :equation:
-E_pot = -\ {M_1 M_2 \over r}
+E_{pot} = -\ {M_1 M_2 \over r}
 
-So when we insist that <tex>$E_pot = -2 E_kin$</tex>, we get for the
+So when we insist that <tex>$E_{pot} = -2 E_{kin}$</tex>, we get for the
 circular velocity
 
 :equation:
@@ -189,7 +189,13 @@ circular orbit, to test whether at least we can get that right?  There we
 know exactly what should happen, whereas with an elliptic orbit, it will
 be harder to see whether the ellipse has the exact right shape.
 
-*Erica*: You have a point there.  Okay, lets do that.
+*Erica*: You have a point there.  Okay, lets do that.  Here is the starting
+point for a circular orbit:
+
+ :inccode: .euler_circular_bug.rb-1
+
+
+
 
 
 
@@ -201,55 +207,80 @@ be harder to see whether the ellipse has the exact right shape.
 
 *Erica*: 
 
-Buggy code <tt>euler0.rb</tt>, but we show it as if it is called
+Buggy code <tt>euler_circular_bug.rb</tt>, but we show it as if it is called
 <tt>euler.rb</tt>:
 
- :inccode: .euler_bug.rb
+ :inccode: .euler_circular_bug.rb
 
 Let's run it:
 
- :command: cp euler_bug.rb euler.rb
- :commandoutput: ruby euler.rb > forward.out
- :commandoutput: head -5 forward.out
- :commandoutput: tail -5 forward.out
+ :command: cp euler_circular_bug.rb euler.rb
+ :commandoutput: ruby euler.rb > euler.out
+ :commandoutput: head -5 euler.out
+ :commandoutput: tail -5 euler.out
 
 Let's plot it:
 
  :commandinput: gnuplot END
 set term post eps
-set output "forward_bug.ps"
+set output "euler_circular_bug.ps"
 set size ratio -1
-plot "forward.out"
+plot "euler.out"
 quit
 END
 
- :figure: forward_bug.ps 10cm euler_bug
+ :figure: euler_circular_bug.ps 10cm euler_circular_bug
  First attempt at integrating the two-body problem: failure.
 
-Corrected code <tt>euler_correct.rb</tt>, but we show it as if it is called
+Corrected code <tt>euler_circular.rb</tt>, but we show it as if it is called
 <tt>euler.rb</tt>:
 
- :inccode: .euler_correct.rb
+ :inccode: .euler_circular.rb
 
 Let's run it:
 
- :command: cp euler_correct.rb euler.rb
- :commandoutput: ruby euler.rb > forward.out
- :commandoutput: head -5 forward.out
- :commandoutput: tail -5 forward.out
+ :command: cp euler_circular.rb euler.rb
+ :commandoutput: ruby euler.rb > euler.out
+ :commandoutput: head -5 euler.out
+ :commandoutput: tail -5 euler.out
 
 Let's plot it:
 
  :commandinput: gnuplot END
 set term post eps
-set output "forward_correct.ps"
+set output "euler_circular.ps"
 set size ratio -1
-plot "forward.out"
+plot "euler.out"
 quit
 END
 
- :figure: forward_correct.ps 10cm euler_correct
- Second attempt at integrating the two-body problem: still a failure.
+ :figure: euler_circular.ps 10cm euler_circular
+ Second attempt at integrating the two-body problem: looking a lot better.
+
+Code <tt>euler_elliptic.rb</tt>, but we show it as if it is called
+<tt>euler.rb</tt>:
+
+ :inccode: .euler_circular.rb
+
+Let's run it:
+
+ :command: cp euler_elliptic.rb euler.rb
+ :commandoutput: ruby euler.rb > euler.out
+ :commandoutput: head -5 euler.out
+ :commandoutput: tail -5 euler.out
+
+Let's plot it:
+
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_elliptic.ps"
+set size ratio -1
+plot "euler.out"
+quit
+END
+
+ :figure: euler_elliptic.ps 10cm euler_elliptic
+ Third attempt at integrating the two-body problem: A different failure.
 
 code <tt>euler_001.rb</tt>, but we show it as if it is called
 <tt>euler.rb</tt>:
@@ -259,21 +290,21 @@ code <tt>euler_001.rb</tt>, but we show it as if it is called
 Let's run it:
 
  :command: cp euler_001.rb euler.rb
- :commandoutput: ruby euler.rb > forward.out
- :commandoutput: tail -1 forward.out
+ :commandoutput: ruby euler.rb > euler.out
+ :commandoutput: tail -1 euler.out
 
 Let's plot it:
 
  :commandinput: gnuplot END
 set term post eps
-set output "forward_001.ps"
+set output "euler_001.ps"
 set size ratio -1
-plot "forward.out"
+plot "euler.out"
 quit
 END
 
- :figure: forward_001.ps 12cm euler_001
- Third attempt at integrating the two-body problem: at least a
+ :figure: euler_001.ps 12cm euler_001
+ Fourth attempt at integrating the two-body problem: at least a
  semblance of an elliptic orbit.
 
 code <tt>euler_0001.rb</tt>, with only these two lines different:
@@ -283,21 +314,21 @@ code <tt>euler_0001.rb</tt>, with only these two lines different:
 Let's run it:
 
  :command: cp euler_0001.rb euler.rb
- :commandoutput: ruby euler.rb > forward.out
- :commandoutput: tail -1 forward.out
+ :commandoutput: ruby euler.rb > euler.out
+ :commandoutput: tail -1 euler.out
 
 Let's plot it:
 
  :commandinput: gnuplot END
 set term post eps
-set output "forward_0001.ps"
+set output "euler_0001.ps"
 set size ratio -1
-plot "forward.out"
+plot "euler.out"
 quit
 END
 
- :figure: forward_0001.ps 12cm euler_0001
- Fourth attempt at integrating the two-body problem: a lot better already.
+ :figure: euler_0001.ps 12cm euler_0001
+ Fifth attempt at integrating the two-body problem: a lot better already.
 
 code <tt>euler_00001.rb</tt>, with only these two lines different:
 
@@ -306,21 +337,21 @@ code <tt>euler_00001.rb</tt>, with only these two lines different:
 Let's run it:
 
  :command: cp euler_00001.rb euler.rb
- :commandoutput: ruby euler.rb > forward.out
- :commandoutput: tail -1 forward.out
+ :commandoutput: ruby euler.rb > euler.out
+ :commandoutput: tail -1 euler.out
 
 Let's plot it:
 
  :commandinput: gnuplot END
 set term post eps
-set output "forward_00001.ps"
+set output "euler_00001.ps"
 set size ratio -1
-plot "forward.out"
+plot "euler.out"
 quit
 END
 
- :figure: forward_00001.ps 12cm euler_00001
- Fifth attempt at integrating the two-body problem: getting there, slowly.
+ :figure: euler_00001.ps 12cm euler_00001
+ Sixth attempt at integrating the two-body problem: getting there, slowly.
 
 
 
@@ -406,12 +437,12 @@ That's it, the last bug caught, our <tt>euler.rb</tt> compiled at
 last!  Let's see what it produces.  Since we asked for the output of
 positions and velocities for 10 time units at intervals <tt>dt = 0.01</tt>,
 our screen will be flooded by 1000 lines of output; better to redirect
-the output to a file.  Let's call it <tt>forward.out</tt>, and let's have
+the output to a file.  Let's call it <tt>euler.out</tt>, and let's have
 a look at the beginning and the end of the file, say five lines each:
 
- :commandoutput: ruby euler.rb > forward.out
- :commandoutput: head -5 forward.out
- :commandoutput: tail -5 forward.out
+ :commandoutput: ruby euler.rb > euler.out
+ :commandoutput: head -5 euler.out
+ :commandoutput: tail -5 euler.out
 
 \output{chap3/forward.output}
 
@@ -1430,11 +1461,10 @@ yet shows global errors for a fixed time interval that are of order _k_
 
 <b>Ex. 3.2:</b>
 convince yourself that the following program,
-<tt>forward_euler1a.rb</tt>:
+<tt>euler_array_inject.rb</tt>:
 
  :inccode: .euler_array_inject.rb
 
 does the same thing as <tt>forward_euler1.rb</tt>.  Check
 this both by inspecting the logic of the new code, and by running the
 two codes to see whether you get the exact same answers in both cases.
-
