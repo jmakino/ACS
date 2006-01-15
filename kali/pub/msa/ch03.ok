@@ -327,12 +327,12 @@ by hand.  Since we have initially
 and
 
 :equation:
-\bv(0) = \{v_x, v_y, v_z\} = \{0,1,0}\}
+\bv(0) = \{v_x, v_y, v_z\} = \{0,1,0\}
 
 the new position must be:
 
 :equation:
-\br(dt) = \br + \bv dt = \{1,dt,0}\}
+\br(dt) = \br + \bv dt = \{1,dt,0\}
 
 *Carol*: And this is indeed what we see in the first half of the last output
 line.
