@@ -22,8 +22,8 @@ text.
 
 = Simple Example
 
-:command: cd examples; ../acsdoc2.rb simpleexample.ok
-:command: cd examples; ../acsdoc2.rb --tolatex simpleexample.ok
+:command: cd examples; ../acsdoc.rb simpleexample.ok
+:command: cd examples; ../acsdoc.rb --tolatex simpleexample.ok
 :command: cd examples; latex simpleexample
 :command: cd examples; dvips -E -l 1 -x 1900 simpleexample
 :command: cd examples; convert simpleexample.ps simpleexample.jpeg
@@ -227,8 +227,8 @@ The following is a sample for deep sections.
 
   :include: examples/sectionssample.ok
 
-:command: cd examples; ../acsdoc2.rb sectionssample.ok
-:command: cd examples; ../acsdoc2.rb --tolatex sectionssample.ok
+:command: cd examples; ../acsdoc.rb sectionssample.ok
+:command: cd examples; ../acsdoc.rb --tolatex sectionssample.ok
 :command: cd examples; latex sectionssample
 :command: cd examples; dvips -E -l 1 -x 1900 sectionssample
 :command: cd examples; convert sectionssample.ps sectionssample.jpeg
