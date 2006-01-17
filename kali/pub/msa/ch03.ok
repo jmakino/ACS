@@ -466,12 +466,56 @@ version of the code:
 
 == A Surprise
 
-Let's run it:
+*Carol*: I don't think you would like to read through 1001 lines of output.
+Let's run the code while redirecting the output to a file <tt>euler.our</tt>.
 
  :command: cp euler_circular_bug.rb euler.rb
  :commandoutput: ruby euler.rb > euler.out
+
+We can then have a peek at, say, the first five lines and the last
+five lines, while skipping the 991 lines in between:
+
  :commandoutput: head -5 euler.out
  :commandoutput: tail -5 euler.out
+
+*Dan*: Instead of a bunch of numbers, I'd rather see a plot of the orbit.
+
+*Erica*: I agree, we should do that soon.  But hey, the numbers do tell us
+something already, namely that there is something seriously wrong!
+
+*Carol*: Right you are, the numbers are much too large.  We are trying
+to let two particles move around a circle, at a relative distance of 1.
+However, here the separation in the <tex>$y$</tex> direction alone is
+already larger than <tex>$11$</tex>, so the total separation must be
+even larger.  I did not expect such a large error.
+
+*Dan*: Hmmm, yes, that is rather surprising.  And yet, look, the result
+of the very first step is exactly correct.  It is just what we would
+expect, when scaling our earlier result, from a time step of
+<tex>$dt=0.1$</tex> to a time step of <tex>$dt=0.01$</tex>.
+
+*Erica*: Well, let us look at the orbit.  How do we make a plot?
+
+*Carol*: I suggest using <tt>gnuplot</tt>, present on any Linux
+running system, and something that can be easily installed on many
+other systems as well.  The style is not particularly pretty, but at
+least it will give us something to look at.
+
+*Dan*: How do you invoke <tt>gnuplot</tt>?
+
+*Carol*: To use it is quite simple, with only one command
+needed to plot a graph.  In our case, however, I'll start with the
+command <tt>set size ratio -1</tt>.  A positive value for the size
+ratio scales the aspect ratio of the vertical and horizontal edge of
+the box in which a figure appears.  But in our case we want to
+set the scales so that the unit has the same length on both the x and
+y axes.  Gnuplot can be instructed to do so by specifying the ratio to
+be <tt>-1</tt>.  In fact, let me write the line <tt>set size ratio
+-1</tt> in a file called <tt>.gnuplot</tt> in my home directory.  That
+way we don't have to type it each time we use gnuplot.  Okay, done.
+Now let's have our picture:
+
+xxxxxxxxx
 
 Let's plot it:
 
