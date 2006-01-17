@@ -25,7 +25,7 @@ text.
 :command: cd examples; ruby ../acsdoc.rb simpleexample.ok
 :command: cd examples; ruby ../acsdoc.rb --tolatex simpleexample.ok
 :command: cd examples; latex simpleexample
-:command: cd examples; dvips -E -l 1 -x 1900 simpleexample
+:command: cd examples; dvips -E -l 1 -x 1900 -o simpleexample.ps simpleexample
 :command: cd examples; convert simpleexample.ps simpleexample.jpeg
 
 The following is a simple example.
@@ -230,7 +230,7 @@ The following is a sample for deep sections.
 :command: cd examples; ruby ../acsdoc.rb sectionssample.ok
 :command: cd examples; ruby ../acsdoc.rb --tolatex sectionssample.ok
 :command: cd examples; latex sectionssample
-:command: cd examples; dvips -E -l 1 -x 1900 sectionssample
+:command: cd examples; dvips -E -l 1 -x 1900 -o sectionssample.ps sectionssample
 :command: cd examples; convert sectionssample.ps sectionssample.jpeg
 
 <web>examples/sectionssample.html|Here</web> is the created HTML
