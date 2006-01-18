@@ -52,13 +52,14 @@ END
  Fourth attempt at integrating the two-body problem: at least a
  semblance of an elliptic orbit.
 
-code <tt>euler_0001.rb</tt>, with only these two lines different:
+code <tt>euler_001_sparse.rb</tt>, but we show it as if it is called
+<tt>euler.rb</tt>:
 
- :inccode: .euler_0001.rb-1
+ :inccode: .euler_001_sparse.rb
 
 Let's run it:
 
- :command: cp euler_0001.rb euler.rb
+ :command: cp euler_001_sparse.rb euler.rb
  :commandoutput: ruby euler.rb > euler.out
  :commandoutput: tail -1 euler.out
 
@@ -66,22 +67,50 @@ Let's plot it:
 
  :commandinput: gnuplot END
 set term post eps
-set output "euler_0001.ps"
+set output "euler_001_sparse.ps"
 set size ratio -1
 plot "euler.out"
 quit
 END
 
- :figure: euler_0001.ps 12cm euler_0001
+ :figure: euler_001_sparse.ps 12cm euler_001_sparse
+ Plotting points only at intervals of 0.01 in time: the picture looks
+ the same.
+
+code <tt>euler_0001_sparse.rb</tt>, with only these two lines different:
+
+ :inccode: .euler_0001_sparse.rb-1
+
+Let's run it:
+
+ADD "0" TO THE ZEROES IN THE LINE BELOW
+
+ :command: cp euler_001_sparse.rb euler.rb
+ :commandoutput: ruby euler.rb > euler.out
+ :commandoutput: tail -1 euler.out
+
+Let's plot it:
+
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_0001_sparse.ps"
+set size ratio -1
+plot "euler.out"
+quit
+END
+un
+ :figure: euler_0001_sparse.ps 12cm euler_0001_sparse
  Fifth attempt at integrating the two-body problem: a lot better already.
 
-code <tt>euler_00001.rb</tt>, with only these two lines different:
+code <tt>euler_00001_sparse.rb</tt>, with only these two lines different:
 
- :inccode: .euler_00001.rb-1
+ :inccode: .euler_00001_sparse.rb-1
 
 Let's run it:
 
- :command: cp euler_00001.rb euler.rb
+ADD "00" TO THE ZEROES IN THE LINE BELOW
+
+ :command: cp euler_001_sparse.rb euler.rb
  :commandoutput: ruby euler.rb > euler.out
  :commandoutput: tail -1 euler.out
 
@@ -89,13 +118,13 @@ Let's plot it:
 
  :commandinput: gnuplot END
 set term post eps
-set output "euler_00001.ps"
+set output "euler_00001_sparse.ps"
 set size ratio -1
 plot "euler.out"
 quit
 END
 
- :figure: euler_00001.ps 12cm euler_00001
+ :figure: euler_00001_sparse.ps 12cm euler_00001_sparse
  Sixth attempt at integrating the two-body problem: getting there, slowly.
 
 xxxxxxxxxxxxxxxxxxxxxxxxxxxx

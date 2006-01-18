@@ -353,7 +353,17 @@ position, defined as:
 :equation:
 \br = \br_2 - \br_1
 
-<b>[Peter, can you make a picture here?]</b>
+ :figure: twop.eps 10cm twop
+ xxxxxx
+
+ :figure: twop2.eps 10cm twop
+ xxxxxx
+
+ :figure: twop3.eps 10cm twop
+ xxxxxx
+
+ :figure: twop4.eps 10cm twop
+ xxxxxx
 
 <b>[add more text, including a derivation of <tex>$E_kin$</tex>
 and <tex>$E_pot$</tex>]</b>

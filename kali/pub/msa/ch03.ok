@@ -517,7 +517,8 @@ Now let's have our picture:
 
 xxxxxxxxx
 
-Let's plot it:
+Let's plot it (fig REF(euler_circular_bug) ):  [upper case REF to
+avoid the current bug]
 
  :commandinput: gnuplot END
 set term post eps
