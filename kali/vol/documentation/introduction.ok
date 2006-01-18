@@ -595,6 +595,7 @@ can write
 which gives "equation ref(equationlabel)." The label cannot contain
 space.
 
+
 Latex eqnarray environment can be used as
 
  # :eqnarray:
