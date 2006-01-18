@@ -80,7 +80,7 @@ UNIX operating system, and uses following commands/softwares
 * latex, dvips
 * latex "subsubsection" package
 
-<tt>Dvips</tt> needs to understand options -E, -l, -x. If these
+<tt>Dvips</tt> needs to understand options -E, -l, -x, -o. If these
 options are not available with your dvips, well, you need to modify
 ascdoc.rb to supply appropriate options.
 
