@@ -353,16 +353,22 @@ position, defined as:
 :equation:
 \br = \br_2 - \br_1
 
- :figure: twop.eps 10cm twop
+ :figure: twop.eps 6cm twop
  xxxxxx
 
- :figure: twop2.eps 10cm twop
+ :figure: twop2.eps 6cm twop
  xxxxxx
 
- :figure: twop3.eps 10cm twop
+ :figure: twop3.eps 6cm twop
  xxxxxx
 
- :figure: twop4.eps 10cm twop
+ :figure: twop4.eps 6cm twop
+ xxxxxx
+
+ :figure: twop4a.eps 6cm twop
+ xxxxxx
+
+ :figure: twop4b.eps 6cm twop
  xxxxxx
 
 <b>[add more text, including a derivation of <tex>$E_kin$</tex>
