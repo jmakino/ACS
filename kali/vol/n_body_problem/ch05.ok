@@ -12,12 +12,12 @@ something at random, how about trying to integrate a figure-eight
 configuration?
 
 *Bob*: You mean this new `classical' solution to the equal-mass three-body
-system that was discovered in the nineteen nineties?  I remember how surprised
-I was when I first read about that.  I had always assumed that the
-classic celestial mechanicians had found all the interesting solutions
-already centuries ago, you know, Legendre, Lagrange, Laplace, and
-perhaps a few others Le's and La's.  I was thrilled to see such an elegant
-new solution.
+system that was discovered recently by Montgomery and Chenciner?  I
+remember how surprised I was when I first read about that.  I had
+always assumed that the classic celestial mechanicians had found all
+the interesting solutions already centuries ago, you know, Legendre,
+Lagrange, Laplace, and perhaps a few others Le's and La's.  I was
+thrilled to see such an elegant new solution.
 
 *Alice*: Me too.  As soon as I read about it, I tried it out for myself,
 and by golly, the configuration was stable: three stars chasing each other
@@ -179,7 +179,7 @@ rapid prototyping.
 
 While violating the DRY principle may not always lead to likely
 errors, the consequences are equally bad if it discourages free
-experimentation.  In that way you are likely to miss more optimal
+experimentation.  In that way you are likely to miss a more optimal
 solution.  Miss out on more optimal solutions often enough in a
 large software project, and you get an end product that can be very
 far from optimal, through the aggregate effect of all the suboptimal

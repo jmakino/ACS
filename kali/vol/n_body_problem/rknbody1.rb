@@ -69,7 +69,7 @@ class Nbody
     @body = []
     for i in 0...n
       @body[i] = Body.new
-      @boby[i].nb = self                                           #1
+      @body[i].nb = self                                           #1
     end
   end
 

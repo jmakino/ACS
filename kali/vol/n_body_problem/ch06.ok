@@ -9,7 +9,7 @@ and the like, as instance variables of the +Body+ class.  That should
 make the notation within the integrator methods a lot simpler.  I don't
 like the notion of proliferating instance variables, though.
 
-*Alice*: I don't think that would be such a bad thing. I could argue
+*Alice*: I don't think that would be such a bad thing.  One could argue
 that in object-oriented programming, it is appropriate to modify the
 object if you use it for a different purpose.  And especially in Ruby,
 such a modification will be easy.  You can always add a few lines in a

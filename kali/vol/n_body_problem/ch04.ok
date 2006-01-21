@@ -2,7 +2,7 @@
 
 == Forward Euler
 
-*Bob*: Okay, reading to chase and catch our bug?
+*Bob*: Okay, ready to chase and catch our bug?
 
 *Alice*: Sure thing!  And I like your idea to simplify things and turn
 to our old friend, the forward Euler algorithm.  And we may as well
@@ -51,7 +51,7 @@ than a fourth-order Runge-Kutta, I agree!
 this step.  If this step is correct, how can things go wrong later on?
 Admittedly, we are still starting from a somewhat special case, launching
 our particles parallel to the _y_ axis, while being positioned on the
-_y_ axis.  Perhaps we should take a really generic initial position,
+_x_ axis.  Perhaps we should take a really generic initial position,
 not lined up with anything at all?
 
 == Two Possibilities
@@ -105,7 +105,7 @@ so 0.5 in total.
 That is a great idea: if it is a matter of the warning light malfunctioning,
 chances are that it already malfunctioned when the plane took off!
 
-*Bob*: But I've just showed that it did _not_ malfunction!
+*Bob*: But I've just shown that it did _not_ malfunction!
 
 *Alice*: But the circular binary did not give us any problems.  It was the
 non-unity masses and the eccentricity that did it.  Let us redo that one
@@ -260,7 +260,7 @@ for this simple form of data reduction, and call it
 
  :inccode: .rknbody2a_reduce.rb
 
-All it does it to read in an N-body system, and print the relative positions
+All it does is to read in an N-body system, and print the relative positions
 and velocities of the first two particles with respect to each other.
 We can then pipe the results from our previous calculation into our
 new script:

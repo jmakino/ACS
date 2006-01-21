@@ -14,7 +14,7 @@ conditions?  They were
  :include: euler.in
 
 *Alice*: Yes, but now we have to be careful how we interpret this mass
-of 1 that we used before.  Remember how we introduced the two-body
+value of 1 that we used before.  Remember how we introduced the two-body
 problem, using the relative position <tex>$\br$</tex> between the two
 pairs?  The equation of motion for <tex>$\br$</tex> was
 
@@ -38,17 +38,23 @@ from the origin.  How about this choice?  I'll put it in a file
  :inccode: test1.in
 
 I will first redo the fourth-order Runge-Kutta run for a time step
-of <tex>$10^{-4}$</tex>, using our previous two-body code:
+of <tex>$10^{-4}$</tex>, using our previous two-body code,
+<tt>integrator_driver2h.rb</tt>:
 
  :inccode: .integrator_driver2h.rb
+
+Here is the result:
 
  :commandoutput: ruby integrator_driver2h.rb < euler.in
 
 == A Bug
 
-Now let's see what my new N-body code will do:
+Now let's see what my new N-body code, <tt>rknbody1a_driver.rb</tt>,
+will do.  Here is the code:
 
  :inccode: .rknbody1a_driver.rb
+
+And here is what it does:
 
  :commandoutput: ruby rknbody1a_driver.rb < test1.in
 
@@ -122,9 +128,11 @@ in my N-body code:
 *Alice*: Nothing wrong here.  So changing the masses did not help, at least
 not for our circular orbit.  Shall we try to increase the eccentricity,
 while leaving the masses both unity?  We can just make the velocities a bit
-smaller.  How about:
+smaller.  How about this, as the file <tt>test4.in</tt>:
 
  :inccode: test4.in
+
+Here goes:
 
  :commandoutput: ruby rknbody1a_driver.rb < test4.in
 
@@ -132,9 +140,12 @@ smaller.  How about:
 
 *Bob*: Still no cigar.  Nothing wrong here either.  How about changing
 both the masses and the eccentricity?  I'll just make the masses ten
-percent smaller, while leaving everything else the same.
+percent smaller, while leaving everything else the same, calling the
+file <tt>test5.in</tt>:
 
  :inccode: test5.in
+
+Try again:
 
  :commandoutput: ruby rknbody1a_driver.rb < test5.in
 
@@ -145,18 +156,19 @@ non-circularity and masses that differ from unity.
 
 *Bob*: We're getting a little closer, but we may still have quite a ways to go!
 
-== A single Time Step
+== A Single Time Step
 
-*Alice*: Let us take a
+*Alice*: Let's take a
 single time step, to see where and how things go wrong.  And let's take
 a relatively big step.  That should make it easier to interpret
 the output:
 
  :commandoutput: ruby rknbody1b_driver.rb < test5.in
 
-*Bob*: But not _that_ easy.  I don't like to compute by hand all the steps
-in the fourth-order Runge-Kutta algorithm.  How about checking whether the
-forward Euler breaks down as well?  That will be far easier to check by hand.
+*Bob*: But not nearly easy enough!
+I don't like to compute by hand all the steps in the fourth-order
+Runge-Kutta algorithm.  How about checking whether the forward Euler
+breaks down as well?  That will be far easier to check by hand.
 
 *Alice*: You may be right.  Let's take a break first, and then take a fresh
 look at the whole situation.

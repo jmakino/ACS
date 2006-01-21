@@ -100,7 +100,7 @@ all too easy to change the link in one direction and to forget to change
 the link in the other direction, or to change it in the wrong way.
 
 *Bob*: Typical one-off errors that often happen in C and C++ are less
-likely to occur in Ruby, because so much of the bookkeeping is handling
+likely to occur in Ruby, because so much of the bookkeeping is handled
 behind the scenes, as long as you don't confuse <tt>0...n</tt> and
 <tt>0..n</tt>.  But I see your point, and perhaps we should change that,
 later on.  For now, let's just go through the code, and then we can decide
