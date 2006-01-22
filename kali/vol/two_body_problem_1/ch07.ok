@@ -134,7 +134,7 @@ inner product, and there is the temporary vector <tt>product[]</tt>.
 Neither of the first two are threatened anywhere with conversion
 into an integer.  Nor is the third one.  Hmmm.
 
-But wait.  I have tried to use the same name <tt>product[]</tt> for a
+But wait, I have tried to use the same name <tt>product[]</tt> for a
 vector, in the +else+ clause, and for a scalar, in the +if+ clause.
 I thought that Ruby was so clever that you could do that.  Because a
 type is determined only at run time, I thought that you could wait to
@@ -234,8 +234,8 @@ somehow.  This is perplexing.  Okay:
     003:0> a*b
     0.020202
 
-WHAT?!?  I now typed in the exact values, and still it works.  But the
-original sequence of six commands above didn't work.
+WHAT?!?  I now typed in the exact values, and it still works.  But the
+original sequence of six commands, above, didn't work.
 
 == And Yet It Is
 
@@ -277,10 +277,10 @@ microscope at every step.  And let us try to make our steps as small
 as we can, doing only one thing at a time.
 
 *Bob*: Okay, divide and conquer.  That's generally a good method.
-Let me start a new +irb+ session.  Above we started by creating a
+Let me start a new +irb+ session.  Above, we started by creating a
 vector with three components, to which we assigned values.  One
-way to split this command in into smaller steps is to separate the
-creating and assigning parts.  First I'll create a vector and then
+way to split this command into smaller steps is to separate the
+creating and assigning parts.  First, I'll create a vector and then
 I'll assign its values.  I'll do the same for the second vector,
 replacing the second command above by a creation and assignment
 statement.
@@ -381,11 +381,11 @@ now I see what you mean.  How very tricky.
 As long as we did not feed any of our vectors, and only printed the
 results of operations on them, they remained pristine little vectors.
 But as soon as we fed them a value, they flipped into the type of that
-value, confusing us no end.  It all makes sense now . . . .
+value, confusing us to no end.  It all makes sense now . . . .
 
 *Alice*: I have heard that before.
 
-*Bob*: I know, I know.  But no I can _prove_ to you that we have traced
+*Bob*: I know, I know.  But no, I can _prove_ to you that we have traced
 the bug.  We can easily repair our +Vector+ class.  So let's go back
 into the file <tt>vector2.rb</tt>.  Ahh, no, it is even easier!
 

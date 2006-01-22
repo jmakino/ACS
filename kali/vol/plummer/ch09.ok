@@ -3,7 +3,7 @@
 == Confusion
 
 *Alice*: Now that we have a working and well-tested code to generate
-realizations of Plummer's model, we have decide how to scale the output.
+realizations of Plummer's model, we have to decide how to scale the output.
 We simply started with the coordinate system that was used by Aarseth
 and his friends, in which <tex>$G=M=a=1$</tex>.  While that is a
 reasonable choice, there are other choices as well.
@@ -17,23 +17,23 @@ you will generate nonsense.
 
 *Alice*: What have you been using so far?
 
-*Bob*: I have never settled on one particular choice.  It depended always
-on the problem at hand, the code I used to work with, and the preferences
+*Bob*: I have never settled on one particular choice.  It always depended
+on the problem at hand, the code I used, and the preferences
 of my collaborators.
 
 *Alice*: People always underestimate the importance of standardization.
 It takes some work, of course, for a community to settle on a standard.
 However, it takes far more work if you always have to transform between
-different systems, even in the unlikely case that you would not make
+different systems, even in the unlikely case that you do not make
 mistakes.  Scaling the results from one system to the others is tricky.
 
-*Bob*: Tell me!  And what is more, my students.
+*Bob*: Tell me about it!  Or better, tell my students about it.
 One thing students always have great trouble with is
 scaling the results from an N-body simulation back to physical
 quantities, expressed in physical or astrophysical units.
 
 *Alice*: That is not surprising.  And I must say, I often have to think
-careful about such questions.  It may be trivial, from a scientific point
+carefully about such questions.  It may be trivial, from a scientific point
 of view, but in practice, it is easy to make a mistake.  It is one thing
 to get as an answer that your star cluster retains a final mass of
 <tt>0.765</tt> at the end of a run, but it is quite another to translate
@@ -42,17 +42,17 @@ that into grams, or into solar masses.
 *Bob*: At least the physical units are standardized.  Mass comes in grams,
 or in kilograms.  It is annoying that there are still two sets of
 units in general use in astrophysics, _MKS_ and _cgs_, but at least
-the conversation between those two is relatively straightforward, just
+the conversion between those two is relatively straightforward, just
 a factor of a thousand in the case of masses.  And similarly, astrophysical
 units are standardized: mass general comes in units of a solar mass.
-But in computer simulations, everybody is using whatever convention
+But in computer simulations, everybody uses whatever convention
 they like.
 
-In contrast, I find it often difficult to interpret the results that
-come from running someone else's code.  Not everybody clearly
-documents what the units is they have been using.  I know, I know --
-I just told you that I have never settled on a single system of units
-either.  I wish there was such a system.
+I often find it difficult to interpret the results that come from
+running someone else's code.  Not everybody clearly documents what
+units they used.  I know, I know -- I just told you that I have never
+settled on a single system of units either.  I wish there was such a
+system.
 
 == A Standard
 
@@ -111,7 +111,7 @@ is:
 {M\over r_V} \, = \, \sum_i\sum_{j\atop j\neq i}{m_im_j\over |\br_i -\br_j|}
 
 and of course, we recognize that this is the potential energy of an N-body
-system, for <tex>$G=1$</tex>, apart for a factor of two, because we
+system, for <tex>$G=1$</tex>, apart from a factor of two, because we
 have now counted every pair twice.  So we can write the potential energy of
 an N-body system as:
 
@@ -119,7 +119,7 @@ an N-body system as:
 E_{pot} \, = \, -\,G\sum_{i<j}{m_im_j\over |\br_i -\br_j|}
   \, = \, - \, \half {GM\over r_V}
 
-*Bob*: and now we can use the virial theorem, which tells us that
+*Bob*: And now we can use the virial theorem, which tells us that
 the magnitude of the total energy is half that of the potential energy,
 to write:
 
@@ -189,7 +189,7 @@ in which the half-mass radius is close to unity.  However, the
 half-mass radius is not a conserved quantity, and as soon as you start
 a simulation, the half-mass radius may change.  Therefore, it is better
 to take a conserved quantity, such as the total energy, as a gauge,
-and to give it a simple value in such a way that it implies that the
+and give it a simple value in such a way that it implies that the
 unit of length is at least close to the half-mass radius.  This must
 have been the sort of thinking that went into the definition of the
 standard units, I'm pretty sure.
@@ -247,14 +247,14 @@ to be careful, and if you simultaneously change your ruler, your clock,
 and your scales, changing your units of length, time, and mass, it is real
 easy to go wrong.
 
-*Alice*: I know from experience!  And still I always have to double check.
+*Alice*: I know from experience!  And still, I always have to double check.
 
-*Bob*: Glad to hear we share the same problem.  And just to make sure that
-I can buy into your story, scaring me away with having to handle tiny values
-for the half-mass radius, shall we quickly check with Plummer's model as a
-concrete application how you can derive the numbers you mentioned?
+*Bob*: Glad to hear we share the same problem.
+And just to make sure that I can buy into your story, shall we quickly
+check with Plummer's model as a concrete application how we can
+derive the numbers you mentioned?
 
-*Alice*: Good idea!  It never hurts to check, as we've seen now already a
+*Alice*: Good idea!  It never hurts to check, as we've now seen a
 number of times.  But I don't like working with factors like
 <tex>$3\pi/16$</tex> and <tex>$(2^{2/3}-1)^{-1/2}$</tex>.  Let's make
 some simplifications, trying to use only fractions like <tex>$1/3$</tex>
@@ -266,7 +266,7 @@ So let us start with the original expressions for the total energy
 the half-mass radius <tex>$r_h$</tex> and the virial radius <tex>$r_V$</tex>,
 given in terms of the structural length <tex>$a$</tex>.  Remember that
 <tex>$a$</tex> was what we first encountered as the softening length, when
-we smoothed the potential of point particles.  In analogy, we started off
+we smoothed the potential of point particles.  We started off
 with our Plummer potential
 
 :equation:
@@ -327,8 +327,8 @@ r_h = 1 \Rightarrow E \approx -1/5 , r_V \approx 5/4
 :equation:
 r_V = 1 \Rightarrow E = -1/4 , r_h \approx 4/5
 
-*Alice*: Yes, that is a good summary, and it important to indicate which
-relations are approximate and which are exact because the follow from the
+*Alice*: Yes, that is a good summary, and it is important to indicate which
+relations are approximate and which are exact because they follow from the
 definitions.
 
 *Bob*: And these are useful numbers to remember.  Actually, now that we
@@ -361,7 +361,7 @@ Which one do we choose?
 
 *Alice*: There may be several, but the definition that I have seen used
 most often is the one that appeals to observers: it defines the core radius
-at the position on the sky where the projected mass density
+as the distance from the center on the sky where the projected light density
 <tex>$\Sigma$</tex> has dropped by a factor of two, with respect to
 the central value.  In other words
 
@@ -370,7 +370,7 @@ the central value.  In other words
 $$</tex>
 
 *Bob*: It may be useful for observers, but for a theorist it is rather
-unnatural do do a line-of-sight integration through a model.  But I, too,
+unnatural to do a line-of-sight integration through a model.  But I too
 have come across this definition quite often, so let's adopt it.
 
 *Alice*: We'll have to do the integral of course.  Better first to draw 

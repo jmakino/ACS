@@ -5,7 +5,7 @@
 *Alice*: Hi Bob!  Well, are you ready to derive the distribution function
 of Plummer's model from first principles?
 
-*Bob*: If we're really going to the bottom of this, I _insist_ on using
+*Bob*: If we're really going to get to the bottom of this, I _insist_ on using
 <tex>$G=M=a=1$</tex>.  Let's roll up our sleeves then.  Here is the,
 by now very familiar, potential-density pair for our Plummer's model:
 
@@ -40,7 +40,7 @@ students . . .
 *Alice*: . . . and for ourselves . . .
 
 *Bob*: . . . and for ourselves, yes, but not for our colleagues.
-I certainly wouldn't want to show to them how many small steps it takes
+I certainly wouldn't want to show them how many small steps it takes
 me to derive these types of equations.
 
 *Alice*: But don't forget, we are planning to put this up on the web.
@@ -107,7 +107,7 @@ eq. (ref(distributionfunction)).  Let's write it here again:
 
 :equation:
 f(E(r,v)\,4\pi r^2 dr\,4\pi v^2dv \, = \,
-       {384\sqrt(2)\over7\pi m}(-E)^{7/2}r^2v^2dr\,dv
+       {384\sqrt{2}\over7\pi m}(-E)^{7/2}r^2v^2dr\,dv
 
 *Bob*: Since <tex>$384/16=24$</tex>, we got exactly what was ordered.
 It was a bit of work, but I must admit, it is fun to derive things from
@@ -340,13 +340,16 @@ g(t) \,&=&\, {\sin \pi \alpha \over \pi}\,{d\over dt} \,
 \int_0^t{df\over dt}\,{dx \over (t-x)^{1-\alpha}}+
 {f(0)\over t^{1-\alpha}}\right]
 
-I like that terse style: only "Let . . then . .", what a difference with
+I like that terse style: only "Let . . then . .", what a difference from
 our constant chattering!
 
 *Alice*: It is a good move of them to reduce the more complex equations
-(ref(fcurlyEa)) and (ref(fcurlyEb)) to these simplified forms.  But as
-always, let us first check whether the "Let . . then . ." claim, if true,
-will solve our problem.  Let us start with eq. (ref(fx)).  For this to be
+(ref(fcurlyEa)) and (ref(fcurlyEb)) to these simplified forms.  But
+let us first check whether the "Let . . then . ." claim, if true,
+will solve our problem.  If it really does, we then have to verify the
+claim itself, to make sure that the problem really has been solved.
+
+Let us start with eq. (ref(fx)).  For this to be
 equal to our previous equation (ref(drhodpsifrompsi)):
 
 <tex>$$

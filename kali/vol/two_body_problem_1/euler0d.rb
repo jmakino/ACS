@@ -5,7 +5,7 @@ include Math
 #:segment start: barebones
 dt = 0.01           # time step
 dt_dia = 2.5        # diagnostics printing interval
-dt_out = 20         # output interval
+dt_out = 10         # output interval
 dt_end = 10         # duration of the integration
 #:segment end:
 

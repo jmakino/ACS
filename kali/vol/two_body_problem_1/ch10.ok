@@ -73,8 +73,8 @@ and will realize that the name <tt>e_init</tt> belongs to a method.
 *Bob*: Indeed.  Of course, you are perfectly free to write <tt>e_init()</tt>
 instead, if you like, but I prefer brevity.  So this third line of +evolve+
 invokes the method <tt>e_init</tt> below.  We'll look at that in a moment, but
-all it does is to compute the total energy of the system at the beginning
-of a run, and stores the value in an internal variable, so that we can
+all it does is compute the total energy of the system at the beginning
+of a run, and store the value in an internal variable, so that we can
 compare the energy at a later time with the initial value, to see how much
 the energy has drifted.
 
@@ -86,7 +86,7 @@ method.  I want <tt>write_diagnostics</tt> to write those numbers as well, so
 I have to pass them explicitly.
 
 *Alice*: You could of course have defined them as internal variables
-for the +Body+ class, how did you call them again?  Ah, instance variables.
+for the +Body+ class, what did you call them again?  Ah, instance variables.
 
 *Bob*: Yes, but that would be confusing and potentially dangerous.  The
 +Body+ class is growing bigger now, so I don't like to have an unnecessary
@@ -99,7 +99,7 @@ of other compartmentalized structures.
 *Alice*: See, that is what I mean when I insist on modular programming.
 
 *Bob*: If so, I agree with you on this level.  The problem I had with your
-earlier descriptions was that you seemed to want to compartmentalize on
+earlier description was that you seemed to want to compartmentalize on
 higher levels as well.  I am glad that each cell of my body does not share
 its contents with every other cell.  But I would be unhappy if my left hand
 would not know what my right hand would be doing.  And even though I don't
@@ -109,7 +109,7 @@ like to put my foot in my mouth, I'm glad I have the freedom to do so!
 about modularity on a local level.  While creating larger programs, we will
 move up to more global issues, and there we can fight things out with
 concrete examples.  Meanwhile, I'll try not to tease you any longer about
-modularity.  This code looks already as modular as you can ask for.
+modularity.  This code already looks as modular as you can ask for.
 
 == Keeping Time
 
@@ -178,7 +178,7 @@ starting with what it thinks is time zero.
 *Alice*: So if you call +evolve+ twice, the time is set back to zero
 in between.
 
-*Bob*: For now, yes.  That just was the simplest way to implement it.
+*Bob*: For now, yes.  That was just the simplest way to implement it.
 Time is used here only internally, for bookkeeping during a single
 invocation of +evolve+.  Of course, I could have introduced a time
 variable on the level of the driver.  But then I would have to pass
@@ -198,15 +198,15 @@ particle, but only for one step.
 *Alice*: Divide and conquer.
 
 *Bob*: Yes, the level of +evolve+ is pure management; all the footwork is
-down by <tt>evolve_step</tt>, step for step.
+down in <tt>evolve_step</tt>, which gets invoked anew for each step.
 
 == More Brevity
 
 *Alice*: In the next line, the time gets updated, by the amount of time
 that was spent while stepping our particle forward by one step, and
 similarly the +nsteps+ counter is increased by one.  I see what happens
-next.  Unless there is an immediate need to do a form of output, for
-energy of particle positions and velocities, we just move on.  And in
+next.  Unless there is an immediate need to output energy, or particle
+positions and velocities, we just move on.  And in 
 those cases where you do an output, you immediately schedule the next
 output, by increasing the future output time by the corresponding output
 interval.
@@ -283,9 +283,9 @@ what grandiose philosophical explanation you would connect with it.
 a natural language.  In English, you mix nouns and verbs in one sentence
 without having to think at the start of each sentence how to connect them.
 You just talk, because you have become familiar with them.  In contrast,
-in a language like C++ you can `talk' in it for years, and still you have
+in a language like C++ you can `talk' in it for years, and still have
 to look up the rules of the game, each time you do something new.  I've
-never felt a natural familiarity with C++, no matter how much I have used
+never felt a natural familiarity with C++, no matter how much I use
 it.  And here, how can you not love Ruby, with <tt>etot = ekin + epot</tt>
 smiling at you!
 
@@ -340,7 +340,7 @@ and let me at least properly indent it, it hurts my eyes.
 
 *Alice*: As opposed to a "there document"?
 
-*Bob*: It is really called like that, and for a simple reason: everything
+*Bob*: It is really called that, and for a simple reason: everything
 that is here, in between <tt><<END</tt> and <tt>END</tt> is interpreted
 as one long string, and that string is the taken as the argument for the
 <tt>STDERR.print</tt> command.
@@ -351,12 +351,12 @@ of the second and third line?
 *Bob*: They indicate that the next line should continue after the previous
 line.  Without them, each of the three lines starting with
 <tt>E_kin</tt>, <tt>E_pot</tt>, and <tt>E_tot</tt>, would appear on
-separate lines, and I prefer to have them appearing on one line of the
+separate lines, and I prefer to have them appear on one line of the
 output.  So I have to escape the first two of the three new-line
 characters at the end of those three lines.
 
-*Alice*: I think I get the idea.  Basically the print command gobbles up
-everything it see until it comes across the magic word +END+ and then it
+*Alice*: I think I get the idea.  Basically, the print command gobbles up
+everything it sees until it comes across the magic word +END+ and then it
 stops.
 
 *Bob*: Effectively, yes, but more precisely speaking the print command
@@ -364,7 +364,7 @@ itself doesn't know about "here documents".  The symbol <tt><<END</tt>
 is what causes the rest up to +END+ to be formed into a string.  Then
 that string, once formed, is what the print command sees.  Here, let
 me show you.  Ruby invites you not to take anything on faith, since it
-is so easy to test things for yourself.  When it doubt, test it out!
+is so easy to test things for yourself.  When in doubt, test it out!
 
     |gravity> irb --prompt short_prompt -r vbody1.rb
     001:0> <<END
@@ -406,12 +406,12 @@ is so easy to test things for yourself.  When it doubt, test it out!
 or better even a valley document, in between those two mountainous ENDs.
 
 *Bob*: Well, the remaining four methods are the ones we've seen before,
-we this is the end of the guided tour.  Pretty pretty, hey?
+so this is the end of the guided tour.  Pretty pretty, hey?
 
 *Alice*: Yes, very, apart from the here document.  I still think that
 looks ugly, but I see that you have no choice.
 
-*Bob*: The basic question is: do you want pretty code of pretty output.
+*Bob*: The basic question is: do you want pretty code or pretty output.
 In this case you can't have both.
 
 *Alice*: I guess in that case I prefer pretty output.  But speaking of

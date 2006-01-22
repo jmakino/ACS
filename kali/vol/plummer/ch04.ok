@@ -74,7 +74,7 @@ particles:
 :equation:
 \label{distributionfunction}
 f(\br,\bv)d\br d\bv \, = \, f(E(r,v)\,4\pi r^2 dr\,4\pi v^2dv \, = \,
-       {384\sqrt(2)\over7\pi m}(-E)^{7/2}r^2v^2dr\,dv
+       {384\sqrt{2}\over7\pi m}(-E)^{7/2}r^2v^2dr\,dv
 
 *Alice*: Where did you get this expression from?
 
@@ -290,7 +290,7 @@ contains on average an amount of mass equal to
 In general, <tex>$\tilde f$</tex> will be time dependent, <i>i.e.</i>
 of the form <tex>$\tilde f(\br, \bv)$</tex>, but here we will restrict
 ourselves to dynamical equilibrium situations, where <tex>$\tilde f$</tex>
-is constant, at least on a dynamical time scale, of order the crossing
+is constant, at least on a dynamical time scale, on the order of the crossing
 time, the time it will take for a typical particle to cross the system.
 
 Each star moving with velocity <tex>$v$</tex> at radial position
@@ -327,7 +327,8 @@ to write <tex>$f(E)dE$</tex> instead, but that would be wrong: the
 element <tex>$dE$</tex> would include all particles with specific
 energy between <tex>$E$</tex> and <tex>$E+dE$</tex>, globally in the
 system, which will amount to far more mass than is present in the
-local volume element <tex>$\br,\bv$</tex>.
+local volume element <tex>$d\br d\bv$</tex> around the position
+<tex>$\br,\bv$</tex> in phase space.
 
 *Bob*: Noted!
 
@@ -543,26 +544,26 @@ distribution function: with a little luck we can solve that integral.
 *Alice*: Not so quick: how do we know that they inverted eq.
 (ref(drhodpsifrompsi)) correctly?
 
-*Bob*: There you go again!  You don't take anything on authority, won't you?
+*Bob*: There you go again!  You don't take anything on authority, do you?
 
-*Alice*: Well, no, preferably not.  The whole reason to get embarked on this
-exercise is to proof things for ourselves, from scratch.  I won't call
+*Alice*: Well, no, preferably not.  The whole reason to embark on this
+exercise is to prove things for ourselves, from scratch.  I won't call
 it starting from scratch if we simply accept their inversion.  We
 might as well have accepted their expression for the distribution function
 in the first place.
 
 *Bob*: Which would have been fine with me, to be honest.  But okay, we got
 started, we may as well finish.  Though I really begin to doubt that our
-students will have the stomach to go through al this.
+students will have the stomach to go through all of this.
 
 *Alice*: The best ones will.  And those are the ones we'd like to stay in
-touch with.  So this may a good way to find good students, to see who are
-interesting in figuring all this out to the bottom.
+touch with.  So this may a good way to find good students, to see who is
+interested in figuring this out, all the way to the bottom.
 
-*Bob*: I'm not so sure.  You might just get formalistic and pedantic students.
+*Bob*: I'm not so sure.  You might just get formal and pedantic students.
 I prefer to work with students who get codes to run and who get
-results with codes, rather than students who can solve this inversion equation
--- what do they call it? -- an Abel integral equation.
+results with codes, rather than students who can solve this inversion
+equation -- what do they call it? -- an Abel integral equation.
 
 *Alice*: The _very_ best students will be able to do both.
 

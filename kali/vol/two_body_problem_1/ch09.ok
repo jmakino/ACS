@@ -55,7 +55,7 @@ particle its position and velocity?
 system as one point in a <tex>$6N$</tex> -dimensional system.  The
 evolution of an N-body system can then be viewed as the
 complex motion of this one point through this huge space.  Now in this
-space you can define layer of subspaces, on each of which the total
+space you can define layers of subspaces, on each of which the total
 energy of the system is constant.  Once the particle starts on such a
 hypersurface, it should stay there, because energy is conserved.  But
 if we make arbitrary errors in computing its motion, our simulated
@@ -95,19 +95,19 @@ not make the rest of the system behave in a more accurate way.
 *Alice*: Of course, the two examples that you and I just cooked up
 are extreme.  It is not at all a bad idea to conserve energy, if your
 approach is part of a systematic way to make the whole integration
-more accurate.  Symplectic integrators are a example.
+more accurate.  Symplectic integrators are an example.
 
 *Bob*: I have heard of the name, but I must admit I don't know what they
 are.
 
 *Alice*: They are a lot of fun, from a mathematical point of view.
-How useful they may be for real 6N-body simulations,
-that is not too clear.  They are more accurate, for sure, but they
-are hard to generalize to individual time steps.  And for our game,
-we have no choice but to go to individual time steps.  Perhaps we can
-come back to this topic, some day, but not any time soon.  But just to
-give you one example of the simplest symplectic integrator: the good
-old leapfrog scheme, also known in some areas of physics as the Verlet
+How useful they may be for real N-body simulations, that is not too
+clear.  They are more accurate, for sure, but they are hard to
+generalize to individual time steps.  And for our game, we have no
+other choice but to go to individual time steps.  Perhaps we can come
+back to this topic, some day, but not any time soon.  But just to give
+you one example of the simplest symplectic integrator: the good old
+leapfrog scheme, also known in some areas of physics as the Verlet
 algorithm.
 
 *Bob*: Which is probably the next algorithm we want to implement.
@@ -130,14 +130,14 @@ effect of different time step sizes and integration times:
 
  :inccode: euler.rb
 
-*Alice*: So at the bottom you create a new particle, for the relative
-motion of the two bodies in our system, with the call to <tt>Body.new</tt>,
-then you read in the initial conditions, as we did before, and then
-you tell the particle to evolve itself.
+*Alice*: So at the bottom you create a new particle, which will represent
+the relative motion between the two bodies in our system, with the call to
+<tt>Body.new</tt>, then you read in the initial conditions, as we did
+before, and then you tell the particle to evolve itself.
 
 *Bob*: Yes, with +evolve+ I mean that we invoke here a method that computes
-the evolution of the system in time.  I have made this now a method that
-is included in the +Body+ class, so we can invoke it with <tt>b.evolve</tt>.
+the evolution of the system in time.  I have made this a method
+in the +Body+ class, so we can invoke it with <tt>b.evolve</tt>.
 The only extra thing needed is to tell the particle how long to integrate,
 with what time step, and how frequently to report the degree of energy
 conservation and the actual position and velocity of the relative motion.

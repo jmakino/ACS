@@ -50,7 +50,7 @@ notation.  Are you ready for this?
 
 *Alice*: Sure thing!
 
-*Bob*: Here it is.  One line shorter in total, which most of the
+*Bob*: Here it is.  One line shorter in total, with most of the
 lines shorter in length as well.  I've put it into <tt>euler2a.rb</tt>
 for now:
 
@@ -276,7 +276,7 @@ that actually works!
 
 *Bob*: How so?
 
-*Alice*: I don't like those <tt>[*...]</tt> notation.  Looks like a
+*Alice*: I don't like that <tt>[*...]</tt> notation.  Looks like a
 hack.
 
 *Bob*: I like hacks.
@@ -306,7 +306,7 @@ Here, it is short, let me show the whole file:
 
 == <i>Voila</i>
 
-*Alice*: That's much better.  I don't mind the <tt>[*...}</tt> <i>per se</i>,
+*Alice*: That's much better.  I don't mind the <tt>[*...]</tt> <i>per se</i>,
 it is only that the line with <tt>gets.split.map</tt> followed by a
 block of code just got too crowded for comfort.  But your definition
 of <tt>to_v</tt> is clean and simple.  So let me check: by writing

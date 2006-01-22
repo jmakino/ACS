@@ -8,7 +8,7 @@ to my Plummer code, but do you have something specific, you'd like to add?
 *Alice*: I'm happy that we have done this energy checking, which seems to
 indicate that your code probably does produce Plummer's model correctly.
 However, I'd like to be even more sure, since it would really be terrible
-if we somehow would start our future simulations with the wrong initial
+if we start our future simulations with the wrong initial
 conditions.  That would make debugging our evolution codes quite confusing,
 to say the least.
 
@@ -26,8 +26,8 @@ and 3/4 of the total mass are enclosed.
 
 *Bob*: That we should be able to do from scratch.  We can start again with
 minimal versions of the +Body+ and +Nbody+ classes, just enough to
-read a snapshot in, and initialize anything properly.  The only thing to
-do is to add a method +quartiles+ that prints out the three quartiles.
+read a snapshot in, and initialize everything properly.  The only thing to
+do is add a method +quartiles+ that prints out the three quartiles.
 
 Fortunately, Ruby has a handy +sort+ method, that comes with the +Array+
 class.  As usual, it has an associated <tt>sort!</tt> method that affects
@@ -62,6 +62,8 @@ This should do the job:
 *Bob*: I bet it does.  I saw you looking up +round+: indeed, that is
 a predefined method that rounds a floating point number to an integer.
 In case of a number exactly in between, such as 2.5, it rounds up, to 3.0.
+You could have used integer division directly, instead of floating
+point division, but I agree that what you wrote might be easier to understand.
 
 *Alice*: We could quibble about exactly where to choose the boundaries
 for the quartiles.  For example, for a four-particle system, things come
@@ -140,7 +142,7 @@ eq. (ref(something2)) into the right-hand side of eq. (ref(something1)),
 to check whether we get the original amount of mass back.  Let us call
 the left-hand side of eq. (ref(something1)) <tex>$\tilde m$</tex>,
 so that we can distinguish it from the mass <tex>$m$</tex> we start with,
-in eq. (ref(something2)):
+in eq. (ref(something2)).  Eq. (ref(something1)) then reads:
 
 :eqnarray:
 \tilde m(r) \, &=& \, r^3\left(1+r^2\right)^{-3/2}                  \nonumber\\
@@ -156,7 +158,7 @@ in eq. (ref(something2)):
 This was an almost trivial exercise.  But I'm glad we checked.
 
 *Bob*: Yes, many bugs turn out to be `almost trivial' as well, and yet
-the can waste many hours of your time while you're chasing them.
+they can waste many hours of your time while you're chasing them.
 By the way, wouldn't it have been much faster to substitute
 eq. (ref(something2)) into the right-hand side of eq. (ref(something0))?
 Calling the <tex>$m(r)$</tex> used in eq. (ref(something0))
@@ -189,10 +191,11 @@ r(1/2) \, = \, \left(2^{2/3}-1\right)^{-1/2} \approx 1.305
 \label{thirdquartile}
 r(3/4) \, = \, \left(2^{4/3}3^{-2/3}-1\right)^{-1/2} \approx 2.175
 
-*Alice*: Those numbers look _completely_ different from what we got before!
-And the strange thing is, the first number comes out too small, while
-the next ones are too large, especially the last one.  So it is not a
-matter of having overlooked a scale factor, or something like that.
+*Alice*: Those numbers look _completely_ different from what we got from
+our code!  And the strange thing is, the first number comes out too
+small, while the next ones are too large, especially the last one.  So
+it is not a matter of having overlooked a scale factor, or something
+like that.
 
 *Bob*: What a pity!  I was more or less convinced that my Plummer code
 was correct.  Obviously there is something seriously wrong with the way
@@ -202,7 +205,7 @@ particles are sprinkled into space.
 First of all, the virial theorem did hold, something that is typically
 violated if you make a random mistake in the energies, since it is unlikely
 that you will make the same mistake in the kinetic as in the potential energy.
-But secondly, we actually computed the energy, and we found that you code
+But secondly, we actually computed the energy, and we found that your code
 produced it correctly.
 
 *Bob*: Yes, that is puzzling.  Unless . . .
@@ -211,19 +214,19 @@ produced it correctly.
 But that is also very unlikely.
 How much can there be wrong in just a few lines of code?
 
-*Bob*: It wouldn't be the first time, to find a nasty bug in a small codes.
+*Bob*: It wouldn't be the first time, to find a nasty bug in a small code.
 I guess that's why they are called bugs!  Bugs are small, and can hide even
 in a code of a single line.  Let's have a look.
 
-*Alice*: Yes, the good thing of a small code is that it makes sense to go
-through the lines one by one.  And there less than ten lines here where actual
-calculations are done.
+*Alice*: Yes, the good thing about a small code is that it makes sense to go
+through each line, one by one.  And there are less than ten lines here
+where actual calculations are done.
 
 == Checking the Code-Checking Code
 
 *Bob*: Let's be systematic.  The driver part calls +quartiles+, and that
 method in turn starts by calling <tt>order_squared_radii</tt>.  You like
-long names, do you?  You could have called it
+long names, don't you?  You could have called it
 <tt>place_an_order_to_order_squared_radii</tt>.
 
 *Alice*: Yes, I do like long names, since that way I will remember later
@@ -268,7 +271,7 @@ glad we checked so thoroughly.
 
 *Alice*: You may laugh, and perhaps I'm getting to much addicted to
 testing, but let me do one final little check.  Having just made a
-really silly mistake with the determining the quartile radii, I feel
+really silly mistake determining the quartile radii, I feel
 I cannot take anything for granted.  Let me see whether the quartile
 radii are _really_ quartile radii.  Starting with:
 

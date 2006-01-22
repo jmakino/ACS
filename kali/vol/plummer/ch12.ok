@@ -130,7 +130,7 @@ reasonable and even not so reasonable numbers, including 0.  However,
 what will happen for negative numbers?
 
 *Bob*: I haven't tested that.  But when I look at +mkplummer+ above,
-it would seem that the do loop gets never executed, so effectively
+it would seem that the do loop never gets executed, so effectively
 if will still give a zero-particle system, without running into any
 more serious error.
 

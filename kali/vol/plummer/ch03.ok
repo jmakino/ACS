@@ -25,12 +25,12 @@ First we introduce the cumulative mass distribution
 \label{mrsymb}
 m(r) \, = \, \int_0^r 4 \pi r^2 \rho(r) dr
 
-which is the amount of mass that is included within the star cluster
+which is the amount of mass contained within the star cluster
 inside a distance <tex>$r$</tex> from the center.  When we create a
-new star, and place it at radius <tex>$r$</tex>, that star will have
-<tex>$m(r)$</tex> of the mass of the cluster at positions closer to
-the center, and <tex>$M-m(r)$</tex> of the mass at positions further
-from the center.
+new star, and place it at radius <tex>$r$</tex>, that star will see
+an amount of mass <tex>$m(r)$</tex> of the cluster at positions closer
+to the center than its own position, and therefore an amount of mass
+<tex>$M-m(r)$</tex> at positions further from the center.
 
 In other words, it will see a fraction <tex>$m(r)/M$</tex> of the
 total mass inside its radial position.  Now that fraction could be
@@ -81,16 +81,16 @@ using Ruby's random number generator +rand+:
 *Alice*: Hmm.  You didn't check whether they had done their math
 correctly?
 
-*Bob*: No need to.  This is a paper by Aarseth, Henon, Wielen.
+*Bob*: No need to.  This is a paper by Aarseth, Henon, and Wielen.
 Besides, it is thirty years old and has been cited zillions of times
 by others.  I'm sure this is a result that can be trusted.
 
 *Alice*: I don't like to accept things on trust, no matter what the
 authority may be behind it.  Not that I expect them to be wrong,
 I agree that that would be highly improbable.  Still, I would feel
-much better to derive the results ourselves.  Besides, if we work
+much better if we derive the results ourselves.  Besides, if we work
 it out now, we can both use those notes when we have to teach it in
-class to the student.  Better still, we just put it into the material
+class to the students.  Better still, we just put it into the material
 we prepare for them on the web.
 
 *Bob*: Okay, if you like.  Your turn, though, I already derived the
@@ -100,7 +100,7 @@ rusty in my integration.
 
 == Cumulative Mass
  
-*Alice*: So am I, and that is exactly a reason to do it with pen and
+*Alice*: So am I, and that is a really good reason to do it with pen and
 paper, tempting as it is to use a symbolic package.  Okay.  I'll start
 with the density you derived:
 
@@ -133,7 +133,7 @@ m(r) \, &=& \, {3M\over a^3}
 
 It is easier to bring the total mass to the other side, as an expression
 for the fractional cumulative mass.  I don't like the high power
-$</tex>5/2$</tex> in the integrand.  I'll use integration by parts to
+<tex>$5/2$</tex> in the integrand.  I'll use integration by parts to
 lower the power:
 
 :eqnarray:
@@ -227,7 +227,7 @@ derivatives of the potential at hand.
 *Alice*: Not only that, here is the physical meaning we were looking for!
 You also mentioned that the gradient of the potential is the gravitational
 force, apart from a minus sign.  So what this equation is telling us, is
-simply that the physical force is proportional to mass and inverse
+simply that the physical force is proportional to mass and inversely
 proportional to the radius squared: Newton's gravity!  We could have
 started that way.  The magnitude of the force on a particle with mass
 <tex>$m_p$</tex> at distance <tex>$r$</tex> from the center is of course:
@@ -358,7 +358,7 @@ giving the variable quantity <tex>$m$</tex> in terms of the mass unit
 \end{array} \right.
 
 This makes is possible to write your derivation without any shortcuts,
-in a mathematical precise way.
+in a mathematically precise way.
 
 <tex>$$
 m \, = \, M r^3\left(r^2 + a^2\right)^{-3/2} \, \Rightarrow \,

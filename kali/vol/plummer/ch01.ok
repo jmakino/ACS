@@ -53,7 +53,7 @@ significant encounters are the ones where the molecules practically
 touch.  Also,  many of the early simulations of star cluster evolution
 were Monte Carlo simulations, and there the effects of two-body
 relaxation are modeled as discrete scattering events, with each star
-going its own merry way until scattered into a different orbits -- like
+going its own merry way until scattered into a different orbit -- like
 molecules in a gas.
 
 *Bob*: Another reason may have been the fact that there was no competition
@@ -86,7 +86,7 @@ collapse, all that good stuff.
 What shall we choose for the initial conditions.
 
 *Bob*: There are many options.  Basically, we can just sprinkle particles
-into a more or less localized region, an in a few crossing times the
+into a more or less localized region, and in a few crossing times the
 initial transients will die down.  The remaining system, after the
 fast particles have escaped, will then slowly undergo core collapse.
 
@@ -94,10 +94,10 @@ So we could start with a homogeneous sphere, with a constant density
 out to a certain radius, and zero density outside that radius.  We could
 give the particles velocities in accord with the virial theorem, or we
 could even give each star zero velocity: from such a cold collapse, too,
-you quickly will get a damped remnant, and you will loose less than
+you quickly will get a damped remnant, and you will lose less than
 half of the particles.
 
-*Alice*: True, but all those solutions ar not very elegant.  Besides,
+*Alice*: True, but all those solutions are not very elegant.  Besides,
 there is no good reason to pick one over the other.  But what is worse,
 I don't like to mix the transient dynamical effects with the longer-lasting
 thermal effects.  Remember, for a star cluster with a hundred thousand
@@ -156,8 +156,8 @@ than from Plummer's model.
 
 *Alice*: Okay, let's do both.  But if so, it really does make sense to start
 with Plummer's model.  Since everything can be done analytically, the students
-will get more of a direct insight into what is going on.  After that,
-we can move on to King models, and whatever else we will find time for.
+will get a more direct insight into what is going on.  After that,
+we can move on to King models, and whatever else we find time for.
 
 *Bob*: Fine with me, since I don't feel as strongly about it as you seem
 to do.  Where shall we start?  It would be good to give the students a
@@ -175,7 +175,7 @@ softened potential.  Thank you!
 *Bob*: You're welcome, even though you didn't need a point 4), since I had
 already given in.  Okay, let me write down what I remember and what I can
 easily derive.  You, as a champion of Plummer's model, can then add whatever
-analytic elegance you like.
+analytical elegance you like.
 
 *Alice*: Go right ahead!
 
@@ -192,7 +192,7 @@ that an equilibrium solution exists.
 
 *Bob*: Good!  There is only so much I can do from scratch.
 
-*Alice*: But you have to define what you mean with a distribution function.
+*Alice*: But you have to define what you mean by a distribution function.
 For a star cluster, it is the density of stars in phase space.
 
 *Bob*: Yes.  Okay, here is the softened potential:
@@ -277,7 +277,7 @@ relationship <tex>$\hat f(E, J) = f(E)$</tex> would hold, independently
 of the value of <tex>$J$</tex>.
 
 *Bob*: Hmm.  I prefer to say <tex>$f(E, J) = f(E)$</tex>.  That makes sense
-and it feels good.  As Janis Joplin would have said `feeling good is
+and it feels good.  As Janis Joplin would have said, `feeling good is
 good enough for me.'
 
 *Alice*: It shows you're a physicist.  Just be gentle with the occasional
@@ -294,8 +294,8 @@ equations as well: <tex>$\hat\rho(\br) = \rho(r)$</tex> and
 *Alice*: Strictly speaking, yes, but once you have made that point, I
 prefer to then drop the hats, for simplicity.
 
-*Bob*: Is that called having you cake and eating it, first confusing me
-by first putting a hat on, and then dropping your hat?
+*Bob*: Is that called having your cake and eating it, first confusing me
+by putting a hat on, and then dropping your hat?
 
 *Alice*: Maybe that's where the expression `I'll eat my hat' comes from.
 
@@ -304,7 +304,7 @@ by first putting a hat on, and then dropping your hat?
 *Bob*: No comment.  Let me go on, and derive the density, given the potential.
 
 To find the density needed to generate a potential, all we have to do is
-to solve Poisson's equation, which in spherical coordinates, under the
+solve Poisson's equation, which in spherical coordinates, under the
 assumption of spherical symmetry for the potential, takes the relatively
 simple form
 
@@ -440,9 +440,9 @@ can always quickly look them up.
 that you, a), actually keep all your notes, and, b), have a way to find
 them when you need them!
 
-*Bob*: Hmmm, well, yes, I'm afraid I often fail in both.
+*Bob*: Hmmm, well, yes, I'm afraid I often fail at both.
 
-*Alice*: So do I, and most anyone I know.  Actually, this in itself is
+*Alice*: So do I, and most everyone I know.  Actually, this in and of itself is
 already a good reason for us to write these notes out in book form, as
 we have started doing.  And the more detail, the better: I hate having
 to spend a few pages of pen and paper work in order to get from one
@@ -450,12 +450,12 @@ line to the next in a text book.  Back in the days that printed paper
 was expensive, that might have been a good thing, but I prefer to save
 time, rather than paper.  Actually, we're saving paper too, when we just
 put it all up on the net.  So let's keep these notes, in full detail,
-just the way we're deriving it, in real time.
+just the way we're deriving them, in real time.
 
 *Bob*: Fine with me.  And I must admit, since we started writing these
 notes, I've gone back to them already several times, to look up things
-that I knew I knew just a few weeks ago, but which already had started
-to slip out of my working memory.
+that I knew I knew just a few weeks ago, but which had started to slip
+out of my working memory.
 
 Coming back to your recasting of the potential-density expressions, I
 suppose we can do something similar for my second choice, but there we

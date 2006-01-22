@@ -2,16 +2,18 @@
 
 == Starting Again
 
-*Bob*: Time to run the driver for our new integrator, which will give
-us the energy conservation diagnostics we have been talking about for
-so long now!  Let us start with the same variables we used for our
-very first forward Euler run:
+*Bob*: Time to run the driver for our new integrator,
+which will give us the energy conservation diagnostics
+we have been talking about for so long now!  Let us start
+with the same variables we used for our very first forward
+Euler run:
 
  :inccode: .euler0a.rb-barebones
 
-We concluded that the position was probably right to within a percent
-or so, from comparing it with a more accurate integration.  I'm
-curious whether the energy check gives us a similar answer.
+We concluded that the position was probably right to within
+a percent or so, from comparing it with a more accurate
+integration.  I'm curious whether the energy check gives us
+a similar answer.
 
  :command: cp -f euler0a.rb test.rb
  :commandoutput: ruby test.rb < euler.in
@@ -38,7 +40,8 @@ Shall we try?
  :commandoutput: ruby test.rb < euler.in
  :command: rm -f test.rb
 
-*Alice*: Almost too good: the relative error is now <tex>$0.094\%$</tex>.
+*Alice*: Almost too good: the relative error is now
+<tex>$0.094\%$</tex>.
 It has decreased by the predicted factor ten.  Let's do this:
 
  :inccode: .euler0c.rb-barebones
@@ -93,14 +96,15 @@ closer look at what happens in the first part:
 
  :inccode: .euler0e.rb-barebones
 
-A five times shorter run, with five times more frequent diagnostics.
+A four times shorter run, with five times more frequent diagnostics.
 
  :command: cp -f euler0e.rb test.rb
  :commandoutput: ruby test.rb < euler.in
  :command: rm -f test.rb
 
 *Alice*: So the disaster happened between a time of 1 and 1.5.  That must
-have been when the first periastron occurred.
+have been when the first pericenter passage occurred, the place where
+the particles made their closest approach during one orbit.
 
 == Pericenter Passage
 

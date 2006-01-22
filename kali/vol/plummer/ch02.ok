@@ -24,13 +24,13 @@ indeed, it was an influential paper by some of the masters in the
 field, around that time.
 
 I remember it well: the paper made the first detailed quantitative comparison
-between the Monte-Carlo Fokker-Plank method and direct N-body integration.
+between the Monte-Carlo Fokker-Planck method and direct N-body integration.
 They even showed the results for runs with a few hundred particles.
-Hard to believe that they got so much compute done, given the slow speed
+Hard to believe that they got so much computing done, given the slow speed
 of computers at that time.
 
 *Bob*: That is impressive, given that computers have increased their speed
-by a factor ten every five years or so.  That means that in 2004 computers
+by a factor of ten every five years or so.  That means that in 2004 computers
 are a million times faster than what they had available.  I bet that my
 camera is a lot more powerful than the computers in their university centers.
 
@@ -169,7 +169,7 @@ The second step is to give each particle a velocity with a random
 direction and a magnitude that is also random, but drawn from the
 appropriate velocity distribution at that point in space.
 
-*Alice*: In order words, you really are sprinkling particles into
+*Alice*: In other words, you really are sprinkling particles into
 phase space, the six-dimensional space that is the direct product
 of configuration space and velocity space.
 
@@ -186,7 +186,7 @@ you know the potential energy, can you know what type of velocities
 are admissible, in order to keep the particle bound and to give each
 velocity the correct statistical weight.
 
-In order words, the order of picking a point in configuration space,
+To sum up, the order of picking a point in configuration space,
 and then picking a point in velocity space, is important: you couldn't
 do it the other way around.
 
@@ -305,7 +305,7 @@ sprinkling every particle in space, independently of any other particle.
 *Alice*: That's fine: I also like to start with a minimal script, so that
 we can really test and understand its behavior, before we start adding
 bells and whistles.  Testing the first version of a new code is half the
-work.  Once you have one well-tested version, you can use that as
-comparison material, to check with each new addition whether that still
-reproduces the old result.  The hardest work is to get an initial result,
-and to make sure that it is correct.
+work.  Once you have one well-tested version, you can use that to make
+comparisons, to check whether each new addition still
+reproduces the old result.  The hardest part is to get an initial result,
+and make sure that that one is correct.
