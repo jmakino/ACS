@@ -14,7 +14,7 @@ chapter 1 in this volume) they choose to use Ruby for documentation
 as well as for code writing.
 
 The main idea of their writing system is to use a specially designed
-format, called <i>acsdoc</i>, which in turn is a a variant of
+format, called <i>acsdoc</i>, which in turn is a stand-alone variant of
 <web>http://rdoc.sourceforge.net|rdoc</web>.  From each acsdoc file,
 html or postcript or pdf files can be automatically generated.
 

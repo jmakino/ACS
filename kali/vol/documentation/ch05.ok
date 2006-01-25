@@ -320,8 +320,8 @@ Wrongly numbered list
 
 == "as is" text
 
-Texts which start with more than one space, if not starts with *, -,
-or number + ".", appear as is.
+Text lines which start with a space, where this space is not followed
+by *, -, or a number + ".", appear as is.
 
 Example:
 
