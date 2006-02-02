@@ -344,7 +344,80 @@ Yet another reason to start with <tex>$N=2$</tex> is that the
 description can be simplified.  Instead of giving the <i>absolute</i>
 positions and velocities for each of the two particles, with respect
 to a given coordinate system, it is enough to deal with the
-<i>relative</i> positions and velocities.  Instead of dealing with
+<i>relative</i> positions and velocities.  In other words, we can
+transform the two-body problem into a one-body problem, effectively.
+
+*Dan*: A one-body problem?  You mean that one body is fixed
+in space, and the other moves around it?
+
+*Carol*: I guess that one body is much more massive, so that it
+doesn't seem to move much, while the other body moves around it.
+When the Earth moves around the Sun, the Sun can almost be considered
+to be fixed.  Similarly, when you look at the motion of the Moon around
+the Earth: the Earth has a much larger mass than the Moon, and the mass
+of the Sun is again much larger than that of the Earth.
+
+*Erica*: Yes, a large mass ratio makes things simpler, but even for
+the case where the masses are comparable, we can still talk about the
+relative motion between the two particles.  There is no approximation
+involved.  Here, let me draw a few pictures, to make it clear.
+
+
+ :figure: absolute_vectors.eps 6cm twop
+Two bodies with absolute coordinates <tex>$\br_1, \br_2$</tex>.
+
+
+Since my notepad is two-dimensional, let us discuss the two-dimensional
+two-body problem.  It will be trivial later to generalize to three
+dimensions.  Here, in figure ref(twop) I show the positions of our two
+particles by drawing the position vectors <tex>$\br_1, \br_2$</tex>.
+
+*Carol*: But in order to define those vectors, you first have to choose
+a coordinate system, right?
+
+*Erica*: Yes.  We have to choose an <tex>$x$</tex> axis and a
+<tex>$y$</tex> axis, and they together make up a coordinate system.
+The point of intersection of the two axes is called the origin of the
+coordinate system.  With respect to the origin, the positions of the two
+bodies are pointed out by the tips of the arrows that stand for the two
+vectors <tex>$\br_1, \br_2$</tex>.
+
+*Dan*: I see the vectors, but I don't see the bodies.
+
+*Erica*: You have to imagine the bodies to reside at the very end of each
+arrow.
+
+*Carol*: They are point masses, remember, so they are too small to see!
+
+*Erica*: Well, yes, but of course I could still have drawn them as small
+points.  However, I wanted to keep the figures simple.
+
+<b>[Jun: or do you prefer to draw little dots at the end of each vector
+point, as was also done for the c.o.m. in the next figure?]</b>
+
+*Dan*: What would happen if you had choosen a different coordinate system?
+
+*Erica*: In that case, the tips of the arrows would stay at the positions
+of the particles, since they would not change.  However, the arrows
+themselves would change, because they would be rooted in the new origin.
+
+<b>[Jun: shall we add a figure with x, x', y, y' axes and four vectors
+in total, <tex>$\br_1, \br_2, \br'_1, \br'_2$</tex>?]</b>
+
+*Dan*: Okay, I got the picture.  Now where does the one-body representation
+come in?
+
+
+ :figure: absolute_relative_vectors.eps 6cm twop
+ xxxxxx
+
+
+*Erica*: 
+
+
+
+
+Instead of dealing with
 position <tex>$\br_1$</tex> for the first particle and
 <tex>$\br_2$</tex> for the second particle, we can write down the
 gravitational attraction between the two in terms of the relative
@@ -353,22 +426,16 @@ position, defined as:
 :equation:
 \br = \br_2 - \br_1
 
- :figure: twop.eps 6cm twop
+ :figure: svn mv twop3.eps relative_vectors.eps 6cm twop
  xxxxxx
 
- :figure: twop2.eps 6cm twop
+ :figure: com_separation_vectors.eps 6cm twop
  xxxxxx
 
- :figure: twop3.eps 6cm twop
+ :figure: com_vector.eps 6cm twop
  xxxxxx
 
- :figure: twop4.eps 6cm twop
- xxxxxx
-
- :figure: twop4a.eps 6cm twop
- xxxxxx
-
- :figure: twop4b.eps 6cm twop
+ :figure: separation_vector.eps 6cm twop
  xxxxxx
 
 <b>[add more text, including a derivation of <tex>$E_kin$</tex>
