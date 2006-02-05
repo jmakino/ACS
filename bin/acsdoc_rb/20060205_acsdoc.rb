@@ -420,8 +420,12 @@ END
 	  s=""
 	end
       else
-	@@intex_state += 1 if  /<tex>/ =~ s
+        deepertex = /<tex>/ =~ s
 	texloc = /<\/tex>/ =~ s
+        if deepertex 
+          @@intex_state += 1  if (texloc && (deepertex < texloc)) || (! texloc)
+        end
+            
 	if texloc
 	  ostring+=s[0,texloc]+"</tex>"
 	  @@intex_state -= 1

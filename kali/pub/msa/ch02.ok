@@ -362,17 +362,14 @@ the case where the masses are comparable, we can still talk about the
 relative motion between the two particles.  There is no approximation
 involved.  Here, let me draw a few pictures, to make it clear.
 
-
- :figure: absolute_vectors.eps 6cm twop
+ :figure: absolute_vectors.eps 6cm absolute_vectors
  Two bodies with absolute coordinates <tex>$\br_1, \br_2$</tex>.
 
-<b>I want to add " <tex>$\br_1, \br_2$</tex>." to the above caption,
-when acsdoc allows me</b>
-
-Since my notepad is two-dimensional, let us discuss the two-dimensional
-two-body problem.  It will be trivial later to generalize to three
-dimensions.  Here, in figure ref(twop) I show the positions of our two
-particles by drawing the position vectors <tex>$\br_1, \br_2$</tex>.
+Since my notepad is two-dimensional, let us discuss the
+two-dimensional two-body problem.  It will be trivial later to
+generalize to three dimensions.  Here, in figure ref(absolute_vectors)
+I show the positions of our two particles by drawing the position
+vectors <tex>$\br_1, \br_2$</tex>.
 
 *Carol*: But in order to define those vectors, you first have to choose
 a coordinate system, right?
@@ -409,27 +406,39 @@ in total, <tex>$\br_1, \br_2, \br'_1, \br'_2$</tex>?]</b>
 *Dan*: Okay, I got the picture.  Now where does the one-body representation
 come in?
 
+ :figure: absolute_relative_vectors.eps 6cm absolute_relative_vectors
+ Construction of alternative coordinates <tex>$\bR$</tex> and
+ <tex>$\br$</tex> for the center of mass position and the relative
+ position of the two bodies, respectively.
 
- :figure: absolute_relative_vectors.eps 6cm twop
- xxxxxx
+*Erica*: It comes in through a clever coordinate transformation.
+We can define the center of mass (often abbreviated as c.o.m.) position as
 
+:equation:
+\bR = {M_1\br_1 + M_2\br_2 \over M_1 + M_2}
 
-*Erica*: 
-
-
-
-
-Instead of dealing with
-position <tex>$\br_1$</tex> for the first particle and
-<tex>$\br_2$</tex> for the second particle, we can write down the
-gravitational attraction between the two in terms of the relative
-position, defined as:
+and the relative position of the second particle with respect to the first
+particle as
 
 :equation:
 \br = \br_2 - \br_1
 
- :figure: relative_vectors.eps 6cm twop
- xxxxxx
+I have drawn them in fig. ref(absolute_relative_vectors) as
+they are constructed from <tex>$\br_1, \br_2$</tex>, while in
+fig. ref(relative_vectors) I am showing only the alternative
+coordinates.
+
+ :figure: relative_vectors.eps 6cm relative_vectors
+ Alternative coordinates <tex>$\bR$</tex> and <tex>$\br$</tex>.
+
+<b>[Jun: in this figure (relative_vectors.eps), could you please
+erase <tex>$\br_1$</tex> and <tex>$\br_2$</tex>?  Thanks!]</b>
+
+*Carol*: Why is <tex>$\bR$</tex> called the center of mass?
+
+*Erica*: 
+
+
 
  :figure: com_separation_vectors.eps 6cm twop
  xxxxxx
