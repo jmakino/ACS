@@ -364,7 +364,7 @@ involved.  Here, let me draw a few pictures, to make it clear.
 
 
  :figure: absolute_vectors.eps 6cm twop
- Two bodies with absolute coordinates
+ Two bodies with absolute coordinates <tex>$\br_1, \br_2$</tex>.
 
 <b>I want to add " <tex>$\br_1, \br_2$</tex>." to the above caption,
 when acsdoc allows me</b>
