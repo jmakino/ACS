@@ -364,8 +364,10 @@ involved.  Here, let me draw a few pictures, to make it clear.
 
 
  :figure: absolute_vectors.eps 6cm twop
-Two bodies with absolute coordinates <tex>$\br_1, \br_2$</tex>.
+ Two bodies with absolute coordinates
 
+<b>I want to add " <tex>$\br_1, \br_2$</tex>." to the above caption,
+when acsdoc allows me</b>
 
 Since my notepad is two-dimensional, let us discuss the two-dimensional
 two-body problem.  It will be trivial later to generalize to three
@@ -426,7 +428,7 @@ position, defined as:
 :equation:
 \br = \br_2 - \br_1
 
- :figure: svn mv twop3.eps relative_vectors.eps 6cm twop
+ :figure: relative_vectors.eps 6cm twop
  xxxxxx
 
  :figure: com_separation_vectors.eps 6cm twop
