@@ -152,8 +152,8 @@ module Rdoctotex
     ostring = []
     instring.each{|x| 
       y=x.gsub(/ref\(sect\:((\w|\d|\:)*)\)/){|s|  
-        labelbody = $1
-        print "LABELY = ",labelbody, "\n" 
+        labelbody = $1.gsub(/\\/,"")
+        print "LABELY = ",labelbody, "\n" if $DEBUG
         if @@latex_section_table[labelbody]
           labelbody =  @@latex_section_table[labelbody] 
         end
@@ -161,8 +161,8 @@ module Rdoctotex
       }
 #      z=y.gsub(/ref\(((\w|\d|\:)*)\)/){|s|  "\\ref{"+ $1 + "}"}
       z=y.gsub(/ref\(((\w|\d|[:_#.\/\\])*)\)/){|s| 
-        label = $1
-        print "LABEL = ",label, "\n" 
+        label = $1.gsub(/\\/,"")
+        print "LABEL = ",label, "\n" if $DEBUG
         if label =~ /(.*)\#(.*)/
             dirname = $1
           reallabel = $2
@@ -172,6 +172,7 @@ module Rdoctotex
         end
         tag
       }
+
       ostring.push(z)
     }
     ostring
@@ -308,7 +309,7 @@ END
 	while /^\s+$/ =~ (s = instring.shift )
 	  header_text += s + " "
 	end
-	p header_text
+	p header_text if $DEBUG
 	if header_text =~ /^\s*Abstract\s*$/ then
 	  inabstract = true
 	  header = "\\begin{abstract}"
@@ -347,7 +348,7 @@ END
       elsif /^\s*:nosectionnumber:\s*$/ =~ header_candidate
 	nosectionnumber = true
       elsif /^\s*:label:\s*$/ =~ header_candidate
-	labeltext=s.split[1]
+	labeltext=s.split[1].gsub(/\\/,"")
         labeltext = "sect:"+labeltext if labeltext !~ /^sect/
 	ostring.push("\\label{#{labeltext}}")
       else
@@ -405,6 +406,9 @@ END
     s = instring
     ostring =""
     while s.length > 0
+#
+# The algorithm below can be simplified, but not done so yet -- JM
+# 
       if @@intex_state == 0
 	texloc = /<tex>/ =~ s
 	if texloc
@@ -416,10 +420,11 @@ END
 	  s=""
 	end
       else
+	@@intex_state += 1 if  /<tex>/ =~ s
 	texloc = /<\/tex>/ =~ s
 	if texloc
 	  ostring+=s[0,texloc]+"</tex>"
-	  @@intex_state = 0
+	  @@intex_state -= 1
 	  s = s[texloc+6,s.length]
 	else
 	  ostring += s
@@ -585,8 +590,14 @@ END
     s=latex_process_tex_equations(s)
     s=latex_process_tex_weblinks(s)
     s=latex_find_and_process_figures(s,dirname)
+    print s.join("\n")
+    print "\n---after tex_figures---\n"
     s=latex_process_single_paragraphs_lists_etc(s,0,0,1,0)
+    print s.join("\n")
+    print "\n---after single---\n"
     s=latex_post_process_paragraphs(s)
+    print s.join("\n")
+    print "\n---after para---\n"
     s=post_process_verbatim(s)
     s=latex_process_link(s)
     s=latex_process_wordmarkup(s,dirname)

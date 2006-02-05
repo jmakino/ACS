@@ -116,7 +116,8 @@ is rather primitive and might not serve your need.
 
 == Options
 
-:label: options
+:label: options_label_test
+
 
 <tt> --directory dirname</tt>
 
@@ -582,7 +583,7 @@ The following form:
 (without "#") gives 
 
 :equation:
-\label{equationlabel}
+\label{equation_label}
 a=b.
 
 The texts after :equation: directive (untill a blanck line) will be
@@ -592,7 +593,7 @@ equation environment can be used. To refer to the above equation, you
 can write
 
    equation ref(equation label)
-which gives "equation ref(equationlabel)." The label cannot contain
+which gives "equation ref(equation_label)." The label cannot contain
 space.
 
 
@@ -637,10 +638,10 @@ As in latex, one can make numbered figures. The syntax is
  # :figure: sample.gif 5cm acslogo
  # The ACS logo
 
-Which gives figure ref(acslogo).
+Which gives figure ref(acs_logo).
 
-:figure: sample.gif 5cm acslogo
-The ACS logo
+:figure: sample.gif 5cm acs_logo
+The ACS logo.
 
 Here, <em>sample.gif</em> is the name of the image file, which can have any
 format which is understood by "convert" command of ImageMagick. _5cm_
@@ -651,7 +652,7 @@ Thus, this figure can be refereed to by
 
       Figure ref (acslogo)
 (without space between ref and (acslogo)). 
-Here is reference to this figure: figure ref(acslogo).
+Here is reference to this figure: figure ref(acs_logo).
 
 == More on references
 
