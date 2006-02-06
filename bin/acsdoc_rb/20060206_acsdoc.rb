@@ -598,14 +598,13 @@ END
     s=latex_process_tex_weblinks(s)
     s=latex_find_and_process_figures(s,dirname)
     print s.join("\n")
-    print "\n---after tex_figures---\n"
-    s=s.map{|x| x.split("\n")}.flatten
+
+    s=s.join("\n").split("\n")
+
     s=latex_process_single_paragraphs_lists_etc(s,0,0,1,0)
-    print s.join("\n")
-    print "\n---after single---\n"
+
     s=latex_post_process_paragraphs(s)
-    print s.join("\n")
-    print "\n---after para---\n"
+
     s=post_process_verbatim(s)
     s=latex_process_link(s)
     s=latex_process_wordmarkup(s,dirname)
