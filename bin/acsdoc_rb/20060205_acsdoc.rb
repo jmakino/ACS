@@ -462,8 +462,12 @@ END
       @@intex_state = 0 if s == "</tex>" 
       if @@intex_state == 1
 	new_type = type
-	new_indet = indent
+	new_indent = indent
 	s1 = s
+        if type == 4
+          new_type=0
+          new_indent=0
+        end
       elsif (header_candidate =~ /^(\*|\-|\d+\.)$/)
         new_type = 1+[/\*/,/\-/,/\d+\./].collect{|x|
           x=~ header_candidate}.index(0)
@@ -486,7 +490,6 @@ END
       if new_indent > indent and new_item == nil
 	new_type = 4 
       end
-#      s1= process_tex_special_chars(s1) unless new_type == 4
       if new_indent > indent
 	instring.unshift(s)
 	new=1
@@ -595,13 +598,13 @@ END
     s=latex_process_tex_weblinks(s)
     s=latex_find_and_process_figures(s,dirname)
     print s.join("\n")
-    print "\n---after tex_figures---\n"
+
+    s=s.join("\n").split("\n")
+
     s=latex_process_single_paragraphs_lists_etc(s,0,0,1,0)
-    print s.join("\n")
-    print "\n---after single---\n"
+
     s=latex_post_process_paragraphs(s)
-    print s.join("\n")
-    print "\n---after para---\n"
+
     s=post_process_verbatim(s)
     s=latex_process_link(s)
     s=latex_process_wordmarkup(s,dirname)

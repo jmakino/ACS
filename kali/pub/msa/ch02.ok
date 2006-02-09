@@ -411,6 +411,9 @@ come in?
  <tex>$\br$</tex> for the center of mass position and the relative
  position of the two bodies, respectively.
 
+<b>[Piet: I will have to reverse the direction of the <tex>$\br$</tex>
+vector]</b>
+
 *Erica*: It comes in through a clever coordinate transformation.
 We can define the center of mass (often abbreviated as c.o.m.) position as
 
@@ -492,8 +495,112 @@ the job:
 + {M_2 + M_1 \over M_1 + M_2} \br_2            \nonumber \\
 &=& \br_2
 
-*Carol*: That's nice, to see the truth in front of us, and to see the
-correction of my sign mistake explicitly.
+*Carol*: That's nice, to see the truth in front of us, and to see
+explicitly the correction of my initial sign mistake.
+
+*Erica*: Now that we are getting comfortable with our new coordinate
+system, let us rewrite Newton's equations of motion into the new system.
+It is convenient to introduce a few definitions:
+
+Here is the equation for the acceleration of the first particle,
+due to the gravitational force that the second particle exerts on it.
+
+:equation:
+\label{Newton_r1}
+\frac{d^2}{dt^2}\br_1 = G \frac{M_2}{r^3}\br
+
+Here I have used the abbreviation
+
+:equation:
+r = |\br|
+
+*Dan*: Why is there a third power in the denominator?  I thought that
+gravity shows an inverse square attraction.
+
+*Erica*: Yes, the magnitude of the acceleration is indeed proportional
+to the minus second power of the separation.  However, we also need to
+indicate the direction of the acceleration.  We can define a unit
+vector <tex>$\hat\br$</tex> pointing in the direction of the second
+particle, as seen from the position of the first particle:
+
+:equation:
+\hat\br = {\br \over r}
+
+Using this unit vector, we can rewrite Eq. (ref(Newton_r1)) as:
+
+:equation:
+\frac{d^2}{dt^2}\br_1 = G \frac{M_2}{r^2}\hat\br
+
+*Dan*: I see.  So the magnitude is indeed inverse square, but the direction
+is given by the unit vector, which has length one, and therefor does not
+influence the length of the acceleration vector.  I like this way of writing
+better, since it brings out the physics more clearly.
+
+*Carol*: I guess that Erica wrote it in the form of Eq. (ref(Newton_r1))
+because it will be easier to program that way.
+
+*Erica*: Indeed.  Once you get used to this way of writing the equations
+of motion, there is no need to introduce the new quantity <tex>$\hat\br$</tex>,
+since it is not used anywhere separately.
+
+Let me also write the acceleration for the second particle:
+
+:equation:
+\label{Newton_r2}
+\frac{d^2}{dt^2}\br_2 = - G \frac{M_2}{r^3}\br
+
+*Carol*: This time I noticed the sign change: the force of attraction
+exerted by the first particle on the second points toward the first
+particle.
+
+*Dan*: Hmm, I'm still a bit confused about these signs.  When the force
+points to the first particle, why does that imply a minus sign?
+
+*Carol*: The easiest way to see this is to take a particular case.  Imagine
+that the second particle is positioned in the origin of the coordinates.
+Since gravity pulls particle 2 in the direction of particle 1, the
+acceleration that particle 2 experiences points in the direction of
+<tex>$\br_1$</tex>.  Notice that in this particular case
+<tex>$\br = \br_2 - \br_1 = - \br_1$</tex>.  Therefore, the direction
+<tex>$\br_1$</tex> is the opposite of the direction of <tex>$\br$</tex>,
+hence the minus sign.
+
+*Dan*: Ah, that is neat.  Instead of trying to figure things out in
+full generality, you take a particular limiting case, and check the
+sign.  Since you already know the magnitude and the line along which
+the acceleration is directed, once you know the sign in one case,
+you know the sign in all cases.
+
+*Carol*: Yes.  Technically we call this invariance under continuous
+deformation.  If you bring the second particle a little bit out of the
+origin, by small continuous changes, the acceleration between the
+particles much change continuously as well; it cannot suddenly flip
+to the opposite direction.
+
+*Erica*: Neat indeed: this means that understanding the sign in one
+place let you know the sign in all places.  I'll remember using that
+trick.
+
+Okay, onward with the equations of motion.  Given Eqs.(ref(Newton_r1))
+and (ref(Newton_r2)), we can calculate the accelerations for the
+alternative coordinates by using the defining equations (ref(com)) and
+(ref(separation)), as follows.
+
+:equation:
+\frac{d^2}{dt^2}\bR = 
+{M_1\over M_1 + M_2}\frac{d^2}{dt^2}\br_1 +
+{M_2\over M_1 + M_2}\frac{d^2}{dt^2}\br_2 =
+
+
+
+
+
+
+
+
+
+:equation:
+\br = \br_2 - \br_1
 
 xxxx
 
