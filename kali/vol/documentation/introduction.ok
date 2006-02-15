@@ -152,6 +152,20 @@ not correct. Latex mode is meant to be used with single input file.
 If you want to process  multiple input files for generating single
 Latex file, just create one input file by using +cat+. 
 
+== Environment variables
+
+Currently, acsdoc sees the following environment variables:
+
+ACSDOCINITRC: location of the initialization file.
+
+LANG: only used to see if some care should be taken for Japanese
+text. If the value is ja_JP.eucJP, EUC-JP is used as charset
+(currently not used. Used to be an optional argument to rdoc)
+
+ACSDOCTEXSCALE: specifies the size of tex-processed image. Default is
+1900, which looks nice on Jun Makino's default browser. 
+
+
 == Output files.
 
 By default, one HTML file is created for each of one text input
