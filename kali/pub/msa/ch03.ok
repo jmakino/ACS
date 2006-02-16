@@ -1,568 +1,485 @@
-= Completing an Orbit for the 2-Body Problem
+= The Gravitational 2-Body Problem
 
-== Choosing an Algorithm
+== Absolute Coordinates
 
-*Carol*:
-Now that we have the equations of motion for the relative position of
-one particle with respect to the other, I guess we need an algorithm
-to integrate these equations.
-
-*Erica*:
-Indeed, and there is a large choice!  If you pick up any book on
-numerical methods, you will see that you can select from a variety of
-lower-order and higher-order integrators, and for each one there are
-additional choices as to the precise structure of the algorithm.
+A decision was made to let Carol take the controls, for now.  Taking
+the keyboard in front of a large computer screen, she opens a new file
+<tt>nbody.rb</tt> in her favorite editor.  Expectantly, she looks at Erica,
+sitting to her left, for instructions, but Dan first raises a hand.
 
 *Dan*:
-What is the order of an algorithm?
+I'm a big believer in keeping things simple.  Why not start by coding up
+the 2-body problem first, before indulging in more bodies?  Also, I
+seem to remember from an introductory physics class for poets that the
+2-body problem was solved, whatever that means.
 
 *Erica*:
-It signifies the rate of convergence.  Since no algorithm with a
-finite time step size is perfect, they all make numerical errors.
-In a fourth-order algorithm, for example, this error scales as the
-fourth power of the time step -- hence the name fourth order.
+Good point.  Let's do that.  It is after all the simplest case that is
+nontrivial: a 1-body problem would involve a single particle that is
+just sitting there, or moving in a straight line with constant velocity,
+since there would be no other particles to disturb its orbit.
 
-*Carol*:
-If that is the case, why not take a tenth order or even a twentieth
-order algorithm.  By only slightly reducing the time step, we would
-read machine accuracy, of order <tex>$10^{-15}$</tex> for the usual double
-precision (8 byte, i.e. 64 bit) representation of floating point numbers.
+And yes, the 2-body problem can be solved analytically.  That means
+that you can write a mathematical formula for the solution.  For
+higher values of N, whether 3 or 4 or more, no such closed formulas
+are known, and we have no choice but to do numerical calculations in
+order to determine the orbits.  For <tex>$N=2$</tex>, we have the
+luxury of being able to test the accuracy of our numerical
+calculations by comparing our results with the formula that Newton
+discovered for the 2-body problem.
 
-*Erica*:
-The drawback of using high-order integrators is two-fold: first, they
-are far more complex to code; and secondly, they do not allow arbitrarily
-large time steps, since their region of convergence is limited.  As a
-consequence, there is an optimal order for each type of problem.  When
-you want to integrate a relatively well-behaved system, such as the
-motion of the planets in the solar system, a twelfth-order integrator
-may well be optimal.  Since all planets follow well-separated orbits,
-there will be no sudden surprises there.  But when you integrate a
-star cluster, where some of the stars can come arbitrarily close to each
-other, experience shows that very high order integrators lose their edge.
-In practice, fourth-order integrators have been used most often for the job.
+Yet another reason to start with <tex>$N=2$</tex> is that the
+description can be simplified.  Instead of giving the <i>absolute</i>
+positions and velocities for each of the two particles, with respect
+to a given coordinate system, it is enough to deal with the
+<i>relative</i> positions and velocities.  In other words, we can
+transform the two-body problem into a one-body problem, effectively.
 
-*Dan*:
-How about starting with the lowest-order integrator we can think of?
-A zeroth-order integrator would make no sense, since the error would
-remain constant, independent of the time step size.  So the simplest
-one must be a first-order integrator.
+*Dan*: A one-body problem?  You mean that one body is fixed
+in space, and the other moves around it?
 
-*Erica*:
-Indeed.  And the simplest version of a first-order integrator is
-called the <i>forward Euler</i> integrator.
+*Carol*: I guess that one body is much more massive, so that it
+doesn't seem to move much, while the other body moves around it.
+When the Earth moves around the Sun, the Sun can almost be considered
+to be fixed.  Similarly, when you look at the motion of the Moon around
+the Earth: the Earth has a much larger mass than the Moon, and the mass
+of the Sun is again much larger than that of the Earth.
 
-*Dan*:
-Was Euler so forward-looking, or is there also a <i>backward Euler</i>
-algorithm?
+*Erica*: Yes, a large mass ratio makes things simpler, but even for
+the case where the masses are comparable, we can still talk about the
+relative motion between the two particles.  There is no approximation
+involved.  Here, let me draw a few pictures, to make it clear.
 
-*Erica*:
-There is indeed.  In the forward version, at each time step you simply
-take a step tangential to the orbit you are on.  After that, at the
-next step, the new value of the acceleration forces you to slightly
-change direction, and again you move for a time step <tex>$dt$</tex>
-in a straight line in that direction.  Your approximate orbit is thus
-constructed out of a number of straight line segments, where each one
-has the proper direction at the beginning of the segment, but the
-wrong one at the end.
+ :figure: absolute_vectors.eps 6cm absolute_vectors
+ Two bodies with absolute coordinates <tex>$\br_1, \br_2$</tex>.
 
-<b>[Peter, can you make a picture here?]</b>
+Since my notepad is two-dimensional, let us discuss the
+two-dimensional two-body problem.  It will be trivial later to
+generalize to three dimensions.  Here, in figure ref(absolute_vectors)
+I show the positions of our two particles by drawing the position
+vectors <tex>$\br_1, \br_2$</tex>.
 
-*Dan*:
-And the <i>backward Euler</i> algorithm must have the right direction
-at the end of a time step, and the wrong one at the beginning.  Let's
-see.  That seems much harder to construct.  How do you know at the
-beginning of a time step in what direction to move so that you come
-out with the right direction tangential to a correct orbit at that
-point?
+*Carol*: But in order to define those vectors, you first have to choose
+a coordinate system, right?
 
-<b>[Peter, can you make a picture here?]</b>
+*Erica*: Yes.  We have to choose an <tex>$x$</tex> axis and a
+<tex>$y$</tex> axis, and they together make up a coordinate system.
+The point of intersection of the two axes is called the origin of the
+coordinate system.  With respect to the origin, the positions of the two
+bodies are pointed out by the tips of the arrows that stand for the two
+vectors <tex>$\br_1, \br_2$</tex>.
 
-*Erica*:
-You do that through iteration.  You guess a direction, and
-then you correct for the mistake you find yourself making, so that
-your second iteration is much more accurate, in fact first-order
-accurate.  Given this extra complexity, I suggest that we start with
-the forward Euler algorithm.
+*Dan*: I see the vectors, but I don't see the bodies.
 
-*Carol*:
-Can't we do both, _ie_ make half the mistakes of each of the two, while
-trying to strike the right balance between forward and backward Euler?
+*Erica*: You have to imagine the bodies to reside at the very end of each
+arrow.
 
-*Erica*:
-Aha!  That is a good way to construct better algorithms, which then
-become second-order accurate, because you have canceled the first-order
-errors.  Examples are second-order Runge Kutta, and leapfrog.  We'll
-soon come to that, but for now let's keep it simple, and stay with
-first order.  Here is the mathematical notation:
+*Carol*: They are point masses, remember, so they are too small to see!
+
+*Erica*: Well, yes, but of course I could still have drawn them as small
+points.  However, I wanted to keep the figures simple.
+
+*Dan*: What would happen if you had choosen a different coordinate system?
+
+*Erica*: In that case, the tips of the arrows would stay at the positions
+of the particles, since they would not change.  However, the arrows
+themselves would change, because they would be rooted in the new origin.
+
+== Relative Coordinates
+
+*Dan*: Okay, I got the picture.  Now where does the one-body representation
+come in?
+
+ :figure: absolute_relative_vectors.eps 6cm absolute_relative_vectors
+ Construction of alternative coordinates <tex>$\bR$</tex> and
+ <tex>$\br$</tex> for the center of mass position and the relative
+ position of the two bodies, respectively.
+
+*Erica*: It comes in through a clever coordinate transformation.
+We can define the center of mass (often abbreviated as c.o.m.) position as
+
+:equation:
+\label{com}
+\bR = {M_1\br_1 + M_2\br_2 \over M_1 + M_2}
+
+and the relative position of the second particle with respect to the first
+particle as
+
+:equation:
+\label{separation}
+\br = \br_2 - \br_1
+
+I have drawn them in fig. ref(absolute_relative_vectors) as
+they are constructed from <tex>$\br_1, \br_2$</tex>, while in
+fig. ref(relative_vectors) I am showing only the alternative
+coordinates.
+
+ :figure: relative_vectors.eps 6cm relative_vectors
+ Alternative coordinates <tex>$\bR$</tex> and <tex>$\br$</tex>.
+
+*Dan*: Wait a minute, in figure ref(absolute_vectors) the two vectors
+start at the same point, namely the origin.  But in fig. ref(relative_vectors)
+only the c.o.m. vector starts in the origin, while the relative position
+vector connecting the two particles does not.  The two systems do not seem
+to be compatible.
+
+*Erica*: Good point.  When we talk about these vectors as coordinates,
+it might be better to forget about the picture where we constructed them,
+fig. ref(absolute_relative_vectors).  Instead, the way to think about these
+two vectors is more along the lines of fig. ref(com_separation_vectors),
+as two separate vectors each living in a separate space.
+
+ :figure: com_separation_vectors.eps 6cm com_separation_vectors
+ The vectors <tex>$\bR$</tex> and <tex>$\br$</tex> occupy different spaces.
+
+*Carol*: I see.  Mathematically speaking, each choice of a set of two
+vectors, whether it is <tex>$\{\br_1,\br_2\}$</tex> or
+<tex>$\{\bR,\br\}$</tex>, determines a single point in the direct
+product of two copies of the base space in which the single vectors live.
+In our case, we have drawn a two-dimensional picture for the vectors,
+such the space for pairs of vectors is four-dimensional.  And the
+coordinate transformation that Erica has introduced is really a bijective
+mapping between two four-dimensional spaces.
+
+*Dan*: If you say so.  For me, fig. ref(com_separation_vectors) is clear
+enough, without the mathematical mumbo-jumbo.  I have no idea wat bijective
+means.
+
+*Carol*: It means that any pair <tex>$\{\br_1,\br_2\}$</tex> corresponds
+to a unique pair <tex>$\{\bR,\br\}$</tex>, and vice versa.
+
+*Dan*: Sure, there had better be a unique translation in both directions.
+But how do we know there is such a two-way correspondence?  Erica has
+shown how to derive <tex>$\bR$</tex> and <tex>$\br$</tex> from
+<tex>$\br_1$</tex> and <tex>$\br_2$</tex>, with the definitions above.
+But when we are given only <tex>$\bR$</tex> and <tex>$\br$</tex>, can
+we recover the original <tex>$\br_1$</tex> and <tex>$\br_2$</tex>?
+
+*Erica*: Good question!  And yes, we can.  Here is the first particle's
+position:
+
+:equation:
+\label{br1}
+\br_1 = \bR - {M_2 \over M_1 + M_2} \br
+
+*Carol*: And the second particle's position is obtained simply by	
+interchaning the subscripts 1 and 2 everywhere, right?
+
+*Erica*: Wrong, but almost right: there is an additional sign change:
+
+:equation:
+\br_2 = \bR + {M_1 \over M_1 + M_2} \br
+
+*Carol*: Ah yes, that makes sense, since there was a minus sign in the
+original definition of <tex>$\br$</tex>.  And in fact the whole picture
+makes sense now: when the first particle is much more massive
+than the second particle, <tex>$\bR$</tex> almost coincides with
+<tex>$\br_1$</tex>, while the much lighter particle <tex>$\br_2$</tex>
+finds itself at a distance of almost <tex>$\br$</tex> from the c.o.m.
+<tex>$\bR$</tex>.
+
+*Dan*: Even so, I do like hard evidence!  As you already saw, it is all
+too easy to get replace a plus sign with a minus sign and those types of
+things, and we'd better get things really right.  Let me try to prove what
+Erica just wrote down.  I will take Eq. (ref(br1)) and then use the original
+definitions Eqs. (ref(com)) and (ref(separation)):
 
 :eqnarray:
-\label{ForwardEulerStep}
-\br_{i+1} & = & \br_i + \bv_i dt    \nonumber \\
-\bv_{i+1} & = & \bv_i + \ba_i dt
+\br_1 &=& \bR - {M_2 \over M_1 + M_2} \br                \nonumber \\
+&=& {M_1\br_1 + M_2\br_2 \over M_1 + M_2}
+- {M_2 \over M_1 + M_2} \left( \br_2 - \br_1 \right)     \nonumber \\
+&=& {M_1 + M_2 \over M_1 + M_2} \br_1
++ {M_2 - M_2 \over M_1 + M_2} \br_2            \nonumber \\
+&=& \br_1
 
-for the position <tex>$\br$</tex> and velocity <tex>$\bv$</tex> of an individual particle,
-where the index <tex>$i$</tex> indicates the values for time <tex>$t_i$</tex> and <tex>$i+1$</tex> for
-the time <tex>$t_{i+1}$</tex> after one more time step has been taken:
-<tex>$dt = t_{i+1} - t_i$</tex>.  The acceleration induced on a particle by the
-gravitational forces of all other particles is indicated by <tex>$\ba$</tex>.
-So, all we have to do now is to code it up.  By the way, let's rename
-the file.  Rather than a generic name <tt>nbody.rb</tt>, let's call it
-<tt>euler.rb</tt>.
-
-*Dan*:
-Erica, go for it!
-
-== Specifying Initial Conditions
-
-*Carol*: In order to solve a differential equation, you have to provide
-initial conditions.
-
-*Erica*: 
-You mean we have to start by specifying the initial separation between
-the particles.  How about a simple choice like this?
-
- :inccode: .euler_elliptic.rb-1
-
-*Dan*: Let me put this into words.  The relative position vector is
-chosen along the <tex>$x$</tex> axis at a distance of unity from the
-origin where the other particle resides in the relative coordinate
-system that we use: <tex>$\br = \{1, 0, 0\}$</tex>.  The relative
-velocity is chosen to be <tex>$0.5$</tex> in the direction of the
-positive <tex>$y$</tex> axis: <tex>$\bv = \{0, 0.5, 0\}$</tex>.
-This means that the initial motion is at right angles to initial separation.
-
-*Carol*: Does this mean that the two particles will move around each other
-in a circle?
-
-*Erica*: Probably not, unless we give exactly the right velocity
-<tex>$v_c$</tex> needed for circular motion.  In general, the orbit
-will take the shape of an ellipse, if the two particles are bound.
-If the initial speed is too high, the particles escape from each
-other, in a parabolic or hyperbolic orbit.
-
-*Carol*: What is the value of <tex>$v_c$</tex>?
-
-*Erica*: We can look it up in any text book on celestial mechanics,
-but I remember a quick way to derive the expression.  According to
-the virial theory, for a circular orbit, the kinetic energy
-<tex>$E_{kin}$</tex> is just one half of the potential energy
-<tex>$E_{pot}$</tex>, and opposite in sign.  This makes the magnitude
-of the total energy <tex>$E_{tot}$</tex> equal to that of the kinetic
-energy:
-
-:equation:
-E_{tot} = E_{kin} + E_{pot} = E_{kin} - 2 E_{kin} = - E_{kin}
-
-We have already derived
-
-:equation:
-E_{kin} = {1 \over 2}\ {M_1 M_2 \over M_1 + M_2} v^2
-
-and
-
-:equation:
-E_{pot} = -\ {M_1 M_2 \over r}
-
-So when we insist that <tex>$E_{pot} = -2 E_{kin}$</tex>, we get for the
-circular velocity
-
-:equation:
-v_c^2 = {M_1 + M_2 \over r}
-
-In our case, we have chosen <tex>$M_1 + M_2$</tex> to be unity, which
-means:
-
-:equation:
-v_c = {1 \over \sqrt r}
-
-*Dan*: So with your choice of an initial separation of <tex>$r=1$</tex>,
-we have <tex>$v_c = 1$</tex>.  Ah, you want to start the particles off
-with a velocity that is only half as large, which means that the two
-particles will start falling towards each other, because they don't
-have enough relative speed to keep them in a circular orbit?
-
-*Erica*: Yes, I guess that is what will happen.  I just typed in some
-simple numbers.
-
-*Carol*: Wouldn't it be better to start with the simplest case, that of a
-circular orbit, to test whether at least we can get that right?  There we
-know exactly what should happen, whereas with an elliptic orbit, it will
-be harder to see whether the ellipse has the exact right shape.
-
-*Erica*: You have a point there.  Okay, lets do that.  Here is the starting
-point for a circular orbit:
-
- :inccode: .euler_circular_step.rb-1
-
-*Dan*: And from this point on we have to step forward in time.
-I have no idea how large the time step +dt+ should be.  Certainly
-it should be very small compared to the time it will take for our two
-bodies to move around a circle.
-
-*Carol*: In other words, the distance +dr+ over which the particles travel
-during a time step +dt+ much be very small compared to the separation
-between the two particles:
-
-:equation:
-dr = v\ dt \ll r
-
-With <tex>$v=1$</tex> and <tex>$r=1$</tex>, this means
-<tex>$dt\ll 1$</tex>.
-
-We could take `much less than 1' to mean 0.1, for starters:
-
- :inccode: .euler_circular_step.rb-2
-
-== Taking the First Step
-
-*Erica*: Now we are ready to let the particles move to their next position,
-from our starting point of time <tex>$t=0$</tex> to <tex>$t=0.1$</tex>,
-by solving the differential equation for the Newtonian two-body problem,
-Eq. (ref(Newton2bodysimple)).
-
-*Carol*: And we do so by using the forward Euler approximation
-(ref(ForwardEulerStep)).  How about coding up that equation first?
-
-*Erica*: That would be:
-
- :inccode: .euler_circular_step.rb-3
-
-*Dan*: But we haven't calculated the acceleration +a+ yet.
-
-*Carol*: This is an important example of code writing, something called
-`wishful thinking' or `wishful programming'.  You start writing a code
-as if you already have the main ingredients in hand, and then you go
-back and fill in the commands needed to compute those ingredients.
-
-*Dan*: That sounds like a top-down programming approach, which makes sense:
-I like to start with an overview of what needs to be done.  It is all too
-easy to start from the bottom up, only to get lost while trying to put all
-the pieces together.
-
-*Erica*: To compute the acceleration, let me copy Eq. (ref(Newton2bodysimple))
-here:
-
-:equation:
-\ba = - \frac{\br}{r^3}
-
-*Dan*: Can you write it out in component notation?
-
-*Erica*: If I write <tex>$\ba=\{a_x,a_y,a_z\}$</tex> for the relative
-acceleration vector between the two and particles and
-<tex>$\br=\{x,y,z\}$</tex> for their separation vector, we get:
+Yes, now I am convinced.  And I can already see more or less how it works
+for <tex>$\br_2$</tex>.  But, to be really sure, I'd like to finish
+the job:
 
 :eqnarray:
-a_x &=& - \frac{x}{r^3}    \nonumber \\
-a_y &=& - \frac{y}{r^3}    \nonumber \\
-a_z &=& - \frac{z}{r^3}
+\br_2 &=& \bR + {M_1 \over M_1 + M_2} \br                \nonumber \\
+&=& {M_1\br_1 + M_2\br_2 \over M_1 + M_2}
++ {M_1 \over M_1 + M_2} \left( \br_2 - \br_1 \right)     \nonumber \\
+&=& {M_1 - M_1 \over M_1 + M_2} \br_1
++ {M_2 + M_1 \over M_1 + M_2} \br_2            \nonumber \\
+&=& \br_2
 
-where the magnitude of the separation <tex>$r$</tex> is defined as
+*Carol*: That's nice, to see the truth in front of us, and to see
+explicitly the correction of my initial sign mistake.
 
-:equation:
-r = \sqrt{x^2 + y^2 + z^2}
+== Newton's Equations of Motion
 
-Let me start with the last line:
+*Erica*: Now that we are getting comfortable with our new coordinate
+system, let us rewrite Newton's equations of motion into the new system.
 
- :inccode: .euler_circular_step.rb-4
+*Dan*: Not so fast!  We haven't written the equations in our old system
+yet.  You may be doing that every day, but I can barely remember what
+I learned about classical mechanics.  Let us start from scratch.
 
-*Carol*: Let's see whether I remember my vector analysis class.  The quantity
-<tex>$\br$</tex> is called a vector, and the quantity <tex>$r$</tex> is called
-a scalar, right?
-
-*Erica*: Indeed.  The last quantity is a scalar because it is independent of
-your choice of coordinate system.  If we rotate out coordinates, the values
-of <tex>$x$</tex> and of <tex>$y$</tex> and of <tex>$z$</tex> may all change,
-and therefore <tex>$\br$</tex> will change.  However, <tex>$r$</tex> will
-stay the same, and that is a good thing: it denotes the physical distance
-between the particles, something that you can measure.  When two people use
-two different coordinate systems, and both measure <tex>$r$</tex>, the value
-they find had better be the same.
-
-*Dan*: My Ruby book tells me that you must add the line
-
- :inccode: .euler_circular_step.rb-5
-
-in order to use the square root method +sqrt+, where the term method
-is used in the same way the word function is used in C and the word
-subroutine is used in Fortran.  The <tt>include</tt> statement is
-needed in order to gain access to the +Math+ module in Ruby, where
-many of the mathematical methods reside.
-
-*Erica*: Thanks!  Now the rest is straightforward:
-
- :inccode: .euler_circular_step.rb-6
-
-== Printing the Result
-
-*Dan*: Shall we see whether the program works, so far?  Let's run it!
-
-*Carol*: Small point, but . . . perhaps we should add a print statement,
-to get the result on the screen?
-
-*Erica*: I guess that doesn't hurt!  The Ruby syntax for printing seems to be
-very intuitive, following what they call the `principle of least surprise':
-
- :inccode: .euler_circular_step.rb-7
-
-*Carol*: I like that principle!  And indeed, this couldn't be simpler!
-
-*Dan*: Apart from this mysterious <tt>\n</tt> at the end.  What does that do?
-
-*Carol*: It prints a new line.  This notation is borrowed from the C language.
-
-*Erica*: So here it is, our first program, <tt>euler.rb</tt>, which is supposed
-to take one step in time:
-
- :inccode: .euler_circular_step.rb
-
-As you can see, I decided to print the positions and velocities twice,
-just before and just after taking one integration step.  Well, let's
-see what happens:
-
- :command: cp euler_circular_step.rb euler.rb
- :commandoutput: ruby euler.rb
-
-== Verification & Validation
-
-*Dan*: That all looks very reasonable.  In fact, we can even check everything
-by hand.  Since we have initially
+*Erica*: Okay, you're right.  Well, here is the equation for the
+acceleration of the first particle, due to the gravitational force
+that the second particle exerts on it:
 
 :equation:
-\br(0) = \{x, y, z\} = \{1,0,0\}
+\label{Newton_r1}
+\frac{d^2}{dt^2}\br_1 = G \frac{M_2}{r^3}\br
 
-and
-
-:equation:
-\bv(0) = \{v_x, v_y, v_z\} = \{0,1,0\}
-
-the new position must be:
+Here I have used the abbreviation
 
 :equation:
-\br(dt) = \br + \bv dt = \{1,dt,0\}
+r = |\br|
 
-*Carol*: And this is indeed what we see in the first half of the last output
-line.
+This is a second-order differential equation.  At the left-hand side
+you see the second derivative of position with respect to time
+<tex>$t$</tex>.  The first time derivative of position
+<tex>$\br_1$</tex> is the velocity <tex>$\bv_1 = d\br_1 /dt$</tex>
+for particle number 1, while the second derivative presented here is
+the acceleration <tex>$\ba_1 = d\bv_1 /dt = d^2\br_1 /dt^2 $</tex>.
+At the right hand side, <tex>$M_2$</tex> indicates the mass of the
+second particles.  As you can guess, <tex>$M_1$</tex> would be the
+mass of the first particle, and <tex>$\bv_2$</tex> and <tex>$\ba_2$</tex>
+stand for the velocity and acceleration of the second particle.
+Finally, <tex>$G$</tex> is the value of Newton's gravitational constant.
 
-*Dan*: To compute the new velocity, we have to first compute the
-acceleration vector.  Let's see, Newton's equation of motion for the
-two-body problem, as written above in component form, gives simply:
+I'm glad you both have at least some familiarity with differential
+equations.  It may not be a bad idea to brush up your knowledge, if
+you want to know more about the background of Newtonian gravity.
+There are certainly plenty of good introductory books.  At this point
+it is not necessary, though, to go deeply into all that.  I can just
+provide the few equations we need to get started, and for quite a
+while our main challenge will be to figure out how to solve these
+equations.
 
-:equation:
-\ba = \{a_x, a_y, a_z\} = \{-1,0,0\}
+*Dan*: Glad to hear that!  But I'm puzzled about one thing.  Why is
+there a third power in the denominator?  I thought that
+gravity shows an inverse square attraction, not an inverse cube!
 
-This means that
-
-:equation:
-\bv(dt) = \bv + \ba dt = \{-dt,1,0\}
-
-*Erica*: And this is indeed what is printed in the last half of the last
-output line.
-
-*Dan*: Perfect!
-
-*Carol*: Well, sort-of.  We have verified that our program does what the
-algorithm intended, and that is certainly nice!  But this is only half
-of the work.  We now have to check whether this particular algorithm
-does indeed give a reasonable result, which corresponds to the behavior
-of gravitating particles in the real world.  This is called validation.
-In the computer science literature these two checks are often called 
-V&V, for Verification and Validation.
-
-In other words, we have passed the verification test, so now we have
-to do a validation test.  For example, we can ask whether this first
-step keeps the two particles on a circular orbit.  After the first
-step, the new separation is:
+*Erica*: Yes, the magnitude of the acceleration is indeed proportional
+to the minus second power of the separation.  However, we also need to
+indicate the direction of the acceleration.  We can define a unit
+vector <tex>$\hat\br$</tex> pointing in the direction of the second
+particle, as seen from the position of the first particle:
 
 :equation:
-r(0.1) = \sqrt{x^2 + y^2 + z^2} = \sqrt{1 + 0.1^2} = \sqrt{1.01} \approx 1.005
+\hat\br = {\br \over r}
 
-*Dan*: Instead of the correct value of <tex>$r(0.1)=1$</tex>, we are half a
-percent off.  Not bad, I would say.
-
-*Carol*: Not bad for one step, perhaps, but our orbit has a radius of unity,
-which means a circumference of <tex>$2\pi \approx 6.3$</tex>.  With a velocity
-of unity, it will take <tex>$63$</tex> steps to go around the circle,
-at the rate we are going.  And if every step introduces `only' half a percent
-error, and if the errors built up linearly, we wind up with a total error of
-more than 30%, even during the first revolution!
-
-*Dan*: Good point.  Of course, we don't know whether the errors build up
-linearly, but for lack of a better idea, that would be the first guess.
-Perhaps we should take a smaller time step.  What would happen if we would
-use <tex>$dt = 0.01$</tex>?  Let's repeat your analysis.  After one step,
-we would have
+Using this unit vector, we can rewrite Eq. (ref(Newton_r1)) as:
 
 :equation:
-r(0.01) = \sqrt{x^2 + y^2 + z^2} = \sqrt{1 + 0.01^2} = \sqrt{1.0001}
-\approx 1.00005
+\frac{d^2}{dt^2}\br_1 = G \frac{M_2}{r^2}\hat\br
 
-We now need roughly <tex>$630$</tex> steps to go around the circle,
-If the errors build up linearly, the radial separation will grow to
-something like <tex>$1 + 630*0.00005 \approx 1.03$</tex>.  Aha!  Only
-a 3% error, instead of roughly 30%.
+*Dan*: I see.  So the magnitude is indeed inverse square, but the direction
+is given by the unit vector, which has length one, and therefor does not
+influence the length of the acceleration vector.  I like this way of writing
+better, since it brings out the physics more clearly.
 
-*Erica*: Bravo!  You have just proved that the forward Euler scheme is
-a first-order scheme!  Remember our discussion at the start?  For a
-first-order scheme, the errors scales like the first power of the time
-step.  You just showed that taking a time step that is ten times smaller
-leads to a ten times smaller error after completing one revolution.
+*Carol*: I guess that Erica wrote it in the form of Eq. (ref(Newton_r1))
+because it will be easier to program that way.
 
-*Dan*: Great!  I thought that numerical analysis was a lot harder.
+*Erica*: Indeed.  Once you get used to this way of writing the equations
+of motion, there is no need to introduce the new quantity <tex>$\hat\br$</tex>,
+since it is not used anywhere separately.
 
-*Carol*: Believe me, it _is_ a lot harder for any numerical integration
-scheme that is more complex than first-order.  You'll see!
+Let me also write the acceleration for the second particle:
 
-*Dan*: I can wait.  For now I'm happy to work with a scheme which I can
-completely understand.  On to the next step!  And ah, yes, let us take
-steps with a size <tex>$dt = 0.01$</tex>, given what we've just learned.
+:equation:
+\label{Newton_r2}
+\frac{d^2}{dt^2}\br_2 = - G \frac{M_1}{r^3}\br
 
-== A Simple Loop
+*Carol*: This time I noticed the sign change: the force of attraction
+exerted by the first particle on the second points toward the first
+particle.
 
-*Erica*: We'd better introduce a loop, since we'll need to take a lot of
-steps.  At the very least we want to move around the circle once, which
-would take a bit more than six time units.  Let's make it ten time units,
-for good measure.  With a step size of <tex>$dt = 0.01$</tex>, we'll have
-to take <tex>$1000$</tex> steps to reach <tex>$t = 10$</tex>.
+*Dan*: Hmm, I'm still a bit confused about these signs.  When the force
+points to the first particle, why does that imply a minus sign?
 
-*Carol*: Let's have a look at the Ruby book.  How do you repeat the same
-thing +k+ times?  Ah, here it is.  That looks funny!  You write
-<tt>k.times</tt>!  So to traverse a piece of code <tex>$1000$</tex> times,
-you enclose that piece of code within the following loop wrapper:
+*Carol*: The easiest way to see this is to take a particular case.  Imagine
+that the second particle is positioned in the origin of the coordinates.
+Since gravity pulls particle 2 in the direction of particle 1, the
+acceleration that particle 2 experiences points in the direction of
+<tex>$\br_1$</tex>.  Notice that in this particular case
+<tex>$\br = \br_2 - \br_1 = - \br_1$</tex>.  Therefore, the direction
+<tex>$\br_1$</tex> is the opposite of the direction of <tex>$\br$</tex>,
+hence the minus sign.
 
- :inccode: .euler_circular_bug.rb-1
+*Dan*: Ah, that is neat.  Instead of trying to figure things out in
+full generality, you take a particular limiting case, and check the
+sign.  Since you already know the magnitude and the line along which
+the acceleration is directed, once you know the sign in one case,
+you know the sign in all cases.
 
-*Dan*: Surely you are joking!  That is carrying the principle of least
-surprise a bit too far to believe.  How can that work?  Can a computer
-language really stay so close to English?
+*Carol*: Yes.  Technically we call this invariance under continuous
+deformation.  If you bring the second particle a little bit out of the
+origin, by small continuous changes, the acceleration between the
+particles much change continuously as well; it cannot suddenly flip
+to the opposite direction.
 
-*Carol*: The key seems to be that Ruby is an object-oriented language.
-Each `thing' is ruby is an object, which can have attributes such as
-perhaps internal data or internal methods, which may or may not be
-visible from the outside.
+*Erica*: Neat indeed: this means that understanding the sign in one
+place let you know the sign in all places.  I'll remember using that
+trick.
 
-*Erica*: I have heard the term `object-oriented programming.'  I really
-should browse through the Ruby book, to get a bit more familiar with that
-approach.
+Okay, onward with the equations of motion.  Given Eqs.(ref(Newton_r1))
+and (ref(Newton_r2)), we can calculate the accelerations for the
+alternative coordinates by using the defining equations (ref(com)) and
+(ref(separation)), as follows.
 
-*Dan*: We all should.  But for now, Carol, how does your key work?
-Is the number <tex>$1000$</tex> also an object?
+:eqnarray:
+\label{Newton_com}
+\frac{d^2}{dt^2}\bR
+&=&
+{M_1\over M_1 + M_2}\frac{d^2}{dt^2}\br_1 +
+{M_2\over M_1 + M_2}\frac{d^2}{dt^2}\br_2                     \nonumber \\
+&=&
+{M_1\over M_1 + M_2}\left(G \frac{M_2}{r^3}\br\right) +
+{M_2\over M_1 + M_2}\left(- G \frac{M_1}{r^3}\br\right)       \nonumber \\
+&=&
+G {M_1 M_2\over M_1 + M_2}\left(\frac{1}{r^3}\br-\frac{1}{r^3}\br\right)
+                                                              \nonumber \\
+&=& 0
 
-*Carol*: You guessed it!  And every number has by default various methods
-associated with it.  One method happens to be called +times+.
+and 
 
-*Erica*: And what +times+ does is repeat the contant of its argument,
-whatever is within the curly brackets, +k+ times, if the number is +k+.
+:eqnarray:
+\label{Newton_separation}
+\frac{d^2}{dt^2}\br
+&=&
+\frac{d^2}{dt^2}\br_2 - \frac{d^2}{dt^2}\br_1                 \nonumber \\
+&=&
+\left(- G \frac{M_2}{r^3}\br\right) - \left(G \frac{M_1}{r^3}\br\right)
+                                                              \nonumber \\
+&=&
+- G \frac{M_1+M_2}{r^3}\br
 
-*Carol*: Precisely.
+== An Equivalent 1-Body Problem
 
-*Dan*: Amazing.  Well, I would be even more amazed to see this work.
+*Dan*: The second equation looks like a form of Newton's law of gravity,
+but what does it mean that the first equation gives just zero as an answer?
 
-*Erica*: Why shouldn't it work?  Let's try it!  Telling the computer how
-to take the first step was hard, but letting it take another 999 steps
-should be easy, given this natural looping construct.  Here is the new
-version of the code:
+*Carol*: Well, it seems that there is zero acceleration for the position
+of the center of mass.
 
- :inccode: .euler_circular_bug.rb
+*Dan*: Ah, so the c.o.m. moves with constant velocity?
 
-== A Surprise
+*Erica*: Yes, and this means that we can choose an inertial coordinate
+frame that moves along with the c.o.m., and in that coordinate frame
+the center of mass does not move at all.  And to make it really simple,
+we can choose a coordinate frame where the c.o.m. is located at the
+origin of the coordinates.
 
-*Carol*: I don't think you would like to read through 1001 lines of output.
-Let's run the code while redirecting the output to a file <tt>euler.our</tt>.
+*Dan*: That does make life simple.  In this coordinate frame, all the
+information about the motions in the two-body problem is now bundled
+Eq. (ref(Newton_separation)).  It almost looks as if we are dealing
+with a 1-body problem, instead of a 2-body problem!
 
- :command: cp euler_circular_bug.rb euler.rb
- :commandoutput: ruby euler.rb > euler.out
+ :figure: com_vector.eps 6cm com_vector
+ The vector <tex>$\bR$</tex> in its own space.
 
-We can then have a peek at, say, the first five lines and the last
-five lines, while skipping the 991 lines in between:
+ :figure: separation_vector.eps 6cm separation_vector
+  The vector <tex>$\br$</tex> in its own space.
 
- :commandoutput: head -5 euler.out
- :commandoutput: tail -5 euler.out
+*Erica*: Yes, this is what I meant when I announced that we could map
+the two-body problem into an equivalent one-body problem, for any choice
+of the masses.  The original equations (ref(Newton_r1)) and (ref(Newton_r2))
+are coupled: both <tex>$\br_1$</tex> and <tex>$\br_2$</tex> occur in both
+equations, indirectly through the fact that <tex>$\br = \br_2-\br1$</tex>.
+In contrast, the equations (ref(Newton_com)) and (ref(Newton_separation)) are
+decoupled.
 
-*Dan*: Instead of a bunch of numbers, I'd rather see a plot of the orbit.
+A clear way to show this is to draw to separate figures,
+Figs. ref(com_vector) and ref(separation_vector).  The c.o.m. vector
+in Fig. ref(com_vector) moves in a way that is totally independent of
+the way the relative vector in ref(separation_vector) moves.  The
+c.o.m. vector moves at a constant speed, while the relative vector
+moves as if it follows an abstract particle in a gravitational field.
 
-*Erica*: I agree, we should do that soon.  But hey, the numbers do tell us
-something already, namely that there is something seriously wrong!
+To see this, notice that Eq. (ref(Newton_separation)) is _exactly_ Newton's
+equation for the gravitational acceleration of a body that feels the
+attraction of a hypothetical body of mass <tex>$M_1 + M_2$</tex>.  To check
+this, look at Eq. (ref(br1)), and replace <tex>$\br_1$</tex> by
+<tex>$\br$</tex> and replace <tex>$M_2$</tex> by <tex>$M_1+M_2$</tex>.
 
-*Carol*: Right you are, the numbers are much too large.  We are trying
-to let two particles move around a circle, at a relative distance of 1.
-However, here the separation in the <tex>$y$</tex> direction alone is
-already larger than <tex>$11$</tex>, so the total separation must be
-even larger.  I did not expect such a large error.
+*Dan*: Indeed.  So the relative motion between two bodies can be described
+as if it was the motion of just one body under the gravitational attraction
+of another body, that happens to have a mass equal to the sum of the masses
+of the two original bodies.
 
-*Dan*: Hmmm, yes, that is rather surprising.  And yet, look, the result
-of the very first step is exactly correct.  It is just what we would
-expect, when scaling our earlier result, from a time step of
-<tex>$dt=0.1$</tex> to a time step of <tex>$dt=0.01$</tex>.
+*Erica*: Exactly.  And to complete this particular picture, we have to
+make sure that the other body stays in the origin, at the place of the
+center of mass.  We can do this by giving our alternative body a mass
+zero.  In other words, we consider the motion of a massless test particle
+under the influence of the gravitational field of a body with mass 
+<tex>$M_1 + M_2$</tex>, that is located in the center of the coordinate
+system.
 
-*Erica*: Well, let us look at the orbit.  How do we make a plot?
+*Carol*: I see.  Because the testparticle has zero mass, it exerts zero
+gravitational pull on the central body.  Therefore, the central body
+does not move at all, and the only task we are left with is to determine
+the motion of the test particle around the center.
 
-*Carol*: I suggest using <tt>gnuplot</tt>, present on any Linux
-running system, and something that can be easily installed on many
-other systems as well.  The style is not particularly pretty, but at
-least it will give us something to look at.
+*Dan*: And that is a one-body problem.  How neat!
 
-*Dan*: How do you invoke <tt>gnuplot</tt>?
+== Wrapping Up
 
-*Carol*: To use it is quite simple, with only one command
-needed to plot a graph.  In our case, however, I'll start with the
-command <tt>set size ratio -1</tt>.  A positive value for the size
-ratio scales the aspect ratio of the vertical and horizontal edge of
-the box in which a figure appears.  But in our case we want to
-set the scales so that the unit has the same length on both the x and
-y axes.  Gnuplot can be instructed to do so by specifying the ratio to
-be <tt>-1</tt>.  In fact, let me write the line <tt>set size ratio
--1</tt> in a file called <tt>.gnuplot</tt> in my home directory.  That
-way we don't have to type it each time we use gnuplot.  Okay, done.
-Now let's have our picture:
+*Carol*: Let us gather the formulas we have obtained so far, for our
+coordinate transformation, from absolute to relative coordinates.
 
-xxxxxxxxx
+:equation:
+\label{br1_br2}
+\left\{ \begin{array}{lcl}
+\br_1 = \bR - {\displaystyle {M_2 \over M_1 + M_2}} \br                   \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\br_2 = \bR + {\displaystyle {M_1 \over M_1 + M_2}} \br
+\end{array} \right.
 
-Let's plot it (fig ref(euler_circular_bug) ):
+:equation:
+\label{com_separation}
+\left\{ \begin{array}{lcl}
+\bR = {\displaystyle {M_1\br_1 + M_2\br_2 \over M_1 + M_2}}                 \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+\br = \br_2 - \br_1
+\end{array} \right.
 
- gnuplot
- set size ratio -1
- plot "euler.out"
- quit
+:equation:
+\label{Newton_br1_br2}
+\left\{ \begin{array}{lcl}
+{\displaystyle {d^2 \over dt^2}}\br_1 = 
+G {\displaystyle {M_2 \over r^3}}\br      \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+{\displaystyle {\frac{d^2}{dt^2}}}\br_2 =
+- G {\displaystyle {\frac{M_1}{r^3}}}\br
+\end{array} \right.
 
- :commandinput: gnuplot END
-set term post eps
-set output "euler_circular_bug.ps"
-set size ratio -1
-plot "euler.out"
-quit
-END
+:equation:
+\label{Newton_com_separation}
+\left\{ \begin{array}{lcl}
+{\displaystyle\frac{d^2}{dt^2}}\bR = 0                                     \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+{\displaystyle\frac{d^2}{dt^2}}\br = - G {\displaystyle\frac{M_1+M_2}{r^3}}\br
+\end{array} \right.
 
- :figure: euler_circular_bug.ps 10cm euler_circular_bug
- First attempt at integrating the two-body problem: failure.
+*Dan*: So from all these equations, what we are going to solve with our
+computer program is the last one above, right?
 
-== Debugging
+*Erica*: Yes, and let me write the equation once again here:
 
-xxxxx
+:equation:
+\label{Newton2body}
+\frac{d^2}{dt^2}\br = - G \frac{M_1 + M_2}{r^3}\br
 
-== Much Better
+And there is one more thing: let's make life as simple as we can, by
+choosing a system of physical units in which the gravitational
+constant and the total mass of the 2-body system are both unity:
 
-Corrected code <tt>euler_circular.rb</tt>, but we show it as if it is called
-<tt>euler.rb</tt>:
+:eqnarray:
+G & = & 1                      \nonumber \\
+M_1 + M_2 & = & 1
 
- :inccode: .euler_circular.rb
+Our original equation of motion now becomes simply:
 
-Let's run it:
+:equation:
+\label{Newton2bodysimple}
+\frac{d^2}{dt^2}\br = - \frac{\br}{r^3}
 
- :command: cp euler_circular.rb euler.rb
- :commandoutput: ruby euler.rb > euler.out
- :commandoutput: head -5 euler.out
- :commandoutput: tail -5 euler.out
-
-Let's plot it:
-
- :commandinput: gnuplot END
-set term post eps
-set output "euler_circular.ps"
-set size ratio -1
-plot "euler.out"
-quit
-END
-
- :figure: euler_circular.ps 10cm euler_circular
- Second attempt at integrating the two-body problem: looking a lot better.
-
+*Dan*:
+I can't imagine anything simpler than that!
+Let's start coding.

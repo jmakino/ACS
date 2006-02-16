@@ -1,9 +1,0 @@
-= Test of "ref" for acsdoc:
-
-This gives an error message (if converted into lower case):
-
-LET'S PLOT IT (FIG REF(EULER_CIRCULAR_BUG)):
-
-and this one too (if converted into lower case):
-
-LET'S PLOT IT (FIG REF(EULER_CIRCULAR_BUG) ):
