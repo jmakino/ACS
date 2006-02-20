@@ -1,0 +1,1242 @@
+= Limitations of the Forward-Euler Algorithm
+
+== Back to an Elliptic Orbit
+
+Code <tt>euler_elliptic.rb</tt>, but we show it as if it is called
+<tt>euler.rb</tt>:
+
+ :inccode: .euler_circular.rb
+
+Let's run it:
+
+ :command: cp euler_elliptic.rb euler.rb
+ :commandoutput: ruby euler.rb > euler.out
+ :commandoutput: head -5 euler.out
+ :commandoutput: tail -5 euler.out
+
+Let's plot it:
+
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_elliptic.ps"
+set size ratio -1
+plot "euler.out"
+quit
+END
+
+ :figure: euler_elliptic.ps 10cm euler_elliptic
+ Third attempt at integrating the two-body problem: A different failure.
+
+code <tt>euler_001.rb</tt>, but we show it as if it is called
+<tt>euler.rb</tt>:
+
+ :inccode: .euler_001.rb
+
+Let's run it:
+
+ :command: cp euler_001.rb euler.rb
+ :commandoutput: ruby euler.rb > euler.out
+ :commandoutput: tail -1 euler.out
+
+Let's plot it:
+
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_001.ps"
+set size ratio -1
+plot "euler.out"
+quit
+END
+
+ :figure: euler_001.ps 12cm euler_001
+ Fourth attempt at integrating the two-body problem: at least a
+ semblance of an elliptic orbit.
+
+code <tt>euler_001_sparse.rb</tt>, but we show it as if it is called
+<tt>euler.rb</tt>:
+
+ :inccode: .euler_001_sparse.rb
+
+Let's run it:
+
+ :command: cp euler_001_sparse.rb euler.rb
+ :commandoutput: ruby euler.rb > euler.out
+ :commandoutput: tail -1 euler.out
+
+Let's plot it:
+
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_001_sparse.ps"
+set size ratio -1
+plot "euler.out"
+quit
+END
+
+ :figure: euler_001_sparse.ps 12cm euler_001_sparse
+ Plotting points only at intervals of 0.01 in time: the picture looks
+ the same.
+
+code <tt>euler_0001_sparse.rb</tt>, with only these two lines different:
+
+ :inccode: .euler_0001_sparse.rb-1
+
+Let's run it:
+
+ADD "0" TO THE ZEROES IN THE LINE BELOW
+
+ :command: cp euler_001_sparse.rb euler.rb
+ :commandoutput: ruby euler.rb > euler.out
+ :commandoutput: tail -1 euler.out
+
+Let's plot it:
+
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_0001_sparse.ps"
+set size ratio -1
+plot "euler.out"
+quit
+END
+un
+ :figure: euler_0001_sparse.ps 12cm euler_0001_sparse
+ Fifth attempt at integrating the two-body problem: a lot better already.
+
+code <tt>euler_00001_sparse.rb</tt>, with only these two lines different:
+
+ :inccode: .euler_00001_sparse.rb-1
+
+Let's run it:
+
+ADD "00" TO THE ZEROES IN THE LINE BELOW
+
+ :command: cp euler_001_sparse.rb euler.rb
+ :commandoutput: ruby euler.rb > euler.out
+ :commandoutput: tail -1 euler.out
+
+Let's plot it:
+
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_00001_sparse.ps"
+set size ratio -1
+plot "euler.out"
+quit
+END
+
+ :figure: euler_00001_sparse.ps 12cm euler_00001_sparse
+ Sixth attempt at integrating the two-body problem: getting there, slowly.
+
+xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+After some further discussion among the three, here is the code that
+Erica typed in.  Actually, the first version contained a few syntax errors,
+not surprisingly, but to move right along, we will just show here the
+final product, by printing the file <tt>euler.rb</tt>:
+
+ :inccode: .euler.rb
+
+Let us look at each line in turn.  The first <tt>include</tt> statement
+is needed in order to gain access to the +Math+ module in Ruby, that
+contains, for example, the definition of the square root method +sqrt+
+(a method in Ruby is like a function in C or a subroutine in Fortran).
+
+In this simple program there is no need for any input: all initial
+values are chosen already in the program.  The time step <tt>dt</tt>
+is fixed to be <tex>$0.01$</tex>.  The relative position vector is
+chosen along the <tex>$x$</tex> axis at a distance of unity from the
+origin where the other particle resides in the relative coordinate
+system that we use: <tex>$\br = \{1, 0, 0\}$</tex>.  The relative
+velocity is chosen to be <tex>$0.5$</tex> in the direction of the
+positive <tex>$y$</tex> axis: <tex>$\bv = \{0, 0.5, 0\}$</tex>.  This
+is less than the value <tex>$v_y = 1$</tex> needed to sustain a
+circular orbit, as you can check in any book on celestial mechanics or
+stellar dynamics.
+
+The choice of a velocity value less than the circular velocity means
+that we have captured the relative motion at apocenter, which is the
+point in the orbit at which the two particles are furthest away from
+each other.  The word is derived from the Greek <tex>$\alpha \pi
+o$</tex> <i>(apo)</i> meaning `far (away) from'.  The subsequent
+motion will bring the two particles closer together, until the
+pericenter is reached on the negative <tex>$x$</tex> axis, which is
+the point in the orbit at which the two particles are closest.  This
+word is derived from the Greek <tex>$\pi \epsilon \rho \iota$</tex>
+<i>(peri)</i> meaning `around' or `near'.  After passing through
+pericenter the particles will move away from each other again.
+
+The <tt>1000.times{...}</tt> expression implies that the body of the
+expression between curly brackets (called a block in Ruby) is executed
+1000 times.  The syntax here should be read as follows.  The number
+1000 is an object, and +times+ is a method that belongs to the class
+number, of which 1000 is an instance.  Since we have chosen a time
+step of length <tt>dt = 0.01</tt>, a thousand steps will cover a time
+interval of 10 units.
+
+We will introduce the main concepts of Ruby as we go along, but if
+you want to read about Ruby in more systematic way, here is a
+<web>http://www.rubycentral.com/|a good place to start</web>, and here
+is a web site specifically aimed at
+<web>http://sciruby.codeforpeople.com/|scientific applications</web>.
+
+The first line in the code block shows how we compute <tt>r2</tt> ,
+the square of the scalar distance between the two particles by summing
+the squares of the Cartesian components.  We then take the square
+root, and multiply that with the square of the distance to get
+<tt>r3</tt> , the third power of the distance, which we have seen
+in the denominator of Eq. (ref(Newton2bodysimple)), which we repeat
+here for convenience:
+
+:equation:
+\frac{d^2}{dt^2}\br = - \frac{\br}{r^3}
+
+The next three lines express this separately for each Cartesian
+component.
+
+Finally, the integration step is completed by executing
+Eq. (ref(ForwardEulerStep)) above, to update the relative position
+and velocity, again component-wise.  At the end of each time step, we
+print the three position and three velocity components, all on a
+single line.
+
+Let us follow the discussion
+of our three friends, from the moment that their code first compiled.
+
+== Running a Code
+
+*Carol*:
+That's it, the last bug caught, our <tt>euler.rb</tt> compiled at
+last!  Let's see what it produces.  Since we asked for the output of
+positions and velocities for 10 time units at intervals <tt>dt = 0.01</tt>,
+our screen will be flooded by 1000 lines of output; better to redirect
+the output to a file.  Let's call it <tt>euler.out</tt>, and let's have
+a look at the beginning and the end of the file, say five lines each:
+
+ :commandoutput: ruby euler.rb > euler.out
+ :commandoutput: head -5 euler.out
+ :commandoutput: tail -5 euler.out
+
+\output{chap3/forward.output}
+
+*Erica*: So we've computed real positions and velocities, in the
+<tex>$\{x,y\}$</tex> plane.  We're gettings somewhere!  And the
+numbers look reasonable, as far as I can see.
+
+*Dan*: I can't see anything, frankly, by starting at a bunch of
+numbers.  Wouldn't it be better to make a picture of the orbit?
+
+*Carol*: I suggest using <tt>gnuplot</tt>, present on any Linux
+running system, and something that can be easily installed on many
+other systems as well.
+
+*Erica*: Fine.  But before doing that, I just noticed that the
+numbers in the first column at the end of the file are way too large.
+Our two particles were at apocenter initially, at distance 1, which
+meant that they could come closer but that they would never get
+further away from each other than unity in our length units.  And here
+we have distance vectors larger than 7, actually close to 10 if I
+remember my Pythagoras formula well enough, in the last line.
+
+*Dan*: Whatever may have gone wrong is likely to show up in a plot.
+Carol, how do you invoke <tt>gnuplot</tt>?
+
+*Carol*: To use it is quite simple, with only one command
+needed to plot a graph.  In our case, however, I'll start with the
+command <tt>set size ratio -1</tt>.  A positive value for the size
+ratio scales the aspect ratio of the vertical and horizontal edge of
+the box in which a figure appears.  However, in our case we want to
+set the scales so that the unit has the same length on both the x and
+y axes.  Gnuplot can be instructed to do so by specifying the ratio to
+be <tt>-1</tt>.  In fact, let me write the line <tt>set size ratio
+-1</tt> in a file called <tt>.gnuplot</tt> in my home directory.  That
+way we don't have to type it each time we use gnuplot.  Okay, done.
+Now let's have our picture:
+
+<tt>
+|gravity> gnuplot
+gnuplot> set size ratio -1
+gnuplot> plot "forward.out"
+gnuplot> quit
+|gravity> 
+</tt>
+
+\begin{figure}[ht]
+\begin{center}
+\epsfxsize = 4.5in
+\epsffile{chap3/forward1.ps}
+\caption[Two-body orbit with a forward-Euler integrator, time step <tex>$dt = 0.01$</tex>]
+{Relative orbit for the first attempt to integrate a two-body system with a
+forward-Euler integrator, with time step <tex>$dt = 0.01$</tex>}
+\label{fig:forward1}
+\end{center}
+\end{figure}
+
+*Dan*:
+Wow, the two stars were flung away as by a slingshot, after only
+slightly more than half an orbit.  I guess that indeed the time step
+was too large.
+
+*Erica*:
+I think you are right.  Notice that the artificial slingshot, caused
+by numerical errors, occurred just after pericenter, where the
+curvature of the orbit is highest.  Stepping along tangentially to the
+orbit tends to let you spiral out from the original orbit, and this
+effect is higher when the orbital curvature is higher.
+
+*Carol*:
+Okay, I'll change the time step size.
+
+== Extending a Code
+
+*Carol*:
+In addition, rather than changing the program each time we change step
+size, I'll make it an option to be provided by the user.  How about
+this version:
+
+\code{forward_euler2a.C}{chap3/forward_euler2a.C}
+
+*Dan*:
+And even with a polite request to remind the user what is needed.
+Very nice.  Let's compile, run, and plot!
+
+*Carol*:
+Okay.  Let's direct to output to a file <tt>forward2a.out</tt>, and let's
+rename the old output file <tt>forward1.out</tt>, to get a consistent
+numbering system, where the number in the source file corresponds to
+the same number in the output file; the `a' after `2' is added here
+since different input options will produce different output files.
+
+*Dan*:
+How about making it even clearer and add the value of the time step
+that we input to the name?
+
+*Carol*:
+Yes, even better.  Let's start with <tex>$dt = 0.01$</tex>, the same value we
+used by default in <tt>forward_euler1.C</tt>.  It never hurts to check
+whether we indeed get the same result.  Here goes:
+
+<tt>
+|gravity> g++ -o forward_euler2 forward_euler2.C
+|gravity> mv forward.out forward1.out
+|gravity> forward_euler2 > forward2_0.01.out
+</tt>
+
+*Dan*:
+So much for the polite reminder.  What is happening, is the computer
+so slow?  Or is it just hanging?
+
+*Erica*:
+Ah, I see.  By redirecting the output to <tt>forward2_0.01.out</tt>, we are
+also redirecting our reminder to that file, spoiling the format of our
+nbody snapshot output, and losing our reminder.
+
+*Carol*:
+Yes, of course, you are right.  Well, how about putting the reminder
+on the error stream <tt>cerr</tt>, rather than the output stream {\st
+cout}?  While reminding you of something is not an error, it does
+provide a handy way to disentangle the snapshot output, meant to be
+read further by a computer, and the reminder output, aimed at human
+consumption.
+
+*Dan*:
+Good idea.  But while we do that, let's make another modification as
+well.  I just realized that our halting criterion is completely wrong.
+If we specify <tt>dt = 0.0001</tt>, the system would bail out after only
+1000 steps, as before, thus advancing the time from zero to 0.1, barely
+enough to see the particles move, and far too little to complete even
+one orbit.
+
+*Erica*:
+Right you are.  Let's put in a time counter, so that we can keep
+integrating till time 10, for good measure.
+
+*Carol*:
+Fine!  And I'll rename the previous version <tt>forward_euler2a.C</tt>,
+while keeping the name <tt>forward_euler2.C</tt> for the corrected version.
+When you are developing code, it is always a good idea to keep older
+versions lying around, even if they are wrong.  After all, subsequent
+versions may turn out to be even more wrong, in which case you might
+well want to go back to the less wrong one!  Here we are:
+
+\code{forward_euler2.C}{chap3/forward_euler2.C}
+
+*Carol*:
+And now let's try again:
+
+\output{chap3/forward2a.output}
+
+  |gravity> g++ -o forward_euler2 forward_euler2.C
+  |gravity> forward_euler2 > forward2_0.01.out
+  forward2_0.01.out: File exists.
+  |gravity> rm forward2_0.01.out
+  rm: remove `forward2_0.01.out'? y
+  |gravity> forward_euler2 > forward2_0.01.out
+  Please provide a value for the time step
+  0.01
+  |gravity> tail -2 !$
+  tail -2 forward2_0.01.out
+  7.69375 -6.27772 0 0.812207 -0.5742 0
+  7.70187 -6.28346 0 0.812128 -0.574136 0
+
+*Dan*:
+That's curious.  Almost the same results as before, but not quite.
+Remember, earlier we got:
+
+  7.68562 -6.27198 0 0.812286 -0.574264 0
+  7.69375 -6.27772 0 0.812207 -0.5742 0
+
+\output{chap3/forward2b.output}
+
+*Dan*:
+Ah, I see: same results, after all, but one more time step.
+Our next to last line is identical to our previous last line.
+
+*Carol*:
+That would imply that the new file should be one line longer.  Let's
+check by doing a word count (actually a line-word-character count):
+
+  |gravity> wc *.out
+     1000    6000   39633 forward1.out
+     1001    6006   39673 forward2_0.01.out
+     2001   12006   79306 total
+  |gravity> 
+
+\output{chap3/wc.output}
+
+*Erica*:
+Indeed: one line more and six words more, for the extra position and
+velocity components.  I guess our switch from integer book keeping
+with the number of time steps, to floating-point book keeping by using
+the time introduced some slight round-off which caused the program to
+do one more step.
+
+*Dan*:
+Sounds plausible, but let's check it out.  Seeing is believing!
+Shall we put in an extra output statement on <tt>cerr</tt>?  This time
+we're after errors after all, namely round-off errors.  Let's add
+the following line at the end, after the two lines starting with {\st
+cout}:
+
+<tt>
+	cerr << t << endl;
+</tt>
+
+*Carol*:
+Done.  I'll call the resulting code <tt>forward_euler2b.C</tt>, following
+our tradition to keep all version around for a while.  Let's run the
+code again, but I won't bother about the snapshot output, since we
+already know what that is.  Redirecting the <tt>cout</tt> output to {\st
+/dev/null} is a time-honored Unix way to get rid of it.  The `null'
+device acts like a black hole, getting rid of whatever falls into it,
+without a trace.  We are then left only with the <tt>cerr</tt> output on
+the screen.
+
+  |gravity> g++ -o forward_euler2b forward_euler2b.C
+  |gravity> forward_euler2b > /dev/null
+  Please provide a value for the time step
+  0.01
+  0
+  0.01
+  0.02
+  0.03
+   . . . . . .
+  9.97
+  9.98
+  9.99
+  10
+  |gravity> 
+
+\output{chap3/forward2b_cerr.output}
+
+*Dan*:
+Hah!  So much for your clever theory, Erica.  It stopped at <tt>t = 10</tt>,
+right on the mark.  So round-off cannot have been the reason.
+
+*Erica*:
+Not so quick in claiming victory, Dan.  Look at the code.  In the <tt>for</tt>
+loop the halting criterion is <tt>t < 10</tt>.  If there would have been
+no round-off, the code should have stopped at <tt>t = 9.99</tt>, not at
+<tt>t = 10</tt>.
+
+*Dan*:
+That makes sense.  And yet there is no round-off.  It seems like we
+are both right, but that is impossible.  What gives?
+
+*Carol*:
+In case of doubt, find it out.  I have a sneaky suspicion that there
+is another round-off that is fooling us: the limited accuracy of the
+output.  The quickest way to find out is to modify the time output
+line.  Instead of simply printing the time, let's print the difference
+of the real time <tt>t</tt> and the non-round-off value <tt>t = 10</tt>.  So
+our last error output line becomes:
+
+<tt>
+	cerr << t - 10.0 << endl;
+</tt>
+
+  |gravity> g++ -o forward_euler2c forward_euler2c.C
+  |gravity> forward_euler2c > /dev/null
+  Please provide a value for the time step
+  0.01
+  -10
+  -9.99
+  -9.98
+   . . . . . .
+  -0.03
+  -0.02
+  -0.01
+  -1.68754e-13
+  |gravity> 
+
+\output{chap3/forward2c_cerr.output}
+
+*Dan*:
+Okay, Erica was right after all.  Close but no cigar.  After 1,000
+steps, the time is updated to a hair's breadth smaller than 10, and
+the code takes one extra step.  Clever detective work, Carol!
+
+*Carol*:
+I'm glad my course in numerical methods was good for something!
+
+*Dan*:
+By the way, returning to the commands you gave earlier, just before we
+spotted the extra output line, what was that all about, that you had
+to remove files by hand?
+
+*Carol*:
+The operating system refused, fortunately, to override the existing
+output file that we created with our earlier version of {\st
+forward_euler2.C}.  This is a good thing, since it is all to easy to
+override (much) earlier results that are perhaps hard to recreate.
+Similarly, when I gave the explicit command <tt>rm</tt> to remove the
+file, the system checked to make sure I knew what I was doing, and I
+answered <tt>y</tt> for yes.
+
+*Dan*:
+That seems like overkill to me.  You asked for a specific file to be
+deleted, and it checked to see whether you had learned to read and write??
+
+*Carol*:
+For a single file this may be overkill, but often we give a command
+such as <tt>rm tmp*</tt> if we want to remove all temporary files in a
+directory.  If you (or your cat) were to hit the space bar by mistake
+in the middle, you could wind up with <tt>rm tmp *</tt> \dots
+
+*Dan*:
+\dots I see, and thus deleting all files in that directory.  No, that
+would not be good, I agree.
+
+*Carol*:
+By the way, you can choose this safety option by typing <tt>rm -i</tt>
+with option <tt>i</tt> for inquiry, prompting the system to question you
+for each file to be deleted.  Or simpler, you can add this to your
+shell definitions, for example to your <tt>.cshrc</tt> file if you use a
+C shell.
+
+*Dan*:
+And what about <tt>!\$</tt>?
+
+*Carol*:
+Oh, that is shorthand for retyping the last word in the previous command.
+I could have used that two lines earlier too, by typing <tt>rm !\$</tt>.
+It speeds things up, just like the command <tt>!!</tt> which repeats the
+whole previous command.  Also the second time I ran the program I
+could have simply typed <tt>!f</tt> which would have expanded to
+<tt>forward_euler2 > forward2_0.01.out</tt>.  Or I could have type <tt>!-2</tt>
+to repeat the command that was issued two steps before.  Unix has many
+ways to say a lot with two or three key strokes!  Here is what I could
+have typed:
+
+  |gravity> g++ -o forward_euler2 forward_euler2.C
+  |gravity> forward_euler2 > forward2_0.01.out
+  forward2_0.01.out: File exists.
+  |gravity> rm !$
+  rm: remove `forward2_0.01.out'? y
+  |gravity> !f
+  Please provide a value for the time step
+  0.01
+  |gravity> tail -2 !$
+  tail -2 forward2_0.01.out
+  7.69375 -6.27772 0 0.812207 -0.5742 0
+  7.70187 -6.28346 0 0.812128 -0.574136 0
+
+\output{chap3/csh_sample.output}
+
+== Plotting and Printing
+
+*Erica*:
+I have a different question.
+It was nice to see the orbit plotted on the screen, but I wonder how
+we can make a hard copy output.  I would like to start gathering
+material to write a working paper about our project.
+
+*Carol*:
+That's easy, although non-intuitive.  The easiest way to find out
+how to do this is to go into gnuplot and then to type help, and to
+work your way down the information about options.  To give you a hint,
+try <tt>"set terminal"</tt> and <tt>"set output"</tt>.  Let me show you.
+
+Note: because the output of the <tt>help</tt> facility of <tt>gnuplot</tt>
+is rather long, we will omit most of it here by printing ``\dots\dots''
+instead.  In the example below, the words typed by Carol are <tt>help</tt>,
+<tt>set</tt>, <tt>terminal</tt>, <tt>postscript</tt>, then she twice hit the return
+key without typing anything, after which she typed <tt>output</tt>,
+followed again by hitting the return key twice to get back to the
+command level of gnuplot.
+
+<tt>
+gnuplot> 
+gnuplot> help
+ `gnuplot` is a command-driven interactive function and data plotting program.
+
+    . . . . . .
+
+ The new `gnuplot` user should begin by reading about `plotting` (if on-line,
+ type `help plotting`).
+
+Help topics available:
+    batch/interactive bugs              commands          comments
+    coordinates       copyright         environment       expressions
+    glossary          graphical         introduction      line-editing
+    new-features      old_bugs          plotting          seeking-assistance
+    set               show              startup           substitution
+    syntax            time/date
+
+Help topic: set
+ The `set` command can be used to sets _lots_ of options.  No screen is
+ drawn, however, until a `plot`, `splot`, or `replot` command is given.
+
+ The `show` command shows their settings;  `show all` shows all the
+ settings.
+
+ If a variable contains time/date data, `show` will display it according to
+ the format currently defined by `set timefmt`, even if that was not in effect
+ when the variable was initially defined.
+
+Subtopics available for set:
+    angles            arrow             autoscale         bar
+    bmargin           border            boxwidth          clabel
+  . . . . . .
+    terminal          tics              ticscale          ticslevel
+    time              time/date_specifiers                timefmt
+  . . . . . .
+
+Subtopic of set: terminal
+ `gnuplot` supports many different graphics devices.  Use `set terminal` to
+ tell `gnuplot` what kind of output to generate. Use `set output` to redirect
+ that output to a file or device.
+
+    . . . . . .
+
+Subtopics available for set terminal:
+    aed512            aed767            aifm              bitgraph
+    cgm               corel             dumb              dxf
+    eepic             emtex             epson-180dpi      epson-60dpi
+    epson-lx800       fig               gpic              hp2623a
+    hp2648            hp500c            hpdj              hpgl
+    hpljii            hppj              imagen            jpeg
+    kc-tek40xx        km-tek40xx        latex             mf
+    mif               mp                nec-cp6           okidata
+    pbm               pcl5              png               postscript
+    pslatex           pstex             pstricks          qms
+    regis             selanar           starc             table
+    tandy-60dpi       tek40xx           tek410x           texdraw
+    tgif              tkcanvas          tpic              vttek
+    x11               xlib
+
+Subtopic of set terminal: postscript
+ Several options may be set in the `postscript` driver.
+
+    . . . . . .
+
+ `eps` mode generates EPS (Encapsulated PostScript) output, which is just
+ regular PostScript with some additional lines that allow the file to be
+ imported into a variety of other applications.  (The added lines are
+ PostScript comment lines, so the file may still be printed by itself.)  To
+ get EPS output, use the `eps` mode and make only one plot per file.  In `eps`
+ mode the whole plot, including the fonts, is reduced to half of the default
+ size.
+Subtopics available for set terminal postscript:
+    editing           enhanced
+
+Subtopic of set terminal postscript: 
+Subtopic of set terminal: 
+Subtopic of set: output
+ By default, screens are displayed to the standard output. The `set output`
+ command redirects the display to the specified file or device.
+
+ Syntax:
+       set output {"<filename>"}
+
+    . . . . . .
+
+Subtopic of set: 
+Help topic: 
+gnuplot> 
+gnuplot> quit
+|gravity> 
+</tt>
+
+*Erica*:
+It is nice to have so much detailed information at your fingertips,
+but I'm glad you knew what to ask?  I would never have guessed that I
+would have to give an arcane command like <tt>set terminal</tt> before
+adding <tt>postscript</tt>, which is what I wanted; and while <tt>set
+output</tt> is somewhat more logical, I wouldn't have guessed that either.
+
+*Carol*:
+That's what friends are for: learning to work with a new package is
+always easiest when looking over someone's shoulder.  The first time I
+used <tt>gnuplot help</tt>, I did not know that you could work your way up
+to higher levels by simply hitting the return key.  I tried quit, exit,
+and a number of other things, and finally killed the program.  Only
+later I saw someone simply typing nothing, which was the solution!
+Okay, let's make a postscript file <tt>forward2_0.01.ps</tt> so that we
+can print the orbit computed by invoking <tt>forward_euler2</tt> for
+step size <tt>0.01</tt>.
+
+*Erica*:
+Let's make it <tt>terminal postscript eps</tt>.  That way I can encapsulate
+the resulting postscript file directly into my working paper, as the
+help statement just told us.
+
+*Carol*:
+Fine.  Note, by the way, that gnuplot does not require us to type
+words like <tt>terminal</tt> in full: <tt>term</tt> is fine, or even {\st
+ter} or <tt>te</tt>.  You might guess that <tt>t</tt> would not be enough to
+specify, given that there are other commands starting with t, like
+<tt>tics</tt>.  In our case, even <tt>t</tt> will work, since <tt>terminal</tt>
+happens to be the first command starting with a t, alphabetically, as
+you can see above.  However, for the human reader a good compromise is
+<tt>set term post eps</tt> which is much easier to type than
+<tt>terminal postscript eps</tt> and still easily recognizable.
+
+<tt>
+|gravity> gnuplot
+gnuplot> plot "forward2_0.01.out"
+gnuplot> set term post eps
+Terminal type set to 'postscript'
+Options are 'eps noenhanced monochrome dashed defaultplex "Helvetica" 14'
+gnuplot> set output "forward2_0.01.ps"
+gnuplot> replot
+gnuplot> q
+|gravity> 
+</tt>
+
+*Carol*:
+Let's print it out:
+
+<tt>
+|gravity> lpr "forward2_0.01.ps"
+|gravity>
+</tt>
+
+*Erica*:
+Great!  My first figure for my working paper.  I wonder how long this
+paper is going to be.  I guess it depends on how much patience you
+both have -- if this is fun, I could even go on to make it a book!
+
+*Dan*:
+Or even a book series, for that matter?
+
+*Carol*:
+Don't be ironic, who knows what our first baby steps will lead to.
+
+== Finding (slow) Convergence
+
+*Erica*:
+Ready for a ten times smaller time step?
+
+*Carol*:
+We aim to please!
+
+  |gravity> forward_euler2 > forward2_0.001.out
+  Please provide a value for the time step
+  0.001
+  |gravity> tail -2 !$
+  tail -2 forward2_0.001.out
+  2.01436 0.162565 0 -0.152876 0.258696 0
+  2.0142 0.162824 0 -0.15312 0.258677 0
+
+\output{chap3/forward2c.output}
+
+*Dan*:
+Somewhat better, but still the separation vector has a length greater
+than unity, which is not physical.  Let's look at a picture.  I saw
+that you wrote this line <tt>set size ratio -1</tt> in <tt>.gnuplot</tt>, so
+I guess you only have to issue the plot command.
+
+<tt>
+|gravity> gnuplot
+gnuplot> plot "forward2_0.001.out"
+gnuplot> quit
+|gravity> 
+</tt>
+
+\begin{figure}[ht]
+\begin{center}
+\epsfxsize = 4.5in
+\epsffile{chap3/forward2_0.001.ps}
+\caption[Two-body orbit with a forward-Euler integrator, time step
+<tex>$dt = 0.001$</tex>]
+{Relative orbit for the second attempt to integrate a two-body system with a
+forward-Euler integrator, with time step <tex>$dt = 0.001$</tex>}
+\label{fig:forward2-0.001}
+\end{center}
+\end{figure}
+
+*Erica*:
+At least we got two revolutions this time.
+
+*Carol*:
+Let's try a couple more steps of ten refinement of the step size.
+But before we do that, let us be a bit more frugal in our output.
+I just noticed that our output files are growing alarmingly in size:
+
+<tt>
+|gravity> ls -l *.out
+-rw-r--r--    1 carol    students    39633 Dec 24 07:07 forward1.out
+-rw-r--r--    1 carol    students   404204 Dec 24 11:27 forward2_0.001.out
+-rw-r--r--    1 carol    students    39673 Dec 24 10:31 forward2_0.01.out
+|gravity> 
+</tt>
+
+*Dan*:
+I see!  Our last file had a size of 400 kbytes, which is not much of a
+problem.  But with two more steps of refinement we would wind up with
+a 40 Mbyte file.  Even though our disk space is large enough, it would
+surely slow down both gnuplot and postscript plotting.  How about
+restricting output to occur only once every <tt>dt_out = 0.01</tt>, even
+if our time step <tt>dt < dt_out</tt>?
+
+*Carol*:
+That's what I had in mind.  Time for a new version:
+
+\code{forward_euler3.C}{chap3/forward_euler3.C}
+
+*Carol*:
+As before, let us first look at the end of the output file, to see
+whether the numbers at least look reasonable.
+
+  |gravity> g++ -o forward_euler3 forward_euler3.C
+  |gravity> forward_euler3 > forward3_0.0001.out
+  Please provide a value for the time step
+  0.0001
+  |gravity> tail -2 !$
+  tail -2 forward3_0.0001.out
+  0.323206 0.388479 0 -1.51485 -0.250448 0
+  0.307933 0.385822 0 -1.54017 -0.28151 0
+  |gravity> ll *.out
+  -rw-r--r--    1 carol    students    39633 Dec 24 07:07 forward1.out
+  -rw-r--r--    1 carol    students   404204 Dec 24 11:27 forward2_0.001.out
+  -rw-r--r--    1 carol    students    39673 Dec 24 10:31 forward2_0.01.out
+  -rw-r--r--    1 carol    students    40598 Dec 27 12:51 forward3_0.0001.out
+  |gravity> 
+
+\output{chap3/forward3.output}
+
+*Dan*:
+Ah, for the first time the separation vector is consistent, at least
+in principle, since now it is shorter than unity.
+
+*Carol*:
+And the output size is under control now.  Time to make a plot, but
+I'm getting a little tired of the label written in the top right hand
+corner with the one lonely plot symbol.  I'll add the <tt>notitle</tt>
+command.
+
+<tt>
+|gravity> gnuplot
+gnuplot> plot "forward3_0.0001.out" notitle
+gnuplot> quit
+|gravity> 
+</tt>
+
+\begin{figure}[ht]
+\begin{center}
+\epsfxsize = 4.5in
+\epsffile{chap3/forward3_0.0001.ps}
+\caption[Two-body orbit with a forward-Euler integrator, time step
+<tex>$dt = 0.0001$</tex>]
+{Relative orbit for the third attempt to integrate a two-body system with a
+forward-Euler integrator, with time step <tex>$dt = 0.0001$</tex>}
+\label{fig:forward3-0.0001}
+\end{center}
+\end{figure}
+
+*Carol*:
+Three revolutions and counting!  And there does seem to be a definite
+convergence toward an ellipse, which is encouraging.  Okay, ready for
+another shrinking by ten of the time step?
+
+  |gravity> forward_euler3 > forward3_0.00001.out
+  Please provide a value for the time step
+  0.00001
+  |gravity> tail -2 !$
+  tail -2 forward3_0.00001.out
+  0.496172 -0.378817 0 1.21125 0.0849565 0
+  0.508183 -0.377891 0 1.19105 0.100179 0
+  |gravity>
+
+\output{chap3/forward3a.output}
+
+*Dan*:
+We are finally beginning to give the computer a workout, with our
+request to take a million steps!  But note that we are still not
+converging very quickly.  The numbers are once more quite different
+from what we saw when we took `only' a hundred thousand steps!
+
+<tt>
+|gravity> gnuplot
+gnuplot> plot "forward3_0.00001.out" notitle
+gnuplot> quit
+|gravity> 
+</tt>
+
+\begin{figure}[ht]
+\begin{center}
+\epsfxsize = 4.5in
+\epsffile{chap3/forward3_0.00001.ps}
+\caption[Two-body orbit with a forward-Euler integrator, time step
+<tex>$dt = 0.00001$</tex>]
+{Relative orbit for the fourth attempt to integrate a two-body system with a
+forward-Euler integrator, with time step <tex>$dt = 0.00001$</tex>}
+\label{fig:forward3-0.00001}
+\end{center}
+\end{figure}
+
+*Carol*:
+But this time the orbit looks almost natural.  I bet that with another
+refinement of the step size by a factor ten, we would finally see
+convergence.
+
+  |gravity> forward_euler3 > forward3_0.000001.out
+  Please provide a value for the time step
+  0.000001
+  |gravity> tail -2 !$
+  tail -2 forward3_0.000001.out
+  0.570929 -0.366472 0 1.08014 0.182609 0
+  0.58164 -0.364588 0 1.06201 0.19411 0
+  |gravity>
+
+\output{chap3/forward3b.output}
+
+*Dan*:
+Disappointing, I must say.  At least we got the first decimal right,
+more or less, but that's about it.  Let's see whether the figure
+finally looks like an honest ellipse.
+
+<tt>
+|gravity> gnuplot
+gnuplot> plot "forward3_0.000001.out" notitle
+gnuplot> quit
+|gravity> 
+</tt>
+
+\begin{figure}[ht]
+\begin{center}
+\epsfxsize = 4.5in
+\epsffile{chap3/forward3_0.000001.ps}
+\caption[Two-body orbit with a forward-Euler integrator, time step
+<tex>$dt = 0.000001$</tex>]
+{Relative orbit for the fifth attempt to integrate a two-body system with a
+forward-Euler integrator, with time step <tex>$dt = 0.000001$</tex>}
+\label{fig:forward3-0.000001}
+\end{center}
+\end{figure}
+
+*Erica*:
+That looks more like it.  Interesting, by the way, to see the speed up
+of the relative motion of the two particles near pericenter, in the
+last three figures: you can see that from the wider spacing of the
+particles, something that was lost when we went to a higher density of
+output points.
+
+*Carol*:
+Let's do one more step of ten refinement in step size.  Modern
+computers should not have much trouble taking a hundred million time
+steps, after all.  And since the plot will not change much any more,
+let us directly look at the last lines of the output:
+
+  |gravity> forward_euler3 | tail -2 
+  Please provide a value for the time step
+  0.0000001
+  0.577881 -0.364877 0 1.06776 0.191061 0
+  0.588468 -0.36291 0 1.0498 0.202265 0
+  |gravity>
+
+\output{chap3/forward3c.output}
+
+*Carol*:
+There you go, Dan, convergence to two significant digits at least!
+Even so, I guess we are all convinced that first-order methods are not
+the way to go.  Time to go to second order!
+
+*Erica*:
+So let's write a leapfrog code.  But before doing so, there is still
+one addition I would like to make to our poorly performing forward
+Euler code.  You see, for the two-body problem we can get a pretty
+good idea of what's going on by looking at the orbit, because we know
+what to expect.  In fact, we can solve the orbit analytically, and
+therefore we can compute everything to arbitrary accuracy that way,
+much faster and cheaper than doing it the hard way, through numerical
+orbit integration.  The point is that for an <tex>$N$</tex>-body system with
+<tex>$N>2$</tex> the orbits don't look recognizable at all, and we would be hard
+put to judge the performance of a code from staring at orbital figures.
+
+*Dan*:
+Ah, you mean that we should try to define, what did they call it in
+physics class, conserved quantities?
+
+*Erica*:
+Exactly.  And the simplest such quantity is the total energy of the
+<tex>$N$</tex>-body system.  We know that it is rigorously conserved, so any
+deviation between beginning and end of a numerical integration session
+must be purely the result of numerical errors.
+
+*Carol*:
+Okay, let's code that up too, and then call it a day.  What are the
+equations?
+
+== Checking Energy Conservation
+
+*Erica*:
+Here are the expressions for the kinetic energy <tex>$E_{\rm kin}$</tex> and the
+potential energy <tex>$E_{\rm pot}$</tex>.  The total energy is just the sum of
+both terms.
+
+:eqnarray:
+E_{\rm kin} & = & \half \frac{M_1 M_2}{M_1 + M_2} v^2 
+\label{two-body-E-kin-full} \\
+E_{\rm pot} & = & - \frac{M_1 M_2}{r} \label{two-body-E-pot-full}
+
+*Erica*:
+So far, we have used units in which <tex>$M_1 + M_2 = 1$</tex>.  We have not
+specified the individual masses, since we did not have to; the
+equations of motion are invariant with respect to how we divide our
+unit of mass over the two bodies.  But the interpretation in terms of
+the physical energy of the system does depend on the value of <tex>$M_2$</tex>,
+which is conventionally chosen as the less massive body.  Once we
+choose <tex>$M_2$</tex>, the mass of the other body is given as <tex>$M_1 = 1 - M_2$</tex>.
+
+*Carol*:
+I would not have guessed that the earlier invariance would be broken.
+Can you make that plausible by hand waving, without deriving equations?
+
+*Dan*:
+Let me try.  If we start with the Earth-Moon system, we know that the
+mass of the Moon is far smaller than the mass of the Earth.  Their
+mass ratio is roughly 1 : 81, so the Moon has not much more than one
+percent of the Earth's mass.  In our notation,
+<tex>$M_2 = 1/82 = 0.012\dots$</tex>\ \ .  In the center-of-mass system, the
+velocities of the two bodies are inversely proportional to their
+masses.  Kinetic energy, however, is proportional to the square of the
+velocities, and therefore the motion of the Moon carries about 81
+times more kinetic energy than the motion of the Earth, around their
+common center of gravity --- which lies inside the Earth, by the way,
+so the Earth barely moves.
+
+*Carol*:
+Let me guess your next step.  You want to compare the Earth-Moon
+system with another system with an even larger mass ratio?  Aha, I
+see.  Why not go all the way, and replace the Moon with a pebble,
+orbiting the Earth at the same distance, but without the Moon being
+there.  The total mass is almost the same (we could even give the
+Earth an extra percent of mass to preserve <tex>$M_1 + M_2$</tex>), but clearly
+the kinetic energy of the pebble is far far smaller than the kinetic
+energy of the Moon.  And using your argument, the pebble will still
+carry almost all the kinetic energy of the Earth-pebble system, as did
+the Moon before.  The velocities of pebble and Moon are almost the same,
+which means that for the whole system <tex>$E_{kin} \propto M_2$</tex> in the
+limit where <tex>$M_2 \ll M_1$</tex>.  Indeed, that is what
+Eq. \ref{two-body-E-kin-full} tells us.  Now I feel comfortable with
+that result.
+
+*Erica*:
+If we continue like this, you'll both be turned into astronomers!
+Yes, it is always a good idea to look at a new formula, and to think
+of some limiting cases, to check whether the equation makes sense.  Of
+course, making sense does not really prove that the equation is correct.
+We still have to check the derivation, which is given in many text books
+on classical dynamics.  However, we are at least guarded against most
+typos, and more importantly, it gives us more of an idea of the
+physics behind the mathematics.
+
+*Dan*:
+It is interesting that Eqs. \ref{two-body-E-kin-full},
+\ref{two-body-E-pot-full} have the exact same mass dependence, if we
+switch back again to our notation in which <tex>$M_1 + M_2 = 1$</tex>.
+
+*Erica*:
+Yes, and we can bring that out more clearly by introducing the notion
+of what is called the `reduced mass' <tex>$\mu$</tex> of a two-body system:
+
+:equation:
+\mu = \frac{M_1 M_2}{M_1 + M_2}
+
+*Carol*:
+I see, if we define <tex>$M = M_1 + M_2$</tex> we then get:
+
+:eqnarray:
+E_{\rm kin} & = & \half \mu v^2 \\
+E_{\rm pot} & = & - \frac{\mu M}{r}
+
+*Carol*:
+Nice and elegant!
+
+*Dan*:
+Let me try to make it more elegant.  I'm beginning to remember more
+and more now from my physics class.  There was this notion of specific
+something as something per unit mass.  How about defining those two
+energy components as specific energies, per unit reduced mass?  Let us
+use a script <tex>$\mathcal{E}$</tex>, rather than roman E, for that notion.  In
+our notation, with unit total mass, we will have the following
+specific energies:
+
+:equation:
+\mathcal{E}_{\rm kin} = \half v^2
+\qquad
+;
+\qquad
+\mathcal{E}_{\rm pot} = - \frac{1}{r}
+
+*Carol*:
+So elegant and skinny that they almost disappear!  But I suggest that
+we keep calling those expressions simply kinetic and potential energy,
+since we all know what we're talking about, rather than the mouthful
+`specific kinetic and potential energy with respect to the reduced mass'.
+
+*Erica*:
+Agreed!  Time to code it up.
+
+*Carol*:
+Does this look reasonable?
+
+\code{forward_euler4.C}{chap3/forward_euler4.C}
+
+*Dan*:
+Looks good to me.  Let's start with our good old <tt>dt = 0.01</tt>
+
+  |gravity> g++ -o forward_euler4 forward_euler4.C
+  |gravity> forward_euler4 > forward4_0.01.out
+  Please provide a value for the time step
+  0.01
+  Initial total energy E_in = -0.875
+  Final total energy E_out = 0.393987
+  absolute energy error: E_out - E_in = 1.26899
+  relative energy error: (E_out - E_in) / E_in = -1.45027
+  |gravity>
+
+\output{chap3/forward4.output}
+
+*Dan*:
+Well, we knew that it was bad, and the energy check confirms it.
+The energy even changes sign --- which of course we knew, since we saw
+the particle escaping, and only positive-energy orbits can show escape.
+
+*Carol*:
+Rather than producing more output files, let's just confirm we have
+the same output in this case, after which I suggest we call our friend
+<tt>/dev/null</tt> to the rescue.
+
+  |gravity> tail -2 forward4_0.01.out
+  7.69375 -6.27772 0 0.812207 -0.5742 0
+  7.70187 -6.28346 0 0.812128 -0.574136 0
+  |gravity>
+
+\output{chap3/forward4a.output}
+
+*Dan*:
+Good!  The same as before, with still the one step overshoot.  Let's
+look at the other cases.
+
+  |gravity> forward_euler4 > /dev/null
+  Please provide a value for the time step
+  0.001
+  Initial total energy E_in = -0.875
+  Final total energy E_out = -0.449681
+  absolute energy error: E_out - E_in = 0.425319
+  relative energy error: (E_out - E_in) / E_in = -0.486079
+  |gravity> !!
+  Please provide a value for the time step
+  0.0001
+  Initial total energy E_in = -0.875
+  Final total energy E_out = -0.80008
+  absolute energy error: E_out - E_in = 0.0749198
+  relative energy error: (E_out - E_in) / E_in = -0.0856226
+  |gravity> !!
+  Please provide a value for the time step
+  0.00001
+  Initial total energy E_in = -0.875
+  Final total energy E_out = -0.864747
+  absolute energy error: E_out - E_in = 0.0102526
+  relative energy error: (E_out - E_in) / E_in = -0.0117172
+  |gravity> !!
+  Please provide a value for the time step
+  0.000001
+  Initial total energy E_in = -0.875
+  Final total energy E_out = -0.873971
+  absolute energy error: E_out - E_in = 0.00102934
+  relative energy error: (E_out - E_in) / E_in = -0.00117639
+  |gravity>
+
+\output{chap3/forward4b.output}
+
+*Dan*:
+How nice to see the errors shrink as snow for the sun!
+
+*Carol*:
+On a rather cold day, with a very low sun.  Yes, it converges, but
+very sloooooowly.
+
+*Erica*:
+I'm glad we went all the way to ten million steps, in the last
+calculation, even though it took more than a minute to complete.
+In the last two runs we have just confirmed the first-order character
+of the forward Euler integration scheme.  Making the time step ten
+times smaller makes the error ten times smaller, to within the first
+three significant digits!  This is something that was not obvious at
+all during the earlier runs, where the errors were so large that
+nonlinear effects overwhelmed the asymptotic proportionality between
+error and time step, for the limit <tex>$dt \rightarrow 0$</tex>.
+
+*Carol*:
+Great!  And a great point to stop.  This has been a far longer session
+than I had anticipated.  Let's get back tomorrow, and then someone
+else should take over the controls.
+
+*Dan*:
+I'd be happy to do so.  This has been fun, and I look forward to
+writing a second-order code.
+
+*Erica*:
+Happy dreams!
+
+<b>EXERCISES</b>
+
+<b>Ex. 3.1:</b>
+In a first-order algorithm, the error in position after one time
+step is quadratic in the size of the time step.  Yet Erica has stated that
+a first-order algorithm produces errors that are first-order in the size
+of the time step.  There seems to be a contradiction here.  What is going on?
+
+Hint: make a distinction between the local error produced after a
+single time step, and the global error that builds up after taking
+however many time steps are needed to cover a fixed interval in time,
+say from <tex>$t=0$</tex> to <tex>$t=1$</tex>.
+
+Using the same reasoning, convince yourself of the fact that an algorithm
+of order _k_ is accurate to that order _k_ per time step (i.e. has errors
+that are proportional to <tex>$(\Delta t)^{k+1}$</tex> per time step), and
+yet shows global errors for a fixed time interval that are of order _k_
+(proportional to <tex>$(\Delta t)^k$</tex>).
+
+<b>Ex. 3.2:</b>
+convince yourself that the following program,
+<tt>euler_array_inject.rb</tt>:
+
+ :inccode: .euler_array_inject.rb
+
+does the same thing as <tt>forward_euler1.rb</tt>.  Check
+this both by inspecting the logic of the new code, and by running the
+two codes to see whether you get the exact same answers in both cases.
