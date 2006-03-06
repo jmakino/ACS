@@ -46,7 +46,7 @@ the structure and purpose and functionality of the different parts.
 Documentation is key, but not only documentation of _what_ a given
 program does, but also _how_ it fits in with other programs, and more
 importantly <i>what type</i> of vision it is part of, _why_ the many
-design decisions leading to this program where made the way they where,
+design decisions leading to this program were made the way they were,
 _how_ it will be possible to modify and/or extend that design, and so on.
 
 After having struggled for more than two decades in our professional

@@ -1,4 +1,4 @@
-= The Forward-Euler Algorithm
+= Writing the Code
 
 == Choosing an Algorithm
 
@@ -387,17 +387,3 @@ to evolve our two-body problem for ten time units, from <tt>t = 0</tt> till
 
  :inccode: .euler_elliptic.rb
 
-*Carol*: Well, let's see what happens.  I don't want to look at a thousands
-lines of output.  I will first run the code, putting the results in
-an output file,
-
- :command: cp euler_elliptic.rb euler.rb
- :commandoutput: ruby euler.rb > euler.out
-
-and then look at the beginning and at the end of the file:
-
- :commandoutput: head -5 euler.out
- :commandoutput: tail -5 euler.out
-
-*Dan*: A lot of numbers.  Now what?  We'd better make a picture of the
-results, to see whether these numbers make sense or not.
