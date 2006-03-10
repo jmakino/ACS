@@ -38,16 +38,17 @@ approach to have applications for software development in general, and
 we would welcome and encourage any attempt by others to extend our
 philosophy to other areas of software development.
 
-At the core of our approach lies the notion that research = education,
-in any large-scale software project.  As soon as such a project grows
-beyond what any one person can keep in mind and view as a whole, the
-different researchers have no choice but to educate each other about
-the structure and purpose and functionality of the different parts.
-Documentation is key, but not only documentation of _what_ a given
-program does, but also _how_ it fits in with other programs, and more
-importantly <i>what type</i> of vision it is part of, _why_ the many
-design decisions leading to this program were made the way they were,
-_how_ it will be possible to modify and/or extend that design, and so on.
+At the core of our approach lies the notion that, in any large-scale
+software project, research = education.  As soon as such a project
+grows beyond what any one person can keep in mind and view as a whole,
+the different researchers have no choice but to educate each other
+about the structure and purpose and functionality of the different
+parts.  Documentation is key, but not only documentation of _what_ a
+given program does, but also _how_ it fits in with other programs, and
+more importantly <i>what type</i> of vision it is part of, _why_ the
+many design decisions leading to this program were made the way they
+were, _how_ it will be possible to modify and/or extend that design,
+and so on.
 
 After having struggled for more than two decades in our professional
 work with the limitations of software products of all kinds --
@@ -61,8 +62,8 @@ documentation.
 
 == Open Knowledge
 
-What we mean with complete documentation goes beyond the requirement
-of `open source', access to the source code.  This is an important
+What we mean by complete documentation goes beyond the requirement
+of `open source' access to the source code.  This is an important
 first step, but it is only the beginning.  In order to use a complex
 piece of software comfortably, wearing it like well fitting clothes,
 it should not harbor any secrets.  And the best kept secret, even for
@@ -73,7 +74,7 @@ extend the code is likely to be haphazard at best, and likely to lead
 to proliferation of code growth with dissonant and poorly connected
 pieces, leading to the phenomenon of `spaghetti code' before long.
 
-When we reached these conclusions, a few years ago, we decided that
+When we reached these conclusions a few years ago, we decided that
 the only radical solution to the problem of software development would
 be to make the design process itself `open source', on a human level
 as well as on a code level.  Software should run accurately on a computer.
@@ -106,12 +107,12 @@ that product in major new ways.
 == Dialogues
 
 The solution we felt driven to was simple, in retrospect: to take the
-classic device of a literary dialogue, following in the footsteps of
+classic literary device of a dialogue, following in the footsteps of
 Plato and Galileo, who used dialogues to convey not only the information
 content of their knowledge, but also the flavor and setting and
 ramifications.
 
-Of course, we realized that it would take a lot of our time, to write
+Of course, we realized that it would take a lot of our time to write
 dialogues covering the whole process of software development.  In
 fact, we had no idea at all, in the beginning, of how much time this
 would actually take us.  The amount of essential but tacit knowledge
@@ -120,7 +121,7 @@ the expert is aware of, as emphasized already half a century ago by
 the physical chemist turned social scientist Michael Polanyi.
 
 Even in areas where we were convinced that we had all the
-necessary knowledge under our finger tips, as soon as we forced
+necessary knowledge in our finger tips, as soon as we forced
 ourselves to be explicit about all the `hows' and `whys', we found
 ourselves discovering new aspects in the middle of our dialogue
 writing.  In quite a number of cases, we found new and better ways to

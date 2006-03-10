@@ -39,8 +39,8 @@ So far, we have started two projects within the ACS series.  The
 umbrella project is called <i>Open Knowledge</i>.  Volumes in this
 series will address issues that are common for all branches of
 computational science.  Other projects will be more specific,
-addressing issues for a particle set of scientific problems.  The
-<i>Kali</i> project is an example of a project in astrophysics, aimed
+addressing issues for a particular set of scientific problems.  The
+<i>Maya</i> project is an example of a project in astrophysics, aimed
 at developing a computational laboratory for the study of dense
 stellar systems.
 
@@ -136,7 +136,8 @@ special gratitude to the Yukawa Institute of Theoretical Physics in
 Kyoto, where we have produced a substantial part of our ACS material,
 including its basic infrastructure, during extended visits made
 possible by the kind invitations to both of us by Professor Masao
-Ninomiya.
+Ninomiya.  We thank Martin Hansen and Douglas Heggie for comments on
+the manuscript.
 
 Piet Hut and Jun Makino
 
