@@ -7,3 +7,8 @@ blockstep-s: blockstep.c
 	cc -DSIMPLE_SYMMETRIC -O4 -o blockstep-s blockstep.c -lm
 blockstep-m: blockstep.c
 	cc -DMIN_BLOCKSTEP -O4 -o blockstep-m blockstep.c -lm
+nbody: nbody.c
+	cc -g -O4 -o nbody nbody.c -lm
+
+note.html: note.ok nbody.c
+	acsdoc.rb note.ok nbody.c
