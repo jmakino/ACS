@@ -12,11 +12,11 @@ from a cancellation of attraction and repulsion in bulk matter, since
 there tend to be as almost exactly as many positive as negative
 charges in any sizable piece of matter.  In contrast, gravitational
 interactions between particles are always attractive.  Therefore, the
-larger a piece of matter is, the more gravitational force it exerts on
-its surroundings.
+more massive a piece of matter is, the more gravitational force it
+exerts on its surroundings.
 
-This dominance of gravity at long distances makes the job of
-modeling a chunk of the Universe easier.  To a first approximation, it
+This dominance of gravity at long distances simplifies the job of
+modeling a chunk of the Universe.  To a first approximation, it
 is often a good idea to neglect the other forces, and to model the
 objects as if they were interacting only through gravity.  In many
 cases, we can also neglect the intrinsic dimensions of the objects,
@@ -26,27 +26,36 @@ out most of the physics and chemistry that would be needed in a more
 accurate treatment.
 
 The objects we will be studying are stars, and the environment we will
-focus on are dense stellar systems, where the stars are so close
-together that they will occasional collide and in general have
-frequent interesting and complex interactions.
+focus on are dense stellar systems, star clusters where the stars are
+so close together that they will occasionally collide and in general
+have frequent interesting and complex interactions.  Some of the stars
+can take on rather extremely dense forms, like white dwarfs and
+neutron stars, and some stars may even collapse to form black holes.
+However, in first approximation we can treat all these different types
+of objects as point particles, as far as their gravitational
+interactions are concerned.
 
 We lay the groundwork for modeling a system of stars.  We start
 absolutely from scratch, with a most simple code of less than a page
 long.  In many small steps we then improve that code, pointing out the
 many pitfalls along the way, on the level of programming as well as
 astrophysical understanding.  We introduce helpful code development
-facilities and give many hints as to how to balance simplicity,
-efficiency, clarity, and modularity of the code.  Our intention is to
-introduce the topic from square one, and then to work our way up to a
-robust set of codes with which one can do actual research.  In later
-volumes in this series, we will continue to develop these codes,
-adding many useful diagnostic tools, and integrating those in a full
-production-level software environment.
+facilities and visualization tools and give many hints as to how to
+balance simplicity, efficiency, clarity, and modularity of the code.
+Our intention is to introduce the topic from square one, and then to
+work our way up to a robust set of codes with which one can do actual
+research.  In later volumes in this series, we will continue to
+develop these codes, adding many useful diagnostic tools, and
+integrating those in a full production-level software environment.
 
 == Galactic Suburbia
 
-The sun is a star like any other among the hundred billion or so stars
-in our galaxy.  It is unremarkable in its properties.  Its mass is in
+Within the visible part of the universe, there are some hundred
+billion galaxies.  Our galaxy is a rather typical spiral galaxy,
+one of those many billions, and within our galaxy, our sun is a star
+like any other among the hundred billion or so stars in our galaxy.
+
+The su is unremarkable in its properties.  Its mass is in
 the mid range of what is normal for stars: there are others more than
 ten times more massive, and there are also stars more ten times less
 massive, but the vast majority of stars have a mass within a factor
@@ -69,7 +78,7 @@ crashing into each other.  A quick estimate tells us that the sun has
 a chance of hitting another star of less than <tex>$10^{-16}$</tex>
 per year.  In other words, we would have to wait at least
 <tex>$10^{16}$</tex> years to have an appreciable chance to witness
-such a collision.  Given that the sun is less than five billion years
+such a collision.  Given that the sun is less than five Gigayears
 old, it is no surprise that it does not show any signs of a past
 collision: the chance that that would have happened was less than one
 in a million.  Life in our galactic suburbs is really quite safe for a
@@ -77,7 +86,8 @@ star.
 
 There are other places in our galaxy that are far more crowded, and
 consequently are a lot more dangerous to venture into.  We will have
-a brief look at four types of crowded neighborhoods.
+a brief look at four types of crowded neighborhoods: globular
+clusters, galactic nuclei, star forming regions, and open clusters.
 
 == Globular Clusters
 
@@ -114,9 +124,9 @@ giant stage lasts shorter than the so-called main-sequence life time
 of a star, during which they have a normal appearance and diameter).
 The other reason is that many stars are part of a double star system,
 a type of dynamic spider web that can catch a third star, or another
-double star, into a temporary three- or four-body dance.  Once engaged
-in such a dance, the local stellar crowding is enormously enhanced,
-and the chance for collisions is greatly increased. 
+double star, into a temporarily bound three- or four-body system.
+Once engaged in such a tightly bound dance, the chance for collisions
+between the stars is greatly increased.
 
 A detailed analysis of all these factors predicts that a significant
 fraction of stars in the core of a dense globular cluster such as M15
@@ -143,9 +153,14 @@ the Northern branch of the two Gemini telescopes, which is located in
 Hawaii on top of the mountain Mauna Kea.
 
  :figure: gc.jpg 10cm gc
- An image of the central region of our galaxy, taken with the Gemini
- North telescope.  The center is located on the right just above the
- bottom edge of the image.
+ An image of the central region of our galaxy, taken with the
+ <web>http://www.astro.ucla.edu/~jlu/gc/pictures/lgs.shtml|Keck telescope</web>.
+ The central black hole is located near the head of the arrow labeled
+ <tex>${\rm Sgr A}^*$</tex>.  The size of this image is two light
+ years by two light years, and the crowding is enormous: in the
+ neighborhood of the sun, typical distances between stars are several
+ lightyears, and a snapshot like this most likely would show just one
+ star or none at all.
 
 In the very center of our galaxy, a black hole resides with a mass a
 few million times larger than the mass of our sun.  Although the black
@@ -204,20 +219,19 @@ These are the sites where stars are born.  Fig. ref(orion) taken by
 the Japanese Subaru telescope in Hawaii shows the Orion Nebula, also
 known as M42, at a distance of 1500 light years from the sun.  This
 picture, too, is taking in infrared light in order to penetrate the
-dusty regions surrounding the young stars.  The four brightest stars
-in the center, collectively known as the Trapezium, form the most
-massive stars of a larger conglomeration of stars, all recently formed
-from the gas and dust that still surrounds them.
+dusty regions surrounding the young stars.  These stars all recently
+formed from the gas and dust that still surrounds them.
 
 In order to study collisions in these star forming regions, we can no
 longer treat the stars are point masses.  Many of the collisions take
-place while the stars are still in the process of forming.  While a
-protostar is still in the process of contracting from the gas cloud
-in which it was born, it presents a larger target for collisions with
-other stars.  In addition, a single contracting gas cloud may fission,
-giving rise to more than one star at the same time.  In this way, the
-correlated appearance of protostars is even more likely to lead to
-subsequent collisions.
+place while the stars are still in the process of forming, before they
+settle into their normal equilibrium state.  While a protostar is
+still in the process of contracting from the gas cloud in which it was
+born, it presents a larger target for collisions with other stars.  In
+addition, a single contracting gas cloud may fission, giving rise to
+more than one star at the same time.  In this way, the correlated
+appearance of protostars is even more likely to lead to subsequent
+collisions.
 
 The proper way to model these processes is to combine gas dynamics and
 stellar dynamics.  Much progress has been made recently in this area.
@@ -234,7 +248,7 @@ clouds in their vicinity are often enough to break up the fragile
 gravitational hold they initial have over each other.  Some of the
 more massive groups of newly formed stars, however, are sufficiently
 tightly bound to survive their environmental harassment.  They form
-the so-called open clusters, where there name indicates that they have
+the so-called open clusters, where their name indicates that they have
 central densities that are typically less than what we see in globular
 clusters.
 
@@ -247,8 +261,10 @@ as observed by the Anglo-Australian Observatory.  Since this cluster
 is old enough to have lost its gas and dust, all stars are visible at
 normal optical wavelengths, at which this image is taken.  In the
 central regions of this cluster, there are indications that some of
-the stars have undergone close encounters or even collisions.
-Consequently, this star cluster qualifies as a dense stellar system.
+the stars have undergone close encounters or even collisions.  In
+particular, some of the so-called blue stragglers may be merger
+products.  Consequently, this star cluster qualifies as a dense
+stellar system.
 
 Open clusters typically have fewer members than globular clusters.
 Also, they are younger.  Both facts makes it easier to simulate open
@@ -262,28 +278,28 @@ investigation of galactic nuclei.
 
 == Writing your own star cluster simulator
 
-Astronomers have half a century of experience in writing
-computer codes to simulate dense stellar systems.  The first published
-results date back to 1960, and it was in the subsequent decade that it
-became clear just how tricky it was to simulate a group of interacting
-stars.  The task seems so easy: just integrate Newton's equations of
-motion for each star, under the influence of the gravitational pairwise
-interactions of all other stars.  Indeed, it is straightforward to
-write a simple code to do so, as we will see below.  And as long as
-all stars remain fairly well separated from each other, even a simple
-code will do a reasonably good job.
+Astronomers have half a century of experience in writing computer
+codes to simulate dense stellar systems.  The first published results
+date back to 1960, and it was in the subsequent decade that it became
+clear just how tricky it was to simulate a group of interacting stars.
+The task seems so easy: for each star, just integrate Newton's
+equations of motion (an object's acceleration is given by the applied
+force divided by the mass of the object) under the influence of the
+gravitational pairwise interactions of all other stars.  Indeed, it is
+straightforward to write a simple code to do so, as we will see below.
+And as long as all stars remain fairly well separated from each other,
+even a simple code will do a reasonably good job.
 
 In practice, though, even a small group of stars will spontaneously
 form one or more double stars.  This was discovered experimentally in
 the early sixties.  One way to understand this result, after the fact,
-is from an energetic point of view.  When a double star, or binary as they
-are generally called, is formed, energy is released.  Since the two stars
-in a binary are bound, the potential energy is larger than the kinetic
-energy, and the total energy is negative.  When three stars come together
-randomly, there is a chance that two of the three are left in a bound
-state, while the third one escapes, carrying the excess energy.  Left
-by itself, a stellar system will exploit this energy liberation
-mechanism by spontaneously forming binaries.
+is from an energetic point of view.  When a double star, or binary as
+they are generally called, is formed, energy is released.  Since the
+two stars in a binary are bound, the total energy is negative.  When
+three stars come together randomly, there is a chance that two of the
+three are left in a bound state, while the third one escapes, carrying
+the excess energy.  Left by itself, a stellar system will exploit this
+energy liberation mechanism by spontaneously forming binaries.
 
 As soon as even one binary appears, a simple code with constant time
 steps will give unacceptably large errors.  The first modification
@@ -299,13 +315,13 @@ close neighbors were stepped forward in time more frequently than
 stars at large, and in this way the computational power was brought to
 where it was most needed.
 
-This modification in itself brought gravitational $N$-body codes already
+This modification in itself brought gravitational N-body codes already
 well outside the range of systems that are normally discussed in text
 books on numerical integration methods.  The internal book keeping
 needed to write a correct and efficient code with individual time
 steps is surprisingly large, given the simplicity of the task:
 integrate the effect of pairwise attractive inverse square forces.
-But this was only a first step toward the development of modern $N$-body
+But this was only a first step toward the development of modern N-body
 codes.  The presence of tight binaries produced much more of an obstacle,
 and throughout the seventies a variety of clever mechanisms were developed
 in order to deal with them efficiently.
@@ -341,7 +357,8 @@ number of more and more distant zones together in ever larger chunks,
 for efficiency.  Triple stars have received their own special treatment,
 especially the marginally stable triples that are sometimes long-lived, 
 but continuously changed their inner state due to internal perturbations.
-The list goes on.
+The list goes on.  See Sverre Aarseth's book
+<web>http://www.cambridge.org/catalogue/catalogue.asp?isbn=0521432723|Gravitational N-Body Simulations</web>
 
 In this book, we will introduce a modern integrator, the Hermite
 scheme, developed in the 1990s, together with a variable time step

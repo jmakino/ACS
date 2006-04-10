@@ -60,22 +60,26 @@ Readers in our third group neither work in natural science nor in
 computer science.  They are simply curious how a modern software
 system is set up.  For example, they may have read about the billions
 of dollars that are lost because of late delivery of software, or
-worse, delivery of faulty software.  Perfectly functioning rockets
-have been blown up because of glitches in complex software systems.
-Newly built airports have experienced very costly delays because
-software for baggage transport was delivered way too late.  Perhaps
-you are an average user of the internet, and just curious about what
-makes writing large software environments so hard.  Perhaps you are
-working in business or finance, and you are wondering whether to
-invest in a software company.  How are you going to judge the
-soundness of the company's approach?  Having a good look in the
-kitchen will help.  Even better, helping a hand as an apprentice in
-the kitchen would be even better.  This is exactly what this book
-offers.
+worse, delivery of faulty software.  Newly built airports have
+experienced very costly delays because software for baggage transport
+was delivered way too late.  Perfectly functioning rockets have been
+blown up because of glitches in complex software systems (see the
+stories about the loss of the
+<web>http://mars.jpl.nasa.gov/msp98/orbiter|Mars Climate Orbiter</web>
+and an
+<web>http://www.ima.umn.edu/~arnold/disasters/ariane.html|Ariane 5 rocket</web>).
+Perhaps you
+are an average user of the internet, and just curious about what makes
+writing large software environments so hard.  Perhaps you are working
+in business or finance, and you are wondering whether to invest in a
+software company.  How are you going to judge the soundness of the
+company's approach?  Having a good look in the kitchen will help.
+Even better, helping a hand as an apprentice in the kitchen would be
+even better.  This is exactly what this book offers.
 
 == Acknowledgments
 
-We thank xxx, xxx, and xxx for their comments on the
+We thank Stan Blank and his high school student for their comments on the
 manuscript.
 
 Piet Hut, Jun Makino, Peter Teuben and Hans-Peter Bischof
