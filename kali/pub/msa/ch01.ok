@@ -153,9 +153,8 @@ the Northern branch of the two Gemini telescopes, which is located in
 Hawaii on top of the mountain Mauna Kea.
 
  :figure: gc.jpg 10cm gc
- An image of the central region of our galaxy, taken with the
- <web>http://www.astro.ucla.edu/~jlu/gc/pictures/lgs.shtml|Keck telescope</web>.
- The central black hole is located near the head of the arrow labeled
+ An image of the central region of our galaxy.
+ The massive black hole is located near the head of the arrow labeled
  <tex>${\rm Sgr A}^*$</tex>.  The size of this image is two light
  years by two light years, and the crowding is enormous: in the
  neighborhood of the sun, typical distances between stars are several
@@ -170,8 +169,9 @@ which stars pass near the black hole.  In normal visible light it is
 impossible to get a glimpse of the galactic center, because of the
 obscuring gas clouds that are positioned between us and the center.
 Infrared light, however, can penetrate deeper in dusty regions.
-Fig. ref(gc) is a false-color image, reconstructed from observations
-in different infrared wavelength bands.
+Fig. ref(gc) has been obtained with the
+<web>http://www.astro.ucla.edu/~jlu/gc/pictures/lgs.shtml|Keck telescope</web>,
+in a near infrared wavelength band.
 
 In the central few light years near the black hole, the total mass of
 stars is comparable to the mass of the hole.  This region is

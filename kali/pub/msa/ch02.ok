@@ -15,20 +15,20 @@ say.
 In this book we will focus in detail on the whole process of developing
 the software needed.  We will aim at realistic detail, showing the way
 of thinking that underlies the construction of a complex and ever-growing
-software environment.  We will require patience from the reader, since it
+software environment.  We will require a bit of patience, since it
 will take a while to have a full package in hand for modeling, say,
 the long-term behavior of a star cluster, and we are presenting in
 this book only the first few steps.  This drawback, we feel, is
 more than offset by the advantages of our approach:
 
-- the reader will be fully empowered to customize _any_
+- you will be fully empowered to customize _any_
   aspect of the software environment or _any_ larger or smaller part of it;
 
-- the reader will be able to use the package with complete
+- you will be able to use the package with complete
   understanding and appreciation of what are and are not reasonable ways
   to apply the tools;
 
-- the reader will learn to embark on completely different large-scale
+- you will learn to embark on completely different large-scale
   software projects, be they in (astro)physics or other areas of scienc;
 
 - and in addition, we hope that reading these books will be as much fun
@@ -105,7 +105,8 @@ is to continuously refine and clean up code while you go along.
 
 *Erica*:
 Yes, that would be better.  In fact, I already had a brief chat
-with my supervisor, and he mentioned just that.  He said that this was
+with my supervisor, a professor specializing in stellar dynamics,
+and he mentioned just that.  He said that this was
 the last really major overhaul he hoped to do for his software
 environment.  The main reason for the planned overhaul is to make
 it flexible enough that the system from now on can grow more
@@ -292,7 +293,7 @@ a newer language C, which became quite popular . . .
 *Carol*:
 No, I'm not kidding.  Then C was extended to a new language for
 object-oriented programming, something we'll talk about later.  In a
-nerdy pun, the successor operation ``++'' from the C language was used
+nerdy pun, the increment operation ``++'' from the C language was used
 to indicate that C++ was the successor language to C.  Don't look at
 me, we'll have to live with it.
 
