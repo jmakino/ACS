@@ -1,0 +1,59 @@
+\documentclass{book}
+\usepackage{graphicx}
+    
+\begin{document}
+\parindent  0 pt
+\parskip 5 pt
+\input ../etc/def
+
+
+\title{{\sl \huge The Art of Computational Science}\\
+\bigskip
+{\sl Volume 1}\\
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+\bf Moving Stars Around
+\bigskip
+}
+\author{\bf Piet Hut, Jun Makino, Peter Teuben and Hans-Peter Bischof}
+
+
+\maketitle
+\thispagestyle{empty}
+
+
+\newpage\tableofcontents\newpage
+
+
+\chapter*{  Preface}\addcontentsline{toc}{chapter}{  Preface}
+\label{sect:1}
+
+Here is a sample figure (actually a first figure in the MSA 2.0(!?)
+book.).
+
+\begin{figure}
+\begin{minipage}{10cm}
+\renewcommand{\thempfootnote}{\arabic{mpfootnote}}
+\begin{center}
+    \includegraphics[width=10cm]{.imgs/1_m15.jpg.eps}
+\caption{ A snapshot of the globular cluster M15, taken with the Hubble Space
+ Telescope.
+\protect\footnotemark[2]
+}
+\footnotetext[2]{Sample footnote for figure}
+\label{m15}
+\end{center}
+
+\end{minipage}
+\end{figure}
+
+In Fig. \ref{m15} we see a
+picture of the globular cluster M15, taken with the Hubble Space
+Telescope.\footnote{This is usual footnote}
+
+
+
+\end{document}
