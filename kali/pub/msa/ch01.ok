@@ -147,10 +147,10 @@ orbital eccentricity.
 
 == Galactic Nuclei
 
-In Fig. ref(gc) we see an
-image of the very center of our galaxy.  This picture is taken with
-the Northern branch of the two Gemini telescopes, which is located in
-Hawaii on top of the mountain Mauna Kea.
+In Fig. ref(gc) we see an image of the very center of our galaxy.
+This picture has been obtained with the
+<web>http://www.astro.ucla.edu/~jlu/gc/pictures/lgs.shtml|Keck telescope</web>,
+in a near infrared wavelength band.
 
  :figure: gc.jpg 10cm gc
  An image of the central region of our galaxy.
@@ -169,9 +169,6 @@ which stars pass near the black hole.  In normal visible light it is
 impossible to get a glimpse of the galactic center, because of the
 obscuring gas clouds that are positioned between us and the center.
 Infrared light, however, can penetrate deeper in dusty regions.
-Fig. ref(gc) has been obtained with the
-<web>http://www.astro.ucla.edu/~jlu/gc/pictures/lgs.shtml|Keck telescope</web>,
-in a near infrared wavelength band.
 
 In the central few light years near the black hole, the total mass of
 stars is comparable to the mass of the hole.  This region is

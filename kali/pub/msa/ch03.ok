@@ -85,6 +85,25 @@ points.  However, I wanted to keep the figures simple.
 of the particles, since they would not change.  However, the arrows
 themselves would change, because they would be rooted in the new origin.
 
+*Dan*: But could you really have chosen any old coordinate system?  And
+could you then let it change or rotate or let it jump up and down?
+That seems rather unlikely.
+
+*Erica*: Ah, no, certainly not.  Or more precisely, preferably not.
+If you choose a coordinate system that moves in a strange way, you
+then have to correct for those strange motions of the coordinate axes,
+which would be reflected in the description of the motions of the
+particles.  And you would then have to correct for that, in the
+equations of motion.
+
+*Carol*: I'm not sure I follow all that, but I guess the upshot is that
+you want to keep things simple, and therefore you prefer to use coordinates
+where the origin stays at rest in space.
+
+*Erica*: Yes, either at rest, or otherwise the origin should move at a
+constant speed in one fixed direction.  A coordinate system that moves
+in such a way is called an inertial coordinate system.
+
 == Relative Coordinates
 
 *Dan*: Okay, I got the picture.  Now where does the one-body representation
