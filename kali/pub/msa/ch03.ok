@@ -323,10 +323,6 @@ explanation.
 
 == Equivalent coordinates
 
-If you say so.  For me, fig. ref(com_separation_vectors) is clear
-enough, without the mathematical mumbo-jumbo.  I have no idea wat bijective
-means.
-
 *Carol*: Well, I have one question left.  I mentioned that the
 transformation between the <tex>$\{\br_1,\br_2\}$</tex> coordinate system
 and the <tex>$\{\bR,\br\}$</tex> was bijective.  What that means is
@@ -344,11 +340,88 @@ But when we are given only <tex>$\bR$</tex> and <tex>$\br$</tex>, can we
 then really recover the original <tex>$\br_1$</tex> and <tex>$\br_2$</tex>?
 
 *Erica*: Yes, we can, or at least I'm pretty sure we can.  But we'll have
-to scratch our heads a bit to write it down.
+to scratch our heads a bit to write it down.  Let us start with figure
+ref(absolute_relative_vectors).  We can use the same figure, but now we
+should consider <tex>$\bR$</tex> and <tex>$\br$</tex> as given, and the
+question is how to derive the values for <tex>$\br_1$</tex> and
+<tex>$\br_2$</tex>.
+
+When I took my classical mechanics course, many homework questions
+were of this type, and generally they involved a clever form of
+coordinate transformation.  Hmmm.  Let's see.  Right now the origin
+is at an arbitrary point in space.  We could shift to a coordinate
+frame that is centered on one of our three special points; the position of
+particle 1, the position of particle 2, or the position of the c.o.m.
+
+Well, why not start with particle 1, and see what happens.  Let me draw
+the new coordinate frame, using primed symbols: <tex>$x'$</tex> and
+<tex>$y'$</tex> instead of <tex>$x$</tex> and <tex>$y$</tex> for the
+coordinate axes.
+
+ :figure: new_absolute_relative_vectors.eps 6cm new_absolute_relative_vectors
+ A shift of coordinate frame brings the origin to the position of particle 1.
+ In this new frame, the c.o.m. vector is <tex>$\bR'$</tex>.
+
+*Carol*: Ah, I see, that is a great move, really!  In this new coordinate
+system, the c.o.m. position is given by the vector <tex>$\bR'$</tex>,
+pointing from the position of particle 1 to the c.o.m.  This means that
+we can reconstruct <tex>$\br_1$</tex> as the sum of <tex>$\bR$</tex> and
+<tex>$-\bR'$</tex>!
+
+*Dan*: Wait a minute, not so quick.  I don't see that yet.  Let me try
+to take smaller steps.  The vector <tex>$-\bR'$</tex> must point, by
+definition, in the opposite direction of <tex>$\bR'$</tex>.  So you can
+go from the old origin to <tex>$\br_1$</tex> by first following the
+vector <tex>$\bR$</tex> from start till tip, and then following the
+vector <tex>$-\bR'$</tex>, which conveniently starts at the tip
+of <tex>$\bR$</tex>.  And the tip of <tex>$-\bR'$</tex> lands on particle 1.
+
+So far so good.  And this means that we have
+<tex>$\br_1 = \bR + (-\bR')$</tex>, or in simpler
+terms
+
+:equation:
+\label{R_minus_R_prime}
+\br_1 = \bR - \bR'
+
+Fine!  But how do we compute this vector <tex>$-R'$</tex>?
+
+*Carol*: Elementary, my dear Watson.  In the old coordinate frame, we
+had Eq. (ref(com)) which gave us the position vector of the c.o.m. in
+that frame.  Let's write it again:
+
+:equation:
+\label{com_again}
+\bR = {M_1\br_1 + M_2\br_2 \over M_1 + M_2}
+
+This expression is valid in any coordinate frame, so we can use it for
+the new primed coordinate frame as well.  In the new frame,
+<tex>$r'_1=0$</tex> because the new origin lies smack on the first particle,
+so that particle has distance zero to the new origin.  And the
+position vector of the second particle is given as
+<tex>$r_2' = r_2 - r_1 = r$</tex>.
+Erica, your choice of coordinate frame shifting was brilliant!  We have
+in the new frame:
+
+:equation:
+\label{com_prime}
+\bR' = {M_1\br'_1 + M_2\br'_2 \over M_1 + M_2} = 
+{M_1 0 + M_2 \br \over M_1 + M_2} = 
+{M_2\over M_1 + M_2}\br
+
+If we now use Eq.(ref(R_minus_R_prime)) that Dan just derived, 
+and substitute the value of <tex>$\bR'$</tex> that we found in
+Eq.(ref(com_prime)), we get:
 
 :equation:
 \label{br1}
 \br_1 = \bR - {M_2 \over M_1 + M_2} \br
+
+== xxxxxxx
+
+<b>This is how far I got, 2007/4/14</b>
+
+== xxxxxxx
 
 *Carol*: And the second particle's position is obtained simply by	
 interchaning the subscripts 1 and 2 everywhere, right?
@@ -671,8 +744,4 @@ Our original equation of motion now becomes simply:
 *Dan*:
 I can't imagine anything simpler than that!
 Let's start coding.
-
-== xxxxxxx
-
-<b>This is how far I got, 2007/4/14</b>
 
