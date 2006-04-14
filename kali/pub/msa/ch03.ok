@@ -321,28 +321,30 @@ four-dimensional spaces.
 make it sound all gobbledygook again.  I'll just stick with Erica's
 explanation.
 
-== xxxxxxx
+== Equivalent coordinates
 
-<b>This is how far I got, 2007/4/13</b>
-
-== xxxxxxx
-
-*Dan*: If you say so.  For me, fig. ref(com_separation_vectors) is clear
+If you say so.  For me, fig. ref(com_separation_vectors) is clear
 enough, without the mathematical mumbo-jumbo.  I have no idea wat bijective
 means.
 
-*Carol*: It means that any pair <tex>$\{\br_1,\br_2\}$</tex> corresponds
+*Carol*: Well, I have one question left.  I mentioned that the
+transformation between the <tex>$\{\br_1,\br_2\}$</tex> coordinate system
+and the <tex>$\{\bR,\br\}$</tex> was bijective.  What that means is
+that any pair <tex>$\{\br_1,\br_2\}$</tex> corresponds
 to a unique pair <tex>$\{\bR,\br\}$</tex>, and vice versa.
 
-*Dan*: Sure, there had better be a unique translation in both directions.
-But how do we know there is such a two-way correspondence?  Erica has
+I think that is true, but I would like to prove it, to make sure, and
+to see explicitly which pair of <tex>$\{\br_1,\br_2\}$</tex> corresponds
+to which pair of <tex>$\{\bR,\br\}$</tex> vectors.
+
+*Dan*: Good questions!  Erica has
 shown how to derive <tex>$\bR$</tex> and <tex>$\br$</tex> from
 <tex>$\br_1$</tex> and <tex>$\br_2$</tex>, with the definitions above.
-But when we are given only <tex>$\bR$</tex> and <tex>$\br$</tex>, can
-we recover the original <tex>$\br_1$</tex> and <tex>$\br_2$</tex>?
+But when we are given only <tex>$\bR$</tex> and <tex>$\br$</tex>, can we
+then really recover the original <tex>$\br_1$</tex> and <tex>$\br_2$</tex>?
 
-*Erica*: Good question!  And yes, we can.  Here is the first particle's
-position:
+*Erica*: Yes, we can, or at least I'm pretty sure we can.  But we'll have
+to scratch our heads a bit to write it down.
 
 :equation:
 \label{br1}
@@ -669,3 +671,8 @@ Our original equation of motion now becomes simply:
 *Dan*:
 I can't imagine anything simpler than that!
 Let's start coding.
+
+== xxxxxxx
+
+<b>This is how far I got, 2007/4/14</b>
+
