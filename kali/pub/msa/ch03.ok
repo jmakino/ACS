@@ -219,7 +219,7 @@ coordinate system anchored to particle 1, which is certainly not inertial.
  The vector <tex>$\bR$</tex> in the inertial coordinate system
 
  :figure: separation_vector.eps 6cm separation_vector
-  The vector <tex>$\br$</tex> in a non-inertial coordinate system
+ The vector <tex>$\br$</tex> in a non-inertial coordinate system
 
 *Dan*: So the vectors <tex>$\br_1, \br_2, \bR$</tex> are all defined in the
 same original inertial coordinate system, while <tex>$\br$</tex> is defined
@@ -557,11 +557,11 @@ information about the motions in the two-body problem is now bundled
 Eq. (ref(Newton_separation)).  It almost looks as if we are dealing
 with a 1-body problem, instead of a 2-body problem!
 
- :figure: com_vector.eps 6cm com_vector
+ NOTfigure: com_vector.eps 6cm com_vector
  The vector <tex>$\bR$</tex> in its own space.
 
- :figure: separation_vector.eps 6cm separation_vector
-  The vector <tex>$\br$</tex> in its own space.
+ NOTfigure: separation_vector.eps 6cm separation_vector
+ The vector <tex>$\br$</tex> in its own space.
 
 *Erica*: Yes, this is what I meant when I announced that we could map
 the two-body problem into an equivalent one-body problem, for any choice
