@@ -229,8 +229,8 @@ plot "euler.out"
 quit
 END
 
- :figure: euler_circular_bug.ps 10cm euler_circular_bug
- First attempt at integrating the two-body problem: failure.
+:figure: euler_circular_bug.ps 10cm euler_circular_bug
+First attempt at integrating the two-body problem: failure.
 
 == Debugging
 
@@ -260,6 +260,6 @@ plot "euler.out"
 quit
 END
 
- :figure: euler_circular.ps 10cm euler_circular
- Second attempt at integrating the two-body problem: looking a lot better.
+:figure: euler_circular.ps 10cm euler_circular
+Second attempt at integrating the two-body problem: looking a lot better.
 

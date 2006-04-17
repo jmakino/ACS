@@ -690,7 +690,7 @@ For example,
 would point to <tt>index.html</tt> in the parent directory.
 
 
-== Table of conents
+== Table of contents
 
 The :tableofcontents: directive creates the table of contents. Example:
 

@@ -24,8 +24,8 @@ plot "euler.out"
 quit
 END
 
- :figure: euler_elliptic.ps 10cm euler_elliptic
- Third attempt at integrating the two-body problem: A different failure.
+:figure: euler_elliptic.ps 10cm euler_elliptic
+Third attempt at integrating the two-body problem: A different failure.
 
 code <tt>euler_001.rb</tt>, but we show it as if it is called
 <tt>euler.rb</tt>:
@@ -48,9 +48,9 @@ plot "euler.out"
 quit
 END
 
- :figure: euler_001.ps 12cm euler_001
- Fourth attempt at integrating the two-body problem: at least a
- semblance of an elliptic orbit.
+:figure: euler_001.ps 12cm euler_001
+Fourth attempt at integrating the two-body problem: at least a
+semblance of an elliptic orbit.
 
 code <tt>euler_001_sparse.rb</tt>, but we show it as if it is called
 <tt>euler.rb</tt>:
@@ -73,9 +73,9 @@ plot "euler.out"
 quit
 END
 
- :figure: euler_001_sparse.ps 12cm euler_001_sparse
- Plotting points only at intervals of 0.01 in time: the picture looks
- the same.
+:figure: euler_001_sparse.ps 12cm euler_001_sparse
+Plotting points only at intervals of 0.01 in time: the picture looks
+the same.
 
 code <tt>euler_0001_sparse.rb</tt>, with only these two lines different:
 
@@ -98,9 +98,9 @@ set size ratio -1
 plot "euler.out"
 quit
 END
-un
- :figure: euler_0001_sparse.ps 12cm euler_0001_sparse
- Fifth attempt at integrating the two-body problem: a lot better already.
+
+:figure: euler_0001_sparse.ps 12cm euler_0001_sparse
+Fifth attempt at integrating the two-body problem: a lot better already.
 
 code <tt>euler_00001_sparse.rb</tt>, with only these two lines different:
 
@@ -124,8 +124,8 @@ plot "euler.out"
 quit
 END
 
- :figure: euler_00001_sparse.ps 12cm euler_00001_sparse
- Sixth attempt at integrating the two-body problem: getting there, slowly.
+:figure: euler_00001_sparse.ps 12cm euler_00001_sparse
+Sixth attempt at integrating the two-body problem: getting there, slowly.
 
 xxxxxxxxxxxxxxxxxxxxxxxxxxxx
 

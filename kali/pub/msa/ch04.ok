@@ -65,9 +65,9 @@ constructed out of a number of straight line segments, where each one
 has the proper direction at the beginning of the segment, but the
 wrong one at the end.
 
- :figure: forward1.eps 6cm forward1
- The forward Euler approximation is indicated by the straight arrows,
- while the curved lines show the true solution to a differential equation.
+:figure: forward1.eps 6cm forward1
+The forward Euler approximation is indicated by the straight arrows,
+while the curved lines show the true solution to a differential equation.
 
 *Dan*:
 And the <i>backward Euler</i> algorithm must have the right direction
@@ -77,8 +77,8 @@ beginning of a time step in what direction to move so that you come
 out with the right direction tangential to a correct orbit at that
 point?
 
- :figure: backward1.eps 6cm backward1
- As figure ref(forward1), but now for the backward Euler approximation.
+:figure: backward1.eps 6cm backward1
+As figure ref(forward1), but now for the backward Euler approximation.
 
 *Erica*:
 You do that through iteration.  You guess a direction, and

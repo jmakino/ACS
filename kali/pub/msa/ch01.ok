@@ -91,9 +91,9 @@ clusters, galactic nuclei, star forming regions, and open clusters.
 
 == Globular Clusters
 
- :figure: m15.jpg 10cm m15
- A snapshot of the globular cluster M15, taken with the Hubble Space
- Telescope.
+:figure: m15.jpg 10cm m15
+A snapshot of the globular cluster M15, taken with the Hubble Space
+Telescope.
 
 In Fig. ref(m15) we see a
 picture of the globular cluster M15, taken with the Hubble Space
@@ -148,18 +148,18 @@ orbital eccentricity.
 == Galactic Nuclei
 
 In Fig. ref(gc) we see an image of the very center of our galaxy.
-This picture has been obtained with the
-<web>http://www.astro.ucla.edu/~jlu/gc/pictures/lgs.shtml|Keck telescope</web>,
+This picture has been obtained with the Keck telescope,
 in a near infrared wavelength band.
 
- :figure: gc.jpg 10cm gc
- An image of the central region of our galaxy.
- The massive black hole is located near the head of the arrow labeled
- <tex>${\rm Sgr A}^*$</tex>.  The size of this image is two light
- years by two light years, and the crowding is enormous: in the
- neighborhood of the sun, typical distances between stars are several
- lightyears, and a snapshot like this most likely would show just one
- star or none at all.
+:figure: gc.jpg 10cm gc
+An image of the central region of our
+galaxy<web>http://www.astro.ucla.edu/~jlu/gc/pictures/lgs.shtml|Keck telescope</web>,
+The massive black hole is located near the head of the arrow labeled
+<tex>${\rm Sgr A}^*$</tex>.  The size of this image is two light
+years by two light years, and the crowding is enormous: in the
+neighborhood of the sun, typical distances between stars are several
+lightyears, and a snapshot like this most likely would show just one
+star or none at all.
 
 In the very center of our galaxy, a black hole resides with a mass a
 few million times larger than the mass of our sun.  Although the black
@@ -207,8 +207,8 @@ steps toward a detailed modeling of galactic nuclei.
 
 == Star Forming Regions
 
- :figure: orion.jpg 10cm orion
- The Orion Nebula, as seen by the Subaru telescope.
+:figure: orion.jpg 10cm orion
+The Orion Nebula, as seen by the Subaru telescope.
 
 There are many other places in the galactic disk where the density of
 stars is high enough to make collisions likely, at least temporarily.
@@ -249,9 +249,9 @@ the so-called open clusters, where their name indicates that they have
 central densities that are typically less than what we see in globular
 clusters.
 
- :figure: m67.jpg 10cm m67
- The open star cluster M67, in a picture taken by the Anglo-Australian
- Observatory.
+:figure: m67.jpg 10cm m67
+The open star cluster M67, in a picture taken by the Anglo-Australian
+Observatory.
 
 Fig. ref(m67) shows one of the richest and densest open clusters, M67,
 as observed by the Anglo-Australian Observatory.  Since this cluster

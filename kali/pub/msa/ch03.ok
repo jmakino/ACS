@@ -45,19 +45,24 @@ to be fixed.  Similarly, when you look at the motion of the Moon around
 the Earth: the Earth has a much larger mass than the Moon, and the mass
 of the Sun is again much larger than that of the Earth.
 
-*Erica*: Yes, a large mass ratio makes things simpler, but even for
-the case where the masses are comparable, we can still talk about the
-relative motion between the two particles.  There is no approximation
-involved.  Here, let me draw a few pictures, to make it clear.
+*Erica*: Yes, a large mass ratio makes things simpler.  In that case we
+can make the approximation that the heavy mass sits still in the center,
+and the lighter mass moves around it.  But that is only an approximation,
+and not completely accurate.  In reality, both masses move around each
+other, even though the heavier mass moves only a little bit.
+
+Even for the case where the masses are comparable, we can still talk
+about the relative motion between the two particles.  And we don't
+have to make any approximation.  Here, let me draw a few pictures, to
+make it clear.
 
 :figure: absolute_vectors.eps 6cm absolute_vectors
 Two bodies with absolute coordinates <tex>$\br_1, \br_2$</tex>.
 
-Since my notepad is two-dimensional, let us discuss the
-two-dimensional two-body problem.  It will be trivial later to
-generalize to three dimensions.  Here, in figure ref(absolute_vectors)
-I show the positions of our two particles by drawing the position
-vectors <tex>$\br_1, \br_2$</tex>.
+Since my notepad is two-dimensional, let us start by discussing the
+two-dimensional two-body problem.  Later, we can easily go to 3D.
+Here, in figure ref(absolute_vectors) I show the positions of our two
+particles by drawing the position vectors <tex>$\br_1, \br_2$</tex>.
 
 *Carol*: But in order to define those vectors, you first have to choose
 a coordinate system, right?
