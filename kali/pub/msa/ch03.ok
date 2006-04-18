@@ -1,5 +1,13 @@
 = The Gravitational 2-Body Problem
 
+== Center of Mass
+
+:figure: com_intro1.eps 6cm com_intro1
+Two bodies falling toward each other.
+
+:figure: com_intro2.eps 6cm com_intro1
+The center of mass toward which the bodies fall.
+
 == Absolute Coordinates
 
 A decision was made to let Carol take the controls, for now.  Taking
