@@ -1,13 +1,5 @@
 = The Gravitational 2-Body Problem
 
-== Center of Mass
-
-:figure: com_intro1.eps 6cm com_intro1
-Two bodies falling toward each other.
-
-:figure: com_intro2.eps 6cm com_intro1
-The center of mass toward which the bodies fall.
-
 == Absolute Coordinates
 
 A decision was made to let Carol take the controls, for now.  Taking
@@ -46,12 +38,13 @@ transform the two-body problem into a one-body problem, effectively.
 *Dan*: A one-body problem?  You mean that one body is fixed
 in space, and the other moves around it?
 
-*Carol*: I guess that one body is much more massive, so that it
-doesn't seem to move much, while the other body moves around it.
-When the Earth moves around the Sun, the Sun can almost be considered
-to be fixed.  Similarly, when you look at the motion of the Moon around
-the Earth: the Earth has a much larger mass than the Moon, and the mass
-of the Sun is again much larger than that of the Earth.
+*Carol*: I guess that Erica is talking about a situation where one body
+is much more massive, so that it doesn't seem to move much, while the
+other body moves around it.  When the Earth moves around the Sun, the
+Sun can almost be considered to be fixed.  Similarly, when you look at
+the motion of the Moon around the Earth: the Earth has a much larger
+mass than the Moon, and the mass of the Sun is again much larger than
+that of the Earth.
 
 *Erica*: Yes, a large mass ratio makes things simpler.  In that case we
 can make the approximation that the heavy mass sits still in the center,
@@ -156,17 +149,118 @@ to Newton's classical mechanics.
 
 *Carol*: So am I.
 
-== Relative Coordinates
+== Center of Mass
 
 *Dan*: Okay, I got the picture.  Now where does the one-body representation
 come in?
+
+*Erica*: It comes in through a clever coordinate transformation.
+The trick is to add a fourth point to the picture given in
+fig. rel(absolute_vectors), besides the origin and the positions of
+the two particles.  The extra point is what is called the center of
+mass of the system, often abbreviated to c.o.m. for simplicity.
+
+*Dan*: You mean the point right in the middle of the two masses?
+
+*Erica*: No, not if the particles have different masses.  Here is the
+basic idea.  Let me draw two masses at rest, in fig. rel(com_intro0).
+Let particle number 1, at the left, be twice as massive as particle 2,
+at the right.  As soon as we let the particles move freely, from rest,
+they will start falling toward each other.
+
+:figure: com_intro0.eps 6cm com_intro0
+Two bodies at rest.
+
+*Carol*: Can you right down the equations?  Sooner or later we'll have
+to program them, after all.
+
+*Dan*: I hope it will be sooner!
+
+*Erica*: In this very simple example, let us define the <tex>$x$</tex>
+axis of our coordinate system to go through both particles, with the
+positive side at the right, as usual.  In that case, the force that
+particle 1 feels from particle 2 is:
+
+:equation:
+\label{f1}
+\bF_1 = G \frac{M_1 M_2}{r^2}
+
+where <tex>$r$</tex> is the distance between the two particles and
+<tex>$G$</tex> is Newton's universal constant of gravity.
+Particle 1 is being pulled in the direction of the positive <tex>$x$</tex>
+axis.  This means that the velocity changes from zero to a positive value,
+which in turn means that the acceleration is positive.
+
+In contrast, particle 2 will be pulled to the left, and it will start
+to move with a negative velocity, so its acceleration is negative.
+Other than this important minus sign, we can simply reverse subscripts
+1 and 2, which gives:
+
+:equation:
+\label{f2}
+\bF_2 = G \frac{M_1 M_2}{r^2}
+
+*Dan*: So the two forces are equal, but opposite in direction.
+
+*Carol*: Action equals reaction, that's one of Newton's laws, right?
+
+*Erica*: Right indeed, that is Newton's third law.  Now let us use
+Newton's second law, to see how the particles will actually start
+moving.  His second law is the famous
+
+:equation:
+\bF_1 = M_1 a_1
+
+and of course similarly
+
+:equation:
+\bF_2 = M_2 a_2
+
+where <tex>$a_i$</tex> is the acceleration that particle <tex>$i$</tex>
+undergoes, due to the force <tex>$F_i$</tex>.
+
+If we use these relations with Eqs. (ref(f1), ref(f2)), we find
+
+:equation:
+\label{f1}
+\ba_1 = G \frac{M_2}{r^2}
+
+and
+
+:equation:
+\label{f2}
+\ba_2 = G \frac{M_1}{r^2}
+
+*Carol*: So even though the forces are equal, the accelerations are not.
+In the case you mentioned, particle 1 is twice as massive as particle 2.
+That means that the acceleration <tex>$a_2$</tex> of particle 2 is twice
+as large as the acceleration <tex>$a_1$</tex> of particle 1.
+
+*Dan*: That makes sense.  It takes twice as much force to move a particle
+that is twice as heavy.
+
+:figure: com_intro1.eps 6cm com_intro1
+Two bodies falling toward each other.
+
+*Erica*: Let's draw the accelerations, as arrows in the picture that I
+just sketched.  Here they are, in figure rel(com_intro1).
+
+
+
+
+
+
+:figure: com_intro2.eps 6cm com_intro1
+The center of mass toward which the bodies fall.
+
+== Relative Coordinates
 
 :figure: absolute_relative_vectors.eps 6cm absolute_relative_vectors
 Construction of alternative coordinates <tex>$\bR$</tex> and
 <tex>$\br$</tex> for the center of mass position and the relative
 position of the two bodies, respectively.
 
-*Erica*: It comes in through a clever coordinate transformation.
+*Erica*: 
 We can define the center of mass (often abbreviated as c.o.m.) position as
 
 :equation:
