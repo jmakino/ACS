@@ -312,6 +312,9 @@ And this suggests that our center of mass can be defined as
 \label{com1d}
 r_{com} = \frac{M_1 r_1 + M_2 r_2}{M_1 + M_2}
 
+Eq. (ref(comr)) guarantees that this position will either be at rest,
+or move at a uniform velocity, with zero acceleration.
+
 :figure: com_intro2.eps 6cm com_intro2
 The center of mass is the point at rest, toward which the bodies fall.
 
@@ -347,12 +350,6 @@ What do you know!  One third of the way from the origin in the direction
 toward particle 1.  Exactly the point that is twice as close to particle
 1 as to particle 2.  Okay, I'm convinced!
 
-<b>xxxxx</b>
-
-<b>This is how far I got -- Piet</b>
-
-<b>xxxxx</b>
-
 == Relative Coordinates
 
 :figure: absolute_relative_vectors.eps 6cm absolute_relative_vectors
@@ -361,7 +358,11 @@ Construction of alternative coordinates <tex>$\bR$</tex> and
 position of the two bodies, respectively.
 
 *Erica*: 
-We can define the center of mass (often abbreviated as c.o.m.) position as
+In the last few pictures we have dealt with a one-dimensional configuration,
+two mass points on a line.  This meant that we only had one coordinate the
+worry about, the <tex>$x$</tex> value of the position.  In the more general
+case of two or three dimensions, we have to go back to vector notation.
+Eq. (ref(com1d)) in vector form becomes:
 
 :equation:
 \label{com}
@@ -437,6 +438,12 @@ shows the relative separation vector in a different frame, anchored on
 particle 1, as you just explained.
 
 *Erica*: Yes, that is a nice way to split it out.
+
+<b>xxxxx</b>
+
+<b>This is how far I got -- Piet</b>
+
+<b>xxxxx</b>
 
 == Coordinates
 
