@@ -322,7 +322,7 @@ The center of mass is the point at rest, toward which the bodies fall.
 \label{com1d2}
 r_{com} = \frac{2 M_2 r_1 + M_2 r_2}{2 M_2 + M_2} = 
 \frac{2 r_1 + r_2}{2 + 1} = 
-{\scriptstyle\frac{2}{3}}r_1 + {\scriptstyle\frac{1}{3}}r_2
+{\textstyle\frac{2}{3}}r_1 + {\textstyle\frac{1}{3}}r_2
 
 Indeed, this is the point that is twice as close to particle 1 as to
 particle 2.
