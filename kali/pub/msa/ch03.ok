@@ -149,29 +149,29 @@ to Newton's classical mechanics.
 
 *Carol*: So am I.
 
-== Center of Mass
+== A Fourth Point
 
 *Dan*: Okay, I got the picture.  Now where does the one-body representation
 come in?
 
 *Erica*: It comes in through a clever coordinate transformation.
 The trick is to add a fourth point to the picture given in
-fig. rel(absolute_vectors), besides the origin and the positions of
+fig. ref(absolute_vectors), besides the origin and the positions of
 the two particles.  The extra point is what is called the center of
 mass of the system, often abbreviated to c.o.m. for simplicity.
 
 *Dan*: You mean the point right in the middle of the two masses?
 
 *Erica*: No, not if the particles have different masses.  Here is the
-basic idea.  Let me draw two masses at rest, in fig. rel(com_intro0).
+basic idea.  Let me draw two masses at rest, in fig. ref(com_intro0).
 Let particle number 1, at the left, be twice as massive as particle 2,
-at the right.  As soon as we let the particles move freely, from rest,
-they will start falling toward each other.
+at the right: <tex>$M_1 = 2 M_2$</tex>.  As soon as we let the particles
+move freely, from rest, they will start falling toward each other.
 
 :figure: com_intro0.eps 6cm com_intro0
 Two bodies at rest.
 
-*Carol*: Can you right down the equations?  Sooner or later we'll have
+*Carol*: Can you write down the equations?  Sooner or later we'll have
 to program them, after all.
 
 *Dan*: I hope it will be sooner!
@@ -183,7 +183,7 @@ particle 1 feels from particle 2 is:
 
 :equation:
 \label{f1}
-\bF_1 = G \frac{M_1 M_2}{r^2}
+F_1 = G \frac{M_1 M_2}{r^2}
 
 where <tex>$r$</tex> is the distance between the two particles and
 <tex>$G$</tex> is Newton's universal constant of gravity.
@@ -198,7 +198,7 @@ Other than this important minus sign, we can simply reverse subscripts
 
 :equation:
 \label{f2}
-\bF_2 = G \frac{M_1 M_2}{r^2}
+F_2 = - G \frac{M_1 M_2}{r^2}
 
 *Dan*: So the two forces are equal, but opposite in direction.
 
@@ -209,12 +209,12 @@ Newton's second law, to see how the particles will actually start
 moving.  His second law is the famous
 
 :equation:
-\bF_1 = M_1 a_1
+F_1 = M_1 a_1
 
 and of course similarly
 
 :equation:
-\bF_2 = M_2 a_2
+F_2 = M_2 a_2
 
 where <tex>$a_i$</tex> is the acceleration that particle <tex>$i$</tex>
 undergoes, due to the force <tex>$F_i$</tex>.
@@ -222,14 +222,14 @@ undergoes, due to the force <tex>$F_i$</tex>.
 If we use these relations with Eqs. (ref(f1), ref(f2)), we find
 
 :equation:
-\label{f1}
-\ba_1 = G \frac{M_2}{r^2}
+\label{a1}
+a_1 = G \frac{M_2}{r^2}
 
 and
 
 :equation:
-\label{f2}
-\ba_2 = G \frac{M_1}{r^2}
+\label{a2}
+a_2 = - G \frac{M_1}{r^2}
 
 *Carol*: So even though the forces are equal, the accelerations are not.
 In the case you mentioned, particle 1 is twice as massive as particle 2.
@@ -237,21 +237,121 @@ That means that the acceleration <tex>$a_2$</tex> of particle 2 is twice
 as large as the acceleration <tex>$a_1$</tex> of particle 1.
 
 *Dan*: That makes sense.  It takes twice as much force to move a particle
-that is twice as heavy.
+that is twice as massive.
+
+== Center of Mass
 
 :figure: com_intro1.eps 6cm com_intro1
 Two bodies falling toward each other.
 
-*Erica*: Let's draw the accelerations, as arrows in the picture that I
-just sketched.  Here they are, in figure rel(com_intro1).
+*Erica*: Let's draw the accelerations, as arrows in the picture,
+fig. ref(com_intro0) that I sketched earlier.  Here they are, in
+figure ref(com_intro1).
 
+*Carol*: And this means that the two particles start falling toward
+each other at different rates, and therefore they will not meet in the
+middle.
 
+*Dan*: They will meet closer to particle 1.  In fact, because particle 2
+will always be accelerated twice as fast as particle 1, I bet they will
+meet at a point that is one third of the way over, going from 1 to 2.
 
+*Carol*: Could that be the fourth point that you talked about, Erica,
+what you called the center of mass?
 
+*Erica*: Yes, indeed!  The center of mass, c.o.m., in the case of the
+two-body problem, is the point of symmetry, around which each of the
+two bodies moves in a way that is inversely proportional to their mass.
+Let me show you explicitly, using the equations of motion,
+Eqs. (ref(a1), ref(a2)), where I will remind us that, for each
+particle, the acceleration is the second derivative of the position:
 
+:equation:
+\label{a1r}
+\frac{d^2}{dt^2}r_1 = G \frac{M_2}{r^2}
 
-:figure: com_intro2.eps 6cm com_intro1
-The center of mass toward which the bodies fall.
+and
+
+:equation:
+\label{a2r}
+\frac{d^2}{dt^2}r_2 = - G \frac{M_1}{r^2}
+
+We are looking for the point around which everything else turns,
+a point that does not get pushed, in other words, a point that
+does not undergo an acceleration.  Perhaps you can see how to
+find a point with zero acceleration, when you add those two equations?
+
+*Dan*: No, I don't see that.  Adding the right hand sides does not give zero.
+
+*Carol*: Ah, but multiplying the first equation by <tex>$M_1$</tex>
+and the second equation by <tex>$M_2$</tex> allows them to add to zero:
+
+:equation:
+\label{comrm12}
+M_1\frac{d^2}{dt^2}r_1 + M_2\frac{d^2}{dt^2}r_2 = 0
+
+*Erica*: Exactly.  We can write this as:
+
+:equation:
+\label{comrm}
+\frac{d^2}{dt^2} \left\{ M_1 r_1 + M_2 r_2 \right\} = 0
+
+but the expression between brackets does have the physical dimension
+of mass multiplied by length.  We are looking for a position, a location
+that is invariant, and a position has a physical dimension of length.
+The most natural way to get rid of the superfluous mass dimension is
+to divide the left and right hand side of the equation by the total mass:
+
+:equation:
+\label{comr}
+\frac{d^2}{dt^2} \left\{ \frac{M_1 r_1 + M_2 r_2}{M_1 + M_2} \right\} = 0
+
+And this suggests that our center of mass can be defined as
+
+:equation:
+\label{com1d}
+r_{com} = \frac{M_1 r_1 + M_2 r_2}{M_1 + M_2}
+
+:figure: com_intro2.eps 6cm com_intro2
+The center of mass is the point at rest, toward which the bodies fall.
+
+*Carol*: Let's check whether that makes sense in our case.  We have
+<tex>$M_1 = 2 M_2$</tex>, so:
+
+:equation:
+\label{com1d2}
+r_{com} = \frac{2 M_2 r_1 + M_2 r_2}{2 M_2 + M_2} = 
+\frac{2 r_1 + r_2}{2 + 1} = 
+{\scriptstyle\frac{2}{3}}r_1 + {\scriptstyle\frac{1}{3}}r_2
+
+Indeed, this is the point that is twice as close to particle 1 as to
+particle 2.
+
+*Dan*: Not so fast, how can you see that?
+
+*Carol*: You can choose the origin of our coordinates where you like.
+Take particle 1 to be the origin, for example, and you will get
+<tex>$r_1 = 0$</tex> and then Eq. (ref(com1d2)) gives you
+<tex>$r_{com}=\frac{1}{3}r_2$</tex>.
+Or take particle 2 as the origin, which means <tex>$r_2 = 0$</tex>
+and Eq. (ref(com1d2)) gives you <tex>$r_{com}=\frac{2}{3}r_1$</tex>,
+which means at a distance from particle 2 that is two thirds on the
+way to particle 1.
+
+*Dan*: Well, let me try your game too, at a somewhat more complicated
+point.  Let me put the origin of the coordinates exactly half-way between
+the particles.  In that case, <tex>$r_1 = - r_2$</tex>.  Now let's see
+what Eq. (ref(com1d2)) gives me.  Aha: 
+<tex>$r_{com}=-\frac{2}{3}r_2 + \frac{1}{3}r_2=-\frac{1}{3}r_2$</tex>.
+What do you know!  One third of the way from the origin in the direction
+toward particle 1.  Exactly the point that is twice as close to particle
+1 as to particle 2.  Okay, I'm convinced!
+
+<b>xxxxx</b>
+
+<b>This is how far I got -- Piet</b>
+
+<b>xxxxx</b>
 
 == Relative Coordinates
 
