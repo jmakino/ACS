@@ -87,7 +87,7 @@ points.  However, I wanted to keep the figures simple.
 
 == Coordinate Systems
 
-*Dan*: What would happen if you had choosen a different coordinate system?
+*Dan*: What would happen if you had chosen a different coordinate system?
 
 *Erica*: In that case, the tips of the arrows would stay at the positions
 of the particles, since they would not change.  However, the arrows
@@ -168,9 +168,6 @@ Let particle number 1, at the left, be twice as massive as particle 2,
 at the right: <tex>$M_1 = 2 M_2$</tex>.  As soon as we let the particles
 move freely, from rest, they will start falling toward each other.
 
-:figure: com_intro0.eps 6cm com_intro0
-Two bodies at rest.
-
 *Carol*: Can you write down the equations?  Sooner or later we'll have
 to program them, after all.
 
@@ -199,6 +196,9 @@ Other than this important minus sign, we can simply reverse subscripts
 :equation:
 \label{f2}
 F_2 = - G \frac{M_1 M_2}{r^2}
+
+:figure: com_intro0.eps 6cm com_intro0
+Two bodies at rest.
 
 *Dan*: So the two forces are equal, but opposite in direction.
 
@@ -368,8 +368,8 @@ Eq. (ref(com1d)) in vector form becomes:
 \label{com}
 \bR = {M_1\br_1 + M_2\br_2 \over M_1 + M_2}
 
-and the relative position of the second particle with respect to the first
-particle as
+It is also convenient to define <tex>$r$</tex> as the relative
+position of the second particle with respect to the first particle:
 
 :equation:
 \label{separation}
@@ -378,29 +378,37 @@ particle as
 I have drawn them in fig. ref(absolute_relative_vectors) as
 they are constructed from <tex>$\br_1, \br_2$</tex>.
 
-*Dan*: Where does this equation come from, and what does it mean?
+*Dan*: But now you have changed your mind, assuming that particle 2
+is heavier than particle 1!
 
-*Carol*: The center of mass is the mass weighted position of an extended
-object.  We use that in computer graphics for computer games all the time.
-One way to look at it is to ask yourself where you should support a rod
-with two weights attached at the end.  If one of the weights is twice
-as heavy as the other, it should be twice as far from the support point
-as the other is, in order to balance the rod.
+*Erica*: Why not?  These figures should be correct for any choice of
+masses.  I just didn't want to get stuck with the same simple choice
+for all the figures we will draw.
+
+*Carol*: So far, you have told us <i>what</i> the center of mass is,
+but you haven't told us <i>why</i> it is called that way.  Looking
+again at Eq. (ref(com)), it seems that the c.o.m. is the mass
+weighted position of an extended object.  We use that notion in computer
+graphics for computer games all the time.  One way to look at it is to
+ask yourself where you should support a rod with two weights attached
+at the end.  If one of the weights is twice as heavy as the other, it
+should be twice as far from the support point as the other is, in
+order to balance the rod.
 
 *Dan*: I see, that helps.  So with `mass weighted' you mean that I multiply
 the position of each particle with its mass, so that more massive particles
 have a larger vote, so to speak, in where the center of mass will be.
 
 *Carol*: Yes, and then you have to divide by the total mass.  Already on
-dimensonial grounds it is clear that you have to divide by a mass, to 
-wind up with a result that has the dimension of length.  And in the equal
-mass case, it is clear that the c.o.m. should be the average of the
-two positions, the point right in between them.
+dimensional grounds it is clear that you have to divide by a mass, as Erica
+told us, to wind up with a result that has the dimension of length.
+And in the equal mass case, it is clear that the c.o.m. should be the
+average of the two positions, the point right in between them.
 
 :figure: relative_vectors.eps 6cm relative_vectors
 Alternative coordinates <tex>$\bR$</tex> and <tex>$\br$</tex>.
 
-*Dan*: Okay, so let us accept Eq. (ref(com)), which leads to
+*Dan*: Okay, I am happy now with Eq. (ref(com)), which leads to
 fig. ref(absolute_relative_vectors).  But now I'm confused about
 something else.  Let us draw a figure that contains only the two
 new vectors, <tex>$\bR, \br$</tex>, that define the alternative
@@ -438,524 +446,4 @@ shows the relative separation vector in a different frame, anchored on
 particle 1, as you just explained.
 
 *Erica*: Yes, that is a nice way to split it out.
-
-<b>xxxxx</b>
-
-<b>This is how far I got -- Piet</b>
-
-<b>xxxxx</b>
-
-== Coordinates
-
-*Dan*: But I'm still confused.  You started talking
-about a change from absolute to relative coordinates.  But in fact we
-seem to switch from two vectors in an absolute inertial coordinate
-system to two other vectors, one in the old coordinate system and one
-in a new, non-inertial coordinate system.  What is going on?
-
-*Erica*: I guess the notation and terminology in physics is rather sloppy.
-We generally don't try to be logically precise, the way mathematicians are.
-But I'm glad you're forcing us to be clear about our terms.  It helps
-me, too, to build things up again from scratch.
-
-It seems that there are two ways to use the notion of coordinates.
-But let me first summarize what we have learned.
-
-We have, so far, dealt with two coordinate frames.  We have the
-inertial one, centered on an arbitrary point, a point that is either
-at rest or in uniform motion with respect to absolute space.  The
-coordinate axes point in fixed directions with respect to absolute
-space.  And we also have the non-inertial frame, centered on particle 1.
-And although this frame is non-inertial, because particle 1 feels
-the force of particle 2 and therefore does not move in a straight line
-at constant speed, the coordinate axes of the non-inertial coordinate
-system remain parallel to the coordinate axes of the inertial
-coordinate system.
-
-This last point is important.  When the two particles complete one
-orbit around each other, the relative vector <tex>$\br$</tex> will
-also complete one orbit in the non-inertial coordinate system given
-in fig. ref(separation_vector).
-
-Now here are the two ways that physicists use `coordinates', at least
-as I understand it.  The first way is to give the coordinates of vectors
-with respect to the coordinate frame in which they are defined.  In that
-case, we have already dealt with the coordinates of the four vectors
-<tex>$\br_1, \br_2, \bR, \br$</tex>.  In each case, a single vector,
-or equivalently the values of the components of that vector, decribe
-the position of one particle with respect to a point in space.  For
-example, <tex>$\br_2$</tex> describes the poition of particle 2 with
-respect to the origin, and <tex>$\br$</tex> describes the poition of
-particle 2 with respect to the point in space temporarily occupied by
-particle 1.
-
-The second way is to talk about coordinates is to capture the information
-about a whole system, not only about a single particle with respect to
-a point in space.  We can say that we have described a two-body
-configuration completely when we give the information contained in the 
-pair of vectors <tex>$\br_1, \br_2$</tex>, or equivalently, in the values
-of their four components in two dimensions, or their six components in
-three dimensions.  But we can also describe the same two-body configuration
-completely by giving the information contained in the pair of vectors
-<tex>$\bR, \br$</tex>.
-
-So in the second way of speaking, a coordinate transformation means a
-change between describing the two-body system through specifying
-<tex>$\br_1, \br_2$</tex> and describing the same system through
-specifying <tex>$\bR, \br$</tex>.
-
-In the beginning of our session, I used the second way of speaking.
-But then, when we started talking about coordinate systems, I guess
-I slipped into the first way of speaking.
-
-*Dan*: Thanks for separating those two ways of speaking.  I'll have to
-go over it a few times more, to get fluent in this way of thinking,
-but I'm beginning to see the light.
-
-*Carol*: Now the beautiful thing is: it <i>is</i> possible to use the
-same language for both ways of speaking.  This is something else I
-learned in our `computer game' class as we called it, although it was
-really titled as a `geometrical representation' class.  If a single
-vector lives in a $d$-dimensional space, then a system of two such
-vectors can also be represented as a single vector in a $2d$-dimensional
-space.  And then your second way of speaking with respect to the
-$d$-dimensional space boils down to your first way of speaking with
-respect to the $2d$-dimensional space.
-
-Mathematically speaking, each choice of a set of two vectors, whether
-it is <tex>$\{\br_1,\br_2\}$</tex> or <tex>$\{\bR,\br\}$</tex>,
-determines a single point in the direct product of two copies of the
-base space in which the single vectors live.  In our case, we have
-started from two-dimensional vectors, so the space for pairs of
-vectors is four-dimensional.  And the coordinate transformation that
-Erica has introduced is really a bijective mapping between two
-four-dimensional spaces.
-
-*Dan*: Just when I thought I understood something, Carol manages to
-make it sound all gobbledygook again.  I'll just stick with Erica's
-explanation.
-
-== Equivalent coordinates
-
-*Carol*: Well, I have one question left.  I mentioned that the
-transformation between the <tex>$\{\br_1,\br_2\}$</tex> coordinate system
-and the <tex>$\{\bR,\br\}$</tex> was bijective.  What that means is
-that any pair <tex>$\{\br_1,\br_2\}$</tex> corresponds
-to a unique pair <tex>$\{\bR,\br\}$</tex>, and vice versa.
-
-I think that is true, but I would like to prove it, to make sure, and
-to see explicitly which pair of <tex>$\{\br_1,\br_2\}$</tex> corresponds
-to which pair of <tex>$\{\bR,\br\}$</tex> vectors.
-
-*Dan*: Good questions!  Erica has
-shown how to derive <tex>$\bR$</tex> and <tex>$\br$</tex> from
-<tex>$\br_1$</tex> and <tex>$\br_2$</tex>, with the definitions above.
-But when we are given only <tex>$\bR$</tex> and <tex>$\br$</tex>, can we
-then really recover the original <tex>$\br_1$</tex> and <tex>$\br_2$</tex>?
-
-*Erica*: Yes, we can, or at least I'm pretty sure we can.  But we'll have
-to scratch our heads a bit to write it down.  Let us start with figure
-ref(absolute_relative_vectors).  We can use the same figure, but now we
-should consider <tex>$\bR$</tex> and <tex>$\br$</tex> as given, and the
-question is how to derive the values for <tex>$\br_1$</tex> and
-<tex>$\br_2$</tex>.
-
-When I took my classical mechanics course, many homework questions
-were of this type, and generally they involved a clever form of
-coordinate transformation.  Hmmm.  Let's see.  Right now the origin
-is at an arbitrary point in space.  We could shift to a coordinate
-frame that is centered on one of our three special points; the position of
-particle 1, the position of particle 2, or the position of the c.o.m.
-
-Well, why not start with particle 1, and see what happens.  Let me draw
-the new coordinate frame, using primed symbols: <tex>$x'$</tex> and
-<tex>$y'$</tex> instead of <tex>$x$</tex> and <tex>$y$</tex> for the
-coordinate axes.
-
-:figure: new_absolute_relative_vectors.eps 6cm new_absolute_relative_vectors
-A shift of coordinate frame brings the origin to the position of particle 1.
-In this new frame, the c.o.m. vector is <tex>$\bR'$</tex>.
-
-*Carol*: Ah, I see, that is a great move, really!  In this new coordinate
-system, the c.o.m. position is given by the vector <tex>$\bR'$</tex>,
-pointing from the position of particle 1 to the c.o.m.  This means that
-we can reconstruct <tex>$\br_1$</tex> as the sum of <tex>$\bR$</tex> and
-<tex>$-\bR'$</tex>!
-
-*Dan*: Wait a minute, not so quick.  I don't see that yet.  Let me try
-to take smaller steps.  The vector <tex>$-\bR'$</tex> must point, by
-definition, in the opposite direction of <tex>$\bR'$</tex>.  So you can
-go from the old origin to <tex>$\br_1$</tex> by first following the
-vector <tex>$\bR$</tex> from start till tip, and then following the
-vector <tex>$-\bR'$</tex>, which conveniently starts at the tip
-of <tex>$\bR$</tex>.  And the tip of <tex>$-\bR'$</tex> lands on particle 1.
-
-So far so good.  And this means that we have
-<tex>$\br_1 = \bR + (-\bR')$</tex>, or in simpler
-terms
-
-:equation:
-\label{R_minus_R_prime}
-\br_1 = \bR - \bR'
-
-Fine!  But how do we compute this vector <tex>$-R'$</tex>?
-
-*Carol*: Elementary, my dear Watson.  In the old coordinate frame, we
-had Eq. (ref(com)) which gave us the position vector of the c.o.m. in
-that frame.  Let's write it again:
-
-:equation:
-\label{com_again}
-\bR = {M_1\br_1 + M_2\br_2 \over M_1 + M_2}
-
-This expression is valid in any coordinate frame, so we can use it for
-the new primed coordinate frame as well.  In the new frame,
-<tex>$r'_1=0$</tex> because the new origin lies smack on the first particle,
-so that particle has distance zero to the new origin.  And the
-position vector of the second particle is given as
-<tex>$r_2' = r_2 - r_1 = r$</tex>.
-Erica, your choice of coordinate frame shifting was brilliant!  We have
-in the new frame:
-
-:equation:
-\label{com_prime}
-\bR' = {M_1\br'_1 + M_2\br'_2 \over M_1 + M_2} = 
-{M_1 0 + M_2 \br \over M_1 + M_2} = 
-{M_2\over M_1 + M_2}\br
-
-If we now use Eq.(ref(R_minus_R_prime)) that Dan just derived, 
-and substitute the value of <tex>$\bR'$</tex> that we found in
-Eq.(ref(com_prime)), we get:
-
-:equation:
-\label{br1}
-\br_1 = \bR - {M_2 \over M_1 + M_2} \br
-
-== xxxxxxx
-
-<b>This is how far I got, 2007/4/14</b>
-
-== xxxxxxx
-
-*Carol*: And the second particle's position is obtained simply by	
-interchaning the subscripts 1 and 2 everywhere, right?
-
-*Erica*: Wrong, but almost right: there is an additional sign change:
-
-:equation:
-\br_2 = \bR + {M_1 \over M_1 + M_2} \br
-
-*Carol*: Ah yes, that makes sense, since there was a minus sign in the
-original definition of <tex>$\br$</tex>.  And in fact the whole picture
-makes sense now: when the first particle is much more massive
-than the second particle, <tex>$\bR$</tex> almost coincides with
-<tex>$\br_1$</tex>, while the much lighter particle <tex>$\br_2$</tex>
-finds itself at a distance of almost <tex>$\br$</tex> from the c.o.m.
-<tex>$\bR$</tex>.
-
-*Dan*: Even so, I do like hard evidence!  As you already saw, it is all
-too easy to get replace a plus sign with a minus sign and those types of
-things, and we'd better get things really right.  Let me try to prove what
-Erica just wrote down.  I will take Eq. (ref(br1)) and then use the original
-definitions Eqs. (ref(com)) and (ref(separation)):
-
-:eqnarray:
-\br_1 &=& \bR - {M_2 \over M_1 + M_2} \br                \nonumber \\
-&=& {M_1\br_1 + M_2\br_2 \over M_1 + M_2}
-- {M_2 \over M_1 + M_2} \left( \br_2 - \br_1 \right)     \nonumber \\
-&=& {M_1 + M_2 \over M_1 + M_2} \br_1
-+ {M_2 - M_2 \over M_1 + M_2} \br_2            \nonumber \\
-&=& \br_1
-
-Yes, now I am convinced.  And I can already see more or less how it works
-for <tex>$\br_2$</tex>.  But, to be really sure, I'd like to finish
-the job:
-
-:eqnarray:
-\br_2 &=& \bR + {M_1 \over M_1 + M_2} \br                \nonumber \\
-&=& {M_1\br_1 + M_2\br_2 \over M_1 + M_2}
-+ {M_1 \over M_1 + M_2} \left( \br_2 - \br_1 \right)     \nonumber \\
-&=& {M_1 - M_1 \over M_1 + M_2} \br_1
-+ {M_2 + M_1 \over M_1 + M_2} \br_2            \nonumber \\
-&=& \br_2
-
-*Carol*: That's nice, to see the truth in front of us, and to see
-explicitly the correction of my initial sign mistake.
-
-== Newton's Equations of Motion
-
-*Erica*: Now that we are getting comfortable with our new coordinate
-system, let us rewrite Newton's equations of motion into the new system.
-
-*Dan*: Not so fast!  We haven't written the equations in our old system
-yet.  You may be doing that every day, but I can barely remember what
-I learned about classical mechanics.  Let us start from scratch.
-
-*Erica*: Okay, you're right.  Well, here is the equation for the
-acceleration of the first particle, due to the gravitational force
-that the second particle exerts on it:
-
-:equation:
-\label{Newton_r1}
-\frac{d^2}{dt^2}\br_1 = G \frac{M_2}{r^3}\br
-
-Here I have used the abbreviation
-
-:equation:
-r = |\br|
-
-This is a second-order differential equation.  At the left-hand side
-you see the second derivative of position with respect to time
-<tex>$t$</tex>.  The first time derivative of position
-<tex>$\br_1$</tex> is the velocity <tex>$\bv_1 = d\br_1 /dt$</tex>
-for particle number 1, while the second derivative presented here is
-the acceleration <tex>$\ba_1 = d\bv_1 /dt = d^2\br_1 /dt^2 $</tex>.
-At the right hand side, <tex>$M_2$</tex> indicates the mass of the
-second particles.  As you can guess, <tex>$M_1$</tex> would be the
-mass of the first particle, and <tex>$\bv_2$</tex> and <tex>$\ba_2$</tex>
-stand for the velocity and acceleration of the second particle.
-Finally, <tex>$G$</tex> is the value of Newton's gravitational constant.
-
-I'm glad you both have at least some familiarity with differential
-equations.  It may not be a bad idea to brush up your knowledge, if
-you want to know more about the background of Newtonian gravity.
-There are certainly plenty of good introductory books.  At this point
-it is not necessary, though, to go deeply into all that.  I can just
-provide the few equations we need to get started, and for quite a
-while our main challenge will be to figure out how to solve these
-equations.
-
-*Dan*: Glad to hear that!  But I'm puzzled about one thing.  Why is
-there a third power in the denominator?  I thought that
-gravity shows an inverse square attraction, not an inverse cube!
-
-*Erica*: Yes, the magnitude of the acceleration is indeed proportional
-to the minus second power of the separation.  However, we also need to
-indicate the direction of the acceleration.  We can define a unit
-vector <tex>$\hat\br$</tex> pointing in the direction of the second
-particle, as seen from the position of the first particle:
-
-:equation:
-\hat\br = {\br \over r}
-
-Using this unit vector, we can rewrite Eq. (ref(Newton_r1)) as:
-
-:equation:
-\frac{d^2}{dt^2}\br_1 = G \frac{M_2}{r^2}\hat\br
-
-*Dan*: I see.  So the magnitude is indeed inverse square, but the direction
-is given by the unit vector, which has length one, and therefor does not
-influence the length of the acceleration vector.  I like this way of writing
-better, since it brings out the physics more clearly.
-
-*Carol*: I guess that Erica wrote it in the form of Eq. (ref(Newton_r1))
-because it will be easier to program that way.
-
-*Erica*: Indeed.  Once you get used to this way of writing the equations
-of motion, there is no need to introduce the new quantity <tex>$\hat\br$</tex>,
-since it is not used anywhere separately.
-
-Let me also write the acceleration for the second particle:
-
-:equation:
-\label{Newton_r2}
-\frac{d^2}{dt^2}\br_2 = - G \frac{M_1}{r^3}\br
-
-*Carol*: This time I noticed the sign change: the force of attraction
-exerted by the first particle on the second points toward the first
-particle.
-
-*Dan*: Hmm, I'm still a bit confused about these signs.  When the force
-points to the first particle, why does that imply a minus sign?
-
-*Carol*: The easiest way to see this is to take a particular case.  Imagine
-that the second particle is positioned in the origin of the coordinates.
-Since gravity pulls particle 2 in the direction of particle 1, the
-acceleration that particle 2 experiences points in the direction of
-<tex>$\br_1$</tex>.  Notice that in this particular case
-<tex>$\br = \br_2 - \br_1 = - \br_1$</tex>.  Therefore, the direction
-<tex>$\br_1$</tex> is the opposite of the direction of <tex>$\br$</tex>,
-hence the minus sign.
-
-*Dan*: Ah, that is neat.  Instead of trying to figure things out in
-full generality, you take a particular limiting case, and check the
-sign.  Since you already know the magnitude and the line along which
-the acceleration is directed, once you know the sign in one case,
-you know the sign in all cases.
-
-*Carol*: Yes.  Technically we call this invariance under continuous
-deformation.  If you bring the second particle a little bit out of the
-origin, by small continuous changes, the acceleration between the
-particles much change continuously as well; it cannot suddenly flip
-to the opposite direction.
-
-*Erica*: Neat indeed: this means that understanding the sign in one
-place let you know the sign in all places.  I'll remember using that
-trick.
-
-Okay, onward with the equations of motion.  Given Eqs.(ref(Newton_r1))
-and (ref(Newton_r2)), we can calculate the accelerations for the
-alternative coordinates by using the defining equations (ref(com)) and
-(ref(separation)), as follows.
-
-:eqnarray:
-\label{Newton_com}
-\frac{d^2}{dt^2}\bR
-&=&
-{M_1\over M_1 + M_2}\frac{d^2}{dt^2}\br_1 +
-{M_2\over M_1 + M_2}\frac{d^2}{dt^2}\br_2                     \nonumber \\
-&=&
-{M_1\over M_1 + M_2}\left(G \frac{M_2}{r^3}\br\right) +
-{M_2\over M_1 + M_2}\left(- G \frac{M_1}{r^3}\br\right)       \nonumber \\
-&=&
-G {M_1 M_2\over M_1 + M_2}\left(\frac{1}{r^3}\br-\frac{1}{r^3}\br\right)
-                                                              \nonumber \\
-&=& 0
-
-and 
-
-:eqnarray:
-\label{Newton_separation}
-\frac{d^2}{dt^2}\br
-&=&
-\frac{d^2}{dt^2}\br_2 - \frac{d^2}{dt^2}\br_1                 \nonumber \\
-&=&
-\left(- G \frac{M_2}{r^3}\br\right) - \left(G \frac{M_1}{r^3}\br\right)
-                                                              \nonumber \\
-&=&
-- G \frac{M_1+M_2}{r^3}\br
-
-== An Equivalent 1-Body Problem
-
-*Dan*: The second equation looks like a form of Newton's law of gravity,
-but what does it mean that the first equation gives just zero as an answer?
-
-*Carol*: Well, it seems that there is zero acceleration for the position
-of the center of mass.
-
-*Dan*: Ah, so the c.o.m. moves with constant velocity?
-
-*Erica*: Yes, and this means that we can choose an inertial coordinate
-frame that moves along with the c.o.m., and in that coordinate frame
-the center of mass does not move at all.  And to make it really simple,
-we can choose a coordinate frame where the c.o.m. is located at the
-origin of the coordinates.
-
-*Dan*: That does make life simple.  In this coordinate frame, all the
-information about the motions in the two-body problem is now bundled
-Eq. (ref(Newton_separation)).  It almost looks as if we are dealing
-with a 1-body problem, instead of a 2-body problem!
-
- NOTfigure: com_vector.eps 6cm com_vector
- The vector <tex>$\bR$</tex> in its own space.
-
- NOTfigure: separation_vector.eps 6cm separation_vector
- The vector <tex>$\br$</tex> in its own space.
-
-*Erica*: Yes, this is what I meant when I announced that we could map
-the two-body problem into an equivalent one-body problem, for any choice
-of the masses.  The original equations (ref(Newton_r1)) and (ref(Newton_r2))
-are coupled: both <tex>$\br_1$</tex> and <tex>$\br_2$</tex> occur in both
-equations, indirectly through the fact that <tex>$\br = \br_2-\br1$</tex>.
-In contrast, the equations (ref(Newton_com)) and (ref(Newton_separation)) are
-decoupled.
-
-A clear way to show this is to draw to separate figures,
-Figs. ref(com_vector) and ref(separation_vector).  The c.o.m. vector
-in Fig. ref(com_vector) moves in a way that is totally independent of
-the way the relative vector in ref(separation_vector) moves.  The
-c.o.m. vector moves at a constant speed, while the relative vector
-moves as if it follows an abstract particle in a gravitational field.
-
-To see this, notice that Eq. (ref(Newton_separation)) is _exactly_ Newton's
-equation for the gravitational acceleration of a body that feels the
-attraction of a hypothetical body of mass <tex>$M_1 + M_2$</tex>.  To check
-this, look at Eq. (ref(br1)), and replace <tex>$\br_1$</tex> by
-<tex>$\br$</tex> and replace <tex>$M_2$</tex> by <tex>$M_1+M_2$</tex>.
-
-*Dan*: Indeed.  So the relative motion between two bodies can be described
-as if it was the motion of just one body under the gravitational attraction
-of another body, that happens to have a mass equal to the sum of the masses
-of the two original bodies.
-
-*Erica*: Exactly.  And to complete this particular picture, we have to
-make sure that the other body stays in the origin, at the place of the
-center of mass.  We can do this by giving our alternative body a mass
-zero.  In other words, we consider the motion of a massless test particle
-under the influence of the gravitational field of a body with mass 
-<tex>$M_1 + M_2$</tex>, that is located in the center of the coordinate
-system.
-
-*Carol*: I see.  Because the testparticle has zero mass, it exerts zero
-gravitational pull on the central body.  Therefore, the central body
-does not move at all, and the only task we are left with is to determine
-the motion of the test particle around the center.
-
-*Dan*: And that is a one-body problem.  How neat!
-
-== Wrapping Up
-
-*Carol*: Let us gather the formulas we have obtained so far, for our
-coordinate transformation, from absolute to relative coordinates.
-
-:equation:
-\label{br1_br2}
-\left\{ \begin{array}{lcl}
-\br_1 = \bR - {\displaystyle {M_2 \over M_1 + M_2}} \br                   \\
-\phantom{1}&\phantom{1}&\phantom{1} \\
-\br_2 = \bR + {\displaystyle {M_1 \over M_1 + M_2}} \br
-\end{array} \right.
-
-:equation:
-\label{com_separation}
-\left\{ \begin{array}{lcl}
-\bR = {\displaystyle {M_1\br_1 + M_2\br_2 \over M_1 + M_2}}                 \\
-\phantom{1}&\phantom{1}&\phantom{1} \\
-\br = \br_2 - \br_1
-\end{array} \right.
-
-:equation:
-\label{Newton_br1_br2}
-\left\{ \begin{array}{lcl}
-{\displaystyle {d^2 \over dt^2}}\br_1 = 
-G {\displaystyle {M_2 \over r^3}}\br      \\
-\phantom{1}&\phantom{1}&\phantom{1} \\
-{\displaystyle {\frac{d^2}{dt^2}}}\br_2 =
-- G {\displaystyle {\frac{M_1}{r^3}}}\br
-\end{array} \right.
-
-:equation:
-\label{Newton_com_separation}
-\left\{ \begin{array}{lcl}
-{\displaystyle\frac{d^2}{dt^2}}\bR = 0                                     \\
-\phantom{1}&\phantom{1}&\phantom{1} \\
-{\displaystyle\frac{d^2}{dt^2}}\br = - G {\displaystyle\frac{M_1+M_2}{r^3}}\br
-\end{array} \right.
-
-*Dan*: So from all these equations, what we are going to solve with our
-computer program is the last one above, right?
-
-*Erica*: Yes, and let me write the equation once again here:
-
-:equation:
-\label{Newton2body}
-\frac{d^2}{dt^2}\br = - G \frac{M_1 + M_2}{r^3}\br
-
-And there is one more thing: let's make life as simple as we can, by
-choosing a system of physical units in which the gravitational
-constant and the total mass of the 2-body system are both unity:
-
-:eqnarray:
-G & = & 1                      \nonumber \\
-M_1 + M_2 & = & 1
-
-Our original equation of motion now becomes simply:
-
-:equation:
-\label{Newton2bodysimple}
-\frac{d^2}{dt^2}\br = - \frac{\br}{r^3}
-
-*Dan*:
-I can't imagine anything simpler than that!
-Let's start coding.
 

@@ -141,7 +141,7 @@ as an exotic collision product itself, the combinatorial richness of
 flavors of double stars and triples is enormous.  If we want to pick a
 particular double star, we not only have to choose a star type for
 each of its members, but in addition we have to specify the mass of
-each star, and the parameters of its orbit, such as the semimajor axis
+each star, and the parameters of its orbit, such as the semi-major axis
 (a measure for the typical separation of the two stars) as well as the
 orbital eccentricity.
 
@@ -158,7 +158,7 @@ The massive black hole is located near the head of the arrow labeled
 <tex>${\rm Sgr A}^*$</tex>.  The size of this image is two light
 years by two light years, and the crowding is enormous: in the
 neighborhood of the sun, typical distances between stars are several
-lightyears, and a snapshot like this most likely would show just one
+light years, and a snapshot like this most likely would show just one
 star or none at all.
 
 In the very center of our galaxy, a black hole resides with a mass a
@@ -184,7 +184,7 @@ consequence, the frequency of stellar collisions is comparable.
 Modeling the detailed behavior of stars in this region remains a great
 challenge, partly because of the complicated environmental features.
 A globular cluster forms a theorist's dream of a laboratory, with its
-absence of gas and dust and starforming regions.  All we find there
+absence of gas and dust and star forming regions.  All we find there
 are stars that can be modeled well as point particles unless they come
 close and collide, after which we can apply the point particle
 approximation once again.  In contrast, there are giant molecular
@@ -301,7 +301,7 @@ energy liberation mechanism by spontaneously forming binaries.
 
 As soon as even one binary appears, a simple code with constant time
 steps will give unacceptably large errors.  The first modification
-needed is the introduction of an adaptive timestep.  In the simplest
+needed is the introduction of an adaptive time step.  In the simplest
 case, all particles will still share the same time step size, but that
 size will change in time, in order to adequately resolve the closest
 encounters between particles.  However, even a single binary can then
