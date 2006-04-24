@@ -7,6 +7,7 @@ vx = 0
 vy = 1
 vz = 0
 dt = 0.01
+
 print(x, "  ", y, "  ", z, "  ")
 print(vx, "  ", vy, "  ", vz, "\n")
 

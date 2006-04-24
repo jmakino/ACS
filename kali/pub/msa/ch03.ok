@@ -368,7 +368,7 @@ Eq. (ref(com1d)) in vector form becomes:
 \label{com}
 \bR = {M_1\br_1 + M_2\br_2 \over M_1 + M_2}
 
-It is also convenient to define <tex>$r$</tex> as the relative
+It is also convenient to define <tex>$\br$</tex> as the relative
 position of the second particle with respect to the first particle:
 
 :equation:

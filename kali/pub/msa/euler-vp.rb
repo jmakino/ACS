@@ -2,7 +2,9 @@ require "acs"
 require "vpl"
 
 include Math
+
 a=[]
+
 x = 1
 y = 0
 z = 0
@@ -10,6 +12,9 @@ vx = 0
 vy = 0.5
 vz = 0
 dt = 0.01
+
+print(x, "  ", y, "  ", z, "  ")
+print(vx, "  ", vy, "  ", vz, "\n")
 
 1000.times{
   r2 = x*x + y*y + z*z
@@ -27,4 +32,5 @@ dt = 0.01
   print(vx, "  ", vy, "  ", vz, "\n")
   a.push([x,y])
 }
+
 VirtualPlotter.new.data(a).plot

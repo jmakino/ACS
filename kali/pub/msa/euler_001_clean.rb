@@ -9,6 +9,9 @@ vz = 0
 rf = 10       # does not violate dry principle
 dt = 0.01/rf
 
+print(x, "  ", y, "  ", z, "  ")
+print(vx, "  ", vy, "  ", vz, "\n")
+
 (1000*rf).times{|i|
   r2 = x*x + y*y + z*z
   r3 = r2 * sqrt(r2)

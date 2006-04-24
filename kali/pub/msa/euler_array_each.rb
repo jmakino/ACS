@@ -4,6 +4,9 @@ r = [1, 0, 0]
 v = [0, 0.5, 0]
 dt = 0.01
 
+r.each{|x| print(x, "  ")}
+v.each{|x| print(x, "  ")}
+
 1000.times{
   r2 = 0
   r.each{|x| r2 += x*x}

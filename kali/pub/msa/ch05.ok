@@ -2,12 +2,6 @@
 
 == Choosing an Algorithm
 
-== xxxxxxx
-
-<b>This is how far I got, 2007/4/21</b>
-
-== xxxxxxx
-
 *Carol*:
 Now that we have the equations of motion for the relative position of
 one particle with respect to the other, I guess we need an algorithm
@@ -218,7 +212,13 @@ associated with it.  One method happens to be called +times+.
 *Erica*: And what +times+ does is repeat the contant of its argument,
 whatever is within the curly brackets, +k+ times, if the number is +k+.
 
-*Carol*: Precisely.
+*Carol*: Precisely.  A bunch of expressions between curly brackets is
+called a block in Ruby, and this block is executed +k+ times.  We will
+have to get used to the main concepts of Ruby as we go along, but if
+you want to read about Ruby in more systematic way, here is a
+<web>http://www.rubycentral.com/|a good place to start</web>, and here
+is a web site specifically aimed at
+<web>http://sciruby.codeforpeople.com/|scientific applications</web>.
 
 == Interactive Ruby: +irb+
 
@@ -386,10 +386,13 @@ very intuitive, following what they call the `principle of least surprise':
 *Dan*: Apart from this mysterious <tt>\n</tt> at the end.  What does that do?
 
 *Carol*: It prints a new line.  This notation is borrowed from the C language.
+By the way, I'd like to see a printout of the position and velocity at the
+start of the run as well, before we enter the loop, so that we get all the
+points, from start to finish.
 
-*Erica*: So here it is, our first program, <tt>euler.rb</tt>, which is supposed
-to evolve our two-body problem for ten time units, from <tt>t = 0</tt> till
-<tt>t = 10</tt>:
+*Erica*: Fine!  Here it is, our first program, <tt>euler.rb</tt>, which
+is supposed to evolve our two-body problem for ten time units, from
+<tt>t = 0</tt> till <tt>t = 10</tt>:
 
  :inccode: .euler_elliptic.rb
 

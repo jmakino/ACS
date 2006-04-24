@@ -8,6 +8,9 @@ vy = 0.5
 vz = 0
 dt = 0.00001                          #1
 
+print(x, "  ", y, "  ", z, "  ")
+print(vx, "  ", vy, "  ", vz, "\n")
+
 1000000.times{                        #1
   r2 = x*x + y*y + z*z
   r3 = r2 * sqrt(r2)
