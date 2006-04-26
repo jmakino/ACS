@@ -22,23 +22,27 @@ orbit.
 *Erica*: I agree, we should do that soon.  But hey, the numbers do tell us
 something already, namely that there is something seriously wrong!
 
-<b>* * * * * * *  This is how far I got, 2007/4/24  * * * * * * * </b>
+*Carol*: How can you tell?
 
-*Carol*: Right you are, the numbers are much too large.  We are trying
-to let two particles move around a circle, at a relative distance of 1.
-However, here the separation in the <tex>$y$</tex> direction alone is
-already larger than <tex>$11$</tex>, so the total separation must be
-even larger.  I did not expect such a large error.
+*Erica*: At the end of the run, the distance between the two particles
+is more than 9.9, almost 10 in our units, as you can see by applying
+Pythagoras to the last numbers in the first two columns.
 
-*Dan*: Hmmm, yes, that is rather surprising.  And yet, look, the result
-of the very first step is exactly correct.  It is just what we would
-expect, when scaling our earlier result, from a time step of
-<tex>$dt=0.1$</tex> to a time step of <tex>$dt=0.01$</tex>.
+*Dan*: So what?
 
-*Erica*: Well, let us look at the orbit.  How do we make a plot?
+*Erica*: A bit large already for my taste, but what clinches it is the
+velocity difference between the particles, more than 0.99, almost 1.
+We started out with a velocity difference of only 0.5, so we have doubled
+the velocity, while increasing the distance by a factor 10.  When two
+particles move away from each other, they should slow down, not speed up,
+because gravity is an attractive force.
 
-*Carol*: I suggest using <tt>gnuplot</tt>, present on any Linux
-running system, and something that can be easily installed on many
+*Carol*: I see, yes, that is strange.
+
+*Dan*: Even more reason to make a plot!
+
+*Carol*: How about using <tt>gnuplot</tt>?  That one is present on any
+Linux running system, and something that can be easily installed on many
 other systems as well.  The style is not particularly pretty, but at
 least it will give us something to look at.
 
@@ -54,27 +58,100 @@ y axes.  Gnuplot can be instructed to do so by specifying the ratio to
 be <tt>-1</tt>.  In fact, let me write the line <tt>set size ratio
 -1</tt> in a file called <tt>.gnuplot</tt> in my home directory.  That
 way we don't have to type it each time we use gnuplot.  Okay, done.
-Now let's have our picture:
 
-xxxxxxxxx
+<b>Jun, shall we use the .gnuplot file this way?  It is natural, but it
+is far more difficult to make sure that all users will install that on
+their system when they copy ACS . . .  Do you have another suggestion?</b>
 
-Let's plot it (fig ref(euler_circular_bug) ):
+Now let's have our picture, in fig ref(euler_circular_bug):
 
  gnuplot
  set size ratio -1
  plot "euler.out"
  quit
 
+# note: it is important to repeat the run command below, to make sure that
+#       we have the correct output file, for the html pass and ps pass
+#        -- Piet, 2006/4/25
+ :command: ruby euler_elliptic.rb > euler.out
  :commandinput: gnuplot END
 set term post eps
-set output "euler_circular_bug.ps"
+set output "euler_elliptic_bug.ps"
 set size ratio -1
 plot "euler.out"
 quit
 END
 
-:figure: euler_circular_bug.ps 10cm euler_circular_bug
+:figure: euler_elliptic_bug.ps 10cm euler_elliptic_bug
 First attempt at integrating the two-body problem: failure.
+
+== Too Much, Too Soon
+
+*Dan*: Hmmm, that is not what I expected to see.  What a disappointment!
+
+*Erica*: Well, research is like that -- the first time you do something,
+it almost never works.  But look, on the bright sight, how well we've done!
+The two particles approach each other on a very nice elliptical orbit,
+so that part seems to work fine.  It is only around the time of closest
+encounter that they seem to get a kick, and fly away from each other.
+
+*Carol*: It's good to know that we seem to have done at least something
+right!  But why would the particles get a kick at closest approach?
+
+*Erica*: That's what we have to find out.  And we'd better be systematic.
+Even though it <i>seems</i> that the orbit integration goes well for a
+while, until the particles come too close, we don't know for sure unless
+we check.  It is equally possible that something already starts going
+wrong right from the beginning, and that the effects show up only
+after a while.
+
+*Dan*: How will we ever find out what is the case?  Shall we look at the
+code, line by line, to see whether we made a mistake?  It is such a short
+code, there are not that many ways to do something wrong!
+
+*Carol*: That's not the right approach.  By looking at the code you can
+perhaps find typos, but if you are starting from the wrong assumptions,
+you will never find what is wrong in the code.  If everything in the code
+fits with your assumptions, all will seem well . . .
+
+*Dan*: Research <i>is</i> difficult!  If this would be an exercise out
+of a book, at least the answer would be in the back, or we could ask a
+teaching assistant . . .
+
+*Erica*: Yes, research is difficult, but it also is a lot more fun than
+chewing on home work assignments.  You know, when you start playing
+in your own way, very soon you start doing things that in that exact
+form nobody else has ever done before.  Isn't that a thrill?!
+
+*Dan*: It would be a thrill if we could make progress.  Frankly, I'm lost.
+
+*Carol*: I must admit, I don't see a clear way ahead either, but at least
+I remember that one of my teacher told us to `divide and conquer' while
+troubleshooting.  In other words, if something goes wrong in a complex
+situation, try to simplify everything by dividing whatever procedure you
+have applied in smaller, more modular steps.  That way, you can try to
+see in which step something goes wrong.
+
+*Erica*: That makes sense.  And I remember hearing a graduate student
+tell us, while we were struggling with a computer program: `simplify,
+simplify.'  The idea was to first look at the simplest possible parameter
+choice, because in simpler cases it is often easier to see what goes wrong.
+
+*Dan*: You mean that we have done too much, too soon, by taking a rather
+arbitrary choice of initial conditions, and a thousand steps?
+
+*Erica*: Exactly.  The notion of `divide and conquer' tells us that we'd
+better do one integration step at a time, instead of a thousand.  And the
+idea of `simplify, simplify' suggests that we start with a circular orbit,
+rather than the more general case of an elliptic orbit.
+
+== A Circular Orbit
+
+*Carol*: So we have to find out what the correct velocity is, for two
+particles at a distance of 1, in order to move in a circle.  It seems
+to be larger than 0.5, but how much larger?
+
+<b>* * * * * * *  This is how far I got, 2007/4/25  * * * * * * * </b>
 
 == For later: Integrating by One Step (Verification & Validation)
 
