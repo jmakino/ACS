@@ -164,7 +164,7 @@ balance the accelerations, which is simpler.
 
 For the equivalent one-body problem, in our choice of units, the
 centripetal acceleration is just the gravitational acceleration,
-given in Eq. (ref(Newton2bodysimple})).  Since we are only interested
+given in Eq. (ref(Newton2bodysimple)).  Since we are only interested
 in the magnitude, we can write the centripetal acceleration as
 
 :equation:
