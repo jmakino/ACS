@@ -1,27 +1,27 @@
-include Math                              #5
+include Math
 
-x = 1                                     #1
-y = 0                                     #1
-z = 0                                     #1
-vx = 0                                    #1
-vy = 1                                    #1
-vz = 0                                    #1
-dt = 0.1                                  #2
+x = 1
+y = 0
+z = 0
+vx = 0
+vy = 1
+vz = 0
+dt = 0.01
 
-print(x, "  ", y, "  ", z, "  ")          #7
-print(vx, "  ", vy, "  ", vz, "\n")       #7
+print(x, "  ", y, "  ", z, "  ")
+print(vx, "  ", vy, "  ", vz, "\n")
 
-r = sqrt(x*x + y*y + z*z)                 #4
-r3 = r*r*r                                #6
-ax = - x / r3                             #6
-ay = - y / r3                             #6
-az = - z / r3                             #6
-x += vx*dt                                #3
-y += vy*dt                                #3
-z += vz*dt                                #3
-vx += ax*dt                               #3
-vy += ay*dt                               #3
-vz += az*dt                               #3
+r2 = x*x + y*y + z*z
+r3 = r2 * sqrt(r2)
+ax = - x / r3
+ay = - y / r3
+az = - z / r3
+x += vx*dt
+y += vy*dt
+z += vz*dt
+vx += ax*dt
+vy += ay*dt
+vz += az*dt
 
 print(x, "  ", y, "  ", z, "  ")
 print(vx, "  ", vy, "  ", vz, "\n")

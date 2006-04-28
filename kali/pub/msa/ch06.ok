@@ -70,9 +70,6 @@ Now let's have our picture, in fig ref(euler_circular_bug):
  plot "euler.out"
  quit
 
-# note: it is important to repeat the run command below, to make sure that
-#       we have the correct output file, for the html pass and ps pass
-#        -- Piet, 2006/4/25
  :command: ruby euler_elliptic.rb > euler.out
  :commandinput: gnuplot END
 set term post eps
@@ -326,7 +323,149 @@ derived.
 *Dan*: Ah, so we should have used <tex>$\br=\{0,1,0\}$</tex> for the
 initial velocity.  Great!  Good to know.
 
-== 
+== Virial Theorem
+
+*Erica*: You know, while Carol was doing her virtuoso derivation act,
+I suddenly remembered that there is a much quicker way to derive the
+same result from scratch.
+
+*Carol*: Show me!  I find that hard to believe.
+
+*Erica*: It just occurred to me that I could use the virial theorem,
+which tells us that for any bound system, on average the potential
+energy is equal to minus twice the kinetic energy in the c.o.m. frame.
+For a circular orbit, both the potential and kinetic energy remain
+constant, so we don't even have to do any averaging.
+
+In our case, we can use Eqs. (ref(br1)) and (ref(br2)) to write the
+kinetic energy as:
+
+:eqnarray:
+\label{rel_ekin}
+E_{kin} &=&
+\half M_1 v_1^2 + \half M_2 v_2^2                              \nonumber \\
+ &=&
+\half M_1 \left(\frac{M_2}{M_1+M_2}\,\bv\right)^2 +
+\half M_2 \left(\frac{M_1}{M_1+M_2}\,\bv\right)^2              \nonumber \\
+ &=&
+\half\,\frac{M_1 M_2}{\left(M_1+M_2\right)^2}
+\,\big[M_2+M_1\big]\,v^2                                       \nonumber \\
+ &=&
+\half\,\frac{M_1 M_2}{M_1+M_2} \,v^2
+
+The potential energy is simply:
+
+:equation:
+\label{rel_epot}
+E_{pot} = -\,G\,\frac{M_1 M_2}{r}
+
+The virial theorem tells us that <tex>$E_{pot} = -2E_{kin}$</tex>,
+which gives us:
+
+:equation:
+\frac{M_1 M_2}{M_1+M_2} \,v^2 = G\,\frac{M_1 M_2}{r}
+
+or:
+
+:equation:
+v^2 = G\,\frac{M_1 + M_2}{r}
+
+In our units, <tex>$G = M_1 + M_2 = 1$</tex> and therefore we have:
+
+:equation:
+v = \sqrt\frac{1}{r}
+
+So here you are: for an initial separation of 1, we need an initial
+velocity of 1.
+
+*Carol*: I must admit, you got the right answer and your derivation
+is a bit simpler than the one I just gave.  But I have never heard of the
+virial theorem.  What does it mean?
+
+*Erica*: Weeeeellll, that's quite a long story.  I'm not sure whether
+we should go into that right now.  If you really want to know, you can
+look at a text book, but . . . 
+
+*Dan*: . . . Google gives me a whole bunch of sites.  Let's look at a few.
+Hmmmm.  A bit too much math, this one. . .  Ah, this one looks easier,
+with more words and simple examples . . . 
+
+*Carol*: So we know we can look it up when we have to.  I agree with Erica,
+I'd rather move on.
+
+== Circular Motion
+
+*Dan*: Wait a minute, each of you have just given a detailed derivation,
+and now you're suddenly in a hurry.  You know what?  I bet that I can give
+an even simpler derivation, and that without using complicated vector
+calculus or the vitrial theorem.
+
+*Erica*: <i>virial</i> theorem.
+
+*Dan*: Whatever.  Here is my suggestion.  Why not just write down the
+circular orbit itself, as if we had already derived it?  I don't remember
+much from my introductory physics class, but I do remember how neat it
+was that you could write down a simple circular motion in two dimensions
+in the following way, for the position:
+
+:equation:
+\label{r_omega_t}
+\left\{ \begin{array}{lcl}
+x = A \cos (\omega t)                                                     \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+y = A \sin (\omega t)
+\end{array} \right.
+
+Now this is easy to differenciate.  No vector notation, just simple
+coordinate operations.  By differentiation with respect to time, the
+velocity vectors become:
+
+:equation:
+\label{v_omega_t}
+\left\{ \begin{array}{lcl}
+v_x = -A \omega\sin (\omega t)                                             \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+v_y = A \omega\cos (\omega t)
+\end{array} \right.
+
+One more differentiation, and we get the acceleration components:
+
+:equation:
+\label{a_omega_t}
+\left\{ \begin{array}{lcl}
+a_x = -A \omega^2\cos (\omega t)                                             \\
+\phantom{1}&\phantom{1}&\phantom{1} \\
+a_y = -A \omega^2\sin (\omega t)
+\end{array} \right.
+
+Comparing Eqs. (ref(r_omega_t)) and (ref(a_omega_t)), we find
+
+:equation:
+\ba = -\omega^2\br
+
+We have seen in Eq.(ref(centripetal)) that for our initial condition
+<tex>$r=1$</tex> we have <tex>$a=1$</tex>, so this means that
+<tex>$\omega=1$</tex>.  Well, Eq. (ref(v_omega_t)) now tells us
+that <tex>$v=1$</tex>.  Isn't that simple?
+
+*Erica*: Yes, it is <i>very</i> simple, I'm surprised!
+
+*Dan*: I must admit that I'm a bit surprised too, that it came out
+so easily.  And, frankly, I'm surprised that I came out correctly!
+
+*Carol*: But working in coordinates like that is not very elegant.
+
+*Erica*: Oh, come on, Carol, give the guy a break!  What counts is
+to get the right answer, and you must admit that his solution is
+simpler than either of our ways of deriving the same answer.  Let's
+just be glad that all three methods gave the same answer!
+
+*Carol*: Ah, you physicists, you're so pragmatic!  I'd prefer a bit
+more style.
+
+*Dan*: Well, each her own style.  I'm happy now, and ready to move on!
+
+== One Step at a Time
 
 *Erica*: Which means that we've answered the `simplify, simplify'
 part of our task of trouble shooting: we now know how to launch the
@@ -335,5 +474,32 @@ two-body problem on the simplest possible orbit, that of a circle.
 The other task was `divide and conquer', and we had already decided
 to start with just one step.
 
-<b>* * * * * * *  This is how far I got, 2007/4/26  * * * * * * * </b>
+*Dan*: That's a simple change in our program: we can just take out the
+loop.
+
+*Carol*: Okay, here is the new code.  Let me call it
+<tt>euler_circular_step.rb</tt>.
+
+*Dan*: You sure like long names!  I would have called it
+<tt>eulercs.rb</tt>.
+
+*Carol*: Right.  And three days later you will be wondering why there
+is a program floating around in your directory that seems to tell you
+that it uses Euler's algorithm for cool stuff, or for communist socialism
+or just for casual sin.  No, I'm a big believer in looooong names.
+
+*Erica*: I used to be like Dan, but I've been bitten too often by the
+problem you just mentioned, that I could for the life of me not remember
+what the acronym was supposed to mean that I had introduced.  So yes,
+I'm with you.
+
+*Dan*: Fine, two against one, I lose again!  But I'll be +gs+, oops,
+I mean a <tt>good_sport</tt>.
+
+*Carol*: What do you think of this version of <tt>euler_circular_step.rb</tt>?
+
+ :inccode: .euler_circular_step.rb
+
+<b>* * * * * * *  This is how far I got, 2007/4/27  * * * * * * * </b>
+
 
