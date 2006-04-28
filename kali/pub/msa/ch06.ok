@@ -500,6 +500,10 @@ I mean a <tt>good_sport</tt>.
 
  :inccode: .euler_circular_step.rb
 
-<b>* * * * * * *  This is how far I got, 2007/4/27  * * * * * * * </b>
+*Erica*: Let's see: you got the circular velocity correct,
+a value of unity as it should be.  And instead of looping,
+you print, take one step, and print again.  Hard to argue with!
+
+*Dan*: Let's see whether it gives a reasonable result.
 
 
