@@ -55,13 +55,10 @@ ratio scales the aspect ratio of the vertical and horizontal edge of
 the box in which a figure appears.  But in our case we want to
 set the scales so that the unit has the same length on both the x and
 y axes.  Gnuplot can be instructed to do so by specifying the ratio to
-be <tt>-1</tt>.  In fact, let me write the line <tt>set size ratio
--1</tt> in a file called <tt>.gnuplot</tt> in my home directory.  That
-way we don't have to type it each time we use gnuplot.  Okay, done.
-
-<b>Jun, shall we use the .gnuplot file this way?  It is natural, but it
-is far more difficult to make sure that all users will install that on
-their system when they copy ACS . . .  Do you have another suggestion?</b>
+be <tt>-1</tt>.  In fact, you can write the line <tt>set size ratio
+-1</tt> in a file called <tt>.gnuplot</tt> in your home directory, if
+you want to avoid repeating yourself each time you use gnuplot.
+But for starters, I'll give the command specifically.
 
 Now let's have our picture, in fig ref(euler_circular_bug):
 
