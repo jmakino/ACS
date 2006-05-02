@@ -79,6 +79,7 @@ END
 :figure: euler_elliptic_bug.ps 10cm euler_elliptic_bug
 First attempt at integrating the two-body problem: failure.
 
+
 == Too Much, Too Soon
 
 *Dan*: Hmmm, that is not what I expected to see.  What a disappointment!

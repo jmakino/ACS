@@ -22,6 +22,7 @@ TMPLOG = $(SRC:.ok=.log)
 TMPAUX = $(SRC:.ok=.aux)
 TMPDVI = $(SRC:.ok=.dvi)
 TMPTEX = $(SRC:.ok=.tex)
+TMPHTML = $(SRC:.ok=.html)
 
 all:  acsdoc acscode
 acsdoc:  $(alldepends)
@@ -62,7 +63,7 @@ clean :
 	    $(TARGET).log $(TARGET).ps $(TARGET).pdf $(TARGET).ps.gz \
 	    $(TARGET).toc >&/dev/null   
 	-rm tmp.tex tmp.aux tmp.dvi tmp.log tmp.ps tmp.toc tmp.jpeg* >&/dev/null	   
-	-rm $(TMPPS) $(TMPLOG) $(TMPAUX) $(TMPDVI) $(TMPTEX) >&/dev/null
+	-rm $(TMPPS) $(TMPLOG) $(TMPAUX) $(TMPDVI) $(TMPTEX) $(TMPHTML) >&/dev/null
 	    
  cleandoc : 
 	-rm -r doc  $(TARGET).tex   $(TARGET).ps $(TARGET).ps.gz  $(TARGET).toc

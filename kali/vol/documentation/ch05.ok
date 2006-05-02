@@ -795,7 +795,11 @@ or
  \\<web>
 even in listing mode.
 
+== section header just after the figure
 
+section header ( === etc) just after figure entry seems to be
+processed incorrectly. If you add one more newline between figure data
+and section header, it works fine. (May 2 2006)
 
 = Sandbox
 
