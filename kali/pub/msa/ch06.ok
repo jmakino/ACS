@@ -502,5 +502,3 @@ a value of unity as it should be.  And instead of looping,
 you print, take one step, and print again.  Hard to argue with!
 
 *Dan*: Let's see whether it gives a reasonable result.
-
-
