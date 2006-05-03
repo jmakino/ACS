@@ -392,7 +392,7 @@ weighted position of an extended object.  We use that notion in computer
 graphics for computer games all the time.  One way to look at it is to
 ask yourself where you should support a rod with two weights attached
 at the end.  If one of the weights is twice as heavy as the other, it
-should be twice as far from the support point as the other is, in
+should be twice as close to the support point as the other is, in
 order to balance the rod.
 
 *Dan*: I see, that helps.  So with `mass weighted' you mean that I multiply
