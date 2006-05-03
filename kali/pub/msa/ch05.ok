@@ -209,7 +209,7 @@ Is the number <tex>$1000$</tex> also an object?
 *Carol*: You guessed it!  And every number has by default various methods
 associated with it.  One method happens to be called +times+.
 
-*Erica*: And what +times+ does is repeat the contant of its argument,
+*Erica*: And what +times+ does is repeat the content of its argument,
 whatever is within the curly brackets, +k+ times, if the number is +k+.
 
 *Carol*: Precisely.  A bunch of expressions between curly brackets is
@@ -286,7 +286,7 @@ addition.  For example, <tt>c *= d</tt> is the same as <tt>c = c * d</tt>.
 == One Step at a Time
 
 *Dan*: All that is left for us to do is to write the content of the loop.
-That means we have to describe how to take a single step forwards in time.
+That means we have to describe how to take a single step forward in time.
 
 *Erica*: Specifically, at the start we have to tell the particles how
 to move to their next relative position, from our starting point of time

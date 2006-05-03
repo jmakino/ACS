@@ -224,7 +224,7 @@ insist that the vectors <tex>$\br$</tex> and <tex>$\bv$</tex> are
 perpendicular, so that <tex>$\br\cdot\bv = 0$</tex>.
 
 *Erica*: That makes sense: on a circular orbit the velocity has no
-component in the direction towards the other particle, so it is indeed
+component in the direction toward the other particle, so it is indeed
 perpendicular.
 
 *Dan*: There is something I don't understand.  In the equation above,
@@ -414,7 +414,7 @@ x = A \cos (\omega t)                                                     \\
 y = A \sin (\omega t)
 \end{array} \right.
 
-Now this is easy to differenciate.  No vector notation, just simple
+Now this is easy to differentiate.  No vector notation, just simple
 coordinate operations.  By differentiation with respect to time, the
 velocity vectors become:
 

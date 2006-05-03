@@ -40,7 +40,7 @@ case, we have already dealt with the coordinates of the four vectors
 or equivalently the values of the components of that vector, describe
 the position of one particle with respect to a point in space.  For
 example, <tex>$\br_2$</tex> describes the position of particle 2 with
-respect to the origin, and <tex>$\br$</tex> describes the poition of
+respect to the origin, and <tex>$\br$</tex> describes the position of
 particle 2 with respect to the point in space temporarily occupied by
 particle 1.
 
