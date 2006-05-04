@@ -99,6 +99,7 @@ this first step keeps the two particles on a circular orbit.  After
 the first step, the new separation is:
 
 :equation:
+\label{first_step_error}
 r(0.1) = \sqrt{x^2 + y^2 + z^2} = \sqrt{1 + 0.01^2} = 
 \sqrt{1.0001} \approx 1.00005
 
@@ -288,7 +289,7 @@ meaning to it, until we have really understood what is happening.
 *Erica*: I agree.  The question is how to get this real understanding!
 I must admit that I'm baffled.
 
-== Debugging
+== Code Inspection
 
 *Carol*: Well, that is where you new a computer scientist to come in.
 We are supposed to be trained to do trouble shooting and bug chasing.

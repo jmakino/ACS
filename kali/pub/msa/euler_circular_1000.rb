@@ -6,12 +6,12 @@ z = 0
 vx = 0
 vy = 1
 vz = 0
-dt = 0.01                                       #2
+dt = 0.001                                      #2
 
 print(x, "  ", y, "  ", z, "  ")
 print(vx, "  ", vy, "  ", vz, "\n")
 
-1000.times{
+1000.times{                                     #3
   r2 = x*x + y*y + z*z
   r3 = r2 * sqrt(r2)
   ax = - x / r3
