@@ -1,4 +1,4 @@
-= Limitations of the Forward-Euler Algorithm
+= Convergence
 
 == Much Better
 
@@ -72,7 +72,8 @@ in <tt>euler_circular.rb</tt> to:
 
  :inccode: .euler_circular_1000.rb-2
 
-and put that code in <tt>euler_circular_1000.rb</tt>.
+and put that code in <tt>euler_circular_1000.rb</tt>, to indicate that
+we are now taking 1000 steps per time unit.  Time to run it!
 
  :commandoutput: ruby euler_circular_1000.rb > euler.out
  :commandoutput: head -5 euler.out
@@ -142,3 +143,7 @@ so I feel I can talk about particles.
 *Erica*: And I think you're both right.  Stop arguing, you guys!
 Let's go back to the elliptic case, the one we started with, remember?
 
+== The Same Problem
+
+*Carol*: Sure, I remember that.  All we have to do is to take
+the file 

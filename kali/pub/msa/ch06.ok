@@ -4,7 +4,7 @@
 
 *Carol*: Well, let's see what happens.  I don't want to look at a thousand
 lines of output.  I will first run the code, redirecting the results into
-an output file, called <tt>euler.our</tt>:
+an output file, called <tt>euler.out</tt>:
 
  :command: cp euler_elliptic.rb euler.rb
  :commandoutput: ruby euler.rb > euler.out
