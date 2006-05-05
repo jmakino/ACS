@@ -93,3 +93,4 @@ END
 
 :figure: euler_elliptic_100000_sparse_ok.ps 10cm euler_elliptic_100000_sparse_ok
 Tenth attempt at integrating the two-body problem: finally converging.
+
