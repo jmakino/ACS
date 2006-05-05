@@ -75,8 +75,6 @@ single line.
 Let us follow the discussion
 of our three friends, from the moment that their code first compiled.
 
-<b>* * * * * * *  This is how far I got, 2007/5/2  * * * * * * * </b>
-
 == Running a Code
 
 *Carol*:
@@ -87,9 +85,9 @@ our screen will be flooded by 1000 lines of output; better to redirect
 the output to a file.  Let's call it <tt>euler.out</tt>, and let's have
 a look at the beginning and the end of the file, say five lines each:
 
- :commandoutput: ruby euler.rb > euler.out
- :commandoutput: head -5 euler.out
- :commandoutput: tail -5 euler.out
+ : commandoutput : ruby euler.rb > euler.out
+ : commandoutput : head -5 euler.out
+ : commandoutput : tail -5 euler.out
 
 \output{chap3/forward.output}
 

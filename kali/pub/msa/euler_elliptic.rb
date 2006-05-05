@@ -4,9 +4,9 @@ x = 1
 y = 0
 z = 0
 vx = 0
-vy = 1                                          #3
+vy = 0.5                                    #1
 vz = 0
-dt = 0.01                                       #2
+dt = 0.01
 
 print(x, "  ", y, "  ", z, "  ")
 print(vx, "  ", vy, "  ", vz, "\n")
@@ -20,9 +20,9 @@ print(vx, "  ", vy, "  ", vz, "\n")
   x += vx*dt
   y += vy*dt
   z += vz*dt
-  vx += ax*dt                                   #1
-  vy += ay*dt                                   #1
-  vz += az*dt                                   #1
+  vx += ax*dt
+  vy += ay*dt
+  vz += az*dt
   print(x, "  ", y, "  ", z, "  ")
   print(vx, "  ", vy, "  ", vz, "\n")
 }

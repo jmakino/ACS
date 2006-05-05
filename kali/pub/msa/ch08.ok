@@ -1,6 +1,6 @@
 = Convergence
 
-== Much Better
+== Better Numbers
 
 *Carol*: Here is our corrected code <tt>euler_circular.rb</tt>:
 
@@ -30,6 +30,8 @@ and the separation along the _y_ axis is about <tex>$0.6$</tex> . . .
 <tex>$\sqrt{1\cdot1+0.6\cdot0.6}\approx 1.17$</tex>.
 Not wildly off, but not very good either.
 
+== Better Orbit
+
 *Dan*: How about a picture?
 
 *Carol*: Here it is, fig. ref(euler_circular).
@@ -56,7 +58,7 @@ orbit it should then have been 4%, and we got 17%.  Perhaps nonlinear effects
 contributed, but at least my original guess of several percent was not way
 off!
 
-== Even Better
+== Even Better Numbers
 
 *Erica*: And after Erica predicted us to be off by 3% per orbit, Dan showed
 what should happen for a time step that is ten times smaller: the
@@ -114,6 +116,8 @@ the mess later.
 *Carol*: A 2% error, about a factor ten smaller than the 17% error
 we had before.  We're winning!
 
+== An Even Better Orbit
+
 *Erica*: And we should get a much better picture now.
 
 *Carol*: Here it is, fig. ref(euler_circular_1000_ok).
@@ -146,4 +150,126 @@ Let's go back to the elliptic case, the one we started with, remember?
 == The Same Problem
 
 *Carol*: Sure, I remember that.  All we have to do is to take
-the file 
+the file <tt>euler_circular.rb</tt> and make the initial velocity half
+as large, by changing the line:
+
+  :inccode: .euler_circular.rb-3
+
+into:
+
+  :inccode: .euler_elliptic.rb-1
+
+Let's call the new file, guess what, <tt>euler_circular.rb</tt>.
+
+*Dan*: But that will be the same file as we started with, <tt>euler.rb</tt>.
+
+*Erica*: No, there is one difference, remember: we found a bug, and corrected
+it.  Here, it is easy to see where there is a difference:
+
+ |gravity> diff euler.rb euler_circular.rb
+ |gravity> 
+
+*Carol*: No difference at all.  That is strange!  Let's look at the lines that
+we had problems with.  In the file <tt>euler_circular_100_steps.rb</tt> we
+saw the following typo:
+
+ :inccode: .euler_circular_100_steps.rb-1
+
+where the +vy+ term got assigned the +ax+ acceleration instead of the
+correct +ay+ acceleration term.  Let us backtrack.  The file before that
+was <tt>euler_circular_step.rb</tt>.  Presumably we inherited the typo
+from there, but let's make sure:
+
+ :inccode: .euler_circular_step.rb-1
+
+*Dan*: I'm glad you checked, no typo there!
+
+*Carol*: This means that I introduced the typo while I was adding the
++times+ loop back into the program!  How silly.  While I was trying to
+debug a program I introduced a new bug.
+
+*Erica*: Don't worry, things like that happen.  And neither Dan nor I
+noticed it, so don't blame yourself.  But let's be really sure the typo
+was indeed not there in the original program <tt>euler.rb</tt>:
+
+ :inccode: .euler.rb-5
+
+*Carol*: Indeed, clean, no typo, which explains why the +diff+ above didn't
+give any difference at all.
+
+*Erica*: I know that <tt>euler.rb</tt> and <tt>euler_elliptic.rb</tt>
+_should_ give the exact same answers, but given that we've had so many
+surprises, would you mind running <tt>euler_elliptic.rb</tt>, just to
+make absolutely sure that we know what we're doing?
+
+*Carol*: Never hurts to check.  Here it is, in fig. ref(euler_elliptic).
+
+ :commandoutput: ruby euler_elliptic.rb > euler.out
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_elliptic.ps"
+set size ratio -1
+plot "euler.out"
+quit
+END
+
+:figure: euler_elliptic.ps 10cm euler_elliptic
+Sixth attempt at integrating the two-body problem: the original failure.
+
+*Erica*: Yes, the exact same problem as before.
+
+== Signs of Hope
+
+*Dan*: So we've wasted our time, chasing a bug, then introducing a new bug
+and then finding the new bug; we're back where we were!
+
+*Erica*: No, that's not true.  We've learned a lot, actually.  We found out
+how to start our particles on a circular orbit.
+
+*Carol*: We found it out in three different ways no less!
+
+*Erica*: And we did our first piece of real numerical analysis, but checking
+by hand the results of the first integration step.
+
+*Carol*: Not only that, we, I mean _you_, actually predicted the order of
+magnitude of the error, and you were not far off!
+
+*Dan*: Only by a factor five or so, but yes, I must admit, it could have been
+anything and in that sense it was nice to be roughly in the right ballpark.
+Well, yes, I have to admit that we learned a lot.
+
+Sure, that is all nice and fine, but what about our original bug?  With
+respect to chasing _that_ bug, we haven't learned anything yet.
+
+*Carol*: Wrong again, Dan!  The fact that we got convergence for an initial
+velocity value of <tt>v_y = 1</tt> suggests to me that we should get
+convergence also for an initial velocity value of <tt>v_y = 0.5</tt>.
+It may just mean that we need to take smaller steps.
+
+*Dan*: You're suddenly very sure of the outcome of an experiment, before
+even trying it.  I've been surprised too many times now to take your word
+for it.  Show me!
+
+*Carol*: Here we go, a ten times smaller step size in the file
+<tt>euler_elliptic_1000.rb</tt>; I'll plot the result in fig.
+ref(euler_elliptic_1000).
+
+ :commandoutput: ruby euler_elliptic_1000.rb > euler.out
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_elliptic_1000.ps"
+set size ratio -1
+plot "euler.out"
+quit
+END
+
+:figure: euler_elliptic_1000.ps 10cm euler_elliptic_1000
+Seventh attempt at integrating the two-body problem: signs of hope.
+
+*Dan*: I must admit, you may have been right: at least now the particles
+are completing a couple orbits that sort-of look elliptical, even though
+the errors are still large. But at least they don't fly off to infinity
+like in a slingshot.
+
+*Erica*: I also think that Carol must be right, but we'd better make sure,
+and use even smaller steps.
