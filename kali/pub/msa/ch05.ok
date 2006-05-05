@@ -124,7 +124,7 @@ initial conditions.
 You mean we have to start by specifying the initial separation between
 the particles.  How about a simple choice like this?
 
- :inccode: .euler_elliptic.rb-1
+ :inccode: .euler.rb-1
 
 *Dan*: Let me put this into words.  The relative position vector is
 chosen along the <tex>$x$</tex> axis at a distance of unity from the
@@ -166,7 +166,7 @@ How about letting `much less than 1' be 0.01?  We can always make the step
 larger, if it turns out to be unnecessarily small.  Here, let me add
 this to the code:
 
- :inccode: .euler_elliptic.rb-2
+ :inccode: .euler.rb-2
 
 == Looping in Ruby
 
@@ -188,7 +188,7 @@ thing +k+ times?  Ah, here it is.  That looks funny!  You write
 <tt>k.times</tt>!  So to traverse a piece of code <tex>$1000$</tex> times,
 you enclose that piece of code within the following loop wrapper:
 
- :inccode: .euler_elliptic.rb-3
+ :inccode: .euler.rb-3
 
 *Dan*: Surely you are joking!  That is carrying the principle of least
 surprise a bit too far to believe.  How can that work?  Can a computer
@@ -295,13 +295,13 @@ general +dt+ value, using the forward Euler approximation
 (ref(ForwardEulerStep)), we obtain the position
 <tex>$\br = \{r_x, r_y, r_z\}$</tex> at the end of the first step:
 
- :inccode: .euler_elliptic.rb-4
+ :inccode: .euler.rb-4
 
 In addition, we have to tell the particles what their new relative velocity
 <tex>$\bv = \{v_x, v_y, v_z\}$</tex>
 should be.  Using the same forward Euler construction, we can write:
 
- :inccode: .euler_elliptic.rb-5
+ :inccode: .euler.rb-5
 
 using the acceleration vector <tex>$\ba = \{a_x, a_y, a_z\}$</tex>.
 
@@ -340,7 +340,7 @@ r = \sqrt{x^2 + y^2 + z^2}
 
 Let me start with the last line:
 
- :inccode: .euler_elliptic.rb-6
+ :inccode: .euler.rb-6
 
 *Carol*: Let's see whether I remember my vector analysis class.  The quantity
 <tex>$\br$</tex> is called a vector, and the quantity <tex>$r$</tex> is called
@@ -357,7 +357,7 @@ they find had better be the same.
 
 *Dan*: My Ruby book tells me that you must add the line
 
- :inccode: .euler_elliptic.rb-7
+ :inccode: .euler.rb-7
 
 in order to use the square root method +sqrt+, where the term method
 is used in the same way the word function is used in C and the word
@@ -367,7 +367,7 @@ many of the mathematical methods reside.
 
 *Erica*: Thanks!  Now the rest is straightforward:
 
- :inccode: .euler_elliptic.rb-8
+ :inccode: .euler.rb-8
 
 == Printing the Result
 
@@ -379,7 +379,7 @@ to get the result on the screen?
 *Erica*: I guess that doesn't hurt!  The Ruby syntax for printing seems to be
 very intuitive, following what they call the `principle of least surprise':
 
- :inccode: .euler_elliptic.rb-9
+ :inccode: .euler.rb-9
 
 *Carol*: I like that principle!  And indeed, this couldn't be simpler!
 
@@ -394,5 +394,5 @@ points, from start to finish.
 is supposed to evolve our two-body problem for ten time units, from
 <tt>t = 0</tt> till <tt>t = 10</tt>:
 
- :inccode: .euler_elliptic.rb
+ :inccode: .euler.rb
 

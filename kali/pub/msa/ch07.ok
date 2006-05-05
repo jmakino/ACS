@@ -16,7 +16,6 @@ Previously, we got much more complicated lines of output.
 Good thing we kept the old program, and give the new one a new name.
 Let me reproduce the first four lines of the old program:
 
- :command: cp euler_elliptic.rb euler.rb
  :commandoutput: ruby euler.rb | head -4
 
 *Dan*: I see, I was wrong.  The first step gave a simple answer,

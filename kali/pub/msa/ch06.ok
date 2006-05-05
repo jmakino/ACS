@@ -6,7 +6,6 @@
 lines of output.  I will first run the code, redirecting the results into
 an output file, called <tt>euler.out</tt>:
 
- :command: cp euler_elliptic.rb euler.rb
  :commandoutput: ruby euler.rb > euler.out
 
 In that way, we can look at our leisure at the beginning and at the
@@ -67,7 +66,10 @@ Now let's have our picture, in fig ref(euler_circular_bug):
  plot "euler.out"
  quit
 
- :command: ruby euler_elliptic.rb > euler.out
+# the following line should be removed after improving acsdoc to
+# include "save_output" extensions -- PH, May 2006
+
+ :command: ruby euler.rb > euler.out
  :commandinput: gnuplot END
 set term post eps
 set output "euler_elliptic_bug.ps"
