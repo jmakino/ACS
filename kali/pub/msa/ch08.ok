@@ -250,7 +250,7 @@ It may just mean that we need to take smaller steps.
 even trying it.  I've been surprised too many times now to take your word
 for it.  Show me!
 
-*Carol*: Here we go, a ten times smaller step size in the file
+*Carol*: Here we go, a ten times smaller step size in
 <tt>euler_elliptic_1000.rb</tt>; I'll plot the result in fig.
 ref(euler_elliptic_1000).
 
