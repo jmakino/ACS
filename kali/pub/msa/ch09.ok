@@ -246,6 +246,7 @@ END
 :figure: euler_one_body.ps 10cm euler_one_body
 Eleventh attempt at integrating the two-body problem: check of 1-body output.
 
+ :inccode: .euler_two_body.rb-4
  :inccode: .euler_two_body.rb-1
  :inccode: .euler_two_body.rb-2
  :inccode: .euler_two_body.rb-3
