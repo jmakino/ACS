@@ -11,7 +11,7 @@ dt = 0.001
 print(x, "  ", y, "  ", z, "  ")
 print(vx, "  ", vy, "  ", vz, "\n")
 
-10000.times{|i|
+10000.times{|i|                              #1
   r2 = x*x + y*y + z*z
   r3 = r2 * sqrt(r2)
   ax = - x / r3
@@ -23,8 +23,8 @@ print(vx, "  ", vy, "  ", vz, "\n")
   vx += ax*dt
   vy += ay*dt
   vz += az*dt
-  if i%10 == 0
-    print(x, "  ", y, "  ", z, "  ")
-    print(vx, "  ", vy, "  ", vz, "\n")
-  end
+  if i%10 == 0                               #2
+    print(x, "  ", y, "  ", z, "  ")         #2
+    print(vx, "  ", vy, "  ", vz, "\n")      #2
+  end                                        #2
 }

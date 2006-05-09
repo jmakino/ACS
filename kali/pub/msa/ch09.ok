@@ -1,16 +1,153 @@
-= Limitations of the Forward-Euler Algorithm
+= Convergence for an Elliptic Orbit
 
-<b>* * * * * * *  This is how far I got, 2007/5/5  * * * * * * * </b>
+== Adding a Counter
 
-Todo: discuss the need for sparse versions, with less output.
+*Carol*: Yes, let's go to smaller steps, but I'm worried about one thing,
+though.  Each time we make the steps ten times as small, we are generating
+ten times more output.  This means a ten times larger output file, and ten
+times more points to load into our graphics figure.  Something tells me
+that we may have to make the steps a hundred times smaller yet, to get
+reasonable convergence, and at some point we will be running into trouble
+when we start saving millions of points.
 
-== xxxxxx
+Let's check the file size so far:
+
+ :command: ruby euler_elliptic_1000.rb > euler.out
+ :commandoutput: ls -l euler.out
+
+*Dan*: I see, almost a Megabyte.  This means that a thousand times smaller
+step size would generate a file of almost a Gigabyte.  That would be overkill
+and probably take quite a while to plot.  I guess we'll have to prune the
+output, and only keep some of the points.
+
+*Erica*: Good idea.  A natural approach would be to keep the same number
+of points as we got in our first attempt, namely one thousand.  
+In our next-to-last plot, figure ref(euler_elliptic) you could still see
+how the individual points were separated further from each other at the
+left hand side, while in our last plot, figure (euler_elliptic_1000),
+everything is so crowded that you can't see what is going on.
+
+*Dan*: What do you mean with `going on'?
+
+*Erica*: In figure ref(euler_elliptic), on the left hand side, you can see
+that the individual points are separated most when the particles come close
+together.  This means that the particles are moving at the highest speed,
+which makes sense: when two particles fall toward each other, they speed up.
+As long as we stick to only a few hundred points per orbit, we will be able
+to see that effect nicely also when we reach convergence in more accurate
+calculations.
+
+*Carol*: I'd like to aks you more about that, but before doing so, let's
+first get the pruning job done, in order to produce more sparse output.
+I will take our last code, from <tt>euler_elliptic_1000.rb</tt>, and call
+it <tt>euler_elliptic_1000_sparse.rb</tt> instead.  Yes, Dan, you can
+later copy it into <tt>ee1s.rb</tt>, if you like.  How to prune things?
+We have a time step of <tt>dt = 0.001</tt> that is ten times smaller than
+our original choice, and therefore it produces ten times too many points.
+
+The solution is to plot only one out of ten points.  The simplest way I
+can think of is to introduce a counter in our loop, which keeps track of
+how many times we have traversed the loop.  I will call the counter +i+:
+
+ :inccode: .euler_elliptic_1000_sparse.rb-1
+
+*Erica*: what do the vertical bars mean?
+
+*Carol*: That is how Ruby allows you to use a counter.  In most languages, you
+start with a counter, and then you define the looping mechanism explicitly
+by using the counter.  For example, in C you write 
+
+ for (i = 0; i < imax; i++){ ... } 
+
+which defines a loop that is traversed +imax+ times.  Ruby is cleaner, 
+in the sense that it allows you to forget about such implementation details.
+The construct
+
+ imax.times{ ... }
+
+neatly takes care of everything, while hiding the actual counting procedure.
+However, if you like to make the counter visible, you can do so by writing:
+
+ imax.times{|i| ... }
+
+where +i+, or whatever name you like to chose for the variable, will become
+the explicit counter.
+
+== Sparse Output
+
+*Dan*: So now we have to give the print statements a test which is passed
+only one out of ten times.
+
+*Carol*: Exactly.  How about this?
+
+ :inccode: .euler_elliptic_1000_sparse.rb-2
+
+Here the symbol <tt>%</tt> gives you the reminder after a division,
+just as in C.
+
+*Dan*: So when you write <tt>8%3</tt>, you get <tt>2</tt>.
+
+*Carol*: Yes.  And the way I wrote it above, <tt>i%10</tt>, will be equal
+to zero only one out of ten times, only when the number +i+ is a multiple
+of ten, or in decimal notation ends in a zero.
+
+*Dan*: Okay, that's hard to argue with.  Let's try it.  Better make sure
+that you land on the same last point as before.  How about running the old
+code and the new sparse code, and comparing the last few lines?
+
+*Carol*: Good idea.  After our debugging sessions you've gotten a taste
+for testing, hey?  You'll turn into a computer scientist before you
+know it!  I'll give you what you ordered, but of course there is hardly
+anything that can go wrong:
 
  :commandoutput: ruby euler_elliptic_1000.rb | tail -3
 
  :commandoutput: ruby euler_elliptic_1000_sparse.rb | tail -3
 
+*Dan*: Well, _hardly_ anything perhaps, but still _something_ went wrong . . .
+
+*Carol*: . . . yes, I spoke too soon.  The points do some to be further
+separated from each other, but the last point from the new code doesn't
+quite reach the last of the many points that the old code printed.
+
+Ah, of course!  I should have thought about that.  Off by one!
+
+*Erica*: Off by one?
+
+*Carol*: Yes, that's what we call it when you forget that Ruby, or C for
+that matter, is counting things starting from zero rather than from one.
+The first time we travers the loop, the value of +i+ is zero, the second
+time it is one.  We want to print out the results one out of ten times.
+This means that each time we have traversed the loop ten times, we print.
+After the tenth traversal, <tt>i = 9</tt>, since we started with
+<tt>i = 0</tt>.  Here, I'll make the change, and call the file
+<tt>euler_elliptic_1000_sparse_ok.rb</tt>:
+
+ :inccode: .euler_elliptic_1000_sparse_ok.rb-2
+
+Let me try again:
+
+ :commandoutput: ruby euler_elliptic_1000.rb | tail -3
+
  :commandoutput: ruby euler_elliptic_1000_sparse_ok.rb | tail -3
+
+*Dan*: Congratulations!  I guess this is called off by zero?
+The last points are indeed identical.
+
+*Erica*: I'd call it on target.  And presumably the output file is
+ten times smaller?
+
+*Carol*: Easy to check:
+
+ :commandoutput: ruby euler_elliptic_1000.rb | wc
+
+ :commandoutput: ruby euler_elliptic_1000_sparse_ok.rb | wc
+
+So it is; from more than 10,000 lines back to 1001 lines, as before.
+
+== Pericenter and Apocenter
+
+<b>* * * * * * *  This is how far I got, 2007/5/8  * * * * * * * </b>
 
 *Carol*: Here it is, fig. ref(euler_elliptic_1000_sparse_ok).
 
@@ -28,9 +165,6 @@ Eighth attempt at integrating the two-body problem: sparse output
 
 == xxxxxx
 
- :commandoutput: ruby euler_elliptic_10000_sparse_ok.rb > euler.out
- :commandoutput: wc euler.out
-
 *Carol*: Here it is, fig. ref(euler_elliptic_10000_sparse_ok).
 
  :commandoutput: ruby euler_elliptic_10000_sparse_ok.rb > euler.out
@@ -46,9 +180,6 @@ END
 Ninth attempt at integrating the two-body problem: starting to converge.
 
 == xxxxxx
-
- :commandoutput: ruby euler_elliptic_100000_sparse_ok.rb > euler.out
- :commandoutput: wc euler.out
 
 *Carol*: Here it is, fig. ref(euler_elliptic_100000_sparse_ok).
 

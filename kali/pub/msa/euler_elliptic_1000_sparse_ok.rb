@@ -23,8 +23,8 @@ print(vx, "  ", vy, "  ", vz, "\n")
   vx += ax*dt
   vy += ay*dt
   vz += az*dt
-  if i%10 == 9
-    print(x, "  ", y, "  ", z, "  ")
-    print(vx, "  ", vy, "  ", vz, "\n")
-  end
+  if i%10 == 9                               #2
+    print(x, "  ", y, "  ", z, "  ")         #2
+    print(vx, "  ", vy, "  ", vz, "\n")      #2
+  end                                        #2
 }
