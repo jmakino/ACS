@@ -182,10 +182,10 @@ copies with shorter names as much as we like.
 
  :commandoutput: ruby euler_circular_100_steps.rb > euler.out
 
- gnuplot
- set size ratio -1
- plot "euler.out"
- quit
+ |gravity> gnuplot
+ gnuplot> set size ratio -1
+ gnuplot> plot "euler.out"
+ gnuplot> quit
 
  :command: ruby euler_circular_100_steps.rb > euler.out
  :commandinput: gnuplot END
@@ -250,10 +250,10 @@ figure ref(euler_circular_1000):
 
  :commandoutput: ruby euler_circular_1000_steps.rb > euler.out
 
- gnuplot
- set size ratio -1
- plot "euler.out"
- quit
+ |gravity> gnuplot
+ gnuplot> set size ratio -1
+ gnuplot> plot "euler.out"
+ gnuplot> quit
 
  :command: ruby euler_circular_1000_steps.rb > euler.out
  :commandinput: gnuplot END

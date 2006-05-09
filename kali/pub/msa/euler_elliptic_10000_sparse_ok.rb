@@ -6,7 +6,7 @@ z = 0
 vx = 0
 vy = 0.5
 vz = 0
-dt = 0.0001
+dt = 0.0001                                  #1
 
 print(x, "  ", y, "  ", z, "  ")
 print(vx, "  ", vy, "  ", vz, "\n")
@@ -23,8 +23,8 @@ print(vx, "  ", vy, "  ", vz, "\n")
   vx += ax*dt
   vy += ay*dt
   vz += az*dt
-  if i%100 == 99
-    print(x, "  ", y, "  ", z, "  ")
-    print(vx, "  ", vy, "  ", vz, "\n")
-  end
+  if i%100 == 99                             #2
+    print(x, "  ", y, "  ", z, "  ")         #2
+    print(vx, "  ", vy, "  ", vz, "\n")      #2
+  end                                        #2
 }

@@ -59,12 +59,12 @@ be <tt>-1</tt>.  In fact, you can write the line <tt>set size ratio
 you want to avoid repeating yourself each time you use gnuplot.
 But for starters, I'll give the command specifically.
 
-Now let's have our picture, in fig ref(euler_circular_bug):
+Now let's have our picture, in fig ref(euler_elliptic_bug):
 
- gnuplot
- set size ratio -1
- plot "euler.out"
- quit
+ |gravity> gnuplot
+ gnuplot> set size ratio -1
+ gnuplot> plot "euler.out"
+ gnuplot> quit
 
 # the following line should be removed after improving acsdoc to
 # include "save_output" extensions -- PH, May 2006
