@@ -387,3 +387,19 @@ Twelfth attempt at integrating the two-body problem: check of 2-body output.
 So the bigger ellipse belongs to the particle with the smaller mass,
 <tt>m2</tt>, and the smaller ellipse is for the bigger one, <tt>m1</tt>.
 
+*Erica*: And they always face each other from different sides with respect
+to the origin, <tex>$\{x,y\}=\{0,0\}$</tex>.
+
+*Carol*: For now, I take your word for it, but it sure would be nice
+to see all that actually happening.  I mean, it would be great to see
+the particles orbiting each other in a movie.
+
+*Erica*: Definitely.  But before we go into that, I suggest we move up
+one step, from the first-order forward Euler algorithm to a
+second-order algorithm.  Look, we're now using a whopping one million
+steps just to go around a simple ellipse a few times.  Clearly,
+forward Euler is very inefficient.
+
+*Dan*: I've been wondering about that.  I agree.  Let's get a better
+scheme first, but then it will be time to see a movie.
+
