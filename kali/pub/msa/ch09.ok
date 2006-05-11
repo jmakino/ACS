@@ -116,7 +116,7 @@ Ah, of course!  I should have thought about that.  Off by one!
 
 *Carol*: Yes, that's what we call it when you forget that Ruby, or C for
 that matter, is counting things starting from zero rather than from one.
-The first time we travers the loop, the value of +i+ is zero, the second
+The first time we traverse the loop, the value of +i+ is zero, the second
 time it is one.  We want to print out the results one out of ten times.
 This means that each time we have traversed the loop ten times, we print.
 After the tenth traversal, <tt>i = 9</tt>, since we started with
@@ -149,9 +149,11 @@ So it is; from more than 10,000 lines back to 1001 lines, as before.
 
 *Dan*: Resulting in a sparser figure, I hope?
 
+*Carol*: That's the idea!
+
  :commandoutput: ruby euler_elliptic_1000_sparse_ok.rb > euler.out
 
-*Carol*: Here is the plot, in fig. ref(euler_elliptic_1000_sparse_ok).
+Here is the plot, in fig. ref(euler_elliptic_1000_sparse_ok).
 
  :commandinput: gnuplot END
 set term post eps
@@ -210,7 +212,7 @@ plot "euler.out"
 quit
 END
 
-== Pericenter and Apocenter
+== A Print Method
 
 *Dan*: Beautiful.  A real ellipse!  Newton would have been delighted
 to see this.  The poor guy; he had to do everything by hand.
@@ -227,11 +229,69 @@ is much faster, right?
 *Erica*: Right!  Remember, what is plotted is the one-body system
 that stands in for the solution of the two-body problem.
 
-<b>* * * * * * *  This is how far I got, 2007/5/9  * * * * * * * </b>
+*Carol*: You know, I would find it really helpful if we could plot
+the orbits of both particles separately.  So far, it has made our
+life easier to use the <tex>$\{\bR,\br\}$</tex> coordinates, since
+we could choose the c.o.m. coordinate system in which 
+<tex>$\{\bR = 0\}$</tex> by definition, so we only had to plot
+<tex>$\{\br\}$</tex>.  But how about going back to our original
+coordinate system, plotting the full <tex>$\{\br1,\br2\}$</tex>
+coordinates, one for each particle separately?
+
+*Erica*: That can't be hard.  We just have to look at the summary
+we wrote of our derivations, where was that, ah yes, Eq. (ref(br1_br2))
+is what we need.
+
+*Dan*: And we derived those in Eqs. (ref(br1)) and (ref(br2)), because
+Carol insisted we do so.
+
+*Carol*: I'm glad I did!  You see, it often pays off, if you're curious.
+Pure science quickly leads to applied science.
+
+*Dan*: You always have such a grandiose way to put yourself on the map!
+But in this case you're right, we do have an application.  Now how do
+we do this . . . oh, it's easy really: we can just plot the positions
+of both particles, in any order we like.  As long as we plot all the
+points, the orbits will show up in the end.
+
+*Erica*: And it is most natural to plot the position of each particle
+in turn, while traversing the loop once.  All we have to do is to make
+the print statements a bit more complicated.
+
+*Carol*: But I don't like to do that twice, once before we enter the
+loop, and once inside the loop, toward the end.  It's high time to
+define a method.
+
+*Dan*: What's a method?
+
+*Carol*: It's what is called a function in C or a subroutine in Fortran,
+a piece of code that can be called from elsewhere, perhaps using some
+arguments.  Here, I'll show you.  When you improve a code, rule number
+one is: try not to break what already works.  This means: be careful,
+take it one step at a time.
+
+In our case, this means: before trying to go to a new coordinate system,
+let us first implement the method idea in the old code, then check that
+the old code still gives the right result, and only then try to change
+coordinate systems.
+
+So far, we have solved the one-body system, using 
+<tt>euler_elliptic_100000_sparse_ok.rb</tt>.  I'll copy it to a new file
+<tt>euler_one_body.rb</tt>.  Now I'm going to wrap the print statements
+for the one-body system into a method called <tt>print1</tt>:
 
  :inccode: .euler_one_body.rb-1
+
+and I will invoke this method once at the beginning, just before entering
+the loop:
+
  :inccode: .euler_one_body.rb-2
+
+and once at the end of each loop traversal:
+
  :inccode: .euler_one_body.rb-3
+
+And now this code should give the same results as we had before:
 
  :commandoutput: ruby euler_one_body.rb > euler.out
 
@@ -246,10 +306,65 @@ END
 :figure: euler_one_body.ps 10cm euler_one_body
 Eleventh attempt at integrating the two-body problem: check of 1-body output.
 
- :inccode: .euler_two_body.rb-4
+*Erica*: Sure looks the same.
+
+*Dan*: If you really want to show that it's the same, why not print the last
+lines in each case?
+
+*Carol*: Right, let's check that too:
+
+ :commandoutput: ruby euler_elliptic_100000_sparse_ok.rb | tail -3
+ :commandoutput: ruby euler_one_body.rb | tail -3
+
+*Dan*: I'm happy.  So now you're going to copy the code of
+<tt>euler_one_body.rb</tt> to a new file called
+<tt>euler_two_body.rb</tt> . . . 
+
+== From One Body to Two Bodies
+
+*Carol*: You're reading my mind.  All I have to do now is implement
+Eq. (ref(br1_br2)):
+
  :inccode: .euler_two_body.rb-1
+
+*Dan*: And change <tt>print1</tt> to <tt>print2</tt>.
+
+*Carol*: Yes, that <i>plus</i> the fact that I now have to give two
+extra arguments, <tt>m1</tt> and <tt>m2</tt>.  In front of the loop
+this becomes:
+
  :inccode: .euler_two_body.rb-2
+
+and at the end inside the loop:
+
  :inccode: .euler_two_body.rb-3
+
+*Erica*: But . . . don't we have to specify somewhere what the two masses
+are?
+
+*Carol*: Oops!  Good point.  So far we've been working in a system of
+units in which <tex>$M_1 + M_2 = 1$</tex>, and in the c.o.m. coordinates
+we never had to specify what each mass value was.  But now we'd better
+write the mass values in the initial conditions.
+
+*Erica*: And for consistency, we should insist that the sum of the masses
+remains unity, so we only have one value that we can freely choose.  For
+example, once we choose a value for <tt>m1</tt>, the value for <tt>m2</tt>
+is fixed to be <tt>m2 = 1 - m1</tt>.
+
+*Carol*: That's easy to add.  How about making the masses somewhat unequal,
+but not hugely so?  That way we can still hope to see both orbits clearly.
+I'll make <tt>m1 = 0.6</tt>:
+
+ :inccode: .euler_two_body.rb-4
+
+*Dan*: Can you show the whole program?  I'm beginning to loose track now.
+
+*Carol*: Here it is:
+
+ :inccode: .euler_two_body.rb
+
+And here is the output:
 
  :commandoutput: ruby euler_two_body.rb > euler.out
 
@@ -261,7 +376,14 @@ plot "euler.out"
 quit
 END
 
+And the results are plotted in fig. ref(euler_two_body)
+
 :figure: euler_two_body.ps 10cm euler_two_body
 Twelfth attempt at integrating the two-body problem: check of 2-body output.
 
+*Erica*: Beautiful!
+
+*Dan*: Indeed.  That makes everything a lot more concrete for me.
+So the bigger ellipse belongs to the particle with the smaller mass,
+<tt>m2</tt>, and the smaller ellipse is for the bigger one, <tt>m1</tt>.
 
