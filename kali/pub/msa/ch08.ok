@@ -218,7 +218,7 @@ Sixth attempt at integrating the two-body problem: the original failure.
 
 *Erica*: Yes, the exact same problem as before.
 
-== Signs of Hope
+== Lessons Learned
 
 *Dan*: So we've wasted our time, chasing a bug, then introducing a new bug
 and then finding the new bug; we're back where we were!
@@ -250,6 +250,44 @@ It may just mean that we need to take smaller steps.
 even trying it.  I've been surprised too many times now to take your word
 for it.  Show me!
 
+== Reasons for Failure
+
+*Erica*: Before Carol shows the answer, let us take a moment to evaluate
+what we have learned.  We know know how small the steps have to be to
+get a reasonable convergence for a circular orbit.  And we can see in
+figure ref(euler_elliptic) that the steps get far larger toward the
+left of the figure.
+
+In fact, even when the steps start of with a reasonably small size at
+the right hand side, by the time we have reached the left, the steps
+are so large that even a circular orbit would not reach convergence if
+we would everywhere use such large steps!
+
+*Dan*: Why do the steps get so large, all of a sudden?
+
+*Erica*: Because the particles get very close together.  Notice that the 
+left-most part of the orbit is also the point in the orbit that is closest
+to the origin, the place where <tex>$x=y=0$</tex>.  This is called the
+_pericenter_ of an elliptic orbit.  This word is derived from the Greek
+<tex>$\pi \epsilon \rho \iota$</tex><i>(peri)</i> meaning `around' or `near'.
+
+You see, we started off with a speed smaller than the speed required for
+a circular orbit, in fact, we had only have of that speed.  So the particles
+started to fall toward each other right away, and IF we would have computed
+the orbit correctly, the two particles would have returned to the
+exact same spot after one revolution, just as we finally managed to
+see in the circular case when we took very small steps.
+
+*Carol*: So the initial position is then the place in the orbit where the
+particles are furthest away from each other?
+
+*Erica*: Yes, indeed!  And that point is called the apocenter, from the Greek
+<tex>$\alpha \pi o$</tex> <i>(apo)</i> meaning `far (away) from'.
+
+*Dan*: Seeing is believing.  Can you show us, Carol?
+
+== Signs of Hope
+
 *Carol*: Here we go, a ten times smaller step size in
 <tt>euler_elliptic_1000.rb</tt>; I'll plot the result in fig.
 ref(euler_elliptic_1000).
@@ -266,10 +304,13 @@ END
 :figure: euler_elliptic_1000.ps 10cm euler_elliptic_1000
 Seventh attempt at integrating the two-body problem: signs of hope.
 
-*Dan*: I must admit, you may have been right: at least now the particles
+*Dan*: I must admit, you may both have been right: at least now the particles
 are completing a couple orbits that sort-of look elliptical, even though
 the errors are still large. But at least they don't fly off to infinity
 like in a slingshot.
 
-*Erica*: I also think that Carol must be right, but we'd better make sure,
-and use even smaller steps.
+*Erica*: Yes, I think we're winning now, finally.
+
+*Dan*: But we'd better make sure, and use even smaller steps.
+
+*Carol*: Will do!
