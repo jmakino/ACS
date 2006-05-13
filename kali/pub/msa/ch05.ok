@@ -67,7 +67,7 @@ wrong one at the end.
 
 :figure: forward1.eps 6cm forward1
 The forward Euler approximation is indicated by the straight arrows,
-while the curved lines show the true solution to a differential equation.
+while the curved lines show the true solutions to the differential equation.
 
 *Dan*:
 And the <i>backward Euler</i> algorithm must have the right direction

@@ -1,6 +1,97 @@
-= Leapfrog
+= Second-Order Integration Algorithms
 
-<b>* * * * * * *  This is how far I got, 2007/5/11  * * * * * * * </b>
+== xxx
 
-== 
+*Carol*: Well, Erica, how are we going to move up to a more accurate
+algorithm.  You mentioned something about a second-order scheme?
+
+*Erica*: Yes, and there are several different choices.  With our
+first-order approach, we had little choice.  Forward Euler was the
+obvious one: just follow your nose, the way it is pointed at the 
+beginning of the step, as in fig. ref(forward1).
+
+*Dan*: You mentioned a backward Euler as well, and even drew a picture,
+in in fig. ref(backward1).
+
+*Erica*: That was only because you asked me about it!  And the backward
+Euler scheme is not self-starting.  It is an implicit method, where you
+have to know the answer before give calculate it.  As we discussed, you
+can solve that through iteration, but then you have to take every step
+twice, and you still only have a first-order method, so there is no good
+reason to use that method.
+
+*Dan*: But can't you combine them?  I mean, forward flies out of the curve
+one way, and backwards spiral in the other way, so can't you somehow let
+the two errors cancel each other?
+
+*Erica*: Brilliant!  Yes, indeed, you are reading my mind.  This is what
+is called the modified Euler method.  Modified in the sense of starting
+with forward, and then modifying it by taking backward into account as
+well.  Here, let me draw a picture, fig. ref(modforward1).
+
+:figure: modforward1.eps 6cm modforward1
+The modified Euler approximation is indicated by the lower arrow, as
+the average of the forward and backward Euler methode.  The
+curved lines show the true solutions to the differential equation.
+
+:eqnarray:
+\label{ModEulerStepLong}
+\br_{i+1, p} & = & \br_i + \bv_i dt                           \nonumber \\
+\bv_{i+1, p} & = & \bv_i + \ba_i dt                           \nonumber \\
+\br_{i+2, p} & = & \br_{i+1, p} + \bv_{i+1, p} dt             \nonumber \\
+\bv_{i+2, p} & = & \bv_{i+1, p} + \ba_{i+1, p} dt             \nonumber \\
+\br_{i+1, c} & = & \br_i + 
+\half\left(\left(\br_{i+1, p} - \br_i\right)+
+           \left(\br_{i+2, p} - \br_{i+1, p}\right)\right)    \nonumber \\
+\bv_{i+1, c} & = & \bv_i + 
+\half\left(\left(\bv_{i+1, p} - \bv_i\right)+
+           \left(\bv_{i+2, p} - \bv_{i+1, p}\right)\right)    \nonumber \\
+
+or shorter
+
+:eqnarray:
+\label{ModEulerStep}
+\br_{i+1, p} & = & \br_i + \bv_i dt                           \nonumber \\
+\bv_{i+1, p} & = & \bv_i + \ba_i dt                           \nonumber \\
+\br_{i+2, p} & = & \br_{i+1, p} + \bv_{i+1, p} dt             \nonumber \\
+\bv_{i+2, p} & = & \bv_{i+1, p} + \ba_{i+1, p} dt             \nonumber \\
+\br_{i+1, c} & = & \br_i + 
+   \half\left(\br_{i+2, p} - \br_i\right)                     \nonumber \\
+\bv_{i+1, c} & = & \bv_i + 
+   \half\left(\bv_{i+2, p} - \bv_i\right)                     \nonumber \\
+
+== xxx
+
+== xxx
+
+== leapfrog
+
+*Carol*: Erica, what kind of second-order algorithm should we use,
+to replace our first-order forward Euler scheme?
+
+*Erica*: A nice and simple scheme is the _leapfrog_ algorithm.
+
+*Dan*: What a strange name.  Does it let particles jump around like frogs?
+
+*Carol*: Or like children jumping over each other?
+
+*Erica*: Something like that, I guess.  I never thought about the meaning
+of the name.  It is used quite widely, although it has different names in
+different fields of science.  In stellar dynamics you often hear it called
+leapfrog, but in molecular dynamics it is generally called the Verlet
+method, and I'm sure there must be other names in use in other fields.
+
+Here is the idea:
+
+:eqnarray:
+\br_{i} & = & \br_{i-1} + \bv_{i-1/2} dt \label{leapfrog-leap-step1} \\
+\bv_{i+1/2} & = & \bv_{i-1/2} + \ba_i dt \label{leapfrog-leap-step2}
+
+
+
+
+
+
+<b>* * * * * * *  This is how far I got, 2007/5/12  * * * * * * * </b>
+
 
