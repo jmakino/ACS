@@ -2,8 +2,10 @@
 
 == xxx
 
-*Carol*: Well, Erica, how are we going to move up to a more accurate
-algorithm.  You mentioned something about a second-order scheme?
+*Dan*: Well, Erica, how are we going to move up to a more accurate
+algorithm?
+
+*Carol*: You mentioned something about a second-order scheme.
 
 *Erica*: Yes, and there are several different choices.  With our
 first-order approach, we had little choice.  Forward Euler was the
@@ -20,14 +22,19 @@ can solve that through iteration, but then you have to take every step
 twice, and you still only have a first-order method, so there is no good
 reason to use that method.
 
-*Dan*: But can't you combine them?  I mean, forward flies out of the curve
-one way, and backwards spiral in the other way, so can't you somehow let
-the two errors cancel each other?
+*Dan*: But wait a minute, the two types of errors in figs. ref(forward1)
+and ref(backward1) are clearly going in the opposite directions.
+I mean, forward flies out of the curve one way, and backwards spiral in
+the other way.  I wonder, can't you somehow combine the two methods and
+see whether we can let the two errors cancel each other?
 
 *Erica*: Brilliant!  Yes, indeed, you are reading my mind.  This is what
 is called the modified Euler method.  Modified in the sense of starting
 with forward, and then modifying it by taking backward into account as
-well.  Here, let me draw a picture, fig. ref(modforward1).
+well.
+
+It is easier to see this in a picture.  Let me draw it,
+in fig. ref(modforward1).
 
 :figure: modforward1.eps 6cm modforward1
 The modified Euler approximation is indicated by the lower arrow, as
