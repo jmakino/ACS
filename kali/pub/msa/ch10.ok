@@ -176,7 +176,8 @@ quit
 END
 
 :figure: euler_modified_1000_sparse.ps 10cm euler_modified_1000_sparse
-xxx
+First attempt at modified Euler integration, with stepsize
+<tex>$dt=0.001$</tex>.
 
 Wow!!!  Too good to be true.  Let's try 10 times later steps.
 
@@ -200,15 +201,14 @@ quit
 END
 
 :figure: euler_modified_100.ps 10cm euler_modified_100
-xxx
+Second attempt at modified Euler integration, with stepsize
+<tex>$dt=0.01$</tex>.
 
 
 
 
 
 == xxx
-
-<b>* * * * * * *  This is how far I got, 2007/5/16  * * * * * * * </b>
 
 == leapfrog
 
@@ -233,6 +233,29 @@ Here is the idea:
 \br_{i} & = & \br_{i-1} + \bv_{i-1/2} dt \label{leapfrog-leap-step1} \\
 \bv_{i+1/2} & = & \bv_{i-1/2} + \ba_i dt \label{leapfrog-leap-step2}
 
+== xxx
+
+== xxx
+
+Here is 
+
+<tt>leapfrog_100.rb</tt>:
+
+ :inccode: .leapfrog_100.rb
+
+Try:
+
+ :commandoutput: ruby leapfrog_100.rb > euler.out
+ :commandinput: gnuplot END
+set term post eps
+set output "leapfrog_100.ps"
+set size ratio -1
+plot "euler.out"
+quit
+END
+
+:figure: leapfrog_100.ps 10cm leapfrog_100
+First attempt at leapfrog integration, with stepsize <tex>$dt=0.01$</tex>.
 
 
 
@@ -240,4 +263,5 @@ Here is the idea:
 
 
 
+<b>* * * * * * *  This is how far I got, 2007/5/19  * * * * * * * </b>
 
