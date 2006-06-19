@@ -55,7 +55,7 @@ billion galaxies.  Our galaxy is a rather typical spiral galaxy,
 one of those many billions, and within our galaxy, our sun is a star
 like any other among the hundred billion or so stars in our galaxy.
 
-The su is unremarkable in its properties.  Its mass is in
+The sun is unremarkable in its properties.  Its mass is in
 the mid range of what is normal for stars: there are others more than
 ten times more massive, and there are also stars more ten times less
 massive, but the vast majority of stars have a mass within a factor
@@ -99,12 +99,12 @@ In Fig. ref(m15) we see a
 picture of the globular cluster M15, taken with the Hubble Space
 Telescope.  This cluster contains roughly a million stars.  In the
 central region typical distances between neighboring stars are only a
-few hundredth of a light year, more than a hundred times smaller than
+few hundredths of a light year, more than a hundred times smaller than
 those in the solar neighborhood.  This implies a stellar density that
 is more than a million times larger than that near the sun.  Since the
 typical relative velocities of stars in M15 are comparable to that of
 the sun and its neighbors, a few tens of km/sec, collision times scale
-with the density, leading to a central time between collisions around
+with the density, leading to a central time between collisions of around
 <tex>$10^{10}$</tex> years.  With globular clusters having an age of
 roughly <tex>$10^{10}$</tex> years, a typical star near the center has
 a significant chance to have undergone a collision in the past.  To be
@@ -243,10 +243,10 @@ and analyze the motions of those stars, including their collisions.
 Although stars are formed in groups, these groups typically do not
 stay together for very long.  Perturbations from other stars and gas
 clouds in their vicinity are often enough to break up the fragile
-gravitational hold they initial have over each other.  Some of the
-more massive groups of newly formed stars, however, are sufficiently
-tightly bound to survive their environmental harassment.  They form
-the so-called open clusters, where their name indicates that they have
+gravitational hold they initially have over each other.  Some of the
+more massive groups of newly formed stars, however, are tightly bound,
+enough to survive their environmental harassment.  They form the
+so-called open clusters, where their name indicates that they have
 central densities that are typically less than what we see in globular
 clusters.
 
@@ -292,8 +292,10 @@ In practice, though, even a small group of stars will spontaneously
 form one or more double stars.  This was discovered experimentally in
 the early sixties.  One way to understand this result, after the fact,
 is from an energetic point of view.  When a double star, or binary as
-they are generally called, is formed, energy is released.  Since the
-two stars in a binary are bound, the total energy is negative.  When
+they are generally called, is formed, energy has to be released.  The
+reason is that the two stars in a binary are bound, which means that
+the total energy is negative, whereas two stars meeting each other
+after coming in from far away have a positive net energy.  When
 three stars come together randomly, there is a chance that two of the
 three are left in a bound state, while the third one escapes, carrying
 the excess energy.  Left by itself, a stellar system will exploit this
@@ -338,8 +340,8 @@ sure that any arbitrary configuration of stars is locally presented
 correctly -- and that the right thing happens when two or more of such
 local coordinate patches encounter each other.  This may not happen
 often, but one occurrence in a long run is enough to cause an
-unacceptably large error if no precautions have been taken for such a
-situation to happen.
+unacceptably large error if no precautions have been taken to deal
+properly with such a situation.
 
 We can continue the list of tricks that have been invented to allow
 every larger and denser systems to be modeled correctly.  Numerical

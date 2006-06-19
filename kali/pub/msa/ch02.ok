@@ -9,8 +9,8 @@ with the right virtual environment, and it is our task to write the
 software that will correctly simulate the behavior of the virtual stars
 and their interactions.  Once that software is in place, or at least
 enough of it to start playing, the user can provide a starting situation,
-after which our software will evolve the system, for a few billion years,
-say.
+after which our software will evolve the system, perhaps for a few
+billion years.
 
 In this book we will focus in detail on the whole process of developing
 the software needed.  We will aim at realistic detail, showing the way
@@ -166,7 +166,7 @@ To keep Erica honest?
 
 *Dan*:
 Exactly!  Of course, she may well get way ahead of us into all
-kind of arcane astrophysics applications, but even so, if we plod
+kinds of arcane astrophysics applications, but even so, if we plod
 behind her, asking her questions about each and every decision she has
 made from the start, we will probably keep her more honest than any
 astrophysicist could -- simply because we know less about astrophysics

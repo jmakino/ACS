@@ -115,7 +115,7 @@ use the term <i>uniform motion</i> for the type of motion that occurs
 at constant speed in the same direction.
 
 *Dan*: Ah, that is a term I remember from my physics class.  This is related
-to the fact that Newton discovered, that an object which does not feel any
+to the fact that Newton discovered that an object which does not feel any
 forces will keep moving in a straight line with constant speed.  Because
 of the inertia of an object, you have to exert a force in order to change
 that type of motion.
@@ -436,6 +436,12 @@ The vector <tex>$\bR$</tex> in the inertial coordinate system
 
 :figure: separation_vector.eps 6cm separation_vector
 The vector <tex>$\br$</tex> in a non-inertial coordinate system
+
+*Carol*: It is not inertial because particle 1 is not moving in a straight
+line at constant speed.  Is that what you mean?
+
+*Erica*: Yes.  Any coordinate system anchored to a particle that 
+deflected by forces acting upon it cannot be an inertial system.
 
 *Dan*: So the vectors <tex>$\br_1, \br_2, \bR$</tex> are all defined in the
 same original inertial coordinate system, while <tex>$\br$</tex> is defined
