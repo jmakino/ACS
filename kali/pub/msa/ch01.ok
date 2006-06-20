@@ -78,11 +78,11 @@ crashing into each other.  A quick estimate tells us that the sun has
 a chance of hitting another star of less than <tex>$10^{-16}$</tex>
 per year.  In other words, we would have to wait at least
 <tex>$10^{16}$</tex> years to have an appreciable chance to witness
-such a collision.  Given that the sun is less than five Gigayears
-old, it is no surprise that it does not show any signs of a past
-collision: the chance that that would have happened was less than one
-in a million.  Life in our galactic suburbs is really quite safe for a
-star.
+such a collision.  Given that the sun's age is less than five Gigayears,
+<tex>$5.10^9$</tex> years, it is no surprise that it does not show
+any signs of a past collision: the chance that that would have
+happened was less than one in a million.  Life in our galactic suburbs
+is really quite safe for a star.
 
 There are other places in our galaxy that are far more crowded, and
 consequently are a lot more dangerous to venture into.  We will have
@@ -286,7 +286,8 @@ force divided by the mass of the object) under the influence of the
 gravitational pairwise interactions of all other stars.  Indeed, it is
 straightforward to write a simple code to do so, as we will see below.
 And as long as all stars remain fairly well separated from each other,
-even a simple code will do a reasonably good job.
+even a simple code will do a reasonably good job.  For historical
+reasons, this type of code is called an N-body code.
 
 In practice, though, even a small group of stars will spontaneously
 form one or more double stars.  This was discovered experimentally in
@@ -344,21 +345,24 @@ unacceptably large error if no precautions have been taken to deal
 properly with such a situation.
 
 We can continue the list of tricks that have been invented to allow
-every larger and denser systems to be modeled correctly.  Numerical
-problems with the singularity in the two-body system have been
-overcome by mapping two or more interacting stars from the
-three-dimensional Kepler problem to a four-dimensional harmonic
-oscillator.  The total force on particles has been split into
-different contributions, the first from a near zone of relatively
-close neighbors and the second from a far zone of all other particles,
-with each partial force being governed with different integration time
-steps.  Tree codes have been used to group the contributions of a
-number of more and more distant zones together in ever larger chunks,
-for efficiency.  Triple stars have received their own special treatment,
-especially the marginally stable triples that are sometimes long-lived, 
-but continuously changed their inner state due to internal perturbations.
-The list goes on.  See Sverre Aarseth's book
-<web>http://www.cambridge.org/catalogue/catalogue.asp?isbn=0521432723|Gravitational N-Body Simulations</web>
+every larger and denser systems to be modeled correctly.  We will
+encounter them later on, and explain them then in detail, but just to
+list a few, here are some of the techniques.  Numerical problems with
+the singularity in the two-body system have been overcome by mapping
+two or more interacting stars from the three-dimensional Kepler
+problem to a four-dimensional harmonic oscillator.  The total force on
+particles has been split into different contributions, the first from
+a near zone of relatively close neighbors and the second from a far
+zone of all other particles, with each partial force being governed
+with different integration time steps.  Tree codes have been used to
+group the contributions of a number of more and more distant zones
+together in ever larger chunks, for efficiency.  Triple stars have
+received their own special treatment, especially the marginally stable
+triples that are sometimes long-lived, but continuously changed their
+inner state due to internal perturbations.  The list goes on.  See
+Sverre Aarseth's book
+<web>http://www.cambridge.org/catalogue/catalogue.asp?isbn=0521432723|Gravitational
+N-Body Simulations</web>
 
 In this book, we will introduce a modern integrator, the Hermite
 scheme, developed in the 1990s, together with a variable time step

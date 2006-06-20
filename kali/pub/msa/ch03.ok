@@ -209,11 +209,13 @@ Newton's second law, to see how the particles will actually start
 moving.  His second law is the famous
 
 :equation:
+\label{fma1}
 F_1 = M_1 a_1
 
 and of course similarly
 
 :equation:
+\label{fma2}
 F_2 = M_2 a_2
 
 where <tex>$a_i$</tex> is the acceleration that particle <tex>$i$</tex>
@@ -290,7 +292,28 @@ and the second equation by <tex>$M_2$</tex> allows them to add to zero:
 \label{comrm12}
 M_1\frac{d^2}{dt^2}r_1 + M_2\frac{d^2}{dt^2}r_2 = 0
 
-*Erica*: Exactly.  We can write this as:
+*Dan*: Okay, that I can see.  But what does it mean?
+
+*Carol*: Erica, correct me if I'm wrong, but I think what it means is
+that the attractive gravitational forces that the two particles exert
+on each other are balanced: equal but opposite in direction.  For my
+own peace of mind, let me summarize what I think has happened so far.
+
+Eq. (ref(f1)) is Newton's gravitational equation, and so is
+Eq. (ref(f2)), while (ref(fma1)) and (ref(fma2)) express Newton's law
+connecting force and acceleration.  Combining both of these Newtonian
+laws allows us to write (ref(a1)) and (ref(a2)) as Newton's
+gravitational equations in terms of acceleration rather than force.
+After that, (ref(a1r)) and (ref(a2r)) are just rewriting (ref(a1)) and
+(ref(a1r)) in a different notation, and (ref(comrm12)) adds (ref(a1r))
+and (ref(a2r)), showing thereby in a more formal way that the
+attractions between the two stars cancel each other, something that
+could have been concluded directly from (ref(f1)) and (ref(f2)) as
+well, but there we would not yet have had the information about the
+second derivatives of the positions.
+
+*Erica*: Yes, that sums it up nicely.  And we can write Eq. (ref(comrm12))
+as:
 
 :equation:
 \label{comrm}

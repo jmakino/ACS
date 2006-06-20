@@ -1,11 +1,66 @@
 = Writing the Code
 
+== Choosing a Computer Language
+
+*Carol*:
+Let's start coding!  Which language shall we use to write a computer code?
+I bet you physics types insist on using Fortran.
+
+*Erica*:
+Believe it or not, most of the code to be overhauled has been written
+in C++, and I suggest that we adopt the same language.  It may not be
+exactly my favorite, but it is at least widely available, well
+supported, and likely to stay with us for decades.
+
+*Dan*:
+What is C++, and why the obscure name?  Makes the notion of an N-body
+problem seem like clarity itself!
+
+*Carol*:
+Long story.  I don't know whether there was ever a language A, but
+there certainly was a language B, which was followed alphabetically by
+a newer language C, which became quite popular . . .
+
+*Dan*:
+. . . are you making a pun on our names?
+
+*Carol*:
+No, I'm not kidding.  Then C was extended to a new language for
+object-oriented programming, something we'll talk about later.  In a
+nerdy pun, the increment operation ``++'' from the C language was used
+to indicate that C++ was the successor language to C.  Don't look at
+me, we'll have to live with it.
+
+*Dan*:
+But everybody I know seems to be coding in Java.
+
+*Carol*:
+Java has a clear advantage over C++ in being almost platform independent,
+but frankly, I don't like either C++ or Java.  Recently, I took a
+course in which the instructor used a scripting language, Ruby was the
+name.  And I was surprised at the flexible way in which you could
+quickly express rather complex ideas in that language.
+
+*Erica*:
+Does Ruby have something like STL?
+
+*Carol*:
+You mean the Standard Template Library in C++?  Ruby doesn't need any
+of those complications because it is already dynamically typed from
+the start!
+
+*Dan*:
+I have no idea what the two of you are talking about, but I agree with
+Carol, let's start coding, in whatever language!
+
 == Choosing an Algorithm
 
 *Carol*:
-Now that we have the equations of motion for the relative position of
-one particle with respect to the other, I guess we need an algorithm
-to integrate these equations.
+We want to write a simulation code, to enable us to simulate the
+behavior of stars that move under the influence of gravity.  So
+far we have derived the equations of motion for the relative position
+of one particle with respect to the other.  What we need now is an
+algorithm to integrate these equations.
 
 *Erica*:
 Indeed, and there is a large choice!  If you pick up any book on
