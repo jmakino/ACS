@@ -71,11 +71,12 @@ but I'm beginning to see the light.
 same language for both ways of speaking.  This is something else I
 learned in our `computer game' class as we called it, although it was
 really titled as a `geometrical representation' class.  If a single
-vector lives in a $d$-dimensional space, then a system of two such
-vectors can also be represented as a single vector in a $2d$-dimensional
-space.  And then your second way of speaking with respect to the
-$d$-dimensional space boils down to your first way of speaking with
-respect to the $2d$-dimensional space.
+vector lives in a <tex>$d$</tex>-dimensional space, then a system of
+two such vectors can also be represented as a single vector in a
+<tex>$2d$</tex>-dimensional space.  And then your second way of
+speaking with respect to the <tex>$d$</tex>-dimensional space boils
+down to your first way of speaking with respect to the
+<tex>$2d$</tex>-dimensional space.
 
 Mathematically speaking, each choice of a set of two vectors, whether
 it is <tex>$\{\br_1,\br_2\}$</tex> or <tex>$\{\bR,\br\}$</tex>,
@@ -260,7 +261,7 @@ so clearly.
 *Carol*: Well, we got a new system of relative coordinates.  I presume
 we're going to use it for something, right?
 
-*Erica*: Yes, tim to rewrite Newton's equations of motion into the new system.
+*Erica*: Yes, time to rewrite Newton's equations of motion into the new system.
 For the one-dimensional case above, we used Eqs. (ref(Newton_r1)) in scalar
 form.  Let me write it in vector form.  So this is the equation for the
 acceleration of the first particle, due to the gravitational force

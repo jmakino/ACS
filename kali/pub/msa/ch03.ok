@@ -286,7 +286,19 @@ find a point with zero acceleration, when you add those two equations?
 *Dan*: No, I don't see that.  Adding the right hand sides does not give zero.
 
 *Carol*: Ah, but multiplying the first equation by <tex>$M_1$</tex>
-and the second equation by <tex>$M_2$</tex> allows them to add to zero:
+and the second equation by <tex>$M_2$</tex> gives
+
+:equation:
+\label{a1rm1}
+M_1\frac{d^2}{dt^2}r_1 = G \frac{M_1M_2}{r^2}
+
+and
+
+:equation:
+\label{a2rm2}
+M_2\frac{d^2}{dt^2}r_2 = - G \frac{M_1M_2}{r^2}
+
+so when we add the two equations we get zero at the right hand side:
 
 :equation:
 \label{comrm12}

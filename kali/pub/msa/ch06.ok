@@ -9,7 +9,8 @@ an output file, called <tt>euler.out</tt>:
  :commandoutput: ruby euler.rb > euler.out
 
 In that way, we can look at our leisure at the beginning and at the
-end of the output file, while skipping the 991 lines in between:
+end of the output file, while skipping the 991 lines in between
+times 0, 0.01, 0.02, 0.03, 0.04 . . . 9.96, 9.97, 9.98, 9.99, 10.
 
  :commandoutput: head -5 euler.out
  :commandoutput: tail -5 euler.out
