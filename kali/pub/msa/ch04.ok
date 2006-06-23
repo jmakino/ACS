@@ -44,8 +44,8 @@ respect to the origin, and <tex>$\br$</tex> describes the position of
 particle 2 with respect to the point in space temporarily occupied by
 particle 1.
 
-The second way is to talk about coordinates is to capture the information
-about a whole system, not only about a single particle with respect to
+The second way to talk about coordinates is to capture the information
+about a whole system, and not just a single particle with respect to
 a point in space.  We can say that we have described a two-body
 configuration completely when we give the information contained in the 
 pair of vectors <tex>$\br_1, \br_2$</tex>, or equivalently, in the values
@@ -322,7 +322,7 @@ Let me also write the acceleration for the second particle:
 \label{Newton_r2}
 \frac{d^2}{dt^2}\br_2 = - G \frac{M_1}{r^3}\br
 
-*Dan*: Look Dan, another sign change: the force of attraction
+*Carol*: Look Dan, another sign change: the force of attraction
 exerted by the first particle on the second points toward the first
 particle.
 
@@ -340,7 +340,7 @@ hence the minus sign.
 
 *Dan*: Ah, that is neat.  Instead of trying to figure things out in
 full generality, you take a particular limiting case, and check the
-sign.  Sort of like what Erica did, in constructing here primed coordinate
+sign.  Sort of like what Erica did, in constructing here a primed coordinate
 system.  Since you already know the magnitude and the line along which
 the acceleration is directed, once you know the sign in one case,
 you know the sign in all cases.
@@ -348,7 +348,7 @@ you know the sign in all cases.
 *Carol*: Yes.  Technically we call this invariance under continuous
 deformation.  If you bring the second particle a little bit out of the
 origin, by small continuous changes, the acceleration between the
-particles much change continuously as well; it cannot suddenly flip
+particles must change continuously as well; it cannot suddenly flip
 to the opposite direction.
 
 *Erica*: Neat indeed: this means that understanding the sign in one
@@ -406,7 +406,7 @@ origin of the coordinates.
 
 *Dan*: That does make life simple.  In this coordinate frame, all the
 information about the motions in the two-body problem is now bundled
-Eq. (ref(Newton_separation)).  It almost looks as if we are dealing
+in Eq. (ref(Newton_separation)).  It almost looks as if we are dealing
 with a 1-body problem, instead of a 2-body problem!
 
 *Erica*: Yes, this is what I meant when I announced that we could map
@@ -417,7 +417,7 @@ equations, indirectly through the fact that <tex>$\br = \br_2-\br_1$</tex>.
 In contrast, the equations (ref(Newton_com)) and (ref(Newton_separation)) are
 decoupled.
 
-A clear way to show this is to draw to separate figures,
+A clear way to show this is to draw two separate figures,
 Figs. ref(com_vector) and ref(separation_vector).  The c.o.m. vector
 in Fig. ref(com_vector) moves in a way that is totally independent of
 the way the relative vector in ref(separation_vector) moves.  The

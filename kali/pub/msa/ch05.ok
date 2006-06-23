@@ -261,7 +261,7 @@ surprise a bit too far to believe.  How can that work?  Can a computer
 language really stay so close to English?
 
 *Carol*: The key seems to be that Ruby is an object-oriented language.
-Each `thing' is ruby is an object, which can have attributes such as
+Each `thing' in ruby is an object, which can have attributes such as
 perhaps internal data or internal methods, which may or may not be
 visible from the outside.
 
@@ -292,7 +292,7 @@ is a web site specifically aimed at
 
 *Carol*: Let's test it out, using +irb+.  This is an interactive program
 that allows you to test little snippets of Ruby code.  Let us explore what
-it can do for us.  You can invoke it simply by type its name:
+it can do for us.  You can invoke it simply by typing its name:
 
     |gravity> irb
     irb(main):001:0>
@@ -325,7 +325,7 @@ Can I try?
 I see.  At the end of each line, the result of the operation is echoed.
 
 *Dan*: But has the value 20 been correctly assigned to the variable +c+?
-Let me take me turn:
+Let me just check:
 
     irb(main):005:0> c
     => 20
@@ -412,7 +412,9 @@ where the magnitude of the separation <tex>$r$</tex> is defined as
 :equation:
 r = \sqrt{x^2 + y^2 + z^2}
 
-Let me start with the last line:
+Let me start with the last line.  Since we will often need the
+square of the scalar distance between the particles, we may as
+well first compute <tex>$r^2 = x^2 + y^2 + z^2$</tex>:
 
  :inccode: .euler.rb-6
 

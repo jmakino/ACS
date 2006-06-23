@@ -31,7 +31,7 @@ Pythagoras to the last numbers in the first two columns.
 *Dan*: So what?
 
 *Erica*: A bit large already for my taste, but what clinches it is the
-velocity difference between the particles, more than 0.99, almost 1.
+velocity difference between the particles, which is more than 0.99, almost 1.
 We started out with a velocity difference of only 0.5, so we have doubled
 the velocity, while increasing the distance by a factor 10.  When two
 particles move away from each other, they should slow down, not speed up,
@@ -42,7 +42,7 @@ because gravity is an attractive force.
 *Dan*: Even more reason to make a plot!
 
 *Carol*: How about using <tt>gnuplot</tt>?  That one is present on any
-Linux running system, and something that can be easily installed on many
+system running Linux, and something that can be easily installed on many
 other systems as well.  The style is not particularly pretty, but at
 least it will give us something to look at.
 
@@ -88,7 +88,7 @@ First attempt at integrating the two-body problem: failure.
 *Dan*: Hmmm, that is not what I expected to see.  What a disappointment!
 
 *Erica*: Well, research is like that -- the first time you do something,
-it almost never works.  But look, on the bright sight, how well we've done!
+it almost never works.  But look, on the bright side, how well we've done!
 The two particles approach each other on a very nice elliptical orbit,
 so that part seems to work fine.  It is only around the time of closest
 encounter that they seem to get a kick, and fly away from each other.
@@ -124,7 +124,7 @@ form nobody else has ever done before.  Isn't that a thrill?!
 *Dan*: It would be a thrill if we could make progress.  Frankly, I'm lost.
 
 *Carol*: I must admit, I don't see a clear way ahead either, but at least
-I remember that one of my teacher told us to `divide and conquer' while
+I remember that one of my teachers told us to `divide and conquer' while
 troubleshooting.  In other words, if something goes wrong in a complex
 situation, try to simplify everything by dividing whatever procedure you
 have applied in smaller, more modular steps.  That way, you can try to
@@ -150,30 +150,31 @@ particles at a distance of 1, in order to move in a circle.  It seems
 to be larger than 0.5, but how much larger?
 
 *Dan*: Large enough that the particles don't fall toward each other but
-not so large that they start moving away from each other.  I guess that
-means that the two forces have to balance each other.  Let me see, what
-were they called again?  You know, the force of gravity that pulls them
-together and the force of inertia that wants the particles to just fly
-apart
+not so large that they start moving away from each other.  Hmm.  How can
+we picture that?  Imagine that we would move the two particles in a
+circular orbit around each other, and measure how much force we have
+to use to keep them in the circular orbit.  We could then require
+gravity to do the work for us, and insist that the gravitational force
+would be just equal to the force that we would have to apply by hand.
 
-*Erica*: You mean centripetal and centrifugal forces, literally center
-seeking and center fleeing forces.  Or, instead, we can also just
-balance the accelerations, which is simpler.
+*Erica*: Or rather that letting gravity provide the right force,
+it is easier to compare accelerations, rather than forces.  Let
+us insist on gravity providing the right acceleration.  
 
 For the equivalent one-body problem, in our choice of units, the
-centripetal acceleration is just the gravitational acceleration,
-given in Eq. (ref(Newton2bodysimple)).  Since we are only interested
-in the magnitude, we can write the centripetal acceleration as
+the gravitational acceleration is given in Eq. (ref(Newton2bodysimple)).
+Since we are only interested in the magnitude, we can write it as:
 
 :equation:
-\label{centripetal}
-a_{cp} = \frac{1}{r^2}
+\label{agravitational}
+a_{grav} = \frac{1}{r^2}
 
-Now the centrifugal acceleration is simply given by
+The acceleration that a particle feels, when being forced to move exactly
+in a circular orbit is simply given by:
 
 :equation:
-\label{centrifugal}
-a_{cf} = \frac{v^2}{r}
+\label{acircular}
+a_{circ} = \frac{v^2}{r}
 
 *Dan*: What do you mean `simply given', how do you know?
 
@@ -291,15 +292,17 @@ that:
 :equation:
 a = \frac{v^2}{r}
 
-*Dan*: Wow, that is exactly the centrifugal acceleration that Erica remembered!
+*Dan*: Wow, that is exactly the acceleration that Erica remembered,
+needed to sustain a circular motion.
 
 *Erica*: Neat!  Satisfied, Dan?
 
 *Dan*: Sure thing!
 
-*Carol*: Let's see why we did all this.  Ah, we wanted to balance
-gravitational and centrifugal accelerations.  We already found that
-<tex>$a_{cp} = 1/r^2$</tex>, so this means:
+*Carol*: Let's see why we did all this.  Ah, we wanted to balance the
+gravitational acceleration provided and the acceleration needed to keep
+a motion being nicely circular.  We already found that
+<tex>$a_{grav} = 1/r^2$</tex>, so this means:
 
 :equation:
 \frac{v^2}{r} = \frac{1}{r^2}
@@ -444,7 +447,7 @@ Comparing Eqs. (ref(r_omega_t)) and (ref(a_omega_t)), we find
 :equation:
 \ba = -\omega^2\br
 
-We have seen in Eq.(ref(centripetal)) that for our initial condition
+We have seen in Eq.(ref(agravitational)) that for our initial condition
 <tex>$r=1$</tex> we have <tex>$a=1$</tex>, so this means that
 <tex>$\omega=1$</tex>.  Well, Eq. (ref(v_omega_t)) now tells us
 that <tex>$v=1$</tex>.  Isn't that simple?
