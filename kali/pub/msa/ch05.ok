@@ -7,10 +7,10 @@ Let's start coding!  Which language shall we use to write a computer code?
 I bet you physics types insist on using Fortran.
 
 *Erica*:
-Believe it or not, most of the code to be overhauled has been written
-in C++, and I suggest that we adopt the same language.  It may not be
-exactly my favorite, but it is at least widely available, well
-supported, and likely to stay with us for decades.
+Believe it or not, most of the astrophysics code I'm familiar with has
+been written in C++.  It may not be exactly my favorite, but it is at
+least widely available, well supported, and likely to stay with us for
+decades.
 
 *Dan*:
 What is C++, and why the obscure name?  Makes the notion of an N-body
@@ -19,17 +19,11 @@ problem seem like clarity itself!
 *Carol*:
 Long story.  I don't know whether there was ever a language A, but
 there certainly was a language B, which was followed alphabetically by
-a newer language C, which became quite popular . . .
-
-*Dan*:
-. . . are you making a pun on our names?
-
-*Carol*:
-No, I'm not kidding.  Then C was extended to a new language for
-object-oriented programming, something we'll talk about later.  In a
-nerdy pun, the increment operation ``++'' from the C language was used
-to indicate that C++ was the successor language to C.  Don't look at
-me, we'll have to live with it.
+a newer language C, which became quite popular.  Then C was extended
+to a new language for object-oriented programming, something we'll
+talk about later.  In a nerdy pun, the increment operation ``++'' from
+the C language was used to indicate that C++ was the successor
+language to C.
 
 *Dan*:
 But everybody I know seems to be coding in Java.
@@ -46,7 +40,7 @@ Does Ruby have something like STL?
 
 *Carol*:
 You mean the Standard Template Library in C++?  Ruby doesn't need any
-of those complications because it is already dynamically typed from
+such complications because it is already dynamically typed from
 the start!
 
 *Dan*:
@@ -192,13 +186,36 @@ the particles.  How about a simple choice like this?
 
  :inccode: .euler.rb-1
 
-*Dan*: Let me put this into words.  The relative position vector is
-chosen along the <tex>$x$</tex> axis at a distance of unity from the
-origin where the other particle resides in the relative coordinate
-system that we use: <tex>$\br = \{1, 0, 0\}$</tex>.  The relative
-velocity is chosen to be <tex>$0.5$</tex> in the direction of the
-positive <tex>$y$</tex> axis: <tex>$\bv = \{0, 0.5, 0\}$</tex>.
-This means that the initial motion is at right angles to initial separation.
+*Carol*: Yes, you guessed correctly: in Ruby, you can assign values to
+variables in the same way as you do in C, say, but there is no need
+to declare the variables, which makes life a lot simpler.  Variables
+have no intrinsic type either.  The type of a variable is whatever
+you assign to it.  If you write <tt>x = 3.14</tt> and +x+ becomes a
+floating point number; and if you then write <tt>x = "abs"</tt> it
+becomes a string.  This freedom and flexibility is expressed by saying
+that Ruby is a dynamically typed language.
+
+*Erica*: Isn't that dangerous?
+
+*Carol*: I expected it would be, but in my experience, I in fact
+made fewer mistakes using Ruby than using so-called strongly typed
+languages, such as C and C++.  Or stated more precisely: what mistakes
+I made, I could catch far more quickly, since it would be rather
+obvious if you assign <tt>pi = "abc"</tt> and then try to compute
+<tt>2*pi*r</tt> and the like: you would get an error message telling
+you that a string cannot be forced into a number.
+
+*Erica*: Well, I'd like to see for myself.  Let's first write a short
+program.
+
+*Dan*: Let me put into words what you've just written.
+The relative position vector is chosen along the <tex>$x$</tex> axis
+at a distance of unity from the origin where the other particle
+resides in the relative coordinate system that we use:
+<tex>$\br = \{1, 0, 0\}$</tex>.  The relative velocity is chosen to be
+<tex>$0.5$</tex> in the direction of the positive <tex>$y$</tex> axis:
+<tex>$\bv = \{0, 0.5, 0\}$</tex>.  This means that the initial motion
+is at right angles to initial separation.
 
 *Carol*: Does this mean that the two particles will move around each other
 in a circle?
@@ -355,6 +372,76 @@ addition.  For example, <tt>c *= d</tt> is the same as <tt>c = c * d</tt>.
 
     irb(main):008:0> quit
     |gravity>
+
+== Compiled vs. Interpreted vs. Interactive
+
+*Erica*: This +irb+ program is quite useful clearly, but I'm puzzled
+about the various ways in which we can use Ruby.  We are now writing
+a Ruby program, by adding lines to a file, in just the same way we
+would be writing a C or Fortran program, yes?
+
+*Carol*: Yes and no.  Yes, it looks the same, but no, it really is a
+quite different approach.  Ruby is an interpreted language, while C
+and Fortran, and C++ as well, are all complied languages.  In Ruby,
+there is no need to compile a source code file; you can just run it
+directly, as we will see soon.
+
+This, by the way, is why Ruby is called a scripting language, like
+Perl and Python.  In all three cases, whatever you write can be run
+right away, just like a shell script.  As soon as we have finished
+writing our program, we will run it with the command <tt>ruby</tt> in
+front of the file name, in the same way as you would run a cshell
+script by typing <tt>csh filename</tt>.  In our case we will type
+<tt>ruby euler.rb</tt>.
+
+*Erica*: So the difference is that in C you first compile each piece of
+source code into object modules, and then you load those modules into
+a single executive file, and then you run that file -- whereas in Ruby
+the script itself is executable.
+
+*Carol*: Exactly.
+
+*Erica*: But what is the difference between typing +ruby+ and typing
++irb+?  If the +ruby+ command interpretes each line as it goes along,
+what does +irb+ add?
+
+*Carol*: The difference is the +i+ in +irb+, which stands for _interactive_.
+In the case of +irb+, each line is not only interpreted, it is also
+evaluated and the result is printed on the screen.  In this way, you
+can look into the mind of the interpreter, so to speak, and you can
+follow step by step what is going on.
+
+*Dan*: It is a bit like going into a debug mode.
+
+*Carol*: I guess you could say that, yes.  If you run a Ruby script with
++ruby+, you only get results on the screen when you give a specific
+print command, such as +print+, as we will see.
+
+And just to give full disclosure, there is another hitch.  If you are
+starting to write a loop, say, you may have included an open parenthesis,
+but not yet a closing parenthesis.  In +irb+ that is no problem; in fact,
+the prompt will change, to indicate that you are one or more levels deep
+inside nested expressions.  But If you try to run such an incomplete file
+with the +ruby+ command, you will get an error message, even before the
+Ruby interpreter starts.
+
+Here is what happens.  Upon typing <tt>ruby some-file.rb</tt>, a syntax
+check is being carried out on the file <tt>some-file.rb</tt>.  If the
+parentheses are not balanced, a syntax error is produced, and the real
+interpreter part of Ruby is not even started up.
+
+*Dan*: Just like what happens in Fortran, when you get a compile error!
+
+*Carol*: Yes, in a way.  And to make things more confusing, many people
+tend to call such an error a `compile error', even when working with Ruby,
+even though in Ruby nothing is compiled, really,  The problem is that
+so-called compile errors in compiled languages are really syntax errors;
+and interpreted languages can of course have syntax errors as well.
+So when you hear someone telling you `my Ruby (or Perl and Python)
+program didn't compile,' they just mean `my script had syntax errors.'
+
+Well, this is probably more than what you would want to know at this
+point.  Shall we move on?
 
 == One Step at a Time
 
