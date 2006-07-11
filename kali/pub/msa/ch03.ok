@@ -168,6 +168,9 @@ Let particle number 1, at the left, be twice as massive as particle 2,
 at the right: <tex>$M_1 = 2 M_2$</tex>.  As soon as we let the particles
 move freely, from rest, they will start falling toward each other.
 
+:figure: com_intro0.eps 6cm com_intro0
+Two bodies at rest.
+
 *Carol*: Can you write down the equations?  Sooner or later we'll have
 to program them, after all.
 
@@ -175,7 +178,42 @@ to program them, after all.
 
 *Erica*: In this very simple example, let us define the <tex>$x$</tex>
 axis of our coordinate system to go through both particles, with the
-positive side at the right, as usual.  In that case, the force that
+positive side at the right, as usual.
+
+*Carol*: Where is the origin?
+
+*Erica*: You can put the origin anywhere you want.  For example, if you
+like to put it to the left of <tex>$M_1$</tex>, as in fig. ref(com_intro0o),
+then both particles are located on the positive _x_ axis, and
+therefore both particles have positive values for their positions
+<tex>$r_1$</tex> and <tex>$r_2$</tex> with respect to the origin.
+Moreover, <tex>$r_2 > r_1$</tex>, so the distance between the two
+particles is given as <tex>$r = r_2 - r_1$</tex>.
+
+:figure: com_intro0o.eps 10.5cm com_intro0o
+Two bodies at rest, with the origin O of a one-dimensional coordinate system
+shown at the left.
+
+But really, the position of the origin is not important; if you shift
+the origin to the left or to the right, the value of $r$ remains the same,
+and that's the only thing that counts.
+
+*Dan*: Yes, I can see that as long as _O_ stays to the left of both particles.
+But how about the other cases?  Let's check.  If we take _O_ to be at the
+right, then the two particle positions have negative values, with
+<tex>$M_1$</tex> further away with a more negative value, say
+<tex>$r_1 = -5$</tex> and <tex>$r_2 = -3$</tex>.  In that particular case,
+<tex>$r = r_2 - r_1 = -3 - (-5) = 5-3=2$</tex>.  Okay, that gives the
+right answer.
+
+The last possibility is to have _O_ located right in between the two particles.
+In that case, <tex>$r_1$</tex> is negative and <tex>$r_2$</tex> is positive,
+and clearly <tex>$r = r_2 - r_1$</tex> is positive as well.  Good!  I am
+convinced now that <tex>$r = r_2 - r_1$</tex> is the right expression for
+the physical distance between the two particles, with a value that is
+always greater than zero, if the particles are not at exactly the same place.
+
+*Erica*: In any of the tree cases that you just explored, the force that
 particle 1 feels from particle 2 is:
 
 :equation:
@@ -196,9 +234,6 @@ Other than this important minus sign, we can simply reverse subscripts
 :equation:
 \label{f2}
 F_2 = - G \frac{M_1 M_2}{r^2}
-
-:figure: com_intro0.eps 6cm com_intro0
-Two bodies at rest.
 
 *Dan*: So the two forces are equal, but opposite in direction.
 
@@ -264,8 +299,14 @@ what you called the center of mass?
 *Erica*: Yes, indeed!  The center of mass, c.o.m., in the case of the
 two-body problem, is the point of symmetry, around which each of the
 two bodies moves in a way that is inversely proportional to their mass.
-Let me show you explicitly, using the equations of motion,
-Eqs. (ref(a1), ref(a2)), where I will remind us that, for each
+As I remember it, the position of the c.o.m. is given by
+
+:equation:
+\label{com1d}
+r_{com} = \frac{M_1 r_1 + M_2 r_2}{M_1 + M_2}
+
+Let me show you explicitly how this all works, using the equations of
+motion, Eqs. (ref(a1), ref(a2)), where I will remind us that, for each
 particle, the acceleration is the second derivative of the position:
 
 :equation:
@@ -317,10 +358,10 @@ connecting force and acceleration.  Combining both of these Newtonian
 laws allows us to write (ref(a1)) and (ref(a2)) as Newton's
 gravitational equations in terms of acceleration rather than force.
 After that, (ref(a1r)) and (ref(a2r)) are just rewriting (ref(a1)) and
-(ref(a1r)) in a different notation, and (ref(comrm12)) adds (ref(a1r))
+(ref(a2)) in a different notation.  Then (ref(comrm12)) adds (ref(a1r))
 and (ref(a2r)), showing thereby in a more formal way that the
-attractions between the two stars cancel each other, something that
-could have been concluded directly from (ref(f1)) and (ref(f2)) as
+attractions between the two stars cancel each other.  We could have
+drawn that conclusion directly from (ref(f1)) and (ref(f2)) as
 well, but there we would not yet have had the information about the
 second derivatives of the positions.
 
@@ -331,23 +372,19 @@ as:
 \label{comrm}
 \frac{d^2}{dt^2} \left\{ M_1 r_1 + M_2 r_2 \right\} = 0
 
-but the expression between brackets does have the physical dimension
-of mass multiplied by length.  We are looking for a position, a location
-that is invariant, and a position has a physical dimension of length.
-The most natural way to get rid of the superfluous mass dimension is
-to divide the left and right hand side of the equation by the total mass:
+Notice that this expression looks a lot like the definition of the
+center of mass, Eq. (ref(com1d)).  Indeed, it implies that:
 
 :equation:
 \label{comr}
 \frac{d^2}{dt^2} \left\{ \frac{M_1 r_1 + M_2 r_2}{M_1 + M_2} \right\} = 0
 
-And this suggests that our center of mass can be defined as
+and with Eq. (ref(com1d)) it can be written as:
 
 :equation:
-\label{com1d}
-r_{com} = \frac{M_1 r_1 + M_2 r_2}{M_1 + M_2}
+\frac{d^2}{dt^2} r_{com} = 0
 
-Eq. (ref(comr)) guarantees that this position will either be at rest,
+This means that the c.o.m. position will either be at rest,
 or move at a uniform velocity, with zero acceleration.
 
 :figure: com_intro2.eps 6cm com_intro2

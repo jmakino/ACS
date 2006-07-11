@@ -205,10 +205,7 @@ obvious if you assign <tt>pi = "abc"</tt> and then try to compute
 <tt>2*pi*r</tt> and the like: you would get an error message telling
 you that a string cannot be forced into a number.
 
-*Erica*: Well, I'd like to judge for myself, later on.  Let's first
-write a short program.
-
-*Dan*: Let me put into words what you've just written.
+*Dan*: Let me put into words what Erica has just written.
 The relative position vector is chosen along the <tex>$x$</tex> axis
 at a distance of unity from the origin where the other particle
 resides in the relative coordinate system that we use:
@@ -217,8 +214,18 @@ resides in the relative coordinate system that we use:
 <tex>$\bv = \{0, 0.5, 0\}$</tex>.  This means that the initial motion
 is at right angles to initial separation.
 
-*Carol*: Does this mean that the two particles will move around each other
-in a circle?
+*Carol*: Would it not be easier to use a position of
+<tex>$\br = \{1, 0\}$</tex> and a velocity of <tex>$\bv = \{0, 0.5\}$</tex>,
+in other words, to work in two dimensions?
+
+*Erica*: Well, as soon as we will do anything connected with the real
+universe, we will have to go to 3D, so why not just start there, even
+though the two-body problem is essential a 2D problem.
+
+*Dan*: I don't care, either way, let's just move on.
+
+*Carol*: Does this specific choice of intial conditions mean that the
+two particles will move around each other in a circle?
 
 *Erica*: Probably not, unless we give exactly the right velocity
 needed for circular motion.  In general, the orbit will take the shape
@@ -245,9 +252,8 @@ for starters.
 
 *Carol*: I would prefer an even smaller value.  Looking at fig. (ref(forward1))
 we see how quickly the forward Euler scheme flies off the tracks, so to speak.
-How about letting `much less than 1' be 0.01?  We can always make the step
-larger, if it turns out to be unnecessarily small.  Here, let me add
-this to the code:
+How about letting `much less than 1' be 0.01?  We can always make it
+larger later:
 
  :inccode: .euler.rb-2
 

@@ -276,6 +276,17 @@ Here I have used the abbreviation
 :equation:
 r = |\br|
 
+for the absolute value of the vector <tex>$\br$</tex>, which in our
+two-dimensional case can be written as
+
+:equation:
+r = \sqrt{x^2+y^2}
+
+while in general, in 3D, it will be
+
+:equation:
+r = \sqrt{x^2+y^2+z^2}
+
 I'm glad you both have at least some familiarity with differential
 equations.  It may not be a bad idea to brush up your knowledge, if
 you want to know more about the background of Newtonian gravity.
