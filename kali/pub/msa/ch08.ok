@@ -131,11 +131,11 @@ Let's go back to the elliptic case, the one we started with, remember?
 the file <tt>euler_circular.rb</tt> and make the initial velocity half
 as large, by changing the line:
 
-  :inccode: .euler_circular_10000_steps.rb-3
+  :inccode: .euler_circular_10000_steps.rb-4
 
 into:
 
-  :inccode: .euler.rb-1
+  :inccode: .euler.rb-4
 
 *Dan*: But that will be the same file as we started with, <tt>euler.rb</tt>.
 
@@ -166,7 +166,7 @@ A rerun of the second attempt at integrating the two-body problem.
 == Reasons for Failure
 
 *Erica*: Let us take a moment to evaluate
-what we have learned.  We know know how small the steps have to be to
+what we have learned.  We know now how small the steps have to be to
 get a reasonable convergence for a circular orbit.  And we can see in
 figure ref(euler) that the steps get far larger toward the
 left of the figure.
@@ -196,6 +196,8 @@ particles are furthest away from each other?
 
 *Erica*: Yes, indeed!  And that point is called the apocenter, from the Greek
 <tex>$\alpha \pi o$</tex> <i>(apo)</i> meaning `far (away) from'.
+Well, I am willing to bet that a smaller time step will cure all of
+our problems.
 
 *Dan*: Seeing is believing.  Can you show us, Carol?
 
@@ -215,7 +217,7 @@ quit
 END
 
 :figure: euler_elliptic_10000_steps.ps 10cm euler_elliptic_10000_steps
-Seventh attempt at integrating the two-body problem: signs of hope.
+Sixth attempt at integrating the two-body problem: signs of hope.
 
 *Dan*: I must admit, you may both have been right: at least now the particles
 are completing a couple orbits that sort-of look elliptical, even though
