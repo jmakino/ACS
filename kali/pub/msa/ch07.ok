@@ -16,7 +16,7 @@ Previously, we got much more complicated lines of output.
 Good thing we kept the old program, and give the new one a new name.
 Let me reproduce the first four lines of the old program:
 
- :commandoutput: ruby euler.rb | head -4
+ :commandoutput: ruby euler_try.rb | head -4
 
 *Dan*: I see, I was wrong.  The first step gave a simple answer,
 also in the previous case; it was after the second step that rather

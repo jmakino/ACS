@@ -170,21 +170,19 @@ the time <tex>$t_{i+1}$</tex> after one more time step has been taken:
 gravitational forces of all other particles is indicated by <tex>$\ba$</tex>.
 So, all we have to do now is to code it up.  By the way, let's rename
 the file.  Rather than a generic name <tt>nbody.rb</tt>, let's call it
-<tt>euler.rb</tt>.
-
-*Dan*:
-Erica, go for it!
+<tt>euler.rb</tt>, or even better <tt>euler_try.rb</tt>.  After all,
+most likely we'll make a mistake, or two, or more, before we're finished!
 
 == Specifying Initial Conditions
 
-*Carol*: In order to solve a differential equation, you have to provide
-initial conditions.
+*Carol*: I have learned that in order to solve a differential equation,
+you have to provide initial conditions.
 
 *Erica*: 
 You mean we have to start by specifying the initial separation between
 the particles.  How about a simple choice like this?
 
- :inccode: .euler.rb-1
+ :inccode: .euler_try.rb-1
 
 *Carol*: Yes, you guessed correctly: in Ruby, you can assign values to
 variables in the same way as you do in C, say, but there is no need
@@ -212,7 +210,7 @@ resides in the relative coordinate system that we use:
 <tex>$\br = \{1, 0, 0\}$</tex>.  The relative velocity is chosen to be
 <tex>$0.5$</tex> in the direction of the positive <tex>$y$</tex> axis:
 <tex>$\bv = \{0, 0.5, 0\}$</tex>.  This means that the initial motion
-is at right angles to initial separation.
+is at right angles to the initial separation.
 
 *Carol*: Would it not be easier to use a position of
 <tex>$\br = \{1, 0\}$</tex> and a velocity of <tex>$\bv = \{0, 0.5\}$</tex>,
@@ -255,7 +253,7 @@ we see how quickly the forward Euler scheme flies off the tracks, so to speak.
 How about letting `much less than 1' be 0.01?  We can always make it
 larger later:
 
- :inccode: .euler.rb-2
+ :inccode: .euler_try.rb-2
 
 == Looping in Ruby
 
@@ -277,7 +275,7 @@ thing +k+ times?  Ah, here it is.  That looks funny!  You write
 <tt>k.times</tt>!  So to traverse a piece of code <tex>$1000$</tex> times,
 you enclose that piece of code within the following loop wrapper:
 
- :inccode: .euler.rb-3
+ :inccode: .euler_try.rb-3
 
 *Dan*: Surely you are joking!  That is carrying the principle of least
 surprise a bit too far to believe.  How can that work?  Can a computer
@@ -398,7 +396,7 @@ right away, just like a shell script.  As soon as we have finished
 writing our program, we will run it with the command <tt>ruby</tt> in
 front of the file name, in the same way as you would run a cshell
 script by typing <tt>csh filename</tt>.  In our case we will type
-<tt>ruby euler.rb</tt>.
+<tt>ruby euler_try.rb</tt>.
 
 *Erica*: So the difference is that in C you first compile each piece of
 source code into object modules, and then you load those modules into
@@ -462,13 +460,13 @@ general +dt+ value, using the forward Euler approximation
 (ref(ForwardEulerStep)), we obtain the position
 <tex>$\br = \{r_x, r_y, r_z\}$</tex> at the end of the first step:
 
- :inccode: .euler.rb-4
+ :inccode: .euler_try.rb-4
 
 In addition, we have to tell the particles what their new relative velocity
 <tex>$\bv = \{v_x, v_y, v_z\}$</tex>
 should be.  Using the same forward Euler construction, we can write:
 
- :inccode: .euler.rb-5
+ :inccode: .euler_try.rb-5
 
 using the acceleration vector <tex>$\ba = \{a_x, a_y, a_z\}$</tex>.
 
@@ -510,7 +508,7 @@ Let me start with the last line.  Since we will often need the
 square of the scalar distance between the particles, we may as
 well first compute <tex>$r^2 = x^2 + y^2 + z^2$</tex>:
 
- :inccode: .euler.rb-6
+ :inccode: .euler_try.rb-6
 
 *Carol*: Let's see whether I remember my vector analysis class.  The quantity
 <tex>$\br$</tex> is called a vector, and the quantity <tex>$r$</tex> is called
@@ -527,7 +525,7 @@ they find had better be the same.
 
 *Dan*: My Ruby book tells me that you must add the line
 
- :inccode: .euler.rb-7
+ :inccode: .euler_try.rb-7
 
 in order to use the square root method +sqrt+, where the term method
 is used in the same way the word function is used in C and the word
@@ -540,7 +538,7 @@ Eq. (ref(axayaz)), we first need to determine <tex>$r^3$</tex>,
 and a simple way to do that is to write it as a product of two
 express we have already found: <tex>$r^3 = r^2r$</tex>:
 
- :inccode: .euler.rb-8
+ :inccode: .euler_try.rb-8
 
 == Printing the Result
 
@@ -552,7 +550,7 @@ to get the result on the screen?
 *Erica*: I guess that doesn't hurt!  The Ruby syntax for printing seems to be
 very intuitive, following what they call the `principle of least surprise':
 
- :inccode: .euler.rb-9
+ :inccode: .euler_try.rb-9
 
 *Carol*: I like that principle!  And indeed, this couldn't be simpler!
 
@@ -563,9 +561,9 @@ By the way, I'd like to see a printout of the position and velocity at the
 start of the run as well, before we enter the loop, so that we get all the
 points, from start to finish.
 
-*Erica*: Fine!  Here it is, our first program, <tt>euler.rb</tt>, which
+*Erica*: Fine!  Here it is, our first program, <tt>euler_try.rb</tt>, which
 is supposed to evolve our two-body problem for ten time units, from
 <tt>t = 0</tt> till <tt>t = 10</tt>:
 
- :inccode: .euler.rb
+ :inccode: .euler_try.rb
 

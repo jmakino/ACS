@@ -1,6 +1,6 @@
 = Second-Order Integration Algorithms
 
-== The Modified Euler Algorithm
+== A Wild Idea
 
 *Dan*: Well, Erica, how are we going to move up to a more accurate
 algorithm?
@@ -28,18 +28,6 @@ I mean, forward flies out of the curve one way, and backwards spiral in
 the other way.  I wonder, can't you somehow combine the two methods and
 see whether we can let the two errors cancel each other?
 
-:figure: modforward1.eps 6cm modforward1
-An attempt to improve the Euler methods.  The top arrow shows forward Euler,
-and the bottom arrow backward Euler.  The dashed arrow shows the average
-between the two, which clearly gives a better approximation to the curved
-lines that show the true solutions to the differential equation.
-
-:figure: modforward2.eps 6cm modforward2
-Two successive forward Euler steps.
-
-:figure: modforward3.eps 6cm modforward3
-A forward Euler steps and a backward Euler step, landing at the same point.
-
 If we combine the previous two pictures, the most natural thing would be
 to try _both_ of the Euler types, forward and backward.  Here is a sketch,
 in fig. ref(modforward1).  The top arrow is what we've done so far,
@@ -49,51 +37,63 @@ with the right tangent at the end.  My idea is to compute both, and then
 take the average between the two attempts.  I'm sure that would give a
 better approximation!
 
+:figure: modforward1.eps 8cm modforward1
+An attempt to improve the Euler methods.  The top arrow shows forward Euler,
+and the bottom arrow backward Euler.  The dashed arrow shows the average
+between the two, which clearly gives a better approximation to the curved
+lines that show the true solutions to the differential equation.
+
 *Carol*: But at a large cost!  The backward Euler method is an implicit
 method, as Erica mentioned, that requires at least one extra iteration.
 So the bottom arrow alone is much more expensive to compute than the top
 arrow, and we have to compute both.
 
-*Erica*: You are both right.  Dan's idea was brilliant!  Dan, were you
-reading my mind?  What you proposed was the essential idea behind what
-is called the modified Euler method.  And Carol hinted at the missing
-piece.  Instead of computing both forward and backward right at the
-start, it is more efficient to begin with a forward Euler step, and
-then to compute the backward Euler step at the position where the forward
-step landed.
+*Dan*: It was just a wild idea, and it may not be useful.
 
-Here, let me also draw a picture, in fig. ref(modforward2).  Here we
-take one forward Euler step, and we then compute a second forward Euler
-step, following the first one.  If we now shift the second arrow back,
-so that the end of the arrow falls on the same point as the end of the
-first arrow, we have constructed a backward Euler step that lands on the
-same point where our forward Euler step landed, as you can see in
-fig. ref(modforward3).
+== Backwards and Forwards
 
-Of course, the top arrow in fig. ref(modforward3) is not exactly the
-same arrow as the bottow arrow in fig. ref(modforward1), but the two
+*Erica*: I must say, I like Dan's idea, and perhaps we can make it a bit more
+efficient.  How about shifting the arrow of the backwards step to the end
+of the arrow of the forwards step, as in fig. ref(modforward2)?  Or to be
+precise, how about just taking two forward Euler steps, one after the other?
+The second forward step will not produce exactly the same arrow as the first
+backward step, but it will be almost the same arrow, and perhaps such an
+approximation would be good enough.
+
+:figure: modforward2.eps 8cm modforward2
+Two successive forward Euler steps.
+
+*Dan*: But how are you going to use that to construct the dashed line in
+fig. ref(modforward1)?
+
+*Erica*: Let's see.  How about starting with fig. ref(modforward1), and
+then shifting the second arrow back, so that the end of the arrow falls
+on the same point as the end of the first arrow?  In that way, we have
+constructed a backward Euler step that lands on the same point where our
+forward Euler step landed, as you can see in fig. ref(modforward3).
+
+:figure: modforward3.eps 8cm modforward3
+A forward Euler steps and a backward Euler step, landing at the same point.
+
+As I already admitted, the top arrow in fig. ref(modforward3) is not exactly
+the same arrow as the bottow arrow in fig. ref(modforward1), but the two
 arrows are approximately the same, especially if our step sizes are
 not too large.  So, in a first approximation, we can average the arrows
 in fig. ref(modforward3).  This will make Carol happy: no more implicit
 steps.  We have only taken forward steps, even though we recycle the
 second one by interpreting it as a backward step.
 
-:figure: modforward4.eps 6cm modforward4
-The modified Euler approximation is indicated by the lower arrow, as
-the average of the forward and backward Euler methode.  The
-curved lines show the true solutions to the differential equation.
-
 The simplest way to construct the average between the two vectors is by
-adding them and then dividing the length by two.  Here it is, in fig.
+adding them and then dividing the length by two.  Here it is, in
 fig. ref(modforward4).
 
-*Dan*: Well, I don't know what hit me, but I'm glad my idea was useful!
+:figure: modforward4.eps 8cm modforward4
+The new integration scheme produces the dashed arrow, as exactly one-half of
+the some of the two fully drawn arrows; the dotted arrow has the same length
+as the dashed arrow.  This result is approximately the same as the dashed
+arrow in fig. ref(modforward1).
 
-*Erica*: What I've just drawn here has a name.  In the literature on
-numerical solutions to differential equations it is called the
-modified Euler method.  Modified in the sense of starting with forward
-Euler, and then modifying it by taking backward Euler into account as
-well.
+*Dan*: That looks like a promising approach.  Let's write a code for it.
 
 == Implementation
 
@@ -206,7 +206,7 @@ Second attempt at modified Euler integration, with stepsize
 
 
 
-
+== The Modified Euler Algorithm
 
 == xxx
 

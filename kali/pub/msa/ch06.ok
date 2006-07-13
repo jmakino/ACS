@@ -4,16 +4,16 @@
 
 *Carol*: Well, let's see what happens.  I don't want to look at a thousand
 lines of output.  I will first run the code, redirecting the results into
-an output file, called <tt>euler.out</tt>:
+an output file, called <tt>euler_try.out</tt>:
 
- :commandoutput: ruby euler.rb > euler.out
+ :commandoutput: ruby euler_try.rb > euler_try.out
 
 In that way, we can look at our leisure at the beginning and at the
 end of the output file, while skipping the 991 lines in between
 times 0, 0.01, 0.02, 0.03, 0.04 . . . 9.96, 9.97, 9.98, 9.99, 10.
 
- :commandoutput: head -5 euler.out
- :commandoutput: tail -5 euler.out
+ :commandoutput: head -5 euler_try.out
+ :commandoutput: tail -5 euler_try.out
 
 *Dan*: A lot of numbers.  Now what?  We'd better make a picture of the
 results, to see whether these numbers make sense or not.  Let's plot the
@@ -25,17 +25,23 @@ something already, they tell us that there is something seriously wrong!
 *Carol*: How can you tell?
 
 *Erica*: At the end of the run, the distance between the two particles
-is more than 9.9, almost 10 in our units, as you can see by applying
-Pythagoras to the last numbers in the first two columns.
+is more than 25 in our units, as you can see by applying Pythagoras to the
+last numbers in the first two columns: <tex>$\sqrt{20^2+16^2} = 25$</tex>.
 
 *Dan*: So what?
 
 *Erica*: A bit large already for my taste, but what clinches it is the
-velocity difference between the particles, which is more than 0.99, almost 1.
-We started out with a velocity difference of only 0.5, so we have doubled
-the velocity, while increasing the distance by a factor 10.  When two
-particles move away from each other, they should slow down, not speed up,
-because gravity is an attractive force.
+velocity difference between the particles, which is more than
+<tex>$\sqrt{2.2^2+1.7^2} \approx 2.8$</tex>.  
+
+*Dan*: So what?
+
+*Erica*: 
+We started out with a velocity difference of only 0.5, so we have
+increased the velocity by more than a factor of more than 5, while
+increasing the distance by a factor of more than 25.  When two
+particles move away from each other, they should slow down, not speed
+up, because gravity is an attractive force.
 
 *Carol*: I see, yes, that is strange.
 
@@ -60,26 +66,26 @@ be <tt>-1</tt>.  In fact, you can write the line <tt>set size ratio
 you want to avoid repeating yourself each time you use gnuplot.
 But for starters, I'll give the command specifically.
 
-Now let's have our picture, in fig ref(euler_elliptic_bug):
+Now let's have our picture, in fig ref(euler_try_elliptic_bug):
 
  |gravity> gnuplot
  gnuplot> set size ratio -1
- gnuplot> plot "euler.out"
+ gnuplot> plot "euler_try.out"
  gnuplot> quit
 
 # the following line should be removed after improving acsdoc to
 # include "save_output" extensions -- PH, May 2006
 
- :command: ruby euler.rb > euler.out
+ :command: ruby euler_try.rb > euler_try.out
  :commandinput: gnuplot END
 set term post eps
-set output "euler_elliptic_bug.ps"
+set output "euler_try_elliptic_bug.ps"
 set size ratio -1
-plot "euler.out"
+plot "euler_try.out"
 quit
 END
 
-:figure: euler_elliptic_bug.ps 10cm euler_elliptic_bug
+:figure: euler_try_elliptic_bug.ps 10cm euler_try_elliptic_bug
 First attempt at integrating the two-body problem: failure.
 
 
@@ -88,29 +94,22 @@ First attempt at integrating the two-body problem: failure.
 *Dan*: Hmmm, that is not what I expected to see.  What a disappointment!
 
 *Erica*: Well, research is like that -- the first time you do something,
-it almost never works.  But look, on the bright side, how well we've done!
-The two particles approach each other on a very nice elliptical orbit,
-so that part seems to work fine.  It is only around the time of closest
-encounter that they seem to get a kick, and fly away from each other.
+it almost never works.
 
-*Carol*: It's good to know that we seem to have done at least something
-right!  But why would the particles get a kick at closest approach?
+*Carol*: Good thing you called the program <tt>euler_try.rb</tt>!
+
+*Dan*: It seems as if the system exploded.  Why would the two particles
+fly apart like that?
 
 *Erica*: That's what we have to find out.  And we'd better be systematic.
-Even though it <i>seems</i> that the orbit integration goes well for a
-while, until the particles come too close, we don't know for sure unless
-we check.  It is equally possible that something already starts going
-wrong right from the beginning, and that the effects show up only
-after a while.
 
 *Dan*: How will we ever find out what is the case?  Shall we look at the
 code, line by line, to see whether we made a mistake?  It is such a short
 code, there are not that many ways to do something wrong!
 
-*Carol*: That's not the right approach.  By looking at the code you can
-perhaps find typos, but if you are starting from the wrong assumptions,
-you will never find what is wrong in the code.  If everything in the code
-fits with your assumptions, all will seem well . . .
+*Carol*: That's not the right approach.  If you are starting from the
+wrong assumptions, just looking at the code will not help you to realize
+what was wrong with your thinking, no matter how long you stare at it.
 
 *Dan*: Research <i>is</i> difficult!  If this would be an exercise out
 of a book, at least the answer would be in the back, or we could ask a

@@ -21,7 +21,7 @@ print(vx, "  ", vy, "  ", vz, "\n")
   y += vy*dt                                #4
   z += vz*dt                                #4
   vx += ax*dt                               #5
-  vy += ay*dt                               #5
+  vy += ax*dt                               #5
   vz += az*dt                               #5
   print(x, "  ", y, "  ", z, "  ")          #9
   print(vx, "  ", vy, "  ", vz, "\n")       #9
