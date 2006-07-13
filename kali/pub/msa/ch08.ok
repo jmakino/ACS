@@ -2,9 +2,9 @@
 
 == Better Numbers
 
-*Carol*: Here is our corrected code <tt>euler_circular.rb</tt>:
-
- :inccode: .euler_circular.rb
+*Carol*: Yes, the orbit is looking recognizably circular, but that's about it.
+The errors are still quite large.  I would like to know exactly how
+large they are.
 
 *Erica*: How about repeating what we did in the elliptic case,
 by having a peak at the numbers at the beginning and at the end of the
@@ -12,13 +12,11 @@ run?
 
 *Carol*: Good idea.
 
- :commandoutput: ruby euler_circular.rb > euler.out
- :commandoutput: head -5 euler.out
- :commandoutput: tail -5 euler.out
+ :commandoutput: ruby euler_circular_1000_steps.rb > euler_circular_1000_steps.out
+ :commandoutput: head -5 euler_circular_1000_steps.out
+ :commandoutput: tail -5 euler_circular_1000_steps.out
 
 *Dan*: That looks a lot better than before, no more huge numbers!
-
-*Carol*: Yes, what a difference a single letter can make, in a code . . .
 
 *Erica*: But the numbers are still too large.  The first few numbers
 give a distance of about 1, but the last few numbers are too large.
@@ -30,29 +28,7 @@ and the separation along the _y_ axis is about <tex>$0.6$</tex> . . .
 <tex>$\sqrt{1\cdot1+0.6\cdot0.6}\approx 1.17$</tex>.
 Not wildly off, but not very good either.
 
-== Better Orbit
-
-*Dan*: How about a picture?
-
-*Carol*: Here it is, fig. ref(euler_circular).
-
- :command: ruby euler_circular.rb > euler.out
- :commandinput: gnuplot END
-set term post eps
-set output "euler_circular.ps"
-set size ratio -1
-plot "euler.out"
-quit
-END
-
-:figure: euler_circular.ps 10cm euler_circular
-Fourth attempt at integrating the two-body problem: looking a lot better.
-
-*Dan*: Indeed a lot better!  At least the particles are _trying_ to orbit
-each other in a circle, it seems.  They're just making many small
-errors, that are piling up.
-
-*Carol*: That must be it.  Remember, just after Eq.(ref(first_step_error)),
+*Carol*: Remember, just after Eq.(ref(first_step_error)),
 how I estimated the error after one orbit to be 3%?  After one and a third
 orbit it should then have been 4%, and we got 17%.  Perhaps nonlinear effects
 contributed, but at least my original guess of several percent was not way
@@ -60,35 +36,26 @@ off!
 
 == Even Better Numbers
 
-xx
-
-*Carol*: That must be it.  Remember, just after Eq.(ref(first_step_error)),
-how I estimated the error after one orbit to be 3%?  After one and a third
-orbit it should then have been 4%, and we got 17%.  Perhaps nonlinear effects
-contributed, but at least my original guess of several percent was not way
-off!
-
-xxx
-
 *Erica*: After Erica predicted us to be off by 3% per orbit, Dan showed
 what should happen for a time step that is ten times smaller: the
 error should shrink to 0.3%.
 
-*Dan*: So in our case, where we actually found an error of 17%, the error
+*Dan*: So in our case, where we just found an error of 17%, the error
 now should shrink to 1.7%.  Let's test that!
 
 *Carol*: Easy.  I'll change the line
 
- :inccode: .euler_circular.rb-2
+ :inccode: .euler_circular_1000_steps.rb-2
 
-in <tt>euler_circular.rb</tt> to:
+in <tt>euler_circular_1000_steps.rb</tt> to:
 
- :inccode: .euler_circular_1000.rb-2
+ :inccode: .euler_circular_10000_steps.rb-2
 
-and put that code in <tt>euler_circular_1000.rb</tt>, to indicate that
-we are now taking 1000 steps per time unit.  Time to run it!
+and put that code in <tt>euler_circular_10000_steps.rb</tt>, to indicate that
+we are now taking 1,000 steps per time unit, 10,000 time steps in total.
+Time to run it!
 
- :commandoutput: ruby euler_circular_1000.rb > euler.out
+ :commandoutput: ruby euler_circular_10000_steps.rb > euler.out
  :commandoutput: head -5 euler.out
  :commandoutput: tail -5 euler.out
 
@@ -100,13 +67,13 @@ many steps!
 
 *Carol*: Of course indeed!  Okay, I'll change the line
 
- :inccode: .euler_circular_1000.rb-3
+ :inccode: .euler_circular_10000_steps.rb-3
 
-in <tt>euler_circular_1000.rb</tt> to:
+in <tt>euler_circular_10000_steps.rb</tt> to:
 
- :inccode: .euler_circular_1000_ok.rb-3
+ :inccode: .euler_circular_10000_steps_ok.rb-3
 
-and call that file <tt>euler_circular_1000_ok.rb</tt>.
+and call that file <tt>euler_circular_10000_steps_ok.rb</tt>.
 
 *Dan*: Your file names are growing again without bounds, and I don't
 like having so very many different files lying around.
@@ -117,7 +84,7 @@ the mess later.
 
 *Dan*: Okay, try again:
 
- :commandoutput: ruby euler_circular_1000_ok.rb > euler.out
+ :commandoutput: ruby euler_circular_10000_steps_ok.rb > euler.out
  :commandoutput: head -5 euler.out
  :commandoutput: tail -5 euler.out
 
@@ -133,7 +100,7 @@ we had before.  We're getting there!
 
 *Carol*: Here it is, fig. ref(euler_circular_1000_ok).
 
- :command: ruby euler_circular_1000_ok.rb > euler.out
+ :command: ruby euler_circular_10000_steps_ok.rb > euler.out
  :commandinput: gnuplot END
 set term post eps
 set output "euler_circular_1000_ok.ps"
