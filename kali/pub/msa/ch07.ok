@@ -6,32 +6,13 @@
 for the one-body problem: starting with a circular orbit, and then
 taking only one small step.  Here we go . . .
 
- :commandoutput: ruby euler_circular_step.rb
+ :commandoutput: ruby euler_try_circular_step.rb
 
 *Dan*: . . . and getting just one short new line of output, after
-the initial conditions are echoed.  But it seems too simple!
-Previously, we got much more complicated lines of output.
+the initial conditions are echoed.  Nice and simple!
 
-*Carol*: Well, yes, but did we got those right away?  Let me check.
-Good thing we kept the old program, and give the new one a new name.
-Let me reproduce the first four lines of the old program:
-
- :commandoutput: ruby euler_try.rb | head -4
-
-*Dan*: I see, I was wrong.  The first step gave a simple answer,
-also in the previous case; it was after the second step that rather
-complicated numbers showed up.
-
-But what are these extra lines, with error messages?
-
-*Carol*: Oh, that is just Ruby being too sensitive, or Unix being too
-rude, as you like.  The Unix +head+ command just breaks the pipe after
-reading the first four lines, without cleaning up properly, and Ruby
-complains about that.
-
-*Dan*: Good, so we can ignore that then.
-
-*Erica*: Time to check whether our first step is correct!  We start
+*Erica*: Simple, yes, but correct?  Let's compute the numbers by
+hand, to see whether our program gave the right answers.  We start
 with
 
 :equation:
@@ -47,14 +28,15 @@ so the new position must be:
 :equation:
 \br(dt) = \br + \bv dt = \{1,dt,0\}
 
+and since we are useing <tex>$dt=0.01$</tex>, we expect:
+
+:equation:
+\br(dt) = \br + \bv dt = \{1,0.01,0\}
+
 *Carol*: And this is indeed what we see in the first half of the second
 output line.
 
-*Dan*: Yes, in both cases: for our new one-step program we got the correct
-result with <tt>v=1</tt> and for our old program we got the correct result
-with <tt>v=0.5</tt>, given that in both cases we choose <tt>dt=0.01</tt>.
-That is encouraging!
-
+*Dan*: That is encouraging!
 Now what about the second half of the second output lines?
 
 *Erica*: To compute the new velocity, we have to first compute the
@@ -72,14 +54,57 @@ In our case this gives
 And this in turn means that
 
 :equation:
-\bv(dt) = \bv + \ba dt = \{-dt,1,0\}
+\bv(dt) = \bv + \ba dt = \{-dt,1,0\} = \{-0.01,1,0\}
 
-*Carol*: And this is indeed what is printed in the last half of the last
-output line, in our one-step program.  For our previous program, we have
-to remember that the initial velocity was only half as large, which gives
-<tex>$\bv(dt) = \{-dt,0.5,0\}$</tex> which is indeed what we got.
+*Carol*: And this is _not_ what is printed in the last half of the last
+output line, in our one-step program.
 
-*Dan*: Perfect.
+*Dan*: Spot on!  We should have gotten <tex>$\{-0.01,1,0\}$</tex>, but
+we somehow wound up with <tex>$\{-0.01,0.99,0\}$</tex>.  So that's were
+the bug is, in the _y_ component of the new velocity, which should be
+<tex>$v_y(dt) = v_y + a_y dt$</tex>, but somehow isn't.
+
+*Erica*: Easy to check: here is where we compute the new value of
+<tex>$v_y$</tex>, which we call <tt>vy</tt>:
+
+ :inccode: .euler_try_circular_step.rb-1
+
+Ooops!!  A typo.  How silly.  No wonder we got the wrong answer for
+<tex>$a_y$</tex>.  Let me correct it right away, and write it out as
+a new file, <tt>euler_circular_step.rb</tt>:
+
+ :inccode: .euler_circular_step.rb-1
+
+I'm curious to see whether now everything will be all right:
+
+ :commandoutput: ruby euler_circular_step.rb
+
+*Dan*: Wonderful!  Now both the position and the velocity components
+are correct, after the first step.  We are winning!
+
+*Carol*: Yes, we have now verified that we got the right result after
+one step.
+
+== A Different Surprise
+
+*Dan*: Great!  Let's go back to our original code, correct the bug,
+and we'll be in business.
+
+*Carol*: Only if the first bug we caught will be the last bug.
+Don't be so sure!  We may well have made another mistake somewhere
+else.
+
+*Dan*: Oh, Carol, you're too pessimistic.  I bet everything will be
+fine now!
+
+*Erica*: We'll see.  Here is the same typo <tt>euler_try.rb</tt>:
+
+ :inccode: .euler_try.rb-5
+
+and here is the corrected program, which I will call <tt>euler.rb</tt>
+in the spirit of Dan's optimism:
+
+ :inccode: .euler.rb-1
 
 == One Integration Step: Validation
 

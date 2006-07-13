@@ -481,15 +481,16 @@ to start with just one step.
 loop.
 
 *Carol*: Okay, here is the new code.  Let me call it
-<tt>euler_circular_step.rb</tt>.
+<tt>euler_try_circular_step.rb</tt>.
 
 *Dan*: You sure like long names!  I would have called it
-<tt>eulercs.rb</tt>.
+<tt>euler_trycs.rb</tt>.
 
 *Carol*: Right.  And three days later you will be wondering why there
 is a program floating around in your directory that seems to tell you
-that it uses Euler's algorithm for cool stuff, or for communist socialism
-or just for casual sin.  No, I'm a big believer in looooong names.
+that it uses Euler's algorithm for trying out cool stuff, or for
+experimenting with communist socialism or for engaging in some casual sin.
+No, I'm a big believer in looooong names.
 
 *Erica*: I used to be like Dan, but I've been bitten too often by the
 problem you just mentioned, that I could for the life of me not remember
@@ -499,9 +500,10 @@ I'm with you.
 *Dan*: Fine, two against one, I lose again!  But I'll be +gs+, oops,
 I mean a <tt>good_sport</tt>.
 
-*Carol*: What do you think of this version of <tt>euler_circular_step.rb</tt>?
+*Carol*: What do you think of this version
+of <tt>euler_try_circular_step.rb</tt>?
 
- :inccode: .euler_circular_step.rb
+ :inccode: .euler_try_circular_step.rb
 
 *Erica*: Let's see: you got the circular velocity correct,
 a value of unity as it should be.  And instead of looping,
