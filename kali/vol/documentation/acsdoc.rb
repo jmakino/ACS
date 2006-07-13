@@ -936,6 +936,7 @@ module Acsdoc
       open(tmpcommand,"w+"){ |f|  f.print fullcommand + "\n"}
       system("cat  #{tmpcommand}") if $DEBUG
       system("csh -f #{tmpcommand}");
+      system "sync; sleep 1"
       @@outputcount += 1
       Dir.mkdir(@@commandoutputdir) unless File.exist? @@commandoutputdir
       outfile = open(@@commandoutputdir+"/"+ @@outputcount.to_s,"w")
@@ -1000,6 +1001,7 @@ module Acsdoc
     open(tmpcommand,"w+"){ |f|  f.print fullcommand + "\n"}
     system("cat  #{tmpcommand}") if $DEBUG
     system("csh -f #{tmpcommand}");
+    system("sync; sleep 1")
     ostring = ostring +  prompt + commandline+ "\n"
     output = indata 
     output += `cat #{dirname}/#{tmpname}`  if  showout
