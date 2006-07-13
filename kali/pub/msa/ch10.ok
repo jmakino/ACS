@@ -95,6 +95,8 @@ arrow in fig. ref(modforward1).
 
 *Dan*: That looks like a promising approach.  Let's write a code for it.
 
+<b>[ this is how far I got ; 2007/7/13 -- Piet ]</b>
+
 == Implementation
 
 *Carol*: It should be easy to implement this new scheme.  The picture

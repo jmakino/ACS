@@ -28,7 +28,7 @@ so the new position must be:
 :equation:
 \br(dt) = \br + \bv dt = \{1,dt,0\}
 
-and since we are useing <tex>$dt=0.01$</tex>, we expect:
+and since we are using <tex>$dt=0.01$</tex>, we expect:
 
 :equation:
 \br(dt) = \br + \bv dt = \{1,0.01,0\}
@@ -106,21 +106,61 @@ in the spirit of Dan's optimism:
 
  :inccode: .euler.rb-1
 
+I'll run the new code:
+
+ :commandoutput: ruby euler.rb > euler.out
+
+And here is the plot, in fig ref(euler_elliptic_bug):
+
+ |gravity> gnuplot
+ gnuplot> set size ratio -1
+ gnuplot> plot "euler.out"
+ gnuplot> quit
+
+# the following line should be removed after improving acsdoc to
+# include "save_output" extensions -- PH, May 2006
+
+ :command: ruby euler.rb > euler.out
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_elliptic_bug.ps"
+set size ratio -1
+plot "euler.out"
+quit
+END
+
+:figure: euler_elliptic_bug.ps 10cm euler_elliptic_bug
+Second attempt at integrating the two-body problem: a different failure.
+
+*Carol*: Well, Dan, what do you say?
+
+*Dan*: No comment.
+
 == One Integration Step: Validation
 
-*Carol*: Well, sort-of.  We have verified that our program does what the
-algorithm intended, and that is certainly nice!  But this is only half
-of the work.  We now have to check whether this particular algorithm
-does indeed give a reasonable result, which corresponds to the behavior
-of gravitating particles in the real world.  This is called validation.
-In the computer science literature these two checks are often called 
-V&V, for Verification and Validation.
+*Erica*: Maybe we should go back to the circular orbit.  We tried to
+take a single step there, and we found our typo.  Perhaps we should
+take a few more steps, before returning to the more general problem.
 
-In other words, we have passed the verification test.  The computer
-code does exactly what we wanted it to do, at least for one step.  But
-now we have to do a validation test.  For example, we can ask whether
-this first step keeps the two particles on a circular orbit.  After
-the first step, the new separation is:
+*Carol*: I agree.  Let us sum up what we've done with our one-step code.
+We have verified that our program does what the algorithm intended,
+and that is certainly nice!  But it is only half of the work.  We
+now have to check whether our particular algorithm does indeed give a
+reasonable result, which corresponds to the behavior of gravitating
+particles in the real world.  This is called validation.  In the
+computer science literature these two checks are often called V&V, for
+Verification and Validation.
+
+In other words, so far in our one-step program we have passed the
+verification test.  The computer code does exactly what we wanted it
+to do, at least for that one step.  But now we have to do a validation
+test.
+
+*Dan*: What does that mean, concretely?
+
+*Carol*: For example, we can ask whether the first step keeps the two
+particles on a circular orbit.  We can answer that question with pure
+thought.  After the first step, the new separation is:
 
 :equation:
 \label{first_step_error}
@@ -178,18 +218,20 @@ closer and closer to the true circular orbit.
 
 *Dan*: That's the good news.  But at the same time, that's also the bad
 news!  When we tried to integrate an arbitrary elliptical orbit, we got
-a nonsense picture.  So then we tried to make life simpler, to see what
-went wrong.  But we have not found anything that went wrong!  How come?
+a nonsense picture.  How come?
 
 *Erica*: We'll have to work our way up to the more complicated situation.
 Let us stick to the circular orbit for now.  We have a basis to start from:
 the first step was correct, that we know for sure.  Let's do a few more steps.
 
-*Dan*: How about a hundred steps?
+*Dan*: Let's try a thousand steps again.
 
-*Erica*: Why not.  Let us go back to the very first code we wrote, but
-now for a circular orbit, and for an integration of one time unit, which
-will give us a hundred steps.
+*Carol*: Better to do ten steps.  Each time to try to jump forwards to
+quickly we've run into problems!
+
+*Erica*: How about a hundred steps, as a compromise?  Let's go back
+to the very first code we wrote, but now for a circular orbit, and for
+an integration of one time unit, which will give us a hundred steps.
 
 *Carol*: Let's keep the old code, for comparison.  Here is the new one.
 I will call it <tt>euler_circular_100_steps.rb</tt>:
@@ -205,187 +247,61 @@ behind the keyboard.
 *Erica*: Peace, peace!  Let's not fight about names; we can later make
 copies with shorter names as much as we like.
 
- :commandoutput: ruby euler_circular_100_steps.rb > euler.out
+ :commandoutput: ruby euler_circular_100_steps.rb > euler_circular_100_steps.out
 
- |gravity> gnuplot
- gnuplot> set size ratio -1
- gnuplot> plot "euler.out"
- gnuplot> quit
-
- :command: ruby euler_circular_100_steps.rb > euler.out
+ :command: ruby euler_circular_100_steps.rb > euler_circular_100_steps.out
  :commandinput: gnuplot END
 set term post eps
 set output "euler_circular_100.ps"
 set size ratio -1
-plot "euler.out"
+plot "euler_circular_100_steps.out"
 quit
 END
 
 :figure: euler_circular_100.ps 10cm euler_circular_100
-Second attempt at integrating the two-body problem: a quarter circle?
+Third attempt at integrating the two-body problem: part of a circle?
 
-*Dan*: Figure ref(euler_circular_100) is still too good to be true;
-looks like the orbit is perfectly circular, as far as the eye can see.
-We're supposed to find a bug, but everything just keeps going fine.
-We have a problem, in that we don't find a problem!
+*Carol*: Figure ref(euler_circular_100) may or may not be part of a good
+circle; hard to see when you only have a small slice.
 
-*Erica*: the orbit is round all right, but look where it is centered on!
+*Dan*: Told you so!
 
-*Dan*: It is centered on the point on the _x_ axis close to the left of
-the figure, something like <tex>$\{0.5, 0\}$</tex>.  What's wrong with
-that?  The two particles are supposed to go around each other.  After
-another 100 steps our second particle will presumably wind up at
-<tex>$\{0, 0\}$</tex>.
+*Carol*: No, you didn't!  You didn't give any reason for returning to the
+old value.
 
-*Carol*: No, no, no, Carol is right, this is wrong!
-
-*Dan*: I beg your pardon?
-
-*Carol*: We have reduced the two-body problem to a one-body problem,
-remember?  What we are plotting is the relative distance between the
-two particles.  If the relative distance vector would ever become
-<tex>$\{0, 0\}$</tex>, that would mean that the two particles would
-sit on top of each other . . . 
-
-*Dan*: . . . rather than going around each other at a constant distance
-of one.  Yes, how stupid of me!
-
-*Erica*: Well, it's easy to get confused, when getting into orbital
-mechanics.  If I were to tell you of all my past stupidities . . . 
-
-*Carol*: . . . please don't!  Better to follow the trail of the bug
-we've found.  How about some more steps?
+*Erica*: Hey guys, don't get cranky.  Let's just go back to
+our original choice of 1,000 steps.
 
 == Even More Integration Steps
 
-*Erica*: Let's try to be more systematic.  We tried one step, and then
-we tried a hundred steps.  But our very first problem showed up after
-a thousand steps.  I'd like us to try a thousand steps here too.
-
-*Carol*: Let's make yet another new file . . . Dan,
+*Carol*: In that case, let's make yet another new file . . . Dan,
 close your eyes, I'm adding one more
 character to the file name . . . <tt>euler_circular_1000_steps.rb</tt>:
 
  :inccode: .euler_circular_1000_steps.rb
 
-*Dan*: no comment.
-
-*Carol*: And here is our new result, which I'm calling
+And here is our new result, which I'm calling
 figure ref(euler_circular_1000):
 
- :commandoutput: ruby euler_circular_1000_steps.rb > euler.out
+ :commandoutput: ruby euler_circular_1000_steps.rb > euler_circular_1000_steps.out
 
- |gravity> gnuplot
- gnuplot> set size ratio -1
- gnuplot> plot "euler.out"
- gnuplot> quit
-
- :command: ruby euler_circular_1000_steps.rb > euler.out
+ :command: ruby euler_circular_1000_steps.rb > euler_circular_1000_steps.out
  :commandinput: gnuplot END
 set term post eps
 set output "euler_circular_1000.ps"
 set size ratio -1
-plot "euler.out"
+plot "euler_circular_1000_steps.out"
 quit
 END
 
 :figure: euler_circular_1000.ps 10cm euler_circular_1000
-Third attempt at integrating the two-body problem: another failure.
+Fourth attempt at integrating the two-body problem: looking much better.
 
-*Dan*: Whoa, no more circle here!!
+Much better!
 
-*Erica*: I'd say!
+*Erica*: Indeed, we're really make progress.
 
-*Carol*: That's awesome!  How easy it is to get misled.  After one
-hundred steps of almost circular motion, the orbit changes into an
-almost straight line, and then suddenly all hell breaks loose, and
-the relative distance grows again as if somebody used a slingshot!
+*Dan*: We've come around full circle -- almost!  At least the particles
+are _trying_ to orbit each other in a circle, it seems.  They're just
+making many small errors, that are piling up.
 
-*Dan*: Well, that last part is similar to the original bug we had,
-with our first attempt at integrating an elliptical orbit.  But this
-looks different.  In our first attempt the orbit seemed to be flying
-off the tracks, but here there seems to be a repelling force, somehow.
-
-*Carol*: More likely we are just dealing with some form of numerical
-mistake or numerical instability.  I wouldn't assign any physical
-meaning to it, until we have really understood what is happening.
-
-*Erica*: I agree.  The question is how to get this real understanding!
-I must admit that I'm baffled.
-
-== Code Inspection
-
-*Carol*: Well, that is where you new a computer scientist to come in.
-We are supposed to be trained to do trouble shooting and bug chasing.
-
-*Dan*: But this is such a short program, it must be possible to inspect
-each line to see what is wrong.
-
-*Erica*: Even short programs can be misleading.  Once you gloss over a
-subtle mistake, you can read it as often as you want, and chances are
-that upon each reading you will overlook it again.
-
-*Dan*: The first line is correct.  Clearly.  The second line is correct . . .
-
-*Carol*: I completely agree with Erica.  That's not the way to do it, Dan.
-
-*Dan*: . . . the sixth line is correct.  Clearly.  The seventh line is
-correct . . .
-
-*Erica*: Let's leave him looking at tea leaves.  Carol, show me how you
-use that wonderful training of yours.
-
-*Dan*: . . . the eleventh line is correct.  Clearly.  The twelfth line is
-correct . . .
-
-*Carol*: To start with, I will draw a flow diagram.
-
-*Erica*: A flow diagram?  There is not much to flow in such a short program.
-
-*Dan*: . . . the eighteenth line is correct.  Clearly.  The nineteenth line is
-correct . . .
-
-*Carol*: Short or not, let's be formal here.  I will draw this box . . .
-
-*Dan*: Yeahhh!!!
-
-*Erica*: Yeah what?
-
-*Dan*: The twenty-first line!
-
-*Carol*: The twenty-first line what?
-
-*Dan*: The bug is in the twenty-first line!  Clear, for all to see!
-Here let me print line twenty, twenty-one and twenty-two:
-
- :inccode: .euler_circular_1000_steps.rb-1
-
-*Erica*: Dan's right.  That second +ax+ should be +ay+.
-
-*Carol*: You're right!  He's right.  How simple.
-
-*Dan*: Sometimes it helps to have no training.
-
-*Erica*: I guess so!  What a trivial mistake.  Just a little typo!
-
-*Dan*: But one with large consequences.
-
-*Carol*: Well, Dan, congratulations.  In this case, at least, your
-brute force approach won out.  But that won't happen with much more
-complex programs, I assure you.
-
-*Dan*: We'll see.
-
-*Carol*: In any case, okay, I've corrected the mistake.  I want to keep
-the old file, so I'll call the corrected file simply
-<tt>euler_circular.rb</tt>.
-
-*Dan*: Yeah again, a shorter name!  Thank you.
-
-*Carol*: Just to make you even happier.  Here are the new three lines:
-
- :inccode: .euler_circular.rb-1
-
-*Dan*: I'm sure all will be well now.
-
-*Erica*: I hope so!  Carol, how about giving it another try?

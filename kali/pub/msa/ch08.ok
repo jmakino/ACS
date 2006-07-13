@@ -60,11 +60,22 @@ off!
 
 == Even Better Numbers
 
-*Erica*: And after Erica predicted us to be off by 3% per orbit, Dan showed
+xx
+
+*Carol*: That must be it.  Remember, just after Eq.(ref(first_step_error)),
+how I estimated the error after one orbit to be 3%?  After one and a third
+orbit it should then have been 4%, and we got 17%.  Perhaps nonlinear effects
+contributed, but at least my original guess of several percent was not way
+off!
+
+xxx
+
+*Erica*: After Erica predicted us to be off by 3% per orbit, Dan showed
 what should happen for a time step that is ten times smaller: the
 error should shrink to 0.3%.
 
-*Dan*: So in our case, it should shrink to 1.7%.  Let's test that!
+*Dan*: So in our case, where we actually found an error of 17%, the error
+now should shrink to 1.7%.  Let's test that!
 
 *Carol*: Easy.  I'll change the line
 
@@ -114,7 +125,7 @@ the mess later.
 <tex>$\sqrt{0.925\cdot0.925+0.430\cdot0.430}\approx 1.020$</tex>.
 
 *Carol*: A 2% error, about a factor ten smaller than the 17% error
-we had before.  We're winning!
+we had before.  We're getting there!
 
 == An Even Better Orbit
 
@@ -309,7 +320,7 @@ are completing a couple orbits that sort-of look elliptical, even though
 the errors are still large. But at least they don't fly off to infinity
 like in a slingshot.
 
-*Erica*: Yes, I think we're winning now, finally.
+*Erica*: Yes, I think we're getting to the bottom of all this, finally.
 
 *Dan*: But we'd better make sure, and use even smaller steps.
 

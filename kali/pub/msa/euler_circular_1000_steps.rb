@@ -20,9 +20,9 @@ print(vx, "  ", vy, "  ", vz, "\n")
   x += vx*dt
   y += vy*dt
   z += vz*dt
-  vx += ax*dt                                   #1
-  vy += ax*dt                                   #1
-  vz += az*dt                                   #1
+  vx += ax*dt
+  vy += ay*dt
+  vz += az*dt
   print(x, "  ", y, "  ", z, "  ")
   print(vx, "  ", vy, "  ", vz, "\n")
 }
