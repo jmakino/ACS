@@ -4,27 +4,18 @@
 
 *Carol*: Yes, the orbit is looking recognizably circular, but that's about it.
 The errors are still quite large.  I would like to know exactly how
-large they are.
-
-*Erica*: How about repeating what we did in the elliptic case,
-by having a peak at the numbers at the beginning and at the end of the
-run?
-
-*Carol*: Good idea.
+large they are.  Let me have a peak at the numbers at the beginning and at
+the end of the run, just like we did in the elliptic case.
 
  :commandoutput: ruby euler_circular_1000_steps.rb > euler_circular_1000_steps.out
  :commandoutput: head -5 euler_circular_1000_steps.out
  :commandoutput: tail -5 euler_circular_1000_steps.out
 
-*Dan*: That looks a lot better than before, no more huge numbers!
-
-*Erica*: But the numbers are still too large.  The first few numbers
-give a distance of about 1, but the last few numbers are too large.
-
-*Dan*: I see, the separation along the _x_ axis is about <tex>$1.0$</tex>,
-and the separation along the _y_ axis is about <tex>$0.6$</tex> . . .
-
-*Erica*: . . . and with Pythagoras that gives us a distance of
+*Erica*: The first few numbers give a distance of about 1 for the separation
+of the two particles, as it should be, but the last few numbers are too large.
+The separation along the _x_ axis is about <tex>$1.0$</tex>,
+and the separation along the _y_ axis is about <tex>$0.6$</tex>,
+and with Pythagoras that gives us a distance of
 <tex>$\sqrt{1\cdot1+0.6\cdot0.6}\approx 1.17$</tex>.
 Not wildly off, but not very good either.
 
@@ -32,18 +23,9 @@ Not wildly off, but not very good either.
 how I estimated the error after one orbit to be 3%?  After one and a third
 orbit it should then have been 4%, and we got 17%.  Perhaps nonlinear effects
 contributed, but at least my original guess of several percent was not way
-off!
-
-== Even Better Numbers
-
-*Erica*: After Erica predicted us to be off by 3% per orbit, Dan showed
-what should happen for a time step that is ten times smaller: the
-error should shrink to 0.3%.
-
-*Dan*: So in our case, where we just found an error of 17%, the error
-now should shrink to 1.7%.  Let's test that!
-
-*Carol*: Easy.  I'll change the line
+off!  And I remember that Dan showed what should happen for a time step that
+is ten times smaller: the error should shrink by a factor ten as
+well.  I'd like to test that, by changing the line:
 
  :inccode: .euler_circular_1000_steps.rb-2
 
@@ -60,6 +42,8 @@ Time to run it!
  :commandoutput: tail -5 euler_circular_10000_steps.out
 
 *Dan*: Those numbers are _very_ different from the earlier ones . . .
+
+== Even Better Numbers
 
 *Erica*: Ah, but of course!  To come back to the same place, after
 making the time step ten times smaller, we have to take ten times as
@@ -125,7 +109,7 @@ so I feel I can talk about particles.
 *Erica*: And I think you're both right.  Stop arguing, you guys!
 Let's go back to the elliptic case, the one we started with, remember?
 
-== The Same Problem
+== Reasons for Failure
 
 *Carol*: Sure, I remember that.  All we have to do is to take
 the file <tt>euler_circular.rb</tt> and make the initial velocity half
@@ -162,8 +146,6 @@ END
 
 :figure: euler.ps 10cm euler
 A rerun of the second attempt at integrating the two-body problem.
-
-== Reasons for Failure
 
 *Erica*: Let us take a moment to evaluate
 what we have learned.  We know now how small the steps have to be to

@@ -12,8 +12,8 @@ when we start saving millions of points.
 
 Let's check the file size so far:
 
- :command: ruby euler_elliptic_1000.rb > euler.out
- :commandoutput: ls -l euler.out
+ :command: ruby euler_elliptic_10000_steps.rb > euler_elliptic_10000_steps.out
+ :commandoutput: ls -l euler_elliptic_10000_steps.out
 
 *Dan*: I see, almost a Megabyte.  This means that a thousand times smaller
 step size would generate a file of almost a Gigabyte.  That would be overkill
@@ -24,7 +24,7 @@ output, and only keep some of the points.
 of points as we got in our first attempt, namely one thousand.  
 In our next-to-last plot, figure ref(euler_elliptic) you could still see
 how the individual points were separated further from each other at the
-left hand side, while in our last plot, figure (euler_elliptic_1000),
+left hand side, while in our last plot, figure (euler_elliptic_10000_steps),
 everything is so crowded that you can't see what is going on.
 
 *Dan*: What do you mean with `going on'?
@@ -39,8 +39,8 @@ calculations.
 
 *Carol*: I'd like to aks you more about that, but before doing so, let's
 first get the pruning job done, in order to produce more sparse output.
-I will take our last code, from <tt>euler_elliptic_1000.rb</tt>, and call
-it <tt>euler_elliptic_1000_sparse.rb</tt> instead.  Yes, Dan, you can
+I will take our last code, from <tt>euler_elliptic_10000_steps.rb</tt>, and call
+it <tt>euler_elliptic_10000_steps_sparse.rb</tt> instead.  Yes, Dan, you can
 later copy it into <tt>ee1s.rb</tt>, if you like.  How to prune things?
 We have a time step of <tt>dt = 0.001</tt> that is ten times smaller than
 our original choice, and therefore it produces ten times too many points.
@@ -49,7 +49,7 @@ The solution is to plot only one out of ten points.  The simplest way I
 can think of is to introduce a counter in our loop, which keeps track of
 how many times we have traversed the loop.  I will call the counter +i+:
 
- :inccode: .euler_elliptic_1000_sparse.rb-1
+ :inccode: .euler_elliptic_10000_steps_sparse.rb-1
 
 *Erica*: what do the vertical bars mean?
 
@@ -80,7 +80,7 @@ only one out of ten times.
 
 *Carol*: Exactly.  How about this?
 
- :inccode: .euler_elliptic_1000_sparse.rb-2
+ :inccode: .euler_elliptic_10000_steps_sparse.rb-2
 
 Here the symbol <tt>%</tt> gives you the reminder after a division,
 just as in C.
@@ -100,9 +100,9 @@ for testing, hey?  You'll turn into a computer scientist before you
 know it!  I'll give you what you ordered, but of course there is hardly
 anything that can go wrong:
 
- :commandoutput: ruby euler_elliptic_1000.rb | tail -3
+ :commandoutput: ruby euler_elliptic_10000_steps.rb | tail -3
 
- :commandoutput: ruby euler_elliptic_1000_sparse.rb | tail -3
+ :commandoutput: ruby euler_elliptic_10000_steps_sparse.rb | tail -3
 
 *Dan*: Well, _hardly_ anything perhaps, but still _something_ went wrong . . .
 
@@ -121,15 +121,15 @@ time it is one.  We want to print out the results one out of ten times.
 This means that each time we have traversed the loop ten times, we print.
 After the tenth traversal, <tt>i = 9</tt>, since we started with
 <tt>i = 0</tt>.  Here, I'll make the change, and call the file
-<tt>euler_elliptic_1000_sparse_ok.rb</tt>:
+<tt>euler_elliptic_10000_steps_sparse_ok.rb</tt>:
 
- :inccode: .euler_elliptic_1000_sparse_ok.rb-2
+ :inccode: .euler_elliptic_10000_steps_sparse_ok.rb-2
 
 Let me try again:
 
- :commandoutput: ruby euler_elliptic_1000.rb | tail -3
+ :commandoutput: ruby euler_elliptic_10000_steps.rb | tail -3
 
- :commandoutput: ruby euler_elliptic_1000_sparse_ok.rb | tail -3
+ :commandoutput: ruby euler_elliptic_10000_steps_sparse_ok.rb | tail -3
 
 *Dan*: Congratulations!  I guess this is called off by zero?
 The last points are indeed identical.
@@ -139,9 +139,9 @@ ten times smaller?
 
 *Carol*: Easy to check:
 
- :commandoutput: ruby euler_elliptic_1000.rb | wc
+ :commandoutput: ruby euler_elliptic_10000_steps.rb | wc
 
- :commandoutput: ruby euler_elliptic_1000_sparse_ok.rb | wc
+ :commandoutput: ruby euler_elliptic_10000_steps_sparse_ok.rb | wc
 
 So it is; from more than 10,000 lines back to 1001 lines, as before.
 
@@ -151,15 +151,15 @@ So it is; from more than 10,000 lines back to 1001 lines, as before.
 
 *Carol*: That's the idea!
 
- :commandoutput: ruby euler_elliptic_1000_sparse_ok.rb > euler.out
+ :commandoutput: ruby euler_elliptic_10000_steps_sparse_ok.rb > euler_elliptic_10000_steps_sparse_ok.out
 
-Here is the plot, in fig. ref(euler_elliptic_1000_sparse_ok).
+Here is the plot, in fig. ref(euler_elliptic_10000_steps_sparse_ok).
 
  :commandinput: gnuplot END
 set term post eps
-set output "euler_elliptic_1000_sparse_ok.ps"
+set output "euler_elliptic_10000_steps_sparse_ok.ps"
 set size ratio -1
-plot "euler.out"
+plot "euler_elliptic_10000_steps_sparse_ok.out"
 quit
 END
 
@@ -167,48 +167,48 @@ END
 side.
 
 *Carol*: It will be easy now to take shorter and shorter steps.
-Starting from <tt>euler_elliptic_1000_sparse_ok.rb</tt>, 
+Starting from <tt>euler_elliptic_10000_steps_sparse_ok.rb</tt>, 
 which we used before, I'll make a file
-<tt>euler_elliptic_10000_sparse_ok.rb</tt>,
+<tt>euler_elliptic_100000_steps_sparse_ok.rb</tt>,
 with only two lines different: the +dt+ value and the +if+ statement:
 
- :inccode: .euler_elliptic_10000_sparse_ok.rb-1
- :inccode: .euler_elliptic_10000_sparse_ok.rb-2
+ :inccode: .euler_elliptic_100000_steps_sparse_ok.rb-1
+ :inccode: .euler_elliptic_100000_steps_sparse_ok.rb-2
 
-Similarly, in <tt>ruby euler_elliptic_100000_sparse_ok.rb</tt> we
+Similarly, in <tt>ruby euler_elliptic_1000000_steps_sparse_ok.rb</tt> we
 have
 
- :inccode: .euler_elliptic_100000_sparse_ok.rb-1
- :inccode: .euler_elliptic_100000_sparse_ok.rb-2
+ :inccode: .euler_elliptic_1000000_steps_sparse_ok.rb-1
+ :inccode: .euler_elliptic_1000000_steps_sparse_ok.rb-2
 
-:figure: euler_elliptic_1000_sparse_ok.ps 10cm euler_elliptic_1000_sparse_ok
-Eighth attempt at integrating the two-body problem: sparse output
+:figure: euler_elliptic_10000_steps_sparse_ok.ps 10cm euler_elliptic_10000_steps_sparse_ok
+Seventh attempt at integrating the two-body problem: sparse output
 
-:figure: euler_elliptic_10000_sparse_ok.ps 10cm euler_elliptic_10000_sparse_ok
-Ninth attempt at integrating the two-body problem: starting to converge.
+:figure: euler_elliptic_100000_steps_sparse_ok.ps 10cm euler_elliptic_100000_steps_sparse_ok
+Eighth attempt at integrating the two-body problem: starting to converge.
 
-:figure: euler_elliptic_100000_sparse_ok.ps 10cm euler_elliptic_100000_sparse_ok
-Tenth attempt at integrating the two-body problem: finally converging.
+:figure: euler_elliptic_1000000_steps_sparse_ok.ps 10cm euler_elliptic_1000000_steps_sparse_ok
+Ninth attempt at integrating the two-body problem: finally converging.
 
 I'll run the codes and show the plots, in
-fig. ref(euler_elliptic_10000_sparse_ok)
-and fig. ref(euler_elliptic_100000_sparse_ok), respectively.
+fig. ref(euler_elliptic_100000_steps_sparse_ok)
+and fig. ref(euler_elliptic_1000000_steps_sparse_ok), respectively.
 
- :commandoutput: ruby euler_elliptic_10000_sparse_ok.rb > euler.out
+ :commandoutput: ruby euler_elliptic_100000_steps_sparse_ok.rb > euler_elliptic_100000_steps_sparse_ok.out
  :commandinput: gnuplot END
 set term post eps
-set output "euler_elliptic_10000_sparse_ok.ps"
+set output "euler_elliptic_100000_steps_sparse_ok.ps"
 set size ratio -1
-plot "euler.out"
+plot "euler_elliptic_100000_steps_sparse_ok.out"
 quit
 END
 
- :commandoutput: ruby euler_elliptic_100000_sparse_ok.rb > euler.out
+ :commandoutput: ruby euler_elliptic_1000000_steps_sparse_ok.rb > euler_elliptic_1000000_steps_sparse_ok.out
  :commandinput: gnuplot END
 set term post eps
-set output "euler_elliptic_100000_sparse_ok.ps"
+set output "euler_elliptic_1000000_steps_sparse_ok.ps"
 set size ratio -1
-plot "euler.out"
+plot "euler_elliptic_1000000_steps_sparse_ok.out"
 quit
 END
 
@@ -276,7 +276,7 @@ the old code still gives the right result, and only then try to change
 coordinate systems.
 
 So far, we have solved the one-body system, using 
-<tt>euler_elliptic_100000_sparse_ok.rb</tt>.  I'll copy it to a new file
+<tt>euler_elliptic_1000000_steps_sparse_ok.rb</tt>.  I'll copy it to a new file
 <tt>euler_one_body.rb</tt>.  Now I'm going to wrap the print statements
 for the one-body system into a method called <tt>print1</tt>:
 
@@ -293,18 +293,18 @@ and once at the end of each loop traversal:
 
 And now this code should give the same results as we had before:
 
- :commandoutput: ruby euler_one_body.rb > euler.out
+ :commandoutput: ruby euler_one_body.rb > euler_one_body.out
 
  :commandinput: gnuplot END
 set term post eps
 set output "euler_one_body.ps"
 set size ratio -1
-plot "euler.out"
+plot "euler_one_body.out"
 quit
 END
 
 :figure: euler_one_body.ps 10cm euler_one_body
-Eleventh attempt at integrating the two-body problem: check of 1-body output.
+Tenth attempt at integrating the two-body problem: check of 1-body output.
 
 *Erica*: Sure looks the same.
 
@@ -313,7 +313,7 @@ lines in each case?
 
 *Carol*: Right, let's check that too:
 
- :commandoutput: ruby euler_elliptic_100000_sparse_ok.rb | tail -3
+ :commandoutput: ruby euler_elliptic_1000000_steps_sparse_ok.rb | tail -3
  :commandoutput: ruby euler_one_body.rb | tail -3
 
 *Dan*: I'm happy.  So now you're going to copy the code of
@@ -366,20 +366,20 @@ I'll make <tt>m1 = 0.6</tt>:
 
 And here is the output:
 
- :commandoutput: ruby euler_two_body.rb > euler.out
+ :commandoutput: ruby euler_two_body.rb > euler_two_body.out
 
  :commandinput: gnuplot END
 set term post eps
 set output "euler_two_body.ps"
 set size ratio -1
-plot "euler.out"
+plot "euler_two_body.out"
 quit
 END
 
 And the results are plotted in fig. ref(euler_two_body)
 
 :figure: euler_two_body.ps 10cm euler_two_body
-Twelfth attempt at integrating the two-body problem: check of 2-body output.
+Eleventh attempt at integrating the two-body problem: check of 2-body output.
 
 *Erica*: Beautiful!
 
