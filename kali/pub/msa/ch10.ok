@@ -258,3 +258,5 @@ END
 
 :figure: leapfrog_100.ps 10cm leapfrog_100
 First attempt at leapfrog integration, with stepsize <tex>$dt=0.01$</tex>.
+
+
