@@ -184,26 +184,7 @@ the particles.  How about a simple choice like this?
 
  :inccode: .euler_try.rb-1
 
-*Carol*: Yes, you guessed correctly: in Ruby, you can assign values to
-variables in the same way as you do in C, say, but there is no need
-to declare the variables, which makes life a lot simpler.  Variables
-have no intrinsic type either.  The type of a variable is whatever
-you assign to it.  If you write <tt>x = 3.14</tt>, +x+ becomes a
-floating point number; and if you then write <tt>x = "abs"</tt>, it
-becomes a string.  This freedom and flexibility is expressed by saying
-that Ruby is a dynamically typed language.
-
-*Erica*: Isn't that dangerous?
-
-*Carol*: I expected it would be, but in my experience, I in fact
-made fewer mistakes using Ruby than using so-called strongly typed
-languages, such as C and C++.  Or stated more precisely: what mistakes
-I made, I could catch far more quickly, since it would be rather
-obvious if you assign <tt>pi = "abc"</tt> and then try to compute
-<tt>2*pi*r</tt> and the like: you would get an error message telling
-you that a string cannot be forced into a number.
-
-*Dan*: Let me put into words what Erica has just written.
+*Dan*: Let me put this into words.
 The relative position vector is chosen along the <tex>$x$</tex> axis
 at a distance of unity from the origin where the other particle
 resides in the relative coordinate system that we use:
@@ -333,7 +314,6 @@ evaluated right away.  Let me try something simple:
     irb(main):002:0>
 
 *Erica*: How about going from arithmetic to algebra, by using some variables?
-Can I try?
 
     irb(main):002:0> a = 4
     => 4
@@ -346,7 +326,6 @@ Can I try?
 I see.  At the end of each line, the result of the operation is echoed.
 
 *Dan*: But has the value 20 been correctly assigned to the variable +c+?
-Let me just check:
 
     irb(main):005:0> c
     => 20
@@ -370,16 +349,30 @@ Perfect!  We started with 20 and three times we added 1.
 by various other languages.  It applies for many operators, not only
 addition.  For example, <tt>c *= d</tt> is the same as <tt>c = c * d</tt>.
 
-*Erica*: How do we leave +irb+?
+*Erica*: I've been puzzled by one thing.  We have never declared any
+variable.  How does Ruby now that the variables +a+ and +b+ and +c+
+can hold numbers, and not, say, character strings or arrays or whatever?
 
-*Carol*: By typing +quit+:
+*Carol*: In Ruby there is no need for variable declaration, simply because
+there is nothing to declare: variables have no intrinsic type.  The type of
+a variable is whatever you assign to it.  If you write <tt>x = 3.14</tt>,
++x+ becomes a floating point number; and if you then write <tt>x = "abs"</tt>,
+it becomes a string.  This freedom and flexibility is expressed by saying
+that Ruby is a dynamically typed language.
 
-    irb(main):008:0> quit
-    |gravity>
+*Erica*: Isn't that dangerous?
+
+*Carol*: I expected it would be, but in my experience, I in fact
+made fewer mistakes using Ruby than using so-called strongly typed
+languages, such as C and C++.  Or stated more precisely: what mistakes
+I made, I could catch far more quickly, since it would be rather
+obvious if you assign <tt>pi = "abc"</tt> and then try to compute
+<tt>2*pi*r</tt> and the like: you would get an error message telling
+you that a string cannot be forced into a number.
 
 == Compiled vs. Interpreted vs. Interactive
 
-*Erica*: This +irb+ program is quite useful clearly, but now I'm puzzled
+*Erica*: This +irb+ program is quite useful clearly, but I'm puzzled
 about the various ways in which we can use Ruby.  We are now writing
 a Ruby program, by adding lines to a file, in just the same way we
 would be writing a C or Fortran program, yes?
@@ -438,22 +431,29 @@ interpreter part of Ruby is not even started up.
 *Dan*: Just like what happens in Fortran, when you get a compile error!
 
 *Carol*: Yes, in a way.  And to make things more confusing, many people
-tend to call such an error a `compile error', even when working with Ruby,
-even though in Ruby nothing is compiled, really,  The problem is that
-so-called compile errors in compiled languages are really syntax errors;
-and interpreted languages can of course have syntax errors as well.
-So when you hear someone telling you `my Ruby (or Perl and Python)
-program didn't compile,' they just mean `my script had syntax errors.'
+tend to call such an error a `compile error', even when working with
+Ruby, even though in Ruby the code is not really compiled, strictly
+speaking.  The problem is that so-called compile errors in compiled
+languages are really syntax errors; and interpreted languages can of
+course have syntax errors as well.  So when you hear someone telling
+you `my Ruby (or Perl and Python) program didn't compile,' they mean
+`my script had syntax errors.'  However, strictly speaking, Ruby
+initially parses the input program and transform it to a tree
+structure, and then the interpreter actually traces this tree
+structure, not the text string itself.  So it is not entirely
+incorrect to say that ruby first "compiles" a program.  But this is
+probably more than what you would want to know at this point.  Let's
+leave +irb+:
 
-Well, this is probably more than what you would want to know at this
-point.  Shall we move on?
+    irb(main):008:0> quit
+    |gravity>
 
 == One Step at a Time
 
-*Dan*: All that is left for us to do is to write the content of the loop.
+*Erica*: All that is left for us to do is to write the content of the loop.
 That means we have to describe how to take a single step forward in time.
 
-*Erica*: Specifically, at the start we have to tell the particles how
+Specifically, at the start we have to tell the particles how
 to move to their next relative position, from our starting point of time
 <tex>$t=0$</tex> to <tex>$t=0.01$</tex>, in our case.  Or for a
 general +dt+ value, using the forward Euler approximation
