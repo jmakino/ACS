@@ -147,7 +147,8 @@ of <tex>$\br$</tex> and <tex>$\ba$</tex> instead of <tex>$\ba$</tex>.
 
 *Erica*: Yes, in fact it is just a matter of differentiating the previous
 lines with respect to time.  Putting it all together, we then get calculate
-all that we need in the following order:
+all that we need in the following order, from predicted to corrected
+quantities:
 
 :eqnarray:
 \label{ModEulerStep}
@@ -218,8 +219,6 @@ simpler, because now we no longer have to sample: we can produce one
 output for each step, in order to get our required one thousand outputs:
 
  :inccode: .euler_modified_1000_steps.rb
-
-== 
 
 *Carol*: 
 This approach should need just twice as much work as our very first attempt
