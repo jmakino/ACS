@@ -13,8 +13,12 @@ print "\n"
   r.each{|x| r2 += x*x}
   r3 = r2 * sqrt(r2)
   a = r.map{|x| -x/r3}
-  r.each_index{|k| r[k] += v[k]*dt}
-  v.each_index{|k| v[k] += a[k]*dt}
+  r1 = r.map{|x| x}
+  r1.each_index{|k| r1[k] = r[k] + v[k]*dt}
+  v1 = r.map{|x| x}
+  v1.each_index{|k| v1[k] = v[k] + a[k]*dt}
+  r = r1.map{|x| x}
+  v = v1.map{|x| x}
   r.each{|x| print(x, "  ")}
   v.each{|x| print(x, "  ")}
   print "\n"
