@@ -1,8 +1,129 @@
-= Arrays and Methods
+= Arrays and Vectors
 
-== xxx
+== The DRY principle
 
-<b>[ this is how far I got ; 2007/7/18 -- Piet ]</b>
+*Dan*: What a difference a second-order scheme makes!  Clearly, we can
+the same accuracy with far fewer calculations than with a first-order
+scheme.  I wonder whether we can go to even higher order schemes, like
+third order or fourth order or who knows what order.
+
+*Erica*: Yes, in stellar dynamics, depending on the application, various
+orders are used.  In star cluster calculations, for example, traditionally
+a fourth-order scheme has been the most popular.  In contrast, in planetary
+dynamics, people routine use even higher-order schemes, like tenth or twelfth
+order schemes.
+
+But before we go any further in climbing the ladder of integration orders,
+I really want to write a leapfrog code.  The modified Euler version 
+that we have discovered was interesting as such, but in astrophysics
+at least, the leapfrog is used much more often.  Presumably it has
+some advantages, and in any case, I'd like to see how it behaves.
+
+*Carol*: 
+But before we do your `before', I have an urgent wish: I want to clean
+up the last code we've written.  If we just go on adding extra lines
+to produce higher-order codes, pretty soon the code becomes a bunch of
+spaghetti.
+
+Look, everything we do is spelled out separately for the _x_ coordinate,
+and the again for the _y_ coordinate and then once again for the _z_
+coordinate.  That's just plain silly.  It violates the most basic
+principle in software writing, the DRY principle: Don't Repeat Yourself.
+
+*Dan*: What's so wrong with repeating yourself?
+
+*Carol*: Lot's of things are wrong with that!  First of all, repititions
+make a code unnecessarily long, and therefore harder to read.  Secondly,
+if you want to modify a feature of a code, it is very difficult to do
+so correctly if that same feature is repeated elsewhere in the code,
+even if it is repeated in a place nearby.  It is very easy to overlook
+the repetition, and only modify the first instance that you encounter.
+
+Related to that is a third point: even the first time around that you
+write a code, if you start repeating yourself, it is quite likely that
+you make a mistake . . .
+
+*Erica* . . . as we did in our very first code, with our typo!
+
+*Carol*: Yes, indeed, I'd forgotten that already.  Yes, that was a classic
+example of the type of penalty you can get for violating the DRY principle!
+
+== Vector Notation
+
+*Dan*: When we were drawing pictures, we could look at the vectors themselves,
+but when we started coding, we had to go back to the components of the vectors.
+Are you suggesting to introduce some graphical way of coding, in which we can
+specify what happens directly to the vectors, as arrows, rather than to their
+separate _x_, _y_, and _z_ components?
+
+*Carol*: Well, in a way.  Until the middle of the previous century,
+mathematicians often wrote vector equations in component form.  But then
+they started more and more to use vector notation, by writing down
+symbols that stood for vectors as such, without any mention of components.
+On the level of the mathematical equations we have written down, we have
+used vector notation right from the beginning: we happily wrote things like
+<tex>$\br_2 = \br_1 + \bv_1 dt$</tex> on paper, but then we tediously wrote
+the same thing on our computer screen as:
+
+  x2 = x1 + vx1*dt
+  y2 = y1 + vy1*dt
+  z2 = z1 + vz1*dt
+
+*Erica*: So you would like to write a computer code with lines like
+
+  r2 = r1 + v1*dt
+
+where it would be understood that <tt>r2</tt>, <i>etc.</i>, would
+be an object with the three components <tt>{ x2, y2, z2 }</tt>.
+
+*Carol*: Yes, exactly!  But for that to work, a lot more should be
+understood.  For example, it should also be understood that the
+simple <tt>+</tt> symbol is now a much more complicated addition
+operator.  It should be clear to the computer that each of the
+components of <tt>r1</tt> should be added to the equivalent component
+of the second expression, <tt>v1*dt</tt>.  And in that last expression
+the <tt>*</tt> symbol is in turn a more complicated multiplication
+operator.  Multiplying a vector <tt>v1</tt> with the scalar quantity
+<tt>dt</tt> should be understood as multiplying each of the components
+of the vector with the same scalar.
+
+*Dan*: I like the idea of simplifying the code, and making it look
+more like the pen-and-paper expressions, but boy, the computer will
+have to understand a lot!  Let me write down what you just said, to
+see whether I understand it.
+
+Writing in the code <tt>a = b + c</tt> for three vector quantities
+<tt>a, b, c</tt> should be translated automatically into the following
+code fragment
+
+  ax = bx + cx
+  ay = by + cy
+  az = bz + cz
+
+where +ax+ is the first component of the vector +a+, +ay+ is its second
+component, and so on.  And writing in the code <tt>a = 3*b</tt> will be
+translated into
+
+  ax = 3 * bx
+  ay = 3 * by
+  az = 3 * bz
+
+*Carol*: Yes, exactly.  That would be nice, wouldn't it?
+
+*Erica*: Well, let's try to make that work.  The first thing that comes
+to mind is to use arrays.
+
+*Dan*: That makes sense.  I hope Ruby has arrays, just like Fortran?
+
+*Carol*: Ruby sure does.  But, as you can guess, they are far more powerful.
+A single array can contain objects of different types in different components,
+and the length of an array can grow and shrink.
+
+*Dan*: Seems like overkill to me.  But who cares, let's get started.
+
+== Arrays
+
+<b>[ this is how far I got ; 2007/7/21 -- Piet ]</b>
 
  :inccode: .euler_array.rb
 
