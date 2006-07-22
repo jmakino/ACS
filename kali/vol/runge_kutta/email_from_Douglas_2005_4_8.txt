@@ -1,0 +1,163 @@
+From heggie@ias.edu  Fri Apr  8 20:25:31 2005
+MIME-Version: 1.0
+X-SNS: School of Natural Sciences
+X-Authentication-Warning: jupiter.sns.ias.edu: heggie owned process doing -bs
+Date: Fri, 8 Apr 2005 20:25:30 -0400 (EDT)
+From: Douglas Heggie <heggie@ias.edu>
+To: piet@ias.edu
+Subject: matrices
+X-Spam-DCC: sonic.net: morpheus 1156; Body=1 Fuz1=1 Fuz2=1
+X-Spam-Checker-Version: SpamAssassin 2.63 (2004-01-11) on morpheus.sns.ias.edu
+X-Spam-Level: 
+X-Spam-Status: No, hits=-274.0 required=5.0 tests=AWL,BAYES_00,SENT_FROM_SNS,
+	USER_IN_WHITELIST autolearn=no version=2.63
+
+%Dear Piet,
+
+%Here is a write-up, though I regret it's in plain latex.
+
+%Yours,
+%Douglas
+\documentclass[11pt]{article}
+\title{}
+\date{}
+\author{}
+\begin{document}
+You can find out the cumulative effect of the local truncation error
+(i.e. the global truncation error) by studying the special case of a
+linear differential equation.  For instance, consider the differential
+equation 
+\begin{equation}
+   \frac{d^2x}{dt^2} = \lambda x,
+\end{equation}
+where $\lambda$ is a constant.  To apply the standard Runge-Kutta
+algorithm with a single force evaluation per step, you would use
+\begin{eqnarray}
+   x_{n+1} &=& x_n + v_n\tau\\
+   v_{n+1} &=& v_n + \lambda x_n\tau,
+\end{eqnarray}
+which can be written in vector form as 
+\begin{equation}
+   \left(
+   \begin{array}{c}
+x_{n+1}\\
+v_{n+1}
+   \end{array}\right) =
+   \left(
+   \begin{array}{cc}
+     1&\tau\\
+     \lambda\tau&1
+   \end{array}\right)
+   \left(
+   \begin{array}{c}
+x_{n}\\
+v_{n}
+   \end{array}\right).
+\end{equation}
+This can be solved exactly by finding the eigenvalues, $\alpha$, of
+the matrix of coefficients.  Thus
+\begin{eqnarray}
+   (1-\alpha)^2 - \lambda\tau^2 &=& 0\\
+\Rightarrow\alpha &=& 1\pm\sqrt{\lambda}\tau.
+\end{eqnarray}
+Calling these roots $\alpha_\pm$, the general solution of our scheme
+is
+\begin{equation}
+     \left(
+   \begin{array}{c}
+x_{n}\\
+v_{n}
+   \end{array}\right) = 
+C_+\alpha_+^n
+   \left(
+   \begin{array}{c}
+x_{+}\\
+v_{+}
+   \end{array}\right) + 
+C_-\alpha_-^n
+   \left(
+   \begin{array}{c}
+x_{-}\\
+v_{-}
+   \end{array}\right),
+\end{equation}
+where the vectors on the right are eigenvectors, and $C_{\pm}$ are
+arbitrary constants.  This solution corresponds to the general
+solution of the differential equation, i.e.
+\begin{equation}
+   x = C_1\exp(\sqrt{\lambda}t) + C_2\exp(-\sqrt{\lambda}t),
+\end{equation}
+for which the velocity is 
+\begin{equation}
+   v = C_1\sqrt{\lambda}\exp(\sqrt{\lambda}t) - C_2\sqrt{\lambda}\exp(-\sqrt{\lambda}t).
+\end{equation}
+Clearly we can tell how accurate our numerical answer is by comparing
+$\exp(\sqrt{\lambda}t)$ with $\alpha_+^n$, and similarly for the other
+(independent) solution.  Equally, we can compare the logarithms,
+i.e. compare $\sqrt{\lambda}t$, which is exact, with 
+\begin{eqnarray}
+   n\log{\alpha_+} &=& n\log(1+\sqrt{\lambda}\tau)\\
+&=&\frac{t}{\tau}(\sqrt{\lambda}\tau - \frac{1}{2}\lambda\tau^2 +
+   O(\tau^3)\\
+&&\nonumber\mbox{(using the standard Taylor expansion of $\log$)}\\
+&=& \sqrt{\lambda}t - \frac{1}{2}\lambda\tau t + O(t\tau^2).
+\end{eqnarray}
+The second term on the right is the leading term in the cumulative
+truncation error in the logarithm, which is actually the leading term
+in the cumulative relative error.  Iterating to a fixed time $t$, the
+error is proportional to first power of the  stepsize $\tau$, which
+proves that this is a first order scheme.
+
+
+Now let's consider the improved algorithm
+\begin{eqnarray}
+   x_{n+1} &=& x_n + v_n\tau + \frac{1}{2}\lambda x_n\tau^2\\
+   v_{n+1} &=& v_n + \lambda x_n\tau.
+\end{eqnarray}
+Now the matrix of coefficients changes to $\displaystyle{
+   \left(
+   \begin{array}{cc}
+     1+\displaystyle{\frac{1}{2}\lambda\tau^2}&\tau\\
+     \lambda\tau&1
+   \end{array}\right),
+}$
+and the calculation of the eigenvalues changes to 
+\begin{eqnarray}
+   (1-\alpha)(1+\frac{1}{2}\lambda\tau^2 - \lambda\tau^2 &=& 0\\
+\Rightarrow \alpha^2 - (2 + \frac{1}{2}\lambda\tau^2)\alpha + 1 -
+\frac{1}{2}\lambda\tau^2 &=& 0
+\end{eqnarray}
+\begin{eqnarray}
+\Rightarrow\alpha &=& 1 +
+\frac{1}{4}\lambda\tau^2\pm\sqrt{\left(1+\frac{1}{4}\lambda\tau^2\right)^2
+   - 1 +\frac{1}{2}\lambda\tau^2}\\
+&=&1 + \frac{1}{4}\lambda\tau^2\pm\sqrt{\lambda\tau^2 +
+   \frac{1}{16}\lambda^2\tau^4}\\
+&=&1 + \frac{1}{4}\lambda\tau^2\pm\sqrt{\lambda}\tau\sqrt{1 + \frac{1}{16}\lambda\tau^2}.
+\end{eqnarray}
+We again compute $n\log\alpha$,  taking the positive square root for
+illustration.   The two leading terms are
+given by 
+$\alpha = 1 + \sqrt{\lambda}\tau$, and in the  expansion $\displaystyle{\log(1+z) = z -
+   \frac{1}{2}z^2 + O(z^3)}$ this is all that is needed to compute the
+quadratic term.  Thus we  get
+\begin{eqnarray}
+   n\log\alpha &=& n\left\{\frac{1}{4}\lambda\tau^2 +
+   \sqrt{\lambda}\tau\sqrt{1 + \frac{1}{16}\lambda\tau^2} -
+   \frac{1}{2}\lambda\tau^2 + O(\lambda^{3/2}\tau^3)\right\}\\
+&=& n\left\{\sqrt{\lambda}\tau = \frac{1}{4}\lambda\tau^2 +
+   O(\lambda^{3/2}\tau^3)\right\}\\
+&=& \sqrt{\lambda}t - \frac{1}{4}\lambda\tau t + \mbox{~higher order terms}.
+\end{eqnarray}
+Again we compare with the exact result $\sqrt{\lambda}t$, and see that
+the cumulative error is still proportional (in the limit) to $\tau$,
+as is characteristic of a first order scheme.  The magnitude of the
+cumulative error is, however, half that of our simpler scheme.
+\end{document}
+
+
+%-- 
+%Douglas Heggie (IDS visitor)
+%301 Olden (279 2874)
+%D208 (951 4452)
+
