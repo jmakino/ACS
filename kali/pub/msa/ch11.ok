@@ -82,15 +82,15 @@ simple <tt>+</tt> symbol is now a much more complicated addition
 operator.  It should be clear to the computer that each of the
 components of <tt>r1</tt> should be added to the equivalent component
 of the second expression, <tt>v1*dt</tt>.  And in that last expression
-the <tt>*</tt> symbol is in turn a more complicated multiplication
-operator.  Multiplying a vector <tt>v1</tt> with the scalar quantity
-<tt>dt</tt> should be understood as multiplying each of the components
-of the vector with the same scalar.
+the <tt>*</tt> symbol should in turn be understood to be a more
+complicated multiplication operator.  Multiplying a vector <tt>v1</tt>
+with the scalar quantity <tt>dt</tt> should be understood as
+multiplying each of the components of the vector with the same scalar.
 
 *Dan*: I like the idea of simplifying the code, and making it look
 more like the pen-and-paper expressions, but boy, the computer will
 have to understand a lot!  Let me write down what you just said, to
-see whether I understand it.
+see whether _I_ at least understand it.
 
 Writing in the code <tt>a = b + c</tt> for three vector quantities
 <tt>a, b, c</tt> should be translated automatically into the following
