@@ -1,6 +1,6 @@
 = Arrays and Vectors
 
-== The DRY principle
+== The DRY Principle
 
 *Dan*: What a difference a second-order scheme makes!  Clearly, we can
 the same accuracy with far fewer calculations than with a first-order
@@ -111,22 +111,327 @@ translated into
 *Carol*: Yes, exactly.  That would be nice, wouldn't it?
 
 *Erica*: Well, let's try to make that work.  The first thing that comes
-to mind is to use arrays.
+to mind is to use arrays.  If we represent a vector by an array, then
+each element of an array can contain a component of the vector.
 
 *Dan*: That makes sense.  I hope Ruby has arrays, just like Fortran?
 
 *Carol*: Ruby sure does.  But, as you can guess, they are far more powerful.
-A single array can contain objects of different types in different components,
+A single array can contain objects of different types in different elements,
 and the length of an array can grow and shrink.
 
 *Dan*: Seems like overkill to me.  But who cares, let's get started.
 
 == Arrays
 
-<b>[ this is how far I got ; 2007/7/21 -- Piet ]</b>
+*Erica*: Before rewriting our modified Euler code, let us start with the
+simplest case, and rewrite our original forward Euler code, <tt>euler.rb</tt>.
+
+*Carol*: Here, let me translate that code, line for line, into array notation.
+That way we can make sure that we perform the same calculations.  Here is
+file <tt>euler_array_try.rb</tt>:
+
+ :inccode: .euler_array_try.rb
+
+As you can see, I have simply replaced +x+ by <tt>r[0]</tt>,
++y+ by <tt>r[1]</tt>, +z+ by <tt>v[0]</tt>, and similarly for the
+velocities and accelerations, I have replaced +vx+ by <tt>v[0]</tt>
+and +ax+ by <tt>a[0]</tt>, and so on for the other elements.
+
+*Dan*: From your example, I guess that arrays start with element zero?
+
+*Carol*: Ah, yes, that's true, like in C, where the first element of an
+array +something+ is <tt>something[0]</tt>, unlike Fortran, where the
+first element is <tt>something[1]</tt>.
+
+*Erica*: I noticed that right at the start of the program, you have done
+a bit more already than simply replacing <tt>x = 1</tt> by <tt>r[0] = 1</tt>,
+<tt>y = 0</tt> by <tt>r[1] = 0</tt>, and <tt>z = 0</tt> by <tt>r[2] = 0</tt>.
+
+Instead, you have directly assigned all three values in one line by writing
+<tt>r = [1, 0, 0]</tt>.
+
+*Carol*: That's true too.  I guess I'm getting already familiar enough
+with Ruby that I had not noticed that I had made a shortcut.  Yes, this
+is a nice example of the compact way in which Ruby can assign values.
+In fact, this line, which is the first line of the program after the
++include+ statement, _defines_ +r+ as having the type `array', and in fact
+an array of three elements.  Similarly, the second line defines +v+, too,
+as an array containing three elements.
+
+In the case of +r+, its three elements are integers, and in the case
+of +v+, the first and last elements are integers, and the middle
+element is a floating point number.  As I had mentioned before, Ruby
+allows each array element to have its own dynamic type.  In practice,
+though, as soon as we start calculating with these numbers, most of
+them will quickly become floating point numbers.  Adding an integer
+and a floating point number, or multiplying an integer with a floating
+point number, is defined as giving a floating point number as a result,
+as you would expect.
+
+== Declaration
+
+*Dan*: That all sounds reasonable.  Shall we check whether we get the
+same result as we did before?
+
+*Carol*: Good idea.  I'll just print the last line, so that we can compare
+that one with our old result:
+
+ :commandoutput: ruby euler_array_try.rb | tail -1
+
+*Dan*: Well, something went wrong right at the start.  It seems like there is
+a problem with the acceleration array +a+.  The only output line we
+got was from the print statement before entering the loop.
+
+*Carol*: Ah, I see.  The two variables +r+ and +v+ are recognized as arrays,
+because the are defined as such, in the first two assignment lines of
+the program.  The line:
+
+ :inccode: .euler_array_try.rb-1
+
+says clearly: +r+ is an array with three elements, and the elements are
+1, 0, and 0.
+
+In contrast, the first time that +a+ is used occurs in the line:
+
+ :inccode: .euler_array_try.rb-2
+
+and here we are not specifying what +a+ is; we are not assigning anything
+to +a+.  Instead, we are assigning a value to a _element_ of +a+, as if
++a+ had already been defined as an object that has elements.
+
+*Erica*: In C, you could just declare +a+ to be an array.  But you have
+told us before that in Ruby, because of dynamic typing, there was no need
+to declare the type of a variable.  What gives?
+
+*Carol*: Well, in this case we do need to give _some_ extra information,
+otherwise the Ruby interpreter cannot possibly know what we mean.
+And yes, here we effectively need to declare +a+ as an array.
+
+*Carol*: 
+How should we do that?  We could give fake values, say <tt>a = [0, 0, 0]</tt>
+right at the beginning of the program.
+
+*Carol*: That would be confusing, since a reader would wonder what the meaning
+would be of those three zeroes.  In fact, in Ruby there is no need to specify
+how many elements an array has.  All we need to say is that the variable +a+
+has the type of an array.  Or more precisely, in Ruby's terminology: the class
+of +a+ is +Array+, which is one of the built-in classes.
+
+<b>[Jun, how much shall we explain here about Ruby? -- Piet}</b>
+
+Here is how I suggest we define +a+ as an array, and I will write this
+in a new file, <tt>euler_array.rb</tt>, in the hope things will be
+correct now:
 
  :inccode: .euler_array.rb
 
+== Three +Array+ Methods
+
+*Dan*: Seeing is believing.  Does is now work?
+
+*Carol*: Let's try:
+
+ :commandoutput: ruby euler_array.rb | tail -1
+
+*Dan*: Great!  And it would be even better if this is what we got before.
+
+*Carol*: Well, let's check:
+
+ :commandoutput: ruby euler.rb | tail -1
+
+So far, so good.  Okay, we got our first array-based version of
+forward Euler working, but it still looks just like the old version.
+Time to start using some of the power of Ruby's arrays.  There are
+three methods for the class +Array+ that we can use right away,
+namely <tt>Array#each</tt>, <tt>Array#each_index</tt> and <tt>Array#map</tt>.
+
+<b>[Jun, how much shall we explain here about Ruby? -- Piet}</b>
+
+I'll explain what they all do in a moment, but it may be easiest to show
+how they work in our forward Euler example:
+
  :inccode: .euler_array_each.rb
 
- :inccode: .euler_array_inject.rb
+*Erica*: That looks nice and compact.
+
+*Dan*: Does it work?
+
+*Carol*: Let's see:
+
+ :commandoutput: ruby euler_array_each.rb | tail -1
+
+== The Methods +each+ and <tt>each_index</tt>
+
+*Erica*: Good!  Now let's look at these magic terms.  I can guess what
++each+ does.  It seems to iterate over all the elements of an array,
+applying whatever appears in parentheses to each element.
+
+*Carol*: Yes, indeed.  And while working with a specific element, it
+needs to give that element a name.  The name is defined between the two
+vertical bars that follow the opening parentheses.  It works just like
+the lambda notion in Lisp.
+
+*Dan*: I've no idea what lambda notation means, but I can see what is
+happening here.  In the line
+
+ :inccode: .euler_array_each.rb-1
+
+writing <tt>{|x| ...}</tt> lets +x+ stand for the element of the array
++r+.  First <tt>x = r[0]</tt>, and the <tt>...</tt> command then becomes
+<tt>print(r[0], "  ")</tt>.  Then in the next round, <tt>x = r[1]</tt>,
+and so on.
+
+Hey, now that I'm looking at the code a bit longer, I just noticed that
+the construction <tt>.each{|x| ...}</tt> is actually quite similar to the
+construction <tt>.times{...}</tt> that we use in the loop.
+
+*Carol*: Yes, in both cases we are dealing with a method, +each+ and +times+
+that causes the statements in parentheses to be iterated.  And the analogy
+goes further.  Remember that we learned how to get sparse output?  At that
+time we added a counter to the +times+ loop, so that it became
+<tt>.times{|i| ...}</tt>.  Just like +x+ stands in for each successive array
+element in <tt>r.each{|x| ...}</tt>, so +i+ stands in for each successive value
+between 0 and 999 in <tt>1000.times{|i| ...}</tt>.
+
+*Erica*: As for your second magic term, the method <tt>each_index</tt>
+seems to do something similar to +each+.  What's the difference?
+
+*Carol*: Take the line:
+
+ :inccode: .euler_array_each.rb-3
+
+There we want to add to each element of array +r+ the corresponding element
+of array +v+, multiplied by +dt+.  However, we cannot just use the
++each+ method, since in that case we would iterate over the _values_
+of +r+, and the dummy parameter, defined between vertical bars, will
+take on the values <tt>r[0]</tt>, <tt>r[1]</tt>, and so on.  That would
+give us no handle on the value of the _index_, which is <tt>0</tt> in the
+first case, <tt>1</tt> in the second, and so on.
+
+In the print case above, we had no need to know the value of the index of
+each element of the array that we were printing.  But here, the value
+of the index is needed, otherwise we cannot line up the corresponding
+elements of +r+ and +v+.
+
+*Erica*: I see.  Or at least I think I do.  Let me try it out, using irb.
+
+  |gravity> irb
+  irb(main):001:0> a = [4, 7, 9]
+  => [4, 7, 9]
+  irb(main):002:0> a.each{|x| print x, "\n"}
+  4
+  7
+  9
+  => [4, 7, 9]
+  irb(main):003:0> a.each_index{|x| print x, "\n"}
+  0
+  1
+  2
+  => [4, 7, 9]
+  irb(main):004:0> a.each_index{|x| print a[x], "\n"}
+  4
+  7
+  9
+  => [4, 7, 9]
+
+Yes, that makes sense.
+
+*Dan*: Why do we get an echo of the whole array, at the end of each result?
+
+*Carol*: That's because irb always prints the value of an expression.
+First the expression is evaluated, and as a side effect the print statements
+in the expression are executed.  But then a value is returned, which turns out
+to be the array +a+ itself.  That's not particularly useful here, but in
+general, it is convenient that irb always gives you the value of anything
+it deals with, without you having to add print statements everywhere.
+
+== The +map+ Method
+
+*Dan*: What about this mysterious +map+ that you are using in line:
+
+ :inccode: .euler_array_each.rb-2
+
+*Carol*: Ah, that is another Lisp like feature, but don't worry about that,
+since you're not familiar with Lisp.  The method +map+, when applied
+by a given array, returns a new array in which every element is the
+result of a mapping that is applied to the corresponding element of
+the old array.  That sounds more complicated than it really is.
+Better to look at an example:
+
+  |gravity> irb
+  irb(main):001:0> a = [4, 7, 9]
+  => [4, 7, 9]
+  irb(main):002:0> a.map{|x| x + 1}
+  => [5, 8, 10]
+  irb(main):003:0> a.map{|x| 2 * x}
+  => [8, 14, 18]
+
+*Dan*: Ah, now I get it.  In the first case, the mapping is simply adding
+the number one, and indeed, each element of the array gets increased
+by one.  And in the second case, the mapping tells us that any element +x+
+is doubled to become <tt>2 * x</tt>, and that's exactly what happens.
+
+*Carol*: Yes, and notice how convenient it is that irb echoes the value
+of each statement you type.  You don't have to write
+<tt>print a.map{|x| x + 1}</tt>, for example.
+
+So in our case the line
+
+ :inccode: .euler_array_each.rb-2
+
+transforms the old vector +r+ into a new vector +a+ for which each element
+gets a minus sign and is divided by <tt>r3</tt>, which is just what we
+needed.
+
+*Erica*: Ah, look, you forgot to include the line <tt>a = []</tt>, and
+it still worked, this time.  That must be because now we _are_ actually
+producing a new array +a+, and we are no longer trying to assign values
+to elements of +a+ as we did before.
+
+*Carol*: That's right!  I had not even realized that.  Good.  One less
+line to worry about.
+
+Oh, by the way, when you look at books about Ruby, or when you happen
+to see someone else's code, you may come across the method
+<tt>Array#collect</tt>.  That is just another name for <tt>Array#map</tt>.
+Both +collect+ and +map+ are interchangeable terms.  This often happens
+in Ruby: many method names are just an alias for another method name.
+I guess the author of Ruby tried to please many of his friends, even
+though they had different preferences.
+
+*Erica*: I prefer the name +map+, since it gives you the impression
+that some type of transformation is being performed.  As for the word
++collect+, it does not suggest much work being done.
+
+*Carol*: I agree, and that's why I chose to use +map+ here.
+
+== Defining a New Method
+
+*Erica*: Carol, you convinced us that we should obey the DRY principle,
+and indeed, we are no longer repeating ourselves on the level of vector
+components.  But when I look at the last code that you produced, there
+is still a glaring violation of the DRY principle.  Look at the three lines
+that we use to print the positions and velocities right at the beginning.
+The very same three lines are used inside the loop, at the end.
+
+*Carol*: Right you are!  Let's do something about that.  Time to define
+a method of our own.  Here, this is easy.  Let's introduce a method
+called <tt>print_pos_vel(r,v)</tt>, which prints the position and velocity
+vectors.  It has two arguments, +r+ and +v+, the values of the two vectors
+it should print.
+
+We can write the definition of <tt>print_rv</tt> at the top of the
+file, and then we can invoke <tt>print_rv</tt> wherever we need it:
+
+ :inccode: .euler_array_each_def.rb
+
+*Erica*: Good!  I think we can now certify this program as DRY compliant.
+
+*Dan*: Does it work?
+
+*Carol*: Ah yes, to be really compliant, it'd better work.  Here we go:
+
+ :commandoutput: ruby euler_array_each_def.rb | tail -1
+
+Okay!  Same results as before.
