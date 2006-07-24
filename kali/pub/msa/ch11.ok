@@ -218,7 +218,7 @@ how many elements an array has.  All we need to say is that the variable +a+
 has the type of an array.  Or more precisely, in Ruby's terminology: the class
 of +a+ is +Array+, which is one of the built-in classes.
 
-<b>[Jun, how much shall we explain here about Ruby? -- Piet}</b>
+<b>[Jun, how much shall we explain here about Ruby? -- Piet]</b>
 
 Here is how I suggest we define +a+ as an array, and I will write this
 in a new file, <tt>euler_array.rb</tt>, in the hope things will be
@@ -246,7 +246,7 @@ Time to start using some of the power of Ruby's arrays.  There are
 three methods for the class +Array+ that we can use right away,
 namely <tt>Array#each</tt>, <tt>Array#each_index</tt> and <tt>Array#map</tt>.
 
-<b>[Jun, how much shall we explain here about Ruby? -- Piet}</b>
+<b>[Jun, how much shall we explain here about Ruby? -- Piet]</b>
 
 I'll explain what they all do in a moment, but it may be easiest to show
 how they work in our forward Euler example:
