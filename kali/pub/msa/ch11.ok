@@ -1,4 +1,4 @@
-= Arrays and Vectors
+= Arrays
 
 == The DRY Principle
 
@@ -32,7 +32,7 @@ principle in software writing, the DRY principle: Don't Repeat Yourself.
 
 *Dan*: What's so wrong with repeating yourself?
 
-*Carol*: Lot's of things are wrong with that!  First of all, repititions
+*Carol*: Lot's of things are wrong with that!  First of all, repetitions
 make a code unnecessarily long, and therefore harder to read.  Secondly,
 if you want to modify a feature of a code, it is very difficult to do
 so correctly if that same feature is repeated elsewhere in the code,
