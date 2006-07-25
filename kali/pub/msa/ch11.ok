@@ -380,7 +380,7 @@ So in our case the line
 
  :inccode: .euler_array_each.rb-2
 
-transforms the old vector +r+ into a new vector +a+ for which each element
+transforms the old array +r+ into a new array +a+ for which each element
 gets a minus sign and is divided by <tt>r3</tt>, which is just what we
 needed.
 
@@ -418,7 +418,7 @@ The very same three lines are used inside the loop, at the end.
 *Carol*: Right you are!  Let's do something about that.  Time to define
 a method of our own.  Here, this is easy.  Let's introduce a method
 called <tt>print_pos_vel(r,v)</tt>, which prints the position and velocity
-vectors.  It has two arguments, +r+ and +v+, the values of the two vectors
+arrays.  It has two arguments, +r+ and +v+, the values of the two arrays
 it should print.
 
 We can write the definition of <tt>print_rv</tt> at the top of the

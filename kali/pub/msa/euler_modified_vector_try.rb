@@ -1,4 +1,4 @@
-require "vector.rb"
+require "vector_try.rb"
 include Math
 
 r = [1, 0, 0].to_v

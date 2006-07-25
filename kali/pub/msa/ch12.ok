@@ -2,4 +2,130 @@
 
 == A DRY Version of Modified Euler
 
-<b>[ this is how far I got ; 2007/7/24 -- Piet ]</b>
+*Dan*: Now how did we get into all this array stuff?
+
+*Erica*: I wanted to move on to the leapfrog algorithm, but Carol
+insisted on first cleaning up the modified Euler code . . .
+
+*Carol*: . . . which we haven't done yet, but now we're all set to do so!
+It is just a matter of translating the old file
+<tt>euler_modified_1000_steps.rb</tt>, introducing our array notation,
+just as we did for the code in <tt>euler_array_each_def.rb</tt>.
+
+Here it is, in <tt>euler_modified_array.rb</tt>
+
+ :inccode: .euler_modified_array.rb
+
+And before Dan can ask me, let me run it:
+
+ :commandoutput: ruby euler_modified_array.rb | tail -1
+
+I will also compare it to the previous result:
+
+ :commandoutput: ruby euler_modified_1000_steps.rb | tail -1
+
+== Not quite DRY yet
+
+*Dan*: Bravo!  Same answers.  And yes, the code has become shorter.
+I like that.
+
+*Erica*: Hmmm, just making a code shorter does not necessarily make
+it better.  You can use semicolons to put two or three lines
+on one line, but that doesn't make the code any prettier.  Most likely,
+it will make the code more opaque.
+
+In fact, I'm sorry to say, I don't find the new code easier to read.
+While the old code was longer, it was very easy to see what happened.
+But in the new code, there are all those <tt>[k]</tt> clumps floating around
+. . .  I thought the whole point of using arrays was that we could hide
+the elements of the array!
+
+*Carol*: To some extent, we have hidden things.  The methods +map+, +each+
+and <tt>each_index</tt> can be attached directly to the arrays themselves,
+without showing elements.  And our use of +each+ in the print statements
+shows an example where there is no ugly <tt>[k]</tt> showing up at all.
+But I agree with you, we should be able to do better.
+
+*Erica*: Can we really do much better?  An array _does_ seem to be the
+natural way to represent a physical vector quantity in a computer program.
+I've never seen any other way . . . ah, no, I take that back.  I once
+saw a C++ program, where the writer had introduced a special vector class.
+
+*Carol*: Can you remember what the reason was for doing so?
+
+*Erica*: I'm not exactly sure now, but it may have had to do with making it
+easier to add vectors, by overloading the <tt>+</tt> operator, and that sort
+of thing.
+
+*Carol*: That sounds exactly like what we need.  If we take a look at the
+first like in our code that contains one of these ugly <tt>[k]</tt> notations
+that you so disliked:
+
+ :inccode: .euler_modified_array.rb-1
+
+you really would like to write this as
+
+ :inccode: .euler_modified_vector.rb-1
+
+right?
+
+*Erica*: Yes, that would be great!  I would _love_ to get rid of all those
+<tt>[k]</tt> blocks.  In fact, I think that we _should_ get rid of
+them if we want to follow the DRY principle.  Look, we have been repeating
+this <tt>[k]</tt> thingy three times in one line, in our latest code!
+
+== A <tt>Vector</tt> Class
+
+*Carol*: Fair enough.
+
+  |gravity> irb
+  irb(main):001:0> a1 = [1, 2, 3]
+  => [1, 2, 3]
+  irb(main):002:0> a2 = [5, 6, 7]
+  => [5, 6, 7]
+  irb(main):003:0> a1 + a2
+  => [1, 2, 3, 5, 6, 7]
+
+With <tt>vector_try_addition.rb</tt>:
+
+ :inccode: .vector_try_addition.rb
+
+  |gravity> irb
+  irb(main):001:0> require "vector_try_addition.rb"
+  => true
+  irb(main):002:0> v1 = Vector[1, 2, 3]
+  => [1, 2, 3]
+  irb(main):003:0> v2 = Vector[5, 6, 7]
+  => [5, 6, 7]
+  irb(main):004:0> v1 + v2
+  => [6, 8, 10]
+
+With <tt>vector_try.rb</tt>: 
+
+ :inccode: .vector_try.rb
+
+And with <tt>euler_modified_vector_try.rb</tt>:
+
+ :inccode: .euler_modified_vector_try.rb
+
+ :commandoutput: ruby euler_modified_vector_try.rb | tail -1
+
+With <tt>euler_modified_vector_try_again.rb</tt>:
+
+ :inccode: .euler_modified_vector_try_again.rb
+
+ :commandoutput: ruby euler_modified_vector_try_again.rb | tail -1
+
+Now with <tt>vector.rb</tt>: 
+
+ :inccode: .vector.rb
+
+And with <tt>euler_modified_vector.rb</tt>:
+
+ :inccode: .euler_modified_vector.rb
+
+ :commandoutput: ruby euler_modified_vector.rb | tail -1
+
+<b>[ this is how far I got ; 2007/7/25 -- Piet ]</b>
+
+Let integer division give floating point results, where needed
