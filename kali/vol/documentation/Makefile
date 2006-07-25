@@ -7,5 +7,5 @@ include ../etc/Makefile.inc
 
 include Makefile.local
 
-SCRIPTSRCS = yacsdoc.rb acsdoc.rb
+SCRIPTSRCS = yacsdoc.rb acsdoc.rb acsdoccat.rb
 
