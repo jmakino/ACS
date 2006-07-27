@@ -52,8 +52,21 @@ arrow, and we have to compute both.
 
 == Backwards and Forwards
 
-*Erica*: I must say, I like Dan's idea, and perhaps we can make it a bit more
-efficient.  How about shifting the arrow of the backwards step to the end
+*Erica*: Actually, I like Dan's idea.  In reminds me of one of the second
+order schemes that I learned in class.  Let me just check my notes.
+
+Aha, I found it.  There is an algorithm called "Modified Euler", which
+starts with the forward Euler idea, and then modifies it to improve the
+accuracy, from first order to second order.  And it seems rather similar
+to what Dan just sketched.
+
+*Carol*: In that case, how about trying to reconstruct it for ourselves.
+That is more fun than copying the algorithm from a book.
+
+*Erica*: Okay, I'll try to forget what I learned about Modified Euler;
+that will be easy to do, since I really don't remember any details any more.
+
+Okay, how about shifting the arrow of the backwards step to the end
 of the arrow of the forwards step, as in fig. ref(modforward2)?  Or to be
 precise, how about just taking two forward Euler steps, one after the other?
 The second forward step will not produce exactly the same arrow as the first

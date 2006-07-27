@@ -76,7 +76,34 @@ this <tt>[k]</tt> thingy three times in one line, in our latest code!
 
 == A <tt>Vector</tt> Class
 
-*Carol*: Fair enough.
+*Carol*: Fair enough.  Well, it's always a good idea to start simply.
+The simplest case I can think of is to add two vectors.  If we continue
+to represent them as arrays, we can added arrays <tt>a1</tt> and <tt>a2</tt>
+to obtain their sum +a+ as follows:
+
+  a = []
+  a1.each_index{|k| a[k] = a1[k] + a2[k]}
+
+which includes the declaration, which is necessary if +a+ has not yet been
+introduced as an array, earlier in the program.
+
+Now what you would like to write is
+
+  a = a1 + a2
+
+without any further complications that include references to elements
+<tt>[k]</tt> or to methods such as <tt>each_index</tt> or to a declaration
+of +a+, since after all the addition of two vectors should obviously produce
+a new vector.  Right?
+
+*Erica*: It sounds too good to be true, to be able to leave out all that
+crap, and to tell the computer only the minimal information needed, as if
+you were writing a note for yourself on a scratch pad.  Do you really think
+you can implement all that, and even do away with the need for declarations?
+
+*Carol*: I think so.  First, let's see what happens if we don't make any
+modification.  I must admit, I'm not sure what Ruby will do if we ask
+it to add two arrays.
 
   |gravity> irb
   irb(main):001:0> a1 = [1, 2, 3]
