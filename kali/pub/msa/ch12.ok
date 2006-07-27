@@ -318,3 +318,4 @@ NOTICE: no "return"
   irb(main):004:0> v = v1 + v2
   => [6, 8, 10]
 
+xx
