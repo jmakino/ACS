@@ -74,7 +74,7 @@ right?
 them if we want to follow the DRY principle.  Look, we have been repeating
 this <tt>[k]</tt> thingy three times in one line, in our latest code!
 
-== A <tt>Vector</tt> Class
+== A First Shot at a <tt>Vector</tt> Class
 
 *Carol*: Fair enough.  Well, it's always a good idea to start simply.
 The simplest case I can think of is to add two vectors.  If we continue
@@ -103,56 +103,218 @@ you can implement all that, and even do away with the need for declarations?
 
 *Carol*: I think so.  First, let's see what happens if we don't make any
 modification.  I must admit, I'm not sure what Ruby will do if we ask
-it to add two arrays.
+it to add two arrays.  Well, let's find out:
 
   |gravity> irb
   irb(main):001:0> a1 = [1, 2, 3]
   => [1, 2, 3]
   irb(main):002:0> a2 = [5, 6, 7]
   => [5, 6, 7]
-  irb(main):003:0> a1 + a2
+  irb(main):003:0> a = a1 + a2
   => [1, 2, 3, 5, 6, 7]
 
-With <tt>vector_try_addition.rb</tt>:
+*Dan*: I guess that is _one_ way to add two arrays, to just put them end
+to end, and string all the elements together.  And for many applications
+that might just be the right thing to do, for example, if you have an array
+of the names of countries in a nation, and you want to add a few more names.
+But in our case, this is not what we want.  We'd better get:
 
- :inccode: .vector_try_addition.rb
+  a = [1+5, 2+6, 3+7] = [6, 8, 10]
+
+*Carol*: In an object-oriented language like Ruby, this means that we
+need to introduce a new type of object.  In other words, we need to
+introduce a new class.  Ruby has the convention that class names start
+with a capital, so a natural name for our new class would be +Vector+.
+
+In principle, we could define our new class from scratch, but it would
+be a lot easier to use the features that the +Array+ class already has.
+All we really want to do is to tame the +Array+ class to behave like
+proper physical vectors, and we can do this by redefining only some of
+the array operations, such as adding two arrays and multiplying an array
+with a scalar.
+
+In Ruby, just like in C++ and many other object-oriented languages, we
+can do this by an approach called _inheritance_.  Instead of just defining
+a new class
+
+  class Vector
+
+we can write
+
+  class Vector < Array
+
+which means that the new +Vector+ class inherits all the features of
+the existing class +Array+.  The +Vector+ class is then called a
+_subclass_ of the +Array+ class, and the +Array+ class is called a
+_superclass_ of the +Vector+ class.
+
+Okay, let me see whether I can redefine the array addition operator,
+so that vectors can be added in the right way.  From what I've seen
+so far, I guess that Ruby wants us to write something like this, in
+file <tt>vector_try_addition.rb</tt>:
+
+ :inccode: .vector_try_addition1.rb
+
+The class definition here contains only one method, by the name of
+<tt>plus</tt>, that is doing the addition.
+
+== Who is Adding What
+
+*Erica*: That's a lot shorter and simpler than I had expected.
+It seems to deliver all the three things you promised: it hides the
+all <tt>[k]</tt> occurrences, it hides the <tt>each_index</tt>
+and it creates a new vector, so that you don't have to declare
+anything.  And all that in just a few lines!
+
+*Dan*: Not so fast.  I'm not there yet.  In fact, I don't understand
+this at all.  To begin with, shouldn't addition have two arguments?
+You're going to add two vectors, no?
+
+*Carol*: Yes, but here we're describing addition from the point of view
+of a vector, an instance of the +Vector+ class.  Given one vector, all
+we have to do is to specify one second vector, which I have called +a+,
+which can then be added to the given vector.  The given vector itself
+simply goes by the name of +self+, a reserved word that points to the
+current instance of the class.
+
+*Dan*: You mean that the class definition describes vectors in general,
+but if I deal with a particular vector, <tt>v1</tt>, then from the point of
+view of <tt>v1</tt> itself, <tt>v1</tt> is called +self+?
+
+*Carol*: Right.
+
+*Dan*: But we want to get the result <tt>v = v1 + v2</tt>.
+So from the point of view of +v+ there really are two other vectors
+involved.
+
+*Carol*: Yes, but at first we only have <tt>v1</tt> and <tt>v2</tt>.
+That's all we've got, and that's what we have to use to construct +a+.
+The way I'm trying to define addition is by starting with one of the
+two vectors <tt>v1</tt>, and to define a method that allows <tt>v1</tt>
+to accept a second vector <tt>v2</tt>.  So the whole operation can then
+be writen as
+
+  v1.plus(v2)
+
+where <tt>v2</tt> is the argument for the method +plus+ that is
+associated with the class +Vector+ of which <tt>v1</tt> is an instance.
+Now this expression will result a new instance of the +Vector+ class,
+and we can assign that new instance to the new variable +v+ by writing:
+
+  v = v1.plus(v2)
+
+*Dan*: You can't write
+
+  v = v1 plus v2
+
+*Carol*: Sorry, no, you can't; that wouldn't make any sense.  What you
+_can_ do in Ruby is leave out the parentheses around the argument of a
+method.  So instead of writing
+
+  v = v1.plus(v2)
+
+you _can_ indeed write
+
+  v = v1.plus v2
+
+== The +plus+ Method
+
+*Dan*: I'll take your word for it.  So if we write this, <tt>v1</tt>
+uses its own +plus+ method, and according to the definition you wrote
+in the +Vector+ class, <tt>v1</tt> first creates a new vector called
++sum+.  What does the new vector look like?  Is it just an empty array?
+
+*Carol*: What else could it be?  But let's make sure:
 
   |gravity> irb
-  irb(main):001:0> require "vector_try_addition.rb"
+  irb(main):001:0> require "vector_try_addition1.rb"
+  => true
+  irb(main):002:0> sum = Vector.new
+  => []
+
+*Dan*: That looks like an empty array.
+
+*Carol*: Yes, because the +Vector+ class inherits the +Array+ notation.
+
+*Dan*: How can you see the difference?
+
+*Carol*: You can't, unless you ask.  Here is how you ask:
+
+  |gravity> irb
+  irb(main):001:0> require "vector_try_addition1.rb"
+  => true
+  irb(main):002:0> a = []
+  => []
+  irb(main):003:0> a.class
+  => Array
+  irb(main):004:0> a = Vector.new
+  => []
+  irb(main):005:0> a.class
+  => Vector
+
+Every object in Ruby has a built-in method +class+ that you can
+use to ask it what class it is a member of.
+
+*Dan*: So you first create an array, by writing <tt>[]</tt> and you
+assign it to the variable +a+.  Then you create a vector by writing
+<tt>Vector.new</tt>, and again you assign it to the same variable.
+By doing so you override the previous content of that variable, and
+not only that, you override the previous type of the content of that
+variable: you've now changed both the content of +a+ and the type of +a+.
+
+*Carol*: Yes.  That is exactly the dynamic typing property of Ruby, that
+can you dynamically change the type in that way.  But when we deal with
+Ruby, it is better to use the word class, rather than type.  The type of
+a variable is the class to which the content of that variable belongs.
+
+*Dan*: Now I'm beginning to see what you did when you wrote the
+file <tt>vector_try_addition.rb</tt>.  Let's look at it again:
+
+ :inccode: .vector_try_addition1.rb
+
+When I write
+
+  v = v1.plus v2
+
+<tt>v1</tt> creates a new vector called +sum+, and then it assigns the
+the value <tt>sum[k] = v1[k]+v2[k]</tt> to each component <tt>[k]</tt>
+of the vector +sum+.  That makes sense!
+
+And finally, in the next line you return the value +sum+, before you
+reach the end of the method.  In that way +v+ receives the value
+that <tt>v1.plus v2</tt> returns, which is the sum of <tt>v1</tt> and
+<tt>v2</tt>.  Okay, I got it now!
+
+*Carol*: Let's hope it works, after everything I've told you!
+
+  |gravity> irb
+  irb(main):001:0> require "vector_try_addition1.rb"
   => true
   irb(main):002:0> v1 = Vector[1, 2, 3]
   => [1, 2, 3]
   irb(main):003:0> v2 = Vector[5, 6, 7]
   => [5, 6, 7]
-  irb(main):004:0> v1 + v2
+  irb(main):004:0> v = v1.plus v2
   => [6, 8, 10]
 
-With <tt>vector_try.rb</tt>: 
+*Dan*: Wonderful!  That's just what we ordered.  A great improvement
+over the old array addition!
 
- :inccode: .vector_try.rb
+== The <tt>+</tt> Method
 
-And with <tt>euler_modified_vector_try.rb</tt>:
+<b>[ this is how far I got ; 2007/7/27 -- Piet ]</b>
 
- :inccode: .euler_modified_vector_try.rb
+ :inccode: .vector_try_addition2.rb
 
- :commandoutput: ruby euler_modified_vector_try.rb | tail -1
+NOTICE: no "return"
 
-With <tt>euler_modified_vector_try_again.rb</tt>:
+  |gravity> irb
+  irb(main):001:0> require "vector_try_addition2.rb"
+  => true
+  irb(main):002:0> v1 = Vector[1, 2, 3]
+  => [1, 2, 3]
+  irb(main):003:0> v2 = Vector[5, 6, 7]
+  => [5, 6, 7]
+  irb(main):004:0> v = v1 + v2
+  => [6, 8, 10]
 
- :inccode: .euler_modified_vector_try_again.rb
-
- :commandoutput: ruby euler_modified_vector_try_again.rb | tail -1
-
-Now with <tt>vector.rb</tt>: 
-
- :inccode: .vector.rb
-
-And with <tt>euler_modified_vector.rb</tt>:
-
- :inccode: .euler_modified_vector.rb
-
- :commandoutput: ruby euler_modified_vector.rb | tail -1
-
-<b>[ this is how far I got ; 2007/7/25 -- Piet ]</b>
-
-Let integer division give floating point results, where needed
