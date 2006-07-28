@@ -1,9 +1,9 @@
 = A Complete +Vector+ Class
 
-== Adding +Vector+ Multiplication
+== +Vector+ Subtraction
 
-*Erica*: Yes, this is really neat.  What a difference, being able to add
-vectors by writing
+*Erica*: Well, Carol, you've pulled a really neat trick.  What a difference,
+being able to add vectors by writing
 
   v = v1 + v2
 
@@ -12,15 +12,80 @@ rather than
   v = []
   v1.each_index{|k| v[k] = v1[k] + v2[k]}
 
-Thanks, Carol!  You've just made our life a whole lot easier.
+*Dan*: Thanks, Carol!  You've just made our life a whole lot easier.
 
-*Carol*: Not quite yet; I'll have to do the same thing for multiplication.
-In fact, there are two types of multiplication that we have to consider.
-I'll open a new file <tt>vector_try.rb</tt>
+*Carol*: Not quite yet; I'll have to do the same thing for subtraction,
+multiplication and addition as well.  And I'm sure there are a few more
+things to consider, before we can claim to have a complete +Vector+ clss.
+But I, too, am encouraged with the good start we've made!
+
+I'll open a new file <tt>vector_try_add_sub.rb</tt>.  First thing to add,
+after addition, is subtraction.  That part is easy:
+
+ :inccode: .vector_try_add_sub.rb
+
+*Erica*: So now we can write <tt>v = v1 + v2</tt> and <tt>v = v1 - v2</tt>
+But what about <tt>v = -v1</tt>?  Or even just <tt>v = v1</tt>?  Would that
+work too?
+
+*Carol*: Good question!  Probably not.  But before getting into the why not,
+let's play with +irb+ and see what happens:
+
+  |gravity> irb
+  irb(main):001:0> require "vector_try_add_sub.rb"
+  => true
+  irb(main):002:0> v1 = Vector[1, 2, 3]
+  => [1, 2, 3]
+  irb(main):003:0> v2 = Vector[5, 6, 7]
+  => [5, 6, 7]
+  irb(main):004:0> v = v1 + v2
+  => [6, 8, 10]
+  irb(main):005:0> v = v1 - v2
+  => [-4, -4, -4]
+  irb(main):006:0> v = v1
+  => [1, 2, 3]
+  irb(main):007:0> v = -v1
+  NoMethodError: undefined method `-@' for [1, 2, 3]:Vector
+          from (irb):7
+
+*Dan*: Huh?  A method by the name of a minus sign followed by an
+<tt>@</tt> symbol?  That's the strangest method name I've ever seen.
+And what can it mean that it is undefined?  Should it be defined?
+
+*Erica*: At least writing <tt>v = v1</tt> worked.  So we've come halfway!
+
+*Dan*: Ah, but would it also work if we would write <tt>v = +v1</tt>?
+Let me try:
+
+  |gravity> irb
+  irb(main):001:0> require "vector_try_add_sub.rb"
+  => true
+  irb(main):002:0> v1 = Vector[1, 2, 3]
+  => [1, 2, 3]
+  irb(main):003:0> v2 = Vector[5, 6, 7]
+  => [5, 6, 7]
+  irb(main):004:0> v = +v1
+  NoMethodError: undefined method `+@' for [1, 2, 3]:Vector
+          from (irb):4
+
+Aha!  You see, we're not even half-way yet.  Neither of the two work.
+But it's intriguing that we get a similar error message, this time with
+a plus sign in front of the mysterious <tt>@</tt> symbol.
+
+== Unitary <tt>+</tt> and <tt>-</tt>
+
+*Carol*: Let me consult the Ruby manual.  Just a moment . . . aha, I see!
+Well, this is perhaps an exception to Ruby's principle of least surprise.
 
 
 
 <b>[ this is how far I got ; 2007/7/28 -- Piet ]</b>
+
+== +Vector+ Multiplication
+
+multiplication.
+
+In fact, there are two types of multiplication that we have to consider.
 
 With <tt>vector_try.rb</tt>: 
 
