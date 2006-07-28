@@ -151,7 +151,7 @@ _superclass_ of the +Vector+ class.
 Okay, let me see whether I can redefine the array addition operator,
 so that vectors can be added in the right way.  From what I've seen
 so far, I guess that Ruby wants us to write something like this, in
-file <tt>vector_try_addition.rb</tt>:
+file <tt>vector_try_addition1.rb</tt>:
 
  :inccode: .vector_try_addition1.rb
 
@@ -206,6 +206,8 @@ and we can assign that new instance to the new variable +v+ by writing:
 *Dan*: You can't write
 
   v = v1 plus v2
+
+?
 
 *Carol*: Sorry, no, you can't; that wouldn't make any sense.  What you
 _can_ do in Ruby is leave out the parentheses around the argument of a
@@ -268,7 +270,7 @@ Ruby, it is better to use the word class, rather than type.  The type of
 a variable is the class to which the content of that variable belongs.
 
 *Dan*: Now I'm beginning to see what you did when you wrote the
-file <tt>vector_try_addition.rb</tt>.  Let's look at it again:
+file <tt>vector_try_addition1.rb</tt>.  Let's look at it again:
 
  :inccode: .vector_try_addition1.rb
 
@@ -297,16 +299,83 @@ that <tt>v1.plus v2</tt> returns, which is the sum of <tt>v1</tt> and
   irb(main):004:0> v = v1.plus v2
   => [6, 8, 10]
 
-*Dan*: Wonderful!  That's just what we ordered.  A great improvement
-over the old array addition!
+*Dan*: Wonderful!  That's just what we ordered.
+
+*Erica*: A great improvement over the old array addition!
 
 == The <tt>+</tt> Method
 
-<b>[ this is how far I got ; 2007/7/27 -- Piet ]</b>
+*Dan*: Still, I can't say I like your new notation.
+I'm still not happy about the asymmetry.  Writing
+
+  v = v1.plus v2
+
+gives the impression that <tt>v1</tt> is charging forwards, gobbling
+up <tt>v2</tt> and then spitting out the result.  You told me that we
+cannot write 
+
+  v = v1 plus v2
+
+and I understand that such a statement would have no clear meaning in
+Ruby.  But is there really no way to make the expression more symmetric,
+rather than making <tt>v1</tt> the predator and <tt>v2</tt> the prey?
+
+*Carol*: Actually, there is a way to make it at least _look_ more symmetric.
+It is just a form of syntactic sugar, as they call it: a way to let the
+syntax look more tasty, without really changing the underlying code.
+
+The idea is what is called `overloading operators'.  We can use the
+<tt>+</tt> symbol, instead of the word +plus+, and we can define the
+meaning of <tt>+</tt> for the case of vectors.  I read about that; let
+me see whether it works.  I believe the idea is to write something like
+this, in file <tt>vector_try_addition2.rb</tt>:
 
  :inccode: .vector_try_addition2.rb
 
-NOTICE: no "return"
+*Dan*: All you've done is to change +plus+ into <tt>+</tt> in the second
+line.  Can that really work?
+
+*Erica*: There is one more change: you've also left out the word +return+
+in the third line of the definition.
+
+*Carol*: Ah yes, most people writing Ruby seem to leave out +return+;
+it is really not necessary to add that.  You just have to remember to
+let the last line of a definition echo the result you want to return.
+The result of invoking a method is to return whatever the last line
+of the definition evaluates to.
+
+And yes, other than that, I've just replaced +plus+ by <tt>+</tt>.
+In fact, in _all_ cases where Ruby uses <tt>+</tt>, it is only
+syntactic sugar for invoking a method that is associated with the
+left-hand side of the <tt>+</tt> symbol.  So even though it _looks_
+symmetric, it never really has been a symmetric operation.
+
+*Dan*: But how can it work?  I thought that you always needed to write
+a dot between an object and its method.
+
+*Carol*: Generally, that is true, and in fact, if you want to, you still
+can write the <tt>+</tt> operator using a period like normal Ruby methods.
+
+*Dan*: Let me try:
+
+  |gravity> irb
+  irb(main):001:0> 2.+ 3
+  => 5
+  irb(main):002:0> 8.* 4
+  => 32
+
+You're right.  They work just like ordinary Ruby methods.
+
+*Carol*: But of course, it is much more intuitively obvious to write
+<tt>2 + 3</tt> than to write <tt>2.+ 3</tt>.  One of the main principles
+that was used by Matsumoto, the designer of Ruby, was the principle of
+least surprise.  Even though in fact Ruby has much in common with Lisp,
+Matsumoto decided not to use a lisp like notation, in which <tt>2 + 3</tt>
+would have looked something like <tt>(+ (2, 3))</tt>, a beautifully clear
+notation once you get used to it, but unlike <tt>2 + 3</tt> not immediately
+obvious at first.
+
+Well, enough talk: let's test my second version of vector addition:
 
   |gravity> irb
   irb(main):001:0> require "vector_try_addition2.rb"
@@ -318,4 +387,5 @@ NOTICE: no "return"
   irb(main):004:0> v = v1 + v2
   => [6, 8, 10]
 
-xx
+*Dan*: I like this a whole lot better!  And I'm glad Matsumoto did not
+introduce four parentheses to add two things.
