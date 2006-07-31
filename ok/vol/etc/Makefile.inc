@@ -12,6 +12,7 @@ endif
 ACSDOCOPTIONS = --reuseoutput --keep-dot-files
 #ACSDOC = ruby $(ACSROOT)/src/coherent_programming/acsdoc.rb $(ACSDOCOPTIONS)
 ACSDOC = ruby $(ACSROOT)/kali/vol/documentation/acsdoc.rb $(ACSDOCOPTIONS)
+ACSDOCCAT = ruby $(ACSROOT)/kali/vol/documentation/acsdoccat.rb
 ACSGZIP = gzip --force
 LOCALDIR = kali
 LOCALLIBDIR=$(ACSROOT)/$(LOCALDIR)/lib
@@ -37,7 +38,7 @@ $(TARGET).dvi: $(TARGET).tex
 	latex $(TARGET)
 	latex $(TARGET)
 $(TARGET).tex: doc $(SRC) .acsdocinitrc
-	cat $(SRC) > $(TARGET).cp
+	$(ACSDOCCAT) $(SRC) > $(TARGET).cp
 	$(ACSDOC) --tolatex $(TARGET).cp
 doc : $(SRC) .acsdocinitrc 
 	$(ACSDOC)  [a-z,A-Z]*.rb  $(SRC)
