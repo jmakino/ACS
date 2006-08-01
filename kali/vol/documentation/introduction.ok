@@ -502,7 +502,7 @@ You can check if the file "aho" is made by:
 
 The result is:
 
-  :commandoutput: ls -al aho; pwd
+  :commandoutputsave: ls -al aho; pwd
   :commandoutput: cat aho
   :command: rm aho
 
