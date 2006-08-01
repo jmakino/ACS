@@ -18,9 +18,10 @@ in in fig. ref(backward1).
 *Erica*: That was only because you asked me about it!  And the backward
 Euler scheme is not an explicit method.  It is an implicit method, where
 you have to know the answer before give calculate it.  As we discussed, you
-can solve that through iteration, but then you have to take every step
-twice, and you still only have a first-order method, so there is no good
-reason to use that method.
+can solve that through iteration; but in that case you have to redo every
+step at least one more time, so you spend a lot more computer time and
+you still only have a first-order method, so there is really no good reason
+to use that method.
 
 *Dan*: But wait a minute, the two types of errors in figs. ref(forward1)
 and ref(backward1) are clearly going in the opposite directions.
@@ -180,7 +181,7 @@ is calculated just before it is needed in calculating
 *Erica*: Now that I see the expressions written down in
 Eq. (ref(ModEulerStep)), they suddenly seem strangely familiar.
 Even though we discovered it for ourselves, I now have the feeling
-I have seem them before.
+I have seen them before.
 
 *Carol*: It would be very surprising indeed, if such a straightforward
 trick would not have been invented long ago.  Here, let me do a search
