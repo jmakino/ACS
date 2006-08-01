@@ -203,7 +203,7 @@ plot "euler_elliptic_100000_steps_sparse_ok.out"
 quit
 END
 
- :commandoutput: ruby euler_elliptic_1000000_steps_sparse_ok.rb > euler_elliptic_1000000_steps_sparse_ok.out
+ :commandoutputsave: ruby euler_elliptic_1000000_steps_sparse_ok.rb > euler_elliptic_1000000_steps_sparse_ok.out
  :commandinput: gnuplot END
 set term post eps
 set output "euler_elliptic_1000000_steps_sparse_ok.ps"
@@ -313,8 +313,8 @@ lines in each case?
 
 *Carol*: Right, let's check that too:
 
- :commandoutput: ruby euler_elliptic_1000000_steps_sparse_ok.rb | tail -3
- :commandoutput: ruby euler_one_body.rb | tail -3
+ :commandoutputsave: ruby euler_elliptic_1000000_steps_sparse_ok.rb | tail -3
+ :commandoutputsave: ruby euler_one_body.rb | tail -3
 
 *Dan*: I'm happy.  So now you're going to copy the code of
 <tt>euler_one_body.rb</tt> to a new file called
@@ -366,7 +366,7 @@ I'll make <tt>m1 = 0.6</tt>:
 
 And here is the output:
 
- :commandoutput: ruby euler_two_body.rb > euler_two_body.out
+ :commandoutputsave: ruby euler_two_body.rb > euler_two_body.out
 
  :commandinput: gnuplot END
 set term post eps
