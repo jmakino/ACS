@@ -111,8 +111,8 @@ arrow in fig. ref(modforward1).
 
 == Specifying the Steps
 
-*Carol*: It should be easy to implement this new scheme.  The picture
-we have drawn shows the change in position of a particle, and we
+*Carol*: It should be easy to implement this new modified Euler scheme.
+The picture we have drawn shows the change in position of a particle, and we
 should apply the same idea to the change in velocity.
 
 For starters, let us just look at the position.  First we have to
@@ -178,31 +178,9 @@ is calculated just before it is needed in calculating
 <tex>$\br_{i+2, p}$</tex>, just as Erica correctly predicted
 (no pun intended).
 
-*Erica*: Now that I see the expressions written down in
-Eq. (ref(ModEulerStep)), they suddenly seem strangely familiar.
-Even though we discovered it for ourselves, I now have the feeling
-I have seen them before.
-
-*Carol*: It would be very surprising indeed, if such a straightforward
-trick would not have been invented long ago.  Here, let me do a search
-on the internet, with "Euler" and "generalization" . . .
-
-. . .  uhhm, that doesn't look promising.  This guy Euler has invented
-too much interesting math stuff, which others then generalized!  There
-is something called an Euler line, an Euler-McLaurin formula, and it
-goes on and on.  Let me add "algorithm" . . .  Still too much other stuff
-. . . I'll throw in a few more words . . .
-
-. . . aha!  Here is something that looks similar.  And not only similar,
-the equations are indeed the same.  And they call it the <i>modified Euler</i>
-scheme.
-
-*Dan*: That is indeed what we did: we started with forward Euler, and modified
-it by mixing in backward Euler.  We could have guessed!
-
 == Implementation
 
-*Carol*: Here is the new code, and now that we know the name of the algorithm,
+*Carol*: Here is the new code.
 I'll call it <tt>euler_modified_10000_steps_sparse.rb</tt>.  Let's
 hope we have properly modified the original Euler:
 
