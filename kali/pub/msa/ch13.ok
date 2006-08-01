@@ -31,6 +31,57 @@ work too?
 *Carol*: Good question!  Probably not.  But before getting into the why not,
 let's play with +irb+ and see what happens:
 
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+x
+
+<b>[Jun, here is the original irb output of an irb session that I ran first
+and then just pasted as straight text into the chapter: -- Piet]</b>
+
   |gravity> irb
   irb(main):001:0> require "vector_try_add_sub.rb"
   => true
@@ -47,6 +98,24 @@ let's play with +irb+ and see what happens:
   irb(main):007:0> v = -v1
   NoMethodError: undefined method `-@' for [1, 2, 3]:Vector
           from (irb):7
+
+<b>[Jun, clearly it would be much better to actually run irb when we
+compile this chapter.  So I'm repeating the same session now below with
+an actual command, using ":commandinputoutput:". The problem is: we
+don't want to see the initial echo of all the input commands.
+How shall we solve this? --  Piet]</b>
+
+ :commandinputoutput: irb END
+require "vector_try_add_sub.rb"
+v1 = Vector[1, 2, 3]
+v2 = Vector[5, 6, 7]
+v = v1 + v2
+v = v1 - v2
+v = v1
+v = -v1
+END
+
+<b>[Jun, this is the end of the irb experiment area -- Piet]</b>
 
 *Dan*: Huh?  A method by the name of a minus sign followed by an
 <tt>@</tt> symbol?  That's the strangest method name I've ever seen.
