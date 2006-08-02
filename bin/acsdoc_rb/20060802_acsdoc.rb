@@ -997,7 +997,7 @@ module Acsdoc
 #
 # takes an array of strings, starting 
 #
-  def command_with_input(s,tag, instring, dirname, showout, saveresult )
+  def command_with_input(s,tag, instring, dirname, showout, showin,saveresult )
     ostring = ""
     a = s.chomp.split
     endtag = a.pop
@@ -1037,7 +1037,11 @@ module Acsdoc
     system("csh -f #{tmpcommand}");
     system("sync; sleep 1")
     ostring = ostring +  prompt + commandline+ "\n"
-    output = indata 
+    if showin
+      output = indata 
+    else
+      output = ""
+    end
     output += `cat #{dirname}/#{tmpname}`  if  showout
     output.each{|x| ostring = ostring +  " "*indent + x}
     ostring = ostring +  @@verbatim_separator
@@ -1141,10 +1145,13 @@ module Acsdoc
 	set_prompt(s)
       elsif s=~ /^(\s*):commandinputoutput:/
 	ostring = ostring +  command_with_input(s,":commandinputoutput:", 
-				      instring,dirname,true, saveresult)
+				      instring,dirname,true, true,saveresult)
+      elsif s=~ /^(\s*):commandinputoutputnoecho:/
+	ostring = ostring +  command_with_input(s,":commandinputoutput:", 
+				      instring,dirname,true, false,saveresult)
       elsif s =~ /^(\s*):commandinput:/
 	ostring = ostring +  command_with_input(s,":commandinput:", instring,
-				      dirname,false, saveresult)
+				      dirname,false, true,saveresult)
       else
 	ostring += @@verbatim_separator if @previous_is_command
 	ostring += s 

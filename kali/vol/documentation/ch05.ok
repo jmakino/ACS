@@ -428,17 +428,31 @@ We can get the following:
 
 :label: includecommand
 
-There are followng five directives to run commands
+There are followng six directives to run commands
 
 * :output: 
 * :command: 
 * :commandoutput:
 * :commandinput:
 * :commandinputoutput:
+* :commandinputoutputnoecho:
 
 and one additional directive
 
 * :prompt:
+
+The directives to run commands can have variations with "save", like
+
+* :commandoutputsave:
+* :commandoutputinputoutputsave:
+
+When these "save" variations are used and acsdoc is invoked with
+"--reuseoutput" option, acsdoc.rb look for the output of the same
+command previously executed (from its hidden data directory), and if
+the same command line is found at the same location of the input .ok
+file, corresponding output is taken from the saved result of previous
+run of acsdoc.rb. 
+
 
 
 Directive  :output: echo foo
