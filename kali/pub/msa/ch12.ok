@@ -326,6 +326,8 @@ this, in file <tt>vector_try_addition2.rb</tt>:
 
  :inccode: .vector_try_addition2.rb
 
+== A Small Matter: the Role of the Period
+
 *Dan*: All you've done is to change +plus+ into <tt>+</tt> in the second
 line.  Can that really work?
 
@@ -399,7 +401,11 @@ would have looked something like <tt>(+ (2, 3))</tt>, a beautifully clear
 notation once you get used to it, but unlike <tt>2 + 3</tt> not immediately
 obvious at first.
 
-Well, enough talk: let's test my second version of vector addition:
+*Dan*: I'd say!
+
+== Testing the <tt>+</tt> Method
+
+*Carol*: Well, enough talk: let's test my second version of vector addition:
 
  :commandinputoutputnoecho: irb END
 require "vector_try_addition2.rb"
