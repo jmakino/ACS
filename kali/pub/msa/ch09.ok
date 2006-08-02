@@ -293,7 +293,7 @@ and once at the end of each loop traversal:
 
 And now this code should give the same results as we had before:
 
- :commandoutput: ruby euler_one_body.rb > euler_one_body.out
+ :commandoutputsave: ruby euler_one_body.rb > euler_one_body.out
 
  :commandinput: gnuplot END
 set term post eps

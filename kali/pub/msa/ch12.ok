@@ -105,13 +105,12 @@ you can implement all that, and even do away with the need for declarations?
 modification.  I must admit, I'm not sure what Ruby will do if we ask
 it to add two arrays.  Well, let's find out:
 
-  |gravity> irb
-  irb(main):001:0> a1 = [1, 2, 3]
-  => [1, 2, 3]
-  irb(main):002:0> a2 = [5, 6, 7]
-  => [5, 6, 7]
-  irb(main):003:0> a = a1 + a2
-  => [1, 2, 3, 5, 6, 7]
+ :commandinputoutputnoecho: irb END
+a1 = [1, 2, 3]
+a2 = [5, 6, 7]
+a = a1 + a2
+quit
+END
 
 *Dan*: I guess that is _one_ way to add two arrays, to just put them end
 to end, and string all the elements together.  And for many applications
@@ -228,11 +227,11 @@ in the +Vector+ class, <tt>v1</tt> first creates a new vector called
 
 *Carol*: What else could it be?  But let's make sure:
 
-  |gravity> irb
-  irb(main):001:0> require "vector_try_addition1.rb"
-  => true
-  irb(main):002:0> sum = Vector.new
-  => []
+ :commandinputoutputnoecho: irb END
+require "vector_try_addition1.rb"
+sum = Vector.new
+quit
+END
 
 *Dan*: That looks like an empty array.
 
@@ -242,17 +241,14 @@ in the +Vector+ class, <tt>v1</tt> first creates a new vector called
 
 *Carol*: You can't, unless you ask.  Here is how you ask:
 
-  |gravity> irb
-  irb(main):001:0> require "vector_try_addition1.rb"
-  => true
-  irb(main):002:0> a = []
-  => []
-  irb(main):003:0> a.class
-  => Array
-  irb(main):004:0> a = Vector.new
-  => []
-  irb(main):005:0> a.class
-  => Vector
+ :commandinputoutputnoecho: irb END
+require "vector_try_addition1.rb"
+a = []
+a.class
+a = Vector.new
+a.class
+quit
+END
 
 Every object in Ruby has a built-in method +class+ that you can
 use to ask it what class it is a member of.
@@ -289,15 +285,13 @@ that <tt>v1.plus v2</tt> returns, which is the sum of <tt>v1</tt> and
 
 *Carol*: Let's hope it works, after everything I've told you!
 
-  |gravity> irb
-  irb(main):001:0> require "vector_try_addition1.rb"
-  => true
-  irb(main):002:0> v1 = Vector[1, 2, 3]
-  => [1, 2, 3]
-  irb(main):003:0> v2 = Vector[5, 6, 7]
-  => [5, 6, 7]
-  irb(main):004:0> v = v1.plus v2
-  => [6, 8, 10]
+ :commandinputoutputnoecho: irb END
+require "vector_try_addition1.rb"
+v1 = Vector[1, 2, 3]
+v2 = Vector[5, 6, 7]
+v = v1.plus v2
+quit
+END
 
 *Dan*: Wonderful!  That's just what we ordered.
 
@@ -358,13 +352,43 @@ can write the <tt>+</tt> operator using a period like normal Ruby methods.
 
 *Dan*: Let me try:
 
-  |gravity> irb
-  irb(main):001:0> 2.+ 3
-  => 5
-  irb(main):002:0> 8.* 4
-  => 32
+ :commandinputoutputnoecho: irb END
+2.+ 3
+8.* 4
+quit
+END
 
-You're right.  They work just like ordinary Ruby methods.
+*Erica*: Wow, surprise.  They work just like ordinary Ruby methods.
+
+*Dan*: Are you sure?  Isn't <tt>2.</tt> just translated into <tt>2.0</tt>
+so that we are only evaluating <tt>2.0 + 3</tt>?  Let's check, by adding
+a space after the periods:
+
+ :commandinputoutputnoecho: irb END
+2. + 3
+8. * 4
+quit
+END
+
+Ah, you see, the zero is just added, like in Fortran.
+
+*Carol*: I don't think so.  Let me try a simpler case:
+
+ :commandinputoutputnoecho: irb END
+2.
+quit
+quit
+END
+
+You see: <tt>2.</tt> is _not_ translated into <tt>2.0</tt>, but is in fact
+illegal.  Or more accurately, it is okay in Ruby to leave space after the
+period between an object and its method.  Here +irb+ is asking for the
+method name, and doesn't like the fact that I just wanted to quit; +irb+
+interpreted the +quit+ as the method name it was waiting for.
+
+*Dan*: I agree, we can now be sure that <tt>2.+</tt>
+really invokes the addition operator of the number <tt>2</tt>.
+Okay, now we know.
 
 *Carol*: But of course, it is much more intuitively obvious to write
 <tt>2 + 3</tt> than to write <tt>2.+ 3</tt>.  One of the main principles
@@ -377,15 +401,13 @@ obvious at first.
 
 Well, enough talk: let's test my second version of vector addition:
 
-  |gravity> irb
-  irb(main):001:0> require "vector_try_addition2.rb"
-  => true
-  irb(main):002:0> v1 = Vector[1, 2, 3]
-  => [1, 2, 3]
-  irb(main):003:0> v2 = Vector[5, 6, 7]
-  => [5, 6, 7]
-  irb(main):004:0> v = v1 + v2
-  => [6, 8, 10]
+ :commandinputoutputnoecho: irb END
+require "vector_try_addition2.rb"
+v1 = Vector[1, 2, 3]
+v2 = Vector[5, 6, 7]
+v = v1 + v2
+quit
+END
 
 *Dan*: I like this a whole lot better!  And I'm glad Matsumoto did not
 introduce four parentheses to add two things.

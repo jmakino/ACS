@@ -31,81 +31,7 @@ work too?
 *Carol*: Good question!  Probably not.  But before getting into the why not,
 let's play with +irb+ and see what happens:
 
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-x
-
-<b>[Jun, here is the original irb output of an irb session that I ran first
-and then just pasted as straight text into the chapter: -- Piet]</b>
-
-  |gravity> irb
-  irb(main):001:0> require "vector_try_add_sub.rb"
-  => true
-  irb(main):002:0> v1 = Vector[1, 2, 3]
-  => [1, 2, 3]
-  irb(main):003:0> v2 = Vector[5, 6, 7]
-  => [5, 6, 7]
-  irb(main):004:0> v = v1 + v2
-  => [6, 8, 10]
-  irb(main):005:0> v = v1 - v2
-  => [-4, -4, -4]
-  irb(main):006:0> v = v1
-  => [1, 2, 3]
-  irb(main):007:0> v = -v1
-  NoMethodError: undefined method `-@' for [1, 2, 3]:Vector
-          from (irb):7
-
-<b>[Jun, clearly it would be much better to actually run irb when we
-compile this chapter.  So I'm repeating the same session now below with
-an actual command, using ":commandinputoutput:". The problem is: we
-don't want to see the initial echo of all the input commands.
-How shall we solve this? --  Piet]</b>
-
- :commandinputoutput: irb END
+ :commandinputoutputnoecho: irb END
 require "vector_try_add_sub.rb"
 v1 = Vector[1, 2, 3]
 v2 = Vector[5, 6, 7]
@@ -113,9 +39,8 @@ v = v1 + v2
 v = v1 - v2
 v = v1
 v = -v1
+quit
 END
-
-<b>[Jun, this is the end of the irb experiment area -- Piet]</b>
 
 *Dan*: Huh?  A method by the name of a minus sign followed by an
 <tt>@</tt> symbol?  That's the strangest method name I've ever seen.
@@ -126,16 +51,13 @@ And what can it mean that it is undefined?  Should it be defined?
 *Dan*: Ah, but would it also work if we would write <tt>v = +v1</tt>?
 Let me try:
 
-  |gravity> irb
-  irb(main):001:0> require "vector_try_add_sub.rb"
-  => true
-  irb(main):002:0> v1 = Vector[1, 2, 3]
-  => [1, 2, 3]
-  irb(main):003:0> v2 = Vector[5, 6, 7]
-  => [5, 6, 7]
-  irb(main):004:0> v = +v1
-  NoMethodError: undefined method `+@' for [1, 2, 3]:Vector
-          from (irb):4
+ :commandinputoutputnoecho: irb END
+require "vector_try_add_sub.rb"
+v1 = Vector[1, 2, 3]
+v2 = Vector[5, 6, 7]
+v = +v1
+quit
+END
 
 Aha!  You see, we're not even half-way yet.  Neither of the two work.
 But it's intriguing that we get a similar error message, this time with
@@ -145,10 +67,46 @@ a plus sign in front of the mysterious <tt>@</tt> symbol.
 
 *Carol*: Let me consult the Ruby manual.  Just a moment . . . aha, I see!
 Well, this is perhaps an exception to Ruby's principle of least surprise.
+The manual tells me that <tt>+@</tt> is the Ruby notation for a
+unitary minus.
 
+*Dan*: A unitary minus?
 
+*Carol*: Yes, and the word `unit' in unitary here means `one'.  A unitary
+minus is an operation that has only one operand.
 
-<b>[ this is how far I got ; 2007/7/28 -- Piet ]</b>
+*Erica*: As opposed to what?
+
+*Carol*: As opposed to a binary minus.  Most normal operations, such as 
+addition and substraction, as well as multiplication and division, are
+binary operation.  Binary here means two operands.  When you use a
+single plus sign, you add two numbers.  Similarly, a minus allows you
+to subtract two numbers.  So when you write <tt>5 - 3 = 2</tt> you are using
+a binary minus.  However, when you first write <tt>x = 5</tt> and then
+<tt>y = -x</tt>, to give <tt>y</tt> the value <tt>-5</tt>, you are using
+not a binary minus, but a unary minus.  The construction <tt>-x</tt>
+returns a value that has the value of the variable <tt>x</tt>, but with
+an additional minus sign.
+
+*Dan*: So you are effectively multiplying <tt>x</tt> with the number
+<tt>-1</tt>.
+
+*Erica*: Or you could say that you are subtracting <tt>x</tt> from <tt>0</tt>.
+
+*Carol*: Yes, both statements are correct.  But rather than introducing
+multiplication, it is simpler to think only about subtraction.  So writing
+<tt>-x</tt> uses a unary minus, while writing <tt>0-x</tt> uses a binary
+minus, while both are denoting the same result.
+
+*Dan*: But why does Ruby use such a complicated symbol, <tt>+@</tt>, for
+unitary minus?
+
+*Carol*: That symbol is only used when you redefine the symbol.  We have
+just redefined the binary plus as follows:
+
+ :inccode: .vector_try.rb-binplus
+
+<b>[ this is how far I got ; 2007/8/2 -- Piet ]</b>
 
 == +Vector+ Multiplication
 

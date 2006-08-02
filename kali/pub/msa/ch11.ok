@@ -316,24 +316,13 @@ elements of +r+ and +v+.
 
 *Erica*: I see.  Or at least I think I do.  Let me try it out, using irb.
 
-  |gravity> irb
-  irb(main):001:0> a = [4, 7, 9]
-  => [4, 7, 9]
-  irb(main):002:0> a.each{|x| print x, "\n"}
-  4
-  7
-  9
-  => [4, 7, 9]
-  irb(main):003:0> a.each_index{|x| print x, "\n"}
-  0
-  1
-  2
-  => [4, 7, 9]
-  irb(main):004:0> a.each_index{|x| print a[x], "\n"}
-  4
-  7
-  9
-  => [4, 7, 9]
+ :commandinputoutputnoecho: irb END
+a = [4, 7, 9]
+a.each{|x| print x, "\n"}
+a.each_index{|x| print x, "\n"}
+a.each_index{|x| print a[x], "\n"}
+quit
+END
 
 Yes, that makes sense.
 
@@ -359,13 +348,12 @@ result of a mapping that is applied to the corresponding element of
 the old array.  That sounds more complicated than it really is.
 Better to look at an example:
 
-  |gravity> irb
-  irb(main):001:0> a = [4, 7, 9]
-  => [4, 7, 9]
-  irb(main):002:0> a.map{|x| x + 1}
-  => [5, 8, 10]
-  irb(main):003:0> a.map{|x| 2 * x}
-  => [8, 14, 18]
+ :commandinputoutputnoecho: irb END
+a = [4, 7, 9]
+a.map{|x| x + 1}
+a.map{|x| 2 * x}
+quit
+END
 
 *Dan*: Ah, now I get it.  In the first case, the mapping is simply adding
 the number one, and indeed, each element of the array gets increased
