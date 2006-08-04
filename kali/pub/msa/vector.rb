@@ -36,23 +36,15 @@ class Vector < Array
   end
 end
 
+#:segment start: array
 class Array
   def to_v
     Vector[*self]
   end
 end
+#:segment end:
 
-class Float
-  alias :original_mult :*
-  def *(a)
-    if a.class == Vector
-      a*self
-    else
-      original_mult(a)
-    end
-  end
-end
-
+#:segment start: fixnum
 class Fixnum
   alias :original_mult :*
   def *(a)
@@ -63,4 +55,17 @@ class Fixnum
     end
   end
 end
+#:segment end:
 
+#:segment start: float
+class Float
+  alias :original_mult :*
+  def *(a)
+    if a.class == Vector
+      a*self
+    else
+      original_mult(a)
+    end
+  end
+end
+#:segment end:

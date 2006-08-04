@@ -1,6 +1,6 @@
 = A Complete +Vector+ Class
 
-== Augmenting the +Array+ class
+== Augmenting a Class
 
 *Carol*: Well, I _may_ have a lead here, to a solution that can make our
 scalar-vector multiplication symmetric.  The problem was,
@@ -22,6 +22,200 @@ v * 3
 quit
 END
 
+You see: it tells us that the number 3 expects to make a multiplication
+with something like another number.  It tries to cast a vector into such
+an other number, but doesn't succeed.
+
+*Dan*: What would be an example of a successful casting?
+
+*Carol*: If you specify a multiplication like <tt>3.14 * 2</tt>
+to get an approximate result for <tex>$2\pi$</tex>, the floating
+point number <tt>3.14</tt> will try to make the fixed point number
+2, in integer, into a floating point number first.  In other words,
+<tt>3.14</tt>, an object that is an instance of the class +Float+,
+will try to cast the number 2, an object that is an instance of
+the class +Fixnum+, into an instance of the class +Float+.  To say it
+in simple terms: <tt>3.14</tt> will cast <tt>2</tt> into <tt>2.0</tt>
+and since it knows how to multiply two floating point numbers, it
+can then happily go ahead and apply its multiplication method.
+
+So, to come back to our case, what we really would like to do is to
+augment the rules for the class +Fixnum+, to explain how to multiply
+with an object of class +Vector+.
+
+*Erica*: But we did not write the +Fixnum+ class.  That's already there
+in Ruby.  How can we then change the rules of the game for that class.
+
+*Carol*: Ah, that's not a problem.  In Ruby, you can always augment the
+set of rules for any class, without needing to know anything about who
+did what before with the class.  The extra rules somehow get just tagged
+on.
+
+In fact, let me show you how to do that, with a simple example.
+So far, we have created new vectors by writing lines like
+
+  v = Vector[1, 2, 3]
+
+Imagine that we would like to start instead with an array, an instance
+of class +Array+, and then make it into a vector.  To do that, it
+would be nice to have a method called <tt>to_v</tt>, so that you could
+write:
+
+  v = [1, 2, 3].to_v
+
+*Dan*: Why do you need that?
+
+*Carol*: Oh, imagine that you read in the components of a vector
+from an input stream, for example, or that you compute them one by
+one, and by the time you have all the components, you want to tell
+Ruby that you want to put them together as a vector.
+
+== Augmenting the +Array+ Class
+
+*Erica*: Did you just make up the notation <tt>to_v</tt>?
+
+*Carol*: No, that is a standard Ruby way to write things.  You will
+often see something like <tt>to_s</tt> as a method to to write
+something as a string.  Here, let me show you:
+
+ :commandinputoutputnoecho: irb END
+3
+3.class
+3.to_s
+3.to_s.class
+3.14
+3.14.class
+3.14.to_s
+3.14.to_s.class
+quit
+END
+
+*Erica*: Ah, so the <tt>"..."</tt> notation already shows that we are
+dealing with a character string, or string for short, and indeed, the
+class of <tt>"..."</tt> is +String+.  That makes sense.
+
+Now how do you define your own transformation that casts an array onto
+a vector?
+
+*Carol*: For that to work, I have to augment the +Array+ class.
+It should be simple.  Let me copy <tt>vector_try.rb</tt> into a
+new file <tt>vector.rb</tt>, in the hope that we will get it right
+and complete this time!
+
+*Dan*: Hope springs eternal.
+
+*Carol*: I'm just hopelessly optimistic.  Here is my first attempt:
+
+ :inccode: .vector.rb-array
+
+And now, with some hope:
+
+ :commandinputoutputnoecho: irb END
+require "vector.rb"
+[1, 2, 3].class
+[1, 2, 3].to_v.class
+v1 = Vector[1, 1, 1]
+v2 = [1, 2, 3].to_v
+v = v1 + v2
+v.class
+quit
+END
+
+*Erica*: Your hope was justified: <tt>to_v</tt> does indeed seem
+to produce genuine vectors.  How neat, that we have the power to
+add to the prescribed behavior of the +Array+ class!
+
+== Augmenting the +Fixnum+ Class
+
+*Carol*: Indeed.  So, there is no stopping us now to add to the
+behavior of the +Fixnum+ class!  Here we go, in <tt>vector.rb</tt>:
+
+ :inccode: .vector.rb-fixnum
+
+*Dan*: Whoa!  That's quite a bit more complicated than I had expected.
+You must have been reading Ruby manuals lately!
+
+*Carol*: I admit, I did.  Here is what happens.  If we start with the
+number 3, and take a vector +v+, and write
+
+  3 * v
+
+then the <tt>*</tt> method of the fixed point number 3 first checks
+whether +v+ is a +Vector+.  In our case, it is, so then it returns
+the result
+
+  v * self
+
+which in the case of 3 is simply
+
+  v * 3
+
+and that is something we have already defined, in the +Vector+ class.
+
+If, on the other hand we write anything else, such as
+
+  3 * 8.5
+
+then the <tt>*</tt> method of the fixed point number 3 finds that
+<tt>8.5</tt> is _not_ a +Vector+, so it applies the original definition
+of multiplication,  to the number <tt>8.5</tt>,
+as it should.
+
+*Dan*: So the +alias+ notion means that whatever the original <tt>*</tt>
+did is now assigned to <tt>original_mult</tt> instead?
+
+*Carol*: Exactly.  Writing <tt>alias :x :y</tt> means that <tt>x</tt>
+becomes an alias for <tt>y</tt>.  Or so the theory goes.  Let's see what
+the practice tells us:
+
+ :commandinputoutputnoecho: irb END
+require "vector.rb"
+v = [1, 2, 3]
+v * 3
+quit
+END
+
+*Dan*: Well, it tells you that something wasn't quite right.
+
+*Erica*: Not necessarily; the mistake was not in the method;
+Carol forgot to specify that +v+ should be a vector.  Right now
+it is still an array, by default.  You should use your nifty
+new <tt>to_v</tt>, Carol!
+
+*Carol*: Of course, yes, stupid of me.  Try again:
+
+ :commandinputoutputnoecho: irb END
+require "vector.rb"
+v = [1, 2, 3].to_v
+v * 3
+(v * 3).class
+3 * v
+(3 * v).class
+quit
+END
+
+== Augmenting the +Float+ Class
+
+*Dan*: Not bad!  Great!  <tt>3 * v</tt> now produces the
+exact same thing as <tt>v * 3</tt>.  Congratulations!
+Another hope fulfilled.  And I guess you should do the
+same thing for floating point numbers, right?
+
+*Carol*: Right.  All very similar:
+
+ :inccode: .vector.rb-float
+
+This time my hope for success will be quite justified:
+
+ :commandinputoutputnoecho: irb END
+require "vector.rb"
+v = [1, 2, 3].to_v
+v * 3.14
+(v * 3.14).class
+3.14 * v
+(3.14 * v).class
+quit
+END
 
 
 
@@ -33,15 +227,7 @@ END
 
 
 
-
-
-
-
-
-
-
-
-<b>[ this is how far I got ; 2007/8/3 -- Piet ]</b>
+<b>[ this is how far I got ; 2007/8/4 -- Piet ]</b>
 
 xxx
 
