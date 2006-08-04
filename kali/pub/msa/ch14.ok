@@ -1,50 +1,83 @@
-= Leapfrog
+= A Complete +Vector+ Class
 
-== xx
+== Augmenting the +Array+ class
 
-*Carol*: Erica, what kind of second-order algorithm should we use,
-to replace our first-order forward Euler scheme?
+*Carol*: Well, I _may_ have a lead here, to a solution that can make our
+scalar-vector multiplication symmetric.  The problem was,
+when you have a vector +v+ and you want to write
 
-*Erica*: A nice and simple scheme is the _leapfrog_ algorithm.
+<tt>3 * v</tt>
 
-*Dan*: What a strange name.  Does it let particles jump around like frogs?
+you are effectively asking the number 3 to provide a method that
+knows how to handle multiplication of 3 with a vector.  But the
+poor number 3 has never heard of vectors!  No wonder we got an
+error message.  Let me show again explicitly what the error message
+says:
 
-*Carol*: Or like children jumping over each other?
-
-*Erica*: Something like that, I guess.  I never thought about the meaning
-of the name.  It is used quite widely, although it has different names in
-different fields of science.  In stellar dynamics you often hear it called
-leapfrog, but in molecular dynamics it is generally called the Verlet
-method, and I'm sure there must be other names in use in other fields.
-
-Here is the idea:
-
-:eqnarray:
-\br_{i} & = & \br_{i-1} + \bv_{i-1/2} dt \label{leapfrog-leap-step1} \\
-\bv_{i+1/2} & = & \bv_{i-1/2} + \ba_i dt \label{leapfrog-leap-step2}
-
-== xxx
-
-== xxx
-
-Here is 
-
-<tt>leapfrog_100.rb</tt>:
-
- :inccode: .leapfrog_1000_steps.rb
-
-Try:
-
- :commandoutput: ruby leapfrog_1000_steps.rb > leapfrog_1000_steps.out
- :commandinput: gnuplot END
-set term post eps
-set output "leapfrog_1000_steps.ps"
-set size ratio -1
-plot "leapfrog_1000_steps.out"
+ :commandinputoutputnoecho: irb END
+require "vector_try.rb"
+v = Vector[1, 2, 3]
+v * 3
+3 * v
 quit
 END
 
-:figure: leapfrog_1000_steps.ps 10cm leapfrog_1000_steps
-First attempt at leapfrog integration, with stepsize <tex>$dt=0.01$</tex>.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<b>[ this is how far I got ; 2007/8/3 -- Piet ]</b>
 
 xxx
+
+And with <tt>euler_modified_vector_try.rb</tt>:
+
+ :inccode: .euler_modified_vector_try.rb
+
+ :commandoutput: ruby euler_modified_vector_try.rb | tail -1
+
+With <tt>euler_modified_vector_try_again.rb</tt>:
+
+ :inccode: .euler_modified_vector_try_again.rb
+
+ :commandoutput: ruby euler_modified_vector_try_again.rb | tail -1
+
+Now with <tt>vector.rb</tt>: 
+
+ :inccode: .vector.rb
+
+And with <tt>euler_modified_vector.rb</tt>:
+
+ :inccode: .euler_modified_vector.rb
+
+ :commandoutput: ruby euler_modified_vector.rb | tail -1
+
+Let integer division give floating point results, where needed
+
+
+
+
+
+
+
+
+
+
+<b>[ this is how far I got ; 2007/8/3 -- Piet ]</b>
+
+

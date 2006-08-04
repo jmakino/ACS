@@ -1,4 +1,4 @@
-= A Complete +Vector+ Class
+= A First Stab at a +Vector+ Class
 
 == +Vector+ Subtraction
 
@@ -63,7 +63,7 @@ Aha!  You see, we're not even half-way yet.  Neither of the two work.
 But it's intriguing that we get a similar error message, this time with
 a plus sign in front of the mysterious <tt>@</tt> symbol.
 
-== Unitary <tt>+</tt> and <tt>-</tt>
+== Unitary <tt>+</tt>
 
 *Carol*: Let me consult the Ruby manual.  Just a moment . . . aha, I see!
 Well, this is perhaps an exception to Ruby's principle of least surprise.
@@ -101,43 +101,243 @@ minus, while both are denoting the same result.
 *Dan*: But why does Ruby use such a complicated symbol, <tt>+@</tt>, for
 unitary minus?
 
-*Carol*: That symbol is only used when you redefine the symbol.  We have
+*Carol*: That symbol is only used when you redefine the symbol.  Let me
+try it out, in a new file <tt>vector_try.rb</tt>.  We have
 just redefined the binary plus as follows:
 
  :inccode: .vector_try.rb-binplus
 
-<b>[ this is how far I got ; 2007/8/2 -- Piet ]</b>
+We can now use the <tt>+@</tt> symbol to redefine also the unary plus for
+the same +Vector+ class:
+
+ :inccode: .vector_try.rb-unplus
+
+When we use it, we don't have to add the <tt>@</tt> symbol, which is only
+used in the definition, to make the necessary distinction between the unary
+and binary plus.
+
+*Dan*: That's it?  You just return the vector itself?  I guess it makes
+sense, but it seems almost too simple.  Let's try it out:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try.rb"
+v1 = Vector[1, 2, 3]
+v = +v1
+quit
+END
+
+Good!  Now what about unary minus?
+
+== Unitary <tt>-</tt>
+
+*Carol*: What about it?
+
+*Dan*: My first guess would be to let the
+method return <tt>-self</tt> but that's too simple, I'm sure . . .
+
+*Carol*: Yes, that would beg the question!  Remember our friend +map+,
+which maps an operation on all elements of an array?  Well, because the
++Vector+ class inherits the +Array+ class, any method working for an
+array will work for a vector as well, so here we go:
+
+ :inccode: .vector_try.rb-unmin
+
+And here is the reality check:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try.rb"
+v1 = Vector[1, 2, 3]
+v = -v1
+quit
+END
+
+*Dan*: It's real.  Congratulations!
+
+*Erica*: Can you compose these operations arbitrarily?  Let me try:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try.rb"
+v1 = Vector[1, 2, 3]
+v2 = Vector[5, 6, 7]
+v = -((-v1) + (+v2))
+quit
+END
+
+Great!  Okay, now we have really covered a complete usage of <tt>+</tt>
+and  <tt>-</tt> for vectors.
 
 == +Vector+ Multiplication
 
+*Carol*: Which means it is time to move on to multiplication.  But here
+we have another problem: there is multiplication and then there is
 multiplication.
 
-In fact, there are two types of multiplication that we have to consider.
+*Dan*: You mean?
 
-With <tt>vector_try.rb</tt>: 
+*Carol*: We can multiply a vector with a scalar number; for a vector
 
- :inccode: .vector_try.rb
+  v = [1, 2, 3]
 
-And with <tt>euler_modified_vector_try.rb</tt>:
+we would like to see multiplication by two giving us:
 
- :inccode: .euler_modified_vector_try.rb
+  2 * v = [2, 4, 6]
 
- :commandoutput: ruby euler_modified_vector_try.rb | tail -1
+But in addition (no pun intended) we want to form an inner product of
+two vectors.  In particular, we would like to get the square of the
+length of a vector by forming the inner product with itself:
 
-With <tt>euler_modified_vector_try_again.rb</tt>:
+  v * v = 2*2 + 4*4 + 6*6 = 56
 
- :inccode: .euler_modified_vector_try_again.rb
+Or more generally, for
 
- :commandoutput: ruby euler_modified_vector_try_again.rb | tail -1
+  w = [10, 10, 10]
 
-Now with <tt>vector.rb</tt>: 
+we want to be able to take the inner product of +v+ and +w+ to give us:
 
- :inccode: .vector.rb
+  v * w = 2*10 + 4*10 + 6*10 = 120
 
-And with <tt>euler_modified_vector.rb</tt>:
+We could of course define different method names for these two operations,
+like <tt>multiply_scalar</tt> and <tt>inner_product</tt>, but
+something tells me that we will be happier using <tt>*</tt> for both.
 
- :inccode: .euler_modified_vector.rb
+*Dan*: Certainly I will be happier that way!
 
- :commandoutput: ruby euler_modified_vector.rb | tail -1
+*Carol*: Well, how about this?
 
-Let integer division give floating point results, where needed
+ :inccode: .vector_try.rb-binmul
+
+Time for a workout:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try.rb"
+v1 = Vector[1, 2, 3]
+v2 = Vector[5, 6, 7]
+v1 * 3
+v1 * v1
+v1 * v2
+v1 * v2 * 3
+v1 * 3 * v2
+quit
+END
+
+== +Vector+ Division
+
+*Dan*: So far so good, but why do you put the number 3 only at the end
+and in the middle, why not in front?  That would seem more natural!
+Let me try:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try.rb"
+v1 = Vector[1, 2, 3]
+v1 * 3
+3 * v1
+quit
+END
+
+Hmmm, I guess not.
+
+*Carol*: Yes, it would be more natural, but it doesn't work.  Do you see
+why?  Remember, when we write <tt>v2 * 3</tt> we invoke the <tt>*</tt>
+method of the vector object <tt>v2</tt>.  I understand that you would
+like to write <tt>3 * v2</tt>, but in that case you have a problem:
+you would be trying to invoke the <tt>*</tt> method of the number
+object 3 . . . .
+
+*Erica*: That's all and well, as a formal explanation, but if you can
+only write <tt>[1, 2, 3] * 3</tt> and never <tt>3 * [1, 2, 3]</tt>,
+I'm not very happy with it.  The whole point was to make our life
+easier, and to make the software notation more natural, more close to
+what you would write with pen and paper . . . 
+
+*Dan*: I agree.  Half a solution is often worse than no solution at all.
+Perhaps we should just return to our earlier component notation.
+
+*Carol*: I can't argue with that.  But I'm not yet willing to give up.
+I wonder whether there is not some sort of way out.  Let me see whether
+I can find something.
+
+For now, let's finish the job we started, and add a division method as
+well.  In the case of division, we only have to deal with scalar division.
+
+*Erica*: Ah, yes, of course, you have an inner product, but not an inner
+quotient.
+
+*Carol*: Well, not completely `of course', there is something called
+`goemetric algebra'.  If you're curious, you can search for it on the
+internet.
+
+*Dan*: I'm not curious, let's move on.
+
+*Carol*: Okay, so I will punish attempts to divide two vectors by letting
+an error message appear.  In Ruby you can use the command +raise+ to 
+halt execution and display an error message:
+
+ :inccode: .vector_try.rb-bindiv
+
+A quick check:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try.rb"
+v1 = Vector[1, 2, 3]
+v2 = Vector[5, 6, 7]
+v1 / 3.0
+v2 / 0.5
+v1 / v2
+quit
+END
+
+You see, we got a run time error, because the +raise+ statement had
+the effect of raising an error, as it is called in Ruby.
+
+== The Score: Six to One
+
+*Erica*: Let me see whether I can sum up what we've learned.
+We've successfully implemented seven legal operations, unary/binary
+addition/multiplication, scalar/vector multiplication and scalar division.
+
+Of these seven, six are okay.  It is only with scalar multiplication that
+we encounter a problem, namely a lack of symmetry.
+
+*Dan*: Can you define "okay" for the other six?
+
+*Erica*: I will be explicit.  I will use a notation where <tt>v1</tt>
+and <tt>v2</tt> are vectors, and +s+ is a scalar number, which could be
+either an integer or a floating point number.  I will call something
+"well defined" if it gives a specific answer, and not an error message.
+
+Here is the whole list of the six operations that I am now considering "okay":
+
+1) unary plus:  <tt>+v1</tt> is okay, because it is well defined.
+
+2) unary minus:  <tt>-v1</tt> is okay, because it is well defined.
+
+3) binary plus:  <tt>v1 + v2</tt> is okay, because both <tt>v1 + v2</tt>
+and <tt>v2 + v1</tt> are well defined, and both give the exact same answer,
+as they should.
+
+4) binary minus:  <tt>v1 - v2</tt> is okay, because both <tt>v1 - v2</tt>
+and <tt>v2 - v1</tt> are well defined, and both give the exact opposite
+answer, as they should.
+
+5) vector times:  <tt>v1 * v2</tt> is okay, because both <tt>v1 * v2</tt>
+and <tt>v2 * v1</tt> are well defined, and both give the exact same answer,
+as they should.
+
+6) scalar slash:  <tt>v1 / s</tt> is okay, because it is well defined.
+The alternative, <tt>s / v1</tt> is not defined, and will give an error
+message.  However, that's perfectly okay too, because we have decided
+that we don't allow division by vectors.
+
+So far, the score is six to zero, and we seem to be winning.  The problem
+is that we are losing in the case of number 7:
+
+7) scalar times:  <tt>v1 * s</tt> is okay, because it is well defined.
+The alternative, <tt>s * v1</tt> _should_ give the same answer too, 
+but unfortunately, in our implementation it is not defined, and in
+fact, as we have seen, it gives an error message.
+
+*Dan*: Thanks, Erica, that's a very clear summary.  So all we have to do,
+to save the day, is to repair <tt>s * v1</tt>, so that it gives a well
+defined result, and in fact the same result as <tt>v1 * s</tt>.
+
+I've seen Carol paging verociously in her Ruby manual.  Any luck yet, Carol?

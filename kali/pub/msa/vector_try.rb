@@ -13,14 +13,14 @@ class Vector < Array
     diff
   end
 #:segment end:
-#:segment start: unmin
-  def -@
-    self.map{|x| -x}.to_v
-  end
-#:segment end:
 #:segment start: unplus
   def +@
     self
+  end
+#:segment end:
+#:segment start: unmin
+  def -@
+    self.map{|x| -x}.to_v
   end
 #:segment end:
 #:segment start: binmul
@@ -46,10 +46,4 @@ class Vector < Array
     quotient
   end
 #:segment end:
-end
-
-class Array
-  def to_v
-    Vector[*self]
-  end
 end
