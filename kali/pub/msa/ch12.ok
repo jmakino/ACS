@@ -191,7 +191,7 @@ That's all we've got, and that's what we have to use to construct +a+.
 The way I'm trying to define addition is by starting with one of the
 two vectors <tt>v1</tt>, and to define a method that allows <tt>v1</tt>
 to accept a second vector <tt>v2</tt>.  So the whole operation can then
-be writen as
+be written as
 
   v1.plus(v2)
 
@@ -304,7 +304,7 @@ I'm still not happy about the asymmetry.  Writing
 
   v = v1.plus v2
 
-gives the impression that <tt>v1</tt> is charging forwards, gobbling
+gives the impression that <tt>v1</tt> is charging forward, gobbling
 up <tt>v2</tt> and then spitting out the result.  You told me that we
 cannot write 
 

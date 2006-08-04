@@ -16,7 +16,7 @@ rather than
 
 *Carol*: Not quite yet; I'll have to do the same thing for subtraction,
 multiplication and addition as well.  And I'm sure there are a few more
-things to consider, before we can claim to have a complete +Vector+ clss.
+things to consider, before we can claim to have a complete +Vector+ class.
 But I, too, am encouraged with the good start we've made!
 
 I'll open a new file <tt>vector_try_add_sub.rb</tt>.  First thing to add,
@@ -78,7 +78,7 @@ minus is an operation that has only one operand.
 *Erica*: As opposed to what?
 
 *Carol*: As opposed to a binary minus.  Most normal operations, such as 
-addition and substraction, as well as multiplication and division, are
+addition and subtraction, as well as multiplication and division, are
 binary operation.  Binary here means two operands.  When you use a
 single plus sign, you add two numbers.  Similarly, a minus allows you
 to subtract two numbers.  So when you write <tt>5 - 3 = 2</tt> you are using
@@ -263,7 +263,7 @@ well.  In the case of division, we only have to deal with scalar division.
 quotient.
 
 *Carol*: Well, not completely `of course', there is something called
-`goemetric algebra'.  If you're curious, you can search for it on the
+`geometric algebra'.  If you're curious, you can search for it on the
 internet.
 
 *Dan*: I'm not curious, let's move on.
@@ -340,4 +340,4 @@ fact, as we have seen, it gives an error message.
 to save the day, is to repair <tt>s * v1</tt>, so that it gives a well
 defined result, and in fact the same result as <tt>v1 * s</tt>.
 
-I've seen Carol paging verociously in her Ruby manual.  Any luck yet, Carol?
+I've seen Carol paging ferociously in her Ruby manual.  Any luck yet, Carol?
