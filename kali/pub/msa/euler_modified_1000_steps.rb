@@ -17,9 +17,9 @@ print(vx, "  ", vy, "  ", vz, "\n")
   ax = - x / r3
   ay = - y / r3
   az = - z / r3
-  x1 = x + vx*dt
-  y1 = y + vy*dt
-  z1 = z + vz*dt
+  x1 = x + vx*dt                             #1
+  y1 = y + vy*dt                             #1
+  z1 = z + vz*dt                             #1
   vx1 = vx + ax*dt
   vy1 = vy + ay*dt
   vz1 = vz + az*dt
