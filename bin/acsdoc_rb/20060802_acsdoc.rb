@@ -1147,7 +1147,7 @@ module Acsdoc
 	ostring = ostring +  command_with_input(s,":commandinputoutput:", 
 				      instring,dirname,true, true,saveresult)
       elsif s=~ /^(\s*):commandinputoutputnoecho:/
-	ostring = ostring +  command_with_input(s,":commandinputoutput:", 
+	ostring = ostring +  command_with_input(s,":commandinputoutputnoecho:", 
 				      instring,dirname,true, false,saveresult)
       elsif s =~ /^(\s*):commandinput:/
 	ostring = ostring +  command_with_input(s,":commandinput:", instring,
