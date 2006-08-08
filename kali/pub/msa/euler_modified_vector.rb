@@ -16,7 +16,7 @@ print_pos_vel(r,v)
   r2 = r*r
   r3 = r2 * sqrt(r2)
   a = -r/r3
-  r1 = r + v*dt
+  r1 = r + v*dt                     #1
   v1 = v + a*dt
   r12 = r1*r1
   r13 = r12 * sqrt(r12)
