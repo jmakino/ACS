@@ -13,7 +13,7 @@ class Vector < Array
     self
   end
   def -@
-    self.map{|x| -x}.to_v
+    self.map{|x| -x}
   end
   def *(a)
     if a.class == Vector              # inner product

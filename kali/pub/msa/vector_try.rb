@@ -20,7 +20,7 @@ class Vector < Array
 #:segment end:
 #:segment start: unmin
   def -@
-    self.map{|x| -x}.to_v
+    self.map{|x| -x}
   end
 #:segment end:
 #:segment start: binmul
