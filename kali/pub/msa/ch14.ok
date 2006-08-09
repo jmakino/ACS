@@ -264,22 +264,6 @@ the practice tells us:
 
  :commandinputoutputnoecho: irb END
 require "vector.rb"
-v = [1, 2, 3]
-v * 3
-quit
-END
-
-*Dan*: Well, it tells you that something wasn't quite right.
-
-*Erica*: Not necessarily; the mistake was not in the method;
-Carol forgot to specify that +v+ should be a vector.  Right now
-it is still an array, by default.  You should use your nifty
-new <tt>to_v</tt>, Carol!
-
-*Carol*: Of course, yes, stupid of me.  Try again:
-
- :commandinputoutputnoecho: irb END
-require "vector.rb"
 v = [1, 2, 3].to_v
 v * 3
 (v * 3).class
