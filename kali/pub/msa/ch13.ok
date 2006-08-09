@@ -63,18 +63,18 @@ Aha!  You see, we're not even half-way yet.  Neither of the two work.
 But it's intriguing that we get a similar error message, this time with
 a plus sign in front of the mysterious <tt>@</tt> symbol.
 
-== Unitary <tt>+</tt>
+== Unary <tt>+</tt>
 
 *Carol*: Let me consult the Ruby manual.  Just a moment . . . aha, I see!
 Well, this is perhaps an exception to Ruby's principle of least surprise.
 The manual tells me that <tt>-@</tt> is the Ruby notation for a
-unitary minus, and similarly, <tt>+@</tt> is the Ruby notation for a
-unitary plus.
+unary minus, and similarly, <tt>+@</tt> is the Ruby notation for a
+unary plus.
 
-*Dan*: A unitary minus?
+*Dan*: A unary minus?
 
-*Carol*: Yes, and the word `unit' in unitary here means `one'.  A unitary
-minus is an operation that has only one operand.
+*Carol*: Yes, and the word `un' in unary here means `one,' like in `unit.'
+A unary minus is an operation that has only one operand.
 
 *Erica*: As opposed to what?
 
@@ -100,12 +100,12 @@ multiplication, it is simpler to think only about subtraction.  So writing
 minus, while both are denoting the same result.
 
 *Dan*: But why does Ruby use such a complicated symbol, <tt>-@</tt>, for
-unitary minus?
+unary minus?
 
 *Carol*: That symbol is only used when you redefine the symbol.
 
 Here, let me try it out, in a new file <tt>vector_try_unary.rb</tt>.  And I may
-as well start with the unitary plus, since that seems the simplest of the
+as well start with the unary plus, since that seems the simplest of the
 two unary operations.
 
 We have just redefined the binary plus as follows:
@@ -133,7 +133,7 @@ END
 
 Good!  Now what about unary minus?
 
-== Unitary <tt>-</tt>
+== Unary <tt>-</tt>
 
 *Carol*: What about it?
 
