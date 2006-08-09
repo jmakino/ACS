@@ -1,20 +1,29 @@
 class Vector < Array
+#:segment start: binplus
   def +(a)
-    sum = Vector.new
+    sum = Vector.new                                   
     self.each_index{|k| sum[k] = self[k]+a[k]}
     sum
   end
+#:segment end:
+#:segment start: binmin
   def -(a)
     diff = Vector.new
     self.each_index{|k| diff[k] = self[k]-a[k]}
     diff
   end
+#:segment end:
+#:segment start: unplus
   def +@
     self
   end
+#:segment end:
+#:segment start: unmin
   def -@
-    self.map{|x| -x}.to_v
+    self.map{|x| -x}
   end
+#:segment end:
+#:segment start: binmul
   def *(a)
     if a.class == Vector              # inner product
       product = 0
@@ -25,6 +34,8 @@ class Vector < Array
     end
     product
   end
+#:segment end:
+#:segment start: bindiv
   def /(a)
     if a.class == Vector
       raise
@@ -34,38 +45,5 @@ class Vector < Array
     end
     quotient
   end
-end
-
-#:segment start: array
-class Array
-  def to_v
-    Vector[*self]
-  end
-end
 #:segment end:
-
-#:segment start: fixnum
-class Fixnum
-  alias :original_mult :*
-  def *(a)
-    if a.class == Vector
-      a*self
-    else
-      original_mult(a)
-    end
-  end
 end
-#:segment end:
-
-#:segment start: float
-class Float
-  alias :original_mult :*
-  def *(a)
-    if a.class == Vector
-      a*self
-    else
-      original_mult(a)
-    end
-  end
-end
-#:segment end:
