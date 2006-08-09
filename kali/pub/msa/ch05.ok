@@ -178,20 +178,30 @@ most likely we'll make a mistake, or two, or more, before we're finished!
 *Carol*: I have learned that in order to solve a differential equation,
 you have to provide initial conditions.
 
-*Erica*: 
-You mean we have to start by specifying the initial separation between
-the particles.  How about a simple choice like this?
+*Erica*: Yes.  It is like using a map: if you don't know where you are,
+you can't use it.  You start with the spot marked "you are here", and then
+you can start walking, using the knowledge given by the map.
 
- :inccode: .euler_try.rb-1
+In our case, a differential equation tells you how a system evolves,
+from one point to the next.  Once you know where you are at time
+<tt>0</tt>, the equation tells you where you will move to, and how, in
+subsequent times.
+
+So we have to specify the initial separation between the particles.
+How about a simple choice like this?
+
+:eqnarray:
+ \br &=& \{x, y, z\} = \{1, 0, 0\}                    \nonumber \\
+ \bv &=& \{v_x, v_y, v_z\} = \{0, 0.5, 0\}
 
 *Dan*: Let me put this into words.
 The relative position vector is chosen along the <tex>$x$</tex> axis
-at a distance of unity from the origin where the other particle
-resides in the relative coordinate system that we use:
-<tex>$\br = \{1, 0, 0\}$</tex>.  The relative velocity is chosen to be
-<tex>$0.5$</tex> in the direction of the positive <tex>$y$</tex> axis:
-<tex>$\bv = \{0, 0.5, 0\}$</tex>.  This means that the initial motion
-is at right angles to the initial separation.
+at a distance of one from the origin.  The origin is the place where
+the other particle resides, and it is the origin of the relative
+coordinate system that we use.  And the relative velocity is chosen to be
+<tex>$0.5$</tex> in the direction of the positive <tex>$y$</tex> axis.
+This means that the initial motion is at right angles to the initial
+separation.
 
 *Carol*: Would it not be easier to use a position of
 <tex>$\br = \{1, 0\}$</tex> and a velocity of <tex>$\bv = \{0, 0.5\}$</tex>,
@@ -201,9 +211,64 @@ in other words, to work in two dimensions?
 universe, we will have to go to 3D, so why not just start there, even
 though the two-body problem is essential a 2D problem.
 
-*Dan*: I don't care, either way, let's just move on.
+*Dan*: I don't care, either way, let's just move on.  We have to translate
+what Erica has just written into computer code.  If it were Fortran, I would
+start writing the first line as
 
-*Carol*: Does this specific choice of intial conditions mean that the
+  x = 1
+
+*Erica*: That is how you would do it in C or C++ as well, although you first
+would have to declare the type of +x+, by specifying that it is a number,
+in our case a floating point number, even though we initialize it here
+with an integer.  The meaning of the equal sign, <tt>=</tt>, can be
+interpreted as follows: the value of the right-hand side of the equation
+gets assigned to the variable that appears at the left-hand side.  In this
+case, the value of the right-hand side is already clear, it is just 1,
+and after execution of this statement, the variable +x+ has acquired the
+value 1.
+
+*Carol*: In Ruby you do the same as in Fortran or C or C++, or Java for that
+matter.  In general, Ruby is designed around the `principle of least surprise.'
+If you have some experience with computer languages, you will find
+that whenever you encounter something new in Ruby, it is not too far
+from what you might have guessed.
+
+*Erica*: So assignment is exactly the same as in C?
+
+*Carol*: The assingment itself is exactly the same, but there is no need to
+declare anything.
+
+*Erica*: Really?  How does Ruby now that the variable +x+ can hold a floating
+point number and not, say, a character string or an array or whatever?
+
+*Carol*: In Ruby there is no need for variable declaration, simply because
+there is nothing to declare: variables have no intrinsic type.  The type of
+a variable is whatever you assign to it.  If you write <tt>x = 3.14</tt>,
++x+ becomes a floating point number; and if you then write <tt>x = "abs"</tt>,
+it becomes a string.  This freedom and flexibility is expressed by saying
+that Ruby is a dynamically typed language.
+
+*Erica*: Isn't that dangerous?
+
+*Carol*: I expected it would be, but in my experience, I in fact
+made fewer mistakes using Ruby than using so-called strongly typed
+languages, such as C and C++.  Or stated more precisely: what mistakes
+I made, I could catch far more quickly, since it would be rather
+obvious if you assign <tt>pi = "abc"</tt> and then try to compute
+<tt>2*pi*r</tt> and the like: you would get an error message telling
+you that a string cannot be forced into a number.
+
+*Erica*: so this means that we can just list the six assignments for
+$\br = \{1, 0, 0\}$ and $\bv = \{0, 0.5, 0\}$?  Like one line for each
+assignment?
+
+*Carol*: You can write several assignments on one line, separated
+by semicolons, but I prefer to keep it simple and do it one per line.
+Here they are:
+
+ :inccode: .euler_try.rb-1
+
+By the way, does this specific choice of intial conditions mean that the
 two particles will move around each other in a circle?
 
 *Erica*: Probably not, unless we give exactly the right velocity
@@ -346,27 +411,6 @@ Perfect!  We started with 20 and three times we added 1.
 by various other languages.  It applies for many operators, not only
 addition.  For example, <tt>c *= d</tt> is the same as <tt>c = c * d</tt>.
 
-*Erica*: I've been puzzled by one thing.  We have never declared any
-variable.  How does Ruby now that the variables +a+ and +b+ and +c+
-can hold numbers, and not, say, character strings or arrays or whatever?
-
-*Carol*: In Ruby there is no need for variable declaration, simply because
-there is nothing to declare: variables have no intrinsic type.  The type of
-a variable is whatever you assign to it.  If you write <tt>x = 3.14</tt>,
-+x+ becomes a floating point number; and if you then write <tt>x = "abs"</tt>,
-it becomes a string.  This freedom and flexibility is expressed by saying
-that Ruby is a dynamically typed language.
-
-*Erica*: Isn't that dangerous?
-
-*Carol*: I expected it would be, but in my experience, I in fact
-made fewer mistakes using Ruby than using so-called strongly typed
-languages, such as C and C++.  Or stated more precisely: what mistakes
-I made, I could catch far more quickly, since it would be rather
-obvious if you assign <tt>pi = "abc"</tt> and then try to compute
-<tt>2*pi*r</tt> and the like: you would get an error message telling
-you that a string cannot be forced into a number.
-
 == Compiled vs. Interpreted vs. Interactive
 
 *Erica*: This +irb+ program is quite useful clearly, but I'm puzzled
@@ -389,7 +433,7 @@ script by typing <tt>csh filename</tt>.  In our case we will type
 <tt>ruby euler_try.rb</tt>.
 
 *Erica*: So the difference is that in C you first compile each piece of
-source code into object modules, and then you load those modules into
+source code into object modules, and then you link those modules into
 a single executive file, and then you run that file -- whereas in Ruby
 the script itself is executable.
 
@@ -537,15 +581,15 @@ express we have already found: <tex>$r^3 = r^2r$</tex>:
 
 *Dan*: Shall we see whether the program works, so far?  Let's run it!
 
-*Carol*: Small point, but . . . perhaps we should add a print statement,
+*Erica*: Small point, but . . . perhaps we should add a print statement,
 to get the result on the screen?
 
-*Erica*: I guess that doesn't hurt!  The Ruby syntax for printing seems to be
-very intuitive, following what they call the `principle of least surprise':
+*Carol*: I guess that doesn't hurt!  The Ruby syntax for printing is
+very intuitive, following the Ruby notion of the `principle of least surprise':
 
  :inccode: .euler_try.rb-9
 
-*Carol*: I like that principle!  And indeed, this couldn't be simpler!
+*Erica*: I like that principle!  And indeed, this couldn't be simpler!
 
 *Dan*: Apart from this mysterious <tt>\n</tt> at the end.  What does that do?
 

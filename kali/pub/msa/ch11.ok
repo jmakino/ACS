@@ -19,8 +19,14 @@ that we have discovered was interesting as such, but in astrophysics
 at least, the leapfrog is used much more often.  Presumably it has
 some advantages, and in any case, I'd like to see how it behaves.
 
+*Dan*: What is a _leapfrog_?
+
+*Erica*: It is probably the most popular integration algorithm, not only
+in astrophysics, but also in molecular dynamics, as well as in other fields.
+It combines simplicity with long-term stability.  Shall I sketch it out?
+
 *Carol*: 
-But before we do your `before', I have an urgent wish: I want to clean
+Before we do your `before', I have an urgent wish: I want to clean
 up the last code we've written.  If we just go on adding extra lines
 to produce higher-order codes, pretty soon the code becomes a bunch of
 spaghetti.
@@ -134,15 +140,15 @@ file <tt>euler_array_try.rb</tt>:
  :inccode: .euler_array_try.rb
 
 As you can see, I have simply replaced +x+ by <tt>r[0]</tt>,
-+y+ by <tt>r[1]</tt>, +z+ by <tt>v[0]</tt>, and similarly for the
++y+ by <tt>r[1]</tt>, +z+ by <tt>r[2]</tt>, and similarly for the
 velocities and accelerations, I have replaced +vx+ by <tt>v[0]</tt>
 and +ax+ by <tt>a[0]</tt>, and so on for the other elements.
 
 *Dan*: From your example, I guess that arrays start with element zero?
 
 *Carol*: Ah, yes, that's true, like in C, where the first element of an
-array +something+ is <tt>something[0]</tt>, unlike Fortran, where the
-first element is <tt>something[1]</tt>.
+array +foo+ is <tt>foo[0]</tt>, unlike Fortran, where the
+first element is <tt>foo[1]</tt>.
 
 *Erica*: I noticed that right at the start of the program, you have done
 a bit more already than simply replacing <tt>x = 1</tt> by <tt>r[0] = 1</tt>,
