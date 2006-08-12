@@ -235,7 +235,7 @@ from what you might have guessed.
 
 *Erica*: So assignment is exactly the same as in C?
 
-*Carol*: The assingment itself is exactly the same, but there is no need to
+*Carol*: The assignment itself is exactly the same, but there is no need to
 declare anything.
 
 *Erica*: Really?  How does Ruby now that the variable +x+ can hold a floating
