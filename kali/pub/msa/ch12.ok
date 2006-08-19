@@ -393,13 +393,14 @@ really invokes the addition operator of the number <tt>2</tt>.
 Okay, now we know.
 
 *Carol*: But of course, it is much more intuitively obvious to write
-<tt>2 + 3</tt> than to write <tt>2.+ 3</tt>.  One of the main principles
-that was used by Matsumoto, the designer of Ruby, was the principle of
-least surprise.  Even though in fact Ruby has much in common with Lisp,
-Matsumoto decided not to use a lisp like notation, in which <tt>2 + 3</tt>
-would have looked something like <tt>(+ (2, 3))</tt>, a beautifully clear
-notation once you get used to it, but unlike <tt>2 + 3</tt> not immediately
-obvious at first.
+<tt>2 + 3</tt> than to write <tt>2.+ 3</tt>.  I have mentioned earlier
+the principle of least surprise, introduced by Matsumoto, the designer
+of Ruby, as a guide line for the Ruby syntax.  Even though in fact
+Ruby has much in common with Lisp, Matsumoto decided not to use a lisp
+like notation, in which <tt>2 + 3</tt> would have looked something
+like <tt>(+ (2, 3))</tt>, a beautifully clear notation once you get
+used to it, but unlike <tt>2 + 3</tt> not immediately obvious when
+somebody comes across it for the first time.
 
 *Dan*: I'd say!
 

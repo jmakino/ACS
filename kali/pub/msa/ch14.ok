@@ -305,3 +305,40 @@ In fact, it is shorter than I thought, for all the things it does:
 
  :inccode: .vector.rb
 
+== Forward Euler in Vector Form
+
+*Bob*: The whole point of this long exercise was to make our codes
+more readable.  Here is the last array version we made of our simplest
+code, the forward Euler version, in <tt>euler_array_each_def.rb</tt>:
+
+ :inccode: .euler_array_each_def.rb
+
+What would that look like in vector form?
+
+*Carol*: To start with, we'll have to +require+ the file <tt>vector.rb</tt>.
+We also have to convert the arrays into vectors, using <tt>.to_v</tt>.
+Then, in the loop, we can use  our vector versions of addition, unary minus,
+multiplication and division.  Let me write it all in file
+<tt>euler_vector.rb</tt>:
+
+ :inccode: .euler_vector.rb
+
+*Dan*: Wait a minute, we haven't define <tt>+=</tt> yet!
+
+*Carol*: Ah, you see, that's a nice feature of operator overloading in
+Ruby: once you redefine <tt>+</tt> the same redefinition applies to
+derivative expressions such as <tt>+=<tt>.
+
+*Dan*: That's nice, if it really works.  Let's compare the run with the
+old results:
+
+ :commandoutput: ruby euler_array_each_def.rb | tail -1
+
+ :commandoutput: ruby euler_vector.rb | tail -1
+
+Wonderful.  And I must say, the code does look a lot cleaner now.
+
+*Erica*: Definitely.  This _is_ a lot more pretty.  What a difference!
+None of all those ugly <tt>[k]</tt> occurrences anymore.
+I think it was worth all the work we put in,
+defining a <tt>Vector</tt> class.

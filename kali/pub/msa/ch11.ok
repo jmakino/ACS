@@ -400,7 +400,7 @@ that some type of transformation is being performed.  As for the word
 
 *Carol*: I agree, and that's why I chose to use +map+ here.
 
-== Defining a New Method
+== Defining a Method
 
 *Erica*: Carol, you convinced us that we should obey the DRY principle,
 and indeed, we are no longer repeating ourselves on the level of vector
@@ -428,4 +428,112 @@ file, and then we can invoke <tt>print_rv</tt> wherever we need it:
 
  :commandoutput: ruby euler_array_each_def.rb | tail -1
 
-Okay!  Same results as before.
+== The <tt>Array#inject</tt> Method
+
+*Dan*: I wonder, would it be possible to make the code even shorter?
+
+*Erica*: Making a code shorter doesn't necessarily make it more readible?
+
+*Dan*: Sure, but I'm just curious.
+
+*Carol*: Well, if you want to get fancy, there is an array method called
++inject+.  It's a strange name for what is something like an accumulation
+method.  Let me show you:
+
+ :commandinputoutputnoecho: irb END
+a = [3, 4, 5]
+a.inject(0){|sum, x| sum + x}
+a.inject(1){|product, x| product * x}
+quit
+END
+
+*Erica*: I get the idea.  What <tt>inject(p){|y, x| y @ x}</tt>
+does is to give +y+ the initial value +p+, and then for each array
+component +x+, it applies the <tt>@</tt> operator, whatever it is,
+to the arguments +y+ and +x+.
+
+*Carol*: Indeed.  So this will allow me to make the loop part of the code
+a bit shorter:
+
+ :inccode: .euler_array_inject1.rb
+
+*Dan*: I see.  That got rid of the first line of the previous loop code.
+Does it work?
+
+*Carol*: Good point, let's first test it:
+
+ :commandoutput: ruby euler_array_inject1.rb | tail -1
+
+Same answer as before.  So yes, it works.
+
+== Shorter and Shorter
+
+*Dan*: And above that, you combined the assignment of the position and velocity
+arrays.  I'm suprised that _that_ works!
+
+*Carol*: In general, in Ruby you can
+assign values to more than one variable in one statement, where Ruby
+assumes that the values are listed in an array:
+
+ :commandinputoutputnoecho: irb END
+a, b, c = [10, "cat", 3.14]
+a
+b
+c
+quit
+END
+
+*Dan*: Oh, and before that, in the <tt>print_pos_vel</tt> method, you've
+gotten rid of a line as well.  What does +flatten+ do?
+
+*Carol*: I takes a nested array, and replaces it by a flat array, where
+all the components of the old tree structure are now arranged in one
+linear array.  Here's an example:
+
+ :commandinputoutputnoecho: irb END
+[1, [[2, 3], [4,5], 6], 7].flatten
+quit
+END
+
+*Dan*: And then just before the last print statement, you combine two
+statements into one, using a semicolon.  Four little tricks, saving us
+four lines.  I'm impressed!
+
+*Carol*: Ah, but I can do better!  How about this one,
+<tt>euler_array_inject2.rb</tt>?
+
+ :inccode: .euler_array_inject2.rb
+
+== Enough
+
+*Dan*: Two lines less.  You're getting devious!  And does it work?
+
+ :commandoutput: ruby euler_array_inject2.rb | tail -1
+
+I guess not.  But how can it produce nothing?
+
+*Carol*: Beats me.  Strange.  Let's show a bit more output:
+
+ :commandoutput: ruby euler_array_inject2.rb | tail -3
+
+Ah, of course, I've been a bit too clever.  By adding the
+return character <tt>\n</tt> character to the same line in
+the printing method, I have caused an extra two blank spaces
+to appear in the end.  Well, I can get rid of that simply
+by reversing the order, by printin the blank spaces first.
+Here is <tt>euler_array_inject3.rb</tt>:
+
+ :inccode: .euler_array_inject3.rb
+
+and here are the results:
+
+ :commandoutput: ruby euler_array_inject3.rb | tail -3
+
+Same!
+
+*Dan*: Almost the same: now every line has a few blank spaces at the start.
+
+*Carol*: Actually, that looks more elegant, doesn't it?
+
+*Erica*: Frankly, I'm getting a bit tired of shaving lines from codes.
+Stop playing, you two, and let's move one!

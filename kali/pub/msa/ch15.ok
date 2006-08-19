@@ -2,21 +2,18 @@
 
 == Modified Euler
 
-*Dan*: Now why again did we do all this?
-
-*Erica*: we were not happy with the way our modified Euler code looked.
-We wanted to clean things up, to make the code look more simple.
-So let's go back to that code and see what it looks like in vector form.
+*Dan*: Now that we have a vector version of forward Euler, it's time
+to clean up our modified Euler code as well.
 
 *Carol*: That will be an easy translation.  I'll open a new file,
 <tt>euler_modified_vector.rb</tt>, and I will copy the code from
 <tt>euler_modified_array.rb</tt>, while translating from array notation
-to vector notation.  Here it is:
+to vector notation.  Same ideas as with <tt>euler_vector.rb</tt>.
+Here it is:
 
  :inccode: .euler_modified_vector.rb
 
-*Erica*: That _is_ a lot more pretty.  What a difference!  None of all
-those ugly <tt>[k]</tt> occurrences anymore.  The lines are shorter,
+*Erica*: What a relief!  The lines are shorter,
 there are fewer lines, but what is most important: the lines are easy
 to understand, with a direct correspondence between code and math.
 
@@ -58,7 +55,7 @@ and here's what our new vector code gives:
 
 *Dan*: Good!  I'm happy.
 
-<b>[ this is how far I got ; 2007/8/8 -- Piet ]</b>
+<b>[ this is how far I got ; 2007/8/19 -- Piet ]</b>
 
 == Leapfrog
 
