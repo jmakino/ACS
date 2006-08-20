@@ -137,6 +137,7 @@ Second attempt at integrating the two-body problem: a different failure.
 *Dan*: No comment.
 
 == One Integration Step: Validation
+:label: validation
 
 *Erica*: Maybe we should go back to the circular orbit.  We tried to
 take a single step there, and we found our typo.  Perhaps we should

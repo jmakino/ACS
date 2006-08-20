@@ -284,7 +284,7 @@ of the separation vector <tex>$\br$</tex>, which means that
 <tex>$\br\cdot\ba=-ra$</tex>.
 
 For a circular orbit, we must insist that the separation between the 
-particles remains constant, also in second order it time, so
+particles remains constant, also in second order in time, so
 <tex>$d^2r/dt^2=0$</tex>.  And there we are, this just means
 that:
 

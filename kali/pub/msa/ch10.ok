@@ -23,7 +23,7 @@ step at least one more time, so you spend a lot more computer time and
 you still only have a first-order method, so there is really no good reason
 to use that method.
 
-*Dan*: But wait a minute, the two types of errors in figs. ref(forward1)
+*Carol*: But wait a minute, the two types of errors in figs. ref(forward1)
 and ref(backward1) are clearly going in the opposite directions.
 I mean, forward flies out of the curve one way, and backwards spiral in
 the other way.  I wonder, can't you somehow combine the two methods and
@@ -44,30 +44,28 @@ and the bottom arrow backward Euler.  The dashed arrow shows the average
 between the two, which clearly gives a better approximation to the curved
 lines that show the true solutions to the differential equation.
 
-*Carol*: But at a large cost!  The backward Euler method is an implicit
+*Dan*: But at a large cost!  The backward Euler method is an implicit
 method, as Erica mentioned, that requires at least one extra iteration.
 So the bottom arrow alone is much more expensive to compute than the top
 arrow, and we have to compute both.
 
-*Dan*: It was just a wild idea, and it may not be useful.
+*Carol*: It was just a wild idea, and it may not be useful.
 
 == Backwards and Forwards
 
-*Erica*: Actually, I like Dan's idea.  In reminds me of one of the second
+*Erica*: Actually, I like Carol's idea.  In reminds me of one of the second
 order schemes that I learned in class.  Let me just check my notes.
 
 Aha, I found it.  There is an algorithm called "Modified Euler", which
 starts with the forward Euler idea, and then modifies it to improve the
 accuracy, from first order to second order.  And it seems rather similar
-to what Dan just sketched.
+to what Carol just sketched.
 
 *Carol*: In that case, how about trying to reconstruct it for ourselves.
 That is more fun than copying the algorithm from a book.
 
-*Erica*: Okay, I'll try to forget what I learned about Modified Euler;
-that will be easy to do, since I really don't remember any details any more.
-
-Okay, how about shifting the arrow of the backwards step to the end
+Now let's see.  We want to compute the dashed line in figure ref(modforward1).
+How about shifting the arrow of the backwards step to the end
 of the arrow of the forwards step, as in fig. ref(modforward2)?  Or to be
 precise, how about just taking two forward Euler steps, one after the other?
 The second forward step will not produce exactly the same arrow as the first
@@ -80,11 +78,11 @@ Two successive forward Euler steps.
 *Dan*: But how are you going to use that to construct the dashed line in
 fig. ref(modforward1)?
 
-*Erica*: Let's see.  How about starting with fig. ref(modforward1), and
-then shifting the second arrow back, so that the end of the arrow falls
-on the same point as the end of the first arrow?  In that way, we have
-constructed a backward Euler step that lands on the same point where our
-forward Euler step landed, as you can see in fig. ref(modforward3).
+*Carol*: How about shifting the second arrow back, in fig. ref(modforward2),
+so that the end of the arrow falls on the same point as the end of the
+first arrow?  In that way, we have constructed a backward Euler step
+that lands on the same point where our forward Euler step landed, as
+you can see in fig. ref(modforward3).
 
 :figure: modforward3.eps 6cm modforward3
 A forward Euler steps and a backward Euler step, landing at the same point.
@@ -107,7 +105,95 @@ the some of the two fully drawn arrows; the dotted arrow has the same length
 as the dashed arrow.  This result is approximately the same as the dashed
 arrow in fig. ref(modforward1).
 
-*Dan*: That looks like a promising approach.  Let's write a code for it.
+== On Shaky Ground
+
+*Dan*: I don't believe it.  Or what I really mean is: I cannot yet believe
+that this is really correct, because I don't see any proof for it.  You are
+waving your arms and you just hope for the best.  Let's be a bit more
+critical here.
+
+In figure ref(modforward1), it was still quite plausible that the
+dashed arrow succeeded in canceling the opposite errors in the two
+solid arrows.  Given that those two solid arrows, corresponding to
+forward Euler and backward Euler, were only first-order accurate, I
+can see that the error in the dashed arrow just _may_ be second-order
+accurate.  Whether the two first-order errors of the solid arrows
+_actually_ cancel in leading order, I'm not sure, but we might be lucky.
+
+But then you start introducing other assumptions: that you can swap
+the new second forward Euler arrow for the old backward Euler error,
+and stuff like that.  I must say, here I have totally lost my intuition.
+
+Frankly, I feel on really shaky ground, talking about an order of a
+differential equation.  I have some vague sense of what it could mean,
+but I wouldn't be able to define it.
+
+*Erica*: Here is the basic idea.  If an algorithm is <i>n</i>th order,
+this means that it makes an error per step that is one order higher
+in terms of powers of the time step.  What I mean is this: for a simple
+differential equation
+
+:equation:
+{dx \over dt} = f(x)
+
+the error that we make in going from time
+<tex>$i$</tex> to time <tex>$i+1$</tex>, with <tex>$dt = t_{i+1}-t_i$</tex>,
+can be written as:
+
+:equation:
+\delta x_{i+1} = B(dt)^{n+1}
+
+Here the coefficient <tex>$B$</tex> is a function of
+<tex>$x$</tex>, but it is almost independent of the size of the time
+step <tex>$dt$</tex>, and in the limit that <tex>$dt\rightarrow
+0$</tex>, it  will converge to a constant value
+<tex>$B(x,dt)\rightarrow B(x)$</tex>, which in the general case will
+be proportional to the <i>(n+1)</i>th time derivative of
+<tex>$f(x(t))$</tex>, along the orbit <tex>$x(t)$</tex>.
+
+In practice, we want to integrate an orbit over a given finite interval
+of time, for example from <tex>$t=0$</tex> to
+<tex>$t=T$</tex>.  For a choice of step size <tex>$dt$</tex>, we then
+need <tex>$k = T/dt$</tex> integration steps.  If we assume that the
+errors simply add up, in other words, if we don't rely on the errors
+to cancel each other in some way, then the total integration error
+after <tex>$k$</tex> steps will be bounded by
+
+:equation:
+\delta x(T) < kC(dt)^{n+1} = {T\over dt}C(dt)^{n+1} = TC(dt)^n
+
+where <tex>$C$</tex> is proportional to an upper bound of the absolute
+value of the <i>(n+1)</i>th time derivative of <tex>$f(x(t))$</tex>,
+along the orbit <tex>$x(t)$</tex>.
+
+In other words, for an <i>n</i>th order algorithm, the error we make
+after integrating for a fixed finite amount of time scales like the
+<i>n</i>th power of the time step.
+
+*Dan*: If we apply this reasoning to the forward Euler algorithm,
+which is a first order algorithm, we find that the accumulated error
+over a fixed time interval scales like the first power of time.  Yes,
+that makes sense: when we have made the time step ten times smaller,
+for example in sections ref(sect:validation) and
+ref(sect:evenbetternumbers), we have found that the error became
+roughly ten times smaller.
+
+== XXXX
+
+xxxx
+
+xxxx
+
+Isn't there any more direct way to check whether your intuition is
+really correct?  I mean, can't we just write it out, algebraically?
+
+xxxxx
+
+== Checking the Algebra
+
+xxxxx
+
+That looks like a promising approach.  Let's write a code for it.
 
 == Specifying the Steps
 

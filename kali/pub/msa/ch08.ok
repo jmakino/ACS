@@ -44,6 +44,7 @@ Time to run it!
 *Dan*: Those numbers are _very_ different from the earlier ones . . .
 
 == Even Better Numbers
+:label: evenbetternumbers
 
 *Erica*: Ah, but of course!  To come back to the same place, after
 making the time step ten times smaller, we have to take ten times as

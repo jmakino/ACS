@@ -567,7 +567,7 @@ they find had better be the same.
 in order to use the square root method +sqrt+, where the term method
 is used in the same way the word function is used in C and the word
 subroutine is used in Fortran.  The <tt>include</tt> statement is
-needed in order to gain access to the +Math+ module in Ruby, where
+needed to gain access to the +Math+ module in Ruby, where
 many of the mathematical methods reside.
 
 *Erica*: Thanks!  Now the rest is straightforward.  To code up
