@@ -302,6 +302,7 @@ larger later:
  :inccode: .euler_try.rb-2
 
 == Looping in Ruby
+:label: looping
 
 *Erica*: We now know where we start in space, and with what velocity.
 We also know the size of each time step.  All we have to do is start
@@ -331,6 +332,13 @@ language really stay so close to English?
 Each `thing' in ruby is an object, which can have attributes such as
 perhaps internal data or internal methods, which may or may not be
 visible from the outside.
+
+*Dan*: What is a method?
+
+*Carol*: In Ruby, the word _method_ is used for a piece of code that
+can be called from another place in a longer code.  In Fortran, you call
+that a _subroutine_, while in C and C++ you call it a _function_.  In
+Ruby, it is called a _method_.
 
 *Erica*: I have heard the term `object-oriented programming.'  I really
 should browse through the Ruby book, to get a bit more familiar with that

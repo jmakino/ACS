@@ -224,11 +224,101 @@ how many elements an array has.  All we need to say is that the variable +a+
 has the type of an array.  Or more precisely, in Ruby's terminology: the class
 of +a+ is +Array+, which is one of the built-in classes.
 
-<b>[Jun, how much shall we explain here about Ruby? -- Piet]</b>
+== Classes
 
-Here is how I suggest we define +a+ as an array, and I will write this
-in a new file, <tt>euler_array.rb</tt>, in the hope things will be
-correct now:
+*Dan*: What is a class?
+
+*Carol*: In Ruby, the word class is used to talk about the collection of
+possible things that have a particular type.
+
+*Dan*: What exactly is a type?
+
+*Carol*: The number 3 is an example of the type integer, the string
+"hello" is an example of the type string, and an array [3, "hello"]
+is an example of the type array.
+
+In Ruby, roughly speaking, each concrete example of a type is called
+an object, and the collection of all possible objects of a given type
+is called a class.  Each object of that type is called an instance of
+the class that corresponds to that type.  In Ruby, the character string
+"hello" is an object, an instance of class String.
+
+*Dan*: What about numbers?
+
+*Carol*: In Ruby there is the class of +Fixnum+,
+which is the class of integers, numbers such as <tex>$7$</tex> or
+<tex>$-5$</tex>, and the class +Float+, which is the class of floating
+point numbers, such as <tex>$1.41421$</tex>, and so on.  Some classes,
+such as arrays, allow objects to contain objects of other
+classes.  For example, the object <tt>[-5, 1.41421]</tt> is an array,
+which means it is an instance of the class +Array+, while the two elements
+are instances of the classes +Fixnum+ and +Float+, respectively.
+
+*Erica*: That's very different from how it is done in C++, where all
+the elements of an array always have the same type.  In C++, you can
+have an array <tt>[-5, 8, 3, ...]</tt> and an array
+<tt>[1.41421, 3.14, ...]</tt> but you certainly cannot mix the types,
+by giving each element of the array a different type.
+
+*Carol*: Well, in Ruby you can.  This is one of the many ways in which
+Ruby is far more flexible than C++.
+
+Coming back to Dan's question about classes, let's see how we can
+interrogate Ruby about class membership:
+
+ :commandinputoutputnoecho: irb END
+a = [-5, 1.41421]
+a.class
+a[0].class
+a[1].class
+a[1].class.class
+a.class.class
+quit
+END
+
+*Erica*: Ah, so each class, like +Fixnum+ or +Array+, or whatever
+is a member of the class +Class+?
+
+*Carol*: Yes, more precisely, _every_ constant or variable in Ruby is
+an object, and therefore must be an instance of a class.  The number
+3 is an object of class +Fixnum+, and the class +Fixnum+ is an object of
+class +Class+.  Note the convention: in Ruby the name of a class
+always starts with a capital letter.
+
+*Erica*: And what about +Class+?  What is that an instance of?
+
+*Carol*: Try it, ask +irb+.
+
+*Erica*: Okay:
+
+ :commandinputoutputnoecho: irb END
+3
+3.class
+3.class.class
+3.class.class.class
+quit
+END
+
+So +Class+ is a member of class +Class+.  That sounds circular!
+
+*Carol*: But it isn't.  This is an example of the strength of Ruby.
+Like Lisp and other seemingly circular languages, Ruby has the power
+to invoke itself, without arbitrary boundaries between metalevels.
+This is one of my favorite topics.  Shall I explain how it works?
+
+*Dan*: Not today.  I got enough of an idea of what a class could be.
+Let's keep writing code.
+
+== An Array Decleration
+
+*Carol*: So where were we?  We wanted to declare +a+ as an array.
+more precisely as an instance of the +Array+ class.  Here is one way to
+do that:
+
+ :inccode: .euler_array.rb-1
+
+Let me write the new version in a new file, <tt>euler_array.rb</tt>,
+in the hope things will be correct now:
 
  :inccode: .euler_array.rb
 
@@ -248,11 +338,25 @@ correct now:
 
 So far, so good.  Okay, we got our first array-based version of
 forward Euler working, but it still looks just like the old version.
-Time to start using some of the power of Ruby's arrays.  There are
-three methods for the class +Array+ that we can use right away,
-namely <tt>Array#each</tt>, <tt>Array#each_index</tt> and <tt>Array#map</tt>.
+Time to start using some of the power of Ruby's arrays.
 
-<b>[Jun, how much shall we explain here about Ruby? -- Piet]</b>
+In general, a Ruby class can have methods that are associated with
+that class.  A while ago, we have come across a very simple in
+section ref(sect:looping), where we encountered the method +times+
+that was associated with the class +Fixnum+.  By writing <tt>10.times</tt>
+we could cause a loop to be transversed ten times.
+
+Ruby has a somewhat confusing notation <i>(class name)#(method name)</i>
+to describe methods that are associated with classes.  The example
+<tt>10.times</tt> is a way to invoke the method <tt>Fixnum#times</tt>.
+I find it a bit confusing, because in practice you always use the dot
+notation <i>(object name).(method name)</i> in your code.  You'll never
+see the <tt>#</tt> notation in a piece of code; you only encounter it
+in a manual or other text description of a code.
+
+Back to our application.
+There are three methods for the class +Array+ that we can use right away,
+namely <tt>Array#each</tt>, <tt>Array#each_index</tt> and <tt>Array#map</tt>.
 
 I'll explain what they all do in a moment, but it may be easiest to show
 how they work in our forward Euler example:

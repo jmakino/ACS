@@ -160,7 +160,13 @@ END
 
 *Dan*: It's real.  Congratulations!
 
-*Erica*: Can you compose these operations arbitrarily?  Let me try:
+*Erica*: Can you compose these operations arbitrarily?
+
+*Carol*: Of course you can.  The syntax is the same, we have only
+overloaded the <tt>+</tt> and <tt>-</tt> operators; the way you
+can combine them is the same as in normal arithmetic.
+
+*Erica*: Let me try:
 
  :commandinputoutputnoecho: irb END
 require "vector_try_unary.rb"
@@ -172,15 +178,15 @@ END
 
 == An Unexpected Result
 
-*Dan*: Just when we thought that everything was under control . . .
+*Dan*: So much for normal arithmetic.
 
-*Erica*: . . . do we get a _very_ unexpected result.  And what does
+*Carol*: That is _very_ unexpected, I must say.  What does
 the error message say?  It talks about a very long array, with six
-components.  And wait a minute, it should only talk about vectors.
+components.  Wait a minute, it should only talk about vectors.
 It seems that not all of our vectors are really members of the +Vector+
 class.  Could it be that some of them are still +Array+ members?
 
-Easy to test:
+*Erica*: Easy to test:
 
  :commandinputoutputnoecho: irb END
 require "vector_try_unary.rb"
@@ -215,26 +221,26 @@ But wait a minute, we can't do that.  We want to pull off a little alchemy
 here, turning an +Array+ into a +Vector+.  But doesn't this mean that the
 +Array+ class has to learn about vectors?
 
-== Casting
+== Converting
 
 *Carol*: Well, I _may_ have a lead here.  In Ruby, you will
 often see something like <tt>to_s</tt> as a method to write
-something as a string.  Or more precisely, to cast it into a string.
+something as a string.  Or more precisely, to convert it into a string.
 
-*Dan*: What does it mean to _cast_ something?  Can you give a really
+*Dan*: What does it mean to _convert_ something?  Can you give a really
 simple example?
 
 *Carol*: The simplest example I can think of is the way that integers
-are being cast into floating point numbers.  I'm sure you're familiar
+are being converted into floating point numbers.  I'm sure you're familiar
 with it.  If you specify a multiplication like <tt>3.14 * 2</tt>
 to get an approximate result for <tex>$2\pi$</tex>, the floating
 point number <tt>3.14</tt> will try to make the fixed point number
 2, in integer, into a floating point number first.
 
 In other words, <tt>3.14</tt>, an object that is an instance of the
-class +Float+, will try to cast the number 2, an object that is an
+class +Float+, will try to convert the number 2, an object that is an
 instance of the class +Fixnum+, into an instance of the class +Float+.
-To say it in simple terms: <tt>3.14</tt> will cast <tt>2</tt> into
+To say it in simple terms: <tt>3.14</tt> will convert <tt>2</tt> into
 <tt>2.0</tt> and since it knows how to multiply two floating point
 numbers, it can then happily go ahead and apply its multiplication
 method.
@@ -257,7 +263,7 @@ the right thing.
 
 *Carol*: Yes, for each class +XXX+ that
 has a method <tt>to_s</tt> defined, as <tt>XXX#to_s</tt>, we can use
-<tt>to_s</tt> to cast an object of class +XXX+ into an object of class
+<tt>to_s</tt> to convert an object of class +XXX+ into an object of class
 +String+.
 
 Here, let me show you:
@@ -279,7 +285,7 @@ dealing with a character string, or string for short, and indeed, the
 class of <tt>"..."</tt> is +String+.  That makes sense.
 
 So you want to do something similar with vectors, starting with an array
-and then casting it into a vector, with a method like <tt>to_v</tt>.
+and then converting it into a vector, with a method like <tt>to_v</tt>.
 
 *Carol*: Exactly!  And I like the name you just suggested.  So we have
 to define a method <tt>Array.to_v</tt>.  Then, once we have such a method,

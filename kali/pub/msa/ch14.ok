@@ -186,12 +186,13 @@ away!
 *Dan*: About what?
 
 *Carol*: Class augmentation!  We can just augment the number classes,
-telling them how to multiply with vectors!
+telling them how to multiply with vectors!  Just as we have already
+augmented the array class, telling it how to convert an array into a
+vector.
 
-*Erica*: Just as we have already augmented the array class, telling it
-how to cast an array into a vector.  Of course!
+*Dan*: I don't see that.  What exactly are you trying to repair?
 
-*Carol*: Let's be careful here, and see what exactly what's going on.
+*Carol*: Let's go back to square one.
 We wanted to make our scalar-vector multiplication symmetric.  The
 problem was, when you have a vector +v+ and you want to write
 
@@ -212,12 +213,13 @@ quit
 END
 
 You see: it tells us that the number 3 expects to make a multiplication
-with something like another number.  It tries to cast a vector into such
+with something like another number.  It tries to convert a vector into such
 an other number, but doesn't succeed.
 
 *Erica*: So, what we really would like to do is to augment the rules for
-the class +Fixnum+, to explain how to multiply with an object of class
-+Vector+.
+the class +Fixnum+, which is the class of integers, to explain how to
+multiply with an object of class +Vector+.  We can then do the same
+for the class +Float+, the class of floating point numbers.
 
 == Augmenting the +Fixnum+ Class
 
@@ -307,8 +309,8 @@ In fact, it is shorter than I thought, for all the things it does:
 
 == Forward Euler in Vector Form
 
-*Bob*: The whole point of this long exercise was to make our codes
-more readable.  Here is the last array version we made of our simplest
+*Dan*: The whole point of this long exercise was to make our codes
+more readable.  Here is one of the array versions we made of our first
 code, the forward Euler version, in <tt>euler_array_each_def.rb</tt>:
 
  :inccode: .euler_array_each_def.rb

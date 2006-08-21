@@ -306,3 +306,47 @@ Much better!
 are _trying_ to orbit each other in a circle, it seems.  They're just
 making many small errors, that are piling up.
 
+== Printing
+
+*Erica*: Now that we're getting somewhat believable results, I would like
+to make some printouts of our best pictures.  Carol, how do you get gnuplot
+to make some prints?
+
+*Carol*: That's easy, once you know how to do it, but it is rather
+non-intuitive.  The easiest way to find out how to do this is to go
+into gnuplot and then to type help, and to work your way down the
+information about options.  To give you a hint, <tt>set terminal</tt>
+and <tt>set output</tt>.  Of course, if you use gnuplot for the first
+time, you would have no way of guessing that _those_ are the keywords
+you have to ask help for.
+
+*Erica*: That's a general problem with software.  Having a help facility
+is a good start, but I often find that I need a meta-help facility to
+find out how to find out how to ask the right questions to the help
+facility.  In any case, I'm happy to explore gnuplot more, some day,
+but just for now, why don't you make a printout of the last figure we
+have just produced.
+
+*Carol*: Okay, here is how it goes.  I'm using abbreviations such as
++post+ for +postscript+ and +q+ for +quit+:
+
+  |gravity> gnuplot
+  gnuplot> plot "euler_circular_1000_steps.out"
+  gnuplot> set term post eps
+  Terminal type set to 'postscript'
+  Options are 'eps noenhanced monochrome dashed defaultplex "Helvetica" 14'
+  gnuplot> set output "euler_circular_1000_steps.ps"
+  gnuplot> replot
+  gnuplot> q
+
+Let's print it out:
+
+  |gravity> lpr "forward2_0.01.ps"
+
+*Erica*: Great, same figure.  But hey, wait a minute, the symbol used
+for the points in the printed figure is very different from the symbol
+that appeared on the screen!
+
+*Carol*: Welcome to the wonderful world of gnuplot.  This is a strange
+quirk which is one of the things I really don't like about it.  But as
+long as we use gnuplot, we have to live with it.
