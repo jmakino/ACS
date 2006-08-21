@@ -130,22 +130,34 @@ clusters, galactic nuclei, star forming regions, and open clusters.
 \label{sect:6}
 
 
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
  
 \begin{figure}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\renewcommand{\thempfootnote}{\fnsymbol{mpfootnote}}
+\begin{minipage}{\columnwidth}
 \begin{minipage}{\columnwidth}
 \begin{center}
-\renewcommand{\thefootnote}{\alph{footnote}}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
     \includegraphics[width=10cm]{.imgs/1_m15.jpg.eps}
 \caption{A snapshot of the globular cluster M15, taken with the
  {\it Hubble Space Telescope\protect \footnotemark[1]}.
 }
- \footnotetext[1]{\tt http://oposite.stsci.edu/pubinfo/PR/2000/25/content/0025y.jpg}
 
 \label{m15}
 \end{center}
+\renewcommand{\thefootnote}{\arabic{footnote}}
+\end{minipage}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\footnotetext[1]{\tt http://oposite.stsci.edu/pubinfo/PR/2000/25/content/0025y.jpg}
+
 \end{minipage}
 \end{figure}
 
+
+ 
 
 
 In Fig. \ref{m15} we see a
@@ -210,7 +222,7 @@ in a near infrared wavelength band.
 \begin{figure}
 \begin{minipage}{\columnwidth}
 \begin{center}
-\renewcommand{\thefootnote}{\alph{footnote}}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
     \includegraphics[width=10cm]{.imgs/2_gc.jpg.eps}
 \caption{An image of the central region of our galaxy, as seen with the
  {\it Keck telescope\protect \footnotemark[1]}.
@@ -282,7 +294,7 @@ steps toward a detailed modeling of galactic nuclei.
 \begin{figure}
 \begin{minipage}{\columnwidth}
 \begin{center}
-\renewcommand{\thefootnote}{\alph{footnote}}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
     \includegraphics[width=10cm]{.imgs/3_orion.jpg.eps}
 \caption{The Orion Nebula, as seen by the
  {\it Subaru telescope\protect \footnotemark[1]}.
@@ -341,7 +353,7 @@ clusters.
 \begin{figure}
 \begin{minipage}{\columnwidth}
 \begin{center}
-\renewcommand{\thefootnote}{\alph{footnote}}
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
     \includegraphics[width=10cm]{.imgs/4_m67.jpg.eps}
 \caption{The open star cluster M67, in a picture taken at the 
  {\it Anglo-Australian Observatory\protect \footnotemark[1]}.

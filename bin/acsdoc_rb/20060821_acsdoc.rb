@@ -242,9 +242,8 @@ module Rdoctotex
     }.join("\n\n")
   end
   def postprocess_footnotes_in_figure_captions(instring)
-#    ins = instring.split(/\n[ \t]*\n/)
-    ins = instring.split(/(\n[ \t]*\n)/)
-#    ins.each{|x| p x}
+    ins = instring.split(/\n[ \t]*\n/)
+    ins.each{|x| p x}
     footnoteregexp = /\\footnote\{\\tt ([0-9,a-z,A-Z,#,-,_,\/,:,.,\$,\\]*)\}/
     ins.map{|x|
       if x =~/^\s*\:figure\:/
@@ -258,6 +257,7 @@ module Rdoctotex
           s.sub!(footnoteregexp,"\\protect \\footnotemark[#{num}]")
           footnotes.push($1)
         end
+        print "Footnotes:", footnotes.join(" "),"\n"
         num = 1
         x = s + "\n"+ footnotes.map{|x| 
           num += 1
@@ -267,7 +267,7 @@ module Rdoctotex
 
       end
       x
-    }.join
+    }.join("\n\n")
   end
   def latex_process_tex_weblinks(instring)
     ins = instring.join("\n")
@@ -660,10 +660,9 @@ END
     s=process_include(instring)
     s=latex_process_tex_mathmarkup(s)
     s=latex_process_tex_equations(s)
-#    print s.join("\n").split("\n").join("|\n")
-    # in the next method somehow blanck line changed...
     s=latex_process_tex_weblinks(s)
     s=latex_find_and_process_figures(s,dirname)
+    print s.join("\n")
 
     s=s.join("\n").split("\n")
 
