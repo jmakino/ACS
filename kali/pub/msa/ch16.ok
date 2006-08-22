@@ -1,246 +1,107 @@
-= XXXX
+= Second-Order Algorithms
 
-== xxxx
+== Modified Euler
 
-== Checking Energy Conservation
+*Dan*: Now that we have a vector version of forward Euler, it's time
+to clean up our modified Euler code as well.
 
-*Erica*:
-Here are the expressions for the kinetic energy <tex>$E_{\rm kin}$</tex> and the
-potential energy <tex>$E_{\rm pot}$</tex>.  The total energy is just the sum of
-both terms.
+*Carol*: That will be an easy translation.  I'll open a new file,
+<tt>euler_modified_vector.rb</tt>, and I will copy the code from
+<tt>euler_modified_array.rb</tt>, while translating from array notation
+to vector notation.  Same ideas as with <tt>euler_vector.rb</tt>.
+Here it is:
 
-:eqnarray:
-E_{\rm kin} & = & \half \frac{M_1 M_2}{M_1 + M_2} v^2 
-\label{two-body-E-kin-full} \\
-E_{\rm pot} & = & - \frac{M_1 M_2}{r} \label{two-body-E-pot-full}
+ :inccode: .euler_modified_vector.rb
 
-*Erica*:
-So far, we have used units in which <tex>$M_1 + M_2 = 1$</tex>.  We have not
-specified the individual masses, since we did not have to; the
-equations of motion are invariant with respect to how we divide our
-unit of mass over the two bodies.  But the interpretation in terms of
-the physical energy of the system does depend on the value of <tex>$M_2$</tex>,
-which is conventionally chosen as the less massive body.  Once we
-choose <tex>$M_2$</tex>, the mass of the other body is given as <tex>$M_1 = 1 - M_2$</tex>.
+*Erica*: What a relief!  The lines are shorter,
+there are fewer lines, but what is most important: the lines are easy
+to understand, with a direct correspondence between code and math.
 
-*Carol*:
-I would not have guessed that the earlier invariance would be broken.
-Can you make that plausible by hand waving, without deriving equations?
-
-*Dan*:
-Let me try.  If we start with the Earth-Moon system, we know that the
-mass of the Moon is far smaller than the mass of the Earth.  Their
-mass ratio is roughly 1 : 81, so the Moon has not much more than one
-percent of the Earth's mass.  In our notation,
-<tex>$M_2 = 1/82 = 0.012\dots$</tex>\ \ .  In the center-of-mass system, the
-velocities of the two bodies are inversely proportional to their
-masses.  Kinetic energy, however, is proportional to the square of the
-velocities, and therefore the motion of the Moon carries about 81
-times more kinetic energy than the motion of the Earth, around their
-common center of gravity --- which lies inside the Earth, by the way,
-so the Earth barely moves.
-
-*Carol*:
-Let me guess your next step.  You want to compare the Earth-Moon
-system with another system with an even larger mass ratio?  Aha, I
-see.  Why not go all the way, and replace the Moon with a pebble,
-orbiting the Earth at the same distance, but without the Moon being
-there.  The total mass is almost the same (we could even give the
-Earth an extra percent of mass to preserve <tex>$M_1 + M_2$</tex>), but clearly
-the kinetic energy of the pebble is far far smaller than the kinetic
-energy of the Moon.  And using your argument, the pebble will still
-carry almost all the kinetic energy of the Earth-pebble system, as did
-the Moon before.  The velocities of pebble and Moon are almost the same,
-which means that for the whole system <tex>$E_{kin} \propto M_2$</tex> in the
-limit where <tex>$M_2 \ll M_1$</tex>.  Indeed, that is what
-Eq. \ref{two-body-E-kin-full} tells us.  Now I feel comfortable with
-that result.
-
-*Erica*:
-If we continue like this, you'll both be turned into astronomers!
-Yes, it is always a good idea to look at a new formula, and to think
-of some limiting cases, to check whether the equation makes sense.  Of
-course, making sense does not really prove that the equation is correct.
-We still have to check the derivation, which is given in many text books
-on classical dynamics.  However, we are at least guarded against most
-typos, and more importantly, it gives us more of an idea of the
-physics behind the mathematics.
-
-*Dan*:
-It is interesting that Eqs. \ref{two-body-E-kin-full},
-\ref{two-body-E-pot-full} have the exact same mass dependence, if we
-switch back again to our notation in which <tex>$M_1 + M_2 = 1$</tex>.
-
-*Erica*:
-Yes, and we can bring that out more clearly by introducing the notion
-of what is called the `reduced mass' <tex>$\mu$</tex> of a two-body system:
+Let's trace our history, in this regard.  We started off writing with pen and
+paper:
 
 :equation:
-\mu = \frac{M_1 M_2}{M_1 + M_2}
+\br_{1} = \br + \bv dt
 
-*Carol*:
-I see, if we define <tex>$M = M_1 + M_2$</tex> we then get:
+In our first code, this became:
 
-:eqnarray:
-E_{\rm kin} & = & \half \mu v^2 \\
-E_{\rm pot} & = & - \frac{\mu M}{r}
+ :inccode: .euler_modified_1000_steps.rb-1
 
-*Carol*:
-Nice and elegant!
+Then in our array code, it became
 
-*Dan*:
-Let me try to make it more elegant.  I'm beginning to remember more
-and more now from my physics class.  There was this notion of specific
-something as something per unit mass.  How about defining those two
-energy components as specific energies, per unit reduced mass?  Let us
-use a script <tex>$\mathcal{E}$</tex>, rather than roman E, for that notion.  In
-our notation, with unit total mass, we will have the following
-specific energies:
+ :inccode: .euler_modified_array.rb-1
+
+and finally, in our vector code, we wrote:
+
+ :inccode: .euler_modified_vector.rb-1
+
+which is very close indeed to what we started out with:
 
 :equation:
-\mathcal{E}_{\rm kin} = \half v^2
-\qquad
-;
-\qquad
-\mathcal{E}_{\rm pot} = - \frac{1}{r}
+\br_{1} = \br + \bv dt
 
-*Carol*:
-So elegant and skinny that they almost disappear!  But I suggest that
-we keep calling those expressions simply kinetic and potential energy,
-since we all know what we're talking about, rather than the mouthful
-`specific kinetic and potential energy with respect to the reduced mass'.
+*Dan*: It was a lot of work, but now that we got the vector class,
+I must admit that the code looks a lot more readable.  So I guess
+this will make life a lot easier for us.
+But before we move on, does it give the correct answers?
 
-*Erica*:
-Agreed!  Time to code it up.
+*Carol*: Here's the old result, from the array code:
 
-*Carol*:
-Does this look reasonable?
+ :commandoutput: ruby euler_modified_array.rb | tail -1
 
-\code{forward_euler4.C}{chap3/forward_euler4.C}
+and here's what our new vector code gives:
 
-*Dan*:
-Looks good to me.  Let's start with our good old <tt>dt = 0.01</tt>
+ :commandoutput: ruby euler_modified_vector.rb | tail -1
 
-  |gravity> g++ -o forward_euler4 forward_euler4.C
-  |gravity> forward_euler4 > forward4_0.01.out
-  Please provide a value for the time step
-  0.01
-  Initial total energy E_in = -0.875
-  Final total energy E_out = 0.393987
-  absolute energy error: E_out - E_in = 1.26899
-  relative energy error: (E_out - E_in) / E_in = -1.45027
-  |gravity>
+*Dan*: Good!  I'm happy.
 
-\output{chap3/forward4.output}
+<b>[ this is how far I got ; 2007/8/19 -- Piet ]</b>
 
-*Dan*:
-Well, we knew that it was bad, and the energy check confirms it.
-The energy even changes sign --- which of course we knew, since we saw
-the particle escaping, and only positive-energy orbits can show escape.
+== Leapfrog
 
-*Carol*:
-Rather than producing more output files, let's just confirm we have
-the same output in this case, after which I suggest we call our friend
-<tt>/dev/null</tt> to the rescue.
+*Carol*: Erica, what kind of second-order algorithm should we use,
+to replace our first-order forward Euler scheme?
 
-  |gravity> tail -2 forward4_0.01.out
-  7.69375 -6.27772 0 0.812207 -0.5742 0
-  7.70187 -6.28346 0 0.812128 -0.574136 0
-  |gravity>
+*Erica*: A nice and simple scheme is the _leapfrog_ algorithm.
 
-\output{chap3/forward4a.output}
+*Dan*: What a strange name.  Does it let particles jump around like frogs?
 
-*Dan*:
-Good!  The same as before, with still the one step overshoot.  Let's
-look at the other cases.
+*Carol*: Or like children jumping over each other?
 
-  |gravity> forward_euler4 > /dev/null
-  Please provide a value for the time step
-  0.001
-  Initial total energy E_in = -0.875
-  Final total energy E_out = -0.449681
-  absolute energy error: E_out - E_in = 0.425319
-  relative energy error: (E_out - E_in) / E_in = -0.486079
-  |gravity> !!
-  Please provide a value for the time step
-  0.0001
-  Initial total energy E_in = -0.875
-  Final total energy E_out = -0.80008
-  absolute energy error: E_out - E_in = 0.0749198
-  relative energy error: (E_out - E_in) / E_in = -0.0856226
-  |gravity> !!
-  Please provide a value for the time step
-  0.00001
-  Initial total energy E_in = -0.875
-  Final total energy E_out = -0.864747
-  absolute energy error: E_out - E_in = 0.0102526
-  relative energy error: (E_out - E_in) / E_in = -0.0117172
-  |gravity> !!
-  Please provide a value for the time step
-  0.000001
-  Initial total energy E_in = -0.875
-  Final total energy E_out = -0.873971
-  absolute energy error: E_out - E_in = 0.00102934
-  relative energy error: (E_out - E_in) / E_in = -0.00117639
-  |gravity>
+*Erica*: Something like that, I guess.  I never thought about the meaning
+of the name.  It is used quite widely, although it has different names in
+different fields of science.  In stellar dynamics you often hear it called
+leapfrog, but in molecular dynamics it is generally called the Verlet
+method, and I'm sure there must be other names in use in other fields.
 
-\output{chap3/forward4b.output}
+Here is the idea:
 
-*Dan*:
-How nice to see the errors shrink as snow for the sun!
+:eqnarray:
+\br_{i} & = & \br_{i-1} + \bv_{i-1/2} dt \label{leapfrog-leap-step1} \\
+\bv_{i+1/2} & = & \bv_{i-1/2} + \ba_i dt \label{leapfrog-leap-step2}
 
-*Carol*:
-On a rather cold day, with a very low sun.  Yes, it converges, but
-very sloooooowly.
+== xxx
 
-*Erica*:
-I'm glad we went all the way to ten million steps, in the last
-calculation, even though it took more than a minute to complete.
-In the last two runs we have just confirmed the first-order character
-of the forward Euler integration scheme.  Making the time step ten
-times smaller makes the error ten times smaller, to within the first
-three significant digits!  This is something that was not obvious at
-all during the earlier runs, where the errors were so large that
-nonlinear effects overwhelmed the asymptotic proportionality between
-error and time step, for the limit <tex>$dt \rightarrow 0$</tex>.
+== xxx
 
-*Carol*:
-Great!  And a great point to stop.  This has been a far longer session
-than I had anticipated.  Let's get back tomorrow, and then someone
-else should take over the controls.
+Here is 
 
-*Dan*:
-I'd be happy to do so.  This has been fun, and I look forward to
-writing a second-order code.
+<tt>leapfrog_100.rb</tt>:
 
-*Erica*:
-Happy dreams!
+ :inccode: .leapfrog_1000_steps.rb
 
-<b>EXERCISES</b>
+Try:
 
-<b>Ex. 3.1:</b>
-In a first-order algorithm, the error in position after one time
-step is quadratic in the size of the time step.  Yet Erica has stated that
-a first-order algorithm produces errors that are first-order in the size
-of the time step.  There seems to be a contradiction here.  What is going on?
+ :commandoutput: ruby leapfrog_1000_steps.rb > leapfrog_1000_steps.out
+ :commandinput: gnuplot END
+set term post eps
+set output "leapfrog_1000_steps.ps"
+set size ratio -1
+plot "leapfrog_1000_steps.out"
+quit
+END
 
-Hint: make a distinction between the local error produced after a
-single time step, and the global error that builds up after taking
-however many time steps are needed to cover a fixed interval in time,
-say from <tex>$t=0$</tex> to <tex>$t=1$</tex>.
+:figure: leapfrog_1000_steps.ps 10cm leapfrog_1000_steps
+First attempt at leapfrog integration, with step size <tex>$dt=0.01$</tex>.
 
-Using the same reasoning, convince yourself of the fact that an algorithm
-of order _k_ is accurate to that order _k_ per time step (i.e. has errors
-that are proportional to <tex>$(\Delta t)^{k+1}$</tex> per time step), and
-yet shows global errors for a fixed time interval that are of order _k_
-(proportional to <tex>$(\Delta t)^k$</tex>).
-
-<b>Ex. 3.2:</b>
-convince yourself that the following program,
-<tt>euler_array_inject.rb</tt>:
-
- :inccode: .euler_array_inject.rb
-
-does the same thing as <tt>forward_euler1.rb</tt>.  Check
-this both by inspecting the logic of the new code, and by running the
-two codes to see whether you get the exact same answers in both cases.
+xxx

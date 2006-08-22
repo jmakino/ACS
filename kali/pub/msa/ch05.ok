@@ -59,7 +59,7 @@ algorithm to integrate these equations.
 *Dan*: What does it mean to integrate an equation?
 
 *Carol*: We are dealing with differential equations.  In calculus,
-differentation is the opposite of integration.  If you differentiate
+differentiation is the opposite of integration.  If you differentiate
 an expression, and then integrate it again, you get the same expression
 back, apart from a constant.  Our differential equations describe the
 time derivatives of position and velocity.  In order to obtain the
@@ -268,7 +268,7 @@ Here they are:
 
  :inccode: .euler_try.rb-1
 
-By the way, does this specific choice of intial conditions mean that the
+By the way, does this specific choice of initial conditions mean that the
 two particles will move around each other in a circle?
 
 *Erica*: Probably not, unless we give exactly the right velocity
@@ -448,7 +448,7 @@ the script itself is executable.
 *Carol*: Exactly.
 
 *Erica*: But what is the difference between typing +ruby+ and typing
-+irb+?  If the +ruby+ command interpretes each line as it goes along,
++irb+?  If the +ruby+ command interprets each line as it goes along,
 what does +irb+ add?
 
 *Carol*: The difference is the +i+ in +irb+, which stands for _interactive_.

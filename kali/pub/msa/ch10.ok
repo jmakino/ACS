@@ -25,7 +25,7 @@ to use that method.
 
 *Carol*: But wait a minute, the two types of errors in figs. ref(forward1)
 and ref(backward1) are clearly going in the opposite directions.
-I mean, forward flies out of the curve one way, and backwards spiral in
+I mean, forward flies out of the curve one way, and backward spirals in
 the other way.  I wonder, can't you somehow combine the two methods and
 see whether we can let the two errors cancel each other?
 
@@ -51,7 +51,7 @@ arrow, and we have to compute both.
 
 *Carol*: It was just a wild idea, and it may not be useful.
 
-== Backwards and Forwards
+== Backward and Forward
 
 *Erica*: Actually, I like Carol's idea.  In reminds me of one of the second
 order schemes that I learned in class.  Let me just check my notes.
@@ -65,8 +65,8 @@ to what Carol just sketched.
 That is more fun than copying the algorithm from a book.
 
 Now let's see.  We want to compute the dashed line in figure ref(modforward1).
-How about shifting the arrow of the backwards step to the end
-of the arrow of the forwards step, as in fig. ref(modforward2)?  Or to be
+How about shifting the arrow of the backward step to the end
+of the arrow of the forward step, as in fig. ref(modforward2)?  Or to be
 precise, how about just taking two forward Euler steps, one after the other?
 The second forward step will not produce exactly the same arrow as the first
 backward step, but it will be almost the same arrow, and perhaps such an
@@ -88,7 +88,7 @@ you can see in fig. ref(modforward3).
 A forward Euler steps and a backward Euler step, landing at the same point.
 
 As I already admitted, the top arrow in fig. ref(modforward3) is not exactly
-the same arrow as the bottow arrow in fig. ref(modforward1), but the two
+the same arrow as the bottom arrow in fig. ref(modforward1), but the two
 arrows are approximately the same, especially if our step sizes are
 not too large.  So, in a first approximation, we can average the arrows
 in fig. ref(modforward3).  This will make Carol happy: no more implicit
@@ -178,22 +178,12 @@ for example in sections ref(sect:validation) and
 ref(sect:evenbetternumbers), we have found that the error became
 roughly ten times smaller.
 
-== XXXX
+*Carol*: So if the modified Euler algorithm is really a second-order
+algorithm, we should be able to reduce the error by a factor one hundred,
+when we make the time step ten times smaller.
 
-xxxx
-
-xxxx
-
-Isn't there any more direct way to check whether your intuition is
-really correct?  I mean, can't we just write it out, algebraically?
-
-xxxxx
-
-== Checking the Algebra
-
-xxxxx
-
-That looks like a promising approach.  Let's write a code for it.
+*Erica*: Yes, that's the idea, and that would be great!  Let's write
+a code for it, so that we can try it out.
 
 == Specifying the Steps
 
@@ -291,7 +281,7 @@ quit
 END
 
 :figure: euler_modified_10000_steps_sparse.ps 10cm euler_modified_10000_steps_sparse
-First attempt at modified Euler integration, with stepsize
+First attempt at modified Euler integration, with step size
 <tex>$dt=0.001$</tex>.
 
 Here are the results, in figure ref(euler_modified_10000_steps_sparse).
@@ -336,8 +326,41 @@ quit
 END
 
 :figure: euler_modified_1000_steps.ps 10cm euler_modified_1000_steps
-Second attempt at modified Euler integration, with stepsize
+Second attempt at modified Euler integration, with step size
 <tex>$dt=0.01$</tex>.
 
 *Erica*: Again, this is far better than what we saw in figure ref(euler).
 There we couldn't even complete a single orbit!
+
+== Second Order
+
+*Dan*: Yes, it seems clear that our modified Euler behaves a lot better
+than forward Euler.  But we have not yet convinced ourselves that it is
+really second order.  We'd better test it, to make sure.
+
+*Carol*: Good idea.  Here is a third choice of time step, ten times smaller
+than our original choice, in file
+<tt>euler_modified_100000_steps_sparse.rb</tt>:
+
+ :inccode: .euler_modified_100000_steps_sparse.rb
+
+With the three choices of time step, we can now compare the last output
+lines in all three cases:
+
+ :commandoutput: ruby euler_modified_1000_steps.rb | tail -1
+
+ :commandoutput: ruby euler_modified_10000_steps_sparse.rb | tail -1
+
+ :commandoutput: ruby euler_modified_100000_steps_sparse.rb | tail -1
+
+Well, that's pretty clear, isn't it?  The difference between the last
+two results is about one hundred times smaller, that the difference
+between the first two results.
+
+In other words, if we take the last outcome as being close to the true
+result, then the middle result has an error that it about one hundred
+times smaller than the first result.  The first result has a time step
+that is ten times larger than the second result.  Therefore, making the
+time step ten times smaller gives a result that is about one hundred
+times more accurate.  We can congratulate ourselves: we have clearly
+crafted a second-order integration algorithm!

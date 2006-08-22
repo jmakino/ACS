@@ -1,303 +1,135 @@
-= A +Vector+ Class with <tt>+</tt> and <tt>-</tt>
+= Overloading the <tt>+</tt> Operator
 
-== +Vector+ Subtraction
+== A DRY Version of Modified Euler
 
-*Erica*: Well, Carol, you've pulled a really neat trick.  What a difference,
-being able to add vectors by writing
+*Dan*: Now how did we get into all this array stuff?
 
-  v = v1 + v2
+*Erica*: I wanted to move on to the leapfrog algorithm, but Carol
+brought up the DRY principle, insisting on first cleaning up the
+modified Euler code . . .
 
-rather than 
+*Carol*: . . . which we haven't done yet, but now we're all set to do so!
+It is just a matter of translating the old file
+<tt>euler_modified_1000_steps.rb</tt>, introducing our array notation,
+just as we did for the code in <tt>euler_array_each_def.rb</tt>.
 
-  v = []
-  v1.each_index{|k| v[k] = v1[k] + v2[k]}
+Here it is, in <tt>euler_modified_array.rb</tt>
 
-*Dan*: Thanks, Carol!  You've just made our life a whole lot easier.
+ :inccode: .euler_modified_array.rb
 
-*Carol*: Not quite yet; I'll have to do the same thing for subtraction,
-multiplication and addition as well.  And I'm sure there are a few more
-things to consider, before we can claim to have a complete +Vector+ class.
-But I, too, am encouraged with the good start we've made!
+And before Dan can ask me, let me run it:
 
-I'll open a new file <tt>vector_try_add_sub.rb</tt>.  First thing to add,
-after addition, is subtraction.  That part is easy:
+ :commandoutput: ruby euler_modified_array.rb | tail -1
 
- :inccode: .vector_try_add_sub.rb
+I will also compare it to the previous result:
 
-*Erica*: So now we can write <tt>v = v1 + v2</tt> and <tt>v = v1 - v2</tt>
-But what about <tt>v = -v1</tt>?  Or even just <tt>v = v1</tt>?  Would that
-work too?
+ :commandoutput: ruby euler_modified_1000_steps.rb | tail -1
 
-*Carol*: Good question!  Probably not.  But before getting into the why not,
-let's play with +irb+ and see what happens:
+== Not quite DRY yet
+
+*Dan*: Bravo!  Same answers.  And yes, the code has become shorter.
+I like that.
+
+*Erica*: Hmmm, just making a code shorter does not necessarily make
+it better.  You can use semicolons to put two or three lines
+on one line, but that doesn't make the code any prettier.  Most likely,
+it will make the code more opaque.
+
+In fact, I'm sorry to say, I don't find the new code easier to read.
+While the old code was longer, it was very easy to see what happened.
+But in the new code, there are all those <tt>[k]</tt> clumps floating around
+. . .  I thought the whole point of using arrays was that we could hide
+the elements of the array!
+
+*Carol*: To some extent, we have hidden things.  The methods +map+, +each+
+and <tt>each_index</tt> can be attached directly to the arrays themselves,
+without showing elements.  And our use of +each+ in the print statements
+shows an example where there is no ugly <tt>[k]</tt> showing up at all.
+But I agree with you, we should be able to do better.
+
+*Erica*: Can we really do much better?  An array _does_ seem to be the
+natural way to represent a physical vector quantity in a computer program.
+I've never seen any other way . . . ah, no, I take that back.  I once
+saw a C++ program, where the writer had introduced a special vector class.
+
+*Carol*: Can you remember what the reason was for doing so?
+
+*Erica*: I'm not exactly sure now, but it may have had to do with making it
+easier to add vectors, by overloading the <tt>+</tt> operator, and that sort
+of thing.
+
+*Carol*: That sounds exactly like what we need.  If we take a look at the
+first like in our code that contains one of these ugly <tt>[k]</tt> notations
+that you so disliked:
+
+ :inccode: .euler_modified_array.rb-1
+
+you really would like to write this as
+
+ :inccode: .euler_modified_vector.rb-1
+
+right?
+
+*Erica*: Yes, that would be great!  I would _love_ to get rid of all those
+<tt>[k]</tt> blocks.  In fact, I think that we _should_ get rid of
+them if we want to follow the DRY principle.  Look, we have been repeating
+this <tt>[k]</tt> thingy three times in one line, in our latest code!
+
+== Array Addition
+
+*Carol*: Fair enough.  Well, it's always a good idea to start simply.
+The simplest case I can think of is to add two vectors.  If we continue
+to represent them as arrays, we can added arrays <tt>a1</tt> and <tt>a2</tt>
+to obtain their sum +a+ as follows:
+
+  a = []
+  a1.each_index{|k| a[k] = a1[k] + a2[k]}
+
+which includes the declaration, which is necessary if +a+ has not yet been
+introduced as an array, earlier in the program.
+
+Now what you would like to write is
+
+  a = a1 + a2
+
+without any further complications that include references to elements
+<tt>[k]</tt> or to methods such as <tt>each_index</tt> or to a declaration
+of +a+, since after all the addition of two vectors should obviously produce
+a new vector.  Right?
+
+*Erica*: It sounds too good to be true, to be able to leave out all that
+crap, and to tell the computer only the minimal information needed, as if
+you were writing a note for yourself on a scratch pad.  Do you really think
+you can implement all that, and even do away with the need for declarations?
+
+*Carol*: I think so.  First, let's see what happens if we don't make any
+modification.  I must admit, I'm not sure what Ruby will do if we ask
+it to add two arrays.  Well, let's find out:
 
  :commandinputoutputnoecho: irb END
-require "vector_try_add_sub.rb"
-v1 = Vector[1, 2, 3]
-v2 = Vector[5, 6, 7]
-v = v1 + v2
-v = v1 - v2
-v = v1
-v = -v1
+a1 = [1, 2, 3]
+a2 = [5, 6, 7]
+a = a1 + a2
 quit
 END
 
-*Dan*: Huh?  A method by the name of a minus sign followed by an
-<tt>@</tt> symbol?  That's the strangest method name I've ever seen.
-And what can it mean that it is undefined?  Should it be defined?
-
-*Erica*: At least writing <tt>v = v1</tt> worked.  So we've come halfway!
-
-*Dan*: Ah, but would it also work if we would write <tt>v = +v1</tt>?
-Let me try:
-
- :commandinputoutputnoecho: irb END
-require "vector_try_add_sub.rb"
-v1 = Vector[1, 2, 3]
-v2 = Vector[5, 6, 7]
-v = +v1
-quit
-END
-
-Aha!  You see, we're not even half-way yet.  Neither of the two work.
-But it's intriguing that we get a similar error message, this time with
-a plus sign in front of the mysterious <tt>@</tt> symbol.
-
-== Unary <tt>+</tt>
-
-*Carol*: Let me consult the Ruby manual.  Just a moment . . . aha, I see!
-Well, this is perhaps an exception to Ruby's principle of least surprise.
-The manual tells me that <tt>-@</tt> is the Ruby notation for a
-unary minus, and similarly, <tt>+@</tt> is the Ruby notation for a
-unary plus.
-
-*Dan*: A unary minus?
-
-*Carol*: Yes, and the word `un' in unary here means `one,' like in `unit.'
-A unary minus is an operation that has only one operand.
-
-*Erica*: As opposed to what?
-
-*Carol*: As opposed to a binary minus.  Most normal operations, such as 
-addition and subtraction, as well as multiplication and division, are
-binary operation.  Binary here means two operands.  When you use a
-single plus sign, you add two numbers.  Similarly, a minus allows you
-to subtract two numbers.  So when you write <tt>5 - 3 = 2</tt> you are using
-a binary minus.  However, when you first write <tt>x = 5</tt> and then
-<tt>y = -x</tt>, to give <tt>y</tt> the value <tt>-5</tt>, you are using
-not a binary minus, but a unary minus.  The construction <tt>-x</tt>
-returns a value that has the value of the variable <tt>x</tt>, but with
-an additional minus sign.
-
-*Dan*: So you are effectively multiplying <tt>x</tt> with the number
-<tt>-1</tt>.
-
-*Erica*: Or you could say that you are subtracting <tt>x</tt> from <tt>0</tt>.
-
-*Carol*: Yes, both statements are correct.  But rather than introducing
-multiplication, it is simpler to think only about subtraction.  So writing
-<tt>-x</tt> uses a unary minus, while writing <tt>0-x</tt> uses a binary
-minus, while both are denoting the same result.
-
-*Dan*: But why does Ruby use such a complicated symbol, <tt>-@</tt>, for
-unary minus?
-
-*Carol*: That symbol is only used when you redefine the symbol.
-
-Here, let me try it out, in a new file <tt>vector_try_unary.rb</tt>.  And I may
-as well start with the unary plus, since that seems the simplest of the
-two unary operations.
-
-We have just redefined the binary plus as follows:
-
- :inccode: .vector_try_unary.rb-binplus
-
-We can now use the <tt>+@</tt> symbol to redefine also the unary plus for
-the same +Vector+ class:
-
- :inccode: .vector_try_unary.rb-unplus
-
-When we use it, we don't have to add the <tt>@</tt> symbol, which is only
-used in the definition, to make the necessary distinction between the unary
-and binary plus.
-
-*Dan*: That's it?  You just return the vector itself?  I guess it makes
-sense, but it seems almost too simple.  Let's try it out:
-
- :commandinputoutputnoecho: irb END
-require "vector_try_unary.rb"
-v1 = Vector[1, 2, 3]
-v = +v1
-quit
-END
-
-Good!  Now what about unary minus?
-
-== Unary <tt>-</tt>
-
-*Carol*: What about it?
-
-*Dan*: My first guess would be to let the
-method return <tt>-self</tt> but that's too simple, I'm sure . . .
-
-*Carol*: Yes, that would beg the question!  By writing <tt>-self</tt>
-you are trying to invoke the very method you are trying to define.
-That certainly won't work.  But, hey, remember our friend +map+,
-which maps an operation on all elements of an array?  Well, because the
-+Vector+ class inherits the +Array+ class, any method working for an
-array will work for a vector as well, so here we go:
-
- :inccode: .vector_try_unary.rb-unmin
-
-And here is the reality check:
-
- :commandinputoutputnoecho: irb END
-require "vector_try_unary.rb"
-v1 = Vector[1, 2, 3]
-v = -v1
-quit
-END
-
-*Dan*: It's real.  Congratulations!
-
-*Erica*: Can you compose these operations arbitrarily?
-
-*Carol*: Of course you can.  The syntax is the same, we have only
-overloaded the <tt>+</tt> and <tt>-</tt> operators; the way you
-can combine them is the same as in normal arithmetic.
-
-*Erica*: Let me try:
-
- :commandinputoutputnoecho: irb END
-require "vector_try_unary.rb"
-v1 = Vector[1, 2, 3]
-v2 = Vector[5, 6, 7]
-v = -((-v1) + (+v2))
-quit
-END
-
-== An Unexpected Result
-
-*Dan*: So much for normal arithmetic.
-
-*Carol*: That is _very_ unexpected, I must say.  What does
-the error message say?  It talks about a very long array, with six
-components.  Wait a minute, it should only talk about vectors.
-It seems that not all of our vectors are really members of the +Vector+
-class.  Could it be that some of them are still +Array+ members?
-
-*Erica*: Easy to test:
-
- :commandinputoutputnoecho: irb END
-require "vector_try_unary.rb"
-v1 = Vector[1, 2, 3]
-v2 = Vector[5, 6, 7]
-v1.class
-v2.class
-(+v2).class
-(-v1).class
-quit
-END
-
-*Carol*: Aha!  Unexpected, yes, but it all makes sense.  For the unary
-plus method, we just returned +self+, the object itself, which already
-is a member of the +Vector+ class.  But the way I wrote the unary minus,
-things are more tricky:
-
- :inccode: .vector_try_unary.rb-unmin
-
-You see, +self+ is a instance of the +Vector+ class, which inherits
-the +Array+ class, and thereby inherits all the methods of the +Array+
-class.  But now the question is: what does a method such as +map+ do?
-It is a member of the +Array+ class, something that Ruby folks write
-as <tt>Array#map</tt> in a notation that I find somewhat confusing,
-but we'll have to get used to it.  So, what <tt>Array#map</tt> does,
-and the only thing it _can_ do, is to return an <tt>Array</tt> object.
-
-*Erica*: And not a +Vector+ object.  Got it!  So all we have to do is
-to tell the result of the <tt>Array#map</tt> method to become a +Vector+.
-
-But wait a minute, we can't do that.  We want to pull off a little alchemy
-here, turning an +Array+ into a +Vector+.  But doesn't this mean that the
-+Array+ class has to learn about vectors?
-
-== Converting
-
-*Carol*: Well, I _may_ have a lead here.  In Ruby, you will
-often see something like <tt>to_s</tt> as a method to write
-something as a string.  Or more precisely, to convert it into a string.
-
-*Dan*: What does it mean to _convert_ something?  Can you give a really
-simple example?
-
-*Carol*: The simplest example I can think of is the way that integers
-are being converted into floating point numbers.  I'm sure you're familiar
-with it.  If you specify a multiplication like <tt>3.14 * 2</tt>
-to get an approximate result for <tex>$2\pi$</tex>, the floating
-point number <tt>3.14</tt> will try to make the fixed point number
-2, in integer, into a floating point number first.
-
-In other words, <tt>3.14</tt>, an object that is an instance of the
-class +Float+, will try to convert the number 2, an object that is an
-instance of the class +Fixnum+, into an instance of the class +Float+.
-To say it in simple terms: <tt>3.14</tt> will convert <tt>2</tt> into
-<tt>2.0</tt> and since it knows how to multiply two floating point
-numbers, it can then happily go ahead and apply its multiplication
-method.
-
-*Dan*: I see.  I guess I never worried about what happened when I
-write something like <tt>3.14 * 2</tt>; I just expect <tt>5.28</tt>
-to come out.
-
-*Carol*: <tt>6.28</tt>.
-
-*Dan*: Oops, yes, of course.  But you see what I mean.
-
-*Carol*: I agree, normally there is no reason to think about those
-things, as long as we are using predefined features that hopefully
-have been tested extensively.  But now we are going to define our
-own objects, vectors, and we'd better make sure that we're doing
-the right thing.
-
-*Erica*: You mentioned the <tt>to_s</tt> method.
-
-*Carol*: Yes, for each class +XXX+ that
-has a method <tt>to_s</tt> defined, as <tt>XXX#to_s</tt>, we can use
-<tt>to_s</tt> to convert an object of class +XXX+ into an object of class
-+String+.
-
-Here, let me show you:
-
- :commandinputoutputnoecho: irb END
-3
-3.class
-3.to_s
-3.to_s.class
-3.14
-3.14.class
-3.14.to_s
-3.14.to_s.class
-quit
-END
-
-*Erica*: Ah, so the <tt>"..."</tt> notation already shows that we are
-dealing with a character string, or string for short, and indeed, the
-class of <tt>"..."</tt> is +String+.  That makes sense.
-
-So you want to do something similar with vectors, starting with an array
-and then converting it into a vector, with a method like <tt>to_v</tt>.
-
-*Carol*: Exactly!  And I like the name you just suggested.  So we have
-to define a method <tt>Array.to_v</tt>.  Then, once we have such a method,
-we can use it to create a vector by writing
-
-  v = [1, 2, 3].to_v
-
-== Augmenting the +Array+ Class
-
-*Erica*: But how can we define <tt>to_v</tt>?  Somebody else already has
-defined the +Array+ class for us.  I guess we'll have to dig into wherever
-Ruby is defined, and change the +Array+ class definition?
+*Dan*: I guess that is _one_ way to add two arrays, to just put them end
+to end, and string all the elements together.  And for many applications
+that might just be the right thing to do, for example, if you have an array
+of the names of countries in a nation, and you want to add a few more names.
+But in our case, this is not what we want.  We'd better get:
+
+  a = [1+5, 2+6, 3+7] = [6, 8, 10]
+
+*Carol*: What we can do, is to introduce a new array method,
+which we can call <tt>Array#plus</tt>, which allows us to add
+two arrays in the way Dan just specified, according to the vector
+rules that we have in mind for the physical addition of two vectors.
+
+*Erica*: But how can you add a new method to the +Array+ class?
+Somebody else already has defined the +Array+ class for us.  I guess
+we'll have to dig into wherever Ruby is defined, and change the
++Array+ class definition?
 
 *Carol*: No digging needed!  The neat thing about Ruby, one of the neat
 things, is that it allows you to augment a class.  Even if someone
@@ -306,101 +138,347 @@ definition, for example, when we want to add a method.  The different
 bits and pieces of the class definition can live in different places.
 Nothing to worry about!
 
-It should be simple.  Let me copy our previous
-<tt>vector_try_unary.rb</tt> into a new file <tt>vector_try.rb</tt>.
-Hopefully we're getting closer to the real thing!
+It should be simple.  From what I've seen so far, I guess that Ruby
+wants us to write something like this, in file
+<tt>array_try_addition1.rb</tt>:
 
-Here is my first attempt to augment the +Array+ class:
+ :inccode: .array_try_addition1.rb
 
- :inccode: .vector_try.rb-array
+This should add the method <tt>plus</tt>, that is doing the addition,
+to the other existing methods in the +Array+ class.  In this way, we
+don't disturb anything in the +Array+ class, so everything should work
+as it did before.  The only difference is that we can now add arrays
+in the way we intend for vectors.
 
-And now, keeping my fingers crossed:
+== Who is Adding What
+
+*Erica*: That's a lot shorter and simpler than I had expected.
+It seems to deliver all the three things you promised: it hides the
+all <tt>[k]</tt> occurrences, it hides the <tt>each_index</tt>
+and it creates a new vector, so that you don't have to declare
+anything.  And all that in just a few lines!
+
+*Dan*: Not so fast.  I'm not there yet.  In fact, I don't understand
+this at all.  To begin with, shouldn't addition have two arguments?
+You're going to add two vectors, no?
+
+*Carol*: Yes, but here we're describing addition from the point of view
+of an array.  Given one array, all we have to do is to specify one
+second array, which I have called +a+, which can then be added to the
+given array.  The given array itself simply goes by the name of
++self+, a reserved word that points to the current instance of the
+class.
+
+*Dan*: You mean that the +Array+ class definition describes arrays in general,
+but if I deal with a particular array, <tt>a1</tt>, then from the point of
+view of <tt>a1</tt> itself, <tt>a1</tt> is called +self+?
+
+*Carol*: Right.
+
+*Dan*: But we want to get the result <tt>a = a1 + a2</tt>.
+So from the point of view of +a+ there really are two other arrays
+involved.
+
+*Carol*: Yes, but at first we only have <tt>a1</tt> and <tt>a2</tt>.
+That's all we've got, and that's what we have to use to construct +a+.
+The way I'm trying to define addition is by starting with one of the
+two arrays <tt>a1</tt>, and to define a method that allows <tt>a1</tt>
+to accept a second array <tt>a2</tt>.  So the whole operation can then
+be written as
+
+  a1.plus(a2)
+
+where <tt>a2</tt> is the argument for the method +plus+ that is
+associated with the class +Array+ of which <tt>a1</tt> is an instance.
+Now this expression will result a new instance of the +Array+ class,
+and we can assign that new instance to the new variable +a+ by writing:
+
+  a = a1.plus(a2)
+
+*Dan*: You can't write
+
+  a = a1 plus a2
+
+?
+
+*Carol*: Sorry, no, you can't; that wouldn't make any sense.  What you
+_can_ do in Ruby is leave out the parentheses around the argument of a
+method.  So instead of writing
+
+  a = a1.plus(a2)
+
+you _can_ indeed write
+
+  a = a1.plus a2
+
+== The +plus+ Method
+
+*Dan*: I'll take your word for it.  So if we write this, <tt>a1</tt>
+uses its own +plus+ method, and according to the definition you wrote
+in the +Array+ class, <tt>a1</tt> first creates a new array called
++sum+, which is an empty array, specified by writing <tt>[]</tt>.
+Next it assigns the
+the value <tt>sum[k] = a1[k]+a2[k]</tt> to each component <tt>[k]</tt>
+of the array +sum+.  That makes sense!
+
+And finally, in the next line you return the value +sum+, before you
+reach the end of the method.  In that way +a+ receives the value
+that <tt>a1.plus a2</tt> returns, which is the sum of <tt>a1</tt> and
+<tt>a2</tt>.  Okay, I got it now!
+
+*Carol*: Let's hope it works, after everything I've told you!
 
  :commandinputoutputnoecho: irb END
-require "vector_try.rb"
-[1, 2, 3].class
-[1, 2, 3].to_v.class
-v1 = Vector[1, 1, 1]
-v2 = [1, 2, 3].to_v
-v = v1 + v2
-v.class
+require "array_try_addition1.rb"
+a1 = [1, 2, 3]
+a2 = [5, 6, 7]
+a = a1.plus a2
 quit
 END
 
-*Erica*: Your hope was justified: <tt>to_v</tt> does indeed seem
-to produce genuine vectors.  How nice, that we have the power to
-add to the prescribed behavior of the +Array+ class!
+*Dan*: Wonderful!  That's just what we ordered.
 
-*Dan*: It may be nice, but I'm afraid I don't understand yet
-how <tt>to_v</tt> works.  You are returning a new vector, and that
-new vector should have the same numerical components as the original
-array, +self+, right?  Now what is that little star doing there, in
-front of +self+?
+*Erica*: A great improvement over the old array addition!
 
-*Carol*: Ah, that's a way to liberate the components.  We have seen
-that we can create an array by writing
+== The <tt>+</tt> Method
 
-   [1, 2, 3]
+*Dan*: Still, I can't say I like your new notation.
+I'm still not happy about the asymmetry.  Writing
 
-which you can view as a shorthand for
+  a = a1.plus a2
 
-   Array[1, 2, 3]
+gives the impression that <tt>a1</tt> is charging forward, gobbling
+up <tt>a2</tt> and then spitting out the result.  You told me that we
+cannot write 
 
-where the <tt>Array[]</tt> method receives a list of components and
-returns an array that contains those components.
+  a = a1 plus a2
 
-Now for our vector class we can similarly write:
+and I understand that such a statement would have no clear meaning in
+Ruby.  But is there really no way to make the expression more symmetric,
+rather than making <tt>a1</tt> the predator and <tt>a2</tt> the prey?
 
-   Vector[1, 2, 3]
+*Carol*: Actually, there is a way to make it at least _look_ more symmetric.
+It is just a form of syntactic sugar, as they call it: a way to let the
+syntax look more tasty, without really changing the underlying code.
 
-in order to create vector <tt>[1, 2, 3]</tt>.
+The idea is what is called `overloading operators'.  We can use the
+<tt>+</tt> symbol, instead of the word +plus+, and we can define the
+meaning of <tt>+</tt> for the case of arrays.  I read about that; let
+me see whether it works.  I believe the idea is to write something like
+this, in file <tt>array_try_addition2.rb</tt>:
 
-Now, let me come back to your question.  If I start with an +Array+
-object <tt>[1, 2, 3]</tt>, which internally is addressed by +self+,
-and if I then were to write:
+ :inccode: .array_try_addition2.rb
 
-    Vector[self]
+== A Small Matter: the Role of the Period
 
-that would be translated into
+*Dan*: All you've done is to change +plus+ into <tt>+</tt> in the second
+line.  Can that really work?
 
-    Vector[[1, 2, 3]]
+*Erica*: There is one more change: you've also left out the word +return+
+in the third line of the definition.
 
-*Dan*: I see: that would be a vector with one component, where the
-one component would be the array <tt>[1, 2, 3]</tt>.  Got it.  So
-we have to dissolve one layer of square brackets, effectively.
+*Carol*: Ah yes, most people writing Ruby seem to leave out +return+;
+it is really not necessary to add that.  You just have to remember to
+let the last line of a definition echo the result you want to return.
+The result of invoking a method is to return whatever the last line
+of the definition evaluates to.
 
-*Carol*: Indeed.  And here is where the <tt>*</tt> notation comes in.
-Let me show you:
+And yes, other than that, I've just replaced +plus+ by <tt>+</tt>.
+In fact, in _all_ cases where Ruby uses <tt>+</tt>, it is only
+syntactic sugar for invoking a method that is associated with the
+left-hand side of the <tt>+</tt> symbol.  So even though it _looks_
+symmetric, it never really has been a symmetric operation.
+
+*Dan*: But how can it work?  I thought that you always needed to write
+a dot between an object and its method.
+
+*Carol*: Generally, that is true, and in fact, if you want to, you still
+can write the <tt>+</tt> operator using a period like normal Ruby methods.
+
+*Dan*: Let me try:
 
  :commandinputoutputnoecho: irb END
-a = [1, 2, 3]
-b = [a]
-c = [*a]
+2.+ 3
+8.* 4
 quit
 END
 
-== Fixing the Bug
+*Erica*: Wow, surprise.  They work just like ordinary Ruby methods.
 
-*Erica*: So now we can go back and fix the bug in our unary minus.
-
-*Carol*: Ah, yes, that's how we got started.  Okay, we had in
-file <tt>vector_try_unary.rb</tt>:
-
- :inccode: .vector_try_unary.rb-unmin
-
-In our new file, <tt>vector_try.rb</tt>, I can now make this:
-
- :inccode: .vector_try.rb-unmin
-
-*Dan*: Shall we repeat our old trial run?  Here we go:
+*Dan*: Are you sure?  Isn't <tt>2.</tt> just translated into <tt>2.0</tt>
+so that we are only evaluating <tt>2.0 + 3</tt>?  Let's check, by adding
+a space after the periods:
 
  :commandinputoutputnoecho: irb END
-require "vector_try.rb"
+2. + 3
+8. * 4
+quit
+END
+
+Ah, you see, the zero is just added, like in Fortran.
+
+*Carol*: I don't think so.  Let me try a simpler case:
+
+ :commandinputoutputnoecho: irb END
+2.
+quit
+quit
+END
+
+You see: <tt>2.</tt> is _not_ translated into <tt>2.0</tt>, but is in fact
+illegal.  Or more accurately, it is okay in Ruby to leave space after the
+period between an object and its method.  Here +irb+ is asking for the
+method name, and doesn't like the fact that I just wanted to quit; +irb+
+interpreted the +quit+ as the method name it was waiting for.
+
+*Dan*: I agree, we can now be sure that <tt>2.+</tt>
+really invokes the addition operator of the number <tt>2</tt>.
+Okay, now we know.
+
+*Carol*: But of course, it is much more intuitively obvious to write
+<tt>2 + 3</tt> than to write <tt>2.+ 3</tt>.  I have mentioned earlier
+the principle of least surprise, introduced by Matsumoto, the designer
+of Ruby, as a guide line for the Ruby syntax.  Even though in fact
+Ruby has much in common with Lisp, Matsumoto decided not to use a lisp
+like notation, in which <tt>2 + 3</tt> would have looked something
+like <tt>(+ (2, 3))</tt>, a beautifully clear notation once you get
+used to it, but unlike <tt>2 + 3</tt> not immediately obvious when
+somebody comes across it for the first time.
+
+*Dan*: I'd say!
+
+== Testing the <tt>+</tt> Method
+
+*Carol*: Well, enough talk: let's test my second version of array addition:
+
+ :commandinputoutputnoecho: irb END
+require "array_try_addition2.rb"
+a1 = [1, 2, 3]
+a2 = [5, 6, 7]
+a = a1 + a2
+quit
+END
+
+*Dan*: I like this a whole lot better!  And I'm glad Matsumoto did not
+introduce four parentheses to add two things.
+
+*Carol*: I like it too, but I'm afraid we can't leave things like this.
+
+*Dan*: Why not?
+
+*Carol*: Because we've now been tinkering with the +Array+ class, we
+can no longer use arrays in the standard way.  That's why not.
+
+*Erica*: Ah, you mean that we can no longer concatenate arrays, the
+way we saw before, using the <tt>+</tt> method.  What did we do again?
+It was something like this:
+
+ :commandinputoutputnoecho: irb END
+a1 = [1, 2, 3]
+a2 = [4, 5, 6]
+a = a1 + a2
+quit
+END
+
+*Dan*: Of course, that no longer will work, when we add our modification:
+
+ :commandinputoutputnoecho: irb END
+require "array_try_addition2.rb"
+a1 = [1, 2, 3]
+a2 = [4, 5, 6]
+a = a1 + a2
+quit
+END
+
+But who cares?  I don't expect us to have much use for array concatenation
+anyway.
+
+*Carol*: Ah, not so quick.  I think you should care a lot!  If you use
+_any_ Ruby program, written by someone else, you don't know what that
+program relies on.  Most likely some Ruby programs do rely on the
+default way of array addition, in the form of concatenation.  If you're
+going to change the default rules, you're likely to invite disaster.
+
+When we introduced the new +plus+ method, there was no danger, since we
+left the existing methods, such as <tt>+</tt>, alone.  That's fine.  But
+tinkering with existing methods is simply a bad idea.
+
+== A +Vector+ Class
+
+*Dan*: Is there no way out?  I like what we've done, and it would be a pity
+to give it up, now that we've just figured out how to do it.
+
+*Carol*: Yes, there is a way.  What we want to do is to introduce a new
+class, similar to the +Array+ class, but with a different name and with
+somewhat different rules.  To be precise, we want to define a vector
+class.  Ruby has the convention that class names start with a capital,
+so a natural name for our new class would be +Vector+.
+
+In principle, we could define our new class from scratch, but it would
+be a lot easier to use the features that the +Array+ class already has.
+All we really want to do is to tame the +Array+ class to behave like
+proper physical vectors, and we can do this by redefining only some of
+the array operations, such as adding two arrays, as we have just done,
+and multiplying an array with a scalar, and probably a few more such
+operations.
+
+In Ruby, just like in C++ and many other object-oriented languages, we
+can do this by an approach called _inheritance_.  Instead of just defining
+a new class
+
+  class Vector
+
+we can write
+
+  class Vector < Array
+
+which means that the new +Vector+ class inherits all the features of
+the existing class +Array+.  The +Vector+ class is then called a
+_subclass_ of the +Array+ class, and the +Array+ class is called a
+_superclass_ of the +Vector+ class.
+
+Okay, let me see whether I can redefine the array addition operator,
+so that vectors can be added in the right way.  From what I've seen
+so far, I guess that Ruby wants us to write something like this, in
+file <tt>vector_try_addition2.rb</tt>, to replace
+<tt>array_try_addition2.rb</tt>:
+
+ :inccode: .vector_try_addition2.rb
+
+This new class definition so far contains only one new method, by the name of
+<tt>+</tt>, that is doing the addition.  Note that I create an empty new
+vector by writing <tt>Vector.new</tt> instead of <tt>[]</tt>, the notation
+we used to create a new array.  In fact, <tt>[]</tt> is simply syntactic
+sugar for <tt>Array.new</tt>.  So therefore it is a straightforward change
+to replace it by <tt>Vector.new</tt> as I've done above.
+
+We can use this new class in the same way as we did before, but there
+is one difference: we have to declare all objects we will play with to
+be vectors.  Before, we declared objects as arrays by using the
+<tt>[]</tt> notation, which is really a shorthand for
+<tt>Array[]</tt>.  Now we have to specify that they are vectors by
+writing <tt>Vector[]</tt>.  At least I think that's how it works.
+Let's try:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try_addition2.rb"
 v1 = Vector[1, 2, 3]
 v2 = Vector[5, 6, 7]
-v = -((-v1) + (+v2))
+v = v1 + v2
 quit
 END
 
-Great!  Okay, now we have really covered a complete usage of <tt>+</tt>
-and  <tt>-</tt> for vectors, the unary and binary forms for each of them.
+*Dan*: That seems to do the right thing.  And I guess we have now
+left the +Array+ class alone, without changing it in any way, right?
+
+*Carol*: Yes, but let us test that as well:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try_addition2.rb"
+a1 = [1, 2, 3]
+a2 = [5, 6, 7]
+a = a1 + a2
+quit
+END
+
+*Dan*: Good.  So we're now playing it safe.

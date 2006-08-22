@@ -1,107 +1,346 @@
-= Second-Order Algorithms
+= A Complete +Vector+ Class
 
-== Modified Euler
+== +Vector+ Multiplication
 
-*Dan*: Now that we have a vector version of forward Euler, it's time
-to clean up our modified Euler code as well.
+*Carol*: Which means it is time to move on to multiplication.  But here
+we have another problem: there is multiplication and then there is
+multiplication.
 
-*Carol*: That will be an easy translation.  I'll open a new file,
-<tt>euler_modified_vector.rb</tt>, and I will copy the code from
-<tt>euler_modified_array.rb</tt>, while translating from array notation
-to vector notation.  Same ideas as with <tt>euler_vector.rb</tt>.
-Here it is:
+*Dan*: You mean?
 
- :inccode: .euler_modified_vector.rb
+*Carol*: We can multiply a vector with a scalar number; for a vector
 
-*Erica*: What a relief!  The lines are shorter,
-there are fewer lines, but what is most important: the lines are easy
-to understand, with a direct correspondence between code and math.
+  v = [1, 2, 3]
 
-Let's trace our history, in this regard.  We started off writing with pen and
-paper:
+we would like to see multiplication by two giving us:
 
-:equation:
-\br_{1} = \br + \bv dt
+  2 * v = [2, 4, 6]
 
-In our first code, this became:
+But in addition (no pun intended) we want to form an inner product of
+two vectors.  In particular, we would like to get the square of the
+length of a vector by forming the inner product with itself:
 
- :inccode: .euler_modified_1000_steps.rb-1
+  v * v = 2*2 + 4*4 + 6*6 = 56
 
-Then in our array code, it became
+Or more generally, for
 
- :inccode: .euler_modified_array.rb-1
+  w = [10, 10, 10]
 
-and finally, in our vector code, we wrote:
+we want to be able to take the inner product of +v+ and +w+ to give us:
 
- :inccode: .euler_modified_vector.rb-1
+  v * w = 2*10 + 4*10 + 6*10 = 120
 
-which is very close indeed to what we started out with:
+We could of course define different method names for these two operations,
+like <tt>multiply_scalar</tt> and <tt>inner_product</tt>, but
+something tells me that we will be happier using <tt>*</tt> for both.
 
-:equation:
-\br_{1} = \br + \bv dt
+*Dan*: Certainly I will be happier that way!
 
-*Dan*: It was a lot of work, but now that we got the vector class,
-I must admit that the code looks a lot more readable.  So I guess
-this will make life a lot easier for us.
-But before we move on, does it give the correct answers?
+*Carol*: Well, how about this?
 
-*Carol*: Here's the old result, from the array code:
+ :inccode: .vector_try.rb-binmul
 
- :commandoutput: ruby euler_modified_array.rb | tail -1
+Time for a workout:
 
-and here's what our new vector code gives:
-
- :commandoutput: ruby euler_modified_vector.rb | tail -1
-
-*Dan*: Good!  I'm happy.
-
-<b>[ this is how far I got ; 2007/8/19 -- Piet ]</b>
-
-== Leapfrog
-
-*Carol*: Erica, what kind of second-order algorithm should we use,
-to replace our first-order forward Euler scheme?
-
-*Erica*: A nice and simple scheme is the _leapfrog_ algorithm.
-
-*Dan*: What a strange name.  Does it let particles jump around like frogs?
-
-*Carol*: Or like children jumping over each other?
-
-*Erica*: Something like that, I guess.  I never thought about the meaning
-of the name.  It is used quite widely, although it has different names in
-different fields of science.  In stellar dynamics you often hear it called
-leapfrog, but in molecular dynamics it is generally called the Verlet
-method, and I'm sure there must be other names in use in other fields.
-
-Here is the idea:
-
-:eqnarray:
-\br_{i} & = & \br_{i-1} + \bv_{i-1/2} dt \label{leapfrog-leap-step1} \\
-\bv_{i+1/2} & = & \bv_{i-1/2} + \ba_i dt \label{leapfrog-leap-step2}
-
-== xxx
-
-== xxx
-
-Here is 
-
-<tt>leapfrog_100.rb</tt>:
-
- :inccode: .leapfrog_1000_steps.rb
-
-Try:
-
- :commandoutput: ruby leapfrog_1000_steps.rb > leapfrog_1000_steps.out
- :commandinput: gnuplot END
-set term post eps
-set output "leapfrog_1000_steps.ps"
-set size ratio -1
-plot "leapfrog_1000_steps.out"
+ :commandinputoutputnoecho: irb END
+require "vector_try.rb"
+v1 = Vector[1, 2, 3]
+v2 = Vector[5, 6, 7]
+v1 * 3
+v1 * v1
+v1 * v2
+v1 * v2 * 3
+v1 * 3 * v2
 quit
 END
 
-:figure: leapfrog_1000_steps.ps 10cm leapfrog_1000_steps
-First attempt at leapfrog integration, with stepsize <tex>$dt=0.01$</tex>.
+== An Unnatural Asymmetry
 
-xxx
+*Dan*: So far so good, but why do you put the number 3 only at the end
+and in the middle, why not in front?  That would seem more natural!
+Let me try:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try.rb"
+v1 = Vector[1, 2, 3]
+v1 * 3
+3 * v1
+quit
+END
+
+Hmmm, I guess not.
+
+*Carol*: Yes, it would be more natural, but it doesn't work.  Do you see
+why?  Remember, when we write <tt>v2 * 3</tt> we invoke the <tt>*</tt>
+method of the vector object <tt>v2</tt>.  I understand that you would
+like to write <tt>3 * v2</tt>, but in that case you have a problem:
+you would be trying to invoke the <tt>*</tt> method of the number
+object 3 . . . .
+
+*Erica*: That's all and well, as a formal explanation, but if you can
+only write <tt>[1, 2, 3] * 3</tt> and never <tt>3 * [1, 2, 3]</tt>,
+I'm not very happy with it.  The whole point was to make our life
+easier, and to make the software notation more natural, more close to
+what you would write with pen and paper . . . 
+
+*Dan*: I agree.  Half a solution is often worse than no solution at all.
+Perhaps we should just return to our earlier component notation.
+
+*Carol*: I can't argue with that.  But I'm not yet willing to give up.
+I wonder whether there is not some sort of way out.  Let me see whether
+I can find something.
+
+== +Vector+ Division
+
+*Erica*: For now at least, let's finish the job we started . . . 
+
+*Carol*: . . . which means that we have to add a division method as
+well.  In the case of division, we only have to deal with scalar division.
+
+*Erica*: Ah, yes, of course, you have an inner product, but not an inner
+quotient.
+
+*Carol*: Well, not completely `of course', there is something called
+`geometric algebra'.  If you're curious, you can search for it on the
+internet.
+
+*Dan*: I'm not curious, let's move on.
+
+*Carol*: Okay, so I will punish attempts to divide two vectors by letting
+an error message appear.  In Ruby you can use the command +raise+ to 
+halt execution and display an error message:
+
+ :inccode: .vector_try.rb-bindiv
+
+A quick check:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try.rb"
+v1 = Vector[1, 2, 3]
+v2 = Vector[5, 6, 7]
+v1 / 3.0
+v2 / 0.5
+v1 / v2
+quit
+END
+
+You see, we got a run time error, because the +raise+ statement had
+the effect of raising an error, as it is called in Ruby.
+
+== The Score: Six to One
+
+*Erica*: Let me see whether I can sum up what we've learned.
+We've successfully implemented seven legal operations, unary/binary
+addition/multiplication, scalar/vector multiplication and scalar division.
+
+Of these seven, six are okay.  It is only with scalar multiplication that
+we encounter a problem, namely a lack of symmetry.
+
+*Dan*: Can you define "okay" for the other six?
+
+*Erica*: I will be explicit.  I will use a notation where <tt>v1</tt>
+and <tt>v2</tt> are vectors, and +s+ is a scalar number, which could be
+either an integer or a floating point number.  I will call something
+"well defined" if it gives a specific answer, and not an error message.
+
+Here is the whole list of the six operations that I am now considering "okay":
+
+1) unary plus:  <tt>+v1</tt> is okay, because it is well defined.
+
+2) unary minus:  <tt>-v1</tt> is okay, because it is well defined.
+
+3) binary plus:  <tt>v1 + v2</tt> is okay, because both <tt>v1 + v2</tt>
+and <tt>v2 + v1</tt> are well defined, and both give the exact same answer,
+as they should.
+
+4) binary minus:  <tt>v1 - v2</tt> is okay, because both <tt>v1 - v2</tt>
+and <tt>v2 - v1</tt> are well defined, and both give the exact opposite
+answer, as they should.
+
+5) vector times:  <tt>v1 * v2</tt> is okay, because both <tt>v1 * v2</tt>
+and <tt>v2 * v1</tt> are well defined, and both give the exact same answer,
+as they should.
+
+6) scalar slash:  <tt>v1 / s</tt> is okay, because it is well defined.
+The alternative, <tt>s / v1</tt> is not defined, and will give an error
+message.  However, that's perfectly okay too, because we have decided
+that we don't allow division by vectors.
+
+So far, the score is six to zero, and we seem to be winning.  The problem
+is that we are losing in the case of number 7:
+
+7) scalar times:  <tt>v1 * s</tt> is okay, because it is well defined.
+The alternative, <tt>s * v1</tt> _should_ give the same answer too, 
+but unfortunately, in our implementation it is not defined, and in
+fact, as we have seen, it gives an error message.
+
+*Dan*: Thanks, Erica, that's a very clear summary.  So all we have to do,
+to save the day, is to repair <tt>s * v1</tt>, so that it gives a well
+defined result, and in fact the same result as <tt>v1 * s</tt>.
+
+== A Solution
+
+*Carol*: Ah, of course!  How stupid, we should have thought about it right
+away!
+
+*Dan*: About what?
+
+*Carol*: Class augmentation!  We can just augment the number classes,
+telling them how to multiply with vectors!  Just as we have already
+augmented the array class, telling it how to convert an array into a
+vector.
+
+*Dan*: I don't see that.  What exactly are you trying to repair?
+
+*Carol*: Let's go back to square one.
+We wanted to make our scalar-vector multiplication symmetric.  The
+problem was, when you have a vector +v+ and you want to write
+
+<tt>3 * v</tt>
+
+you are effectively asking the number 3 to provide a method that
+knows how to handle multiplication of 3 with a vector.  But the
+poor number 3 has never heard of vectors!  No wonder we got an
+error message.  Let me show again explicitly what the error message
+says:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try.rb"
+v = Vector[1, 2, 3]
+v * 3
+3 * v
+quit
+END
+
+You see: it tells us that the number 3 expects to make a multiplication
+with something like another number.  It tries to convert a vector into such
+an other number, but doesn't succeed.
+
+*Erica*: So, what we really would like to do is to augment the rules for
+the class +Fixnum+, which is the class of integers, to explain how to
+multiply with an object of class +Vector+.  We can then do the same
+for the class +Float+, the class of floating point numbers.
+
+== Augmenting the +Fixnum+ Class
+
+*Carol*: Indeed.  Well, there is no stopping us now to add to the
+behavior of the +Fixnum+ class!  Here we go, in <tt>vector.rb</tt>:
+
+ :inccode: .vector.rb-fixnum
+
+*Dan*: Whoa!  That's quite a bit more complicated than I had expected.
+You must have been reading Ruby manuals lately!
+
+*Carol*: I admit, I did.  Here is what happens.  If we start with the
+number 3, and take a vector +v+, and write
+
+  3 * v
+
+then the <tt>*</tt> method of the fixed point number 3 first checks
+whether +v+ is a +Vector+.  In our case, it is, so then it returns
+the result
+
+  v * self
+
+which in the case of 3 is simply
+
+  v * 3
+
+and that is something we have already defined, in the +Vector+ class.
+
+If, on the other hand we write anything else, such as
+
+  3 * 8.5
+
+then the <tt>*</tt> method of the fixed point number 3 finds that
+<tt>8.5</tt> is _not_ a +Vector+, so it applies the original definition
+of multiplication,  to the number <tt>8.5</tt>,
+as it should.
+
+*Dan*: So the +alias+ notion means that whatever the original <tt>*</tt>
+did is now assigned to <tt>original_mult</tt> instead?
+
+*Carol*: Exactly.  Writing <tt>alias :x :y</tt> means that <tt>x</tt>
+becomes an alias for <tt>y</tt>.  Or so the theory goes.  Let's see what
+the practice tells us:
+
+ :commandinputoutputnoecho: irb END
+require "vector.rb"
+v = [1, 2, 3].to_v
+v * 3
+(v * 3).class
+3 * v
+(3 * v).class
+quit
+END
+
+== Augmenting the +Float+ Class
+
+*Dan*: Not bad!  Great!  <tt>3 * v</tt> now produces the
+exact same thing as <tt>v * 3</tt>.  Congratulations!
+Another hope fulfilled.  And I guess you should do the
+same thing for floating point numbers, right?
+
+*Carol*: Right.  All very similar:
+
+ :inccode: .vector.rb-float
+
+This time my hope for success will be quite justified:
+
+ :commandinputoutputnoecho: irb END
+require "vector.rb"
+v = [1, 2, 3].to_v
+v * 3.14
+(v * 3.14).class
+3.14 * v
+(3.14 * v).class
+quit
+END
+
+And indeed, it all comes out the way it should.  So I declare victory:
+I'm very pleased with our vector class.
+
+== +Vector+ Class Listing
+
+*Erica*: Let's get the whole listing on the screen.  Here it is.
+In fact, it is shorter than I thought, for all the things it does:
+
+ :inccode: .vector.rb
+
+== Forward Euler in Vector Form
+
+*Dan*: The whole point of this long exercise was to make our codes
+more readable.  Here is one of the array versions we made of our first
+code, the forward Euler version, in <tt>euler_array_each_def.rb</tt>:
+
+ :inccode: .euler_array_each_def.rb
+
+What would that look like in vector form?
+
+*Carol*: To start with, we'll have to +require+ the file <tt>vector.rb</tt>.
+We also have to convert the arrays into vectors, using <tt>.to_v</tt>.
+Then, in the loop, we can use  our vector versions of addition, unary minus,
+multiplication and division.  Let me write it all in file
+<tt>euler_vector.rb</tt>:
+
+ :inccode: .euler_vector.rb
+
+*Dan*: Wait a minute, we haven't define <tt>+=</tt> yet!
+
+*Carol*: Ah, you see, that's a nice feature of operator overloading in
+Ruby: once you redefine <tt>+</tt> the same redefinition applies to
+derivative expressions such as <tt>+=<tt>.
+
+*Dan*: That's nice, if it really works.  Let's compare the run with the
+old results:
+
+ :commandoutput: ruby euler_array_each_def.rb | tail -1
+
+ :commandoutput: ruby euler_vector.rb | tail -1
+
+Wonderful.  And I must say, the code does look a lot cleaner now.
+
+*Erica*: Definitely.  This _is_ a lot more pretty.  What a difference!
+None of all those ugly <tt>[k]</tt> occurrences anymore.
+I think it was worth all the work we put in,
+defining a <tt>Vector</tt> class.

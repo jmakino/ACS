@@ -1,346 +1,406 @@
-= A Complete +Vector+ Class
+= A +Vector+ Class with <tt>+</tt> and <tt>-</tt>
 
-== +Vector+ Multiplication
+== +Vector+ Subtraction
 
-*Carol*: Which means it is time to move on to multiplication.  But here
-we have another problem: there is multiplication and then there is
-multiplication.
+*Erica*: Well, Carol, you've pulled a really neat trick.  What a difference,
+being able to add vectors by writing
 
-*Dan*: You mean?
+  v = v1 + v2
 
-*Carol*: We can multiply a vector with a scalar number; for a vector
+rather than 
 
-  v = [1, 2, 3]
+  v = []
+  v1.each_index{|k| v[k] = v1[k] + v2[k]}
 
-we would like to see multiplication by two giving us:
+*Dan*: Thanks, Carol!  You've just made our life a whole lot easier.
 
-  2 * v = [2, 4, 6]
+*Carol*: Not quite yet; I'll have to do the same thing for subtraction,
+multiplication and addition as well.  And I'm sure there are a few more
+things to consider, before we can claim to have a complete +Vector+ class.
+But I, too, am encouraged with the good start we've made!
 
-But in addition (no pun intended) we want to form an inner product of
-two vectors.  In particular, we would like to get the square of the
-length of a vector by forming the inner product with itself:
+I'll open a new file <tt>vector_try_add_sub.rb</tt>.  First thing to add,
+after addition, is subtraction.  That part is easy:
 
-  v * v = 2*2 + 4*4 + 6*6 = 56
+ :inccode: .vector_try_add_sub.rb
 
-Or more generally, for
+*Erica*: So now we can write <tt>v = v1 + v2</tt> and <tt>v = v1 - v2</tt>
+But what about <tt>v = -v1</tt>?  Or even just <tt>v = v1</tt>?  Would that
+work too?
 
-  w = [10, 10, 10]
-
-we want to be able to take the inner product of +v+ and +w+ to give us:
-
-  v * w = 2*10 + 4*10 + 6*10 = 120
-
-We could of course define different method names for these two operations,
-like <tt>multiply_scalar</tt> and <tt>inner_product</tt>, but
-something tells me that we will be happier using <tt>*</tt> for both.
-
-*Dan*: Certainly I will be happier that way!
-
-*Carol*: Well, how about this?
-
- :inccode: .vector_try.rb-binmul
-
-Time for a workout:
+*Carol*: Good question!  Probably not.  But before getting into the why not,
+let's play with +irb+ and see what happens:
 
  :commandinputoutputnoecho: irb END
-require "vector_try.rb"
+require "vector_try_add_sub.rb"
 v1 = Vector[1, 2, 3]
 v2 = Vector[5, 6, 7]
-v1 * 3
-v1 * v1
-v1 * v2
-v1 * v2 * 3
-v1 * 3 * v2
+v = v1 + v2
+v = v1 - v2
+v = v1
+v = -v1
 quit
 END
 
-== An Unnatural Asymmetry
+*Dan*: Huh?  A method by the name of a minus sign followed by an
+<tt>@</tt> symbol?  That's the strangest method name I've ever seen.
+And what can it mean that it is undefined?  Should it be defined?
 
-*Dan*: So far so good, but why do you put the number 3 only at the end
-and in the middle, why not in front?  That would seem more natural!
+*Erica*: At least writing <tt>v = v1</tt> worked.  So we've come halfway!
+
+*Dan*: Ah, but would it also work if we would write <tt>v = +v1</tt>?
 Let me try:
 
  :commandinputoutputnoecho: irb END
-require "vector_try.rb"
+require "vector_try_add_sub.rb"
 v1 = Vector[1, 2, 3]
-v1 * 3
-3 * v1
+v2 = Vector[5, 6, 7]
+v = +v1
 quit
 END
 
-Hmmm, I guess not.
+Aha!  You see, we're not even half-way yet.  Neither of the two work.
+But it's intriguing that we get a similar error message, this time with
+a plus sign in front of the mysterious <tt>@</tt> symbol.
 
-*Carol*: Yes, it would be more natural, but it doesn't work.  Do you see
-why?  Remember, when we write <tt>v2 * 3</tt> we invoke the <tt>*</tt>
-method of the vector object <tt>v2</tt>.  I understand that you would
-like to write <tt>3 * v2</tt>, but in that case you have a problem:
-you would be trying to invoke the <tt>*</tt> method of the number
-object 3 . . . .
+== Unary <tt>+</tt>
 
-*Erica*: That's all and well, as a formal explanation, but if you can
-only write <tt>[1, 2, 3] * 3</tt> and never <tt>3 * [1, 2, 3]</tt>,
-I'm not very happy with it.  The whole point was to make our life
-easier, and to make the software notation more natural, more close to
-what you would write with pen and paper . . . 
+*Carol*: Let me consult the Ruby manual.  Just a moment . . . aha, I see!
+Well, this is perhaps an exception to Ruby's principle of least surprise.
+The manual tells me that <tt>-@</tt> is the Ruby notation for a
+unary minus, and similarly, <tt>+@</tt> is the Ruby notation for a
+unary plus.
 
-*Dan*: I agree.  Half a solution is often worse than no solution at all.
-Perhaps we should just return to our earlier component notation.
+*Dan*: A unary minus?
 
-*Carol*: I can't argue with that.  But I'm not yet willing to give up.
-I wonder whether there is not some sort of way out.  Let me see whether
-I can find something.
+*Carol*: Yes, and the word `un' in unary here means `one,' like in `unit.'
+A unary minus is an operation that has only one operand.
 
-== +Vector+ Division
+*Erica*: As opposed to what?
 
-*Erica*: For now at least, let's finish the job we started . . . 
+*Carol*: As opposed to a binary minus.  Most normal operations, such as 
+addition and subtraction, as well as multiplication and division, are
+binary operation.  Binary here means two operands.  When you use a
+single plus sign, you add two numbers.  Similarly, a minus allows you
+to subtract two numbers.  So when you write <tt>5 - 3 = 2</tt> you are using
+a binary minus.  However, when you first write <tt>x = 5</tt> and then
+<tt>y = -x</tt>, to give <tt>y</tt> the value <tt>-5</tt>, you are using
+not a binary minus, but a unary minus.  The construction <tt>-x</tt>
+returns a value that has the value of the variable <tt>x</tt>, but with
+an additional minus sign.
 
-*Carol*: . . . which means that we have to add a division method as
-well.  In the case of division, we only have to deal with scalar division.
+*Dan*: So you are effectively multiplying <tt>x</tt> with the number
+<tt>-1</tt>.
 
-*Erica*: Ah, yes, of course, you have an inner product, but not an inner
-quotient.
+*Erica*: Or you could say that you are subtracting <tt>x</tt> from <tt>0</tt>.
 
-*Carol*: Well, not completely `of course', there is something called
-`geometric algebra'.  If you're curious, you can search for it on the
-internet.
+*Carol*: Yes, both statements are correct.  But rather than introducing
+multiplication, it is simpler to think only about subtraction.  So writing
+<tt>-x</tt> uses a unary minus, while writing <tt>0-x</tt> uses a binary
+minus, while both are denoting the same result.
 
-*Dan*: I'm not curious, let's move on.
+*Dan*: But why does Ruby use such a complicated symbol, <tt>-@</tt>, for
+unary minus?
 
-*Carol*: Okay, so I will punish attempts to divide two vectors by letting
-an error message appear.  In Ruby you can use the command +raise+ to 
-halt execution and display an error message:
+*Carol*: That symbol is only used when you redefine the symbol.
 
- :inccode: .vector_try.rb-bindiv
+Here, let me try it out, in a new file <tt>vector_try_unary.rb</tt>.  And I may
+as well start with the unary plus, since that seems the simplest of the
+two unary operations.
 
-A quick check:
+We have just redefined the binary plus as follows:
+
+ :inccode: .vector_try_unary.rb-binplus
+
+We can now use the <tt>+@</tt> symbol to redefine also the unary plus for
+the same +Vector+ class:
+
+ :inccode: .vector_try_unary.rb-unplus
+
+When we use it, we don't have to add the <tt>@</tt> symbol, which is only
+used in the definition, to make the necessary distinction between the unary
+and binary plus.
+
+*Dan*: That's it?  You just return the vector itself?  I guess it makes
+sense, but it seems almost too simple.  Let's try it out:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try_unary.rb"
+v1 = Vector[1, 2, 3]
+v = +v1
+quit
+END
+
+Good!  Now what about unary minus?
+
+== Unary <tt>-</tt>
+
+*Carol*: What about it?
+
+*Dan*: My first guess would be to let the
+method return <tt>-self</tt> but that's too simple, I'm sure . . .
+
+*Carol*: Yes, that would beg the question!  By writing <tt>-self</tt>
+you are trying to invoke the very method you are trying to define.
+That certainly won't work.  But, hey, remember our friend +map+,
+which maps an operation on all elements of an array?  Well, because the
++Vector+ class inherits the +Array+ class, any method working for an
+array will work for a vector as well, so here we go:
+
+ :inccode: .vector_try_unary.rb-unmin
+
+And here is the reality check:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try_unary.rb"
+v1 = Vector[1, 2, 3]
+v = -v1
+quit
+END
+
+*Dan*: It's real.  Congratulations!
+
+*Erica*: Can you compose these operations arbitrarily?
+
+*Carol*: Of course you can.  The syntax is the same, we have only
+overloaded the <tt>+</tt> and <tt>-</tt> operators; the way you
+can combine them is the same as in normal arithmetic.
+
+*Erica*: Let me try:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try_unary.rb"
+v1 = Vector[1, 2, 3]
+v2 = Vector[5, 6, 7]
+v = -((-v1) + (+v2))
+quit
+END
+
+== An Unexpected Result
+
+*Dan*: So much for normal arithmetic.
+
+*Carol*: That is _very_ unexpected, I must say.  What does
+the error message say?  It talks about a very long array, with six
+components.  Wait a minute, it should only talk about vectors.
+It seems that not all of our vectors are really members of the +Vector+
+class.  Could it be that some of them are still +Array+ members?
+
+*Erica*: Easy to test:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try_unary.rb"
+v1 = Vector[1, 2, 3]
+v2 = Vector[5, 6, 7]
+v1.class
+v2.class
+(+v2).class
+(-v1).class
+quit
+END
+
+*Carol*: Aha!  Unexpected, yes, but it all makes sense.  For the unary
+plus method, we just returned +self+, the object itself, which already
+is a member of the +Vector+ class.  But the way I wrote the unary minus,
+things are more tricky:
+
+ :inccode: .vector_try_unary.rb-unmin
+
+You see, +self+ is a instance of the +Vector+ class, which inherits
+the +Array+ class, and thereby inherits all the methods of the +Array+
+class.  But now the question is: what does a method such as +map+ do?
+It is a member of the +Array+ class, something that Ruby folks write
+as <tt>Array#map</tt> in a notation that I find somewhat confusing,
+but we'll have to get used to it.  So, what <tt>Array#map</tt> does,
+and the only thing it _can_ do, is to return an <tt>Array</tt> object.
+
+*Erica*: And not a +Vector+ object.  Got it!  So all we have to do is
+to tell the result of the <tt>Array#map</tt> method to become a +Vector+.
+
+But wait a minute, we can't do that.  We want to pull off a little alchemy
+here, turning an +Array+ into a +Vector+.  But doesn't this mean that the
++Array+ class has to learn about vectors?
+
+== Converting
+
+*Carol*: Well, I _may_ have a lead here.  In Ruby, you will
+often see something like <tt>to_s</tt> as a method to write
+something as a string.  Or more precisely, to convert it into a string.
+
+*Dan*: What does it mean to _convert_ something?  Can you give a really
+simple example?
+
+*Carol*: The simplest example I can think of is the way that integers
+are being converted into floating point numbers.  I'm sure you're familiar
+with it.  If you specify a multiplication like <tt>3.14 * 2</tt>
+to get an approximate result for <tex>$2\pi$</tex>, the floating
+point number <tt>3.14</tt> will try to make the fixed point number
+2, in integer, into a floating point number first.
+
+In other words, <tt>3.14</tt>, an object that is an instance of the
+class +Float+, will try to convert the number 2, an object that is an
+instance of the class +Fixnum+, into an instance of the class +Float+.
+To say it in simple terms: <tt>3.14</tt> will convert <tt>2</tt> into
+<tt>2.0</tt> and since it knows how to multiply two floating point
+numbers, it can then happily go ahead and apply its multiplication
+method.
+
+*Dan*: I see.  I guess I never worried about what happened when I
+write something like <tt>3.14 * 2</tt>; I just expect <tt>5.28</tt>
+to come out.
+
+*Carol*: <tt>6.28</tt>.
+
+*Dan*: Oops, yes, of course.  But you see what I mean.
+
+*Carol*: I agree, normally there is no reason to think about those
+things, as long as we are using predefined features that hopefully
+have been tested extensively.  But now we are going to define our
+own objects, vectors, and we'd better make sure that we're doing
+the right thing.
+
+*Erica*: You mentioned the <tt>to_s</tt> method.
+
+*Carol*: Yes, for each class +XXX+ that
+has a method <tt>to_s</tt> defined, as <tt>XXX#to_s</tt>, we can use
+<tt>to_s</tt> to convert an object of class +XXX+ into an object of class
++String+.
+
+Here, let me show you:
+
+ :commandinputoutputnoecho: irb END
+3
+3.class
+3.to_s
+3.to_s.class
+3.14
+3.14.class
+3.14.to_s
+3.14.to_s.class
+quit
+END
+
+*Erica*: Ah, so the <tt>"..."</tt> notation already shows that we are
+dealing with a character string, or string for short, and indeed, the
+class of <tt>"..."</tt> is +String+.  That makes sense.
+
+So you want to do something similar with vectors, starting with an array
+and then converting it into a vector, with a method like <tt>to_v</tt>.
+
+*Carol*: Exactly!  And I like the name you just suggested.  So we have
+to define a method <tt>Array.to_v</tt>.  Then, once we have such a method,
+we can use it to create a vector by writing
+
+  v = [1, 2, 3].to_v
+
+== Augmenting the +Array+ Class
+
+*Erica*: But how can we define <tt>to_v</tt>?  Somebody else already has
+defined the +Array+ class for us.  I guess we'll have to dig into wherever
+Ruby is defined, and change the +Array+ class definition?
+
+*Carol*: No digging needed!  The neat thing about Ruby, one of the neat
+things, is that it allows you to augment a class.  Even if someone
+else had defined a class, we can always add a few lines to the class
+definition, for example, when we want to add a method.  The different
+bits and pieces of the class definition can live in different places.
+Nothing to worry about!
+
+It should be simple.  Let me copy our previous
+<tt>vector_try_unary.rb</tt> into a new file <tt>vector_try.rb</tt>.
+Hopefully we're getting closer to the real thing!
+
+Here is my first attempt to augment the +Array+ class:
+
+ :inccode: .vector_try.rb-array
+
+And now, keeping my fingers crossed:
+
+ :commandinputoutputnoecho: irb END
+require "vector_try.rb"
+[1, 2, 3].class
+[1, 2, 3].to_v.class
+v1 = Vector[1, 1, 1]
+v2 = [1, 2, 3].to_v
+v = v1 + v2
+v.class
+quit
+END
+
+*Erica*: Your hope was justified: <tt>to_v</tt> does indeed seem
+to produce genuine vectors.  How nice, that we have the power to
+add to the prescribed behavior of the +Array+ class!
+
+*Dan*: It may be nice, but I'm afraid I don't understand yet
+how <tt>to_v</tt> works.  You are returning a new vector, and that
+new vector should have the same numerical components as the original
+array, +self+, right?  Now what is that little star doing there, in
+front of +self+?
+
+*Carol*: Ah, that's a way to liberate the components.  We have seen
+that we can create an array by writing
+
+   [1, 2, 3]
+
+which you can view as a shorthand for
+
+   Array[1, 2, 3]
+
+where the <tt>Array[]</tt> method receives a list of components and
+returns an array that contains those components.
+
+Now for our vector class we can similarly write:
+
+   Vector[1, 2, 3]
+
+in order to create vector <tt>[1, 2, 3]</tt>.
+
+Now, let me come back to your question.  If I start with an +Array+
+object <tt>[1, 2, 3]</tt>, which internally is addressed by +self+,
+and if I then were to write:
+
+    Vector[self]
+
+that would be translated into
+
+    Vector[[1, 2, 3]]
+
+*Dan*: I see: that would be a vector with one component, where the
+one component would be the array <tt>[1, 2, 3]</tt>.  Got it.  So
+we have to dissolve one layer of square brackets, effectively.
+
+*Carol*: Indeed.  And here is where the <tt>*</tt> notation comes in.
+Let me show you:
+
+ :commandinputoutputnoecho: irb END
+a = [1, 2, 3]
+b = [a]
+c = [*a]
+quit
+END
+
+== Fixing the Bug
+
+*Erica*: So now we can go back and fix the bug in our unary minus.
+
+*Carol*: Ah, yes, that's how we got started.  Okay, we had in
+file <tt>vector_try_unary.rb</tt>:
+
+ :inccode: .vector_try_unary.rb-unmin
+
+In our new file, <tt>vector_try.rb</tt>, I can now make this:
+
+ :inccode: .vector_try.rb-unmin
+
+*Dan*: Shall we repeat our old trial run?  Here we go:
 
  :commandinputoutputnoecho: irb END
 require "vector_try.rb"
 v1 = Vector[1, 2, 3]
 v2 = Vector[5, 6, 7]
-v1 / 3.0
-v2 / 0.5
-v1 / v2
+v = -((-v1) + (+v2))
 quit
 END
 
-You see, we got a run time error, because the +raise+ statement had
-the effect of raising an error, as it is called in Ruby.
-
-== The Score: Six to One
-
-*Erica*: Let me see whether I can sum up what we've learned.
-We've successfully implemented seven legal operations, unary/binary
-addition/multiplication, scalar/vector multiplication and scalar division.
-
-Of these seven, six are okay.  It is only with scalar multiplication that
-we encounter a problem, namely a lack of symmetry.
-
-*Dan*: Can you define "okay" for the other six?
-
-*Erica*: I will be explicit.  I will use a notation where <tt>v1</tt>
-and <tt>v2</tt> are vectors, and +s+ is a scalar number, which could be
-either an integer or a floating point number.  I will call something
-"well defined" if it gives a specific answer, and not an error message.
-
-Here is the whole list of the six operations that I am now considering "okay":
-
-1) unary plus:  <tt>+v1</tt> is okay, because it is well defined.
-
-2) unary minus:  <tt>-v1</tt> is okay, because it is well defined.
-
-3) binary plus:  <tt>v1 + v2</tt> is okay, because both <tt>v1 + v2</tt>
-and <tt>v2 + v1</tt> are well defined, and both give the exact same answer,
-as they should.
-
-4) binary minus:  <tt>v1 - v2</tt> is okay, because both <tt>v1 - v2</tt>
-and <tt>v2 - v1</tt> are well defined, and both give the exact opposite
-answer, as they should.
-
-5) vector times:  <tt>v1 * v2</tt> is okay, because both <tt>v1 * v2</tt>
-and <tt>v2 * v1</tt> are well defined, and both give the exact same answer,
-as they should.
-
-6) scalar slash:  <tt>v1 / s</tt> is okay, because it is well defined.
-The alternative, <tt>s / v1</tt> is not defined, and will give an error
-message.  However, that's perfectly okay too, because we have decided
-that we don't allow division by vectors.
-
-So far, the score is six to zero, and we seem to be winning.  The problem
-is that we are losing in the case of number 7:
-
-7) scalar times:  <tt>v1 * s</tt> is okay, because it is well defined.
-The alternative, <tt>s * v1</tt> _should_ give the same answer too, 
-but unfortunately, in our implementation it is not defined, and in
-fact, as we have seen, it gives an error message.
-
-*Dan*: Thanks, Erica, that's a very clear summary.  So all we have to do,
-to save the day, is to repair <tt>s * v1</tt>, so that it gives a well
-defined result, and in fact the same result as <tt>v1 * s</tt>.
-
-== A Solution
-
-*Carol*: Ah, of course!  How stupid, we should have thought about it right
-away!
-
-*Dan*: About what?
-
-*Carol*: Class augmentation!  We can just augment the number classes,
-telling them how to multiply with vectors!  Just as we have already
-augmented the array class, telling it how to convert an array into a
-vector.
-
-*Dan*: I don't see that.  What exactly are you trying to repair?
-
-*Carol*: Let's go back to square one.
-We wanted to make our scalar-vector multiplication symmetric.  The
-problem was, when you have a vector +v+ and you want to write
-
-<tt>3 * v</tt>
-
-you are effectively asking the number 3 to provide a method that
-knows how to handle multiplication of 3 with a vector.  But the
-poor number 3 has never heard of vectors!  No wonder we got an
-error message.  Let me show again explicitly what the error message
-says:
-
- :commandinputoutputnoecho: irb END
-require "vector_try.rb"
-v = Vector[1, 2, 3]
-v * 3
-3 * v
-quit
-END
-
-You see: it tells us that the number 3 expects to make a multiplication
-with something like another number.  It tries to convert a vector into such
-an other number, but doesn't succeed.
-
-*Erica*: So, what we really would like to do is to augment the rules for
-the class +Fixnum+, which is the class of integers, to explain how to
-multiply with an object of class +Vector+.  We can then do the same
-for the class +Float+, the class of floating point numbers.
-
-== Augmenting the +Fixnum+ Class
-
-*Carol*: Indeed.  Well, there is no stopping us now to add to the
-behavior of the +Fixnum+ class!  Here we go, in <tt>vector.rb</tt>:
-
- :inccode: .vector.rb-fixnum
-
-*Dan*: Whoa!  That's quite a bit more complicated than I had expected.
-You must have been reading Ruby manuals lately!
-
-*Carol*: I admit, I did.  Here is what happens.  If we start with the
-number 3, and take a vector +v+, and write
-
-  3 * v
-
-then the <tt>*</tt> method of the fixed point number 3 first checks
-whether +v+ is a +Vector+.  In our case, it is, so then it returns
-the result
-
-  v * self
-
-which in the case of 3 is simply
-
-  v * 3
-
-and that is something we have already defined, in the +Vector+ class.
-
-If, on the other hand we write anything else, such as
-
-  3 * 8.5
-
-then the <tt>*</tt> method of the fixed point number 3 finds that
-<tt>8.5</tt> is _not_ a +Vector+, so it applies the original definition
-of multiplication,  to the number <tt>8.5</tt>,
-as it should.
-
-*Dan*: So the +alias+ notion means that whatever the original <tt>*</tt>
-did is now assigned to <tt>original_mult</tt> instead?
-
-*Carol*: Exactly.  Writing <tt>alias :x :y</tt> means that <tt>x</tt>
-becomes an alias for <tt>y</tt>.  Or so the theory goes.  Let's see what
-the practice tells us:
-
- :commandinputoutputnoecho: irb END
-require "vector.rb"
-v = [1, 2, 3].to_v
-v * 3
-(v * 3).class
-3 * v
-(3 * v).class
-quit
-END
-
-== Augmenting the +Float+ Class
-
-*Dan*: Not bad!  Great!  <tt>3 * v</tt> now produces the
-exact same thing as <tt>v * 3</tt>.  Congratulations!
-Another hope fulfilled.  And I guess you should do the
-same thing for floating point numbers, right?
-
-*Carol*: Right.  All very similar:
-
- :inccode: .vector.rb-float
-
-This time my hope for success will be quite justified:
-
- :commandinputoutputnoecho: irb END
-require "vector.rb"
-v = [1, 2, 3].to_v
-v * 3.14
-(v * 3.14).class
-3.14 * v
-(3.14 * v).class
-quit
-END
-
-And indeed, it all comes out the way it should.  So I declare victory:
-I'm very pleased with our vector class.
-
-== +Vector+ Class Listing
-
-*Erica*: Let's get the whole listing on the screen.  Here it is.
-In fact, it is shorter than I thought, for all the things it does:
-
- :inccode: .vector.rb
-
-== Forward Euler in Vector Form
-
-*Dan*: The whole point of this long exercise was to make our codes
-more readable.  Here is one of the array versions we made of our first
-code, the forward Euler version, in <tt>euler_array_each_def.rb</tt>:
-
- :inccode: .euler_array_each_def.rb
-
-What would that look like in vector form?
-
-*Carol*: To start with, we'll have to +require+ the file <tt>vector.rb</tt>.
-We also have to convert the arrays into vectors, using <tt>.to_v</tt>.
-Then, in the loop, we can use  our vector versions of addition, unary minus,
-multiplication and division.  Let me write it all in file
-<tt>euler_vector.rb</tt>:
-
- :inccode: .euler_vector.rb
-
-*Dan*: Wait a minute, we haven't define <tt>+=</tt> yet!
-
-*Carol*: Ah, you see, that's a nice feature of operator overloading in
-Ruby: once you redefine <tt>+</tt> the same redefinition applies to
-derivative expressions such as <tt>+=<tt>.
-
-*Dan*: That's nice, if it really works.  Let's compare the run with the
-old results:
-
- :commandoutput: ruby euler_array_each_def.rb | tail -1
-
- :commandoutput: ruby euler_vector.rb | tail -1
-
-Wonderful.  And I must say, the code does look a lot cleaner now.
-
-*Erica*: Definitely.  This _is_ a lot more pretty.  What a difference!
-None of all those ugly <tt>[k]</tt> occurrences anymore.
-I think it was worth all the work we put in,
-defining a <tt>Vector</tt> class.
+Great!  Okay, now we have really covered a complete usage of <tt>+</tt>
+and  <tt>-</tt> for vectors, the unary and binary forms for each of them.
