@@ -332,7 +332,7 @@ Second attempt at modified Euler integration, with step size
 *Erica*: Again, this is far better than what we saw in figure ref(euler).
 There we couldn't even complete a single orbit!
 
-== Second Order
+== Second Order Scaling
 
 *Dan*: Yes, it seems clear that our modified Euler behaves a lot better
 than forward Euler.  But we have not yet convinced ourselves that it is
