@@ -306,7 +306,7 @@ Much better!
 are _trying_ to orbit each other in a circle, it seems.  They're just
 making many small errors, that are piling up.
 
-== Printing
+== Printing Plots
 
 *Erica*: Now that we're getting somewhat believable results, I would like
 to make some printouts of our best pictures.  Carol, how do you get gnuplot
@@ -339,7 +339,7 @@ have just produced.
   gnuplot> replot
   gnuplot> q
 
-Let's print it out:
+Let's print out this plot:
 
   |gravity> lpr "forward2_0.01.ps"
 
