@@ -1,0 +1,30 @@
+
+<b> </b>	
+
+<b> </b>
+
+<tt> </tt>
+	
+<tex>
+
+\title{{\sl \huge The Art of Computational Science}\\
+\bigskip
+{\sl Volume 3}\\
+\bigskip
+\bigskip
+\includegraphics[width=3.5cm]{acstitle.ps}\\
+\bigskip
+\bigskip
+\bigskip
+\bf Documentation
+\bigskip
+}
+\author{\bf Piet Hut, Jun Makino, Stan Blank}
+
+
+\maketitle
+\thispagestyle{empty}
+</tex>
+
+:tableofcontents:
+

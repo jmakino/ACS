@@ -1,0 +1,62 @@
+= Documentation for Documentation
+
+== Documenting the Project
+
+*Erica*:
+I know we've talked about this before, but we need to consider some form of journaling system for documenting the valuable work we're doing.  I don't want to have to re-invent the wheel every time we need to work with Ruby and our virtual start cluster lab.
+
+*Dan*:
+It doesn't sound like a lot of fun, but if we are nominated for a Nobel Prize, we would need some form of evidence of our work, wouldn't we?  I remember a class trip to Fermilab once and Leon Lederman's Nobel Prize was on display with the journal he kept of his work.  We had probably better do the same!
+
+*Carol*:
+Um... OK... Anyway, I think I'll agree that we need to consider documenting our work and that it probably won't be the most fun we've had since summer vacation, but I'm going to ignore most of what Dan said.  Most of my computer science professors drilled the phrase "The job isn't finished until the paperwork is done!" into our heads from the start.
+
+*Dan*:
+Well you can't blame a guy for being an optimist, can you?  Anyway, we do need to keep track of our work.  Any suggestions?  I think a pencil and paper notebook is a bit old-fashioned for a group that's trying to simulate a star cluster!
+
+*Carol*:
+I think we should consider something more than a word or text processor.  Nobel Prize or not, we may want to publish our results at some point.  Even if we don't publish, we probably would want to make our work available in several different formats.  There are probably some good commercial packages available that would fit out needs.
+
+*Erica*:
+Whoa... are you forgetting that we're grad students?  By definition we live in genteel poverty... we need something that is inexpensive, or better yet, free.  
+
+*Dan*:
+Inexpensive is good, but I like "free" better.  One thing that bothers me, though, is that nothing is really free.  Free software may not cost money, but how much time are we going to need to learn how to use it?  In genteel poverty we may be, but our time is worth something.
+
+*Erica*:
+You are correct (for once) Dan, but I may have a solution to our needs.  I overheard one of my professors talking about a documentation system called "acsdoc".  Apparently it is available on a website called "The Art of Computational Science".  Why don't we take a look?  
+
+*Dan*:
+OK... and after all, we ARE in the presence of a computer science major!  Carol should be able to figure out anything we encounter in any software package.
+
+*Carol*:
+Now wait a minute... don't put all the pressure on me!  We're all in this together, remember?  We'll figure it out together.  Agreed?
+
+*Erica*:
+Certainly!
+
+*Dan*:
+Of course... I was just having some fun with you!
+
+*Carol*:
+Well, I thought so, but I just wanted to make sure.  How about we agree to write down the learning process for acsdoc also?  That may be of benefit to others as well as ourselves.
+
+== The acsdoc package
+
+*Dan*:
+400 megabytes for a tarball... that's a download!  I'm glad I didn't have to use a dialup connection.
+
+*Erica*:
+OK Carol, now what?  How do we install this thing and get it working?
+
+*Carol*:
+Let's read the installation instructions on the website.  It looks fairly straightforward.  From what I understand, acsdoc is based somewhat on RDoc, a free Ruby documentation engine.  I know that RDoc is relatively simple to use, so perhaps acsdoc will share that feature as well?
+
+*Dan*:
+This is sounding better all the time.  I suppose the first thing we should do is untar the file and get started?  Carol, you need to explain everything you are doing so that we won't miss any details.
+
+*Carol*:
+So, I get to act like a professor!  Now hear this...  Seriously, first I'm going to bring up a terminal window and find the acs-1.2.4.tar file.  There, it's in our home directory right where it should be.  Now I'm going to "untar" the file by typing "tar xvf acs-1.2.4.tar" at the prompt, followed by the magic "Enter" key.  
+
+*Erica*:
+Wow... look at all the files and directories!  I hope everything gets placed in the correct locations!
