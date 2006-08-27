@@ -195,8 +195,8 @@ Two bodies at rest, with the origin O of a one-dimensional coordinate system
 shown at the left.
 
 But really, the position of the origin is not important; if you shift
-the origin to the left or to the right, the value of $r$ remains the same,
-and that's the only thing that counts.
+the origin to the left or to the right, the value of <tex>$r$</tex>
+remains the same, and that's the only thing that counts.
 
 *Dan*: Yes, I can see that as long as _O_ stays to the left of both particles.
 But how about the other cases?  Let's check.  If we take _O_ to be at the
