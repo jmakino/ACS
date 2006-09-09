@@ -3,31 +3,25 @@
 == Documenting the Project
 
 *Erica*:
-I know we've talked about this before, but we need to consider some form of journaling system for documenting the valuable work we're doing.  I don't want to have to re-invent the wheel every time we need to work with Ruby and our virtual start cluster lab.
+I know we've talked about this before, but we need to consider some form of journaling system for documenting the work we're doing.  I don't want to have to re-invent the wheel every time we need to work with Ruby and our virtual star cluster lab.  The larger this project grows, the more difficult it is going to be for us to remember what we've accomplished!
 
 *Dan*:
-It doesn't sound like a lot of fun, but if we are nominated for a Nobel Prize, we would need some form of evidence of our work, wouldn't we?  I remember a class trip to Fermilab once and Leon Lederman's Nobel Prize was on display with the journal he kept of his work.  We had probably better do the same!
+Documentation isn't a lot of fun, but I know it's important.  I suppose we should begin at the beginning... which is always a good place to start!  Carol, do you have any ideas about how we should go about documenting our work?  You are the computer scientist among us and I would think this falls under your area of expertise.  Simply using a pencil and paper notebook seems a bit old-fashioned for a group that is trying to simulate star cluster dynamics!
 
 *Carol*:
-Um... OK... Anyway, I think I'll agree that we need to consider documenting our work and that it probably won't be the most fun we've had since summer vacation, but I'm going to ignore most of what Dan said.  Most of my computer science professors drilled the phrase "The job isn't finished until the paperwork is done!" into our heads from the start.
-
-*Dan*:
-Well you can't blame a guy for being an optimist, can you?  Anyway, we do need to keep track of our work.  Any suggestions?  I think a pencil and paper notebook is a bit old-fashioned for a group that's trying to simulate a star cluster!
-
-*Carol*:
-I think we should consider something more than a word or text processor.  Nobel Prize or not, we may want to publish our results at some point.  Even if we don't publish, we probably would want to make our work available in several different formats.  There are probably some good commercial packages available that would fit out needs.
+I agree, Dan.  I also think we should consider something more than a word or text processor.  Who knows, we may want to publish our results at some point.  Even if we don't publish, we probably would want to make our work available in several different formats.  There are some good commercial packages available that would fit out needs.
 
 *Erica*:
-Whoa... are you forgetting that we're grad students?  By definition we live in genteel poverty... we need something that is inexpensive, or better yet, free.  
+Whoa... are you forgetting that we're grad students?  By definition we live in genteel poverty... we need something that is inexpensive, or better yet, free. 
 
 *Dan*:
-Inexpensive is good, but I like "free" better.  One thing that bothers me, though, is that nothing is really free.  Free software may not cost money, but how much time are we going to need to learn how to use it?  In genteel poverty we may be, but our time is worth something.
+Inexpensive is good, but I like "free" better.  One thing that bothers me, though, is that nothing is really free.  Free software may not cost money, but what is the usual learning curve for free software?  In genteel poverty we may be, but our time is worth something.
 
 *Erica*:
-You are correct (for once) Dan, but I may have a solution to our needs.  I overheard one of my professors talking about a documentation system called "acsdoc".  Apparently it is available on a website called "The Art of Computational Science".  Why don't we take a look?  
+I may have a solution to our needs.  I overheard one of my professors talking about a documentation system called "acsdoc".  Carol, you mentioned several different formats... I believe that acsdoc will allow us to publish in .html, .tex, .ps, and .pdf formats.  Apparently the software is available on a website called "The Art of Computational Science".  Dan has a good point... I've also heard that acsdoc is relatively simple to use.  Why don't we take a look?
 
 *Dan*:
-OK... and after all, we ARE in the presence of a computer science major!  Carol should be able to figure out anything we encounter in any software package.
+Sounds great to me... and after all, we ARE in the presence of a computer science major!  Carol should be able to figure out any problems we encounter in any software package, simple or not.
 
 *Carol*:
 Now wait a minute... don't put all the pressure on me!  We're all in this together, remember?  We'll figure it out together.  Agreed?
@@ -39,24 +33,168 @@ Certainly!
 Of course... I was just having some fun with you!
 
 *Carol*:
-Well, I thought so, but I just wanted to make sure.  How about we agree to write down the learning process for acsdoc also?  That may be of benefit to others as well as ourselves.
+Well, I thought so, but I just wanted to make sure.  How about we agree to write down the learning process for acsdoc also?  That may be of benefit to others as well as ourselves.  Now, let's go to the website and see what we can find!  We'll simply point the browser to:  http://www.artcompsci.org and see if we can locate the acsdoc software.  
+
+*Erica*:
+I remember seeing this website.  Look!  There is a new version of acsdoc that's just been released, ACS 1.2.5.  Let's download that package and see if we can get it installed on our workstation.
 
 == The acsdoc package
 
 *Dan*:
-400 megabytes for a tarball... that's a download!  I'm glad I didn't have to use a dialup connection.
+It appears that the acs-1.2.5 tarball is around 400 megabytes... now that's a download!  I'm glad I didn't have to use the dialup connection I have back home on the farm.  Let's save it to the desktop.
 
 *Erica*:
-OK Carol, now what?  How do we install this thing and get it working?
+OK Carol, now that we have it downloaded, how do we install this thing and get it working?
 
 *Carol*:
-Let's read the installation instructions on the website.  It looks fairly straightforward.  From what I understand, acsdoc is based somewhat on RDoc, a free Ruby documentation engine.  I know that RDoc is relatively simple to use, so perhaps acsdoc will share that feature as well?
+Let's read the installation instructions found in the README page on the website.  It looks fairly straightforward.  From what I understand, acsdoc is based somewhat on RDoc, a free Ruby documentation engine.  I know that RDoc is relatively simple to use, so perhaps acsdoc will share that feature as well?
 
 *Dan*:
 This is sounding better all the time.  I suppose the first thing we should do is untar the file and get started?  Carol, you need to explain everything you are doing so that we won't miss any details.
 
 *Carol*:
-So, I get to act like a professor!  Now hear this...  Seriously, first I'm going to bring up a terminal window and find the acs-1.2.4.tar file.  There, it's in our home directory right where it should be.  Now I'm going to "untar" the file by typing "tar xvf acs-1.2.4.tar" at the prompt, followed by the magic "Enter" key.  
+So, I get to act like a professor and keep you two under control!  Seriously, since the acs-1.2.5.tgz file has been saved to our desktop, we should be able to simply double-click the file and extract it to our home directory.  Let's see!  Hmmm... that didn't work very well.  There was an error.  Let's try that again and this time, we'll select "All Files" from the extract dialog.  Ah... that worked!  Great!  
 
 *Erica*:
-Wow... look at all the files and directories!  I hope everything gets placed in the correct locations!
+No wonder the tarball is 400 megabytes... That took a few minutes simply to untar to the file!  I can now see the "acs" directory in our home directory, so I assume everything is in the proper location and ready to go.
+
+*Carol*:
+We'll know soon enough if something went wrong, but I think based on what we saw during the untar procedure that everything is probably fine with the acs directory structure.
+
+*Dan*:
+I saw something in the online documentation about a C shell.  Are we using a C shell in our version of linux?
+
+*Erica*:
+The C shell is standard on a unix terminal.  But we are using linux and I don't see the "%" prompt like I usually do on my unix workstation.  I see a "$" instead.  Does that matter?
+
+*Carol*:
+The "$" prompt means that we are operating with a bash shell rather than a C shell.
+
+*Dan*:
+Bash shell?  Is that why we've see the word "bash" when we typed something incorrectly at the prompt?  How can we be certain?
+
+*Carol*:
+We can type "echo $SHELL" at the prompt and see what happens.  See, it says "/bin/bash".  That means we are using the bash shell, which is an acronym for "Bourne Again SHell", but I really don't think it's going to matter what shell we are using.  All we have to do is set a few environment variables and paths and we should be able to use acsdoc from any linux shell.
+
+*Erica*:
+OK, let's get busy with the installation.  This could be interesting!
+
+== Installation of acsdoc
+
+*Carol*:
+According to the README file on the Art of Computational Science web page we are supposed to add the line:  
+
+setenv ACSROOT ~name/acs 
+
+to our .cshrc file.  Since we are using Ubuntu Linux and the bash shell, we probably don't have a .cshrc file.  Likewise, we are instructed to add the line:
+
+ source $ACSROOT/bin/acsstart.cshrc
+
+to the same .cshrc file... which doesn't exist.
+
+*Dan*:
+If we don't have such a file, how are we going to add the lines?  I'm also guessing that it won't do any good to source the acsstart.cshrc file since we aren't running a C shell?
+
+*Erica*:
+Carol, can't we look at the acsstart.cshrc file and see what it's trying to do for us?  Perhaps we can work around the problem?  Maybe we can write our own file that accomplishes the same thing?
+
+*Carol*:
+I think we can work around this little issue, Erica.  The acsstart.cshrc file has the following listing:
+
+ #
+ # acsstart.cshrc: startup for ACS
+ #
+ # one should source this file somewhere
+ #
+ if ( $?ACSROOT) then
+   if (! $?ACSSCRIPTS ) then
+     setenv ACSSCRIPTS $ACSROOT/bin
+     set path=( $ACSSCRIPTS $path )
+   endif
+   setenv ACSDOCOPTIONS --reuseoutput
+   setenv ACSLIBS $ACSROOT/lib
+   setenv RUBYLIB .:${ACSLIBS}:${ACSROOT}/kali/lib
+   if ( -e $ACSSCRIPTS/acsstart.local ) then
+      source   $ACSSCRIPTS/acsstart.local
+   endif
+ endif
+
+I think we can do something similar in the bash shell by creating a small script that will export the variables we need.
+
+*Dan*:
+Export?  The acsstart.cshrc file uses "setenv"?  Doesn't that mean 'set environment variable" or something similar?  What do you mean by "export"?
+
+*Carol*:
+I don't think we can't use setenv in the bash shell.  Export does essentially the same thing.  Here is what I'm proposing.  Let's create a file in our home directoy and call it "acs.sh".  It will contain the following lines:
+
+ export ACSROOT=/home/sblank/acs
+ export ACSSCRIPTS=/home/sblank/acs/bin
+ export PATH=$PATH:$ACSSCRIPTS
+ export ACSDOCOPTIONS=--reuseoutput
+ export ACSLIBS=/home/sblank/acs/lib
+ export RUBYLIB=.:$ACSLIBS:/home/sblank/acs/kali/lib
+
+If we source this file, we should be setting all the same environment variables required by the acsdoc package.
+
+*Erica*:
+Is that it?  Won't we need other packages?
+
+*Carol*:
+According to the installation instructions, we'll need the commands mv, rm, cp, cat, and csh.  We'll also need ImageMagick, latex, and dvips.  Since we are using Ubuntu, which is a Debian-based linux, we can use apt-get to gather and install these packages if we don't already have them.
+
+*Dan*:
+What if I want to use something other than Ubuntu linux at home?  Can I use apt-get?
+
+*Carol*:
+If the linux distro is Debian-based, you probably can.  Otherwise, you'll need to check and see how to install these packages on your particular version of linux.
+
+*Erica*:
+How can we check to see if we have these packages available?  I'm assuming we should do that prior to trying to install acsdoc?
+
+*Carol*:
+The easy way would be to simply type the commands and see what happens.  Most linux distributions would have them available, probably even in a basic installation.  Let's try them!
+
+ (try commands in order)
+
+*Dan*:
+Well, it seems as though everything works.  Now what?
+
+*Carol*:
+Let's install acsdoc!  We used to call this "the smoke test" in my undergraduate days.
+
+*Dan*:
+I know... try running the script and see if smoke comes out of the computer?
+
+*Carol*:
+Something like that... first, let's source the acs.sh file to set the environment variables:
+
+ source acs.sh
+
+Now let's move into the acs directory:
+
+ cd acs
+
+If everything is working properly, we should be able to type:
+
+ make acscode
+
+and everything should install itself.  Let's see!
+
+*Dan*:
+Is that it?  I didn't see any errors, did you?
+
+*Erica*:
+No, I didn't either.  Was it that easy to install?
+
+*Carol*:
+Apparently so.  Now we need to try and write some sample documentation and see if everything works properly.
+
+
+
+
+
+
+
+
+
+------ÿextPart_000_0008_01C6D3EE.608AE3B0
