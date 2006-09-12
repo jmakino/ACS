@@ -233,7 +233,7 @@ first two forward Euler steps, as indicated in fig. ref(modforward4):
 
 *Carol*: As Dan pointed out, we have to do a similar thing for the velocities.
 I guess that everything carries over, but with <tex>$\bv$</tex> instead
-of <tex>$\br$</tex> and <tex>$\ba$</tex> instead of <tex>$\ba$</tex>.
+of <tex>$\br$</tex> and <tex>$\ba$</tex> instead of <tex>$\bv$</tex>.
 
 *Erica*: Yes, in fact it is just a matter of differentiating the previous
 lines with respect to time.  Putting it all together, we then get calculate

@@ -5,8 +5,8 @@
 *Dan*: Now how did we get into all this array stuff?
 
 *Erica*: I wanted to move on to the leapfrog algorithm, but Carol
-brought up the DRY principle, insisting on first cleaning up the
-modified Euler code . . .
+brought up the DRY principle, Don't Repeat Yourself, insisting on
+first cleaning up the modified Euler code . . .
 
 *Carol*: . . . which we haven't done yet, but now we're all set to do so!
 It is just a matter of translating the old file
@@ -17,7 +17,7 @@ Here it is, in <tt>euler_modified_array.rb</tt>
 
  :inccode: .euler_modified_array.rb
 
-And before Dan can ask me, let me run it:
+And before Dan can ask me to do so, let me run it:
 
  :commandoutput: ruby euler_modified_array.rb | tail -1
 
@@ -59,7 +59,7 @@ easier to add vectors, by overloading the <tt>+</tt> operator, and that sort
 of thing.
 
 *Carol*: That sounds exactly like what we need.  If we take a look at the
-first like in our code that contains one of these ugly <tt>[k]</tt> notations
+first line in our code that contains one of these ugly <tt>[k]</tt> notations
 that you so disliked:
 
  :inccode: .euler_modified_array.rb-1

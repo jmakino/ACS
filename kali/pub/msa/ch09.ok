@@ -22,14 +22,14 @@ output, and only keep some of the points.
 
 *Erica*: Good idea.  A natural approach would be to keep the same number
 of points as we got in our first attempt, namely one thousand.  
-In our next-to-last plot, figure ref(euler_elliptic) you could still see
+In our next-to-last plot, figure ref(euler) you could still see
 how the individual points were separated further from each other at the
-left hand side, while in our last plot, figure (euler_elliptic_10000_steps),
+left hand side, while in our last plot, figure ref(euler_elliptic_10000_steps),
 everything is so crowded that you can't see what is going on.
 
 *Dan*: What do you mean with `going on'?
 
-*Erica*: In figure ref(euler_elliptic), on the left hand side, you can see
+*Erica*: In figure ref(euler), on the left hand side, you can see
 that the individual points are separated most when the particles come close
 together.  This means that the particles are moving at the highest speed,
 which makes sense: when two particles fall toward each other, they speed up.
@@ -37,13 +37,15 @@ As long as we stick to only a few hundred points per orbit, we will be able
 to see that effect nicely also when we reach convergence in more accurate
 calculations.
 
-*Carol*: I'd like to aks you more about that, but before doing so, let's
-first get the pruning job done, in order to produce more sparse output.
-I will take our last code, from <tt>euler_elliptic_10000_steps.rb</tt>, and call
-it <tt>euler_elliptic_10000_steps_sparse.rb</tt> instead.  Yes, Dan, you can
-later copy it into <tt>ee1s.rb</tt>, if you like.  How to prune things?
-We have a time step of <tt>dt = 0.001</tt> that is ten times smaller than
-our original choice, and therefore it produces ten times too many points.
+*Carol*: I see.  That makes sense.  I'd like to aks you more about that,
+but before doing so, let's first get the pruning job done, in order to
+produce more sparse output.  I will take our last code, from
+<tt>euler_elliptic_10000_steps.rb</tt>, and call it
+<tt>euler_elliptic_10000_steps_sparse.rb</tt> instead.  Yes, Dan, you
+can later copy it into <tt>ee1s.rb</tt>, if you like.  How to prune
+things?  We have a time step of <tt>dt = 0.001</tt> that is ten times
+smaller than our original choice, and therefore it produces ten times
+too many points.
 
 The solution is to plot only one out of ten points.  The simplest way I
 can think of is to introduce a counter in our loop, which keeps track of
@@ -70,7 +72,7 @@ However, if you like to make the counter visible, you can do so by writing:
 
  imax.times{|i| ... }
 
-where +i+, or whatever name you like to chose for the variable, will become
+where +i+, or whatever name you like to choose for the variable, will become
 the explicit counter.
 
 == Sparse Output
@@ -275,7 +277,7 @@ let us first implement the method idea in the old code, then check that
 the old code still gives the right result, and only then try to change
 coordinate systems.
 
-So far, we have solved the one-body system, using 
+So far, we have solved the one-body system, using the computer program in
 <tt>euler_elliptic_1000000_steps_sparse_ok.rb</tt>.  I'll copy it to a new file
 <tt>euler_one_body.rb</tt>.  Now I'm going to wrap the print statements
 for the one-body system into a method called <tt>print1</tt>:
@@ -291,7 +293,21 @@ and once at the end of each loop traversal:
 
  :inccode: .euler_one_body.rb-3
 
-And now this code should give the same results as we had before:
+*Dan*: Wait a minute, shouldn't the +if+ statement come in front?
+
+*Carol*: in most languages, yes, but in Ruby you instead of writing:
+
+   if a
+     b
+   end
+
+you can also write
+
+  b if a
+
+if everything fits on one line, and then the +end+ can be omitted.
+
+Well, now this new code should give the same results as we had before:
 
  :commandoutputsave: ruby euler_one_body.rb > euler_one_body.out
 

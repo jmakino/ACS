@@ -341,7 +341,7 @@ have just produced.
 
 Let's print out this plot:
 
-  |gravity> lpr "forward2_0.01.ps"
+  |gravity> lpr euler_circular_1000_steps.ps
 
 *Erica*: Great, same figure.  But hey, wait a minute, the symbol used
 for the points in the printed figure is very different from the symbol

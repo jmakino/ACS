@@ -318,12 +318,12 @@ v = r^{-1/2}
 
 In our first attempt at orbit integration, we started with an initial
 condition <tex>$\br=\{1,0,0\}$</tex> which implies <tex>$r=1$</tex>,
-but we used an initial velocity of <tex>$\br=\{0,0.5,0\}$</tex> which
+but we used an initial velocity of <tex>$\bv=\{0,0.5,0\}$</tex> which
 means that <tex>$v=1/4$</tex>, much too small a value for a circular
 orbit!  It should have been <tex>$v=1$</tex>, according to what we just
 derived.
 
-*Dan*: Ah, so we should have used <tex>$\br=\{0,1,0\}$</tex> for the
+*Dan*: Ah, so we should have used <tex>$\bv=\{0,1,0\}$</tex> for the
 initial velocity.  Great!  Good to know.
 
 == Virial Theorem
