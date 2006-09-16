@@ -283,10 +283,12 @@ acceleration vector <tex>$\ba$</tex> points in the opposite direction
 of the separation vector <tex>$\br$</tex>, which means that
 <tex>$\br\cdot\ba=-ra$</tex>.
 
-For a circular orbit, we must insist that the separation between the 
-particles remains constant, also in second order in time, so
-<tex>$d^2r/dt^2=0$</tex>.  And there we are, this just means
-that:
+For a circular orbit, we must insist that the separation
+<tex>$r$</tex> between the particles remains constant.
+This means that the time derivative <tex>$dr/dt=0$</tex>,
+and of course the same holds for the second derivative in time,
+<tex>$d^2r/dt^2=0$</tex>.  And there we are, Eq. (ref(ddrdtdt)) then
+gives us:
 
 :equation:
 a = \frac{v^2}{r}

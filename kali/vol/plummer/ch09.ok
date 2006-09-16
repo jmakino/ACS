@@ -124,7 +124,7 @@ the magnitude of the total energy is half that of the potential energy,
 to write:
 
 :equation:
-E_{tot} \, = \, -\half E_{pot} \, =\, -\, {1 \over 4}{GM\over r_V}
+E_{tot} \, = \, \half E_{pot} \, =\, -\, {1 \over 4}{GM\over r_V}
 
 and with our previous choice of <tex>$G=M=1$</tex>, we get:
 
@@ -170,13 +170,14 @@ your time scale definition you make use of an earlier length scale definition.
 *Alice*: There is nothing wrong with that, and people have used that choice
 as well.  The problem is that in that case the total energy has a non-obvious
 value, typically somewhere like 
-<tex>$E_{tot}=0.2$</tex>, but not exactly.
+<tex>$|E_{tot}|=0.2$</tex>, but not exactly.
 
-*Bob*: Well, my original suggestion was to make <tex>$E_{tot}=1$</tex>.
+*Bob*: Well, my original suggestion was to make <tex>$|E_{tot}|=1$</tex>.
 Not only is that an exact number, it is a very simple number.  I'm
 still not sure what is wrong with that.
 
-*Alice*: If you choose the total energy to be one, your half-mass radius
+*Alice*: If you choose the absolute value of the total energy to be one,
+your half-mass radius
 comes out to be very small, about 1/5, and that is not a very natural value.
 
 *Bob*: Hmm, yes, it would be a bit of a nuisance, to deal with a core radius
