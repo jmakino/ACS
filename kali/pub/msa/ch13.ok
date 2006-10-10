@@ -79,7 +79,7 @@ this <tt>[k]</tt> thingy three times in one line, in our latest code!
 
 *Carol*: Fair enough.  Well, it's always a good idea to start simply.
 The simplest case I can think of is to add two vectors.  If we continue
-to represent them as arrays, we can added arrays <tt>a1</tt> and <tt>a2</tt>
+to represent them as arrays, we can add arrays <tt>a1</tt> and <tt>a2</tt>
 to obtain their sum +a+ as follows:
 
   a = []
