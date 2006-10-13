@@ -1,14 +1,156 @@
-= XXXXXX
+= Visualization of Stellar Dynamics
 
-== xxxxx
+== Choosing a Graphics System
 
-aaaa bbbbb ccccc
+*Dan*:  I don't know about either of you, but I think it's time to start writing some code so that we can actually SEE the stars move.  There isn't anything wrong with gnuplot, but the video game player in me wants to see some action!
 
-== xxxxx
+*Erica*:  I agree, Dan.  I think we have made great progress in our project and I'm ready to actually see the stars interact.  What do you think, Carol?
 
-aaaa bbbbb ccccc
+*Carol*:  No objection here!  The only problem I can think of is how to implement the visualization?  If you two have no preferences, may I make a suggestion?
 
-== xxxxx
+*Dan*:  By all means!  What do you have in mind?
 
-aaaa bbbbb ccccc
+*Erica*:  I'm all ears...
+
+*Carol*:  Well, we have to consider who might eventually use our code and what computer platforms would be available to these individuals.  We need to choose a graphics package that will work with Ruby on all computer operating systems.  I'm going to suggest that we use OpenGL.
+
+*Dan*:  I've actually heard of OpenGL!  There are several games written using OpenGL... Tuxracer is a good example.
+
+*Erica*:  Games aside, why would we choose OpenGL?
+
+*Carol*:  Mainly for the reasons I've just given.  OpenGL is available on nearly any computer platform and OpenGL bindings have been written for almost every language, and that includes Ruby!  Plus, OpenGL is not difficult to learn and there are a number of tutorials available online for us to use. Also, in keeping with what seems to be our philosophy, OpenGL is open source and therefore free for us to use as we see fit.
+
+*Dan*:  Free is good!  How do we start?
+
+*Erica*:  Good question, Dan... Carol, can we use the code we've already written or will we have to modify it substantially?
+
+*Carol*:  I think we'll be able to use the code we've written and simply insert it into an OpenGL framework.  I suppose that means that we'll need to write an OpenGL framework first?
+
+*Dan*:  Makes sense to me!  Let's get started... 
+
+== An OpenGL Framework
+
+*Carol*:  I am certainly no expert in OpenGL programming, but I think I know enough about the basic commands to get us started on the correct path.
+
+*Erica*:  When we started this project, I don't think any of us could claim to be experts in any sense of the word, so don't worry about that.  
+
+*Dan*:  Erica's correct... since when have we let our lack of expertise stop us?
+
+*Carol*:  Okay, okay... enough already!  Let's start with a simple OpenGL/GLUT program...
+
+*Dan*:  GLUT?  What's a GLUT?
+
+*Carol*:  Oh, sorry... I should have mentioned GLUT.  GLUT is an acronym for GL Utilities Toolkit and it helps with the complexities of creating windows and swapping buffers.  I'll explain a bit more when the need arises.  Let's just say that GLUT is a nice addition to OpenGL and it makes life a bit easier for us.  How's that?
+
+*Dan*:  More than I probably wanted to know at this point, but thanks anyway!
+
+*Carol*:  Now back to the simple OpenGL/GLUT program.  Here is a program listing that will help introduce OpenGL/GLUT.  I'll call this program <tt>ogl1.rb</tt>.
+---
+ :include: ogl1.rb
+---
+*Erica*:  There isn't much to this program... before you explain it, let's run the code.  I assume we simply type <tt>ruby ogl1.rb</tt>?
+
+*Carol*:  Try it!
+
+:figure: teapot.gif teapot 
+ The GLUT Teapot
+
+*Dan*:  Well, that's interesting!  I'm not certain what I expected, but I'm pleasantly surprised.  That certainly doesn't look like a star though!
+
+*Erica*:  I'm impressed.  Now explain how the program works.
+
+*Carol*:  This one isn't too difficult, I think.  First, the two lines:
+---
+ require "opengl"
+ require "glut"
+---
+load the necessary modules Ruby needs to use OpenGL and GLUT.  The next lines:
+---
+ display = Proc.new{
+ 	GL.Clear(GL::COLOR_BUFFER_BIT)
+ 	GLUT.WireTeapot(0.5)
+ 	GL.Flush()
+ }
+---
+define a procedure that GLUT will use to display the graphics, in this case a teapot.
+
+*Erica*:  We used methods before.  Is a procedure the same thing as a method?
+
+*Carol*:  From what I understand, they behave roughly the same way.  A procedure can be passed as a single object, which GLUT needs to do its thing.  I'm not certain I'm explaining this very well, though.  I do know that you can use the <tt>call</tt> command to invoke a procedure.
+
+*Dan*:  It seems to me that I remember reading something about Ruby 1.9 and above merging methods and procedures into essentially the same thing.  In other words, methods will behave exactly like procedures?
+
+*Erica*:  Now I'M impressed!  I didn't know you read much Dan.
+
+*Dan*:  Ha, ha.  Very funny.  Seriously, I actually do some research when time permits.
+
+*Carol*:  Ok you two... let's get back to business.  We've defined a procedure called <tt>display</tt>.  In this procedure, we do three things.  First, we clear the graphics window using <tt>GL.Clear(GL::COLOR_BUFFER_BIT)</tt>.  The <tt>COLOR_BUFFER_BIT</tt> is whatever we've defined the background color to be.  Here, we've told OpenGL nothing about the background color, so the default color black is used.
+
+*Erica*:  And the next line, <tt>GLUT.WireTeapot(0.5)</tt> draws the teapot!  I assume the 0.5 value is the size?
+
+*Carol*:  Yes and size does matter!  We must fit the teapot into the graphics window.  Since we've not told OpenGL anything about the window dimensions, the default window size is used.  Its dimensions are -1.0 to 1.0 horizontally and 1.0 to -1.0 vertically.
+
+*Dan*:  I'm concerned about the <tt>GL.Flush()</tt> command.  Don't tell me that flushes the graphics to the screen?
+
+*Carol*:  Yes it does!  Later when we do some animation we won't have to flush anything...
+
+*Erica*:  What about the last lines, the ones that start with <tt>GLUT</tt>?
+
+*Carol*:  Those lines prepare GLUT for the various activities it needs to perform.
+---
+ GLUT.Init
+---
+initializes the GLUT environment.
+---
+ GLUT.InitDisplayMode(GLUT::SINGLE|GLUT::RGB)
+---
+sets up a single buffer... in other words, a single graphics canvas to draw on.  We also set up the RGB color scheme.
+
+*Dan*:  RGB?  Is that Red, Green, Blue?  If I remember my biology classes, those are the only true colors the eye can see.  Every other color is simply a mixture of those three.
+
+*Carol*:  I think you are correct.  And it's true that we can create almost any color we wish using the RGB scheme.  The next two lines:
+---
+ GLUT.InitWindowSize(250, 250)
+ GLUT.InitWindowPosition(100, 100)
+---
+set both the size of the window in pixels and the position of the upper left corner of the window relative to the upper left corner of our monitor screen.  Then
+---
+ GLUT.CreateWindow("My First OGL Program")
+---
+actually creates the window.  It looks simple, but there is a LOT going on behind the scenes here.  It's amazing that OpenGL and GLUT commands work exactly the same, or nearly so, on all platforms.  This command works just as well in windows as it does in linux or on the Mac!
+
+*Erica*:  I can certainly see the advantages of using OpenGL and GLUT.  It looks fairly simple and we aren't going to have to change much to use other computer operating systems.
+
+*Dan*:  Those are great advantages!  I'm becoming more enthused about this project all the time!
+
+*Carol*:  Continuing, the next line:
+---
+ GLUT.DisplayFunc(display)
+---
+defines which procedure... and it has to be a procedure... will be the display function.  Finally, the last line:
+---
+ GLUT.MainLoop()
+---
+places the program into an eternal loop until we close the window and end program execution.
+
+*Dan*:  Eternal loop?  Don't you mean infinite loop?
+
+*Carol*:  Probably.  I had a math professor who did not like using the phrase "infinite loop" for philosophical reasons.  You can call it "the loop that doesn't end" if you want.
+
+*Erica*:  Ok folks, now back to visualizing star clusters.  Can we use this simple program to animate stellar dynamics?  I'm assuming we can, but we'll probably have to change the program and add some lines?  Where do we place our mathematics?
+
+*Carol*:  To answer your question, yes, we can use this simple program as a starting point.  Let me think about this overnight and I'll bring something back tomorrow for you two to look at.
+
+== Two Body Visualization Using OpenGL/GLUT
+
+*Erica*:  Welcome back!  Did you have time work on the program?
+
+*Carol*:  As a matter of fact, I did.  Here is what I've done.
+---
+ :include: leap_frog.rb
+---
+
+*Dan*:  That's more like it!  I think I can see the leapfrog code we worked on earlier.  I'm excited about this... we're actually going to make some stars dance!
+
+
 
