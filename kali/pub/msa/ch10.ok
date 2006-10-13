@@ -148,7 +148,7 @@ Here the coefficient <tex>$B$</tex> is a function of
 step <tex>$dt$</tex>, and in the limit that <tex>$dt\rightarrow
 0$</tex>, it  will converge to a constant value
 <tex>$B(x,dt)\rightarrow B(x)$</tex>, which in the general case will
-be proportional to the <i>(n+1)</i>th time derivative of
+be proportional to the <i>(n+1)</i> th time derivative of
 <tex>$f(x(t))$</tex>, along the orbit <tex>$x(t)$</tex>.
 
 In practice, we want to integrate an orbit over a given finite interval
@@ -163,18 +163,27 @@ after <tex>$k$</tex> steps will be bounded by
 \delta x(T) < kC(dt)^{n+1} = {T\over dt}C(dt)^{n+1} = TC(dt)^n
 
 where <tex>$C$</tex> is proportional to an upper bound of the absolute
-value of the <i>(n+1)</i>th time derivative of <tex>$f(x(t))$</tex>,
+value of the <i>(n+1)</i> th time derivative of <tex>$f(x(t))$</tex>,
 along the orbit <tex>$x(t)$</tex>.
 
 In other words, for an <i>n</i>th order algorithm, the error we make
-after integrating for a fixed finite amount of time scales like the
-<i>n</i>th power of the time step.
+after integrating for a <i>single time step</i> scales like the
+<i>(n+1)</i> th power of the time step, and the error we make after
+integrating for a <t>fixed finite amount of time</t> scales like the
+<i>n</i> th power of the time step.
 
-*Dan*: If we apply this reasoning to the forward Euler algorithm,
-which is a first order algorithm, we find that the accumulated error
-over a fixed time interval scales like the first power of time.  Yes,
-that makes sense: when we have made the time step ten times smaller,
-for example in sections ref(sect:validation) and
+*Dan*: I'm now totally confused.  I don't see at all how these higher
+derivatives of _f_ come in.  In any case, for the time being, I would
+prefer to do, rather than think too much.  Let's just code up and run
+the algorithm, and check whether it is really second order.
+
+*Erica*: That's fine, and I agree, we shouldn't try to get into a
+complete numerical analysis course.  However, I think I can see what
+Carol is getting at.  If we apply her reasoning to the forward Euler
+algorithm, which is a first order algorithm, we find that the
+accumulated error over a fixed time interval scales like the first
+power of time.  Yes, that makes sense: when we have made the time step
+ten times smaller, for example in sections ref(sect:validation) and
 ref(sect:evenbetternumbers), we have found that the error became
 roughly ten times smaller.
 
@@ -184,6 +193,10 @@ when we make the time step ten times smaller.
 
 *Erica*: Yes, that's the idea, and that would be great!  Let's write
 a code for it, so that we can try it out.
+
+*Dan*: I'm all for writing code!  Later we can always go back to see what
+the theory says.  For me, at least, theory makes much more sense after
+I see at least one working application.
 
 == Specifying the Steps
 

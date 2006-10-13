@@ -339,7 +339,8 @@ lines in each case?
 == From One Body to Two Bodies
 
 *Carol*: You're reading my mind.  All I have to do now is implement
-Eq. (ref(br1_br2)):
+Eq. (ref(br1_br2)), and its time derivative, where positions are
+replaced by velocities:
 
  :inccode: .euler_two_body.rb-1
 
@@ -374,7 +375,30 @@ I'll make <tt>m1 = 0.6</tt>:
 
  :inccode: .euler_two_body.rb-4
 
-*Dan*: Can you show the whole program?  I'm beginning to loose track now.
+*Dan*: Given that we use the convention <tex>$M_1 + M_2 = 1$</tex>,
+there is really no need to divide by this quantity, in the method
+<tt>print2</tt>.  In fact, there was no reason to introduce the
+variables <tt>mfrac1</tt> and <tt>mfrac2</tt> for the mass fractions
+that were assigned to each star.  With the total mass being unity,
+the mass fraction in each star has exactly the same value as the
+mass of each star itself.
+
+*Erica*: Yes, that is true.  However, I prefer to keep <tt>print2</tt>
+the way it is, just to make the physics clear.  When you write
+<tt>mfrac1*vx</tt>, it is clear that you are dealing with a velocity, +vx+,
+that is multiplied by a mass fraction.  If you were to write simply
+<tt>m1*vx</tt>, you would get the same numerical value, but the casual
+reader would get the impression that you are now working with a momentum,
+rather than a velocity.
+
+*Carol*: I agree.  I can see Dan's argument for writing a shorter
+and minimal version of <tt>print2</tt>, but I, too, prefer the longer
+version, for clarity.
+
+*Dan*: Okay, I can see the point, though I myself would prefer brevity
+over clarity in this case.  But since I'm outvoted here, let's leave
+it as it is.  Can you show the whole program?  I'm beginning to loose
+track now.
 
 *Carol*: Here it is:
 
