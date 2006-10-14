@@ -12,8 +12,8 @@ m1 = 0.6                                                        #4
 m2 = 1 - m1                                                     #4
 
 def print2(m1,m2,x,y,z,vx,vy,vz)                                #1
-  mfrac1 = m1/(m1+m2)
-  mfrac2 = m2/(m1+m2)
+  mfrac1 = m1/(m1+m2)                                           #1
+  mfrac2 = m2/(m1+m2)                                           #1
   print(-mfrac2*x, "  ", -mfrac2*y, "  ", -mfrac2*z, "  ")      #1
   print(-mfrac2*vx, "  ", -mfrac2*vy, "  ", -mfrac2*vz, "\n")   #1
   print(mfrac1*x, "  ", mfrac1*y, "  ", mfrac1*z, "  ")         #1
