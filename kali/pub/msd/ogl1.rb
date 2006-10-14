@@ -1,8 +1,8 @@
 # First Ruby OpenGL Program
 # ogl1.rb
 
-require "opengl"
-require "glut"
+require "opengl"      #1
+require "glut"        #1
 
 display = Proc.new{
 	GL.Clear(GL::COLOR_BUFFER_BIT)

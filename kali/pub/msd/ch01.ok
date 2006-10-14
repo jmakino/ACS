@@ -45,9 +45,9 @@
 *Dan*:  More than I probably wanted to know at this point, but thanks anyway!
 
 *Carol*:  Now back to the simple OpenGL/GLUT program.  Here is a program listing that will help introduce OpenGL/GLUT.  I'll call this program <tt>ogl1.rb</tt>.
----
- :include: ogl1.rb
----
+
+ :inccode: .ogl1.rb
+
 *Erica*:  There isn't much to this program... before you explain it, let's run the code.  I assume we simply type <tt>ruby ogl1.rb</tt>?
 
 *Carol*:  Try it!
@@ -60,10 +60,9 @@ The GLUT Teapot
 *Erica*:  I'm impressed.  Now explain how the program works.
 
 *Carol*:  This one isn't too difficult, I think.  First, the two lines:
----
- require "opengl"
- require "glut"
----
+
+ :inccode: .ogl1.rb-1
+
 load the necessary modules Ruby needs to use OpenGL and GLUT.  The next lines:
 ---
  display = Proc.new{
