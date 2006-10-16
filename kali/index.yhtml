@@ -1,7 +1,7 @@
 <%
 require 'pathname'
 current = Pathname.new(".").realpath
-acsroot = Pathname.new(ENV["ACSROOT"])
+acsroot = Pathname.new(ENV["ACSROOT"]).realpath
 relpath = acsroot.relative_path_from(current)
 %>
 

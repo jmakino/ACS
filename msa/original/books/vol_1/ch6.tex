@@ -204,8 +204,8 @@ in terms of the acceleration and jerk at times $t_i$ and $t_{i+1}$,
 using Eqs. \ref{taylor-a}, \ref{taylor-j}.  We find:
 
 \begin{eqnarray}
-\bs_i &=& -6\ba_i +6\ba_{i+1} -4\bj_i -2\bj_{i+1} \\
-\bc_i &=& 12\ba_i -12\ba_{i+1} +6\bj_i +6\bj_{i+1} 
+\bs_i &=& 6(\ba_{i+1} -\ba_{i})(dt)^{-2} -2(\bj_{i+1} +2\bj_{i})(dt)^{-1} \\
+\bc_i &=& -12(\ba_{i+1} -\ba_{i})(dt)^{-3} +6(\bj_{i+1} +\bj_{i})(dt)^{-2}
 \end{eqnarray}
 
 \noindent
