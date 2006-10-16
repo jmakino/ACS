@@ -1587,8 +1587,6 @@ module Acsdoc
       tmp2= process_some_special_characters(tmp2)
 #      tmp2= process_single_paragraphs_lists_etc(tmp2,0,0,1,0).join("\n")
       tmp2= latex_process_single_paragraphs_lists_etc(tmp2,0,0,1,0)
-      print tmp2.join("|\n")
-
       tmp2= post_process_paragraphs(tmp2).join("\n")
       tmp2= process_link(tmp2)
       tmp2=process_wordmarkup(tmp2)
