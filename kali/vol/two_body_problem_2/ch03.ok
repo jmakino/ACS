@@ -151,13 +151,19 @@ like:
     @pos = old_pos + half_vel*dt
   end
 
+Note that I first move the position variable +pos+ from
+<tex>${\bf r}_i$</tex> to <tex>${\bf r}_{i+2}$</tex> in
+the fifth line of this method, before invoking the
+method +acc+ on <tex>${\bf r}_{i+2}$</tex> in order to obtain
+<tex>${\bf a}_{i+2}$</tex>, the value of which I assign to <tt>half_acc</tt>.
+
 *Bob*: Yes, that is how I started as well.  But then I realized that
 I could save three lines by writing them the way I did in the code:
 
  :inccode:.rkbody.rb+rk2
 
 The number of times you calculate the acceleration is the same, but
-instead of introducing five new variable, I only introduced two.
+instead of introducing five new variables, I only introduced two.
 
 *Alice*: it is probably a good idea to show both ways to the students,
 so that the whole process of coding up an algorithm becomes more

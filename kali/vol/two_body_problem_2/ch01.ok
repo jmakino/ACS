@@ -101,7 +101,7 @@ inspect where the final positions and
 velocities <tex>$\{{\bf r}_f(t=i), {\bf v}_f(t=i-1/2)\}$</tex> are
 indeed equal to their initial values
 <tex>$\{{\bf r}_i, {\bf v}_{i-1/2}\}$</tex>.  Here is the
-calculation, resulting from applying the first set of equation twice:
+calculation, resulting from applying the first set of equations twice:
 
 :eqnarray:
 {\bf r}_f & = & {\bf r}_{i+1} - {\bf v}_{i+1/2} \Delta t \nonumber \\

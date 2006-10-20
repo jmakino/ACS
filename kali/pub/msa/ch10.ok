@@ -232,9 +232,9 @@ something that you haven't calculated yet.
 
 *Erica*: I know, we'll come to that in a moment, when we write down the
 velocity equivalent for Eq. (ref(riplus1p)).  I just wanted to write
-the position part first.  If we had <tex>$\bv_{i+1, p}$</tex>, we could
-then find the _corrected_ new position by taking the average of the
-first two forward Euler steps, as indicated in fig. ref(modforward4):
+the position part first.  We can find the _corrected_ new position by
+taking the average of the first two forward Euler steps, as indicated
+in fig. ref(modforward4):
 
 :eqnarray:
 \label{ModEulerStepLong}
@@ -249,7 +249,7 @@ I guess that everything carries over, but with <tex>$\bv$</tex> instead
 of <tex>$\br$</tex> and <tex>$\ba$</tex> instead of <tex>$\bv$</tex>.
 
 *Erica*: Yes, in fact it is just a matter of differentiating the previous
-lines with respect to time.  Putting it all together, we then get calculate
+lines with respect to time.  Putting it all together, we can calculate
 all that we need in the following order, from predicted to corrected
 quantities:
 

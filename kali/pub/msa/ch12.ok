@@ -210,8 +210,8 @@ called <tt>print_pos_vel(r,v)</tt>, which prints the position and velocity
 arrays.  It has two arguments, +r+ and +v+, the values of the two arrays
 it should print.
 
-We can write the definition of <tt>print_rv</tt> at the top of the
-file, and then we can invoke <tt>print_rv</tt> wherever we need it:
+We can write the definition of <tt>print_pos_vel</tt> at the top of the
+file, and then we can invoke that method wherever we need it:
 
  :inccode: .euler_array_each_def.rb
 
@@ -227,7 +227,7 @@ file, and then we can invoke <tt>print_rv</tt> wherever we need it:
 
 *Dan*: I wonder, would it be possible to make the code even shorter?
 
-*Erica*: Making a code shorter doesn't necessarily make it more readable?
+*Erica*: Making a code shorter doesn't necessarily make it more readable!
 
 *Dan*: Sure, but I'm just curious.
 
