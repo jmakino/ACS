@@ -1,17 +1,17 @@
-= Second-Order Algorithms
+= Modified Euler in Vector Form
 
-== Modified Euler
+== An Easy Translation
 
 *Dan*: Now that we have a vector version of forward Euler, it's time
 to clean up our modified Euler code as well.
 
 *Carol*: That will be an easy translation.  I will start by copying
 the old code from <tt>euler_modified_array.rb</tt> into a new file,
-<tt>euler_modified_vector_try.rb</tt>.  All we have to do is to translate
+<tt>euler_modified_vector_try1.rb</tt>.  All we have to do is to translate
 the code from array notation to vector notation.  Same as what we did
 with <tt>euler_vector.rb</tt>.  Here it is:
 
- :inccode: .euler_modified_vector_try.rb
+ :inccode: .euler_modified_vector_try1.rb
 
 *Erica*: What a relief!  The lines are shorter,
 there are fewer lines, but what is most important: the lines are easy
@@ -33,7 +33,7 @@ Then in our array code it became
 
 and finally, in our vector code, we wrote:
 
- :inccode: .euler_modified_vector_try.rb-1
+ :inccode: .euler_modified_vector_try1.rb-1
 
 which is very close indeed to what we started out with:
 
@@ -51,21 +51,24 @@ But before we move on, does it give the correct answers?
 
 and here's what our new vector code gives:
 
- :commandoutput: ruby euler_modified_vector_try.rb | tail -1
+ :commandoutput: ruby euler_modified_vector_try1.rb | tail -1
+
+== Variable Names
 
 *Dan*: Good!  I'm happy.
 
 *Erica*: But I'm not, at least not completely.  Look, in the code
 we are using the variable <tt>r2</tt> in two very different ways.
 Early on, we use it to hold the value of <tex>$r^2$</tex>,
-the square of the original variable <tex>$\br$</tex>:
+the square of the original variable <tex>$\br$</tex>, defined as
+the inner product
 <tex>$r^2 = \br\cdot\br$</tex>.  But later, toward the end
 of the loop, we use the same variable to hold value of
 <tex>$\br_{i+2, p}$</tex>, the predicted value of <tex>$\br_{i+2}$</tex>.
 
 I guess Ruby doesn't mind that we assing completely different values,
 even with different types, first a scalar, then a vector.  But I sure
-do mind!  Someone reading this code from scratch is likely to be
+do mind!  And someone else reading our code from scratch is likely to be
 confused.
 
 *Carol*: You have a point there.  Okay, how about calling the initial
@@ -73,58 +76,78 @@ position <tex>$\br_0$</tex> instead of <tex>$\br$</tex>?  That is more
 consistent anyway.  We can then use the variable name <tt>r0</tt>
 instead of <tt>r</tt> for the initial vector, and the scalar value of
 its square will then become <tt>r02</tt>.  So there will be no possible
-confusion anymore!  Here is the new listing?
+confusion anymore!  Here is the new listing, in file
+<tt>euler_modified_vector_try2.rb</tt>:
 
+ :inccode: .euler_modified_vector_try2.rb
 
+and here is the test:
 
+ :commandoutput: ruby euler_modified_vector_try2.rb | tail -1
+
+== Consistency
+
+*Erica*: Yes, that's better, and you are no longer using the same
+variable name for two different things.  But you haven't quite done
+what you said you would do, namely calling the initial position
+<tex>$\br_0$</tex> instead of <tex>$\br$</tex>.  You have only assigned
+the square of <tex>$\br$</tex> to <tex>$r_0^2$</tex>, or <tt>r02</tt>
+in the code.
+
+*Carol*: That's because I wanted to continue using the original variables
++r+ and +v+, to keep track of the evolving code.  The alternative would
+have been to call the running variables <tt>r0</tt> and <tt>v0</tt>, but
+that would be misleading, as if the particle would come back to the original
+position each time.
+
+*Erica*: How about a compromise?  We can keep the original variables
++r+ and +v+, but convert them to <tt>r0</tt> and <tt>v0</tt> at the
+beginning of the loop.  Let me try this, in file
+<tt>euler_modified_vector_try3.rb</tt>:
+
+ :inccode: .euler_modified_vector_try3.rb
+
+and let me test it right away:
+
+ :commandoutput: ruby euler_modified_vector_try2.rb | tail -1
+
+*Dan*: Sure, that is more consistent, but you've just made the code two
+lines longer!
+
+*Erica*: I'm not really worried about that.  What's much more important is
+that in this new notation we can see clearly that we have a new target of
+attack for the DRY principle.  Look, there are two blocks of code that are
+nearly identical!  Let me add two blank lines, to show them clearly:
+
+ :inccode: .euler_modified_vector_try3a.rb
+
+== A Method Returning Multiple Values
+
+*Carol*: Right you are!  This calls for a new method.  Here, let me try,
+in file <tt>euler_modified_vector.rb</tt>:
+
+ :inccode: .euler_modified_vector.rb
+
+and I'll test it right away:
+
+ :commandoutput: ruby euler_modified_vector.rb | tail -1
+
+*Dan*: I'm glad it works, but how does it work?  It seems that your
+new method <tt>step_pos_vel</tt> returns an array.
+
+*Carol*: Ah, yes.  In Ruby you can return more than one value simultaneously,
+and the way to do that is to list them in an array.  Then, when you invoke
+the method, you can just list the variables to which you want to assign the 
+array values, in the same order.  Very lazy, very simple, and in a way, you
+might say, following the principle of least surprise.
+
+*Dan*: Well, yes, once you realize what is happening.
+
+*Erica*: And it is quite elegant, I must say.  I begin to like Ruby more and
+more!  The inner loop now has become almost a mathematical formula, rather
+than a piece of computer code.  You can read it aloud: step forward, step
+again, and then average the values from the beginning and the end, both
+for position and velocity, and print the results.  Wonderful!
 
 <b>[ this is how far I got ; 2007/10/20 -- Piet ]</b>
 
-== Leapfrog
-
-*Carol*: Erica, what kind of second-order algorithm should we use,
-to replace our first-order forward Euler scheme?
-
-*Erica*: A nice and simple scheme is the _leapfrog_ algorithm.
-
-*Dan*: What a strange name.  Does it let particles jump around like frogs?
-
-*Carol*: Or like children jumping over each other?
-
-*Erica*: Something like that, I guess.  I never thought about the meaning
-of the name.  It is used quite widely, although it has different names in
-different fields of science.  In stellar dynamics you often hear it called
-leapfrog, but in molecular dynamics it is generally called the Verlet
-method, and I'm sure there must be other names in use in other fields.
-
-Here is the idea:
-
-:eqnarray:
-\br_{i} & = & \br_{i-1} + \bv_{i-1/2} dt \label{leapfrog-leap-step1} \\
-\bv_{i+1/2} & = & \bv_{i-1/2} + \ba_i dt \label{leapfrog-leap-step2}
-
-== xxx
-
-== xxx
-
-Here is 
-
-<tt>leapfrog_100.rb</tt>:
-
- :inccode: .leapfrog_1000_steps.rb
-
-Try:
-
- :commandoutput: ruby leapfrog_1000_steps.rb > leapfrog_1000_steps.out
- :commandinput: gnuplot END
-set term post eps
-set output "leapfrog_1000_steps.ps"
-set size ratio -1
-plot "leapfrog_1000_steps.out"
-quit
-END
-
-:figure: leapfrog_1000_steps.ps 10cm leapfrog_1000_steps
-First attempt at leapfrog integration, with step size <tex>$dt=0.01$</tex>.
-
-xxx

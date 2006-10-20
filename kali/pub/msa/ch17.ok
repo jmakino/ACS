@@ -1,6 +1,50 @@
-= Energy Conservation
+== Leapfrog
 
-== xxxx
+= xxxx
 
-== Checking Energy Conservation
+*Carol*: Erica, what kind of second-order algorithm should we use,
+to replace our first-order forward Euler scheme?
 
+*Erica*: A nice and simple scheme is the _leapfrog_ algorithm.
+
+*Dan*: What a strange name.  Does it let particles jump around like frogs?
+
+*Carol*: Or like children jumping over each other?
+
+*Erica*: Something like that, I guess.  I never thought about the meaning
+of the name.  It is used quite widely, although it has different names in
+different fields of science.  In stellar dynamics you often hear it called
+leapfrog, but in molecular dynamics it is generally called the Verlet
+method, and I'm sure there must be other names in use in other fields.
+
+Here is the idea:
+
+:eqnarray:
+\br_{i} & = & \br_{i-1} + \bv_{i-1/2} dt \label{leapfrog-leap-step1} \\
+\bv_{i+1/2} & = & \bv_{i-1/2} + \ba_i dt \label{leapfrog-leap-step2}
+
+== xxx
+
+== xxx
+
+Here is 
+
+<tt>leapfrog_100.rb</tt>:
+
+ :inccode: .leapfrog_1000_steps.rb
+
+Try:
+
+ :commandoutput: ruby leapfrog_1000_steps.rb > leapfrog_1000_steps.out
+ :commandinput: gnuplot END
+set term post eps
+set output "leapfrog_1000_steps.ps"
+set size ratio -1
+plot "leapfrog_1000_steps.out"
+quit
+END
+
+:figure: leapfrog_1000_steps.ps 10cm leapfrog_1000_steps
+First attempt at leapfrog integration, with step size <tex>$dt=0.01$</tex>.
+
+xxx

@@ -8,6 +8,8 @@ def print_pos_vel(r,v)
 end
 
 def step_pos_vel(r,v,dt)
+p r
+p v
   r2 = r*r
   r3 = r2 * sqrt(r2)
   a = -r/r3
@@ -21,7 +23,7 @@ dt = 0.01
 print_pos_vel(r,v)
 1000.times{
   r1, v1 = step_pos_vel(r,v,dt)
-  r2, v2 = step_pos_vel(r1,v2,dt)
+  r2, v2 = step_pos_vel(r1,v1,dt)
   r = 0.5 * ( r + r2 )
   v = 0.5 * ( v + v2 )
   print_pos_vel(r,v)

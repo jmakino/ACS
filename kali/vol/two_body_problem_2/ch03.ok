@@ -121,7 +121,7 @@ calculations.
 
 Of course, in my current code that is not obvious, since I am calculating
 the acceleration twice in the leapfrog as well.  However, it would be easy
-to rewrite it in such a way that it needs only once acceleration calculation.
+to rewrite it in such a way that it needs only one acceleration calculation.
 And in the Runge-Kutta method you cannot do that.
 
 == Translating Formulas Again
