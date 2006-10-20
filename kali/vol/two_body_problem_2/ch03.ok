@@ -152,10 +152,12 @@ like:
   end
 
 Note that I first move the position variable +pos+ from
-<tex>${\bf r}_i$</tex> to <tex>${\bf r}_{i+2}$</tex> in
-the fifth line of this method, before invoking the
-method +acc+ on <tex>${\bf r}_{i+2}$</tex> in order to obtain
-<tex>${\bf a}_{i+2}$</tex>, the value of which I assign to <tt>half_acc</tt>.
+<tex>${\bf r}_i$</tex> to <tex>${\bf r}_{i+1/2}$</tex> in
+the fifth line of this method.  Or more precisely: I assign
+the value of <tex>${\bf r}_{i+1/2}$</tex> to the variable +pos+.
+I then invoke the method +acc+ on <tex>${\bf r}_{i+1/2}$</tex>
+in order to obtain <tex>${\bf a}_{i+1/2}$</tex>, the value of
+which I then assign to the variable <tt>half_acc</tt>.
 
 *Bob*: Yes, that is how I started as well.  But then I realized that
 I could save three lines by writing them the way I did in the code:

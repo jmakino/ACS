@@ -121,8 +121,14 @@ But in our case, this is not what we want.  We'd better get:
 
   a = [1+5, 2+6, 3+7] = [6, 8, 10]
 
-*Carol*: What we can do, is to introduce a new array method,
-which we can call <tt>Array#plus</tt>, which allows us to add
+*Carol*: Of course, we can _change_ the definition of "+" for array.
+
+*Dan*: How can you change the definition of a built-in function?
+
+*Carol*: In Ruby you can change anything, or at least almost anything!
+But let's take only one step at a time.  The simplest and safest way
+to get the correct addition behavior, is to introduce a new array
+method.  We can call it <tt>Array#plus</tt>, and use it to add
 two arrays in the way Dan just specified, according to the vector
 rules that we have in mind for the physical addition of two vectors.
 
@@ -262,10 +268,11 @@ It is just a form of syntactic sugar, as they call it: a way to let the
 syntax look more tasty, without really changing the underlying code.
 
 The idea is what is called `overloading operators'.  We can use the
-<tt>+</tt> symbol, instead of the word +plus+, and we can define the
-meaning of <tt>+</tt> for the case of arrays.  I read about that; let
-me see whether it works.  I believe the idea is to write something like
-this, in file <tt>array_try_addition2.rb</tt>:
+<tt>+</tt> symbol, instead of the word +plus+, and we can redefine the
+meaning of <tt>+</tt> for the case of arrays.  This is what I meant
+when I said earlier that in Ruby you can change almost anything.
+I have read about that; let me see whether it works.  I believe the idea
+is to write something like this, in file <tt>array_try_addition2.rb</tt>:
 
  :inccode: .array_try_addition2.rb
 

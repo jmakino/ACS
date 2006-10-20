@@ -5,13 +5,13 @@
 *Dan*: Now that we have a vector version of forward Euler, it's time
 to clean up our modified Euler code as well.
 
-*Carol*: That will be an easy translation.  I'll open a new file,
-<tt>euler_modified_vector.rb</tt>, and I will copy the code from
-<tt>euler_modified_array.rb</tt>, while translating from array notation
-to vector notation.  Same ideas as with <tt>euler_vector.rb</tt>.
-Here it is:
+*Carol*: That will be an easy translation.  I will start by copying
+the old code from <tt>euler_modified_array.rb</tt> into a new file,
+<tt>euler_modified_vector_try.rb</tt>.  All we have to do is to translate
+the code from array notation to vector notation.  Same as what we did
+with <tt>euler_vector.rb</tt>.  Here it is:
 
- :inccode: .euler_modified_vector.rb
+ :inccode: .euler_modified_vector_try.rb
 
 *Erica*: What a relief!  The lines are shorter,
 there are fewer lines, but what is most important: the lines are easy
@@ -23,17 +23,17 @@ paper:
 :equation:
 \br_{1} = \br + \bv dt
 
-In our first code, this became:
+In our first code this became:
 
  :inccode: .euler_modified_1000_steps.rb-1
 
-Then in our array code, it became
+Then in our array code it became
 
  :inccode: .euler_modified_array.rb-1
 
 and finally, in our vector code, we wrote:
 
- :inccode: .euler_modified_vector.rb-1
+ :inccode: .euler_modified_vector_try.rb-1
 
 which is very close indeed to what we started out with:
 
@@ -51,11 +51,34 @@ But before we move on, does it give the correct answers?
 
 and here's what our new vector code gives:
 
- :commandoutput: ruby euler_modified_vector.rb | tail -1
+ :commandoutput: ruby euler_modified_vector_try.rb | tail -1
 
 *Dan*: Good!  I'm happy.
 
-<b>[ this is how far I got ; 2007/8/19 -- Piet ]</b>
+*Erica*: But I'm not, at least not completely.  Look, in the code
+we are using the variable <tt>r2</tt> in two very different ways.
+Early on, we use it to hold the value of <tex>$r^2$</tex>,
+the square of the original variable <tex>$\br$</tex>:
+<tex>$r^2 = \br\cdot\br$</tex>.  But later, toward the end
+of the loop, we use the same variable to hold value of
+<tex>$\br_{i+2, p}$</tex>, the predicted value of <tex>$\br_{i+2}$</tex>.
+
+I guess Ruby doesn't mind that we assing completely different values,
+even with different types, first a scalar, then a vector.  But I sure
+do mind!  Someone reading this code from scratch is likely to be
+confused.
+
+*Carol*: You have a point there.  Okay, how about calling the initial
+position <tex>$\br_0$</tex> instead of <tex>$\br$</tex>?  That is more
+consistent anyway.  We can then use the variable name <tt>r0</tt>
+instead of <tt>r</tt> for the initial vector, and the scalar value of
+its square will then become <tt>r02</tt>.  So there will be no possible
+confusion anymore!  Here is the new listing?
+
+
+
+
+<b>[ this is how far I got ; 2007/10/20 -- Piet ]</b>
 
 == Leapfrog
 

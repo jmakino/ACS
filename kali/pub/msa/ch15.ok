@@ -329,7 +329,7 @@ multiplication and division.  Let me write it all in file
 
 *Carol*: Ah, you see, that's a nice feature of operator overloading in
 Ruby: once you redefine <tt>+</tt> the same redefinition applies to
-derivative expressions such as <tt>+=<tt>.
+derivative expressions such as <tt>+=</tt>.
 
 *Dan*: That's nice, if it really works.  Let's compare the run with the
 old results:
