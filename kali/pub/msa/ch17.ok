@@ -1,11 +1,11 @@
-== Leapfrog
+= Leapfrog
 
-= xxxx
+== xxxx
 
-*Carol*: Erica, what kind of second-order algorithm should we use,
-to replace our first-order forward Euler scheme?
+*Carol*: Erica, we now have a second-order algorithm, modified Euler,
+but you mentioned an other one, quite a while ago, that you seemed to prefer.
 
-*Erica*: A nice and simple scheme is the _leapfrog_ algorithm.
+*Erica*: Yes, the _leapfrog_ algorithm, a nice and simple scheme.
 
 *Dan*: What a strange name.  Does it let particles jump around like frogs?
 

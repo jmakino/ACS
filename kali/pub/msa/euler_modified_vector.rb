@@ -8,8 +8,6 @@ def print_pos_vel(r,v)
 end
 
 def step_pos_vel(r,v,dt)
-p r
-p v
   r2 = r*r
   r3 = r2 * sqrt(r2)
   a = -r/r3
