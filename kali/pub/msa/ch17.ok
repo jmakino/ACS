@@ -172,7 +172,7 @@ errors will exactly cancel each other.
 
 *Don*: Amazing indeed, but I would be really amazed if the same time
 symmetry would hold for that other set of equations,
-Eq. (ref(leap_full_time)), that don't look time symmetric at all!
+Eq. (ref(leap_whole_time)), that don't look time symmetric at all!
 
 *Erica*: Yes, that's where the real fun comes in.  The derivation
 is a bit longer, but equally straightforward, and the steps are all
@@ -198,7 +198,7 @@ at all obvious at first, as soon as we write out the effects of
 stepping forward and backward, the cancellations become manifest.
 
 *Dan*: Okay, I'm convinced!  Let's code it up.  Obviously, 
-Eq. (ref(leap_full_time)) is the better set of expressions to use,
+Eq. (ref(leap_whole_time)) is the better set of expressions to use,
 since then we can forget about any leaping and frogging, and just
 move from time <tex>$t_i$</tex> to time <tex>$t_{i+1}$</tex>, with
 both positions and velocities

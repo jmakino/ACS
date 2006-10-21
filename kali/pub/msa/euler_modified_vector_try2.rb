@@ -10,8 +10,8 @@ end
 r = [1, 0, 0].to_v
 v = [0, 0.5, 0].to_v
 dt = 0.01
-
 print_pos_vel(r,v)
+
 1000.times{
   r02 = r*r
   r03 = r02 * sqrt(r02)

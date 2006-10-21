@@ -9,8 +9,8 @@ end
 r = [1, 0, 0]
 v = [0, 0.5, 0]
 dt = 0.01
-
 print_pos_vel(r,v)
+
 1000.times{
   r2 = 0
   r.each{|x| r2 += x*x}
