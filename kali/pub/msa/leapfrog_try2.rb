@@ -1,29 +1,37 @@
-require "vector.rb"
 include Math
 
-def print_pos_vel(r,v)
-  r.each{|x| print(x, "  ")}
-  v.each{|x| print(x, "  ")}
-  print "\n"
-end
-
-r = [1, 0, 0].to_v
-v = [0, 0.5, 0].to_v
+x = 1
+y = 0
+z = 0
+vx = 0
+vy = 0.5
+vz = 0
 dt = 0.01
-print_pos_vel(r,v)
 
-r2 = r*r
+print(x, "  ", y, "  ", z, "  ")
+print(vx, "  ", vy, "  ", vz, "\n")
+
+r2 = x*x + y*y + z*z
 r3 = r2 * sqrt(r2)
-a = -r/r3
+ax = - x / r3
+ay = - y / r3
+az = - z / r3
 
 1000.times{
-  v += 0.5*a*dt
-  r += v*dt
-  r2 = r*r
+  vx += 0.5*ax*dt
+  vy += 0.5*ay*dt
+  vz += 0.5*az*dt
+  x += vx*dt
+  y += vy*dt
+  z += vz*dt
+  r2 = x*x + y*y + z*z
   r3 = r2 * sqrt(r2)
-  a = -r/r3
-  v += 0.5*a*dt
-  print_pos_vel(r,v)
+  ax = - x / r3
+  ay = - y / r3
+  az = - z / r3
+  vx += 0.5*ax*dt
+  vy += 0.5*ay*dt
+  vz += 0.5*az*dt
+  print(x, "  ", y, "  ", z, "  ")
+  print(vx, "  ", vy, "  ", vz, "\n")
 }
-
-

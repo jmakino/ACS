@@ -203,7 +203,6 @@ since then we can forget about any leaping and frogging, and just
 move from time <tex>$t_i$</tex> to time <tex>$t_{i+1}$</tex>, with
 both positions and velocities
 
-
 == xxx
 
 
@@ -215,22 +214,55 @@ both positions and velocities
 
 Here is 
 
-<tt>leapfrog_100.rb</tt>:
+<tt>leapfrog_try1.rb</tt>:
 
- :inccode: .leapfrog_1000_steps.rb
+ :inccode: .leapfrog_try1.rb
 
 Try:
 
- :commandoutput: ruby leapfrog_1000_steps.rb > leapfrog_1000_steps.out
+ :commandoutput: ruby leapfrog_try1.rb > leapfrog_try1.out
  :commandinput: gnuplot END
 set term post eps
-set output "leapfrog_1000_steps.ps"
+set output "leapfrog_try1.ps"
 set size ratio -1
-plot "leapfrog_1000_steps.out"
+plot "leapfrog_try1.out"
 quit
 END
 
-:figure: leapfrog_1000_steps.ps 10cm leapfrog_1000_steps
+:figure: leapfrog_try1.ps 10cm leapfrog_try1
 First attempt at leapfrog integration, with step size <tex>$dt=0.01$</tex>.
 
 xxx
+
+Here is 
+
+<tt>leapfrog_try2.rb</tt>:
+
+ :inccode: .leapfrog_try2.rb
+
+*Carol*: Here's the first result
+
+ :commandoutput: ruby leapfrog_try1.rb | tail -1
+
+and here's what our shortened version gives:
+
+ :commandoutput: ruby leapfrog_try2.rb | tail -1
+
+Good.
+
+xxx
+
+Here is 
+
+<tt>leapfrog.rb</tt>:
+
+ :inccode: .leapfrog.rb
+
+*Carol*: Another test:
+
+ :commandoutput: ruby leapfrog.rb | tail -1
+
+Good.
+
+
+
