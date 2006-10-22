@@ -197,28 +197,39 @@ In this case, too, we have exact time reversibility.  Even though not
 at all obvious at first, as soon as we write out the effects of
 stepping forward and backward, the cancellations become manifest.
 
-*Dan*: Okay, I'm convinced!  Let's code it up.  Obviously, 
-Eq. (ref(leap_whole_time)) is the better set of expressions to use,
-since then we can forget about any leaping and frogging, and just
-move from time <tex>$t_i$</tex> to time <tex>$t_{i+1}$</tex>, with
-both positions and velocities
+== A Simple Implementation
 
-== xxx
+*Dan*: Okay, I'm convinced now that Eq. (ref(leap_whole_time)) does the
+right thing.  Let's code it up, and for convenience, let me write down
+the equations again:
 
+:eqnarray:
+\label{leap_whole_time}
+{\br}_{i+1} & = & {\br}_i + {\bv}_{i} dt + 
+{\ba}_{i} (dt)^2/2                                  \nonumber \\
+{\bv}_{i+1} & = & {\bv}_i + ({\ba}_i +
+{\ba}_{i+1})dt / 2
 
+Obviously, this is the better set of expressions to use.  It is more
+convenient than Eq. (ref(leap_half_time)) since in the above equations
+we can forget about any leaping and frogging, and just move from time
+<tex>$t_i$</tex> to time <tex>$t_{i+1}$</tex>, with both positions and
+velocities.
 
+Let me try to write a simple implementation.  I must admit, I'm not
+yet completely used to the vector notation, no matter how pretty it
+may look.  So bear with me, while I will start off with good old
+component notation.
 
+*Erica*: We will bear!  It is a good idea to get something simple working
+first, and then to prettify it.
 
-
-== xxx
-
-Here is 
-
-<tt>leapfrog_try1.rb</tt>:
+*Dan*: Well, writing it in component form is rather straightforward.
+I will put it in file <tt>leapfrog_try1.rb</tt>:
 
  :inccode: .leapfrog_try1.rb
 
-Try:
+and let me make a picture right away, in figure ref(leapfrog_try1):
 
  :commandoutput: ruby leapfrog_try1.rb > leapfrog_try1.out
  :commandinput: gnuplot END
@@ -232,37 +243,192 @@ END
 :figure: leapfrog_try1.ps 10cm leapfrog_try1
 First attempt at leapfrog integration, with step size <tex>$dt=0.01$</tex>.
 
-xxx
+*Carol*: Now that is a clear improvement over modified Euler.  Presumably
+both schemes are second-order, but the orbit integration is clearly more
+accurate in the case of the leapfrog.  Modified Euler gave
+figure ref(euler_modified_1000_steps_sparse) for the same time step size.
+In fact, our leapfrog is almost as good as Modified Euler for a ten
+times smaller time step, as given in
+figure ref(euler_modified_10000_steps_sparse), in the sense that the
+orbit does not drift away.
 
-Here is 
+*Erica*: That is in fact an essential part of the leapfrog algorithm.
+If it would drift in one direction, and if you would then play time
+backward, it would have to drift in the other direction -- which means
+it would not be time symmetric.  So because the leapfrog is time
+symmetric, it is impossible for the orbits to drift!
 
-<tt>leapfrog_try2.rb</tt>:
+== Saving Some Work
+
+*Dan*: Ah, I just noticed something.  In my leapfrog implementation,
+I compute the acceleration at the end of the loop, and then at the
+beginning of the next loop, I calculate the exact same acceleration
+once again.  Since the position <tt>{x,y,z}</tt> does not change
+between the two calculations, the value of the acceleration components
+<tt>{ax,ay,az}</tt> is bound to be the same.  That's a waste of
+computing time.
+
+*Carol*: Well, for the two-body problem, we don't have to worry too much
+about exactly how many milliseconds of computer time we are spending.
+
+*Erica*: True, but when we go to a thousand-body problem, this will become
+an issue.  Good point, Dan, why don't you leave one of the acceleration
+calculations out from the loop.
+
+*Dan*: The question is, which one.  If I leave out the first one,
+the acceleration is not yet defined, when the loop gets transversed
+for the very first time.  But if I leave out the second one,  I cannot
+calculate the value of the velocity at the end of the loop.
+
+Hmmm.  The second acceleration calculation is clearly essential.
+But . . . , aha, I see!  I can take out the first acceleration calculation
+and place it _before_ the loop.  That way, the length of the computer
+program does not change.  However, inside the loop unnecessary
+calculations are no longer being done.
+
+Here is the new version, in file <tt>leapfrog_try2.rb</tt>:
 
  :inccode: .leapfrog_try2.rb
 
-*Carol*: Here's the first result
+Let me check first to see that we get the samer result.  The first
+code gives:
 
  :commandoutput: ruby leapfrog_try1.rb | tail -1
 
-and here's what our shortened version gives:
+and the second version gives:
 
  :commandoutput: ruby leapfrog_try2.rb | tail -1
 
 Good.
 
-xxx
+*Carol*: Let's check whether you really made the computation faster.
+We can redirect the standard output to <tt>/dev/null</tt>, literally
+a null device, effectively a waste basket, which is a Unix way of
+throwing the results away.  That way, we are left only with output
+that appears on the standard error channel, such as timing information
+provided by the +time+ command.
 
-Here is 
+The first code gives:
 
-<tt>leapfrog.rb</tt>:
+ :commandoutput: time ruby leapfrog_try1.rb > /dev/null
+
+and the second version gives:
+
+ :commandoutput: time ruby leapfrog_try2.rb > /dev/null
+
+*Dan*: Indeed, a bit faster.  If all the computer time would have
+been spend on acceleration calculation, things would have sped up
+by a factor two, but of course, that is not the case, so the speed
+increase should be quite a bit less.  This looks quite reasonable.
+
+== A Vector Implementation
+
+*Erica*: Now that we have a working code, how about a vector implementation?
+
+*Dan*: No problem at all.  Once I see the flow of the program, it is just
+a matter of translating.  How about this, in file <tt>leapfrog_try3.rb</tt>:
+
+ :inccode: .leapfrog_try3.rb
+
+And I'll test it right away:
+
+ :commandoutput: ruby leapfrog_try3.rb | tail -1
+
+*Erica*: Ah, that looks so much better: shorter and much clearer.
+
+*Carol*: But we can make it even more clear, and we can make the loop
+even shorter, with the help of our old friend, the DRY principle.  Look,
+the calculation for the acceleration, before and in the loop, contains
+the exact same three lines.  Those lines really ask to be encapsulated
+in a method.  Let me do that, in file <tt>leapfrog.rb</tt>:
 
  :inccode: .leapfrog.rb
 
-*Carol*: Another test:
+and as always, I'll test it:
 
  :commandoutput: ruby leapfrog.rb | tail -1
 
-Good.
+== Long Time Behavior
+
+*Dan*: I must agree, that is all very nice and clean.  But let's get back
+to the behavior of the two second-order algorithms that we have coded up
+so far.  Time symmetry is supposed to prevent a long-term drift.  I'd like
+to test that a bit more.
+
+Let me take the modified Euler code, copying it from
+<tt>euler_modified_vector.rb</tt> to
+<tt>euler_modified_vector_long_time.rb</tt>.
+I will let the code run ten times longer, by changing the loop defining line
+to:
+
+ :inccode: .euler_modified_vector_long_time.rb-1
+
+*Carol*: I'm glad you're getting the hang of using long names.  Thank you!
+
+*Dan*: My pleasure.  However, I don't like having different files lying
+around that are almost the same, except for just one extra 0 in one line.
+
+*Carol*: We'll have to do something about that.  I had already been thinking
+about introducing command line arguments.
+
+*Erica*: What does that mean?
+
+*Carol*: We really would like to specify the number of steps on the command
+line, as an argument.  It would be much better if we could take the program
+<tt>euler_modified_vector.rb</tt> and run it for 10,000 steps, simply by
+invoking it as
+
+ |gravity> ruby euler_modified_vector.rb -n 10000
+
+to indicate that now we want to take that many steps, or probably even
+better
+
+ |gravity> ruby euler_modified_vector.rb -t 100
+
+to indicate that we want to run for 100 time units.
+
+*Dan*: I would like that much better!  Let's put that on our to-do list.
+But for now, let me finish my long time behavior test.  I'll write
+<tt>leapfrog_long_time.rb</tt>, by modifying <tt>leapfrog.rb</tt>
+in the same way, to take 10,000 steps:
+
+ :inccode: .euler_modified_vector_long_time.rb-1
+
+Our expectation would be that modified Euler will completely screw up,
+while the leapfrog will keep behaving relatively well.  Let's seee what
+will happen!
+
+First I will make a picture of the long run for modified Euler,
+in figure ref(euler_modified_vector_long_time):
+
+ :commandoutput: ruby euler_modified_vector_long_time.rb > euler_modified_vector_long_time.out
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_modified_vector_long_time.ps"
+set size ratio -1
+plot "euler_modified_vector_long_time.out"
+quit
+END
+
+:figure: euler_modified_vector_long_time.ps 10cm euler_modified_vector_long_time
+Long time integration till <tex>$t=100$</tex>, with the
+modified Euler algorithm, and step size <tex>$dt=0.01$</tex>.
+
+Next, I will make a picture of the long run for our leapfrog,
+in figure ref(leapfrog_long_time):
+
+ :commandoutput: ruby leapfrog_long_time.rb > leapfrog_long_time.out
+ :commandinput: gnuplot END
+set term post eps
+set output "leapfrog_long_time.ps"
+set size ratio -1
+plot "leapfrog_long_time.out"
+quit
+END
+
+:figure: leapfrog_long_time.ps 10cm leapfrog_long_time
+Long time integration till <tex>$t=100$</tex>, with the
+leapfrog algorithm, and step size <tex>$dt=0.01$</tex>.
 
 
 
