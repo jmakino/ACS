@@ -357,15 +357,19 @@ to test that a bit more.
 
 Let me take the modified Euler code, copying it from
 <tt>euler_modified_vector.rb</tt> to
-<tt>euler_modified_vector_long_time.rb</tt>.
+<tt>euler_modified_long_time.rb</tt>.
 I will let the code run ten times longer, by changing the loop defining line
 to:
 
- :inccode: .euler_modified_vector_long_time.rb-1
+ :inccode: .euler_modified_long_time.rb-1
 
 *Carol*: I'm glad you're getting the hang of using long names.  Thank you!
 
-*Dan*: My pleasure.  However, I don't like having different files lying
+*Dan*: My pleasure.  But see, I did still abbreviate a bit: I could have
+left the word <tt>_vector_</tt> in, but that really would have made the
+name too long, for my taste.
+
+On a more important topic, I really don't like having different files lying
 around that are almost the same, except for just one extra 0 in one line.
 
 *Carol*: We'll have to do something about that.  I had already been thinking
@@ -392,25 +396,25 @@ But for now, let me finish my long time behavior test.  I'll write
 <tt>leapfrog_long_time.rb</tt>, by modifying <tt>leapfrog.rb</tt>
 in the same way, to take 10,000 steps:
 
- :inccode: .euler_modified_vector_long_time.rb-1
+ :inccode: .euler_modified_long_time.rb-1
 
 Our expectation would be that modified Euler will completely screw up,
 while the leapfrog will keep behaving relatively well.  Let's seee what
 will happen!
 
 First I will make a picture of the long run for modified Euler,
-in figure ref(euler_modified_vector_long_time):
+in figure ref(euler_modified_long_time):
 
- :commandoutput: ruby euler_modified_vector_long_time.rb > euler_modified_vector_long_time.out
+ :commandoutput: ruby euler_modified_long_time.rb > euler_modified_long_time.out
  :commandinput: gnuplot END
 set term post eps
-set output "euler_modified_vector_long_time.ps"
+set output "euler_modified_long_time.ps"
 set size ratio -1
-plot "euler_modified_vector_long_time.out"
+plot "euler_modified_long_time.out"
 quit
 END
 
-:figure: euler_modified_vector_long_time.ps 10cm euler_modified_vector_long_time
+:figure: euler_modified_long_time.ps 10cm euler_modified_long_time
 Long time integration till <tex>$t=100$</tex>, with the
 modified Euler algorithm, and step size <tex>$dt=0.01$</tex>.
 
@@ -429,6 +433,4 @@ END
 :figure: leapfrog_long_time.ps 10cm leapfrog_long_time
 Long time integration till <tex>$t=100$</tex>, with the
 leapfrog algorithm, and step size <tex>$dt=0.01$</tex>.
-
-
 
