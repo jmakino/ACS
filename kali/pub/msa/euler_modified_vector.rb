@@ -19,6 +19,7 @@ v = [0, 0.5, 0].to_v
 dt = 0.01
 print_pos_vel(r,v)
 
+#:segment start: loop
 1000.times{
   r1, v1 = step_pos_vel(r,v,dt)
   r2, v2 = step_pos_vel(r1,v1,dt)
@@ -26,3 +27,4 @@ print_pos_vel(r,v)
   v = 0.5 * ( v + v2 )
   print_pos_vel(r,v)
 }
+#:segment end:
