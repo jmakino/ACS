@@ -668,6 +668,13 @@ Thus, this figure can be refereed to by
 (without space between ref and (acslogo)). 
 Here is reference to this figure: figure ref(acs_logo).
 
+Note that the size of an embedded postscript file, say foo.eps,
+may be too small for the html output.  In such a case, you can
+for example double the size of the figure by converting it to
+a gif file, with the following command:
+
+ convert -density 200x200 foo.eps foo.gif
+
 == More on references
 
 :label: moreonreferences
