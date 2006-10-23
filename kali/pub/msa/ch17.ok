@@ -6,6 +6,7 @@
 but you mentioned an other one, quite a while ago, that you seemed to prefer.
 
 *Erica*: Yes, the _leapfrog_ algorithm, a nice and simple scheme.
+I just learned about that in class, so it is still fresh in my memory.
 
 *Dan*: What a strange name.  Does it let particles jump around like frogs?
 
@@ -47,6 +48,13 @@ Lorentz force being velocity dependent.  And in any situation in which
 there is friction, the friction is typically stronger for higher velocities.
 However, in the case of Newtonian gravity, the velocity dependence is absent:
 <tex>${\bf a}({\bf r}, {\bf v}) = {\bf a}({\bf r})$</tex>.
+
+:figure: leapfrog.eps 8cm leapfrog
+With the leapfrog algorithm, each position value is updated by using
+the information from the velocity value half a time step ahead.
+Each velocity is updated by using the information from the
+accelaration value half a time step ahead.  Each acceleration value is
+computed directly from the position value, using Newton's law of gravity.
 
 *Carol*: I like the nice symmetric look of Eq. (ref(leap_half_time)).
 But how do you get started?  If you know the positions and velocities
@@ -95,7 +103,7 @@ remain synchronized, both at the beginning and at the end of each step.
 
 *Dan*: That looks totally different.
 
-*Erica*: Ha, but looks decieve!  Notice that the increment in
+*Erica*: Ha, but looks deceive!  Notice that the increment in
 <tex>${\br}$</tex> is given by the time step multiplied by
 <tex>${\bv}_{i} + {\ba}_{i} dt / 2$</tex>, effectively equal
 to <tex>${\bv}_{i+ 1/2}$</tex>.  Similarly, the increment in
@@ -197,7 +205,7 @@ In this case, too, we have exact time reversibility.  Even though not
 at all obvious at first, as soon as we write out the effects of
 stepping forward and backward, the cancellations become manifest.
 
-== A Simple Implementation
+== A Vector Implementation
 
 *Dan*: Okay, I'm convinced now that Eq. (ref(leap_whole_time)) does the
 right thing.  Let's code it up, and for convenience, let me write down
@@ -216,15 +224,7 @@ we can forget about any leaping and frogging, and just move from time
 <tex>$t_i$</tex> to time <tex>$t_{i+1}$</tex>, with both positions and
 velocities.
 
-Let me try to write a simple implementation.  I must admit, I'm not
-yet completely used to the vector notation, no matter how pretty it
-may look.  So bear with me, while I will start off with good old
-component notation.
-
-*Erica*: We will bear!  It is a good idea to get something simple working
-first, and then to prettify it.
-
-*Dan*: Well, writing it in component form is rather straightforward.
+Let me see whether I'm getting the hang of using vectors now.
 I will put it in file <tt>leapfrog_try1.rb</tt>:
 
  :inccode: .leapfrog_try1.rb
@@ -263,10 +263,9 @@ symmetric, it is impossible for the orbits to drift!
 *Dan*: Ah, I just noticed something.  In my leapfrog implementation,
 I compute the acceleration at the end of the loop, and then at the
 beginning of the next loop, I calculate the exact same acceleration
-once again.  Since the position <tt>{x,y,z}</tt> does not change
-between the two calculations, the value of the acceleration components
-<tt>{ax,ay,az}</tt> is bound to be the same.  That's a waste of
-computing time.
+once again.  Since the position +r+ does not change between the two
+calculations, the value of the acceleration +a+ is bound to be the
+same.  That's a waste of computing time!
 
 *Carol*: Well, for the two-body problem, we don't have to worry too much
 about exactly how many milliseconds of computer time we are spending.
@@ -290,7 +289,7 @@ Here is the new version, in file <tt>leapfrog_try2.rb</tt>:
 
  :inccode: .leapfrog_try2.rb
 
-Let me check first to see that we get the samer result.  The first
+Let me check first to see that we get the same result.  The first
 code gives:
 
  :commandoutput: ruby leapfrog_try1.rb | tail -1
@@ -321,20 +320,7 @@ been spend on acceleration calculation, things would have sped up
 by a factor two, but of course, that is not the case, so the speed
 increase should be quite a bit less.  This looks quite reasonable.
 
-== A Vector Implementation
-
-*Erica*: Now that we have a working code, how about a vector implementation?
-
-*Dan*: No problem at all.  Once I see the flow of the program, it is just
-a matter of translating.  How about this, in file <tt>leapfrog_try3.rb</tt>:
-
- :inccode: .leapfrog_try3.rb
-
-And I'll test it right away:
-
- :commandoutput: ruby leapfrog_try3.rb | tail -1
-
-*Erica*: Ah, that looks so much better: shorter and much clearer.
+== The DRY Principle Once Again
 
 *Carol*: But we can make it even more clear, and we can make the loop
 even shorter, with the help of our old friend, the DRY principle.  Look,
@@ -399,7 +385,7 @@ in the same way, to take 10,000 steps:
  :inccode: .leapfrog_long_time.rb-1
 
 Our expectation would be that modified Euler will completely screw up,
-while the leapfrog will keep behaving relatively well.  Let's seee what
+while the leapfrog will keep behaving relatively well.  Let's see what
 will happen!
 
 First I will make a picture of the long run for modified Euler,

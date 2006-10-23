@@ -66,7 +66,7 @@ the inner product
 of the loop, we use the same variable to hold value of
 <tex>$\br_{i+2, p}$</tex>, the predicted value of <tex>$\br_{i+2}$</tex>.
 
-I guess Ruby doesn't mind that we assing completely different values,
+I guess Ruby doesn't mind that we assign completely different values,
 even with different types, first a scalar, then a vector.  But I sure
 do mind!  And someone else reading our code from scratch is likely to be
 confused.
@@ -182,8 +182,9 @@ the lower step, so really both ways of drawing the picture involve two steps.
 *Erica*: True, but to me at least the original figure suggests a somewhat
 simpler procedure.
 
-*Dan*: I don't care about your philosophy or esthetics.  Here is the inner
-loop of the first vector version that we wrote for modified Euler:
+*Dan*: I don't care to quibble about philosophy of aesthetics.
+Here is the inner loop of the first vector version that we wrote for
+modified Euler:
 
  :inccode: .euler_modified_vector_try1.rb-loop
 
@@ -224,7 +225,7 @@ backward Euler values.
 the whole code longer again.
 
 *Erica*: I guess there is a trade off here.  Introducing an extra
-method gives the elegance of seeing two steps being taken explicity,
+method gives the elegance of seeing two steps being taken explicitly,
 which shortening the code as I just did brings out the Taylor series
 character of the result of averaging two steps.
 
