@@ -125,7 +125,7 @@ constructed out of a number of straight line segments, where each one
 has the proper direction at the beginning of the segment, but the
 wrong one at the end.
 
-:figure: forward1.gif 6cm forward1
+:figure: forward1.eps 6cm forward1
 The forward Euler approximation is indicated by the straight arrows,
 while the curved lines show the true solutions to the differential equation.
 
@@ -137,7 +137,7 @@ beginning of a time step in what direction to move so that you come
 out with the right direction tangential to a correct orbit at that
 point?
 
-:figure: backward1.gif 6cm backward1
+:figure: backward1.eps 6cm backward1
 As figure ref(forward1), but now for the backward Euler approximation.
 
 *Erica*:

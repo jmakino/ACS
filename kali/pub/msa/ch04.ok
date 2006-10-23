@@ -128,7 +128,7 @@ the new coordinate frame, using primed symbols: <tex>$x'$</tex> and
 <tex>$y'$</tex> instead of <tex>$x$</tex> and <tex>$y$</tex> for the
 coordinate axes.
 
-:figure: new_absolute_relative_vectors.gif 6cm new_absolute_relative_vectors
+:figure: new_absolute_relative_vectors.eps 6cm new_absolute_relative_vectors
 A shift of coordinate frame brings the origin to the position of particle 1.
 In this new frame, the c.o.m. vector is <tex>$\bR'$</tex>.
 

@@ -20,19 +20,20 @@ print_pos_vel(r,v)
 
 a = acc(r)
 
-10000.times{            #1
-  v += 0.5*a*dt         #1
-  r += v*dt             #1
-  a = acc(r)            #1
-  v += 0.5*a*dt         #1
-}                       #1
-                        #1
-dt = -dt                #1
-10000.times{            #1
-  v += 0.5*a*dt         #1
-  r += v*dt             #1
-  a = acc(r)            #1
-  v += 0.5*a*dt         #1
-  print_pos_vel(r,v)    #1
-}                       #1
+#:segment start: loops
+10000.times{
+  v += 0.5*a*dt
+  r += v*dt
+  a = acc(r)
+  v += 0.5*a*dt
+}
 
+dt = -dt
+10000.times{
+  v += 0.5*a*dt
+  r += v*dt
+  a = acc(r)
+  v += 0.5*a*dt
+  print_pos_vel(r,v)
+}
+#:segment end:

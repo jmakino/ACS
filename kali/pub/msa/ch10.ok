@@ -38,7 +38,7 @@ with the right tangent at the end.  My idea is to compute both, and then
 take the average between the two attempts.  I'm sure that would give a
 better approximation!
 
-:figure: modforward1.gif 6cm modforward1
+:figure: modforward1.eps 6cm modforward1
 An attempt to improve the Euler methods.  The top arrow shows forward Euler,
 and the bottom arrow backward Euler.  The dashed arrow shows the average
 between the two, which clearly gives a better approximation to the curved
@@ -72,7 +72,7 @@ The second forward step will not produce exactly the same arrow as the first
 backward step, but it will be almost the same arrow, and perhaps such an
 approximation would be good enough.
 
-:figure: modforward2.gif 6cm modforward2
+:figure: modforward2.eps 6cm modforward2
 Two successive forward Euler steps.
 
 *Dan*: But how are you going to use that to construct the dashed line in
@@ -84,7 +84,7 @@ first arrow?  In that way, we have constructed a backward Euler step
 that lands on the same point where our forward Euler step landed, as
 you can see in fig. ref(modforward3).
 
-:figure: modforward3.gif 6cm modforward3
+:figure: modforward3.eps 6cm modforward3
 A forward Euler steps and a backward Euler step, landing at the same point.
 
 As I already admitted, the top arrow in fig. ref(modforward3) is not exactly
@@ -99,7 +99,7 @@ The simplest way to construct the average between the two vectors is by
 adding them and then dividing the length by two.  Here it is, in
 fig. ref(modforward4).
 
-:figure: modforward4.gif 6cm modforward4
+:figure: modforward4.eps 6cm modforward4
 The new integration scheme produces the dashed arrow, as exactly one-half of
 the some of the two fully drawn arrows; the dotted arrow has the same length
 as the dashed arrow.  This result is approximately the same as the dashed

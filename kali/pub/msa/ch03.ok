@@ -57,7 +57,7 @@ about the relative motion between the two particles.  And we don't
 have to make any approximation.  Here, let me draw a few pictures, to
 make it clear.
 
-:figure: absolute_vectors.gif 6cm absolute_vectors
+:figure: absolute_vectors.eps 6cm absolute_vectors
 Two bodies with absolute coordinates <tex>$\br_1, \br_2$</tex>.
 
 Since my notepad is two-dimensional, let us start by discussing the
@@ -168,7 +168,7 @@ Let particle number 1, at the left, be twice as massive as particle 2,
 at the right: <tex>$M_1 = 2 M_2$</tex>.  As soon as we let the particles
 move freely, from rest, they will start falling toward each other.
 
-:figure: com_intro0.gif 6cm com_intro0
+:figure: com_intro0.eps 6cm com_intro0
 Two bodies at rest.
 
 *Carol*: Can you write down the equations?  Sooner or later we'll have
@@ -190,7 +190,7 @@ therefore both particles have positive values for their positions
 Moreover, <tex>$r_2 > r_1$</tex>, so the distance between the two
 particles is given as <tex>$r = r_2 - r_1$</tex>.
 
-:figure: com_intro0o.gif 10.5cm com_intro0o
+:figure: com_intro0o.eps 10.5cm com_intro0o
 Two bodies at rest, with the origin O of a one-dimensional coordinate system
 shown at the left.
 
@@ -278,7 +278,7 @@ that is twice as massive.
 
 == Center of Mass
 
-:figure: com_intro1.gif 6cm com_intro1
+:figure: com_intro1.eps 6cm com_intro1
 Two bodies falling toward each other.
 
 *Erica*: Let's draw the accelerations, as arrows in the picture,
@@ -387,7 +387,7 @@ and with Eq. (ref(com1d)) it can be written as:
 This means that the c.o.m. position will either be at rest,
 or move at a uniform velocity, with zero acceleration.
 
-:figure: com_intro2.gif 6cm com_intro2
+:figure: com_intro2.eps 6cm com_intro2
 The center of mass is the point at rest, toward which the bodies fall.
 
 *Carol*: Let's check whether that makes sense in our case.  We have
@@ -424,7 +424,7 @@ toward particle 1.  Exactly the point that is twice as close to particle
 
 == Relative Coordinates
 
-:figure: absolute_relative_vectors.gif 6cm absolute_relative_vectors
+:figure: absolute_relative_vectors.eps 6cm absolute_relative_vectors
 Construction of alternative coordinates <tex>$\bR$</tex> and
 <tex>$\br$</tex> for the center of mass position and the relative
 position of the two bodies, respectively.
@@ -477,7 +477,7 @@ told us, to wind up with a result that has the dimension of length.
 And in the equal mass case, it is clear that the c.o.m. should be the
 average of the two positions, the point right in between them.
 
-:figure: relative_vectors.gif 6cm relative_vectors
+:figure: relative_vectors.eps 6cm relative_vectors
 Alternative coordinates <tex>$\bR$</tex> and <tex>$\br$</tex>.
 
 *Dan*: Okay, I am happy now with Eq. (ref(com)), which leads to
@@ -503,10 +503,10 @@ in the second case, only <tex>$\bR$</tex> is a vector in an inertial
 coordinate system, while <tex>$\br$</tex> points to particle 2 within a
 coordinate system anchored to particle 1, which is certainly not inertial.
 
-:figure: com_vector.gif 6cm com_vector
+:figure: com_vector.eps 6cm com_vector
 The vector <tex>$\bR$</tex> in the inertial coordinate system
 
-:figure: separation_vector.gif 6cm separation_vector
+:figure: separation_vector.eps 6cm separation_vector
 The vector <tex>$\br$</tex> in a non-inertial coordinate system
 
 *Carol*: It is not inertial because particle 1 is not moving in a straight
