@@ -1,339 +1,234 @@
-= Leapfrog
+= Modified Euler in Vector Form
 
-== Interleaving Positions and Velocities
+== An Easy Translation
 
-*Carol*: Erica, we now have a second-order algorithm, modified Euler,
-but you mentioned an other one, quite a while ago, that you seemed to prefer.
+*Dan*: Now that we have a vector version of forward Euler, it's time
+to clean up our modified Euler code as well.
 
-*Erica*: Yes, the _leapfrog_ algorithm, a nice and simple scheme.
-I just learned about that in class, so it is still fresh in my memory.
+*Carol*: That will be an easy translation.  I will start by copying
+the old code from <tt>euler_modified_array.rb</tt> into a new file,
+<tt>euler_modified_vector_try1.rb</tt>.  All we have to do is to translate
+the code from array notation to vector notation.  Same as what we did
+with <tt>euler_vector.rb</tt>.  Here it is:
 
-*Dan*: What a strange name.  Does it let particles jump around like frogs?
+ :inccode: .euler_modified_vector_try1.rb
 
-*Carol*: Or like children jumping over each other?
+*Erica*: What a relief!  The lines are shorter,
+there are fewer lines, but what is most important: the lines are easy
+to understand, with a direct correspondence between code and math.
 
-*Erica*: Something like that, I guess.  I never thought about the
-meaning of the name, apart from the fact that something is leaping
-over something, as we will see in a moment.  The algorithm is used
-quite widely, although it has different names in different fields of
-science.  In stellar dynamics you often hear it called leapfrog, but
-in molecular dynamics it is generally called the Verlet method, and
-I'm sure there must be other names in use in other fields.
-
-Here is the idea.  Positions are defined at times <tex>$t_i, t_{i+1},
-t_{i+2}, \dots $</tex>, spaced at constant intervals <tex>$\Delta
-t$</tex>, while the velocities are defined at times halfway in
-between, indicated by <tex>$t_{i-1/2}, t_{i+1/2}, t_{i+3/2}, \dots
-$</tex>, where <tex>$t_{i+1} - t_{i + 1/2} = t_{i + 1/2} - t_i =
-\Delta t / 2$</tex>.
-
-It is these positions and velocities that `leap over' each other.
-The leapfrog integration scheme reads:
-
-:eqnarray:
-\label{leap_half_time}
-\br_{i} & = & \br_{i-1} + \bv_{i-1/2} dt \label{leapfrog-leap-step1}
-  \nonumber \\
-\bv_{i+1/2} & = & \bv_{i-1/2} + \ba_i dt \label{leapfrog-leap-step2}
-
-Note that the accelerations <tex>${\bf a}$</tex> are defined only on
-integer times, just like the positions, while the velocities are
-defined only on half-integer times.  This makes sense, given that the
-acceleration on one particle depends only on its position with respect
-to all other particles, and not on its or their velocities.  To put it
-in mathematical terms, for many situations in physics the acceleration
-depends on velocity and position, as <tex>${\bf a}({\bf r}, {\bf v})$</tex>.
-The motion of an electron in a magnetic field is one example, with the
-Lorentz force being velocity dependent.  And in any situation in which
-there is friction, the friction is typically stronger for higher velocities.
-However, in the case of Newtonian gravity, the velocity dependence is absent:
-<tex>${\bf a}({\bf r}, {\bf v}) = {\bf a}({\bf r})$</tex>.
-
-:figure: leapfrog.eps 8cm leapfrog
-With the leapfrog algorithm, when we update a position value to a new point
-in time, we use the information from the velocity value in between the old
-and the new point in time.  This is indicated by the vertical downward
-arrows.  Similarly, when we update a velocity value to a new point
-in time, we use the information from the acceleration value in between the old
-and the new point in time.  Each acceleration value is
-computed directly from the position value, using Newton's law of gravity.
-This is indicated with the dashed upward pointing arrows.
-
-*Carol*: I like the nice symmetric look of Eq. (ref(leap_half_time)).
-But how do you get started?  If you know the positions and velocities
-at time <tex>$t_i$</tex>, how are you going to construct the velocities
-at time <tex>$t_{i+1/2}$</tex>?
-
-*Erica*: The simplest way to extrapolate the velocities from <tex>$t_i$</tex>
-to <tex>$t_{i+1/2}$</tex> is by using a Taylor series. and the simplest
-nontrivial Taylor series is the one that takes only one term beyond the
-initial value.  It turns out that such utter simplicity is already enough!
-
-Concretely, we can start with the initial conditions <tex>${\br}_0$</tex>
-and <tex>${\bv}_0$</tex>, and take the first term in the Taylor series
-expansion to compute the first leap value for <tex>${\bf v}$</tex>:
+Let's trace our history, in this regard.  We started off writing with pen and
+paper:
 
 :equation:
-{\bv}_{1/2} = {\bv}_0 + {\ba}_0 \Delta t / 2.
+\br_{1} = \br + \bv dt
 
-We are then ready to the first line of apply Eq. (ref(leap_half_time))
-to compute the new position <tex>${\bf r}_1$</tex>, 
-using the first leap value for <tex>${\bf v}_{1/2}$</tex>.
-Next we compute the acceleration <tex>${\bf a}_1$</tex>, using Newton's
-law of gravitation, and this enables us to compute the second leap value,
-<tex>${\bf v}_{3/2}$</tex>, using the second line of apply
-Eq. (ref(leap_half_time)).  In this way we just march on.
+In our first code this became:
 
-*Carol*: And when you want to stop, or pause in order to do a printout,
-you can again construct a Taylor series in order to synchronize the
-positions and velocities, I presume?  If you make frequent outputs,
-you'll have to do a lot of Tayloring around.  I wonder whether that
-doesn't affect accuracy.  Can you estimate the errors that will be
-introduced that way?
+ :inccode: .euler_modified_1000_steps.rb-1
 
-*Erica*: Ah, the beauty here is: you do not introduce any extra errors!
-In fact, what we usually do is _never_ use the half-integer values for
-the velocity in any explicit way.  Here, let me rewrite the basic
-equations of the algorithm, in such a way that position and velocity
-remain synchronized, both at the beginning and at the end of each step.
+Then in our array code it became
 
-:eqnarray:
-\label{leap_whole_time}
-{\br}_{i+1} & = & {\br}_i + {\bv}_{i} dt + 
-{\ba}_{i} (dt)^2/2                                  \nonumber \\
-{\bv}_{i+1} & = & {\bv}_i + ({\ba}_i +
-{\ba}_{i+1})dt / 2
+ :inccode: .euler_modified_array.rb-1
 
-*Dan*: That looks totally different.
+and finally, in our vector code, we wrote:
 
-*Erica*: Ha, but looks deceive!  Notice that the increment in
-<tex>${\br}$</tex> is given by the time step multiplied by
-<tex>${\bv}_{i} + {\ba}_{i} dt / 2$</tex>, effectively equal
-to <tex>${\bv}_{i+ 1/2}$</tex>.  Similarly, the increment in
-<tex>${\bv}$</tex> is given by the time step multiplied by
-<tex>$({\ba}_i + {\ba}_{i+1}) / 2$</tex>, effectively equal to the
-intermediate value <tex>${\ba}_{i+1/2}$</tex>.  In conclusion,
-although both positions and velocities are defined at integer times,
-their increments are governed by quantities approximately defined at
-half-integer values of time.
+ :inccode: .euler_modified_vector_try1.rb-1
 
-== Time Symmetry
+which is very close indeed to what we started out with:
 
-*Dan*: I'm still not quite convinced that Eq. (ref(leap_half_time)) and
-Eq. (ref(leap_whole_time)) really express the same integration scheme.
+:equation:
+\br_{1} = \br + \bv dt
 
-*Erica*: An interesting way to see the equivalence of the two descriptions
-is to note the fact that the first two equations are explicitly
-time-reversible, while it is not at all obvious whether the last two
-equations are time-reversible.  For the two systems to be equivalent,
-they'd better share this property.  Let us check this, for both cases.
+*Dan*: It was a lot of work, but now that we got the vector class,
+I must admit that the code looks a lot more readable.  So I guess
+this will make life a lot easier for us.
+But before we move on, does it give the correct answers?
 
-*Carol*: Eq. (ref(leap_half_time)) indeed looks pretty time symmetric.
-Whether you jump forward or backward, in both cases you use the same
-middle point to jump over.  So when you first jump forward and then
-jump backward, you come back to the same point.
+*Carol*: Here's the old result, from the array code:
 
-*Erica*: Yes, but I would like to prove that, too, in a mathematical
-way.  It is all too easy to fool yourself with purely language-based
-analogies.
+ :commandoutput: ruby euler_modified_array.rb | tail -1
 
-*Dan*: Spoke the true scientist!
+and here's what our new vector code gives:
 
-*Carol*: Well, I agree.  In computer science too, intuition can lead you
-astray quite easily.  How do you want to check this?
+ :commandoutput: ruby euler_modified_vector_try1.rb | tail -1
 
-*Erica*: Let us first take one step forward, taking a time step
-<tex>$+dt$</tex>, to evolve <tex>$\{{\br}_i, {\bv}_{i-1/2}\}$</tex> to
-<tex>$\{{\br}_{i+1}, {\bv}_{i+1/2}\}$</tex>.  We can then take one
-step backward, using the same scheme, taking a time step of
-<tex>$-dt$</tex>, back in time.  Clearly, after these two steps the
-time will return to the same value since <tex>$t_i +dt-dt=t_i$</tex>.
+== Variable Names
 
-We now have to inspect where the final positions and velocities
-<tex>$\{{\br}_f(t=i), {\bv}_f(t=i-1/2)\}$</tex> are indeed equal to
-their initial values <tex>$\{{\br}_i, {\bv}_{i-1/2}\}$</tex>.  Here is
-the calculation.  First we apply the first line of Eq. (ref(leap_half_time))
-to compute <tex>${\br}_f$</tex> as the result of the step back in time,
-and then we again apply the first line of Eq. (ref(leap_half_time)), to
-compute the forward step, and we see that indeed
-<tex>${\br}_f = {\br}_i$</tex>.  Next we apply the second line of
-Eq. (ref(leap_half_time)) two times, to find that
-<tex>${\bv}_f = {\bv}_i$</tex>.  Here is the whole derivation:
+*Dan*: Good!  I'm happy.
 
-:eqnarray:
-{\br}_f & = & {\br}_{i+1} - {\bv}_{i+1/2} dt \nonumber \\
-      & = & \left[ {\br}_i + {\bv}_{i+1/2} dt \right]
-            - {\bv}_{i+1/2} dt \nonumber \\
-      & = & {\br}_i \nonumber \\
-                  \nonumber \\
-{\bv}_f & = & {\bv}_{i+1/2} - {\ba}_i dt \nonumber \\
-      & = & \left[ {\bv}_{i-1/2} + {\ba}_i dt \right]
-            - {\ba}_i dt \nonumber \\
-      & = & {\bv}_{i-1/2} \nonumber
+*Erica*: But I'm not, at least not completely.  Look, in the code
+we are using the variable <tt>r2</tt> in two very different ways.
+Early on, we use it to hold the value of <tex>$r^2$</tex>,
+the square of the original variable <tex>$\br$</tex>, defined as
+the inner product
+<tex>$r^2 = \br\cdot\br$</tex>.  But later, toward the end
+of the loop, we use the same variable to hold value of
+<tex>$\br_{i+2, p}$</tex>, the predicted value of <tex>$\br_{i+2}$</tex>.
 
-*Carol*: Can't argue with that!  This is a crystal clear derivation.
-In an almost trivial way, we can see clearly that time reversal causes
-both positions and velocities to return to their old values, not only
-in an approximate way, but exactly.  This has amazing consequences!
-When we write a computer program for the leapfrog algorithm, we can
-evolve forward a thousand time steps and then evolve backward for the
-same length of time.  Although we will make integration errors at
-every step, and although the errors will get compounded, all those
-errors will exactly cancel each other.
+I guess Ruby doesn't mind that we assign completely different values,
+even with different types, first a scalar, then a vector.  But I sure
+do mind!  And someone else reading our code from scratch is likely to be
+confused.
 
-*Don*: Amazing indeed, but I would be really amazed if the same time
-symmetry would hold for that other set of equations,
-Eq. (ref(leap_whole_time)), that don't look time symmetric at all!
+*Carol*: You have a point there.  Okay, how about calling the initial
+position <tex>$\br_0$</tex> instead of <tex>$\br$</tex>?  That is more
+consistent anyway.  We can then use the variable name <tt>r0</tt>
+instead of <tt>r</tt> for the initial vector, and the scalar value of
+its square will then become <tt>r02</tt>.  So there will be no possible
+confusion anymore!  Here is the new listing, in file
+<tt>euler_modified_vector_try2.rb</tt>:
 
-*Erica*: Yes, that's where the real fun comes in.  The derivation
-is a bit longer, but equally straightforward, and the steps are all
-the same.  Here it is:
+ :inccode: .euler_modified_vector_try2.rb
 
-:eqnarray:
-{\br}_f & = & {\br}_{i+1} - {\bv}_{i+1} dt + 
-{\ba}_{i+1} (dt)^2/2 \nonumber \\
-      & = & \left[ {\br}_i
- + {\bv}_i dt + {\ba}_i (dt)^2/2 \right]
- - \left[ {\bv}_i + ({\ba}_i + {\ba}_{i+1})dt / 2 \right] dt
-            + {\ba}_{i+1} (dt)^2/2 \nonumber \\
-      & = & {\br}_i \nonumber \\
-                  \nonumber \\
-{\bv}_f & = & {\bv}_{i+1}
-- ({\ba}_{i+1} + {\ba}_i)dt / 2  \nonumber \\
-      & = & \left[ {\bv}_i + ({\ba}_i + {\ba}_{i+1})dt / 2 \right]
-            - ({\ba}_{i+1} + {\ba}_i)dt / 2  \nonumber \\
-      & = & {\bv}_i  \nonumber
+and here is the test:
 
-In this case, too, we have exact time reversibility.  Even though not
-at all obvious at first, as soon as we write out the effects of
-stepping forward and backward, the cancellations become manifest.
+ :commandoutput: ruby euler_modified_vector_try2.rb | tail -1
 
-== A Vector Implementation
+== Consistency
 
-*Dan*: Okay, I'm convinced now that Eq. (ref(leap_whole_time)) does the
-right thing.  Let's code it up, and for convenience, let me write down
-the equations again:
+*Erica*: Yes, that's better, and you are no longer using the same
+variable name for two different things.  But you haven't quite done
+what you said you would do, namely calling the initial position
+<tex>$\br_0$</tex> instead of <tex>$\br$</tex>.  You have only assigned
+the square of <tex>$\br$</tex> to <tex>$r_0^2$</tex>, or <tt>r02</tt>
+in the code.
 
-:eqnarray:
-\label{leap_whole_time}
-{\br}_{i+1} & = & {\br}_i + {\bv}_{i} dt + 
-{\ba}_{i} (dt)^2/2                                  \nonumber \\
-{\bv}_{i+1} & = & {\bv}_i + ({\ba}_i +
-{\ba}_{i+1})dt / 2
+*Carol*: That's because I wanted to continue using the original variables
++r+ and +v+, to keep track of the evolving code.  The alternative would
+have been to call the running variables <tt>r0</tt> and <tt>v0</tt>, but
+that would be misleading, as if the particle would come back to the original
+position each time.
 
-Obviously, this is the better set of expressions to use.  It is more
-convenient than Eq. (ref(leap_half_time)) since in the above equations
-we can forget about any leaping and frogging, and just move from time
-<tex>$t_i$</tex> to time <tex>$t_{i+1}$</tex>, with both positions and
-velocities.
+*Erica*: How about a compromise?  We can keep the original variables
++r+ and +v+, but convert them to <tt>r0</tt> and <tt>v0</tt> at the
+beginning of the loop.  Let me try this, in file
+<tt>euler_modified_vector_try3.rb</tt>:
 
-Let me see whether I'm getting the hang of using vectors now.
-I will put it in file <tt>leapfrog_try1.rb</tt>:
+ :inccode: .euler_modified_vector_try3.rb
 
- :inccode: .leapfrog_try1.rb
+and let me test it right away:
 
-and let me make a picture right away, in figure ref(leapfrog_try1):
+ :commandoutput: ruby euler_modified_vector_try2.rb | tail -1
 
- :commandoutput: ruby leapfrog_try1.rb > leapfrog_try1.out
- :commandinput: gnuplot END
-set term post eps
-set output "leapfrog_try1.ps"
-set size ratio -1
-plot "leapfrog_try1.out"
-quit
-END
+*Dan*: Sure, that is more consistent, but you've just made the code two
+lines longer!  In fact, five lines longer, if you count the three blank
+lines.  Why did you add blank lines?
 
-:figure: leapfrog_try1.ps 10cm leapfrog_try1
-First attempt at leapfrog integration, with step size <tex>$dt=0.01$</tex>.
+*Erica*: I'm not really worried about the extra two lines of code.
+What's much more important is that in this new notation we can see
+clearly that we have a new target of attack for the DRY principle.
+Look, the two blocks of code, that I have highlighted by place blank
+lines around them, are nearly identical!
 
-*Carol*: Now that is a clear improvement over modified Euler.  Presumably
-both schemes are second-order, but the orbit integration is clearly more
-accurate in the case of the leapfrog.  Modified Euler gave
-figure ref(euler_modified_1000_steps_sparse) for the same time step size.
-In fact, our leapfrog is almost as good as Modified Euler for a ten
-times smaller time step, as given in
-figure ref(euler_modified_10000_steps_sparse), in the sense that the
-orbit does not drift away.
+== A Method Returning Multiple Values
 
-*Erica*: That is in fact an essential part of the leapfrog algorithm.
-If it would drift in one direction, and if you would then play time
-backward, it would have to drift in the other direction -- which means
-it would not be time symmetric.  So because the leapfrog is time
-symmetric, it is impossible for the orbits to drift!
+*Carol*: Right you are!  This calls for a new method.  Here, let me try,
+in file <tt>euler_modified_vector.rb</tt>:
 
-== Saving Some Work
+ :inccode: .euler_modified_vector.rb
 
-*Dan*: Ah, I just noticed something.  In my leapfrog implementation,
-I compute the acceleration at the end of the loop, and then at the
-beginning of the next loop, I calculate the exact same acceleration
-once again.  Since the position +r+ does not change between the two
-calculations, the value of the acceleration +a+ is bound to be the
-same.  That's a waste of computing time!
+and I'll test it right away:
 
-*Carol*: Well, for the two-body problem, we don't have to worry too much
-about exactly how many milliseconds of computer time we are spending.
+ :commandoutput: ruby euler_modified_vector.rb | tail -1
 
-*Erica*: True, but when we go to a thousand-body problem, this will become
-an issue.  Good point, Dan, why don't you leave one of the acceleration
-calculations out from the loop.
+*Dan*: I'm glad it works, but how does it work?  It seems that your
+new method <tt>step_pos_vel</tt> returns an array.
 
-*Dan*: The question is, which one.  If I leave out the first one,
-the acceleration is not yet defined, when the loop gets transversed
-for the very first time.  But if I leave out the second one,  I cannot
-calculate the value of the velocity at the end of the loop.
+*Carol*: Ah, yes.  In Ruby you can return more than one value simultaneously,
+and the way to do that is to list them in an array.  Then, when you invoke
+the method, you can just list the variables to which you want to assign the 
+array values, in the same order.  Very lazy, very simple, and in a way, you
+might say, following the principle of least surprise.
 
-Hmmm.  The second acceleration calculation is clearly essential.
-But . . . , aha, I see!  I can take out the first acceleration calculation
-and place it _before_ the loop.  That way, the length of the computer
-program does not change.  However, inside the loop unnecessary
-calculations are no longer being done.
+*Dan*: Well, yes, once you realize what is happening.
 
-Here is the new version, in file <tt>leapfrog_try2.rb</tt>:
+*Erica*: And it is quite elegant, I must say.  I begin to like Ruby more and
+more!  The inner loop now has become almost a mathematical formula, rather
+than a piece of computer code.  You can read it aloud: step forward, step
+again, and then average the values from the beginning and the end, both
+for position and velocity, and print the results.  Wonderful!
 
- :inccode: .leapfrog_try2.rb
+== Simplification
 
-Let me check first to see that we get the same result.  The first
-code gives:
+*Erica*: Before we move on, there is something that bothers me, which I
+noticed as soon as we translated the modified Euler scheme into vector
+notion, in <tt>euler_modified_vector_try1.rb</tt>.  I had not noticed
+any problem when we first wrote the much longer component-based version,
+but when it became so compact, I realized that we are being clumsy.
 
- :commandoutput: ruby leapfrog_try1.rb | tail -1
+*Carol*: How so?
 
-and the second version gives:
+*Erica*: Look, we have effectively implemented figure ref(modforward4),
+right?  Let me sketch it here again:
 
- :commandoutput: ruby leapfrog_try2.rb | tail -1
+:figure: modforward4.eps 6cm modforward4
+Two-step implementation of the modified Euler algorithm
 
-Good.
+We take two steps forward, in order to compute a single improved step.
 
-*Carol*: Let's check whether you really made the computation faster.
-We can redirect the standard output to <tt>/dev/null</tt>, literally
-a null device, effectively a waste basket, which is a Unix way of
-throwing the results away.  That way, we are left only with output
-that appears on the standard error channel, such as timing information
-provided by the +time+ command.
+However, we started off that whole discussion, way back when, we the
+simpler figure ref(modforward1).  Let me draw that one again too:
 
-The first code gives:
+:figure: modforward1.eps 6cm modforward1
+One-step implementation of the modified Euler algorithm
 
- :commandoutput: time ruby leapfrog_try1.rb > /dev/null
+You see, in that original figure, we average two steps, in order to
+compute an improved step.
 
-and the second version gives:
+*Carol*: But you needed to compute the upper step, before you could compute
+the lower step, so really both ways of drawing the picture involve two steps.
 
- :commandoutput: time ruby leapfrog_try2.rb > /dev/null
+*Erica*: True, but to me at least the original figure suggests a somewhat
+simpler procedure.
 
-*Dan*: Indeed, a bit faster.  If all the computer time would have
-been spend on acceleration calculation, things would have sped up
-by a factor two, but of course, that is not the case, so the speed
-increase should be quite a bit less.  This looks quite reasonable.
+*Dan*: I don't care to quibble about philosophy of aesthetics.
+Here is the inner loop of the first vector version that we wrote for
+modified Euler:
 
-== The DRY Principle Once Again
+ :inccode: .euler_modified_vector_try1.rb-loop
 
-*Carol*: But we can make it even more clear, and we can make the loop
-even shorter, with the help of our old friend, the DRY principle.  Look,
-the calculation for the acceleration, before and in the loop, contains
-the exact same three lines.  Those lines really ask to be encapsulated
-in a method.  Let me do that, in file <tt>leapfrog.rb</tt>:
+Where do you think you can simplify things?
 
- :inccode: .leapfrog.rb
+*Erica*: Let me copy that file, <tt>euler_modified_vector_try1.rb</tt>,
+to <tt>euler_modified_vector_try4.rb</tt>, and let me see whether I can
+change the loop, to make it look more like my understanding of the
+original figure, the second one above:
 
-and as always, I'll test it:
+ :inccode: .euler_modified_vector_try4.rb-loop
 
- :commandoutput: ruby leapfrog.rb | tail -1
+*Dan*: That sure looks a lot simpler.  Does it give the same answer?
 
+ :commandoutput: ruby euler_modified_vector_try4.rb | tail -1
+
+*Carol*: And so it does, almost.  Since some of the additions and
+multiplications and such are done in a different order, round-off
+errors may prevent us from getting the exact same results, but this
+is certainly close enough.  And yes, I admit, this code is quite a
+bit simpler.
+
+*Erica*: Not only that, you can now understand the mathematical
+structure better.  The increments in position and velocity, in
+the last two lines, are just Taylor series expansions, up to terms
+that contain the accelerations.  In the case of the position, the
+acceleration term is second order in +dt+ and so the original value
+of the acceleration is good enough.  In the case of the velocity,
+we need more precision, so we take the average of the forward and
+backward Euler values.
+
+*Carol*: On the other hand, the inner loop in our code in
+<tt>euler_modified_vector.rb</tt> was even shorter.  Here it is:
+
+ :inccode: .euler_modified_vector.rb-loop
+
+*Dan* Yes, but at the expense of introducing an extra method, making
+the whole code longer again.
+
+*Erica*: I guess there is a trade off here.  Introducing an extra
+method gives the elegance of seeing two steps being taken explicitly,
+which shortening the code as I just did brings out the Taylor series
+character of the result of averaging two steps.
+
+*Carol*: I agree.  Well, we've learned a lot, and I am actually happy
+to have several versions.  In general, there is never just one right
+solution for any question concerning software writing!

@@ -344,25 +344,3 @@ Wonderful.  And I must say, the code does look a lot cleaner now.
 None of all those ugly <tt>[k]</tt> occurrences anymore.
 I think it was worth all the work we put in,
 defining a <tt>Vector</tt> class.
-
-== A Matter of Speed
-
-*Dan*: Clean and pretty, sure, but is it fast enough?  Let's compare
-the speed of the old code and the new vector code.  I wonder whether
-all this fancy vector stuff is affecting execution speed.
-
-*Carol*: We can use the +time+ command, to find out how much time a
-code spends before finishing.  We can redirect the standard output to
-<tt>/dev/null</tt>, literally a null device, effectively a waste
-basket, which is a Unix way of throwing the results away.  That way,
-we are left only with output that appears on the standard error
-channel, such as timing information provided by the +time+ command.
-
-The first code gives:
-
- :commandoutput: time ruby euler_array_each_def.rb > /dev/null
-
-and the second version gives:
-
- :commandoutput: time ruby euler_vector.rb > /dev/null
-

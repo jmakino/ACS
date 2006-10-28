@@ -1,248 +1,339 @@
-= Time Reversibility
+= Leapfrog
 
-== Long Time Behavior
+== Interleaving Positions and Velocities
 
-*Dan*: I must agree, that is all very nice and clean.  But let's get back
-to the behavior of the two second-order algorithms that we have coded up
-so far.  Time symmetry is supposed to prevent a long-term drift.  I'd like
-to test that a bit more.
+*Carol*: Erica, we now have a second-order algorithm, modified Euler,
+but you mentioned an other one, quite a while ago, that you seemed to prefer.
 
-Let me take the modified Euler code, copying it from
-<tt>euler_modified_vector.rb</tt> to
-<tt>euler_modified_long_time.rb</tt>.
-I will let the code run ten times longer, by changing the loop defining line
-to:
+*Erica*: Yes, the _leapfrog_ algorithm, a nice and simple scheme.
+I just learned about that in class, so it is still fresh in my memory.
 
- :inccode: .euler_modified_long_time.rb-1
+*Dan*: What a strange name.  Does it let particles jump around like frogs?
 
-*Carol*: I'm glad you're getting the hang of using long names.  Thank you!
+*Carol*: Or like children jumping over each other?
 
-*Dan*: My pleasure.  But see, I did still abbreviate a bit: I could have
-left the word <tt>_vector_</tt> in, but that really would have made the
-name too long, for my taste.
+*Erica*: Something like that, I guess.  I never thought about the
+meaning of the name, apart from the fact that something is leaping
+over something, as we will see in a moment.  The algorithm is used
+quite widely, although it has different names in different fields of
+science.  In stellar dynamics you often hear it called leapfrog, but
+in molecular dynamics it is generally called the Verlet method, and
+I'm sure there must be other names in use in other fields.
 
-On a more important topic, I really don't like having different files lying
-around that are almost the same, except for just one extra 0 in one line.
+Here is the idea.  Positions are defined at times <tex>$t_i, t_{i+1},
+t_{i+2}, \dots $</tex>, spaced at constant intervals <tex>$\Delta
+t$</tex>, while the velocities are defined at times halfway in
+between, indicated by <tex>$t_{i-1/2}, t_{i+1/2}, t_{i+3/2}, \dots
+$</tex>, where <tex>$t_{i+1} - t_{i + 1/2} = t_{i + 1/2} - t_i =
+\Delta t / 2$</tex>.
 
-*Carol*: We'll have to do something about that.  I had already been thinking
-about introducing command line arguments.
+It is these positions and velocities that `leap over' each other.
+The leapfrog integration scheme reads:
 
-*Erica*: What does that mean?
+:eqnarray:
+\label{leap_half_time}
+\br_{i} & = & \br_{i-1} + \bv_{i-1/2} dt \label{leapfrog-leap-step1}
+  \nonumber \\
+\bv_{i+1/2} & = & \bv_{i-1/2} + \ba_i dt \label{leapfrog-leap-step2}
 
-*Carol*: We really would like to specify the number of steps on the command
-line, as an argument.  It would be much better if we could take the program
-<tt>euler_modified_vector.rb</tt> and run it for 10,000 steps, simply by
-invoking it as
+Note that the accelerations <tex>${\bf a}$</tex> are defined only on
+integer times, just like the positions, while the velocities are
+defined only on half-integer times.  This makes sense, given that the
+acceleration on one particle depends only on its position with respect
+to all other particles, and not on its or their velocities.  To put it
+in mathematical terms, for many situations in physics the acceleration
+depends on velocity and position, as <tex>${\bf a}({\bf r}, {\bf v})$</tex>.
+The motion of an electron in a magnetic field is one example, with the
+Lorentz force being velocity dependent.  And in any situation in which
+there is friction, the friction is typically stronger for higher velocities.
+However, in the case of Newtonian gravity, the velocity dependence is absent:
+<tex>${\bf a}({\bf r}, {\bf v}) = {\bf a}({\bf r})$</tex>.
 
- |gravity> ruby euler_modified_vector.rb -n 10000
+:figure: leapfrog.eps 8cm leapfrog
+With the leapfrog algorithm, when we update a position value to a new point
+in time, we use the information from the velocity value in between the old
+and the new point in time.  This is indicated by the vertical downward
+arrows.  Similarly, when we update a velocity value to a new point
+in time, we use the information from the acceleration value in between the old
+and the new point in time.  Each acceleration value is
+computed directly from the position value, using Newton's law of gravity.
+This is indicated with the dashed upward pointing arrows.
 
-to indicate that now we want to take that many steps, or probably even
-better
+*Carol*: I like the nice symmetric look of Eq. (ref(leap_half_time)).
+But how do you get started?  If you know the positions and velocities
+at time <tex>$t_i$</tex>, how are you going to construct the velocities
+at time <tex>$t_{i+1/2}$</tex>?
 
- |gravity> ruby euler_modified_vector.rb -t 100
+*Erica*: The simplest way to extrapolate the velocities from <tex>$t_i$</tex>
+to <tex>$t_{i+1/2}$</tex> is by using a Taylor series. and the simplest
+nontrivial Taylor series is the one that takes only one term beyond the
+initial value.  It turns out that such utter simplicity is already enough!
 
-to indicate that we want to run for 100 time units.
+Concretely, we can start with the initial conditions <tex>${\br}_0$</tex>
+and <tex>${\bv}_0$</tex>, and take the first term in the Taylor series
+expansion to compute the first leap value for <tex>${\bf v}$</tex>:
 
-*Dan*: I would like that much better!  Let's put that on our to-do list.
-But for now, let me finish my long time behavior test.  I'll write
-<tt>leapfrog_long_time.rb</tt>, by modifying <tt>leapfrog.rb</tt>
-in the same way, to take 10,000 steps:
+:equation:
+{\bv}_{1/2} = {\bv}_0 + {\ba}_0 \Delta t / 2.
 
- :inccode: .leapfrog_long_time.rb-1
+We are then ready to the first line of apply Eq. (ref(leap_half_time))
+to compute the new position <tex>${\bf r}_1$</tex>, 
+using the first leap value for <tex>${\bf v}_{1/2}$</tex>.
+Next we compute the acceleration <tex>${\bf a}_1$</tex>, using Newton's
+law of gravitation, and this enables us to compute the second leap value,
+<tex>${\bf v}_{3/2}$</tex>, using the second line of apply
+Eq. (ref(leap_half_time)).  In this way we just march on.
 
-Our expectation would be that modified Euler will completely screw up,
-while the leapfrog will keep behaving relatively well.  Let's see what
-will happen!
+*Carol*: And when you want to stop, or pause in order to do a printout,
+you can again construct a Taylor series in order to synchronize the
+positions and velocities, I presume?  If you make frequent outputs,
+you'll have to do a lot of Tayloring around.  I wonder whether that
+doesn't affect accuracy.  Can you estimate the errors that will be
+introduced that way?
 
-First I will make a picture of the long run for modified Euler,
-in figure ref(euler_modified_long_time):
+*Erica*: Ah, the beauty here is: you do not introduce any extra errors!
+In fact, what we usually do is _never_ use the half-integer values for
+the velocity in any explicit way.  Here, let me rewrite the basic
+equations of the algorithm, in such a way that position and velocity
+remain synchronized, both at the beginning and at the end of each step.
 
- :commandoutput: ruby euler_modified_long_time.rb > euler_modified_long_time.out
+:eqnarray:
+\label{leap_whole_time}
+{\br}_{i+1} & = & {\br}_i + {\bv}_{i} dt + 
+{\ba}_{i} (dt)^2/2                                  \nonumber \\
+{\bv}_{i+1} & = & {\bv}_i + ({\ba}_i +
+{\ba}_{i+1})dt / 2
+
+*Dan*: That looks totally different.
+
+*Erica*: Ha, but looks deceive!  Notice that the increment in
+<tex>${\br}$</tex> is given by the time step multiplied by
+<tex>${\bv}_{i} + {\ba}_{i} dt / 2$</tex>, effectively equal
+to <tex>${\bv}_{i+ 1/2}$</tex>.  Similarly, the increment in
+<tex>${\bv}$</tex> is given by the time step multiplied by
+<tex>$({\ba}_i + {\ba}_{i+1}) / 2$</tex>, effectively equal to the
+intermediate value <tex>${\ba}_{i+1/2}$</tex>.  In conclusion,
+although both positions and velocities are defined at integer times,
+their increments are governed by quantities approximately defined at
+half-integer values of time.
+
+== Time Symmetry
+
+*Dan*: I'm still not quite convinced that Eq. (ref(leap_half_time)) and
+Eq. (ref(leap_whole_time)) really express the same integration scheme.
+
+*Erica*: An interesting way to see the equivalence of the two descriptions
+is to note the fact that the first two equations are explicitly
+time-reversible, while it is not at all obvious whether the last two
+equations are time-reversible.  For the two systems to be equivalent,
+they'd better share this property.  Let us check this, for both cases.
+
+*Carol*: Eq. (ref(leap_half_time)) indeed looks pretty time symmetric.
+Whether you jump forward or backward, in both cases you use the same
+middle point to jump over.  So when you first jump forward and then
+jump backward, you come back to the same point.
+
+*Erica*: Yes, but I would like to prove that, too, in a mathematical
+way.  It is all too easy to fool yourself with purely language-based
+analogies.
+
+*Dan*: Spoke the true scientist!
+
+*Carol*: Well, I agree.  In computer science too, intuition can lead you
+astray quite easily.  How do you want to check this?
+
+*Erica*: Let us first take one step forward, taking a time step
+<tex>$+dt$</tex>, to evolve <tex>$\{{\br}_i, {\bv}_{i-1/2}\}$</tex> to
+<tex>$\{{\br}_{i+1}, {\bv}_{i+1/2}\}$</tex>.  We can then take one
+step backward, using the same scheme, taking a time step of
+<tex>$-dt$</tex>, back in time.  Clearly, after these two steps the
+time will return to the same value since <tex>$t_i +dt-dt=t_i$</tex>.
+
+We now have to inspect where the final positions and velocities
+<tex>$\{{\br}_f(t=i), {\bv}_f(t=i-1/2)\}$</tex> are indeed equal to
+their initial values <tex>$\{{\br}_i, {\bv}_{i-1/2}\}$</tex>.  Here is
+the calculation.  First we apply the first line of Eq. (ref(leap_half_time))
+to compute <tex>${\br}_f$</tex> as the result of the step back in time,
+and then we again apply the first line of Eq. (ref(leap_half_time)), to
+compute the forward step, and we see that indeed
+<tex>${\br}_f = {\br}_i$</tex>.  Next we apply the second line of
+Eq. (ref(leap_half_time)) two times, to find that
+<tex>${\bv}_f = {\bv}_i$</tex>.  Here is the whole derivation:
+
+:eqnarray:
+{\br}_f & = & {\br}_{i+1} - {\bv}_{i+1/2} dt \nonumber \\
+      & = & \left[ {\br}_i + {\bv}_{i+1/2} dt \right]
+            - {\bv}_{i+1/2} dt \nonumber \\
+      & = & {\br}_i \nonumber \\
+                  \nonumber \\
+{\bv}_f & = & {\bv}_{i+1/2} - {\ba}_i dt \nonumber \\
+      & = & \left[ {\bv}_{i-1/2} + {\ba}_i dt \right]
+            - {\ba}_i dt \nonumber \\
+      & = & {\bv}_{i-1/2} \nonumber
+
+*Carol*: Can't argue with that!  This is a crystal clear derivation.
+In an almost trivial way, we can see clearly that time reversal causes
+both positions and velocities to return to their old values, not only
+in an approximate way, but exactly.  This has amazing consequences!
+When we write a computer program for the leapfrog algorithm, we can
+evolve forward a thousand time steps and then evolve backward for the
+same length of time.  Although we will make integration errors at
+every step, and although the errors will get compounded, all those
+errors will exactly cancel each other.
+
+*Don*: Amazing indeed, but I would be really amazed if the same time
+symmetry would hold for that other set of equations,
+Eq. (ref(leap_whole_time)), that don't look time symmetric at all!
+
+*Erica*: Yes, that's where the real fun comes in.  The derivation
+is a bit longer, but equally straightforward, and the steps are all
+the same.  Here it is:
+
+:eqnarray:
+{\br}_f & = & {\br}_{i+1} - {\bv}_{i+1} dt + 
+{\ba}_{i+1} (dt)^2/2 \nonumber \\
+      & = & \left[ {\br}_i
+ + {\bv}_i dt + {\ba}_i (dt)^2/2 \right]
+ - \left[ {\bv}_i + ({\ba}_i + {\ba}_{i+1})dt / 2 \right] dt
+            + {\ba}_{i+1} (dt)^2/2 \nonumber \\
+      & = & {\br}_i \nonumber \\
+                  \nonumber \\
+{\bv}_f & = & {\bv}_{i+1}
+- ({\ba}_{i+1} + {\ba}_i)dt / 2  \nonumber \\
+      & = & \left[ {\bv}_i + ({\ba}_i + {\ba}_{i+1})dt / 2 \right]
+            - ({\ba}_{i+1} + {\ba}_i)dt / 2  \nonumber \\
+      & = & {\bv}_i  \nonumber
+
+In this case, too, we have exact time reversibility.  Even though not
+at all obvious at first, as soon as we write out the effects of
+stepping forward and backward, the cancellations become manifest.
+
+== A Vector Implementation
+
+*Dan*: Okay, I'm convinced now that Eq. (ref(leap_whole_time)) does the
+right thing.  Let's code it up, and for convenience, let me write down
+the equations again:
+
+:eqnarray:
+\label{leap_whole_time}
+{\br}_{i+1} & = & {\br}_i + {\bv}_{i} dt + 
+{\ba}_{i} (dt)^2/2                                  \nonumber \\
+{\bv}_{i+1} & = & {\bv}_i + ({\ba}_i +
+{\ba}_{i+1})dt / 2
+
+Obviously, this is the better set of expressions to use.  It is more
+convenient than Eq. (ref(leap_half_time)) since in the above equations
+we can forget about any leaping and frogging, and just move from time
+<tex>$t_i$</tex> to time <tex>$t_{i+1}$</tex>, with both positions and
+velocities.
+
+Let me see whether I'm getting the hang of using vectors now.
+I will put it in file <tt>leapfrog_try1.rb</tt>:
+
+ :inccode: .leapfrog_try1.rb
+
+and let me make a picture right away, in figure ref(leapfrog_try1):
+
+ :commandoutput: ruby leapfrog_try1.rb > leapfrog_try1.out
  :commandinput: gnuplot END
 set term post eps
-set output "euler_modified_long_time.ps"
+set output "leapfrog_try1.ps"
 set size ratio -1
-plot "euler_modified_long_time.out"
+plot "leapfrog_try1.out"
 quit
 END
 
-:figure: euler_modified_long_time.ps 14cm euler_modified_long_time
-Long time integration till <tex>$t=100$</tex>, with the
-modified Euler algorithm, and step size <tex>$dt=0.01$</tex>.
+:figure: leapfrog_try1.ps 10cm leapfrog_try1
+First attempt at leapfrog integration, with step size <tex>$dt=0.01$</tex>.
 
-Next, I will make a picture of the long run for our leapfrog,
-in figure ref(leapfrog_long_time):
+*Carol*: Now that is a clear improvement over modified Euler.  Presumably
+both schemes are second-order, but the orbit integration is clearly more
+accurate in the case of the leapfrog.  Modified Euler gave
+figure ref(euler_modified_1000_steps_sparse) for the same time step size.
+In fact, our leapfrog is almost as good as Modified Euler for a ten
+times smaller time step, as given in
+figure ref(euler_modified_10000_steps_sparse), in the sense that the
+orbit does not drift away.
 
- :commandoutput: ruby leapfrog_long_time.rb > leapfrog_long_time.out
- :commandinput: gnuplot END
-set term post eps
-set output "leapfrog_long_time.ps"
-set size ratio -1
-plot "leapfrog_long_time.out"
-quit
-END
+*Erica*: That is in fact an essential part of the leapfrog algorithm.
+If it would drift in one direction, and if you would then play time
+backward, it would have to drift in the other direction -- which means
+it would not be time symmetric.  So because the leapfrog is time
+symmetric, it is impossible for the orbits to drift!
 
-:figure: leapfrog_long_time.ps 10cm leapfrog_long_time
-Long time integration till <tex>$t=100$</tex>, with the
-leapfrog algorithm, and step size <tex>$dt=0.01$</tex>.
+== Saving Some Work
 
-== Discussing Time Symmetry
+*Dan*: Ah, I just noticed something.  In my leapfrog implementation,
+I compute the acceleration at the end of the loop, and then at the
+beginning of the next loop, I calculate the exact same acceleration
+once again.  Since the position +r+ does not change between the two
+calculations, the value of the acceleration +a+ is bound to be the
+same.  That's a waste of computing time!
 
-*Carol*: Your expectation was right, to some extent.  Modified Euler
-is almost literally screwing up: the orbit gets wider and wider.  In
-contrast, the leapfrog orbit keeps the same size, which is better for
-sure, but why does the orbit rotate?
+*Carol*: Well, for the two-body problem, we don't have to worry too much
+about exactly how many milliseconds of computer time we are spending.
 
-*Erica*: Well, why not?  A time symmetric code cannot spiral out,
-since such a motion would increase the size of the orbit.  If an
-algorithm lets an orbit grow in one direction in time, it lets the
-orbit grow when applied to the other direction in time as well, as
-so it would not be time symmetric.  However, if an orbit rotates
-clockwise in one direction in time, you might expect the orbit to
-rotate counter-clockwise in the other direction in time.  So time
-reversal will just map a leftward rotation of the whole orbit figure
-into a rightward rotation, and similarly rightward into leftward
+*Erica*: True, but when we go to a thousand-body problem, this will become
+an issue.  Good point, Dan, why don't you leave one of the acceleration
+calculations out from the loop.
 
-*Dan*: I don't get that.  What's so different about expanding and
-rotating?
+*Dan*: The question is, which one.  If I leave out the first one,
+the acceleration is not yet defined, when the loop gets transversed
+for the very first time.  But if I leave out the second one,  I cannot
+calculate the value of the velocity at the end of the loop.
 
-*Erica*: The key point is that we already have a sense of direction,
-in our elliptic Kepler orbit.  Our star moves counter-clockwise along
-the ellipse, and we see that the leapfrog lets the whole ellipse slowly
-rotate clockwise.  This means that if we let our star move in the
-other direction, clockwise, then the leapfrog would let the whole
-ellipse turn slowly in counter-clockwise direction.  So the leapfrog
-algorithm would remain time symmetric: revolve within the orbit in
-one direction, and the whole orbit rotates; then revolve back into
-the other direction and the orbit shifts back again, until it reaches
-the original position.
+Hmmm.  The second acceleration calculation is clearly essential.
+But . . . , aha, I see!  I can take out the first acceleration calculation
+and place it _before_ the loop.  That way, the length of the computer
+program does not change.  However, inside the loop unnecessary
+calculations are no longer being done.
 
-However, during the course of one revolution, the orbit neither shrinks
-nor expands.  Since there is no prefered direction, inwards or outwards,
-there is nothing for the leapfrog algorithm to capitalize on.  It it
-were to make an error in one direction in time, say expanding the
-orbit, it would have to make the same error when going backward in
-time.  So after moving forward and backward in time, during both moves
-the orbit would have expanded, and there is no way to get back to the
-original starting point.  In other words, that would violate time symmetry.
+Here is the new version, in file <tt>leapfrog_try2.rb</tt>:
 
-== Testing Time Symmetry
+ :inccode: .leapfrog_try2.rb
 
-*Dan*: Hmmmm.  I guess.  Well, let's first see how well this time
-symmetry idea pans out in practice.  Clearly, 
-nothing stops us from running the code backward.
-After taking 10,000 steps forward, we can reverse the direction
-by simply changing the sign of the time step value.  I will do
-that, and I will omit the print statement in the forward loop,
-so that we only get to see the backward trajectory.  If I would
-print everything on top of each other, we probably wouldn't see
-what was going on.
+Let me check first to see that we get the same result.  The first
+code gives:
 
-I will call the new code <tt>leapfrog_backward.rb</tt>, which is the
-same as the old code <tt>leapfrog_long_time.rb</tt>, except that I
-have replaced the original loop by the following two loops:
+ :commandoutput: ruby leapfrog_try1.rb | tail -1
 
- :inccode: .leapfrog_backward.rb-loops
+and the second version gives:
 
-I will plot the backward trajectory in figure ref(leapfrog_backward):
+ :commandoutput: ruby leapfrog_try2.rb | tail -1
 
- :commandoutput: ruby leapfrog_backward.rb > leapfrog_backward.out
- :commandinput: gnuplot END
-set term post eps
-set output "leapfrog_backward.ps"
-set size ratio -1
-plot "leapfrog_backward.out"
-quit
-END
+Good.
 
-:figure: leapfrog_backward.ps 10cm leapfrog_backward
-Time reversed version of the long time integration with the
-leapfrog algorithm, from <tex>$t=100$</tex> back to <tex>$t=0$</tex>,
-and step size <tex>$dt=-0.01$</tex>.
+*Carol*: Let's check whether you really made the computation faster.
+We can redirect the standard output to <tt>/dev/null</tt>, literally
+a null device, effectively a waste basket, which is a Unix way of
+throwing the results away.  That way, we are left only with output
+that appears on the standard error channel, such as timing information
+provided by the +time+ command.
 
-*Carol*: Figure ref(leapfrog_backward) looks exactly the same as
-figure ref(leapfrog_long_time)!
+The first code gives:
 
-*Erica*: Ah, yes, but that's precisely the point.  The stars are
-retracing their steps so accurately, we can't see the difference!
+ :commandoutput: time ruby leapfrog_try1.rb > /dev/null
 
-*Dan*: Let's check how close the stars reach their point of departure,
-after their long travel:
+and the second version gives:
 
- :commandoutput: ruby leapfrog_backward.rb | tail -1
+ :commandoutput: time ruby leapfrog_try2.rb > /dev/null
 
-Wow, that's very close to the initial position and velocity,
-which we specified in our code to be:
+*Dan*: Indeed, a bit faster.  If all the computer time would have
+been spend on acceleration calculation, things would have sped up
+by a factor two, but of course, that is not the case, so the speed
+increase should be quite a bit less.  This looks quite reasonable.
 
- :inccode: .leapfrog_backward.rb-2
+== The DRY Principle Once Again
 
-== Two Ways to Go Backward
+*Carol*: But we can make it even more clear, and we can make the loop
+even shorter, with the help of our old friend, the DRY principle.  Look,
+the calculation for the acceleration, before and in the loop, contains
+the exact same three lines.  Those lines really ask to be encapsulated
+in a method.  Let me do that, in file <tt>leapfrog.rb</tt>:
 
-*Carol*: But shouldn't the velocity have the opposite sign, now that
-we're going backward?
+ :inccode: .leapfrog.rb
 
-*Dan*: No, I've gone back in time, using negative time steps, while
-leaving everything else the same, including the sign of the velocity.
-I could instead have reversed the direction of the velocity, while
-leaving the time step the same.  That would mean that time would keep
-flowing forward, but the stars would move in the opposite direction,
-from time <tex>$t=100$</tex> to <tex>$t=200$</tex>.  Let me try that
-too, why not, in <tt>leapfrog_onward.rb</tt>.  This code is the same
-as <tt>leapfrog_backward.rb</tt>, with the only difference being the
-one line in between the two loops, which now reads:
+and as always, I'll test it:
 
- :inccode: .leapfrog_onward.rb-1
-
-In this case, the final position and velocity are:
-
- :commandoutput: ruby leapfrog_onward.rb | tail -1
-
-*Carol*: Indeed, now the velocity is reversed, while reaching the
-same point.  Great, thanks!
-
-*Erica*: It is remarkable how close we come to the starting point.
-And yet, it is not exactly the starting point.
-
-*Carol*: The small deviations must be related to roundoff.
-While the algorithm itself is strictly time symmetric, in the real
-world of computing we typically work with double precision numbers
-of 64 bits.  This means that floating point numbers have a finite
-precision, and that any calculation in floating point numbers will be
-rounded off to the floating point number that is closest to the true
-result.  Since the rounding off process is not time symmetric, it will
-introduce a slight time asymmetry.
-
-== Testing a Lack of Time Symmetry
-
-*Dan*: Before we move on, I'd like to make sure that the rival of
-the leapfrog, good old modified Euler, is really not time symmetric.
-
-I will do the same as what we did for the leapfrog.  
-I will call the new code <tt>euler_modified_backward.rb</tt>, which is the
-same as the old code <tt>euler_modified_long_time.rb</tt>, except that I
-have again replaced the original loop by these two loops:
-
- :inccode: .euler_modified_backward.rb-loops
-
-I will plot the backward trajectory in figure ref(euler_modified_backward):
-
- :commandoutput: ruby euler_modified_backward.rb > euler_modified_backward.out
- :commandinput: gnuplot END
-set term post eps
-set output "euler_modified_backward.ps"
-set size ratio -1
-plot "euler_modified_backward.out"
-quit
-END
-
-:figure: euler_modified_backward.ps 14cm euler_modified_backward
-Time reversed version of the long time integration with the
-modified Euler algorithm, from <tex>$t=100$</tex> back to <tex>$t=0$</tex>,
-and step size <tex>$dt=-0.01$</tex>.
-
-*Carol*: Figure ref(euler_modified_backward) looks nothing like
-figure ref(euler_modified_long_time).  Even when you reverse the
-direction of time, the orbit just continues to spiral out, like
-it did before.  You have now definitely established
-that the modified Euler algorithm is not time symmetric!
+ :commandoutput: ruby leapfrog.rb | tail -1
 

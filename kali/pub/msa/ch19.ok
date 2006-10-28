@@ -1,87 +1,248 @@
-= Energy Conservation
+= Time Reversibility
 
-== xxxx
+== Long Time Behavior
 
-== Checking Energy Conservation
+*Dan*: I must agree, that is all very nice and clean.  But let's get back
+to the behavior of the two second-order algorithms that we have coded up
+so far.  Time symmetry is supposed to prevent a long-term drift.  I'd like
+to test that a bit more.
 
- :inccode: .euler_energy_try1.rb
+Let me take the modified Euler code, copying it from
+<tt>euler_modified_vector.rb</tt> to
+<tt>euler_modified_long_time.rb</tt>.
+I will let the code run ten times longer, by changing the loop defining line
+to:
 
- :commandoutput: ruby euler_energy_try1.rb > /dev/null
+ :inccode: .euler_modified_long_time.rb-1
 
- :inccode: .euler_energy.rb
+*Carol*: I'm glad you're getting the hang of using long names.  Thank you!
 
- :commandinputoutputnoecho: ruby euler_energy.rb > /dev/null END
-0.01
-10
+*Dan*: My pleasure.  But see, I did still abbreviate a bit: I could have
+left the word <tt>_vector_</tt> in, but that really would have made the
+name too long, for my taste.
+
+On a more important topic, I really don't like having different files lying
+around that are almost the same, except for just one extra 0 in one line.
+
+*Carol*: We'll have to do something about that.  I had already been thinking
+about introducing command line arguments.
+
+*Erica*: What does that mean?
+
+*Carol*: We really would like to specify the number of steps on the command
+line, as an argument.  It would be much better if we could take the program
+<tt>euler_modified_vector.rb</tt> and run it for 10,000 steps, simply by
+invoking it as
+
+ |gravity> ruby euler_modified_vector.rb -n 10000
+
+to indicate that now we want to take that many steps, or probably even
+better
+
+ |gravity> ruby euler_modified_vector.rb -t 100
+
+to indicate that we want to run for 100 time units.
+
+*Dan*: I would like that much better!  Let's put that on our to-do list.
+But for now, let me finish my long time behavior test.  I'll write
+<tt>leapfrog_long_time.rb</tt>, by modifying <tt>leapfrog.rb</tt>
+in the same way, to take 10,000 steps:
+
+ :inccode: .leapfrog_long_time.rb-1
+
+Our expectation would be that modified Euler will completely screw up,
+while the leapfrog will keep behaving relatively well.  Let's see what
+will happen!
+
+First I will make a picture of the long run for modified Euler,
+in figure ref(euler_modified_long_time):
+
+ :commandoutput: ruby euler_modified_long_time.rb > euler_modified_long_time.out
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_modified_long_time.ps"
+set size ratio -1
+plot "euler_modified_long_time.out"
+quit
 END
 
- :commandinputoutput: ruby euler_energy.rb > /dev/null END
-0.01
-0.1
+:figure: euler_modified_long_time.ps 14cm euler_modified_long_time
+Long time integration till <tex>$t=100$</tex>, with the
+modified Euler algorithm, and step size <tex>$dt=0.01$</tex>.
+
+Next, I will make a picture of the long run for our leapfrog,
+in figure ref(leapfrog_long_time):
+
+ :commandoutput: ruby leapfrog_long_time.rb > leapfrog_long_time.out
+ :commandinput: gnuplot END
+set term post eps
+set output "leapfrog_long_time.ps"
+set size ratio -1
+plot "leapfrog_long_time.out"
+quit
 END
 
- :commandinputoutput: ruby euler_energy.rb > /dev/null END
-0.001
-0.1
+:figure: leapfrog_long_time.ps 10cm leapfrog_long_time
+Long time integration till <tex>$t=100$</tex>, with the
+leapfrog algorithm, and step size <tex>$dt=0.01$</tex>.
+
+== Discussing Time Symmetry
+
+*Carol*: Your expectation was right, to some extent.  Modified Euler
+is almost literally screwing up: the orbit gets wider and wider.  In
+contrast, the leapfrog orbit keeps the same size, which is better for
+sure, but why does the orbit rotate?
+
+*Erica*: Well, why not?  A time symmetric code cannot spiral out,
+since such a motion would increase the size of the orbit.  If an
+algorithm lets an orbit grow in one direction in time, it lets the
+orbit grow when applied to the other direction in time as well, as
+so it would not be time symmetric.  However, if an orbit rotates
+clockwise in one direction in time, you might expect the orbit to
+rotate counter-clockwise in the other direction in time.  So time
+reversal will just map a leftward rotation of the whole orbit figure
+into a rightward rotation, and similarly rightward into leftward
+
+*Dan*: I don't get that.  What's so different about expanding and
+rotating?
+
+*Erica*: The key point is that we already have a sense of direction,
+in our elliptic Kepler orbit.  Our star moves counter-clockwise along
+the ellipse, and we see that the leapfrog lets the whole ellipse slowly
+rotate clockwise.  This means that if we let our star move in the
+other direction, clockwise, then the leapfrog would let the whole
+ellipse turn slowly in counter-clockwise direction.  So the leapfrog
+algorithm would remain time symmetric: revolve within the orbit in
+one direction, and the whole orbit rotates; then revolve back into
+the other direction and the orbit shifts back again, until it reaches
+the original position.
+
+However, during the course of one revolution, the orbit neither shrinks
+nor expands.  Since there is no prefered direction, inwards or outwards,
+there is nothing for the leapfrog algorithm to capitalize on.  It it
+were to make an error in one direction in time, say expanding the
+orbit, it would have to make the same error when going backward in
+time.  So after moving forward and backward in time, during both moves
+the orbit would have expanded, and there is no way to get back to the
+original starting point.  In other words, that would violate time symmetry.
+
+== Testing Time Symmetry
+
+*Dan*: Hmmmm.  I guess.  Well, let's first see how well this time
+symmetry idea pans out in practice.  Clearly, 
+nothing stops us from running the code backward.
+After taking 10,000 steps forward, we can reverse the direction
+by simply changing the sign of the time step value.  I will do
+that, and I will omit the print statement in the forward loop,
+so that we only get to see the backward trajectory.  If I would
+print everything on top of each other, we probably wouldn't see
+what was going on.
+
+I will call the new code <tt>leapfrog_backward.rb</tt>, which is the
+same as the old code <tt>leapfrog_long_time.rb</tt>, except that I
+have replaced the original loop by the following two loops:
+
+ :inccode: .leapfrog_backward.rb-loops
+
+I will plot the backward trajectory in figure ref(leapfrog_backward):
+
+ :commandoutput: ruby leapfrog_backward.rb > leapfrog_backward.out
+ :commandinput: gnuplot END
+set term post eps
+set output "leapfrog_backward.ps"
+set size ratio -1
+plot "leapfrog_backward.out"
+quit
 END
 
- :commandinputoutput: ruby euler_energy.rb > /dev/null END
-0.0001
-0.1
+:figure: leapfrog_backward.ps 10cm leapfrog_backward
+Time reversed version of the long time integration with the
+leapfrog algorithm, from <tex>$t=100$</tex> back to <tex>$t=0$</tex>,
+and step size <tex>$dt=-0.01$</tex>.
+
+*Carol*: Figure ref(leapfrog_backward) looks exactly the same as
+figure ref(leapfrog_long_time)!
+
+*Erica*: Ah, yes, but that's precisely the point.  The stars are
+retracing their steps so accurately, we can't see the difference!
+
+*Dan*: Let's check how close the stars reach their point of departure,
+after their long travel:
+
+ :commandoutput: ruby leapfrog_backward.rb | tail -1
+
+Wow, that's very close to the initial position and velocity,
+which we specified in our code to be:
+
+ :inccode: .leapfrog_backward.rb-2
+
+== Two Ways to Go Backward
+
+*Carol*: But shouldn't the velocity have the opposite sign, now that
+we're going backward?
+
+*Dan*: No, I've gone back in time, using negative time steps, while
+leaving everything else the same, including the sign of the velocity.
+I could instead have reversed the direction of the velocity, while
+leaving the time step the same.  That would mean that time would keep
+flowing forward, but the stars would move in the opposite direction,
+from time <tex>$t=100$</tex> to <tex>$t=200$</tex>.  Let me try that
+too, why not, in <tt>leapfrog_onward.rb</tt>.  This code is the same
+as <tt>leapfrog_backward.rb</tt>, with the only difference being the
+one line in between the two loops, which now reads:
+
+ :inccode: .leapfrog_onward.rb-1
+
+In this case, the final position and velocity are:
+
+ :commandoutput: ruby leapfrog_onward.rb | tail -1
+
+*Carol*: Indeed, now the velocity is reversed, while reaching the
+same point.  Great, thanks!
+
+*Erica*: It is remarkable how close we come to the starting point.
+And yet, it is not exactly the starting point.
+
+*Carol*: The small deviations must be related to roundoff.
+While the algorithm itself is strictly time symmetric, in the real
+world of computing we typically work with double precision numbers
+of 64 bits.  This means that floating point numbers have a finite
+precision, and that any calculation in floating point numbers will be
+rounded off to the floating point number that is closest to the true
+result.  Since the rounding off process is not time symmetric, it will
+introduce a slight time asymmetry.
+
+== Testing a Lack of Time Symmetry
+
+*Dan*: Before we move on, I'd like to make sure that the rival of
+the leapfrog, good old modified Euler, is really not time symmetric.
+
+I will do the same as what we did for the leapfrog.  
+I will call the new code <tt>euler_modified_backward.rb</tt>, which is the
+same as the old code <tt>euler_modified_long_time.rb</tt>, except that I
+have again replaced the original loop by these two loops:
+
+ :inccode: .euler_modified_backward.rb-loops
+
+I will plot the backward trajectory in figure ref(euler_modified_backward):
+
+ :commandoutput: ruby euler_modified_backward.rb > euler_modified_backward.out
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_modified_backward.ps"
+set size ratio -1
+plot "euler_modified_backward.out"
+quit
 END
 
- :commandinputoutput: ruby euler_energy.rb > /dev/null END
-0.000001
-0.1
-END
+:figure: euler_modified_backward.ps 14cm euler_modified_backward
+Time reversed version of the long time integration with the
+modified Euler algorithm, from <tex>$t=100$</tex> back to <tex>$t=0$</tex>,
+and step size <tex>$dt=-0.01$</tex>.
 
- :inccode: .euler_modified_energy.rb
+*Carol*: Figure ref(euler_modified_backward) looks nothing like
+figure ref(euler_modified_long_time).  Even when you reverse the
+direction of time, the orbit just continues to spiral out, like
+it did before.  You have now definitely established
+that the modified Euler algorithm is not time symmetric!
 
- :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
-0.01
-0.1
-END
-
- :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
-0.001
-0.1
-END
-
- :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
-0.0001
-0.1
-END
-
- :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
-0.00001
-0.1
-END
-
- :commandinputoutput: ruby euler_modified_energy.rb | tail -1 END
-0.01
-0.1
-END
-
- :commandoutput: ruby euler_modified_vector.rb | tail -1
-
- :inccode: .leapfrog_energy.rb
-
- :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
-0.01
-0.1
-END
-
- :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
-0.001
-0.1
-END
-
- :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
-0.0001
-0.1
-END
-
- :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
-0.00001
-0.1
-END

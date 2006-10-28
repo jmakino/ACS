@@ -1,234 +1,51 @@
-= Modified Euler in Vector Form
+= A Matter of Speed
 
-== An Easy Translation
+== xxxx
 
-*Dan*: Now that we have a vector version of forward Euler, it's time
-to clean up our modified Euler code as well.
+*Dan*: Clean and pretty, sure, but is it fast enough?  Let's compare
+the speed of the old code and the new vector code.  I wonder whether
+all this fancy vector stuff is affecting execution speed.
 
-*Carol*: That will be an easy translation.  I will start by copying
-the old code from <tt>euler_modified_array.rb</tt> into a new file,
-<tt>euler_modified_vector_try1.rb</tt>.  All we have to do is to translate
-the code from array notation to vector notation.  Same as what we did
-with <tt>euler_vector.rb</tt>.  Here it is:
+*Carol*: We can use the +time+ command, to find out how much time a
+code spends before finishing.  We can redirect the standard output to
+<tt>/dev/null</tt>, literally a null device, effectively a waste
+basket, which is a Unix way of throwing the results away.  That way,
+we are left only with output that appears on the standard error
+channel, such as timing information provided by the +time+ command.
 
- :inccode: .euler_modified_vector_try1.rb
+xxx
 
-*Erica*: What a relief!  The lines are shorter,
-there are fewer lines, but what is most important: the lines are easy
-to understand, with a direct correspondence between code and math.
+ :commandoutput: time ruby euler.rb > /dev/null
+ :commandoutput: time ruby euler_array_each_def.rb > /dev/null
+ :commandoutput: time ruby euler_vector.rb > /dev/null
 
-Let's trace our history, in this regard.  We started off writing with pen and
-paper:
+xxx
 
-:equation:
-\br_{1} = \br + \bv dt
+ :commandoutput: ruby euler.rb | tail -1
+ :commandoutput: ruby euler_array_each_def.rb | tail -1
+ :commandoutput: ruby euler_vector.rb | tail -1
 
-In our first code this became:
+== xxx
 
- :inccode: .euler_modified_1000_steps.rb-1
+ :inccode: euler_100000_steps.C
 
-Then in our array code it became
+ :commandoutput: g++ -o euler_100000_steps euler_100000_steps.C
+ :commandoutput: time euler_100000_steps
 
- :inccode: .euler_modified_array.rb-1
+ :commandoutput: time ruby euler_100000_steps.rb
 
-and finally, in our vector code, we wrote:
+ :commandoutput: time ruby euler_array_100000_steps.rb
 
- :inccode: .euler_modified_vector_try1.rb-1
+ :commandoutput: time ruby euler_vector_100000_steps.rb
 
-which is very close indeed to what we started out with:
+== xxx
 
-:equation:
-\br_{1} = \br + \bv dt
+ :commandoutput: g++ -o euler_1000000_steps euler_1000000_steps.C
+ :commandoutput: time euler_1000000_steps
 
-*Dan*: It was a lot of work, but now that we got the vector class,
-I must admit that the code looks a lot more readable.  So I guess
-this will make life a lot easier for us.
-But before we move on, does it give the correct answers?
+ :commandoutput: time ruby euler_1000000_steps.rb
 
-*Carol*: Here's the old result, from the array code:
+ :commandoutput: time ruby euler_array_1000000_steps.rb
 
- :commandoutput: ruby euler_modified_array.rb | tail -1
+ :commandoutput: time ruby euler_vector_1000000_steps.rb
 
-and here's what our new vector code gives:
-
- :commandoutput: ruby euler_modified_vector_try1.rb | tail -1
-
-== Variable Names
-
-*Dan*: Good!  I'm happy.
-
-*Erica*: But I'm not, at least not completely.  Look, in the code
-we are using the variable <tt>r2</tt> in two very different ways.
-Early on, we use it to hold the value of <tex>$r^2$</tex>,
-the square of the original variable <tex>$\br$</tex>, defined as
-the inner product
-<tex>$r^2 = \br\cdot\br$</tex>.  But later, toward the end
-of the loop, we use the same variable to hold value of
-<tex>$\br_{i+2, p}$</tex>, the predicted value of <tex>$\br_{i+2}$</tex>.
-
-I guess Ruby doesn't mind that we assign completely different values,
-even with different types, first a scalar, then a vector.  But I sure
-do mind!  And someone else reading our code from scratch is likely to be
-confused.
-
-*Carol*: You have a point there.  Okay, how about calling the initial
-position <tex>$\br_0$</tex> instead of <tex>$\br$</tex>?  That is more
-consistent anyway.  We can then use the variable name <tt>r0</tt>
-instead of <tt>r</tt> for the initial vector, and the scalar value of
-its square will then become <tt>r02</tt>.  So there will be no possible
-confusion anymore!  Here is the new listing, in file
-<tt>euler_modified_vector_try2.rb</tt>:
-
- :inccode: .euler_modified_vector_try2.rb
-
-and here is the test:
-
- :commandoutput: ruby euler_modified_vector_try2.rb | tail -1
-
-== Consistency
-
-*Erica*: Yes, that's better, and you are no longer using the same
-variable name for two different things.  But you haven't quite done
-what you said you would do, namely calling the initial position
-<tex>$\br_0$</tex> instead of <tex>$\br$</tex>.  You have only assigned
-the square of <tex>$\br$</tex> to <tex>$r_0^2$</tex>, or <tt>r02</tt>
-in the code.
-
-*Carol*: That's because I wanted to continue using the original variables
-+r+ and +v+, to keep track of the evolving code.  The alternative would
-have been to call the running variables <tt>r0</tt> and <tt>v0</tt>, but
-that would be misleading, as if the particle would come back to the original
-position each time.
-
-*Erica*: How about a compromise?  We can keep the original variables
-+r+ and +v+, but convert them to <tt>r0</tt> and <tt>v0</tt> at the
-beginning of the loop.  Let me try this, in file
-<tt>euler_modified_vector_try3.rb</tt>:
-
- :inccode: .euler_modified_vector_try3.rb
-
-and let me test it right away:
-
- :commandoutput: ruby euler_modified_vector_try2.rb | tail -1
-
-*Dan*: Sure, that is more consistent, but you've just made the code two
-lines longer!  In fact, five lines longer, if you count the three blank
-lines.  Why did you add blank lines?
-
-*Erica*: I'm not really worried about the extra two lines of code.
-What's much more important is that in this new notation we can see
-clearly that we have a new target of attack for the DRY principle.
-Look, the two blocks of code, that I have highlighted by place blank
-lines around them, are nearly identical!
-
-== A Method Returning Multiple Values
-
-*Carol*: Right you are!  This calls for a new method.  Here, let me try,
-in file <tt>euler_modified_vector.rb</tt>:
-
- :inccode: .euler_modified_vector.rb
-
-and I'll test it right away:
-
- :commandoutput: ruby euler_modified_vector.rb | tail -1
-
-*Dan*: I'm glad it works, but how does it work?  It seems that your
-new method <tt>step_pos_vel</tt> returns an array.
-
-*Carol*: Ah, yes.  In Ruby you can return more than one value simultaneously,
-and the way to do that is to list them in an array.  Then, when you invoke
-the method, you can just list the variables to which you want to assign the 
-array values, in the same order.  Very lazy, very simple, and in a way, you
-might say, following the principle of least surprise.
-
-*Dan*: Well, yes, once you realize what is happening.
-
-*Erica*: And it is quite elegant, I must say.  I begin to like Ruby more and
-more!  The inner loop now has become almost a mathematical formula, rather
-than a piece of computer code.  You can read it aloud: step forward, step
-again, and then average the values from the beginning and the end, both
-for position and velocity, and print the results.  Wonderful!
-
-== Simplification
-
-*Erica*: Before we move on, there is something that bothers me, which I
-noticed as soon as we translated the modified Euler scheme into vector
-notion, in <tt>euler_modified_vector_try1.rb</tt>.  I had not noticed
-any problem when we first wrote the much longer component-based version,
-but when it became so compact, I realized that we are being clumsy.
-
-*Carol*: How so?
-
-*Erica*: Look, we have effectively implemented figure ref(modforward4),
-right?  Let me sketch it here again:
-
-:figure: modforward4.eps 6cm modforward4
-Two-step implementation of the modified Euler algorithm
-
-We take two steps forward, in order to compute a single improved step.
-
-However, we started off that whole discussion, way back when, we the
-simpler figure ref(modforward1).  Let me draw that one again too:
-
-:figure: modforward1.eps 6cm modforward1
-One-step implementation of the modified Euler algorithm
-
-You see, in that original figure, we average two steps, in order to
-compute an improved step.
-
-*Carol*: But you needed to compute the upper step, before you could compute
-the lower step, so really both ways of drawing the picture involve two steps.
-
-*Erica*: True, but to me at least the original figure suggests a somewhat
-simpler procedure.
-
-*Dan*: I don't care to quibble about philosophy of aesthetics.
-Here is the inner loop of the first vector version that we wrote for
-modified Euler:
-
- :inccode: .euler_modified_vector_try1.rb-loop
-
-Where do you think you can simplify things?
-
-*Erica*: Let me copy that file, <tt>euler_modified_vector_try1.rb</tt>,
-to <tt>euler_modified_vector_try4.rb</tt>, and let me see whether I can
-change the loop, to make it look more like my understanding of the
-original figure, the second one above:
-
- :inccode: .euler_modified_vector_try4.rb-loop
-
-*Dan*: That sure looks a lot simpler.  Does it give the same answer?
-
- :commandoutput: ruby euler_modified_vector_try4.rb | tail -1
-
-*Carol*: And so it does, almost.  Since some of the additions and
-multiplications and such are done in a different order, round-off
-errors may prevent us from getting the exact same results, but this
-is certainly close enough.  And yes, I admit, this code is quite a
-bit simpler.
-
-*Erica*: Not only that, you can now understand the mathematical
-structure better.  The increments in position and velocity, in
-the last two lines, are just Taylor series expansions, up to terms
-that contain the accelerations.  In the case of the position, the
-acceleration term is second order in +dt+ and so the original value
-of the acceleration is good enough.  In the case of the velocity,
-we need more precision, so we take the average of the forward and
-backward Euler values.
-
-*Carol*: On the other hand, the inner loop in our code in
-<tt>euler_modified_vector.rb</tt> was even shorter.  Here it is:
-
- :inccode: .euler_modified_vector.rb-loop
-
-*Dan* Yes, but at the expense of introducing an extra method, making
-the whole code longer again.
-
-*Erica*: I guess there is a trade off here.  Introducing an extra
-method gives the elegance of seeing two steps being taken explicitly,
-which shortening the code as I just did brings out the Taylor series
-character of the result of averaging two steps.
-
-*Carol*: I agree.  Well, we've learned a lot, and I am actually happy
-to have several versions.  In general, there is never just one right
-solution for any question concerning software writing!
