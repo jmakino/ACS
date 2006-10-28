@@ -4,3 +4,66 @@
 
 == Checking Energy Conservation
 
+ :inccode: .euler_energy_try1.rb
+
+ :commandoutput: ruby euler_energy_try1.rb > /dev/null
+
+ :inccode: .euler_energy.rb
+
+ :commandinputoutput: ruby euler_energy.rb > /dev/null END
+0.01
+END
+
+ :commandinputoutput: ruby euler_energy.rb > /dev/null END
+0.001
+END
+
+ :commandinputoutput: ruby euler_energy.rb > /dev/null END
+0.0001
+END
+
+ :commandinputoutput: ruby euler_energy.rb > /dev/null END
+0.00001
+END
+
+ :commandinputoutput: ruby euler_energy.rb > /dev/null END
+0.000005
+END
+
+ :inccode: .euler_modified_energy.rb
+
+ :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
+0.01
+END
+
+ :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
+0.001
+END
+
+ :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
+0.0001
+END
+
+ :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
+0.00001
+END
+
+ :inccode: .leapfrog_energy.rb
+
+ :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+0.01
+END
+
+ :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+0.001
+END
+
+ :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+0.0001
+END
+
+ :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+0.00001
+END
+
+

@@ -246,5 +246,3 @@ direction of time, the orbit just continues to spiral out, like
 it did before.  You have now definitely established
 that the modified Euler algorithm is not time symmetric!
 
-
-
