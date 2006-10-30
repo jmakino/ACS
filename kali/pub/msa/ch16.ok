@@ -29,7 +29,16 @@ xxx
 
  :inccode: euler_100000_steps.C
 
+ :commandoutput: gcc -o euler_100000_steps euler_100000_steps.c -lm 
+ :commandoutput: time euler_100000_steps
+
+ :commandoutput: gcc -O -o euler_100000_steps euler_100000_steps.c -lm 
+ :commandoutput: time euler_100000_steps
+
  :commandoutput: g++ -o euler_100000_steps euler_100000_steps.C
+ :commandoutput: time euler_100000_steps
+
+ :commandoutput: g++ -O -o euler_100000_steps euler_100000_steps.C
  :commandoutput: time euler_100000_steps
 
  :commandoutput: time ruby euler_100000_steps.rb
@@ -40,7 +49,16 @@ xxx
 
 == xxx
 
+ :commandoutput: gcc -o euler_1000000_steps euler_1000000_steps.c -lm 
+ :commandoutput: time euler_1000000_steps
+
+ :commandoutput: gcc -O -o euler_1000000_steps euler_1000000_steps.c -lm 
+ :commandoutput: time euler_1000000_steps
+
  :commandoutput: g++ -o euler_1000000_steps euler_1000000_steps.C
+ :commandoutput: time euler_1000000_steps
+
+ :commandoutput: g++ -O -o euler_1000000_steps euler_1000000_steps.C
  :commandoutput: time euler_1000000_steps
 
  :commandoutput: time ruby euler_1000000_steps.rb

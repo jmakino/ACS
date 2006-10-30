@@ -6,31 +6,53 @@
 
  :inccode: .euler_energy_try1.rb
 
- :commandoutput: ruby euler_energy_try1.rb > /dev/null
+ :commandoutput: ruby euler_energy_try1.rb > try.out
+ :commandoutput: head -1 try.out
+ :commandoutput: tail -1 try.out
+ :commandinput: gnuplot END
+set term post eps
+set output "tryout.ps"
+set size ratio -1
+plot "try.out" using 1:2
+quit
+END
+ :commandinput: gnuplot END
+set term post eps
+set output "tryerr.ps"
+set size ratio -1
+plot "try.out" using 0:7
+quit
+END
+
+:figure: tryout.ps 10cm euler_energy_tryout
+Trajectory of our very first forward Euler integration attempt.
+
+:figure: tryerr.ps 10cm euler_energy_tryerr
+Error growth for our very first forward Euler integration attempt.
 
  :inccode: .euler_energy.rb
 
- :commandinputoutputnoecho: ruby euler_energy.rb > /dev/null END
+ :commandinputoutputnoecho: ruby euler_energy.rb > euler_energy.out
 0.01
 10
 END
 
- :commandinputoutput: ruby euler_energy.rb > /dev/null END
+ :commandinputoutput: ruby euler_energy.rb > euler_energy.out
 0.01
 0.1
 END
 
- :commandinputoutput: ruby euler_energy.rb > /dev/null END
+ :commandinputoutput: ruby euler_energy.rb > euler_energy.out
 0.001
 0.1
 END
 
- :commandinputoutput: ruby euler_energy.rb > /dev/null END
+ :commandinputoutput: ruby euler_energy.rb > euler_energy.out
 0.0001
 0.1
 END
 
- :commandinputoutput: ruby euler_energy.rb > /dev/null END
+ :commandinputoutput: ruby euler_energy.rb > euler_energy.out
 0.000001
 0.1
 END

@@ -1,16 +1,23 @@
 require "vector.rb"
 include Math
 
-def print_pos_vel(r,v)
+def energies(r,v)
+  ekin = 0.5*v*v
+  epot = -1/sqrt(r*r)
+  [ekin, epot, ekin+epot]
+end
+
+def print_pos_vel_energy(r,v,e0)
   r.each{|x| print(x, "  ")}
   v.each{|x| print(x, "  ")}
+  etot = energies(r,v).last
+  print (etot-e0)/e0
   print "\n"
 end
 
-def print_energy(r,v,e0)
-  ekin = 0.5*v*v
-  epot = -1/sqrt(r*r)
-  etot = ekin + epot
+def print_diagnostics(t,r,v,e0)
+  ekin, epot, etot = energies(r,v)
+  STDERR.print "  t = ", sprintf("%.3g, ", t)
   STDERR.print "  E_kin = ", sprintf("%.3g, ", ekin)
   STDERR.print "E_pot = ", sprintf("%.3g; ", epot)
   STDERR.print "E_tot = ", sprintf("%.3g\n", etot)
@@ -20,11 +27,11 @@ end
 
 r = [1, 0, 0].to_v
 v = [0, 0.5, 0].to_v
-e0 = 0.5*v*v - 1/sqrt(r*r)
+e0 = energies(r,v).last
 t = 0
-STDERR.print "time step =\n"
+STDERR.print "time step = ?\n"
 dt = gets.to_f
-STDERR.print "final time =\n"
+STDERR.print "final time = ?\n"
 t_end = gets.to_f
 print_pos_vel(r,v)
 print_energy(r,v,e0)
@@ -37,5 +44,5 @@ while t < t_end - 0.5*dt
   v += a*dt
   t += dt
   print_pos_vel(r,v)
+  print_energy(t,r,v,e0)
 end
-print_energy(r,v,e0)

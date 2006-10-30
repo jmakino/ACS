@@ -29,9 +29,9 @@ r = [1, 0, 0].to_v
 v = [0, 0.5, 0].to_v
 e0 = 0.5*v*v - 1/sqrt(r*r)
 t = 0
-STDERR.print "time step =\n"
+STDERR.print "time step = ?\n"
 dt = gets.to_f
-STDERR.print "final time =\n"
+STDERR.print "final time = ?\n"
 t_end = gets.to_f
 print_pos_vel(r,v)
 print_energy(r,v,e0)
