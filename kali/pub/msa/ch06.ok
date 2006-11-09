@@ -66,6 +66,13 @@ be <tt>-1</tt>.  In fact, you can write the line <tt>set size ratio
 you want to avoid repeating yourself each time you use gnuplot.
 But for starters, I'll give the command specifically.
 
+The next command we need to use is <tt>plot <filename></tt> which by
+default will plot the data from the first two columns from the file
++filename+.  And of course, you can specify other columns to be used,
+if you prefer.  However, in our case, the first two columns just
+happen to contain the +x+ and +y+ values of the positions, so there
+is no need to give any further specifications.
+
 Now let's have our picture, in fig ref(euler_try_elliptic_bug):
 
  |gravity> gnuplot
@@ -73,10 +80,6 @@ Now let's have our picture, in fig ref(euler_try_elliptic_bug):
  gnuplot> plot "euler_try.out"
  gnuplot> quit
 
-# the following line should be removed after improving acsdoc to
-# include "save_output" extensions -- PH, May 2006
-
- :command: ruby euler_try.rb > euler_try.out
  :commandinput: gnuplot END
 set term post eps
 set output "euler_try_elliptic_bug.ps"

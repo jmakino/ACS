@@ -117,10 +117,6 @@ And here is the plot, in fig ref(euler_elliptic_bug):
  gnuplot> plot "euler.out"
  gnuplot> quit
 
-# the following line should be removed after improving acsdoc to
-# include "save_output" extensions -- PH, May 2006
-
- :command: ruby euler.rb > euler.out
  :commandinput: gnuplot END
 set term post eps
 set output "euler_elliptic_bug.ps"
@@ -250,7 +246,6 @@ copies with shorter names as much as we like.
 
  :commandoutput: ruby euler_circular_100_steps.rb > euler_circular_100_steps.out
 
- :command: ruby euler_circular_100_steps.rb > euler_circular_100_steps.out
  :commandinput: gnuplot END
 set term post eps
 set output "euler_circular_100.ps"
@@ -286,7 +281,6 @@ figure ref(euler_circular_1000):
 
  :commandoutput: ruby euler_circular_1000_steps.rb > euler_circular_1000_steps.out
 
- :command: ruby euler_circular_1000_steps.rb > euler_circular_1000_steps.out
  :commandinput: gnuplot END
 set term post eps
 set output "euler_circular_1000.ps"

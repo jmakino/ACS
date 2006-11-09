@@ -8,8 +8,8 @@ def energies(r,v)
 end
 
 def print_pos_vel_energy(r,v,e0)
-  r.each{|x| print(x, "  ")}
-  v.each{|x| print(x, "  ")}
+  r.each{|x| printf("%.5g  ", x)}
+  v.each{|x| printf("%.5g  ", x)}
   etot = energies(r,v).last
   print (etot-e0)/e0
   print "\n"
@@ -36,7 +36,7 @@ t_end = gets.to_f
 print_pos_vel_energy(r,v,e0)
 print_diagnostics(t,r,v,e0)
 
-while t < t_end - 0.5*dt
+while t < t_end
   r2 = r*r
   r3 = r2 * sqrt(r2)
   a = -r/r3

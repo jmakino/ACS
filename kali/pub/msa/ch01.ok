@@ -280,11 +280,12 @@ Astronomers have half a century of experience in writing computer
 codes to simulate dense stellar systems.  The first published results
 date back to 1960, and it was in the subsequent decade that it became
 clear just how tricky it was to simulate a group of interacting stars.
-The task seems so easy: for each star, just integrate Newton's
+The task seems so easy: for each star, just solve Newton's
 equations of motion (an object's acceleration is given by the applied
 force divided by the mass of the object) under the influence of the
 gravitational pairwise interactions of all other stars.  Indeed, it is
-straightforward to write a simple code to do so, as we will see below.
+straightforward to write a simple code to do so, which integrates a
+rather simple differential equation, as we will see below.
 And as long as all stars remain fairly well separated from each other,
 even a simple code will do a reasonably good job.  For historical
 reasons, this type of code is called an N-body code.
@@ -321,11 +322,15 @@ well outside the range of systems that are normally discussed in text
 books on numerical integration methods.  The internal book keeping
 needed to write a correct and efficient code with individual time
 steps is surprisingly large, given the simplicity of the task:
-integrate the effect of pairwise attractive inverse square forces.
-But this was only a first step toward the development of modern N-body
-codes.  The presence of tight binaries produced much more of an obstacle,
-and throughout the seventies a variety of clever mechanisms were developed
-in order to deal with them efficiently.
+integrate the effect of pairwise attractive inverse square forces,
+in order to solve the differential equations that constitute the
+equations of motion of classical Newtonian gravity.
+
+However, introducing individual time steps was only a first step
+toward the development of modern N-body codes.  The presence of tight
+binaries produced much more of an obstacle, and throughout the
+seventies a variety of clever mechanisms were developed in order to
+deal with them efficiently.
 
 For one thing, there are problems with round-off.  Two stars in a
 tight orbit around each other have almost the same position vector, as

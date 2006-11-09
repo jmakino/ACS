@@ -85,7 +85,6 @@ we had before.  We're getting there!
 
 *Carol*: Here it is, fig. ref(euler_circular_10000_steps_ok).
 
- :command: ruby euler_circular_10000_steps_ok.rb > euler_circular_10000_steps_ok.out
  :commandinput: gnuplot END
 set term post eps
 set output "euler_circular_10000_steps_ok.ps"
@@ -136,7 +135,6 @@ perhaps we can figure out what went wrong in the elliptic case.
 
 And here is the plot once more, in fig ref(euler):
 
- :command: ruby euler.rb > euler.out
  :commandinput: gnuplot END
 set term post eps
 set output "euler.ps"
