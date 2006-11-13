@@ -90,7 +90,7 @@ the same output.
 
 And let us see what our new program gives:
 
- :commandinputoutput: ruby euler_energy_try4.rb > euler_energy_try4.out END
+ :commandinputoutputinteractive: ruby euler_energy_try4.rb > euler_energy_try4.out END
 0.01
 10
 END

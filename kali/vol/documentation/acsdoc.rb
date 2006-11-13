@@ -1012,7 +1012,7 @@ module Acsdoc
     alias original_gets gets
         def gets
           a=original_gets
-          print a
+          STDERR.print a
           a
         end
     END
