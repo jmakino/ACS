@@ -428,7 +428,7 @@ We can get the following:
 
 :label: includecommand
 
-There are followng six directives to run commands
+There are followng seven directives to run commands
 
 * :output: 
 * :command: 
@@ -436,6 +436,7 @@ There are followng six directives to run commands
 * :commandinput:
 * :commandinputoutput:
 * :commandinputoutputnoecho:
+* :commandinputoutputinteractive:
 
 and one additional directive
 
@@ -532,6 +533,10 @@ gives
 
  :prompt: yebisu>
  :commandoutput: echo test
+
+The "interactive" variant shows the input data at the location of
+corresponding ruby "gets". It works only with a ruby program which
+uses "gets" function to read input from STDIN.
 
 == Boldface, italic, and typewriter font
 
