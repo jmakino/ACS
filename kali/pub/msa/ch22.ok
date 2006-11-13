@@ -24,27 +24,27 @@ Euler case.  Here we go:
 *Carol*: And now it is just a matter of making the time steps
 smaller and smaller:
 
- :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
+ :commandinputoutputinteractive: ruby euler_modified_energy.rb > /dev/null END
 0.01
 0.1
 END
 
- :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
+ :commandinputoutputinteractive: ruby euler_modified_energy.rb > /dev/null END
 0.001
 0.1
 END
 
- :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
+ :commandinputoutputinteractive: ruby euler_modified_energy.rb > /dev/null END
 0.0001
 0.1
 END
 
- :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
+ :commandinputoutputinteractive: ruby euler_modified_energy.rb > /dev/null END
 0.00001
 0.1
 END
 
- :commandinputoutputsave: ruby euler_modified_energy.rb > /dev/null END
+ :commandinputoutputinteractivesave: ruby euler_modified_energy.rb > /dev/null END
 0.000001
 0.1
 END
@@ -71,7 +71,7 @@ are still getting the same results as before.
 and we should get the same result for our new code, if we give it
 the same parameters:
 
- :commandinputoutput: ruby euler_modified_energy.rb | tail -1 END
+ :commandinputoutputinteractive: ruby euler_modified_energy.rb | tail -1 END
 0.01
 10
 END
@@ -93,27 +93,27 @@ of energy output statements and diagnostics.  Here it is:
 *Carol*: I'll just use the same parameters as I did while testing the
 modified Euler scheme, for making the time steps smaller and smaller:
 
- :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+ :commandinputoutputinteractive: ruby leapfrog_energy.rb > /dev/null END
 0.01
 0.1
 END
 
- :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+ :commandinputoutputinteractive: ruby leapfrog_energy.rb > /dev/null END
 0.001
 0.1
 END
 
- :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+ :commandinputoutputinteractive: ruby leapfrog_energy.rb > /dev/null END
 0.0001
 0.1
 END
 
- :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+ :commandinputoutputinteractive: ruby leapfrog_energy.rb > /dev/null END
 0.00001
 0.1
 END
 
- :commandinputoutputsave: ruby leapfrog_energy.rb > /dev/null END
+ :commandinputoutputinteractivesave: ruby leapfrog_energy.rb > /dev/null END
 0.000001
 0.1
 END
@@ -138,18 +138,18 @@ grow again.  Wanna bet?
 
 *Carol*: Here we go;
 
- :commandinputoutputsave: ruby leapfrog_energy.rb > /dev/null END
+ :commandinputoutputinteractivesave: ruby leapfrog_energy.rb > /dev/null END
 0.0000005
 0.1
 END
 
-*Dan*: I should have accepted your challenge, and made a bet againts you!
+*Dan*: I should have accepted your challenge, and made a bet against you!
 
 *Carol*: I must say, I'm surprised that the roundoff errors cancel so well.
 But this just can't go on.  If shrink the time step factor by another factor
 of two.
 
- :commandinputoutputsave: ruby leapfrog_energy.rb > /dev/null END
+ :commandinputoutputinteractivesave: ruby leapfrog_energy.rb > /dev/null END
 0.00000025
 0.1
 END
@@ -166,7 +166,7 @@ we still get the same output as before.  What we got was:
 
 And what our new code gives is:
 
- :commandinputoutput: ruby leapfrog_energy.rb | tail -1 END
+ :commandinputoutputinteractive: ruby leapfrog_energy.rb | tail -1 END
 0.01
 10
 END

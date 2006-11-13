@@ -1,6 +1,6 @@
 = Error Behavior for 2nd-Order Schemes
 
-== Energy Error Peaks
+== Modified Euler: Energy Error Peaks
 
 *Erica*: I want to see how the error accumulates over a few orbits.
 We saw in figure ref(euler_energy_err) how the total energy error
@@ -13,7 +13,7 @@ getting more complicated.
 the orbit looked like, by plotting the <tex>$\{x,y\}$</tex>
 coordinates of the position, in fig ref(euler_modified_energy_out).
 
- :commandinputoutput: ruby euler_modified_energy.rb > euler_modified_energy.out END
+ :commandinputoutputinteractive: ruby euler_modified_energy.rb > euler_modified_energy.out END
 0.001
 10
 END
@@ -82,7 +82,7 @@ step smaller.
 *Carol*: Okay, I'll make the time step ten time smaller, and plot the
 results in fig ref(euler_modified_energy_err2).
 
- :commandinputoutput: ruby euler_modified_energy.rb > euler_modified_energy2.out END
+ :commandinputoutputinteractive: ruby euler_modified_energy.rb > euler_modified_energy2.out END
 0.0001
 10
 END
@@ -119,12 +119,12 @@ cancellation, for free.  Who knows?
 
 *Dan*: Let's move on and see what the leapfrog algorithm shows us.
 
-== 
+== Leapfrog: Peaks on Top of a Flat Valley
 
-*Carol*: Okay, okay.  First I'll show the orbit, in
+*Carol*: Okay.  First I'll show the orbit, in
 fig ref(leapfrog_energy_out).
 
- :commandinputoutput: ruby leapfrog_energy.rb > leapfrog_energy.out END
+ :commandinputoutputinteractive: ruby leapfrog_energy.rb > leapfrog_energy.out END
 0.001
 10
 END
@@ -158,11 +158,31 @@ END
 Energy error growth using a leapfrog algorithm.
 with <tex>$dt = 0.001$</tex>.
 
-*Dan*: xxxx
+*Dan*: Now the valleys in between the peaks are all of the same height.
+I can't see any change from the one to the other.
 
-== xxxxx
+*Erica*: That makes sense, actually.  Remember, the leapfrog is time
+symmetric.  Imagine that the energy errors increased in one direction
+in time.  We could then reverse the direction of time after a few orbits,
+and we would play the tape backward, returning to our original starting
+point.  But that would mean that in the backward direction, the energy
+errors would _decrease_.  So that would spoil time symmetry: if the
+errors were to increase in one direction in time, they should increase
+in the other direction as well.  The only solution that is really time
+symmetric is to let the energy errors remain constant, neither
+decreasing nor increasing.
 
- :commandinputoutput: ruby leapfrog_energy.rb > leapfrog_energy2.out END
+*Carol*: Apart from roundoff.
+
+*Erica*: Yes, roundoff is not guaranteed to be time symmetric.  But as long
+as we stay away from relative errors of the order of <tex>$10^{-15}$</tex>,
+what I said should hold accurately.  This most be the explanation for
+the fact that the baseline errors in fig ref(leapfrog_energy_err), in
+between the periastron peaks, remain so level.
+
+*Carol*: Time to check what happens for a ten times smaller time step:
+
+ :commandinputoutputinteractive: ruby leapfrog_energy.rb > leapfrog_energy2.out END
 0.0001
 10
 END
@@ -179,30 +199,100 @@ END
 Energy error growth using a leapfrog algorithm.
 with <tex>$dt = 0.0001$</tex>.
 
-xx
+Everything does seem to scale as we expect from a second-order scheme:
+the height of the peaks is a hundred times less, in
+fig ref(leapfrog_energy_err2) compared to fig ref(leapfrog_energy_err).
+
+*Erica*: And so is the scaling for the total error at the end of the
+whole run: it, too, is a hundred times smaller.
+
+== Time Symmetry
+
+*Dan*: But wait a minute, you just argued so eloquently that the leapfrog
+algorithm should make almost no error, in the long run.
+
+*Erica*: Yes, either in the long run, or after completing exactly one
+orbit -- or any integer number of orbits, for that matter.  But in our
+case, we haven't done either.  After ten time units, we did not return
+to the exact same place.
+
+You see, during one orbit, the leapfrog can make all kind of errors.
+It is only after one full orbit that time symmetry guarantees that
+the total energy neither increases or decreases.  And compared to
+other algorithms, the leapfrog would do better in the long run, even
+if you would not stop after an exact integer number of orbits,
+compared to a non-time-symmetric scheme, such as modified Euler.  The
+latter would just keep building up errors at every orbit, adding the
+same systematic contribution each time.
+
+*Dan*: I'd like to see that.  Let's integrate for an exact number of
+orbits.
+
+*Erica*: Good idea.  I also like to test the idea, to see how well it
+works in practice.  But first we have to know how long it takes for
+our stars to revolve around each other.
+
+Let's see.  In the circular case that we have studied before, while
+we were debugging, we started with the following initial conditions,
+where I am adding the subscript _c_ for circular:
 
 :equation:
-a_c = 2 \ \ \ \ \ \ \ \ \ \ ;  \ \ \ \ \ \ \ \ \ \ 
-E_c = -0.5 \ \ \ \ \ \ \ \ \ \ ;  \ \ \ \ \ \ \ \ \ \ 
-T = 2pi
+\br_c(0) = \{1, 0, 0\} \ \ \ \ \ \ \ \ \ \ ;  \ \ \ \ \ \ \ \ \ \ 
+\bv_c(0) = \{0, 1, 0\}
+
+With Eq. (ref(curly_E_tot)), we have for the total energy, actually
+the total specific energy:
 
 :equation:
-E_e = 1/8 - 1 = 7/8
+E_c = \half v_c^2(0) - {1 \over r_c(0)} = \half - 1 = - \half
+
+On a circular orbit, the speed remains constant.  Since the
+circumference of the orbit has a length <tex>$L = 2\pi$</tex>.
+The orbital period, the time to go around the whole orbit, is therefore:
 
 :equation:
-a_e = 4/7 * 2 = 8/7
+T_c = {L \over v_c(0)} = {2\pi \over 1} = 2\pi
+
+We can now do a similar analysis for the current case in which we are
+integrating an eccentric orbit, for which I will use the subscript _e_.
+We start with the same position, but with an initial speed that is only
+half as large:
 
 :equation:
-T = (4/7)^{3/2} * 2 * \pi
+\br_e(0) = \{1, 0, 0\} \ \ \ \ \ \ \ \ \ \ ;  \ \ \ \ \ \ \ \ \ \ 
+\bv_e(0) = \{0, \half, 0\}
 
- :commandinputoutputnoecho: irb END
-include Math
-acos(0)
-pi = 2*acos(0)
-quit
-END
+This means that the total energy is now:
 
-xxxx
+:equation:
+E_e = \half v_e^2(0) - {1 \over r_e(0)} = 
+\frac{1}{8} - 1 = - \frac{7}{8}
+
+For the circular orbit, the diameter has a length of 2, and
+therefore the semi-major axis has a length \<tex>$a_c = 1$</tex>.
+Since the semi-major axis <tex>$a$</tex> of a Kepler orbit
+is inversely proportional to the total energy, we can use the
+results from the circular orbit to find the semi-major axis 
+for our eccentric orbit:
+
+:equation:
+a_e = {E_c \over E_e} a_c = {-\half \over -\textstyle\frac{7}{8}} 1 =
+-\frac{4}{7}
+
+Finally, Kepler's third law tells us that the orbital period scales
+with the three-halves power of the energy, so
+<tex>$T_e/T_c = (a_e/a_c)^{3/2}$</tex>, or:
+
+:equation:
+T_e = \left( {a_e \over a_c} \right)^{3/2} T_c = 
+2 \left(\frac{4}{7}\right)^{3/2} \pi
+
+== Surprisingly High Accuracy
+
+*Dan*: Let's bring up a calculator on your screen.
+
+*Carol*: Why not stay with Ruby and use +irb+?  We can use the fact
+that <tex>${\rm acos}(0) = \pi/2$</tex>:
 
  :commandinputoutputnoecho: irb END
 include Math
@@ -211,7 +301,18 @@ t = (4.0/7.0)**1.5 * 2 * pi
 quit
 END
 
-xxxx
+*Dan*: Ah, so four orbits would be close to our total integration time
+of ten time units, but just a bit longer.
+
+*Erica*: Yes, and indeed, if you look at fig. ref(euler_energy_out),
+you can see that our stars have almost completed four orbits by
+time <tex>$t=10$</tex>, but not quite yet.
+
+*Carol*: Let's see whether we can find a good time to stop.  Since we
+do an output every <tex>$\Delta t=0.01$</tex>, it would be nice to
+find an integer number of orbits that would also be close to a multiple
+of <tex>$\Delta t$</tex>, so that we can end the integration at that
+time.  I'll try a few values:
 
  :commandinputoutputnoecho: irb END
 include Math
@@ -223,28 +324,78 @@ t = (4.0/7.0)**1.5 * 2 * pi
 quit
 END
 
-xxx
+Ah, seven orbits brings us very close to <tex>$t=19.00$</tex>.
+Okay, let me integrate for 19 time units:
 
-Okay, let's take 19 orbits.
-
- :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+ :commandinputoutputinteractive: ruby leapfrog_energy.rb > /dev/null END
 0.001
 19
 END
 
-#xx too good!  10^-13
+*Erica*: That's an amazing accuracy, for such a large time step!
+Can you try an even larger time step?
 
- :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+*Carol*: Sure, why not ten times larger:
+
+ :commandinputoutputinteractive: ruby leapfrog_energy.rb > /dev/null END
 0.01
 19
 END
 
-#xx amazing!   10^-10
+*Erica*: Still a very good result.  Remind me, what did we get when we
+did our shorter standard integration of ten time units?
 
- :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+*Carol*: Here it is
+
+ :commandinputoutputinteractive: ruby leapfrog_energy.rb > /dev/null END
 0.01
 10
 END
 
-#xx 10^-05
+And indeed a lot worse than integrating for 19 time units.  I begin
+to see the strength of time symmetric integration schemes!  Many orders
+of magnitude gain in final accuracy, as long as you return to the same
+location in the orbit that you started from!
 
+== Squaring Off
+
+*Erica*: How about running it ten times longer?  I'm curious to see
+what will happen.
+
+*Carol*: Let's find another example of an integer number of orbits,
+close to a multiple of <tex>$\Delta t=0.01$</tex>.  Here is one:
+201 orbits will take a total time <tex>$t=545.530269157643$</tex>,
+close to <tex>$t=545.53$</tex>.  That should be good enough.  Here goes:
+
+ :commandinputoutputinteractivesave: ruby leapfrog_energy.rb > /dev/null END
+0.01
+545.53
+END
+
+*Erica*: Clearly, we're losing accuracy, but I bet we're doing a lot better
+with leapfrog than with modified Euler here!
+
+*Dan*: So now you're starting to bet as well.  I think you're right, but
+let's check:
+
+ :commandinputoutputinteractivesave: ruby euler_modified_energy.rb > /dev/null END
+0.01
+545.53
+END
+
+That's pretty dramatic, I'd say!  Modified Euler just falls apart, after
+a couple hundred orbits, for such a large time step.  And the leapfrog
+just keeps going.
+
+*Carol*: At least for periodic orbits, such as this one.  But I must say,
+I'm impressed too.
+
+*Erica*: I had wondered why so many people use the leapfrog algorithm.
+I'm beginning to see that it has some real advantages!
+
+*Carol*: So what's next.  Do we want to start playing with third-order
+or fourth-order integration schemes?
+
+*Dan*: I'd rather go beyond the two-body problem, to the real N-body problem.
+It's time to do start simulating a real star cluster, rather than just one
+double star!

@@ -138,7 +138,7 @@ time values to be printed out, the running time +t+ and the end time
 
 Here we go:
 
- :commandinputoutput: ruby euler_energy_try5.rb > euler_energy_try5.out END
+ :commandinputoutputinteractive: ruby euler_energy_try5.rb > euler_energy_try5.out END
 0.01
 10
 END
@@ -162,7 +162,7 @@ this:
 
 That should do it:
 
- :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
+ :commandinputoutputinteractive: ruby euler_energy.rb > euler_energy.out END
 0.01
 10
 END
@@ -189,21 +189,21 @@ and the duration of the integration, let's speed things up a bit, and
 integrate for only 0.1 time unit.  Starting with the previous time step
 we get:
 
- :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
+ :commandinputoutputinteractive: ruby euler_energy.rb > euler_energy.out END
 0.01
 0.1
 END
 
 Making the time step ten times shorter, we find:
 
- :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
+ :commandinputoutputinteractive: ruby euler_energy.rb > euler_energy.out END
 0.001
 0.1
 END
 
 And making it yet ten times shorter gives:
 
- :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
+ :commandinputoutputinteractive: ruby euler_energy.rb > euler_energy.out END
 0.0001
 0.1
 END
@@ -213,7 +213,7 @@ END
 *Carol*: Let's jump to a hundred times smaller time step, to see whether
 the error still becomes a hundred times smaller:
 
- :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
+ :commandinputoutputinteractive: ruby euler_energy.rb > euler_energy.out END
 0.000001
 0.1
 END
@@ -229,7 +229,7 @@ few full orbits, and with better accuracy.
 integration, and a time step of 0.0001.  Just to remind us of what
 the orbit looked like, I'll plot it again, in fig ref(euler_energy_out).
 
- :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
+ :commandinputoutputinteractive: ruby euler_energy.rb > euler_energy.out END
 0.0001
 10
 END

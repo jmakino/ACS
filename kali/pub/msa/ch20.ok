@@ -199,17 +199,20 @@ We can now define the specific energy <tex>$\mathcal{E}$</tex>
 as the energy per unit mass for the pseudo particle:
 
 :equation:
+\label{curly_E_kin}
 \mathcal{E}_{kin} = {E_{kin} \over \mu} = \half v^2
 
 and 
 
 :equation:
+\label{curly_E_pot}
 \mathcal{E}_{pot} = {E_{pot} \over \mu} = - {G M \over r}
 
 and with our convention <tex>$G = M_1 + M_2 = 1$</tex>, we
 find for the specific total energy:
 
 :equation:
+\label{curly_E_tot}
 \mathcal{E}_{tot} = \half v^2 - {1 \over r}
 
 This is exactly the expression in parentheses in the right-hand side
