@@ -1,0 +1,175 @@
+= Error Scaling for 2nd-Order Schemes
+
+== Modified Euler
+
+*Dan*: Let's have a look at our second-order integration schemes.
+If I understand things correctly, they are supposed to improve
+energy quadratically, right?  When we make the time step ten times
+smaller, the energy error should become one hundred times smaller.
+
+*Carol*: That's the expectation, yes.  But first I have to write the
+codes.  I will start with the modified Euler algorithm, for which we
+had written the vector version of the code in file
+<tt>euler_modified_vector.rb</tt>.  I will open a new file
+<tt>euler_modified_energy.rb</tt>, and add the same type of energy
+output statements and diagnostics as we have done for the forward
+Euler case.  Here we go:
+
+ :inccode: .euler_modified_energy.rb
+
+== Energy Error Scaling
+
+*Dan*: That all looks pretty straightforward.
+
+*Carol*: And now it is just a matter of making the time steps
+smaller and smaller:
+
+ :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
+0.01
+0.1
+END
+
+ :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
+0.001
+0.1
+END
+
+ :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
+0.0001
+0.1
+END
+
+ :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
+0.00001
+0.1
+END
+
+ :commandinputoutputsave: ruby euler_modified_energy.rb > /dev/null END
+0.000001
+0.1
+END
+
+*Erica*: Up till the last run, it looked almost too good to be true.
+We must have hit roundoff, I guess.
+
+*Carol*: Well, yes, with double precision you can't get much further
+than <tex>$10^{-15}$</tex> in relative accuracy for a single
+calculation.  I'm surprised we got as close as we did.  Most of the
+roundoff errors must have cancelled, in the 10,000 steps we took in
+the next to last integration.  But in the last run, where we took
+100,000 steps, we accumulated more roundoff errors.  When you are
+adding more steps, you'll get more roundoff, no matter how accurate
+each individual step may be.
+
+*Dan*: But wait, just one thing: we haven't checked yet whether we
+are still getting the same results as before.
+
+*Carol*: Ah, yes, safety first!  The old code gave:
+
+ :commandoutput: ruby euler_modified_vector.rb | tail -1
+
+and we should get the same result for our new code, if we give it
+the same parameters:
+
+ :commandinputoutput: ruby euler_modified_energy.rb | tail -1 END
+0.01
+10
+END
+
+*Dan*: All is well.
+
+== Leapfrog
+
+*Carol*: Finally, time to let the leapfrog algorithm tell us whether
+it is really a second-order algorithm as well.  I will start with
+<tt>leapfrog.rb</tt>.  I will open a new file
+<tt>leapfrog_energy.rb</tt>, and again I will add the same type
+of energy output statements and diagnostics.  Here it is:
+
+ :inccode: .leapfrog_energy.rb
+
+== Another Error Scaling Exercise
+
+*Carol*: I'll just use the same parameters as I did while testing the
+modified Euler scheme, for making the time steps smaller and smaller:
+
+ :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+0.01
+0.1
+END
+
+ :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+0.001
+0.1
+END
+
+ :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+0.0001
+0.1
+END
+
+ :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+0.00001
+0.1
+END
+
+ :commandinputoutputsave: ruby leapfrog_energy.rb > /dev/null END
+0.000001
+0.1
+END
+
+== Roundoff Kicks In
+
+*Erica*: An amazing accuracy, and that after 100,000 steps!  What
+happened?  I would have thought that the cumulative effects of
+100,000 roundoff errors would have spoiled the fun.
+
+*Carol*: We were probably just lucky in the way the roundoff errors
+canceled.  Notice that the energy error at first got 100 times smaller,
+each time we made the time step 10 times smaller, as it should for a
+second-order algorithm.  But in the last round, the improvement was a
+lot less than a factor 100.
+
+We must be really close to the roundoff barrier now.  Let me just make
+the time step a factor two smaller.  That should make the total error
+grow again.  Wanna bet?
+
+*Dan*: No, but I do wanna see whether you're right.
+
+*Carol*: Here we go;
+
+ :commandinputoutputsave: ruby leapfrog_energy.rb > /dev/null END
+0.0000005
+0.1
+END
+
+*Dan*: I should have accepted your challenge, and made a bet againts you!
+
+*Carol*: I must say, I'm surprised that the roundoff errors cancel so well.
+But this just can't go on.  If shrink the time step factor by another factor
+of two.
+
+ :commandinputoutputsave: ruby leapfrog_energy.rb > /dev/null END
+0.00000025
+0.1
+END
+
+So there!  Now the errors are finally accumulating enough to show a worse
+performance.
+
+*Dan*: But you didn't feel confident enough to ask us to bet, this time.
+
+*Carol*: I should have!  And yes, before you ask me, let us check whether
+we still get the same output as before.  What we got was:
+
+ :commandoutput: ruby leapfrog.rb | tail -1
+
+And what our new code gives is:
+
+ :commandinputoutput: ruby leapfrog_energy.rb | tail -1 END
+0.01
+10
+END
+
+Good.
+

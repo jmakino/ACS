@@ -8,8 +8,8 @@ def energies(r,v)
 end
 
 def print_pos_vel_energy(r,v,e0)
-  r.each{|x| print(x, "  ")}
-  v.each{|x| print(x, "  ")}
+  r.each{|x| printf("%.5g  ", x)}
+  v.each{|x| printf("%.5g  ", x)}
   etot = energies(r,v).last
   print (etot-e0)/e0
   print "\n"
@@ -28,21 +28,29 @@ end
 r = [1, 0, 0].to_v
 v = [0, 0.5, 0].to_v
 e0 = energies(r,v).last
+
 t = 0
+t_out = 0
+dt_out = 0.01
 STDERR.print "time step = ?\n"
 dt = gets.to_f
 STDERR.print "final time = ?\n"
 t_end = gets.to_f
+
 print_pos_vel_energy(r,v,e0)
+t_out += dt_out
 print_diagnostics(t,r,v,e0)
 
-while t < t_end - 0.5*dt
+while t < t_end - 0.5*dt              #1
   r2 = r*r
   r3 = r2 * sqrt(r2)
   a = -r/r3
   r += v*dt
   v += a*dt
   t += dt
-  print_pos_vel_energy(r,v,e0)
+  if t >= t_out
+    print_pos_vel_energy(r,v,e0)
+    t_out += dt_out
+  end
 end
 print_diagnostics(t,r,v,e0)

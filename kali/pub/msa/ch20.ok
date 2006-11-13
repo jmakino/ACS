@@ -19,7 +19,7 @@ smaller time steps.
 the time step, for two different integrations, so that we could compare
 the distance between the two end points.  I would prefer to use a measure
 that tells us how good a single orbit calculation is.  And this is indeed
-what astronomers do when they cumpute orbits: they pick a physical quantity
+what astronomers do when they compute orbits: they pick a physical quantity
 that should be conversed, and they use that to get an impression of
 the size of the numerical errors.
 
@@ -171,7 +171,7 @@ defined as:
 \mu = {M_1 M_2 \over M_1 + M_2}
 
 As you can see, it has indeed the physical dimension of mass: two
-powers of mass devided by one power leaves mass to the power one.
+powers of mass divided by one power leaves mass to the power one.
 The total mass can be written as simply
 
 :equation:
@@ -227,7 +227,7 @@ We definitely want to check to what extent the total energy is
 constant, but I would also like to see how the kinetic and potential
 energy are varying.
 
-To begin with, let me define a methode +energies+ which returns
+To begin with, let me define a method +energies+ which returns
 all three energies, kinetic, potential and total, in one array:
 
  :inccode: .euler_energy_try1.rb-1
@@ -289,7 +289,7 @@ the same result as typing
 
  print "x = 3.14\n"
 
-so you should seee
+so you should see
 
  x = 3.14
 
@@ -415,7 +415,7 @@ give it, to plot the energy as a function of time.  To start with, let
 me remember how we have plotted the orbit.  Ah yes, we have been using
 the fact that gnuplot use the first two columns, if you don't specify
 anything otherwise.  Instead of relaying on that default choice, let's
-plot the orbit again, this time giving gnuplot explicit intructions to
+plot the orbit again, this time giving gnuplot explicit instructions to
 use the data from columns 1 and 2:
 
  |gravity> gnuplot
@@ -459,7 +459,7 @@ an output line that reads, say, in the first three columns:
  9 2 1
  ...
 
-then it is as gnuplot itself adds the line numbers:
+then it is as if gnuplot itself adds the line numbers to the left:
 
  1 8 20 3
  2 4 5 6
@@ -471,11 +471,6 @@ and now the column numbering starts at 0 instead of at 1.
 *Carol*: Yes, come to think of it, that must be the reason they
 introduced that notation.  Well, let me try:
 
- |gravity> gnuplot
- gnuplot> set size ratio -1
- gnuplot> plot "euler_energy_try3.out" using 0:7
- gnuplot> quit
-
  :commandinput: gnuplot END
 set term post eps
 set output "tryerr.ps"
@@ -483,6 +478,11 @@ set size ratio -1
 plot "euler_energy_try3.out" using 0:7
 quit
 END
+
+ |gravity> gnuplot
+ gnuplot> set size ratio -1
+ gnuplot> plot "euler_energy_try3.out" using 0:7
+ gnuplot> quit
 
 :figure: tryerr.ps 10cm euler_energy_tryerr
 Error growth for our very first forward Euler integration attempt.
@@ -509,94 +509,3 @@ there where the orbit is curved most.
 *Erica*: I agree, but it's the simplest thing to do.  We can later try
 to be more clever.
 
-== xxxx
-
-
- :inccode: .euler_energy_try4.rb
-
- :commandinputoutput: ruby euler_energy_try4.rb > euler_energy_try4.out END
-0.01
-10
-END
- :commandoutput: head -1 euler_energy_try4.out
- :commandoutput: tail -1 euler_energy_try4.out
-
- :inccode: .euler_energy.rb
-
- :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
-0.01
-10
-END
- :commandoutput: head -1 euler_energy.out
- :commandoutput: tail -1 euler_energy.out
-
- :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
-0.01
-0.1
-END
-
- :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
-0.001
-0.1
-END
-
- :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
-0.0001
-0.1
-END
-
- :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
-0.000001
-0.1
-END
-
- :inccode: .euler_modified_energy.rb
-
- :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
-0.01
-0.1
-END
-
- :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
-0.001
-0.1
-END
-
- :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
-0.0001
-0.1
-END
-
- :commandinputoutput: ruby euler_modified_energy.rb > /dev/null END
-0.00001
-0.1
-END
-
- :commandinputoutput: ruby euler_modified_energy.rb | tail -1 END
-0.01
-0.1
-END
-
- :commandoutput: ruby euler_modified_vector.rb | tail -1
-
- :inccode: .leapfrog_energy.rb
-
- :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
-0.01
-0.1
-END
-
- :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
-0.001
-0.1
-END
-
- :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
-0.0001
-0.1
-END
-
- :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
-0.00001
-0.1
-END

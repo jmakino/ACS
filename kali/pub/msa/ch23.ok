@@ -1,0 +1,250 @@
+= Error Behavior for 2nd-Order Schemes
+
+== Energy Error Peaks
+
+*Erica*: I want to see how the error accumulates over a few orbits.
+We saw in figure ref(euler_energy_err) how the total energy error
+grows monotonically, with energy conservation getting a whack each
+time te stars pass close to each other.  I wonder whether our two
+second-order schemes show a similar behavior, or whether things are
+getting more complicated.
+
+*Carol*: Easy to do.  As before, I will remind us what
+the orbit looked like, by plotting the <tex>$\{x,y\}$</tex>
+coordinates of the position, in fig ref(euler_modified_energy_out).
+
+ :commandinputoutput: ruby euler_modified_energy.rb > euler_modified_energy.out END
+0.001
+10
+END
+
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_modified_energy_out.ps"
+set size ratio -1
+plot "euler_modified_energy.out" using 1:2
+quit
+END
+
+:figure: euler_modified_energy_out.ps 10cm euler_modified_energy_out
+Trajectory using a modified Euler algorithm.
+with <tex>$dt = 0.001$</tex>.
+
+*Erica*: I remember now: even with a rather long time step,
+we got a very nice looking orbit.  You can barely see how it drifts
+away from the ideal ellipse.
+
+*Carol*: And here is how the error grows, as a function of time,
+in fig ref(euler_modified_energy_err).
+
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_modified_energy_err.ps"
+set size ratio -1
+plot "euler_modified_energy.out" using 0:7
+quit
+END
+
+:figure: euler_modified_energy_err.ps 10cm euler_modified_energy_err
+Energy error growth using a modified Euler algorithm.
+with <tex>$dt = 0.001$</tex>.
+
+*Dan*: Wow, that's a _very_ different behavior.
+
+== Almost Too Good
+
+*Erica*: I think I know what's going on.  The original forward Euler
+algorithm was making terrible errors at pericenter.  I'm sure that the
+backward Euler algorithm would be making similarly terrible errors when
+the stars pass each other at pericenter.  Now the modified Euler scheme
+works so well because it almost cancels those two errors.
+
+In other words, during pericenter passage, the errors in forward and
+in backward Euler grow enormously, and the attempt at canceling is
+relatively less successful.  But once we emerge from the close encounter,
+the attempts at canceling have paid off, and the net result is a much
+more accurate energy conservation.
+
+*Carol*: Hmm, that sounds too much like a hand-waving argument to me.
+I would be more conservative, and just say that second-order
+algorithms are more complicated to begin with, so I would expect them
+to have more complex error behavior as well.  Your particular
+explanation may well be right, but can you prove that?
+
+*Erica*: I'm not sure how to _prove_ it.  It is more of a hunch.
+
+*Dan*: Let's not get too technical here.  We want to move stars around,
+and we don't need to become full-time numerical analysts.
+
+*Erica*: But I would like to see what happens when we make the time
+step smaller.
+
+*Carol*: Okay, I'll make the time step ten time smaller, and plot the
+results in fig ref(euler_modified_energy_err2).
+
+ :commandinputoutput: ruby euler_modified_energy.rb > euler_modified_energy2.out END
+0.0001
+10
+END
+
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_modified_energy_err2.ps"
+set size ratio -1
+plot "euler_modified_energy2.out" using 0:7
+quit
+END
+
+:figure: euler_modified_energy_err2.ps 10cm euler_modified_energy_err2
+Energy error growth using a modified Euler algorithm.
+with <tex>$dt = 0.0001$</tex>.
+
+*Dan*: Heh, look, compared to the error peaks at pericenter passage, the
+total error drift looks a lot less than in the previous figure.
+
+*Erica*: But the error peaks scale like a second-order algorithm: they have
+become 100 times less high.
+
+*Carol*: So the net error after the whole run must have scaled better than
+second-order.  And indeed, look at the output we got when I did the
+runs: after ten time units, the energy error became a factor thousand
+smaller, when I decreased the time step by a factor ten!
+
+*Dan*: Almost too good to be true.
+
+*Carol*: Well, a second-order scheme is guaranteed to be at least second
+order; there is no guarantee that it doesn't do better than that.  It may
+be the particular configuration of the orbit that gives us extra error
+cancellation, for free.  Who knows?
+
+*Dan*: Let's move on and see what the leapfrog algorithm shows us.
+
+== 
+
+*Carol*: Okay, okay.  First I'll show the orbit, in
+fig ref(leapfrog_energy_out).
+
+ :commandinputoutput: ruby leapfrog_energy.rb > leapfrog_energy.out END
+0.001
+10
+END
+
+ :commandinput: gnuplot END
+set term post eps
+set output "leapfrog_energy_out.ps"
+set size ratio -1
+plot "leapfrog_energy.out" using 1:2
+quit
+END
+
+:figure: leapfrog_energy_out.ps 10cm leapfrog_energy_out
+Trajectory using a leapfrog algorithm.
+with <tex>$dt = 0.001$</tex>.
+
+*Erica*: Even better looking than the equivalent modified Euler orbit.
+
+*Carol*: And here is how the error grows, as a function of time,
+in fig ref(leapfrog_energy_err).
+
+ :commandinput: gnuplot END
+set term post eps
+set output "leapfrog_energy_err.ps"
+set size ratio -1
+plot "leapfrog_energy.out" using 0:7
+quit
+END
+
+:figure: leapfrog_energy_err.ps 10cm leapfrog_energy_err
+Energy error growth using a leapfrog algorithm.
+with <tex>$dt = 0.001$</tex>.
+
+*Dan*: xxxx
+
+== xxxxx
+
+ :commandinputoutput: ruby leapfrog_energy.rb > leapfrog_energy2.out END
+0.0001
+10
+END
+
+ :commandinput: gnuplot END
+set term post eps
+set output "leapfrog_energy_err2.ps"
+set size ratio -1
+plot "leapfrog_energy2.out" using 0:7
+quit
+END
+
+:figure: leapfrog_energy_err2.ps 10cm leapfrog_energy_err2
+Energy error growth using a leapfrog algorithm.
+with <tex>$dt = 0.0001$</tex>.
+
+xx
+
+:equation:
+a_c = 2 \ \ \ \ \ \ \ \ \ \ ;  \ \ \ \ \ \ \ \ \ \ 
+E_c = -0.5 \ \ \ \ \ \ \ \ \ \ ;  \ \ \ \ \ \ \ \ \ \ 
+T = 2pi
+
+:equation:
+E_e = 1/8 - 1 = 7/8
+
+:equation:
+a_e = 4/7 * 2 = 8/7
+
+:equation:
+T = (4/7)^{3/2} * 2 * \pi
+
+ :commandinputoutputnoecho: irb END
+include Math
+acos(0)
+pi = 2*acos(0)
+quit
+END
+
+xxxx
+
+ :commandinputoutputnoecho: irb END
+include Math
+pi = 2*acos(0)
+t = (4.0/7.0)**1.5 * 2 * pi
+quit
+END
+
+xxxx
+
+ :commandinputoutputnoecho: irb END
+include Math
+pi = 2*acos(0)
+t = (4.0/7.0)**1.5 * 2 * pi
+4 * t
+6 * t
+7 * t
+quit
+END
+
+xxx
+
+Okay, let's take 19 orbits.
+
+ :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+0.001
+19
+END
+
+#xx too good!  10^-13
+
+ :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+0.01
+19
+END
+
+#xx amazing!   10^-10
+
+ :commandinputoutput: ruby leapfrog_energy.rb > /dev/null END
+0.01
+10
+END
+
+#xx 10^-05
+

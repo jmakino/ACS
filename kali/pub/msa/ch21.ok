@@ -1,246 +1,277 @@
-= XXXX
+= Scaling of Energy Errors
 
-== xxxx
+== A Matter of Time
 
-== Checking Energy Conservation
+*Carol*: So now we have seen how we are making a really big error,
+when we use forward Euler with a time step that is really too
+large for a first-order integration scheme.  But that's not what
+we are really interested in.  We want to study the behavior of
+errors in the case where the time steps are small enough to give
+reasonable orbit pictures.
 
-*Erica*:
-Here are the expressions for the kinetic energy <tex>$E_{\rm kin}$</tex> and the
-potential energy <tex>$E_{\rm pot}$</tex>.  The total energy is just the sum of
-both terms.
+*Erica*: Yes, and then we want to compare first-order and second-order
+integration schemes, to check whether the energy errors scale in
+different ways.  First we should continue to look at forward Euler,
+but with smaller time steps.
 
-:eqnarray:
-E_{\rm kin} & = & \half \frac{M_1 M_2}{M_1 + M_2} v^2 
-\label{two-body-E-kin-full} \\
-E_{\rm pot} & = & - \frac{M_1 M_2}{r} \label{two-body-E-pot-full}
+*Dan*: You know, I really get tired of writing a whole new file, each
+time we change a parameter, like the size of a time step.  Can't we
+let the program ask for the time step size, so that we can type it in
+while the program is running?
 
-*Erica*:
-So far, we have used units in which <tex>$M_1 + M_2 = 1$</tex>.  We have not
-specified the individual masses, since we did not have to; the
-equations of motion are invariant with respect to how we divide our
-unit of mass over the two bodies.  But the interpretation in terms of
-the physical energy of the system does depend on the value of <tex>$M_2$</tex>,
-which is conventionally chosen as the less massive body.  Once we
-choose <tex>$M_2$</tex>, the mass of the other body is given as <tex>$M_1 = 1 - M_2$</tex>.
+*Carol*: Good idea.  That is a much cleaner approach.  And while we're
+at it, why not ask for the total duration of the integration too.
+And that reminds me, I really wasn't very happy with the way we have
+forced the code to give sparse output, at every interval of
+<tt>\Delta t = 0.01</tt>.
 
-*Carol*:
-I would not have guessed that the earlier invariance would be broken.
-Can you make that plausible by hand waving, without deriving equations?
+*Dan*: Remind me, what did we do there?
 
-*Dan*:
-Let me try.  If we start with the Earth-Moon system, we know that the
-mass of the Moon is far smaller than the mass of the Earth.  Their
-mass ratio is roughly 1 : 81, so the Moon has not much more than one
-percent of the Earth's mass.  In our notation,
-<tex>$M_2 = 1/82 = 0.012\dots$</tex>\ \ .  In the center-of-mass system, the
-velocities of the two bodies are inversely proportional to their
-masses.  Kinetic energy, however, is proportional to the square of the
-velocities, and therefore the motion of the Moon carries about 81
-times more kinetic energy than the motion of the Earth, around their
-common center of gravity --- which lies inside the Earth, by the way,
-so the Earth barely moves.
+*Carol*: Take file <tt>euler_elliptic_100000_steps_sparse_ok.rb</tt>
 
-*Carol*:
-Let me guess your next step.  You want to compare the Earth-Moon
-system with another system with an even larger mass ratio?  Aha, I
-see.  Why not go all the way, and replace the Moon with a pebble,
-orbiting the Earth at the same distance, but without the Moon being
-there.  The total mass is almost the same (we could even give the
-Earth an extra percent of mass to preserve <tex>$M_1 + M_2$</tex>), but clearly
-the kinetic energy of the pebble is far far smaller than the kinetic
-energy of the Moon.  And using your argument, the pebble will still
-carry almost all the kinetic energy of the Earth-pebble system, as did
-the Moon before.  The velocities of pebble and Moon are almost the same,
-which means that for the whole system <tex>$E_{kin} \propto M_2$</tex> in the
-limit where <tex>$M_2 \ll M_1$</tex>.  Indeed, that is what
-Eq. \ref{two-body-E-kin-full} tells us.  Now I feel comfortable with
-that result.
+*Dan*: Ah, yes, of course, how can I forget such a name!
 
-*Erica*:
-If we continue like this, you'll both be turned into astronomers!
-Yes, it is always a good idea to look at a new formula, and to think
-of some limiting cases, to check whether the equation makes sense.  Of
-course, making sense does not really prove that the equation is correct.
-We still have to check the derivation, which is given in many text books
-on classical dynamics.  However, we are at least guarded against most
-typos, and more importantly, it gives us more of an idea of the
-physics behind the mathematics.
+*Carol*: Well, as the name says, that code took 100,000 steps, during
+a total time of 10 time units.  With output intervals of length 0.01,
+this means that we needed only 1,000 outputs.  In other words, we
+needed only to print the results once every 100 steps.  We did this
+with the following rather clumsy trick, using the remainder operator
+<tt>%</tt>:
 
-*Dan*:
-It is interesting that Eqs. \ref{two-body-E-kin-full},
-\ref{two-body-E-pot-full} have the exact same mass dependence, if we
-switch back again to our notation in which <tex>$M_1 + M_2 = 1$</tex>.
+ :inccode: .euler_elliptic_100000_steps_sparse_ok.rb-2
 
-*Erica*:
-Yes, and we can bring that out more clearly by introducing the notion
-of what is called the `reduced mass' <tex>$\mu$</tex> of a two-body system:
+I suggest that instead we introduce the time explicitly.  Notice
+that so far we have used a variable +dt+ to keep the value of the
+time step size, but we have never kept track of the time itself.
+Let us introduce a variable +t+ to indicate the time that has
+passed since the start of the integration.  We can then specify
+a desired interval between outputs, <tt>dt_out</tt> for short.
+And to keep track of when the next output is scheduled to happen,
+we can use a variable <tt>t_out</tt>.  Whenever the time +t+ reaches
+<tt>t_out</tt> or goes past it, we need to do another output.
 
-:equation:
-\mu = \frac{M_1 M_2}{M_1 + M_2}
+Of course, our diagnostics method should now print the value of the
+time as well.  What else do we need to change.  The main loop now
+becomes a test to see whether the time +t+ has passed to or beyond
+the final time <tt>t_end</tt>, specified by the user.  And after each
+output statement, <tt>t_out</tt> has to be incremented to the next
+scheduled output time, by adding <tt>dt_out</tt> to its value.
+Well, that must be about it, yes?
 
-*Carol*:
-I see, if we define <tex>$M = M_1 + M_2$</tex> we then get:
+== A New Control Structure
 
-:eqnarray:
-E_{\rm kin} & = & \half \mu v^2 \\
-E_{\rm pot} & = & - \frac{\mu M}{r}
+Let me open a file <tt>euler_energy_try4.rb</tt> and type it all in:
 
-*Carol*:
-Nice and elegant!
+ :inccode: .euler_energy_try4.rb
 
-*Dan*:
-Let me try to make it more elegant.  I'm beginning to remember more
-and more now from my physics class.  There was this notion of specific
-something as something per unit mass.  How about defining those two
-energy components as specific energies, per unit reduced mass?  Let us
-use a script <tex>$\mathcal{E}$</tex>, rather than roman E, for that notion.  In
-our notation, with unit total mass, we will have the following
-specific energies:
+*Dan*: What is +gets+?
 
-:equation:
-\mathcal{E}_{\rm kin} = \half v^2
-\qquad
-;
-\qquad
-\mathcal{E}_{\rm pot} = - \frac{1}{r}
+*Carol*: That is a Ruby input statement, short for `get string'.
+It reads the next line from the command line.  So if you type
+a single value, and then hit the enter key, +gets+ gobbles up
+the number you have typed, but packaged as a string.  For example,
+when the code asks you for a time step, and you type
 
-*Carol*:
-So elegant and skinny that they almost disappear!  But I suggest that
-we keep calling those expressions simply kinetic and potential energy,
-since we all know what we're talking about, rather than the mouthful
-`specific kinetic and potential energy with respect to the reduced mass'.
+ 0.01
 
-*Erica*:
-Agreed!  Time to code it up.
+then +gets+ returns the string <tt>"0.01"</tt>, made up of four characters.
+What we really want is a number, and the method <tt>to_f</tt> is the
+built-in Ruby way to convert a string into a floating point number;
+it is short for `(convert) to float'.
 
-*Carol*:
-Does this look reasonable?
+== Overshooting
 
-\code{forward_euler4.C}{chap3/forward_euler4.C}
+*Erica*: Let's give it the same values as before, to see whether we get
+the same output.
 
-*Dan*:
-Looks good to me.  Let's start with our good old <tt>dt = 0.01</tt>
+*Carol*: This is what we found before:
 
-  |gravity> g++ -o forward_euler4 forward_euler4.C
-  |gravity> forward_euler4 > forward4_0.01.out
-  Please provide a value for the time step
-  0.01
-  Initial total energy E_in = -0.875
-  Final total energy E_out = 0.393987
-  absolute energy error: E_out - E_in = 1.26899
-  relative energy error: (E_out - E_in) / E_in = -1.45027
-  |gravity>
+ :commandoutput: ruby euler_energy_try3.rb > euler_energy_try3.out
 
-\output{chap3/forward4.output}
+And let us see what our new program gives:
 
-*Dan*:
-Well, we knew that it was bad, and the energy check confirms it.
-The energy even changes sign --- which of course we knew, since we saw
-the particle escaping, and only positive-energy orbits can show escape.
+ :commandinputoutput: ruby euler_energy_try4.rb > euler_energy_try4.out END
+0.01
+10
+END
 
-*Carol*:
-Rather than producing more output files, let's just confirm we have
-the same output in this case, after which I suggest we call our friend
-<tt>/dev/null</tt> to the rescue.
+*Dan*: At least the diagnostics output is the same.  How about the
+output files?
 
-  |gravity> tail -2 forward4_0.01.out
-  7.69375 -6.27772 0 0.812207 -0.5742 0
-  7.70187 -6.28346 0 0.812128 -0.574136 0
-  |gravity>
+*Carol*: I'll do a +diff+:
 
-\output{chap3/forward4a.output}
+ :commandoutput: diff euler_energy_try3.out euler_energy_try4.out
 
-*Dan*:
-Good!  The same as before, with still the one step overshoot.  Let's
-look at the other cases.
+He, that is strange.  Our friend +diff+ claims that the two files
+are identical except for the fact that our latest code produces one
+more line of output!  Let me check it with a word count:
 
-  |gravity> forward_euler4 > /dev/null
-  Please provide a value for the time step
-  0.001
-  Initial total energy E_in = -0.875
-  Final total energy E_out = -0.449681
-  absolute energy error: E_out - E_in = 0.425319
-  relative energy error: (E_out - E_in) / E_in = -0.486079
-  |gravity> !!
-  Please provide a value for the time step
-  0.0001
-  Initial total energy E_in = -0.875
-  Final total energy E_out = -0.80008
-  absolute energy error: E_out - E_in = 0.0749198
-  relative energy error: (E_out - E_in) / E_in = -0.0856226
-  |gravity> !!
-  Please provide a value for the time step
-  0.00001
-  Initial total energy E_in = -0.875
-  Final total energy E_out = -0.864747
-  absolute energy error: E_out - E_in = 0.0102526
-  relative energy error: (E_out - E_in) / E_in = -0.0117172
-  |gravity> !!
-  Please provide a value for the time step
-  0.000001
-  Initial total energy E_in = -0.875
-  Final total energy E_out = -0.873971
-  absolute energy error: E_out - E_in = 0.00102934
-  relative energy error: (E_out - E_in) / E_in = -0.00117639
-  |gravity>
+ :commandoutput: wc euler_energy_try[34].out
 
-\output{chap3/forward4b.output}
+And what do you know, yes, 1001 lines in <tt>euler_energy_try3.out</tt>
+as it should be, moving from times 0 till 10 with steps of 0.01, but
+why does <tt>euler_energy_try4.out</tt> have 1002 lines??
 
-*Dan*:
-How nice to see the errors shrink as snow for the sun!
+*Erica*: That last program must be taking one more step, beyond time 10.
+Can you show the last few lines for both output files?
 
-*Carol*:
-On a rather cold day, with a very low sun.  Yes, it converges, but
-very sloooooowly.
+*Carol*: Sure:
 
-*Erica*:
-I'm glad we went all the way to ten million steps, in the last
-calculation, even though it took more than a minute to complete.
-In the last two runs we have just confirmed the first-order character
-of the forward Euler integration scheme.  Making the time step ten
-times smaller makes the error ten times smaller, to within the first
-three significant digits!  This is something that was not obvious at
-all during the earlier runs, where the errors were so large that
-nonlinear effects overwhelmed the asymptotic proportionality between
-error and time step, for the limit <tex>$dt \rightarrow 0$</tex>.
+ :commandoutput: tail -3 euler_energy_try3.out
+ :commandoutput: tail -3 euler_energy_try4.out
 
-*Carol*:
-Great!  And a great point to stop.  This has been a far longer session
-than I had anticipated.  Let's get back tomorrow, and then someone
-else should take over the controls.
+Just like +diff+ told us, the last few lines are identical, except for
+the fact that <tt>euler_energy_try4.out</tt> shows one extra step.  You
+must be right: it looks like the code didn't know how to stop in time.
 
-*Dan*:
-I'd be happy to do so.  This has been fun, and I look forward to
-writing a second-order code.
+== Knowing When To Stop
 
-*Erica*:
-Happy dreams!
+*Erica*: I wonder why it overshot.
 
-<b>EXERCISES</b>
+*Carol*: Let me put some debug statements in there, for now, just to
+see what the code thinks it is doing, toward the end.  Right at the
+beginning of the loop, after the +while+ line, I'll ask for the two
+time values to be printed out, the running time +t+ and the end time
+<tt>t_end</tt>, in file <tt>euler_energy_try5.rb</tt>:
 
-<b>Ex. 3.1:</b>
-In a first-order algorithm, the error in position after one time
-step is quadratic in the size of the time step.  Yet Erica has stated that
-a first-order algorithm produces errors that are first-order in the size
-of the time step.  There seems to be a contradiction here.  What is going on?
+ :inccode: .euler_energy_try5.rb-1
 
-Hint: make a distinction between the local error produced after a
-single time step, and the global error that builds up after taking
-however many time steps are needed to cover a fixed interval in time,
-say from <tex>$t=0$</tex> to <tex>$t=1$</tex>.
+Here we go:
 
-Using the same reasoning, convince yourself of the fact that an algorithm
-of order _k_ is accurate to that order _k_ per time step (i.e. has errors
-that are proportional to <tex>$(\Delta t)^{k+1}$</tex> per time step), and
-yet shows global errors for a fixed time interval that are of order _k_
-(proportional to <tex>$(\Delta t)^k$</tex>).
+ :commandinputoutput: ruby euler_energy_try5.rb > euler_energy_try5.out END
+0.01
+10
+END
+ :commandoutput: tail euler_energy_try5.out
 
-<b>Ex. 3.2:</b>
-convince yourself that the following program,
-<tt>euler_array_inject.rb</tt>:
+*Erica*: Aha!  The problem is roundoff, that explains everything!
+The time variable +t+ is a floating point variable, and instead
+of reaching the exact time 10, after 1,000 steps, it comes ever
+so close, but not quite at the right point.  Therefore, when it
+runs the loop test, it decides that the time has to be incremented
+by another time step, and it then overshoots.
 
- :inccode: .euler_array_inject.rb
+*Carol*: That suggests a simple solution.  How about testing whether
+the time has reached not exactly the end time, but close enough?
+Close enough could mean half a time step.  Let's try!  And I'll be
+bold and call the next file <tt>euler_energy.rb</tt>, in the hope
+we now get it right.  I will write the loop continuation test like
+this:
 
-does the same thing as <tt>forward_euler1.rb</tt>.  Check
-this both by inspecting the logic of the new code, and by running the
-two codes to see whether you get the exact same answers in both cases.
+ :inccode: .euler_energy.rb-1
+
+That should do it:
+
+ :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
+0.01
+10
+END
+ :commandoutput: diff euler_energy_try3.out euler_energy.out
+
+*Dan*: And it did it.  No differences.  Congratulations!
+
+*Carol*: Let me be double sure:
+
+ :commandoutput: tail -1 euler_energy_try3.out
+ :commandoutput: tail -1 euler_energy.out
+
+Good.  So now we have a new tool, allowing us to change two parameters,
+without having to change the source code each time.  Progress!
+
+== Linear Scaling
+
+*Dan*: Now the point of all this was to check whether the energy errors
+in forward Euler scale linearly with the time step size.  Let's try a
+few values.
+
+*Carol*: Sure thing.  And now that we can control both the time step
+and the duration of the integration, let's speed things up a bit, and
+integrate for only 0.1 time unit.  Starting with the previous time step
+we get:
+
+ :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
+0.01
+0.1
+END
+
+Making the time step ten times shorter, we find:
+
+ :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
+0.001
+0.1
+END
+
+And making it yet ten times shorter gives:
+
+ :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
+0.0001
+0.1
+END
+
+*Dan*: Pretty linear, all right.
+
+*Carol*: Let's jump to a hundred times smaller time step, to see whether
+the error still becomes a hundred times smaller:
+
+ :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
+0.000001
+0.1
+END
+
+*Dan*: And so it does.
+
+== Picture Time
+
+*Erica*: I'd like to see how the energy error behaves in time, over a
+few full orbits, and with better accuracy.
+
+*Carol*: Okay, I'll take ten time units again for the total orbit
+integration, and a time step of 0.0001.  Just to remind us of what
+the orbit looked like, I'll plot it again, in fig ref(euler_energy_out).
+
+ :commandinputoutput: ruby euler_energy.rb > euler_energy.out END
+0.0001
+10
+END
+
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_energy_out.ps"
+set size ratio -1
+plot "euler_energy.out" using 1:2
+quit
+END
+
+:figure: euler_energy_out.ps 10cm euler_energy_out
+Trajectory of a more accurate forward Euler integration,
+with <tex>$dt = 0.0001$</tex>.
+
+*Erica*: Ah, yes, that time step was just about short enough to begin
+to see the intended orbit, without too much drift.
+
+*Carol*: And here is how the error grows, as a function of time,
+in fig ref(euler_energy_err).
+
+ :commandinput: gnuplot END
+set term post eps
+set output "euler_energy_err.ps"
+set size ratio -1
+plot "euler_energy.out" using 0:7
+quit
+END
+
+:figure: euler_energy_err.ps 10cm euler_energy_err
+Energy error growth for a more accurate forward Euler integration,
+with <tex>$dt = 0.0001$</tex>.
+
+*Erica*: Even though the orbit behaves a lot better now, it is clear
+that the energy errors are still being generated mostly around
+pericenter passage.  In between those close encounters, the energy is
+very well conserved.  But whenever the two stars swing around each
+other, the energy drifts in a systematic and cumulative way.
+
+*Dan*: Yes, dramatically so!  I can see why people like to use
+individual time steps.  If you use thrown in a few more time steps
+during close encounters, you can get very much more accuracy as a
+return for investing very little extra computer time.
+

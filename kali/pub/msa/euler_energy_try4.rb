@@ -28,12 +28,17 @@ end
 r = [1, 0, 0].to_v
 v = [0, 0.5, 0].to_v
 e0 = energies(r,v).last
+
 t = 0
+t_out = 0
+dt_out = 0.01
 STDERR.print "time step = ?\n"
 dt = gets.to_f
 STDERR.print "final time = ?\n"
 t_end = gets.to_f
+
 print_pos_vel_energy(r,v,e0)
+t_out += dt_out
 print_diagnostics(t,r,v,e0)
 
 while t < t_end
@@ -43,6 +48,9 @@ while t < t_end
   r += v*dt
   v += a*dt
   t += dt
-  print_pos_vel_energy(r,v,e0)
+  if t >= t_out
+    print_pos_vel_energy(r,v,e0)
+    t_out += dt_out
+  end
 end
 print_diagnostics(t,r,v,e0)

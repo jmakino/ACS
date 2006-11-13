@@ -1,12 +1,6 @@
 require "vector.rb"
 include Math
 
-def acc(r)
-  r2 = r*r
-  r3 = r2 * sqrt(r2)
-  -r/r3
-end
-
 def energies(r,v)
   ekin = 0.5*v*v
   epot = -1/sqrt(r*r)
@@ -47,12 +41,13 @@ print_pos_vel_energy(r,v,e0)
 t_out += dt_out
 print_diagnostics(t,r,v,e0)
 
-a = acc(r)
-while t < t_end - 0.5*dt
-  v += 0.5*a*dt
+while t < t_end                                   #1
+  print "t = ", t, " and t_end = ", t_end, "\n"   #1
+  r2 = r*r
+  r3 = r2 * sqrt(r2)
+  a = -r/r3
   r += v*dt
-  a = acc(r)
-  v += 0.5*a*dt
+  v += a*dt
   t += dt
   if t >= t_out
     print_pos_vel_energy(r,v,e0)
