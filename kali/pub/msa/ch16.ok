@@ -23,7 +23,7 @@ the array version, and the vector version:
 
 *Dan*: It seems that using our nifty vector notation, we get a penalty
 in speed of a factor two.  But before jumping to conclusions, can we
-check once more that we are really doing the same calcualations in
+check once more that we are really doing the same calculations in
 all three cases?
 
 *Carol*: Sure, here are the last lines of all three calculations:
