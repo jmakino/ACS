@@ -1,6 +1,6 @@
 = A Matter of Speed
 
-== xxxx
+== Slowdown by a Factor Two
 
 *Dan*: Clean and pretty, sure, but is it fast enough?  Let's compare
 the speed of the old code and the new vector code.  I wonder whether
@@ -9,56 +9,146 @@ all this fancy vector stuff is affecting execution speed.
 *Carol*: We can use the +time+ command, to find out how much time a
 code spends before finishing.  We can redirect the standard output to
 <tt>/dev/null</tt>, literally a null device, effectively a waste
-basket, which is a Unix way of throwing the results away.  That way,
+basket.  This is a Unix way of throwing the ordinary output away, the
+output that appears on the standard output channel.  In that way,
 we are left only with output that appears on the standard error
 channel, such as timing information provided by the +time+ command.
 
-xxx
+Let me run all three forward Euler codes, the original version we wrote,
+the array version, and the vector version:
 
  :commandoutput: time ruby euler.rb > /dev/null
  :commandoutput: time ruby euler_array_each_def.rb > /dev/null
  :commandoutput: time ruby euler_vector.rb > /dev/null
 
-xxx
+*Dan*: It seems that using our nifty vector notation, we get a penalty
+in speed of a factor two.  But before jumping to conclusions, can we
+check once more that we are really doing the same calcualations in
+all three cases?
+
+*Carol*: Sure, here are the last lines of all three calculations:
 
  :commandoutput: ruby euler.rb | tail -1
  :commandoutput: ruby euler_array_each_def.rb | tail -1
  :commandoutput: ruby euler_vector.rb | tail -1
 
-== xxx
+*Dan*: Good!  And now I have another question.  Presumably even the first
+version is slower than an equivalent code written in Fortran or C or C++.
+I would like to know how much slower.
 
- :inccode: euler_100000_steps.C
+== A C Version of Forward Euler
+
+*Carol*: That's a good idea.  Given that our first code, <tt>euler.rb</tt>,
+is rather simple, it should be easy to translate it into C.  And to make
+the time measurement a bit more precise, I'll make the time step a hundred
+times smaller, so that we let the code make a hundred thousand steps.
+
+Finally, we are interested now in execution speed, and for now at
+least we don't worry about the cost of frequent outputs.  After all,
+when we switch to the real N-body problem, for <tex>$N>2$</tex>,
+the total costs will be dominated by inter-particle force calculations,
+not by print statements.
+
+Here is the C version, for 100,000 steps, with only one output at the end,
+in file <tt>euler_100000_steps.c</tt>:
+
+ :inccode: euler_100000_steps.c
+
+Let me compile and run it:
 
  :commandoutput: gcc -o euler_100000_steps euler_100000_steps.c -lm 
  :commandoutput: time euler_100000_steps
 
+*Dan*: Pretty fast indeed!  But you really should compile it with the
+optimizer flag <tt>-O</tt>, to bring out the real speed that C is
+capable off.
+
+*Carol*: Good point!  Here goes:
+
  :commandoutput: gcc -O -o euler_100000_steps euler_100000_steps.c -lm 
  :commandoutput: time euler_100000_steps
 
- :commandoutput: g++ -o euler_100000_steps euler_100000_steps.C
- :commandoutput: time euler_100000_steps
+*Dan*: Even faster.  One and a half times faster, it seems, but
+we can't really be sure, given the limited accuracy of the timing output.
+In any case, the C code really flies!
 
- :commandoutput: g++ -O -o euler_100000_steps euler_100000_steps.C
- :commandoutput: time euler_100000_steps
+*Erica*: Note that the output values differ in the last few significant
+digits.  That must be because optimization causes a different order of
+arithmetic operations, which means that the roundoff errors are different
+too.  Since we are taking a hundred thousand steps, it is perhaps not
+so strange that we are losing several digits in accuracy.
+
+*Dan*: Time to compare these results with the Ruby code.  I have this
+sinking feeling that it will be muuuuuch slower.
+
+== A Simple Ruby Version
+
+*Carol*: You are probably right.  Here is the simplest forward Euler version,
+also with only one output statement at the end, in
+<tt>euler_100000_steps.rb</tt>:
+
+ :inccode: euler_100000_steps.rb
+
+and here is the timing result:
 
  :commandoutput: time ruby euler_100000_steps.rb
 
+*Dan*: A dramatic difference.  As far as we can see here, Ruby is at least
+thirty times slower than C!
+
+*Erica*: That's a bit of a shock.
+
+*Carol*: Yes, I knew that Ruby would be slow, but I didn't expect it to be
+quite that slow.  Well, at least C and Ruby give the same output
+results, apart from the last few digits, which change anyway in C when
+we switch on optimization, as we have seen.  So as far as what it is the
+same between the optimized and unoptimized C results, Ruby produces
+that part exactly.
+
+*Dan*: Let's complete the exercise and make similar versions for arrays
+and vectors.
+
+== A Ruby Array Version
+
+*Carol*: Here is the array version, in <tt>euler_array_100000_steps.rb</tt>:
+
+ :inccode: euler_array_100000_steps.rb
+
+and here is what timing gives:
+
  :commandoutput: time ruby euler_array_100000_steps.rb
+
+*Dan*: So adding arrays let Ruby slow down by a factor two.
+
+== A Ruby Vector Version
+
+*Carol*: And here is the vector version, in
+<tt>euler_vector_100000_steps.rb</tt>:
+
+ :inccode: euler_vector_100000_steps.rb
+
+and here is how slow it runs:
 
  :commandoutput: time ruby euler_vector_100000_steps.rb
 
-== xxx
+*Dan*: And now we're losing yet another factor of three.  That's pretty
+terrible!
+
+== More Timing Precision
+
+*Carol*: Let's try to get a bit more timing precision.  Instead of taking
+a hundred thousands steps, we can take a million steps, to make the timing
+comparison more accurate.  You can guess the names of the files I will
+create: <tt>euler_1000000_steps.c</tt>, <tt>euler_1000000_steps.rb</tt>,
+<tt>euler_array_1000000_steps.rb</tt> and
+<tt>euler_vector_1000000_steps.rb</tt>.
+
+Here are the results:
 
  :commandoutput: gcc -o euler_1000000_steps euler_1000000_steps.c -lm 
  :commandoutput: time euler_1000000_steps
 
  :commandoutput: gcc -O -o euler_1000000_steps euler_1000000_steps.c -lm 
- :commandoutput: time euler_1000000_steps
-
- :commandoutput: g++ -o euler_1000000_steps euler_1000000_steps.C
- :commandoutput: time euler_1000000_steps
-
- :commandoutput: g++ -O -o euler_1000000_steps euler_1000000_steps.C
  :commandoutput: time euler_1000000_steps
 
  :commandoutput: time ruby euler_1000000_steps.rb
@@ -67,3 +157,49 @@ xxx
 
  :commandoutput: time ruby euler_vector_1000000_steps.rb
 
+== Conclusion
+
+*Dan*: This confirms our earlier conclusions.  At least on this particular
+computer, that we are now using to do some speed tests, the unoptimized
+C version takes 50% more time than the optimized version, the simplest
+Ruby version takes about 50 times more time, the Ruby array version about
+100 times more, and finally the Ruby vector version takes more than 250
+times more time than the optimized C version.
+
+*Carol*: But even so, for short calculations, who cares if a run takes ten
+millisecond or a few seconds?  I certainly like the power of Ruby in giving
+us vector classes, and a lot more goodies.  We have barely scratched the
+surface of all the power that Ruby can give us.  You should see what
+we can do when we really start to pass blocks to methods and . . .
+
+*Dan*: . . . and then we will start drinking a lot of coffee, while waiting
+for results when we begin to run 100-body experiments!  Is there no way to
+speed up Ruby calculations?
+
+*Carol*: There is.  By the time we use 100 particles, we are talking about
+<tex>$10^\cross10^2=10^4$</tex> force calculations for every time step.
+This means that the calculation of the mutually accelerations will take
+up almost all of the computer time.  What we can do is write a short C code
+for computing the accelerations.  It is possible to invoke such a C code
+from within a Ruby code.  In that way, we can leave most of the Ruby code
+unchanged, while gaining most of the C speed.
+
+*Erica*: I certainly like the flexibility of a high-level language like Ruby,
+at least for writing a few trial versions of a new code.  In order to play
+around, Ruby is a lot more fun and a lot easier to use than C or C++
+or Fortran.  After we have constructed a general N-body code that we are
+really happy with, we can always translate part of it into C, as Carol just
+suggested.
+
+Or, if really needed to gain speed, we could even translate the
+whole code into C.  Translating a code will always take far less time than
+developing a code in the first place.  And is seems pretty clear to me that
+development will be faster in Ruby.
+
+*Dan*: I'm not so sure about all that.  In any case, we got started now
+with Ruby, so let us see how far we get.  But if and when we really
+get bogged down by the lack of speed of Ruby, we should not hesitate
+to switch to a more efficient language.
+
+*Carol*: Fair enough!  Let's continue our project, and apply our vector
+formalism to second-order integration schemes.
