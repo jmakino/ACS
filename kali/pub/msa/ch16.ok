@@ -177,7 +177,7 @@ for results when we begin to run 100-body experiments!  Is there no way to
 speed up Ruby calculations?
 
 *Carol*: There is.  By the time we use 100 particles, we are talking about
-<tex>$10^\cross10^2=10^4$</tex> force calculations for every time step.
+<tex>$10^2.10^2=10^4$</tex> force calculations for every time step.
 This means that the calculation of the mutually accelerations will take
 up almost all of the computer time.  What we can do is write a short C code
 for computing the accelerations.  It is possible to invoke such a C code
