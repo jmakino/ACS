@@ -1007,7 +1007,7 @@ module Acsdoc
   end
   PSEUDO_INTERACTIVE_LIB_NAME = ".pseudo_interactive.rb"
   def create_pseudo_interactive_library
-    open (  PSEUDO_INTERACTIVE_LIB_NAME, "w+") { |f|
+    open(PSEUDO_INTERACTIVE_LIB_NAME, "w+") { |f|
     f.print <<-END
     alias original_gets gets
         def gets
