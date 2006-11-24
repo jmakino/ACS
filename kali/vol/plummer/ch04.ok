@@ -147,7 +147,7 @@ g(v)dv \, \propto \, \left(-E(r,v)\right)^{7/2}v^2dv
 
 where the energy per unit mass <tex>$E(r,v) = \Phi(r) + \half v^2$</tex>
 can be written in terms of the escape velocity <tex>$v_e$</tex> as
-<tex>$E(r,v) = -v_e^2 + \half v^2$</tex>.  If we introduce the
+<tex>$E(r,v) = -\half v_e^2 + \half v^2$</tex>.  If we introduce the
 variable
 
 :equation:
