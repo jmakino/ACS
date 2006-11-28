@@ -4,13 +4,14 @@
 
 == The ACS Initiative
 
-This book is the first in a series of books titled <i>The Kali
-Code</i>, which in turn is part of a larger series, under the name
-<i>The Art of Computational Science (ACS)</i>.  The aim of the larger
-ACS series is to provide real-world guides to designing, developing,
-using, and extending computational laboratories.  The specific
-<i>Kali</i> series will provide a detailed example of a setting up
-such a lab, for simulations of dense stellar systems in astrophysics.
+This book is the first volume in the <i>Development Series</i> of
+the <i>Maya Open Lab</i> project, for constructing a laboratory
+for simulations of dense stellar systems in astrophysics.  The Maya
+project in turn is the first concrete example of projects developed in
+an initiative titled <i>The Art of Computational Science (ACS)</i>.
+The aim of the larger ACS series, of which the Maya Series will be a
+part, is to provide real-world guides to designing, developing, using,
+and extending computational laboratories.
 
 In many areas of science, computer simulations of complex physical
 systems cannot be performed with off-the-shelf software packages.
@@ -46,9 +47,9 @@ source' project.  In that series we plan to publish what we have
 learned about the ACS approach, insofar as it is generally
 applicable, to any area in computational science.
 
-== The Kali Code
+== The Maya Series, and the Kali Code
 
-The <i>Kali</i> series will contain the first such fully worked-out
+The Maya series will contain the first such fully worked-out
 example of building a computational lab.  The first several volumes in
 this series will focus on one particular topic, the <i>gravitational
 N-body problem</i>, the oldest unsolved problem in mathematical
@@ -75,9 +76,20 @@ present these first few books in sufficient detail for researchers
 from other areas of natural science to be able to follow and
 appreciate the approach to virtual lab building presented here.
 
-The aim of the _Kali_ series is to develop, in many small steps, a
-state-of-the-art code that can be used for research in dense stellar
-systems.  We borrowed the name from the Sanskrit _kali_, meaning
+The aim of the Maya series is to develop, in many small steps, the
+_Kali_ code, a state-of-the-art code that can be used for research in
+dense stellar systems.
+
+The name _Maya_ seemed fitting for two reasons, one connected with
+Middle America and one with India.  The Maya culture was very good at
+accurate calculations in astronomy.  And the word <i>maya</i> in
+Sanskrit has the following meaning, according to the Encyclopedia
+Britannica: ``Maya originally denoted the power of wizardry with which
+a god can make human beings believe in what turns out to be an
+illusion.''  Indeed, a simulation of the heavens is something virtual,
+an illusion of sorts, and a considerable feat of wizardry.
+
+We borrowed the name _Kali_ from the Sanskrit _kali_, meaning
 _dark_, as in the <i>kali yuga</i>, the dark ages we are currently in
 according to Hindu mythology.  The same word also occurs in the name
 _Kali_, for the Hindu Goddess who is depicted as black.  The term _dark_
@@ -88,7 +100,7 @@ expect our dialogues to carry the many less formal and less bright
 shades of meaning, that pervade any craft.
 
 Future volumes in this series are expected to cover wider and wider
-areas of science.  Within the _Kali_ series, we will move from stellar
+areas of science.  Within the Maya series, we will move from stellar
 dynamics, associated with the gravitational N-body problem, first to
 stellar evolution and stellar hydrodynamics.  It is our hope that this
 series will be followed by additional series for other areas of
@@ -99,15 +111,15 @@ like to try it out in their own field of expertise, we will welcome
 them to join this series, and to provide additional volumes discussing
 computational labs for their specialty.
 
-Finally, we will also welcome more educational volumes to appear in
-this series.  The current authors already have some detailed plans in
-that regard, aimed at late high school to early undergraduate levels.
-In those volumes we would like to introduce the basic notions of
-physical forces and resultant motions, the associated mathematical
-description through differential equations, and numerical techniques
-for finding general solutions to those equations.  Here, too, we
-welcome others to join us with similar educational approaches, applied
-to other topics.
+The current volume is the first one in the <i>Development Series</i>
+of the Maya Open Lab project.  In parallel, we are also writing a
+<i>School Series</i> for the same Maya project, as a more educational
+counterpart to, and introduction for, the full Development Series.
+In the School Series, we introduce the basic notions of physical
+forces and resultant motions, the associated mathematical description
+through differential equations, and numerical techniques for finding
+general solutions to those equations.  Here, too, we welcome others to
+join us with similar educational approaches, applied to other topics.
 
 == A Narrative in Dialogue Form
 
@@ -230,12 +242,12 @@ at beginning students who may not yet have much familiarity with
 computer programming and the use of numerical methods.  We have no
 current plans to continue that particular approach, but even so, the
 manuscript will remain a useful guide for N-body calculations, with a
-somewhat different emphasis than the one presented in the _Kali_
+somewhat different emphasis than the one presented in the _Maya_
 series.
 
 For example, MSA provides a very quick shortcut to playing with simple
 algorithms and simple graphics representations of orbit calculations.
-Both topics are treated in far more detail in the _Kali_ series,
+Both topics are treated in far more detail in the _Maya_ series,
 leading to far more robust and general code, but it will also require
 far more patience from the reader to get there.  This is one of the
 reasons that we decided to keep the MSA volume on our web site
@@ -253,7 +265,7 @@ present the current ACS material.  You can also find literature references
 there, under working group 8.
 
 Two specific recent references, close to the material presented in the
-<i>Kali</i> series, are:
+<i>Maya</i> series, are:
 
 * <i>Gravitational N-Body Simulations</i>, by Sverre Aarseth, 2003
   [Cambridge University Press]

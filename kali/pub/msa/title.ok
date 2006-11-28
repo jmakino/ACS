@@ -1,25 +1,24 @@
-
-<b> </b>	
-
-<b> </b>
-
-<tt> </tt>
-	
 <tex>
 
-\title{{\sl \huge The Art of Computational Science}\\
+\title{{${}_{\rm The\ Art\ of\ Computational\ Science}$}\\
+\bigskip
+\bigskip
+\bigskip
+\bigskip
+{\sl The Maya Open Lab}\\
+\bigskip
+{\sl School Series}\\
 \bigskip
 {\sl Volume 1}\\
 \bigskip
 \bigskip
+\bigskip
 \includegraphics[width=3.5cm]{acstitle.ps}\\
 \bigskip
-\bigskip
-\bigskip
-\bf Moving Stars Around
-\bigskip
+\bf \Huge Moving Stars Around
 }
-\author{\bf Piet Hut and Jun Makino}
+\author{\bf Piet Hut and Jun Makino
+\bigskip\bigskip\bigskip}
 
 
 \maketitle
