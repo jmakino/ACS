@@ -115,11 +115,12 @@ The current volume is the first one in the <i>Development Series</i>
 of the Maya Open Lab project.  In parallel, we are also writing a
 <i>School Series</i> for the same Maya project, as a more educational
 counterpart to, and introduction for, the full Development Series.
-In the School Series, we introduce the basic notions of physical
-forces and resultant motions, the associated mathematical description
-through differential equations, and numerical techniques for finding
-general solutions to those equations.  Here, too, we welcome others to
-join us with similar educational approaches, applied to other topics.
+In the School Series, also in dialogue form, we introduce the basic
+notions of physical forces and resultant motions, the associated
+mathematical description through differential equations, and numerical
+techniques for finding general solutions to those equations.  Here,
+too, we welcome others to join us with similar educational approaches,
+applied to other topics.
 
 == A Narrative in Dialogue Form
 
@@ -234,25 +235,6 @@ the conditions of the MIT license:
     IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 
-== A Historical Note
-
-In preparing for our project, we wrote a complete manuscript, titled
-<i>Moving Stars Around MSA)</i>, also in dialogue form, but aimed more
-at beginning students who may not yet have much familiarity with
-computer programming and the use of numerical methods.  We have no
-current plans to continue that particular approach, but even so, the
-manuscript will remain a useful guide for N-body calculations, with a
-somewhat different emphasis than the one presented in the _Maya_
-series.
-
-For example, MSA provides a very quick shortcut to playing with simple
-algorithms and simple graphics representations of orbit calculations.
-Both topics are treated in far more detail in the _Maya_ series,
-leading to far more robust and general code, but it will also require
-far more patience from the reader to get there.  This is one of the
-reasons that we decided to keep the MSA volume on our web site
-indefinitely, as additional introductory material.
-
 == Background
 
 The quickest way to obtain more background information about dense
@@ -273,6 +255,13 @@ Two specific recent references, close to the material presented in the
 * <i>The Gravitational Million-Body Problem</i>, by Douglas Heggie and 
   Piet Hut, 2003 [Cambridge University Press]
 
+== Historical Note
+
+The current version of this introduction was rewritten in December 2006,
+to take into account the name change from Kali series to Maya series,
+and the introduction of a School series in addition to the Development
+series that was started in 2004.
+
 == Acknowledgments
 
 Besides thanking our home institutes, the Institute for Advanced Study
@@ -291,4 +280,4 @@ their comments on the manuscript.
 
 Piet Hut and Jun Makino
 
-Kyoto, June 2004
+Kyoto, June 2004 (revised in December 2006)
