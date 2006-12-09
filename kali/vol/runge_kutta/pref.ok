@@ -7,8 +7,8 @@ in choosing the coefficients in explicit Runge-Kutta integration
 schemes.  We limit ourselves to the simple cases in which there are at
 most two new evaluations of the right-hand side of the differential
 equation per time step.  We start with first-order differential
-equations, to explain the general procedures, but then we specially to
-a special case of the type of second-order differential equation that
+equations, to explain the general procedures, but then we limit
+ourselves to the type of second-order differential equation that
 occurs in classical mechanics, where the forces are dependent only on
 positions, and independent of the velocities.  In that case we derive
 some of the classical <tex>Runge-Kutta-Nystr\"om</tex> schemes, and

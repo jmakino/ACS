@@ -4,15 +4,15 @@
 
 == N-Body Simulations
 
-The current manuscript is Volume 1a in a series of books titled <i>The
-Kali Code</i>, which in turn is part of a larger series, under the
-name <i>The Art of Computational Science (ACS)</i>.  We refer to the
-preface of Volume 0a for more background concerning both series.
-Briefly, the aim of the larger ACS series is to provide real-world
-guides to designing, developing, using, and extending computational
-laboratories.  The specific <i>Kali</i> series will provide a detailed
-example of a setting up such a lab, for simulations of dense stellar
-systems in astrophysics.
+The current manuscript is Volume 1 in the <i>Development Series</i> of
+the <i>Maya Open Lab</i> project, for constructing a laboratory for
+simulations of dense stellar systems in astrophysics.  The Maya
+project in turn is the first concrete example of projects developed in
+an initiative titled <i>The Art of Computational Science (ACS)</i>.
+The aim of the larger ACS series, of which the Maya Series will be a
+part, is to provide real-world guides to designing, developing, using,
+and extending computational laboratories.  We refer to the preface of
+Volume 0 for more background.
 
 This volume presents the first steps on a road toward constructing
 computer codes for N-body simulations.  We start in a very modest way,
@@ -21,9 +21,9 @@ integration scheme we use here is the forward Euler scheme.  While of
 little practical use, its extreme simplicity makes it a useful toy
 algorithm to illustrate some of the general issues involved in
 building N-body codes.  Various additional algorithms, such as the
-leapfrog, and a few Runge-Kutta methods, will be discussed in Volume 1b,
+leapfrog, and a few Runge-Kutta methods, will be discussed in Volume 2,
 also within the context of the 2-body problem.  The general N-body
-problem will be addressed in Volume 2.
+problem will be addressed in Volume 4.
 
 == Ruby
 
