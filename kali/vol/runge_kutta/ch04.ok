@@ -129,7 +129,6 @@ x_1 = x_0 + v_0\tau + \half f_0\tau^2
 Comparing Eqs. (ref(simplex)) and (ref(taylor4fx)), we find:
 
 :equation:
-\label{samplebox}
 \fbox{
 $\displaystyle{
 \alpha_0 = 1
@@ -139,7 +138,6 @@ $\displaystyle{
 and
 
 :equation:
-\label{samplebox}
 \fbox{
 $\displaystyle{
 \alpha_1 = \half
@@ -174,7 +172,6 @@ Comparing Eqs. (ref(simplev)) and (ref(taylor4fv)), we find from the
 terms that are first order in <tex>$\tau$</tex>:
 
 :equation:
-\label{samplebox}
 \fbox{
 $\displaystyle{
 \beta_1 = 1

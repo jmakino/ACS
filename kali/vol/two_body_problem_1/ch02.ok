@@ -358,7 +358,9 @@ session.  Is it possible to put everything in a file, and somehow let
 +irb+ have access to the definitions in that file?
 
 *Bob*: Yes, that can be done.  First we put all the definitions in the
-file <tt>body2.rb</tt>, where <tt>.rb</tt> is the standard ending for
+file
+<web>file:///body2.rb|<tt>body2.rb</tt></web>, where
+<tt>.rb</tt> is the standard ending for
 a file name that contains Ruby code.  I added the <tt>2</tt> here because
 this is our second attempt to define a +Body+ class, and I'm sure
 there will be more.  I'll type it straight into the file, since it's

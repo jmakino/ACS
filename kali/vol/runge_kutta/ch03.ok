@@ -242,7 +242,6 @@ We have no free parameter left, so this leads us to the
 only possible explicit first-order integration scheme
 
 :equation:
-\label{forward}
 \left\{ \begin{array}{lcl}
 \vec s_1 &=& \vec s_0 + \vec k_1\tau  \\
 \phantom{1}&\phantom{1}&\phantom{1} \\
