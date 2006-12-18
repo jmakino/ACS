@@ -1,19 +1,10 @@
 <tex>
 
-\title{{${}_{\rm The\ Art\ of\ Computational\ Science}$}\\
+\title{{\large The Art of Computational Science\\
 \bigskip
+\sl The Maya Open Lab Development Series,\\
+volume 0}\\
 \bigskip
-\bigskip
-\bigskip
-\bigskip
-\bigskip
-\bigskip
-\bigskip
-{\sl The Maya Open Lab}\\
-\bigskip
-{\sl Development Series}\\
-\bigskip
-{\sl volume 0}\\
 \bigskip
 \bigskip
 \bigskip
@@ -26,15 +17,11 @@ Dealing with Dense Stellar Systems
 \bigskip
 }
 \author{\bf Piet Hut and Jun Makino
-\bigskip\bigskip\bigskip\bigskip\bigskip\bigskip\bigskip\bigskip\bigskip}
+\bigskip\bigskip\bigskip\bigskip\bigskip\bigskip
+\bigskip\bigskip\bigskip\bigskip\bigskip\bigskip}
 
 \maketitle
 \thispagestyle{empty}
-\bigskip
-\bigskip
-\bigskip
-\bigskip
-${}.$
 </tex>
 
 :tableofcontents:
