@@ -1,4 +1,11 @@
-= Literature References
+#= Literature References
 
-<i>Literate Programming</i>, by Donald E. Knuth, 1992 [Center for the Study
-of Language and Information - Lecture Notes]
+#<i>Literate Programming</i>, by Donald E. Knuth, 1992 [Center for the Study
+#of Language and Information - Lecture Notes]
+
+<REF>
+
+Knuth, D. E.|1992|Knuth1992|<i>Literate Programming</i>, Center for the Study
+of Language and Information - Lecture Notes
+
+</REF>

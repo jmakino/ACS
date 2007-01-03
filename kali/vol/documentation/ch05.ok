@@ -754,6 +754,43 @@ comments and not further processed.
 
 # Sample comments (not shown in the processed documents)
 
+== References
+
+As in latex with natbib style file, one can make two types of
+citetation in the text, such as
+
+   < citet >MakinoHut2006</ citet>
+   < citep >MakinoHut2006</ citep>
+
+(without whitespaces). Actual reference entries should have the form:
+
+  < REF >
+
+  Aarseth, S. J. | 1963 |Aarseth1963| MNRAS, 126, 223
+
+  Makino, J.; Hut, P. | 2006 |MakinoHut2006| ACS
+
+  Barnes, J. E.; Hut, P. | 1986 |BarnesHut1986|Nature, 324, 446 
+
+  < /REF >
+
+Each of the reference entries consists of four fields, separated by
+"|".  One entry can consist of multiple lines, since the separator
+between reference entries are two consective newlines.
+
+The first field of a reference entry is the list of authors. Authors
+must be separated by ";", and the familiy name, with single "," at the
+end, should appear first.
+
+The second field is the publication year.
+
+The third field is the tag, to be refered in the text.
+
+The 4th fieled is the actual bibiliographic data.
+
+Here is the citettion to Knuth: <citet>Knuth1992</citet>.
+
+
 == Examples.
 
 All of the functionalities described in this document is used in this
@@ -778,7 +815,6 @@ is included after \begin{document}.
 
 = Wish lists
 
-* citations
 * tables
 
 
