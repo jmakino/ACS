@@ -500,15 +500,40 @@ END
     ostring
   end
 
+  def filename_to_tag(fname)
+    realfilename = nil
+    if fname =~ /(\S+\.rb)\-(\S+)/
+      realfilename = $1
+      tagname = "segment-"+$2
+    end
+    if fname =~ /(\S+\.rb)\+(\S+)/
+      realfilename = $1
+      tagname = $2
+    end
+    if fname =~ /(\S+\.rb)$/
+      realfilename = $1
+      tagname = ""
+    end
+    p realfilename
+    p tagname
+    if realfilename
+      "\n<a class=codetext href=#{realfilename}.html\##{tagname}>"
+    else
+      nil
+    end
+  end
   def process_include(instring)
     ostring=[] 
     while s=instring.shift
       if /^(\s*)\:include\:\s*(\S+)$/  =~ s
         indent = $1
         infile= open($2,"r")
+        tag = filename_to_tag($2)
+        ostring.push tag if tag
 	while ss=infile.gets
 	  ostring.push(indent+ss.chomp)
 	end
+        ostring.push "</a>\n"if tag
 	infile.close
       else
 	ostring.push(s)
@@ -1910,7 +1935,16 @@ END
     oname = Array.new;
     olevel = Array.new;
     classname = "noname"
+    if infile =~ /\.(\w+)$/
+      extension = "."+$1
+    else
+      raise "File name #{infile} has no extention part"
+    end
+    htmloutfilename = File.dirname(infile)+"/."+File.basename(infile) +".html"
+    htmloutfile = open(htmloutfilename, "w+")
+    htmloutfile.print "<pre>\n"
     while s = expand(ifile.gets)
+      htmlprintline = true
       s.gsub!(/([^\t]{8})|([^\t]*)\t/n){[$+].pack("A8")}
       if s.split[0]== "class"
 	classname = s.split[1]
@@ -1930,6 +1964,8 @@ END
 	ofile[method_level] = [open(outfile, "w+"),open(outfilelong, "w+")]
 	olevel[method_level] = s.index("def")
 	method_level += 1
+        htmloutfile.print "<a name=#{method_name}>"
+        htmloutfile.print "<a name=#{method_name}+#{classname}>"
       elsif  s.split[0] == "end"
 	loc = s.index("end")
 	# check if this "end" corresponds to the deepest level "def"
@@ -1945,11 +1981,18 @@ END
 	  end
 	end
       end
+
       for i in 0...method_level do
 	ofile[i].each{|x| x.print s}
       end
+      s.gsub!(@@hashtypes[extension]){"<a name=segment-#{$1}>"}
+      s.gsub!( /^\s*#\s*:segment start:\s*(\S*)\s*\n/){"<a name=segment-#{$1}>"}
+      htmlprintline = false if s =~ /#\s*:segment end:/
+      htmloutfile.print s if htmlprintline
     end
     ifile.close
+    htmloutfile.print "</pre>\n"
+    htmloutfile.close
   end
 
   def prep_c_defs(infile)
@@ -2071,6 +2114,8 @@ PRE {
 body,td,p { font-family: Verodana, Arial, Helvetica, sans-serif; 
        color: #000010;
 }
+
+.codetext{ text-decoration: none; color: #000010; }
 
 .attr-rw { font-size: x-small; color: #444488 }
 
