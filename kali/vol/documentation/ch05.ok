@@ -536,7 +536,24 @@ gives
 
 The "interactive" variant shows the input data at the location of
 corresponding ruby "gets". It works only with a ruby program which
-uses "gets" function to read input from STDIN.
+uses "gets" function to read input from STDIN. Here is one example:
+
+  :commandinputoutputinteractivesave: ruby testinteractive.rb END
+1
+2
+END
+
+This is made with:
+
+   : commandinputoutputinteractivesave : ruby testinteractive.rb END
+   1
+   2
+   END
+
+The file  testinteractive.rb is
+
+ :inccode: testinteractive.rb
+
 
 == Boldface, italic, and typewriter font
 
@@ -795,7 +812,7 @@ Here is the citettion to Knuth: <citet>Knuth1992</citet>.
 
 All of the functionalities described in this document is used in this
 document. So the best place to look at examples is the
-<web>../introduction.ok|input  file itself</web>.
+<web>ch05.ok|input  file itself</web>.
 
 
 = Initialization file
