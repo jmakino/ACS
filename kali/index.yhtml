@@ -1,3 +1,11 @@
+<!-- 
+     @#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%
+     If you see these lines at the top of a xxx.html file, this means that
+     the file is generated automatically from an xxx.yaml file.  Therefore,
+     do NOT make any changes to the xxx.html file; only to the xxx.yaml file.
+     @#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%@#$%
+-->
+
 <%
 require 'pathname'
 current = Pathname.new(".").realpath

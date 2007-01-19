@@ -108,7 +108,7 @@ of particles with masses <tex>$m_i$</tex> and total mass _M_, the definition
 is:
 
 :equation:
-{M\over r_V} \, = \, \sum_i\sum_{j\atop j\neq i}{m_im_j\over |\br_i -\br_j|}
+{M^2\over r_V} \, = \, \sum_i\sum_{j\atop j\neq i}{m_im_j\over |\br_i -\br_j|}
 
 and of course, we recognize that this is the potential energy of an N-body
 system, for <tex>$G=1$</tex>, apart from a factor of two, because we
@@ -117,14 +117,14 @@ an N-body system as:
 
 :equation:
 E_{pot} \, = \, -\,G\sum_{i<j}{m_im_j\over |\br_i -\br_j|}
-  \, = \, - \, \half {GM\over r_V}
+  \, = \, - \, \half {GM^2\over r_V}
 
 *Bob*: And now we can use the virial theorem, which tells us that
 the magnitude of the total energy is half that of the potential energy,
 to write:
 
 :equation:
-E_{tot} \, = \, \half E_{pot} \, =\, -\, {1 \over 4}{GM\over r_V}
+E_{tot} \, = \, \half E_{pot} \, =\, -\, {1 \over 4}{GM^2\over r_V}
 
 and with our previous choice of <tex>$G=M=1$</tex>, we get:
 
