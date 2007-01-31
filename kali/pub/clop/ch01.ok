@@ -1,0 +1,98 @@
+= Programming with Unit Tests
+
+== Introduction to Unit Testing
+
+*Gloria*: Alright, let's get down to business!  Should we start with the command definition parser, or with the bit that figures out what commands to run?
+
+*Fred*: I think we should slow down a bit and start writing the tests first.
+
+*Gloria*: Writing the tests..?  Aren't we just going to do what we did before and run a variety of different options once the program is written?
+
+*Fred*: We could do that, but then we would quickly forget what tests we had run, and we might break something important later on when we add a new feature.  I have been reading quite a bit lately about using +unit tests+ and +test-first programming+ to mitigate those problems.
+
+*Gloria*: "Test-first programming" sounds silly.  How can you test something that hasn't been created yet?
+
+*Fred*: Well, the idea is to always write a simple, automated test that fails before writing a single new line of code.  You then write code and run it frequently until the test passes.
+
+*Gloria*: That sounds like too much extra work.
+
+*Fred*: I think so too, but many people in the "Agile" programming community claim that the presence of the tests actually makes large projects move faster.
+
+*Gloria*: Well, why is it that you suddenly want to try this out now?  If you're so keen on these tests, why didn't you want them for the 2-body code?
+
+*Fred*: I think that's a result of the nature of the problem.  Unit tests had their birth in commercial software development shops, and they are well-suited to situations in which the correct results of a test are known in advance.  With the 2-body code, we could, potentially, have created unit tests, because we could analytically calculate the orbit.  However, in the general case of the N-body codes, we won't be able to tell what the right answer looks like!  So I don't think unit tests would work very well in that case. 
+
+Here, with the command line problem, we have a case where the answers are obvious: the commands should be loaded and parsed properly, and "properly" is easily defined.  So let's try it out for this piece of the code, and then we can decide  later on if it's still of value.
+
+*Gloria*: Ok, we can try it out this once.  I must admit, though, that I'm still very skeptical.
+
+== The First Unit Test
+
+*Fred*: Let's start with the parsing of the string that defines the options available to the user.  The reason I want to start here is because having this piece running will make the running of the options easier to test later on.  Also, I think they are both relatively small, so it shouldn't matter too much where we start.
+
+I am first going to write out a test that we know will fail:
+
+# :incode:	ClopsTests
+
+You'll notice a few things about this that are new.  First of all, the line <tt>require 'test/unit'</tt> loads Ruby's standard unit testing framework.
+
+*Gloria*: Why would you want that?
+
+*Fred*: It gives us result reporting, makes the tests execute automatically, and, best of all, gives us +assertions+.
+
+*Gloria*: You mean like the assertion that this test-first stuff is faster?
+
+*Fred*: No, not quite like that one.  An assertion is simply a statement that must be true if the program is functioning as expected.  If there are bugs, an assertion becomes false and the unit test framework records the failure and stops the test.
+
+In this test case, the assertion is that the value of <tt>SIMPLE_DEFINITION</tt> matches the value of the <tt>option_definition_str</tt> on a Clops object.
+
+*Gloria*: I'm not following you.
+
+*Fred*: Ok, look at the test from the top down.  First of all, we have a constant called <tt>SIMPLE_DEFINITION</tt> that contains the simplest possible option definition that isn't blank.
+
+*Gloria*: How do you know it's a constant?
+
+*Fred*: Its name is all in capital letters.  In Ruby, a constant is just like a variable, with the exception that its name is in ALL CAPS.  If you try to change the value of a constant, Ruby prints out a warning.
+
+*Gloria*:  I see...  So you would use constants for values that never change, like the gravitational constant or the value of pi.
+
+*Fred*: Exactly.
+
+*Gloria*:  Ok, I'm starting to follow the flow here.  So when the <tt>test_simple_definition</tt> is run, it creates a new Clops object called <tt>c</tt> and sets the options to the simple definition.
+
+*Fred*: Right.  It then asks the Clops object what its option definition string is, and compares that with what we sent the object initially.
+
+*Gloria*:  Ok.  So the third parameter to <tt>assert_equal</tt> is a message to be displayed when the assertion is false?
+
+*Fred*: You've got it.  Notice that the first parameter to <tt>assert_equal</tt> is the expected value, and the second is the actual.  That's a Ruby convention.  If you get it backwards, the assertion will still work, but the feedback you get when there's a failure will be backwards.
+
+*Gloria*:  Well, this test will fail for sure!  We haven't even defined the Clops class!
+
+*Fred*: Right.  Let's do that now.  Here's a very simple class definiton:
+
+#  :incode:  Clops
+
+When the class is created, it saves the option definition string.  It also provides a method to read out that value later.
+
+*Gloria*: Right, right.  So now you're telling me that writing twice as much code is faster than just typing out this super-simple little class?
+
+*Fred*: I think it will be, on average and over the long run.  As the software gets more and more complex, you start to need many tests to cover it.  By writing the tests one at a time, we ensure that we never forget about an old feature or an old test when we add something new.
+
+*Gloria*: Alright already, let's see this thing through.  How do you run the test?
+
+*Fred*:  Just run the Ruby file directly from the command line.  If Ruby sees no other executable code, then <tt>test/unit</tt> will step in and take over.  Let's try it now:
+
+# :commandinputoutputnoecho: ruby ./clops1.rb
+
+Hey, wait a minute.  The test failed!
+
+*Gloria*:  Aha!  Have a look at <tt>parse_option_definition</tt>.
+
+*Fred*: Oh, silly me.  I forgot the last <tt>_str</tt> bit on the variable name.  Fixed.  Let's try again:
+
+#  :commandinputoutputnoecho: ruby ./clops1a.rb
+
+*Gloria*: Neat.  I think I see how this unit test stuff could come in handy.
+
+*Fred*:  Yeah, me too.  Let's keep up with it for the duration of the Clops module.  We'll see if it pays off at the end.
+

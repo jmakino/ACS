@@ -1,6 +1,6 @@
 SRC =  title.ok  pref.ok  ch01.ok  ch02.ok  ch03.ok  ch04.ok \
        ch05.ok  litt.ok
 
-TARGET = volume2
+TARGET = volume4
 
 include ../etc/Makefile.inc
