@@ -14,6 +14,7 @@ end
 
 
 require 'test/unit'
+#:segment start: clopstests
 class ClopsTests < Test::Unit::TestCase
 
 	SIMPLE_DEFINITION = <<-END
@@ -27,3 +28,4 @@ class ClopsTests < Test::Unit::TestCase
 		assert_equal(SIMPLE_DEFINITION, c.option_definition_str, "The simple defintion string was not saved.")
 	end
 end
+#:segment end:

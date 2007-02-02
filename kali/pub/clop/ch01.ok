@@ -30,6 +30,18 @@ Here, with the command line problem, we have a case where the answers are obviou
 
 *Fred*: Let's start with the parsing of the string that defines the options available to the user.  The reason I want to start here is because having this piece running will make the running of the options easier to test later on.  Also, I think they are both relatively small, so it shouldn't matter too much where we start.
 
+*Piet*: Here is a cameo appearance of me answering your question
+"Is there a feature in acsdoc to display the entire contents of a
+class?  For instance, in my clops1.rb file, I would like to display
+the "ClopsTests" class, but not the "Clops" class."
+
+How about this?
+
+ :inccode: .clops1.rb-clopstests
+
+Back to Fred:
+
+*Fred*:
 I am first going to write out a test that we know will fail:
 
 # :incode:	ClopsTests
