@@ -8,7 +8,7 @@
 
 *Gloria*: Writing the tests..?  Aren't we just going to do what we did before and run a variety of different options once the program is written?
 
-*Fred*: We could do that, but then we would quickly forget what tests we had run, and we might break something important later on when we add a new feature.  I have been reading quite a bit lately about using +unit tests+ and +test-first programming+ to mitigate those problems.
+*Fred*: We could do that, but then we would quickly forget what tests we had run, and we might break something important later on when we add a new feature.  I have been reading quite a bit lately about using _unit tests_ and _test-first programming_ to mitigate those problems.
 
 *Gloria*: "Test-first programming" sounds silly.  How can you test something that hasn't been created yet?
 
@@ -16,7 +16,7 @@
 
 *Gloria*: That sounds like too much extra work.
 
-*Fred*: I think so too, but many people in the "Agile" programming community claim that the presence of the tests actually makes large projects move faster.
+*Fred*: I think so too, but many people in the Agile programming community claim that the presence of the tests actually makes large projects move faster.
 
 *Gloria*: Well, why is it that you suddenly want to try this out now?  If you're so keen on these tests, why didn't you want them for the 2-body code?
 
@@ -30,27 +30,16 @@ Here, with the command line problem, we have a case where the answers are obviou
 
 *Fred*: Let's start with the parsing of the string that defines the options available to the user.  The reason I want to start here is because having this piece running will make the running of the options easier to test later on.  Also, I think they are both relatively small, so it shouldn't matter too much where we start.
 
-*Piet*: Here is a cameo appearance of me answering your question
-"Is there a feature in acsdoc to display the entire contents of a
-class?  For instance, in my clops1.rb file, I would like to display
-the "ClopsTests" class, but not the "Clops" class."
-
-How about this?
-
- :inccode: .clops1.rb-clopstests
-
-Back to Fred:
-
 *Fred*:
 I am first going to write out a test that we know will fail:
 
-# :incode:	ClopsTests
+ :inccode: .clops1.rb-clopstests
 
 You'll notice a few things about this that are new.  First of all, the line <tt>require 'test/unit'</tt> loads Ruby's standard unit testing framework.
 
 *Gloria*: Why would you want that?
 
-*Fred*: It gives us result reporting, makes the tests execute automatically, and, best of all, gives us +assertions+.
+*Fred*: It gives us result reporting, makes the tests execute automatically, and, best of all, gives us _assertions_.
 
 *Gloria*: You mean like the assertion that this test-first stuff is faster?
 
@@ -66,7 +55,7 @@ In this test case, the assertion is that the value of <tt>SIMPLE_DEFINITION</tt>
 
 *Fred*: Its name is all in capital letters.  In Ruby, a constant is just like a variable, with the exception that its name is in ALL CAPS.  If you try to change the value of a constant, Ruby prints out a warning.
 
-*Gloria*:  I see...  So you would use constants for values that never change, like the gravitational constant or the value of pi.
+*Gloria*:  I see...  So you would use constants for values that never change, like the gravitational constant or the value of <tex>$\pi$</tex>.
 
 *Fred*: Exactly.
 
@@ -82,7 +71,7 @@ In this test case, the assertion is that the value of <tt>SIMPLE_DEFINITION</tt>
 
 *Fred*: Right.  Let's do that now.  Here's a very simple class definiton:
 
-#  :incode:  Clops
+ :inccode: .clops1.rb-clops
 
 When the class is created, it saves the option definition string.  It also provides a method to read out that value later.
 
@@ -94,7 +83,7 @@ When the class is created, it saves the option definition string.  It also provi
 
 *Fred*:  Just run the Ruby file directly from the command line.  If Ruby sees no other executable code, then <tt>test/unit</tt> will step in and take over.  Let's try it now:
 
-# :commandinputoutputnoecho: ruby ./clops1.rb
+ :commandoutput: ruby clops1.rb
 
 Hey, wait a minute.  The test failed!
 
@@ -102,7 +91,7 @@ Hey, wait a minute.  The test failed!
 
 *Fred*: Oh, silly me.  I forgot the last <tt>_str</tt> bit on the variable name.  Fixed.  Let's try again:
 
-#  :commandinputoutputnoecho: ruby ./clops1a.rb
+ :commandoutput: ruby clops1a.rb
 
 *Gloria*: Neat.  I think I see how this unit test stuff could come in handy.
 

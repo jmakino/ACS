@@ -1,3 +1,4 @@
+#:segment start: clops
 class Clops
 	def initialize(option_definition_str, argv_array=nil)
 		parse_option_definition(option_definition_str)
@@ -11,7 +12,7 @@ class Clops
 	attr_reader :option_definition_str
 
 end
-
+#:segment end:
 
 require 'test/unit'
 #:segment start: clopstests
