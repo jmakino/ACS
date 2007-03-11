@@ -744,8 +744,17 @@ It should appear as only word in one line.
 
 One can use \<web\> tag to make links to external URL. For example,
 
- \<web>http://www.artcompsci.org|ACS homepage</web>
+ < web >http://www.artcompsci.org|ACS homepage</web>
+(whithout spaces)
 creates a link:  <web>http://www.artcompsci.org|ACS homepage</web>.
+
+If you specify just like  \<web\>name\</web\>, it is assumed same name
+is specified for text and url, like <web>acsdoc.rb</web>, which is
+generated from
+
+ < web >acsdoc.rb< /web >
+(whithout spaces).
+
 
 == Inline image
 
