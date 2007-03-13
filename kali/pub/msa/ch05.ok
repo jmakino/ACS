@@ -606,7 +606,7 @@ By the way, I'd like to see a printout of the position and velocity at the
 start of the run as well, before we enter the loop, so that we get all the
 points, from start to finish.
 
-*Erica*: Fine!  Here it is, our first program, <tt>euler_try.rb</tt>, which
+*Erica*: Fine!  Here it is, our first program, <web>euler_try.rb</web>, which
 is supposed to evolve our two-body problem for ten time units, from
 <tt>t = 0</tt> till <tt>t = 10</tt>:
 
