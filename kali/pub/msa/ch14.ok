@@ -19,7 +19,7 @@ multiplication and addition as well.  And I'm sure there are a few more
 things to consider, before we can claim to have a complete +Vector+ class.
 But I, too, am encouraged with the good start we've made!
 
-I'll open a new file <tt>vector_try_add_sub.rb</tt>.  First thing to add,
+I'll open a new file <web>vector_try_add_sub.rb</web>.  First thing to add,
 after addition, is subtraction.  That part is easy:
 
  :inccode: .vector_try_add_sub.rb
@@ -104,9 +104,9 @@ unary minus?
 
 *Carol*: That symbol is only used when you redefine the symbol.
 
-Here, let me try it out, in a new file <tt>vector_try_unary.rb</tt>.  And I may
-as well start with the unary plus, since that seems the simplest of the
-two unary operations.
+Here, let me try it out, in a new file <web>vector_try_unary.rb</web>.
+And I may as well start with the unary plus, since that seems the
+simplest of the two unary operations.
 
 We have just redefined the binary plus as follows:
 
@@ -307,7 +307,7 @@ bits and pieces of the class definition can live in different places.
 Nothing to worry about!
 
 It should be simple.  Let me copy our previous
-<tt>vector_try_unary.rb</tt> into a new file <tt>vector_try.rb</tt>.
+<web>vector_try_unary.rb</web> into a new file <web>vector_try.rb</web>.
 Hopefully we're getting closer to the real thing!
 
 Here is my first attempt to augment the +Array+ class:
@@ -384,11 +384,11 @@ END
 *Erica*: So now we can go back and fix the bug in our unary minus.
 
 *Carol*: Ah, yes, that's how we got started.  Okay, we had in
-file <tt>vector_try_unary.rb</tt>:
+file <web>vector_try_unary.rb</web>:
 
  :inccode: .vector_try_unary.rb-unmin
 
-In our new file, <tt>vector_try.rb</tt>, I can now make this:
+In our new file, <web>vector_try.rb</web>, I can now make this:
 
  :inccode: .vector_try.rb-unmin
 

@@ -225,7 +225,7 @@ conserved reasonably well in our calculations.
 == Diagnostics
 
 *Carol*: Let us start with our simplest vector code,
-<tt>euler_vector.rb</tt>, and let us add some nice diagnostics.
+<web>euler_vector.rb</web>, and let us add some nice diagnostics.
 We definitely want to check to what extent the total energy is
 constant, but I would also like to see how the kinetic and potential
 energy are varying.
@@ -380,7 +380,7 @@ and we have quantified that by looking at the final energy error, at
 the end of our orbit integration.  But it would be a lot more instructive
 to see how the energy error is growing in time.
 
-*Carol*: Easily done: in file <tt>euler_energy_try2.rb</tt>, I will modify
+*Carol*: Easily done: in file <web>euler_energy_try2.rb</web>, I will modify
 our <tt>print_pos_vel</tt> method to include the total energy value as well,
 calling it <tt>print_pos_vel_energy</tt> instead:
 
@@ -400,7 +400,7 @@ We don't really need that much precision in the positions and velocities,
 if we just want to make a pretty picture.  Four or five digits should be
 more than enough.
 
-*Carol*: That's easy to fix.  In file <tt>euler_energy_try3.rb</tt>
+*Carol*: That's easy to fix.  In file <web>euler_energy_try3.rb</web>
 I will change the frequent output method as follows:
 
  :inccode: .euler_energy_try3.rb-1

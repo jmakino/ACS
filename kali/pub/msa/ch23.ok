@@ -122,7 +122,7 @@ cancellation, for free.  Who knows?
 == Leapfrog: Peaks on Top of a Flat Valley
 
 *Carol*: Okay.  First I'll show the orbit, in
-fig ref(leapfrog_energy_out).
+fig ref(leapfrog_energy_out), using <web>leapfrog_energy.rb</web>:
 
  :commandinputoutputinteractive: ruby leapfrog_energy.rb > leapfrog_energy.out END
 0.001

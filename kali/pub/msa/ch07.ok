@@ -71,7 +71,7 @@ the bug is, in the _y_ component of the new velocity, which should be
 
 Ooops!!  A typo.  How silly.  No wonder we got the wrong answer for
 <tex>$a_y$</tex>.  Let me correct it right away, and write it out as
-a new file, <tt>euler_circular_step.rb</tt>:
+a new file, <web>euler_circular_step.rb</web>:
 
  :inccode: .euler_circular_step.rb-1
 
@@ -97,11 +97,11 @@ else.
 *Dan*: Oh, Carol, you're too pessimistic.  I bet everything will be
 fine now!
 
-*Erica*: We'll see.  Here is the same typo <tt>euler_try.rb</tt>:
+*Erica*: We'll see.  Here is the same typo in <web>euler_try.rb</web>:
 
  :inccode: .euler_try.rb-5
 
-and here is the corrected program, which I will call <tt>euler.rb</tt>
+and here is the corrected program, which I will call <web>euler.rb</web>
 in the spirit of Dan's optimism:
 
  :inccode: .euler.rb-1
@@ -208,7 +208,7 @@ completely understand.
 == More Integration Steps
 
 *Carol*: So were are we.  To sum up: we have verified that our
-simple one-step code <tt>euler_circular_step.rb</tt> does exactly what
+simple one-step code <web>euler_circular_step.rb</web> does exactly what
 we want it to do.  And we have validated that what we want it to do is
 reasonable: for smaller and smaller time steps the orbit should stay
 closer and closer to the true circular orbit.
@@ -231,7 +231,7 @@ to the very first code we wrote, but now for a circular orbit, and for
 an integration of one time unit, which will give us a hundred steps.
 
 *Carol*: Let's keep the old code, for comparison.  Here is the new one.
-I will call it <tt>euler_circular_100_steps.rb</tt>:
+I will call it <web>euler_circular_100_steps.rb</web>:
 
  :inccode: .euler_circular_100_steps.rb
 
@@ -272,7 +272,7 @@ our original choice of 1,000 steps.
 
 *Carol*: In that case, let's make yet another new file . . . Dan,
 close your eyes, I'm adding one more
-character to the file name . . . <tt>euler_circular_1000_steps.rb</tt>:
+character to the file name . . . <web>euler_circular_1000_steps.rb</web>:
 
  :inccode: .euler_circular_1000_steps.rb
 

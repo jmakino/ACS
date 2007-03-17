@@ -10,8 +10,8 @@ smaller, the energy error should become one hundred times smaller.
 *Carol*: That's the expectation, yes.  But first I have to write the
 codes.  I will start with the modified Euler algorithm, for which we
 had written the vector version of the code in file
-<tt>euler_modified_vector.rb</tt>.  I will open a new file
-<tt>euler_modified_energy.rb</tt>, and add the same type of energy
+<web>euler_modified_vector.rb</web>.  I will open a new file
+<web>euler_modified_energy.rb</web>, and add the same type of energy
 output statements and diagnostics as we have done for the forward
 Euler case.  Here we go:
 
@@ -82,8 +82,8 @@ END
 
 *Carol*: Finally, time to let the leapfrog algorithm tell us whether
 it is really a second-order algorithm as well.  I will start with
-<tt>leapfrog.rb</tt>.  I will open a new file
-<tt>leapfrog_energy.rb</tt>, and again I will add the same type
+<web>leapfrog.rb</web>.  I will open a new file
+<web>leapfrog_energy.rb</web>, and again I will add the same type
 of energy output statements and diagnostics.  Here it is:
 
  :inccode: .leapfrog_energy.rb

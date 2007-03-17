@@ -29,11 +29,11 @@ well.  I'd like to test that, by changing the line:
 
  :inccode: .euler_circular_1000_steps.rb-2
 
-in <tt>euler_circular_1000_steps.rb</tt> to:
+in <web>euler_circular_1000_steps.rb</web> to:
 
  :inccode: .euler_circular_10000_steps.rb-2
 
-and put that code in <tt>euler_circular_10000_steps.rb</tt>, to indicate that
+and put that code in <web>euler_circular_10000_steps.rb</web>, to indicate that
 we are now taking 1,000 steps per time unit, 10,000 time steps in total.
 Time to run it!
 
@@ -54,11 +54,11 @@ many steps!
 
  :inccode: .euler_circular_10000_steps.rb-3
 
-in <tt>euler_circular_10000_steps.rb</tt> to:
+in <web>euler_circular_10000_steps.rb</web> to:
 
  :inccode: .euler_circular_10000_steps_ok.rb-3
 
-and call that file <tt>euler_circular_10000_steps_ok.rb</tt>.
+and call that file <web>euler_circular_10000_steps_ok.rb</web>.
 
 *Dan*: Your file names are growing again without bounds, and I don't
 like having so very many different files lying around.
@@ -112,7 +112,7 @@ Let's go back to the elliptic case, the one we started with, remember?
 == Reasons for Failure
 
 *Carol*: Sure, I remember that.  All we have to do is to take
-the file <tt>euler_circular.rb</tt> and make the initial velocity half
+the file <web>euler_circular.rb</web> and make the initial velocity half
 as large, by changing the line:
 
   :inccode: .euler_circular_10000_steps.rb-4
@@ -121,7 +121,7 @@ into:
 
   :inccode: .euler.rb-4
 
-*Dan*: But that will be the same file as we started with, <tt>euler.rb</tt>.
+*Dan*: But that will be the same file as we started with, <web>euler.rb</web>.
 
 *Carol*: Ah, yes, of course, I had forgotten already.  And in that case,
 the orbit exploded.
@@ -185,7 +185,7 @@ our problems.
 == Signs of Hope
 
 *Carol*: Here we go, a ten times smaller step size in
-<tt>euler_elliptic_10000_steps.rb</tt>; I'll plot the result in fig.
+<web>euler_elliptic_10000_steps.rb</web>; I'll plot the result in fig.
 ref(euler_elliptic_10000_steps).
 
  :commandoutput: ruby euler_elliptic_10000_steps.rb > euler_elliptic_10000_steps.out

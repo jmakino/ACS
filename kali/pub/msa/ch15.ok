@@ -36,7 +36,7 @@ something tells me that we will be happier using <tt>*</tt> for both.
 
 *Dan*: Certainly I will be happier that way!
 
-*Carol*: Well, how about this?
+*Carol*: Well, how about this, in <web>vector_try.rb</web>:
 
  :inccode: .vector_try.rb-binmul
 
@@ -224,7 +224,7 @@ for the class +Float+, the class of floating point numbers.
 == Augmenting the +Fixnum+ Class
 
 *Carol*: Indeed.  Well, there is no stopping us now to add to the
-behavior of the +Fixnum+ class!  Here we go, in <tt>vector.rb</tt>:
+behavior of the +Fixnum+ class!  Here we go, in <web>vector.rb</web>:
 
  :inccode: .vector.rb-fixnum
 
@@ -311,17 +311,17 @@ In fact, it is shorter than I thought, for all the things it does:
 
 *Dan*: The whole point of this long exercise was to make our codes
 more readable.  Here is one of the array versions we made of our first
-code, the forward Euler version, in <tt>euler_array_each_def.rb</tt>:
+code, the forward Euler version, in <web>euler_array_each_def.rb</web>:
 
  :inccode: .euler_array_each_def.rb
 
 What would that look like in vector form?
 
-*Carol*: To start with, we'll have to +require+ the file <tt>vector.rb</tt>.
+*Carol*: To start with, we'll have to +require+ the file <web>vector.rb</web>.
 We also have to convert the arrays into vectors, using <tt>.to_v</tt>.
 Then, in the loop, we can use  our vector versions of addition, unary minus,
 multiplication and division.  Let me write it all in file
-<tt>euler_vector.rb</tt>:
+<web>euler_vector.rb</web>:
 
  :inccode: .euler_vector.rb
 

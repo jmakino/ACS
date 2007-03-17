@@ -228,7 +228,7 @@ we can forget about any leaping and frogging, and just move from time
 velocities.
 
 Let me see whether I'm getting the hang of using vectors now.
-I will put it in file <tt>leapfrog_try1.rb</tt>:
+I will put it in file <web>leapfrog_try1.rb</web>:
 
  :inccode: .leapfrog_try1.rb
 
@@ -288,7 +288,7 @@ and place it _before_ the loop.  That way, the length of the computer
 program does not change.  However, inside the loop unnecessary
 calculations are no longer being done.
 
-Here is the new version, in file <tt>leapfrog_try2.rb</tt>:
+Here is the new version, in file <web>leapfrog_try2.rb</web>:
 
  :inccode: .leapfrog_try2.rb
 
@@ -329,7 +329,7 @@ increase should be quite a bit less.  This looks quite reasonable.
 even shorter, with the help of our old friend, the DRY principle.  Look,
 the calculation for the acceleration, before and in the loop, contains
 the exact same three lines.  Those lines really ask to be encapsulated
-in a method.  Let me do that, in file <tt>leapfrog.rb</tt>:
+in a method.  Let me do that, in file <web>leapfrog.rb</web>:
 
  :inccode: .leapfrog.rb
 

@@ -40,8 +40,8 @@ calculations.
 *Carol*: I see.  That makes sense.  I'd like to aks you more about that,
 but before doing so, let's first get the pruning job done, in order to
 produce more sparse output.  I will take our last code, from
-<tt>euler_elliptic_10000_steps.rb</tt>, and call it
-<tt>euler_elliptic_10000_steps_sparse.rb</tt> instead.  Yes, Dan, you
+<web>euler_elliptic_10000_steps.rb</web>, and call it
+<web>euler_elliptic_10000_steps_sparse.rb</web> instead.  Yes, Dan, you
 can later copy it into <tt>ee1s.rb</tt>, if you like.  How to prune
 things?  We have a time step of <tt>dt = 0.001</tt> that is ten times
 smaller than our original choice, and therefore it produces ten times
@@ -123,7 +123,7 @@ time it is one.  We want to print out the results one out of ten times.
 This means that each time we have traversed the loop ten times, we print.
 After the tenth traversal, <tt>i = 9</tt>, since we started with
 <tt>i = 0</tt>.  Here, I'll make the change, and call the file
-<tt>euler_elliptic_10000_steps_sparse_ok.rb</tt>:
+<web>euler_elliptic_10000_steps_sparse_ok.rb</web>:
 
  :inccode: .euler_elliptic_10000_steps_sparse_ok.rb-2
 
@@ -169,15 +169,15 @@ END
 side.
 
 *Carol*: It will be easy now to take shorter and shorter steps.
-Starting from <tt>euler_elliptic_10000_steps_sparse_ok.rb</tt>, 
+Starting from <web>euler_elliptic_10000_steps_sparse_ok.rb</web>, 
 which we used before, I'll make a file
-<tt>euler_elliptic_100000_steps_sparse_ok.rb</tt>,
+<web>euler_elliptic_100000_steps_sparse_ok.rb</web>,
 with only two lines different: the +dt+ value and the +if+ statement:
 
  :inccode: .euler_elliptic_100000_steps_sparse_ok.rb-1
  :inccode: .euler_elliptic_100000_steps_sparse_ok.rb-2
 
-Similarly, in <tt>ruby euler_elliptic_1000000_steps_sparse_ok.rb</tt> we
+Similarly, in <web>ruby euler_elliptic_1000000_steps_sparse_ok.rb</web> we
 have
 
  :inccode: .euler_elliptic_1000000_steps_sparse_ok.rb-1
@@ -278,9 +278,9 @@ the old code still gives the right result, and only then try to change
 coordinate systems.
 
 So far, we have solved the one-body system, using the computer program in
-<tt>euler_elliptic_1000000_steps_sparse_ok.rb</tt>.  I'll copy it to a new file
-<tt>euler_one_body.rb</tt>.  Now I'm going to wrap the print statements
-for the one-body system into a method called <tt>print1</tt>:
+<web>euler_elliptic_1000000_steps_sparse_ok.rb</web>.  I'll copy it to a
+new file <web>euler_one_body.rb</web>.  Now I'm going to wrap the print
+statements for the one-body system into a method called <tt>print1</tt>:
 
  :inccode: .euler_one_body.rb-1
 
@@ -333,8 +333,8 @@ lines in each case?
  :commandoutputsave: ruby euler_one_body.rb | tail -3
 
 *Dan*: I'm happy.  So now you're going to copy the code of
-<tt>euler_one_body.rb</tt> to a new file called
-<tt>euler_two_body.rb</tt> . . . 
+<web>euler_one_body.rb</web> to a new file called
+<web>euler_two_body.rb</web> . . . 
 
 == From One Body to Two Bodies
 

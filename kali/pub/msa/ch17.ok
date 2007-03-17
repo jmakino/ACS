@@ -6,10 +6,10 @@
 to clean up our modified Euler code as well.
 
 *Carol*: That will be an easy translation.  I will start by copying
-the old code from <tt>euler_modified_array.rb</tt> into a new file,
-<tt>euler_modified_vector_try1.rb</tt>.  All we have to do is to translate
+the old code from <web>euler_modified_array.rb</web> into a new file,
+<web>euler_modified_vector_try1.rb</web>.  All we have to do is to translate
 the code from array notation to vector notation.  Same as what we did
-with <tt>euler_vector.rb</tt>.  Here it is:
+with <web>euler_vector.rb</web>.  Here it is:
 
  :inccode: .euler_modified_vector_try1.rb
 
@@ -77,7 +77,7 @@ consistent anyway.  We can then use the variable name <tt>r0</tt>
 instead of <tt>r</tt> for the initial vector, and the scalar value of
 its square will then become <tt>r02</tt>.  So there will be no possible
 confusion anymore!  Here is the new listing, in file
-<tt>euler_modified_vector_try2.rb</tt>:
+<web>euler_modified_vector_try2.rb</web>:
 
  :inccode: .euler_modified_vector_try2.rb
 
@@ -103,7 +103,7 @@ position each time.
 *Erica*: How about a compromise?  We can keep the original variables
 +r+ and +v+, but convert them to <tt>r0</tt> and <tt>v0</tt> at the
 beginning of the loop.  Let me try this, in file
-<tt>euler_modified_vector_try3.rb</tt>:
+<web>euler_modified_vector_try3.rb</web>:
 
  :inccode: .euler_modified_vector_try3.rb
 
@@ -124,7 +124,7 @@ lines around them, are nearly identical!
 == A Method Returning Multiple Values
 
 *Carol*: Right you are!  This calls for a new method.  Here, let me try,
-in file <tt>euler_modified_vector.rb</tt>:
+in file <web>euler_modified_vector.rb</web>:
 
  :inccode: .euler_modified_vector.rb
 
@@ -153,7 +153,7 @@ for position and velocity, and print the results.  Wonderful!
 
 *Erica*: Before we move on, there is something that bothers me, which I
 noticed as soon as we translated the modified Euler scheme into vector
-notion, in <tt>euler_modified_vector_try1.rb</tt>.  I had not noticed
+notion, in <web>euler_modified_vector_try1.rb</web>.  I had not noticed
 any problem when we first wrote the much longer component-based version,
 but when it became so compact, I realized that we are being clumsy.
 
@@ -190,8 +190,8 @@ modified Euler:
 
 Where do you think you can simplify things?
 
-*Erica*: Let me copy that file, <tt>euler_modified_vector_try1.rb</tt>,
-to <tt>euler_modified_vector_try4.rb</tt>, and let me see whether I can
+*Erica*: Let me copy that file, <web>euler_modified_vector_try1.rb</web>,
+to <web>euler_modified_vector_try4.rb</web>, and let me see whether I can
 change the loop, to make it look more like my understanding of the
 original figure, the second one above:
 
@@ -217,7 +217,7 @@ we need more precision, so we take the average of the forward and
 backward Euler values.
 
 *Carol*: On the other hand, the inner loop in our code in
-<tt>euler_modified_vector.rb</tt> was even shorter.  Here it is:
+<web>euler_modified_vector.rb</web> was even shorter.  Here it is:
 
  :inccode: .euler_modified_vector.rb-loop
 

@@ -99,7 +99,7 @@ First attempt at integrating the two-body problem: failure.
 *Erica*: Well, research is like that -- the first time you do something,
 it almost never works.
 
-*Carol*: Good thing you called the program <tt>euler_try.rb</tt>!
+*Carol*: Good thing you called the program <web>euler_try.rb</web>!
 
 *Dan*: It seems as if the system exploded.  Why would the two particles
 fly apart like that?
@@ -506,7 +506,7 @@ I'm with you.
 I mean a <tt>good_sport</tt>.
 
 *Carol*: What do you think of this version
-of <tt>euler_try_circular_step.rb</tt>?
+of <web>euler_try_circular_step.rb</web>?
 
  :inccode: .euler_try_circular_step.rb
 

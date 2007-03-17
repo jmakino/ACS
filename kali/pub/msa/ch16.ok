@@ -38,7 +38,7 @@ I would like to know how much slower.
 
 == A C Version of Forward Euler
 
-*Carol*: That's a good idea.  Given that our first code, <tt>euler.rb</tt>,
+*Carol*: That's a good idea.  Given that our first code, <web>euler.rb</web>,
 is rather simple, it should be easy to translate it into C.  And to make
 the time measurement a bit more precise, I'll make the time step a hundred
 times smaller, so that we let the code make a hundred thousand steps.
@@ -50,7 +50,7 @@ the total costs will be dominated by inter-particle force calculations,
 not by print statements.
 
 Here is the C version, for 100,000 steps, with only one output at the end,
-in file <tt>euler_100000_steps.c</tt>:
+in file <web>euler_100000_steps.c</web>:
 
  :inccode: euler_100000_steps.c
 
@@ -85,7 +85,7 @@ sinking feeling that it will be muuuuuch slower.
 
 *Carol*: You are probably right.  Here is the simplest forward Euler version,
 also with only one output statement at the end, in
-<tt>euler_100000_steps.rb</tt>:
+<web>euler_100000_steps.rb</web>:
 
  :inccode: euler_100000_steps.rb
 
@@ -110,7 +110,7 @@ and vectors.
 
 == A Ruby Array Version
 
-*Carol*: Here is the array version, in <tt>euler_array_100000_steps.rb</tt>:
+*Carol*: Here is the array version, in <web>euler_array_100000_steps.rb</web>:
 
  :inccode: euler_array_100000_steps.rb
 
@@ -123,7 +123,7 @@ and here is what timing gives:
 == A Ruby Vector Version
 
 *Carol*: And here is the vector version, in
-<tt>euler_vector_100000_steps.rb</tt>:
+<web>euler_vector_100000_steps.rb</web>:
 
  :inccode: euler_vector_100000_steps.rb
 
@@ -139,9 +139,9 @@ terrible!
 *Carol*: Let's try to get a bit more timing precision.  Instead of taking
 a hundred thousands steps, we can take a million steps, to make the timing
 comparison more accurate.  You can guess the names of the files I will
-create: <tt>euler_1000000_steps.c</tt>, <tt>euler_1000000_steps.rb</tt>,
-<tt>euler_array_1000000_steps.rb</tt> and
-<tt>euler_vector_1000000_steps.rb</tt>.
+create: <web>euler_1000000_steps.c</web>, <web>euler_1000000_steps.rb</web>,
+<web>euler_array_1000000_steps.rb</web> and
+<web>euler_vector_1000000_steps.rb</web>.
 
 Here are the results:
 

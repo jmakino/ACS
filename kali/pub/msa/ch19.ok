@@ -8,8 +8,8 @@ so far.  Time symmetry is supposed to prevent a long-term drift.  I'd like
 to test that a bit more.
 
 Let me take the modified Euler code, copying it from
-<tt>euler_modified_vector.rb</tt> to
-<tt>euler_modified_long_time.rb</tt>.
+<web>euler_modified_vector.rb</web> to
+<web>euler_modified_long_time.rb</web>.
 I will let the code run ten times longer, by changing the loop defining line
 to:
 
@@ -31,7 +31,7 @@ about introducing command line arguments.
 
 *Carol*: We really would like to specify the number of steps on the command
 line, as an argument.  It would be much better if we could take the program
-<tt>euler_modified_vector.rb</tt> and run it for 10,000 steps, simply by
+<web>euler_modified_vector.rb</web> and run it for 10,000 steps, simply by
 invoking it as
 
  |gravity> ruby euler_modified_vector.rb -n 10000
@@ -45,7 +45,7 @@ to indicate that we want to run for 100 time units.
 
 *Dan*: I would like that much better!  Let's put that on our to-do list.
 But for now, let me finish my long time behavior test.  I'll write
-<tt>leapfrog_long_time.rb</tt>, by modifying <tt>leapfrog.rb</tt>
+<web>leapfrog_long_time.rb</web>, by modifying <web>leapfrog.rb</web>
 in the same way, to take 10,000 steps:
 
  :inccode: .leapfrog_long_time.rb-1
@@ -138,8 +138,8 @@ so that we only get to see the backward trajectory.  If I would
 print everything on top of each other, we probably wouldn't see
 what was going on.
 
-I will call the new code <tt>leapfrog_backward.rb</tt>, which is the
-same as the old code <tt>leapfrog_long_time.rb</tt>, except that I
+I will call the new code <web>leapfrog_backward.rb</web>, which is the
+same as the old code <web>leapfrog_long_time.rb</web>, except that I
 have replaced the original loop by the following two loops:
 
  :inccode: .leapfrog_backward.rb-loops
@@ -187,8 +187,8 @@ I could instead have reversed the direction of the velocity, while
 leaving the time step the same.  That would mean that time would keep
 flowing forward, but the stars would move in the opposite direction,
 from time <tex>$t=100$</tex> to <tex>$t=200$</tex>.  Let me try that
-too, why not, in <tt>leapfrog_onward.rb</tt>.  This code is the same
-as <tt>leapfrog_backward.rb</tt>, with the only difference being the
+too, why not, in <web>leapfrog_onward.rb</web>.  This code is the same
+as <web>leapfrog_backward.rb</web>, with the only difference being the
 one line in between the two loops, which now reads:
 
  :inccode: .leapfrog_onward.rb-1
@@ -218,8 +218,8 @@ introduce a slight time asymmetry.
 the leapfrog, good old modified Euler, is really not time symmetric.
 
 I will do the same as what we did for the leapfrog.  
-I will call the new code <tt>euler_modified_backward.rb</tt>, which is the
-same as the old code <tt>euler_modified_long_time.rb</tt>, except that I
+I will call the new code <web>euler_modified_backward.rb</web>, which is the
+same as the old code <web>euler_modified_long_time.rb</web>, except that I
 have again replaced the original loop by these two loops:
 
  :inccode: .euler_modified_backward.rb-loops

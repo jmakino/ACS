@@ -270,7 +270,7 @@ is calculated just before it is needed in calculating
 == Implementation
 
 *Carol*: Here is the new code.
-I'll call it <tt>euler_modified_10000_steps_sparse.rb</tt>.  Let's
+I'll call it <web>euler_modified_10000_steps_sparse.rb</web>.  Let's
 hope we have properly modified the original Euler:
 
  :inccode: .euler_modified_10000_steps_sparse.rb
@@ -318,7 +318,7 @@ of steps!
 
 *Carol*: Let's try to do even less work, to see how quickly things get bad.
 Here, I'll make the time step that is ten times larger, in the file
-<tt>euler_modified_1000_steps.rb</tt>.  This also makes life a little
+<web>euler_modified_1000_steps.rb</web>.  This also makes life a little
 simpler, because now we no longer have to sample: we can produce one
 output for each step, in order to get our required one thousand outputs:
 
@@ -353,7 +353,7 @@ really second order.  We'd better test it, to make sure.
 
 *Carol*: Good idea.  Here is a third choice of time step, ten times smaller
 than our original choice, in file
-<tt>euler_modified_100000_steps_sparse.rb</tt>:
+<web>euler_modified_100000_steps_sparse.rb</web>:
 
  :inccode: .euler_modified_100000_steps_sparse.rb
 

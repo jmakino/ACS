@@ -8,7 +8,7 @@ do that:
 
  :inccode: .euler_array.rb-1
 
-Let me write the new version in a new file, <tt>euler_array.rb</tt>,
+Let me write the new version in a new file, <web>euler_array.rb</web>,
 in the hope things will be correct now:
 
  :inccode: .euler_array.rb
@@ -50,7 +50,8 @@ There are three methods for the class +Array+ that we can use right away,
 namely <tt>Array#each</tt>, <tt>Array#each_index</tt> and <tt>Array#map</tt>.
 
 I'll explain what they all do in a moment, but it may be easiest to show
-how they work in our forward Euler example:
+how they work in our forward Euler example, in file
+<web>euler_array_each.rb</web>:
 
  :inccode: .euler_array_each.rb
 
@@ -211,7 +212,8 @@ arrays.  It has two arguments, +r+ and +v+, the values of the two arrays
 it should print.
 
 We can write the definition of <tt>print_pos_vel</tt> at the top of the
-file, and then we can invoke that method wherever we need it:
+file, and then we can invoke that method wherever we need it; I'll call
+the file <web>euler_array_each_def.rb</web>:
 
  :inccode: .euler_array_each_def.rb
 
@@ -248,7 +250,7 @@ component +x+, it applies the <tt>@</tt> operator, whatever it is,
 to the arguments +y+ and +x+.
 
 *Carol*: Indeed.  So this will allow me to make the loop part of the code
-a bit shorter:
+a bit shorter, in <web>euler_array_inject1.rb</web>:
 
  :inccode: .euler_array_inject1.rb
 
@@ -295,7 +297,7 @@ statements into one, using a semicolon.  Four little tricks, saving us
 four lines.  I'm impressed!
 
 *Carol*: Ah, but I can do better!  How about this one,
-<tt>euler_array_inject2.rb</tt>?
+<web>euler_array_inject2.rb</web>?
 
  :inccode: .euler_array_inject2.rb
 
@@ -316,7 +318,7 @@ return character <tt>\n</tt> character to the same line in
 the printing method, I have caused an extra two blank spaces
 to appear in the end.  Well, I can get rid of that simply
 by reversing the order, by printing the blank spaces first.
-Here is <tt>euler_array_inject3.rb</tt>:
+Here is <web>euler_array_inject3.rb</web>:
 
  :inccode: .euler_array_inject3.rb
 

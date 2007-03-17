@@ -27,7 +27,7 @@ forced the code to give sparse output, at every interval of
 
 *Dan*: Remind me, what did we do there?
 
-*Carol*: Take file <tt>euler_elliptic_100000_steps_sparse_ok.rb</tt>
+*Carol*: Take file <web>euler_elliptic_100000_steps_sparse_ok.rb</web>
 
 *Dan*: Ah, yes, of course, how can I forget such a name!
 
@@ -60,7 +60,7 @@ Well, that must be about it, yes?
 
 == A New Control Structure
 
-Let me open a file <tt>euler_energy_try4.rb</tt> and type it all in:
+Let me open a file <web>euler_energy_try4.rb</web> and type it all in:
 
  :inccode: .euler_energy_try4.rb
 
@@ -132,7 +132,7 @@ must be right: it looks like the code didn't know how to stop in time.
 see what the code thinks it is doing, toward the end.  Right at the
 beginning of the loop, after the +while+ line, I'll ask for the two
 time values to be printed out, the running time +t+ and the end time
-<tt>t_end</tt>, in file <tt>euler_energy_try5.rb</tt>:
+<tt>t_end</tt>, in file <web>euler_energy_try5.rb</web>:
 
  :inccode: .euler_energy_try5.rb-1
 
@@ -154,7 +154,7 @@ by another time step, and it then overshoots.
 *Carol*: That suggests a simple solution.  How about testing whether
 the time has reached not exactly the end time, but close enough?
 Close enough could mean half a time step.  Let's try!  And I'll be
-bold and call the next file <tt>euler_energy.rb</tt>, in the hope
+bold and call the next file <web>euler_energy.rb</web>, in the hope
 we now get it right.  I will write the loop continuation test like
 this:
 

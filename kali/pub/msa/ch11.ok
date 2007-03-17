@@ -131,11 +131,12 @@ and the length of an array can grow and shrink.
 == Arrays
 
 *Erica*: Before rewriting our modified Euler code, let us start with the
-simplest case, and rewrite our original forward Euler code, <tt>euler.rb</tt>.
+simplest case, and rewrite our original forward Euler code,
+<web>euler.rb</web>.
 
 *Carol*: Here, let me translate that code, line for line, into array notation.
 That way we can make sure that we perform the same calculations.  Here is
-file <tt>euler_array_try.rb</tt>:
+file <web>euler_array_try.rb</web>:
 
  :inccode: .euler_array_try.rb
 

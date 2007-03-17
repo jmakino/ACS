@@ -10,10 +10,10 @@ first cleaning up the modified Euler code . . .
 
 *Carol*: . . . which we haven't done yet, but now we're all set to do so!
 It is just a matter of translating the old file
-<tt>euler_modified_1000_steps.rb</tt>, introducing our array notation,
-just as we did for the code in <tt>euler_array_each_def.rb</tt>.
+<web>euler_modified_1000_steps.rb</web>, introducing our array notation,
+just as we did for the code in <web>euler_array_each_def.rb</web>.
 
-Here it is, in <tt>euler_modified_array.rb</tt>
+Here it is, in <web>euler_modified_array.rb</web>
 
  :inccode: .euler_modified_array.rb
 
@@ -146,7 +146,7 @@ Nothing to worry about!
 
 It should be simple.  From what I've seen so far, I guess that Ruby
 wants us to write something like this, in file
-<tt>array_try_addition1.rb</tt>:
+<web>array_try_addition1.rb</web>:
 
  :inccode: .array_try_addition1.rb
 
@@ -272,7 +272,7 @@ The idea is what is called `overloading operators'.  We can use the
 meaning of <tt>+</tt> for the case of arrays.  This is what I meant
 when I said earlier that in Ruby you can change almost anything.
 I have read about that; let me see whether it works.  I believe the idea
-is to write something like this, in file <tt>array_try_addition2.rb</tt>:
+is to write something like this, in file <web>array_try_addition2.rb</web>:
 
  :inccode: .array_try_addition2.rb
 
@@ -447,8 +447,8 @@ _superclass_ of the +Vector+ class.
 Okay, let me see whether I can redefine the array addition operator,
 so that vectors can be added in the right way.  From what I've seen
 so far, I guess that Ruby wants us to write something like this, in
-file <tt>vector_try_addition2.rb</tt>, to replace
-<tt>array_try_addition2.rb</tt>:
+file <web>vector_try_addition2.rb</web>, to replace
+<web>array_try_addition2.rb</web>:
 
  :inccode: .vector_try_addition2.rb
 
