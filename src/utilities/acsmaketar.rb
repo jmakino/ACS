@@ -179,7 +179,7 @@ unless $webonly
   STDERR.print "svn files finished ..."
   dirlist = sub_directories(".", /.\/not$/)
   dirlist.each{|x| print x,"\n"}
-  doclist = add_files(dirlist, ["v*.ps.gz",  "v*.pdf", ".imgs", "*.html"])
+  doclist = add_files(dirlist, ["v*.ps.gz",  "v*.pdf", ".imgs", "*.html",".*.html", ".*.css"])
   doclist.each{|x| print x,"\n"}
   STDERR.print "doc files finished ..."
   
