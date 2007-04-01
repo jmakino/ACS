@@ -75,7 +75,7 @@ c_0 &=& \dot s_0 \ \ = \ \ f_0''' v_0^3 + 3f_0'' f_0 v_0 +
 (f_0')^2 v_0                                           \nonumber\\ 
 \phantom{1}&\phantom{1}&\phantom{1}                    \nonumber\\
 p_0 &=& \dot c_0 \ \ = \ \ f_0'''' v_0^4 + 6f_0''' f_0 v_0^2 +
-f_0''\left\{3f_0^2 + 2f_0' v_0^2\right\} + (f_0')^2 f_0
+f_0''\left\{3f_0^2 + 5f_0' v_0^2\right\} + (f_0')^2 f_0
 
 The last three lines can be derived in the same way as the second line,
 by fully writing out the differentiations, using the chain rule.  This
