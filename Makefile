@@ -1,4 +1,4 @@
-all:
+wall:
 	$(MAKE) -C ok
 	$(MAKE) -C kali
 	$(MAKE) -C toolbox
