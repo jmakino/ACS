@@ -15,6 +15,9 @@ options_text= <<-END
 
     (c) 2005, Piet Hut, Jun Makino; see ACS at www.artcompsi.org
 
+    example:
+    cat run1.out run2.out | kali #{$0}
+
 
   Short name: 		-r
   Long name:            --positions_only

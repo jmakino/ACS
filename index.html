@@ -51,7 +51,7 @@ How to build a computational lab
 <form method=GET action="http://www.google.com/search">
 <table bgcolor="" width="100%"><tr valign=top>
 <td align="left">
-&#169;  2003-2007 <a href=http://www.ids.ias.edu/~piet/>Piet Hut</a> and
+&#169;  2003-2009 <a href=http://www.ids.ias.edu/~piet/>Piet Hut</a> and
 <a href=http://jun.artcompsci.org>Jun Makino</a>
 </td>
 <td align="right">
@@ -126,8 +126,8 @@ Türkçe
 </td>
 <td align=left>
 <ul>
-<li>2007, March 30: our latest release,
-<a href="rel/index.html#acs131">ACS 1.3.1</a>
+<li>2009, July 13: <a href="http://www.grav-sim.com">Grav-Sim</a>,
+a C++ port of an extended subset of ACS, by Mark Ridler.
 </ul>
 </td>
 <td align=left>
@@ -521,7 +521,8 @@ As an introduction to our Maya Open Lab project, we present
 <ul>
 <li><a href="kali/pub/msa/title.html">Moving Stars Around</a>; we also
 provide a <a href="kali/pub/msa/volume1.pdf">pdf file</a>
-and a <a href="kali/pub/msa/volume1.ps.gz">postscript file</a> (gzipped).
+and a <a href="kali/pub/msa/volume1.ps.gz">postscript file</a> (gzipped);
+see also Rob Knop's <a href="http://www.manybody.org/wiki/index.php/Moving_Stars_Around">wiki version</a>.
 </ul>
 This book can also serve as an introduction to stellar dynamics,
 and as such can be used for self-study, as well as in a class room.
@@ -570,12 +571,20 @@ Here are some papers that give more background and context for the ACS
 initiative and in particular the Maya project:
 
 <ul>
+<li><a href="http://arxiv.org/abs/0712.1655">
+      Virtual Laboratories and Virtual Worlds
+    </a>, in <i>Dynamical Evolution of Dense Stellar Systems</i>,
+      eds. E. Vesperini, M. Giersz and A. Sills (2007).
+<li><a href="http://arXiv.org/abs/0707.4293">
+      Modeling Dense Stellar Systems
+    </a>, <i>Prog. Theor. Phys. Suppl.</i> <b>118</b>, 187-209 (2007).
 <li><a href="http://arXiv.org/abs/astro-ph/0610222">
       Virtual Laboratories
-    </a>
+    </a>, <i>Prog. Theor. Phys. Suppl.</i> <b>164</b>, 38-53 (2007).
 <li><a href="http://arXiv.org/abs/astro-ph/0601232">
       Dense Stellar Systems as Laboratories for Fundamental Physics
-    </a>
+    </a>, to appear in <i>A Life With Stars</i> (2007),
+    eds. L. Kaper, M. van der Klis and R. Wijers [Amsterdam: Elsevier].
 </ul>
 
 <h3>
@@ -586,14 +595,34 @@ Here we list projects that are inspired by, or otherwise related
 to, ACS:
 
 <ul>
+<li><a href="http://arXiv.org/abs/0707.4293">
+      Formation Rate of Binaries in Three-Body Interactions
+    </a>, <i>Mon. Not. Roy. astr. Soc.</i> <b>xxx</b>, xxx-xxx (2007).
+    In this paper we present a gravitational laboratory for modeling a
+    chunk of a homogeneous star distribution, using periodic boundary
+    conditions. The codes used in that paper
+    <a href="etc/fukushige/src.tar.gz">can be found here</a>
 <li><a href="http://www.kof.zcu.cz/st/dis/schwarzmeier/">Galaxy Dynamics
 N-body Simulations</a>, a self-teaching project, created by Jakub Schwarzmeier.
 <li><a href="http://www.longwood.edu/staff/dunningrb/research/vpnbody/">Visual
 Python N-Body</a>, a solar-system dynamics package, created by Rodney Dunning.
 <li><a href="http://www.physics.utah.edu/~jasonu/kaliope/">Kaliope"</a>,
 a gravitational N-body simulator, written by Jason Underdown.
-<li><a href="http://groups.google.com/group/N_body">N-body Simulations
-bulletin board</a>, a forum for N-body simulations, created by Cary Walker.
+<li><a href="http://www.grav-sim.com">Grav-Sim: Gravity Simulation on a Desktop Computer</a>,
+an evolution of the ACS code, by Mark Ridler.<br/>
+The new features include:
+<ul>
+<li>porting to C++</li>
+<li>accelerator plug-in interface</li>
+<li>tree-based accelerator as a faster alternative to brute-force</li>
+<li>choice of precisions (float, double and dd_real)</li>
+<li>batch processing for improved performance</li>
+<li>transactional time-steps for improved accuracy</li>
+<li>parallel processing via OpenMP</li>
+<li>GLUT-based viewer that updates as you watch</li>
+</ul>
+<li><a href="http://www.manybody.org/wiki/index.php/StarryOrbits">StarryOrbits</a>,
+an N-body visualization project, created by Dave Wilson
 </ul>
 
 <h3>
@@ -645,4 +674,3 @@ was designed by
 </BODY>
 
 </html>
-

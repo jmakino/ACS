@@ -115,7 +115,7 @@ c = parse_command_line(options_text)
 times = []
 run_seed = c.seed
 c.n_runs.times do
-  t = `kali mkplummer.rb -n #{c.n} -s #{run_seed} --verbosity #{c.run_verbosity} | kali acs2sim | nbody_sh1 -t #{c.max_run_time} | kali sim2acs.rb | kali report_binaries.rb -x #{c.max_semi_major_axis} | kali test2a.rb --verbosity 0`.chomp
+  t = `kali mkplummer.rb -n #{c.n} -s #{run_seed} --verbosity #{c.run_verbosity} | kali acs2sim | kali nbody_sh1 -t #{c.max_run_time} | kali sim2acs.rb | kali report_binaries.rb -x #{c.max_semi_major_axis} | kali test2a.rb --verbosity 0`.chomp
   if t.size == 0
     t = c.max_run_time.to_s 
     STDERR.print "passed time limit\n"

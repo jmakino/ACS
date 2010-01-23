@@ -1,6 +1,7 @@
 #
 # acsmaketar.rb
 #
+# version 2007/12/18
 # version 2006/1/14
 # version 2005/1/29
 #
@@ -71,7 +72,8 @@ p $releasename
 #
 # Information on where to install the web pages
 # 
-installhost="grape.astron.s.u-tokyo.ac.jp"
+#installhost="grape.astron.s.u-tokyo.ac.jp"
+#installhost="grape.mtk.nao.ac.jp"
 installuname="acs"
 installdir="WWW/artcompsci"
 $toplevelname="acs/"

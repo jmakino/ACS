@@ -1,3 +1,40 @@
 = Introduction
 
-== xxx
+== preliminary summary
+
+In <web>world6.rb</web> we present an individual time step code,
+with an option to use block time steps, and another option to
+perform the block time steps in a time reversible way.
+
+Time symmetric block time step algorithms were first introduced in
+<web>http://arXiv.org/abs/astro-ph/0604371|Time-Symmetric Block
+Time-Step Algorithm for N-Body Simulations</web>, by Makino, J., Hut,
+P., Kaplan, M. &amp; Saygin, H., 2006, <i> New Astronomy</i>
+<b>12</b>, 124-133.  We have extended their procedure, presented in
+their paper only for the leapfrog algorithm, to a general approach
+that is applicable to all symmetric integration schemes (symmetric
+for constant time steps).
+
+For example, the leapfrog integration scheme is explicitly symmetric
+in time for constant time steps.  It was show in
+<web>http://adsbit.harvard.edu/cgi-bin/nph-iarticle_query?bibcode=1995ApJ...443L..93H|Building
+a Better Leapfrog</web>, by Hut, P., Makino, J. &amp; McMillan, S.,
+1995, <I>Astrophys. J. Lett.</I> <B>443</B>, L93-L96, how to use
+an iteration scheme to construct a time-symmetric version of the
+leapfrog, even for adaptive time steps, with step length changing in
+time, but still using the same shared time step for all particles, at
+any given point in time.  The paper by Makino et al, quoted above,
+extended that analysis to an individual time step scheme, based on
+block time steps, where each time step length is a fraction of the
+fundamental time step length, multiplied by a negative power of two.
+
+In <web>world6.rb</web> we offer a code that combines block time steps
+and time reversability not only for the leapfrog, but for a variety of
+other schemes, including the standard fourth-order Hermite scheme, as
+well as a sixth-order Hermite scheme.  Currently, the fourth-order
+Hermite scheme is explicitly time symmetric, and passes the time
+reversability test (integrating forwards, and then backwards for the
+same duration), reaching the starting point to within machine accuracy.
+The sixth-order Hermite does not come that close, probably because our
+interpolation scheme is not quite fully symmetric.
+

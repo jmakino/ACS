@@ -830,6 +830,7 @@ module Acsdoc
   ]
   
 
+  @@additional_htmlheaders = ""
   def wordmarkup(instr)
     @@wordreplace.each do |x| instr.gsub!(x[0]) do |word|
 	$1 + x[1]+ " " + $2 +x[2] + $3
@@ -2092,6 +2093,7 @@ END
 <html>
 <head>
   <title> #{name}</title>
+  #{@@additional_htmlheaders}
   <link rel=StyleSheet href="#{@@stylefilename}" type="text/css" media="screen" />
 </head>
 
