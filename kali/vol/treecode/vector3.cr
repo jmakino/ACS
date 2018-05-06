@@ -29,7 +29,6 @@ struct Vector
       self
   end
 
-
   def *(a : Vector)
     # inner product
     @x*a.x+ @y*a.y+ @z*a.z
@@ -49,20 +48,12 @@ struct Vector
                @z*other.x - @x*other.z,
                @x*other.y - @y*other.x)
   end
-  def join(s)
-    [@x, @y, @z].join(s)
-  end
-  def each(&block)
-    [@x, @y, @z].each(&block)
-  end
-  def each
-    [@x, @y, @z].each
-  end
   def to_a
     [@x, @y, @z]
   end
-  def to_s
-    self.to_a.to_s
+
+  macro method_missing(call)
+    to_a.{{call}}
   end
 end
 

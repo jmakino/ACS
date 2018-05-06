@@ -1,12 +1,8 @@
-def myprint(a : Int32)
-  p a
-end
-def myprint(a : Float)
-  p a
-end
-def myprint(a : String)
-  p a
-end
-a=[12345, 0.1, "This is string"]
+require "./vector3.cr"
+a=Vector.new(1.0,2.0,3.9)
+p a.index(2.0)
+a.each_index{|i| p i}
 
-a.each{|i| myprint(i)}
+
+
+
