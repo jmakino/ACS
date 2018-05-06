@@ -124,7 +124,7 @@ class NBody
   end
 
   def get_acc
-    @body.each{|b| b.acc = b.pos*0}
+    @body.each{|b|b.acc = b.pos*0}
     i = 0
     while (i < @body.size) 
       j = i+1
@@ -139,6 +139,7 @@ class NBody
   def get_tree_acc
     maketree
     @rootnode.center_of_mass
+#    @rootnode.pp(0)
     @body.each{|b| b.acc = @rootnode.get_node_acc(b, @tol, @eps)}
   end
 
@@ -444,6 +445,7 @@ include Math
 
 nb = NBody.new
 nb.read
+#p nb
 nb.evolve($tol, $eps, $dt, $dt_dia, $dt_out, $dt_end, $init_out, $x_flag)
 
 

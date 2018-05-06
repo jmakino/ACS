@@ -1,5 +1,5 @@
 #require "./clop.cr"
-require "./vector.cr"
+require "./vector3.cr"
 
 
 def get_self_other_acc(myself, other, eps)
@@ -90,8 +90,8 @@ end
 
   def write
     printf("%22.15e", @mass)
-    @pos.each do |x| printf("%23.15e", x) end
-    @vel.each do |x| printf("%23.15e", x) end
+    @pos.to_a.each do |x| printf("%23.15e", x) end
+    @vel.to_a.each do |x| printf("%23.15e", x) end
     print "\n"
   end
 
@@ -278,7 +278,7 @@ EOF
   end
 
   def makerootnode : Node
-    r = @body.reduce(0){|oldmax, b| [oldmax, b.pos.map{|x| x.abs}.max].max}
+    r = @body.reduce(0){|oldmax, b| [oldmax, b.pos.to_a.map{|x| x.abs}.max].max}
     s = 1.0
     while r > s
         s *= 2
@@ -320,9 +320,11 @@ end
 
   def octant(pos)
     result = 0
-    pos.each_index do |i| 
+    p=pos.to_a
+    c=@center.to_a
+    p.each_index do |i| 
       result *= 2
-      result += 1 if pos[i] > @center[i]
+      result += 1 if p[i] > c[i]
     end
     result
   end
@@ -413,7 +415,7 @@ nb = NBody.new
 nb.read
 #nb.evolve(c.tol, c.eps, c.dt, c.dt_dia, c.dt_out, c.dt_end, c.init_out, c.x_flag)
 
-nb.evolve(0.5, 0.05, 0.015625,0.5,0.5,0.5, false, true)
+nb.evolve(0.5, 0.05, 0.015625,0.5,5.0,5.0, false, false)
 
 
 

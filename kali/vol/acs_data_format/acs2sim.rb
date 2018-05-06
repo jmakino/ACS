@@ -6,12 +6,12 @@ class Body
 
   def simple_print(precision, no_exp_flag)
     if no_exp_flag
-      printf("%#{precision+8}.#{precision}f\n", @mass)
-      @pos.each{|x| printf("%#{precision+8}.#{precision}f", x)}; print "\n"
+      printf("%#{precision+8}.#{precision}f ", @mass)
+      @pos.each{|x| printf("%#{precision+8}.#{precision}f", x)}; print " "
       @vel.each{|x| printf("%#{precision+8}.#{precision}f", x)}; print "\n"
     else
-      printf("%#{precision+8}.#{precision}e\n", @mass)
-      @pos.each{|x| printf("%#{precision+8}.#{precision}e", x)}; print "\n"
+      printf("%#{precision+8}.#{precision}e ", @mass)
+      @pos.each{|x| printf("%#{precision+8}.#{precision}e", x)}; print " "
       @vel.each{|x| printf("%#{precision+8}.#{precision}e", x)}; print "\n"
     end
   end

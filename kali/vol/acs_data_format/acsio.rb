@@ -138,8 +138,10 @@ module ACS_IO
       tag = self.class.name
     end
     s = " " * base_indent + tag + " " + name + "\n"
+#    p self.instance_variables
     if self.instance_variables.size > 0
-      self.instance_variables.sort.each do |v|
+      self.instance_variables.sort.each do |vsim|
+        v = vsim.to_s
         s += eval(v).to_acs_s(v.delete("@"), check_acs_output_name,
                               precision, indent, add_indent)
         remove_instance_variable(:@story) if v == "@story"
@@ -249,6 +251,8 @@ module ACS_IO
   end
 
   def acs_parse(a, base_indent)
+#    p a[0]
+#    p base_indent
     loop do
       break unless a[0]
       variable_name = a[0].split[1]
@@ -258,7 +262,9 @@ module ACS_IO
         a.shift
         eval("@#{variable_name} = #{val}")
       else
+ #       p "call parse_manager"
         result = ACS_IO.acs_parse_manager(a, base_indent)
+#        p "return from parse_manager"
         if result
           eval("@#{variable_name} = result")
         else
@@ -276,13 +282,14 @@ module ACS_IO
     indent = ACS_IO.count_initial_blanks(first_line)
     word = first_line.split
     class_name = word[0]
+#    p class_name
     case class_name
     when "String"
       add_indent = word[2].to_i
       return String.acs_parse(a, indent + add_indent)
     when "Array"
       return Array.acs_parse(a, indent)
-    when /^(TrueClass|Fixnum|Bignum|Float|Vector)$/
+    when /^(TrueClass|Fixnum|Bignum|Float|Vector|Integer)$/
       return eval("#{class_name}.acs_parse(a.shift, indent)")
     when /^(Module)$/
       modulename = a.shift.split[0]
